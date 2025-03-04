@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpBackend } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
@@ -61,10 +61,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
-    { prefix: './assets/shared-i18n/', suffix: '.json' },
-    { prefix: './assets/i18n/', suffix: '.json' },
-  ]);
+  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
 }
 
 registerLocaleData(localeFr, 'fr');
@@ -81,15 +78,6 @@ registerLocaleData(localeFr, 'fr');
     AppRoutingModule,
     MatNativeDateModule,
     QuicklinkModule,
-    TranslateModule.forRoot({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpBackend],
-      },
-    }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
@@ -98,6 +86,15 @@ registerLocaleData(localeFr, 'fr');
     }),
   ],
   providers: [
+    provideTranslateService({
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
+      defaultLanguage: 'fr',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpBackend],
+      },
+    }),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: BASE_URL, useValue: './referential-api' },

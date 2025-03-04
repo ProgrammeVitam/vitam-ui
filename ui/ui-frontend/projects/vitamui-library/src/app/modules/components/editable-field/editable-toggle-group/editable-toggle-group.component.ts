@@ -51,6 +51,7 @@ export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   templateUrl: './editable-toggle-group.component.html',
   styleUrls: ['./editable-toggle-group.component.scss'],
   providers: [EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableToggleGroupComponent extends EditableFieldComponent {
   @ContentChildren(EditableButtonToggleComponent) buttons: QueryList<EditableButtonToggleComponent>;

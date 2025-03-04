@@ -53,6 +53,7 @@ import { ArchiveService } from '../../archive.service';
   selector: 'app-found-object-modal',
   templateUrl: './found-object-modal.component.html',
   styleUrls: ['./found-object-modal.component.scss'],
+  standalone: false,
 })
 export class FoundObjectModalComponent {
   ark: string;

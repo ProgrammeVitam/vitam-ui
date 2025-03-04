@@ -1,7 +1,7 @@
-@import '../../../../../sass/mixins/elevation';
+@use '../../../../../sass/mixins/elevation' as elevation;
 
 .card {
-  @include shadow-4dp-dark;
+  @include elevation.shadow-4dp-dark;
 
   padding: 1rem;
   background-color: white;

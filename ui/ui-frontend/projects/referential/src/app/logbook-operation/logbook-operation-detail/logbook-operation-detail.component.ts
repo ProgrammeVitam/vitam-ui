@@ -64,6 +64,7 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
   animations: [fadeInOutAnimation],
+  standalone: false,
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   @Input() eventId: string;

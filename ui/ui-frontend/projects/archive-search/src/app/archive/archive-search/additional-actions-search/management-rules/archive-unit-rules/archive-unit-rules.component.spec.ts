@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -49,6 +49,7 @@ import { UpdateUnitManagementRuleService } from '../../../../common-services/upd
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../models/ruleAction.interface';
 import { ArchiveUnitRulesComponent } from './archive-unit-rules.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
@@ -172,6 +173,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [ArchiveUnitRulesComponent],
       imports: [
         VitamUICommonTestModule,
         InjectorModule,
@@ -179,10 +181,8 @@ describe('ArchiveUnitRulesComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
-        HttpClientTestingModule,
         RouterTestingModule,
       ],
-      declarations: [ArchiveUnitRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -193,6 +193,8 @@ describe('ArchiveUnitRulesComponent', () => {
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

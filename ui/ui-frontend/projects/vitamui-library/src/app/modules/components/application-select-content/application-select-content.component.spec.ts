@@ -45,6 +45,7 @@ import { ApplicationSelectContentComponent } from './application-select-content.
 @Component({
   selector: 'vitamui-common-menu-tile',
   template: '',
+  standalone: false,
 })
 class VitamUIMenuTileStubComponent {
   @Input() application: any;

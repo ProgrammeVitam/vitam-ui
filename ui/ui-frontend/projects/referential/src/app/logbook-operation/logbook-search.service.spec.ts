@@ -36,18 +36,21 @@
  */
 import { LogbookApiService, LogbookService } from 'vitamui-library';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { LogbookSearchService } from './logbook-search.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LogbookSearchService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         { provide: LogbookService, useValue: {} },
         { provide: LogbookApiService, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }),
   );

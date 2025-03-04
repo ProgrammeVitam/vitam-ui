@@ -41,6 +41,7 @@ import { Event } from '../../../event';
   selector: 'app-vitam-event-display',
   templateUrl: './event-display.component.html',
   styleUrls: ['./event-display.component.scss'],
+  standalone: false,
 })
 export class EventDisplayComponent implements OnInit {
   @Input() event: Event;

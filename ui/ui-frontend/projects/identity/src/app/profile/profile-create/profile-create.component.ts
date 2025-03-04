@@ -59,6 +59,7 @@ import { ProfileValidators } from '../profile.validators';
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.scss'],
   animations: [collapseAnimation],
+  standalone: false,
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {
   adminProfileForm: FormGroup;

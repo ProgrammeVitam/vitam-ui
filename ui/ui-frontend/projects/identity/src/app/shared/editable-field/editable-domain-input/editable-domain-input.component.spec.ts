@@ -55,6 +55,7 @@ import { EditableDomainInputComponent } from './editable-domain-input.component'
       multi: true,
     },
   ],
+  standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -71,6 +72,7 @@ class DomainInputStubComponent implements ControlValueAccessor {
   template: `
     <app-editable-domain-input [(ngModel)]="value" [label]="label" [(defaultDomain)]="defaultValue"></app-editable-domain-input>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   value: string[];

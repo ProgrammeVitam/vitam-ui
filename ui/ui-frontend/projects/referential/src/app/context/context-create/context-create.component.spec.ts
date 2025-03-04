@@ -62,6 +62,7 @@ import { ContextCreateValidators } from './context-create.validators';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() contextInfo: any;

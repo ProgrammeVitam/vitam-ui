@@ -105,6 +105,7 @@ const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
   styleUrls: ['./list-profile.component.scss'],
+  standalone: false,
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;

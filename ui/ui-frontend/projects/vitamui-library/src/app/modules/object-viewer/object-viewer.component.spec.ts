@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -92,20 +92,7 @@ describe('ObjectViewerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        DataStructureService,
-        TypeService,
-        DisplayObjectHelperService,
-        DisplayRuleHelperService,
-        SchemaElementToDisplayRuleService,
-        DateDisplayService,
-        LayoutService,
-        FavoriteEntryService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
-      ],
       imports: [
-        HttpClientTestingModule,
         TranslateModule.forRoot({
           missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
           defaultLanguage: 'fr',
@@ -117,6 +104,20 @@ describe('ObjectViewerComponent', () => {
         }),
         PipesModule,
         LoggerModule.forRoot(),
+      ],
+      providers: [
+        DataStructureService,
+        TypeService,
+        DisplayObjectHelperService,
+        DisplayRuleHelperService,
+        SchemaElementToDisplayRuleService,
+        DateDisplayService,
+        LayoutService,
+        FavoriteEntryService,
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(ObjectViewerComponent, {

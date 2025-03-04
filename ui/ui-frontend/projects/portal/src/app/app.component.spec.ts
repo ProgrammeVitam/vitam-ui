@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -48,6 +48,7 @@ import { environment } from './../environments/environment.prod';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'This is a test' };
 
@@ -57,7 +58,11 @@ class FakeLoader implements TranslateLoader {
   }
 }
 
-@Component({ selector: 'router-outlet', template: '' })
+@Component({
+  selector: 'router-outlet',
+  template: '',
+  standalone: false,
+})
 class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
@@ -74,7 +79,6 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
-        HttpClientTestingModule,
         MatSnackBarModule,
         InjectorModule,
         VitamUICommonTestModule,
@@ -87,10 +91,18 @@ describe('AppComponent', () => {
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => {}, events: of() } },
+        {
+          provide: Router,
+          useValue: {
+            navigate: () => {},
+            events: of(),
+          },
+        },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

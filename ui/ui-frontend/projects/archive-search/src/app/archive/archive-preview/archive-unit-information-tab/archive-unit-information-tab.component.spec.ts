@@ -68,21 +68,30 @@ import {
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
 
-@Pipe({ name: 'dateTime' })
+@Pipe({
+  name: 'dateTime',
+  standalone: false,
+})
 export class MockDateTimePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
 }
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
   }
 }
 
-@Pipe({ name: 'unitI18n' })
+@Pipe({
+  name: 'unitI18n',
+  standalone: false,
+})
 class MockUnitI18nPipe implements PipeTransform {
   transform(value: number): number {
     return value;

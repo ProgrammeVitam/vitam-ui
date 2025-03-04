@@ -44,6 +44,7 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
+  standalone: false,
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   @Input() archiveUnit: Unit;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -57,6 +57,7 @@ import { SimpleCriteriaSearchComponent } from './simple-criteria-search.componen
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ArchiveService } from '../../archive.service';
 import { ActivatedRoute } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SimpleCriteriaSearchComponent', () => {
   let component: SimpleCriteriaSearchComponent;
@@ -91,6 +92,7 @@ describe('SimpleCriteriaSearchComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [SimpleCriteriaSearchComponent],
+      imports: [InjectorModule, TranslateModule.forRoot(), AgenciesModule, MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },
@@ -106,14 +108,8 @@ describe('SimpleCriteriaSearchComponent', () => {
             queryParamMap: of(),
           },
         },
-      ],
-      imports: [
-        HttpClientTestingModule,
-        InjectorModule,
-        TranslateModule.forRoot(),
-        AgenciesModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

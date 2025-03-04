@@ -40,6 +40,7 @@ import { RowCollapseDirective } from './row-collapse.directive';
 
 @Directive({
   selector: '[vitamuiCommonRowCollapseTriggerFor]',
+  standalone: false,
 })
 export class RowCollapseTriggerForDirective {
   @Input() vitamuiCommonRowCollapseTriggerFor: RowCollapseDirective;

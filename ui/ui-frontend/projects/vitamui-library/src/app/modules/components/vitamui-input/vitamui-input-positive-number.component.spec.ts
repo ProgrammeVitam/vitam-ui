@@ -45,6 +45,7 @@ import { VitamUIInputPositiveNumberComponent } from './vitamui-input-positive-nu
 
 @Component({
   template: ` <vitamui-common-input-positive-number [(ngModel)]="value" #input="ngModel"></vitamui-common-input-positive-number> `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChild(VitamUIInputPositiveNumberComponent) VitamUIInputPositiveNumberComponent: VitamUIInputPositiveNumberComponent;

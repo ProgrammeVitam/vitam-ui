@@ -46,7 +46,10 @@ import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;

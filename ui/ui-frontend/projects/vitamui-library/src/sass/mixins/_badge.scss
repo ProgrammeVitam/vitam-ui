@@ -1,8 +1,10 @@
+@use './elevation' as elevation;
+
 @mixin status-badge {
   position: relative;
 
   &:after {
-    @include shadow-4dp-dark;
+    @include elevation.shadow-4dp-dark;
     content: '';
     display: flex;
     align-items: center;

@@ -49,7 +49,7 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
 import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
 import { OwnerPopupComponent } from './owner-popup.component';
 import { OwnerPreviewComponent } from './owner-preview.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -60,7 +60,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatTabsModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
+    TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,
   ],

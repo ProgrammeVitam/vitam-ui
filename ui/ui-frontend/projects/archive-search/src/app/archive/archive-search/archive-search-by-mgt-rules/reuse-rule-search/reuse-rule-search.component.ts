@@ -69,6 +69,7 @@ const RULE_END_DATE = 'RULE_END_DATE';
   selector: 'app-reuse-rule-search',
   templateUrl: './reuse-rule-search.component.html',
   styleUrls: ['./reuse-rule-search.component.css'],
+  standalone: false,
 })
 export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
   @Input()

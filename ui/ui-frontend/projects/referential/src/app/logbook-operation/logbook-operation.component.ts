@@ -47,6 +47,7 @@ import moment from 'moment';
   selector: 'app-logbook-operation',
   templateUrl: './logbook-operation.component.html',
   styleUrls: ['./logbook-operation.component.scss'],
+  standalone: false,
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;

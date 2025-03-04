@@ -42,6 +42,7 @@ import { VitamuiSnackBarData } from './vitamui-snack-bar.interface';
   selector: 'vitamui-common-vitamui-snack-bar',
   templateUrl: './vitamui-snack-bar.component.html',
   styleUrls: ['./vitamui-snack-bar.component.scss'],
+  standalone: false,
 })
 export class VitamUISnackBarComponent {
   constructor(

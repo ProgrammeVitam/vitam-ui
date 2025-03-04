@@ -46,6 +46,7 @@ import { BaseUserInfoApiService } from './../../../api/base-user-info-api.servic
   selector: 'vitamui-common-select-language',
   templateUrl: './select-language.component.html',
   styleUrls: ['./select-language.component.scss'],
+  standalone: false,
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
   /**

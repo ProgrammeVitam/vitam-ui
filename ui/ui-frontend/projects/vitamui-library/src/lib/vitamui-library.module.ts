@@ -54,6 +54,7 @@ import { SearchWithTypeSelectorComponent } from './components/search-with-type-s
 import { FormFieldValueWrapperComponent } from './components/form-field-value-wrapper/form-field-value-wrapper.component';
 import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 import { PatternComponent } from './components/pattern/pattern.component';
+import { MAT_BUTTON_TOGGLE_DEFAULT_OPTIONS } from '@angular/material/button-toggle';
 
 const components = [
   ConfirmActionModule,
@@ -81,6 +82,7 @@ const components = [
     { provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { autoFocus: false } },
+    { provide: MAT_BUTTON_TOGGLE_DEFAULT_OPTIONS, useValue: { hideSingleSelectionIndicator: true } },
   ],
 })
 export class VitamUILibraryModule {}

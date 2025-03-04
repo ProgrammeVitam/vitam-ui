@@ -47,7 +47,6 @@ export const FORM_FIELD_VALUE_WRAPPER_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'vitamui-form-field-value-wrapper',
-  standalone: true,
   imports: [CdkConnectedOverlay, CdkOverlayOrigin],
   templateUrl: './form-field-value-wrapper.component.html',
   styleUrl: './form-field-value-wrapper.component.scss',

@@ -54,6 +54,7 @@ import { FileFormatCreateValidators } from './file-format-create.validators';
   selector: 'app-file-format-create',
   templateUrl: './file-format-create.component.html',
   styleUrls: ['./file-format-create.component.scss'],
+  standalone: false,
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

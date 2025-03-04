@@ -57,6 +57,7 @@ import { delay, distinctUntilChanged, map } from 'rxjs/operators';
   selector: 'app-transfer-request-modal',
   templateUrl: './transfer-request-modal.component.html',
   styleUrls: ['./transfer-request-modal.component.scss'],
+  standalone: false,
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
   formGroups: FormGroup[];

@@ -45,6 +45,7 @@ import { AccessionRegistersService } from '../accession-register.service';
   selector: 'app-accession-register-advanced-search',
   templateUrl: './accession-register-advanced-search.component.html',
   styleUrls: ['./accession-register-advanced-search.component.scss'],
+  standalone: false,
 })
 export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();

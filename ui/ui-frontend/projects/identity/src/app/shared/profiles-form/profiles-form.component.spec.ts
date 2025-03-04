@@ -141,6 +141,7 @@ const expectedApp = {
 
 @Component({
   template: ` <app-profiles-form [(ngModel)]="profiles"></app-profiles-form> `,
+  standalone: false,
 })
 class TesthostComponent {
   profiles: string[];

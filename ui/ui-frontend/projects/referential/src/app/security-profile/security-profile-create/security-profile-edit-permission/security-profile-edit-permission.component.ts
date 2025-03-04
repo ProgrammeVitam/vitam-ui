@@ -49,6 +49,7 @@ export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   templateUrl: './security-profile-edit-permission.component.html',
   styleUrls: ['./security-profile-edit-permission.component.scss'],
   providers: [PERMISSION_SELECT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class SecurityProfileEditPermissionComponent implements ControlValueAccessor {
   permissions: PermissionStructure;

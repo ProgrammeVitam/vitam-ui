@@ -83,7 +83,7 @@
         </div>
       </cdk-step>
 
-      <cdk-step *ngIf="this.actionChosen !== 'PULL'">
+      <cdk-step *ngIf="actionChosen !== 'PULL'">
         <div [ngSwitch]="actionChosen">
           <ng-container *ngSwitchCase="'REPLACE'">
             <div class="text danger mt-3">

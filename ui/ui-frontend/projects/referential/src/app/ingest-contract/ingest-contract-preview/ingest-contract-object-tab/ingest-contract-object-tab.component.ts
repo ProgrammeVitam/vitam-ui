@@ -47,6 +47,7 @@ import { IngestContractService } from '../../ingest-contract.service';
   selector: 'app-ingest-contract-object-tab',
   templateUrl: './ingest-contract-object-tab.component.html',
   styleUrls: ['./ingest-contract-object-tab.component.scss'],
+  standalone: false,
 })
 export class IngestContractObjectTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

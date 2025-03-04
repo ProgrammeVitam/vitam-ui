@@ -42,6 +42,7 @@ import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
   selector: 'app-graphic-identity-form',
   templateUrl: './graphic-identity-form.component.html',
   styleUrls: ['./graphic-identity-form.component.scss'],
+  standalone: false,
 })
 export class GraphicIdentityFormComponent implements OnInit {
   @Input()

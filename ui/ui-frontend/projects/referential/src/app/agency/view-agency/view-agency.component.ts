@@ -54,7 +54,6 @@ import { of, switchMap } from 'rxjs';
   templateUrl: 'view-agency.component.html',
   styleUrls: ['view-agency.component.scss'],
   imports: [CommonModule, RouterModule, VitamUICommonModule, VitamUILibraryModule],
-  standalone: true,
 })
 export class ViewAgencyComponent implements OnInit {
   readonly agencyTemplate = agencyTemplate;

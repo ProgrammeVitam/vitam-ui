@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -46,6 +46,7 @@ import { of } from 'rxjs';
 import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, UsageVersionEnum, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { TransferRequestModalComponent } from './transfer-request-modal.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('TransferRequestModalComponent tests', () => {
   let component: TransferRequestModalComponent;
@@ -70,14 +71,7 @@ describe('TransferRequestModalComponent tests', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransferRequestModalComponent],
-      imports: [
-        InjectorModule,
-        TranslateModule.forRoot(),
-        MatButtonToggleModule,
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
-      ],
+      imports: [InjectorModule, TranslateModule.forRoot(), MatButtonToggleModule, MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -97,6 +91,8 @@ describe('TransferRequestModalComponent tests', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

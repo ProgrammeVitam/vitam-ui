@@ -47,6 +47,7 @@ import { IngestContractService } from '../../ingest-contract.service';
   selector: 'app-ingest-contract-heritage-tab',
   templateUrl: './ingest-contract-heritage-tab.component.html',
   styleUrls: ['./ingest-contract-heritage-tab.component.scss'],
+  standalone: false,
 })
 export class IngestContractHeritageTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

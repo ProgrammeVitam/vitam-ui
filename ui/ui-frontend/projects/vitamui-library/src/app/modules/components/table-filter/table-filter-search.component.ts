@@ -40,6 +40,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'vitamui-common-table-filter-search',
   templateUrl: './table-filter-search.component.html',
   styleUrls: ['./table-filter-search.component.scss'],
+  standalone: false,
 })
 export class TableFilterSearchComponent {
   @Input() filter: any[];

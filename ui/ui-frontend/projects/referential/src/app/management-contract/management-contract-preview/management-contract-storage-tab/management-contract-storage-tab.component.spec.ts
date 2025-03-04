@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -47,6 +47,7 @@ import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, Manage
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractStorageTabComponent', () => {
   let component: ManagementContractStorageTabComponent;
@@ -92,16 +93,16 @@ describe('ManagementContractStorageTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [ManagementContractStorageTabComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        HttpClientTestingModule,
         TranslateModule.forRoot(),
         RouterTestingModule,
         LoggerModule.forRoot(),
       ],
-      declarations: [ManagementContractStorageTabComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -109,8 +110,9 @@ describe('ManagementContractStorageTabComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ManagementContractService, useValue: managementContractServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

@@ -55,6 +55,7 @@ import { HierarchyService } from '../hierarchy.service';
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

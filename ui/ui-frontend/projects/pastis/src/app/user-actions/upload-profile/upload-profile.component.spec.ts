@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
@@ -79,6 +79,7 @@ import { BASE_URL, ProfileService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { UserActionUploadProfileComponent } from './upload-profile.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -89,13 +90,15 @@ describe('UserActionUploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       declarations: [UserActionUploadProfileComponent],
+      imports: [],
       providers: [
         ProfileService,
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -45,6 +45,7 @@ import { LogbookManagementOperationService } from '../logbook-management-operati
   selector: 'app-logbook-management-operation-list',
   templateUrl: './logbook-management-operation-list.component.html',
   styleUrls: ['./logbook-management-operation-list.component.scss'],
+  standalone: false,
 })
 export class LogbookManagementOperationListComponent implements OnInit {
   elementInPage: number;

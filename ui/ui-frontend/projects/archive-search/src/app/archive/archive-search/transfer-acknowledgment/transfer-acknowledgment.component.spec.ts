@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
@@ -45,15 +45,20 @@ import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, StartupService, WIND
 import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
 import { DecimalPipe } from '@angular/common';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
+
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
     return of(translations);
   }
 }
 
-@Pipe({ name: 'dateTime' })
+@Pipe({
+  name: 'dateTime',
+  standalone: false,
+})
 export class MockDateTimePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -80,6 +85,7 @@ describe('TransferAcknowledgmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [TransferAcknowledgmentComponent, MockDateTimePipe],
       imports: [
         InjectorModule,
         LoggerModule.forRoot(),
@@ -87,10 +93,7 @@ describe('TransferAcknowledgmentComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         MatSnackBarModule,
-        HttpClientTestingModule,
       ],
-
-      declarations: [TransferAcknowledgmentComponent, MockDateTimePipe],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -101,6 +104,8 @@ describe('TransferAcknowledgmentComponent', () => {
         { provide: ArchiveService, useValue: archiveSearchServiceStub },
         DecimalPipe,
         BytesPipe,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

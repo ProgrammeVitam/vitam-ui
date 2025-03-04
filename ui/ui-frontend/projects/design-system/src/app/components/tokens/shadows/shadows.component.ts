@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({
   templateUrl: './shadows.component.html',
   styleUrls: ['./shadows.component.scss'],
-  imports: [TranslateModule, UpperCasePipe],
-  standalone: true,
+  imports: [TranslatePipe, UpperCasePipe],
 })
 export class ShadowsComponent {
   colors = ['dark', 'primary', 'secondary', 'tertiary'];

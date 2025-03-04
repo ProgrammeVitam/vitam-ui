@@ -79,7 +79,7 @@ export class SchemaService {
         const element = subschema.find((element) => element[options.pathKey] === child);
         const key = child.split('.').pop();
 
-        if (this.isArray(element)) return { key, value: [] };
+        if (this.isArray(element)) return { key, value: [] as unknown[] };
         if (this.isObject(element)) return { key, value: {} };
 
         return { key, value: null };

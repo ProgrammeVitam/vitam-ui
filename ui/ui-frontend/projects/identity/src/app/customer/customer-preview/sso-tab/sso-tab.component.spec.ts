@@ -39,14 +39,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of, Subject } from 'rxjs';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BASE_URL, Customer, IdentityProvider, OtpState } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
 import { SsoTabComponent } from './sso-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-identity-provider-details', template: '' })
+@Component({
+  selector: 'app-identity-provider-details',
+  template: '',
+  standalone: false,
+})
 class IdentityProviderDetailsStubComponent {
   @Input() identityProvider: IdentityProvider;
   @Input() domains: any;
@@ -54,7 +59,8 @@ class IdentityProviderDetailsStubComponent {
 }
 
 @Component({
-  template: `<app-sso-tab [customer]="customer"></app-sso-tab>`,
+  template: ` <app-sso-tab [customer]="customer"></app-sso-tab>`,
+  standalone: false,
 })
 class TestHostComponent {
   customer: Customer = {
@@ -139,8 +145,8 @@ describe('SsoTabComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, HttpClientTestingModule],
       declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent],
+      imports: [VitamUICommonTestModule],
       providers: [
         ProviderApiService,
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -153,6 +159,8 @@ describe('SsoTabComponent', () => {
             updated: new Subject(),
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -39,7 +39,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IEvent } from '../../../models';
 import { HistoryEventsComponent } from './history-events.component';
 
-@Component({ selector: 'vitamui-common-event-type-label', template: '' })
+@Component({
+  selector: 'vitamui-common-event-type-label',
+  template: '',
+  standalone: false,
+})
 class EventTypeLabelStubComponent {
   @Input() key: string;
 }

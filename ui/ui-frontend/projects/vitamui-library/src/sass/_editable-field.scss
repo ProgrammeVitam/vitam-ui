@@ -1,6 +1,4 @@
-@import './variables/colors';
-
-$anim-timing: 150ms ease-out;
+@use './mixins/elevation' as elevation;
 
 .editable-field-wrapper {
   display: inline-block;
@@ -29,6 +27,7 @@ $anim-timing: 150ms ease-out;
   }
 
   i.edit-icon {
+    $anim-timing: 150ms ease-out;
     color: var(--vitamui-primary);
     opacity: 0;
     transition: opacity $anim-timing;
@@ -112,14 +111,14 @@ $anim-timing: 150ms ease-out;
   border-radius: 25px;
   padding: 10px;
   background-color: white;
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   z-index: 1;
   margin: 10px 0 10px 10px;
   display: flex;
   justify-content: space-between;
 
   button {
-    @include shadow-2dp-dark;
+    @include elevation.shadow-2dp-dark;
     background: none;
     border: none;
     color: white;

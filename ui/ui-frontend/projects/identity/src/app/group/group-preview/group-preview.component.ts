@@ -44,6 +44,7 @@ import { GroupService } from '../group.service';
   selector: 'app-group-preview',
   templateUrl: './group-preview.component.html',
   styleUrls: ['./group-preview.component.scss'],
+  standalone: false,
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isPopup: boolean;

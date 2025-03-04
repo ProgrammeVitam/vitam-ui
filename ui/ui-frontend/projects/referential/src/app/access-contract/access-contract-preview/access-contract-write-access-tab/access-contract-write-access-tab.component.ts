@@ -45,6 +45,7 @@ import { AccessContract, diff, Option, AccessContractService } from 'vitamui-lib
   selector: 'app-access-contract-write-access-tab',
   templateUrl: './access-contract-write-access-tab.component.html',
   styleUrls: ['./access-contract-write-access-tab.component.scss'],
+  standalone: false,
 })
 export class AccessContractWriteAccessTabComponent implements OnInit {
   public usages: Option[] = [

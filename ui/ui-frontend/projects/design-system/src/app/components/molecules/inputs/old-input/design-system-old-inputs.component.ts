@@ -41,7 +41,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field';
 import { NgForOf, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -51,7 +51,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'design-system-old-inputs',
-  standalone: true,
   imports: [
     EditableFieldModule,
     MatButtonToggleModule,
@@ -63,7 +62,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     NgForOf,
     NgIf,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,
   ],

@@ -52,6 +52,7 @@ export class IngestFilters {
   selector: 'app-ingest-list',
   templateUrl: './ingest-list.component.html',
   styleUrls: ['./ingest-list.component.scss'],
+  standalone: false,
 })
 export class IngestListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   IngestStatus = IngestStatus;

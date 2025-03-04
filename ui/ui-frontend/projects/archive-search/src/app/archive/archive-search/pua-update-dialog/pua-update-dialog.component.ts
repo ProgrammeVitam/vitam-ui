@@ -52,7 +52,7 @@ import {
 import { map } from 'rxjs/operators';
 import { ArchiveService } from '../../archive.service';
 import { RuleActions, RuleSearchCriteriaDto } from '../../models/ruleAction.interface';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 export interface PuaUpdateDialogComponentData {
   tenantIdentifier: number;
@@ -61,7 +61,6 @@ export interface PuaUpdateDialogComponentData {
 }
 
 @Component({
-  standalone: true,
   imports: [
     FormsModule,
     MatRadioModule,
@@ -69,7 +68,7 @@ export interface PuaUpdateDialogComponentData {
     MatDialogModule,
     AsyncPipe,
     SelectComponent,
-    TranslateModule,
+    TranslatePipe,
     I18nPluralPipe,
     DialogHeaderComponent,
   ],

@@ -45,6 +45,7 @@ import { DisplayObjectType } from '../../types';
   selector: 'vitamui-common-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
+  standalone: false,
 })
 export class GroupComponent implements OnInit, OnChanges {
   @Input() displayObject: DisplayObject;

@@ -51,6 +51,7 @@ import { StepperModule } from './stepper.module';
       <cdk-step></cdk-step>
     </vitamui-common-stepper>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChild(StepperComponent) stepper: StepperComponent;

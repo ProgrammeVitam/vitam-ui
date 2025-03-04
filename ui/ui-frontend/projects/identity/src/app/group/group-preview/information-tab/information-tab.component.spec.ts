@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -45,11 +45,13 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../group.service';
 import { GroupValidators } from '../../group.validators';
 import { InformationTabComponent } from './information-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 let expectedGroup: Group;
 
 @Component({
-  template: `<app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`,
+  template: ` <app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`,
+  standalone: false,
 })
 class TestHostComponent {
   group = expectedGroup;
@@ -84,8 +86,8 @@ describe('Profile Group InformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot(), HttpClientTestingModule],
       declarations: [InformationTabComponent, TestHostComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot()],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -94,6 +96,8 @@ describe('Profile Group InformationTabComponent', () => {
         { provide: GroupValidators, useValue: groupValidatorsSpy },
         { provide: AuthService, useValue: authServiceMock },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

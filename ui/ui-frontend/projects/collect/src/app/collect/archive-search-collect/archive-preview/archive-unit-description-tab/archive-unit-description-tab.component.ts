@@ -39,14 +39,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, SpinnerOverlayService } from 'vitamui-library';
-import { EditObject } from 'vitamui-library/app/modules/object-editor/models/edit-object.model';
+import { ArchiveUnit, ArchiveUnitEditorComponent, EditObject, JsonPatch, SpinnerOverlayService } from 'vitamui-library';
 import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({
   selector: 'app-archive-unit-description-tab',
   templateUrl: './archive-unit-description-tab.component.html',
   styleUrls: ['./archive-unit-description-tab.component.scss'],
+  standalone: false,
 })
 export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   @Input() archiveUnit: ArchiveUnit;

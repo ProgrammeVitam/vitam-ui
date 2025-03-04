@@ -53,6 +53,7 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {
   @Input()

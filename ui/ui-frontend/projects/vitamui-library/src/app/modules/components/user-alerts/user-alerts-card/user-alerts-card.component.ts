@@ -40,6 +40,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'vitamui-common-user-alerts-card',
   templateUrl: './user-alerts-card.component.html',
   styleUrls: ['./user-alerts-card.component.scss'],
+  standalone: false,
 })
 export class UserAlertsCardComponent {
   @Input() applicationName: string;

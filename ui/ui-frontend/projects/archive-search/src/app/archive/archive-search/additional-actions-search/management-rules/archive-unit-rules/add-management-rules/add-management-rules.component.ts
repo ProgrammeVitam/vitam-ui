@@ -66,6 +66,7 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   selector: 'app-add-management-rules',
   templateUrl: './add-management-rules.component.html',
   styleUrls: ['./add-management-rules.component.css'],
+  standalone: false,
 })
 export class AddManagementRulesComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();

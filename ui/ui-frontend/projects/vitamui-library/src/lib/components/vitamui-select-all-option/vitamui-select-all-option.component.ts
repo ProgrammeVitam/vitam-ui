@@ -59,6 +59,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'vitamui-select-all-option',
   templateUrl: './vitamui-select-all-option.component.html',
   styleUrls: ['./vitamui-select-all-option.component.scss'],
+  standalone: false,
 })
 export class VitamUISelectAllOptionComponent extends MatOption implements OnInit, OnDestroy {
   // You need to provide either a control or a model

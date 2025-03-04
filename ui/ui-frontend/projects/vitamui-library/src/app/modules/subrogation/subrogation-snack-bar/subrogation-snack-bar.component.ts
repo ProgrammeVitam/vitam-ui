@@ -41,6 +41,7 @@ import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitam
 
 @Component({
   templateUrl: './subrogation-snack-bar.component.html',
+  standalone: false,
 })
 export class SubrogationSnackBarComponent {
   constructor(

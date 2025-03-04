@@ -60,6 +60,7 @@ import { EditableTextareaComponent } from './editable-textarea.component';
       <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
     </vitamui-common-editable-textarea>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   value: string;

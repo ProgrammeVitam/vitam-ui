@@ -43,7 +43,6 @@ import { NgTemplateOutlet } from '@angular/common';
 @Component({
   templateUrl: './tab-group.component.html',
   styleUrls: ['./tab-group.component.scss'],
-  standalone: true,
   imports: [MatTabsModule, TranslateModule, NgTemplateOutlet],
 })
 export class TabGroupComponent {

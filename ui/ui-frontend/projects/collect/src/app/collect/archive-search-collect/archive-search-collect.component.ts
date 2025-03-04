@@ -98,6 +98,7 @@ const DYNAMIC_ATTACHEMENT = 'DYNAMIC_ATTACHEMENT_';
   selector: 'app-archive-search-collect',
   templateUrl: './archive-search-collect.component.html',
   styleUrls: ['./archive-search-collect.component.scss'],
+  standalone: false,
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
   readonly UnitType = UnitType;

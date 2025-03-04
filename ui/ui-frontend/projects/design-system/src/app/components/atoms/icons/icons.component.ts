@@ -38,13 +38,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectComponent } from 'vitamui-library';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss'],
-  standalone: true,
-  imports: [CommonModule, TranslateModule, FormsModule, SelectComponent],
+  imports: [CommonModule, TranslatePipe, FormsModule, SelectComponent],
 })
 export class IconsComponent {
   icons: (string | string[])[];

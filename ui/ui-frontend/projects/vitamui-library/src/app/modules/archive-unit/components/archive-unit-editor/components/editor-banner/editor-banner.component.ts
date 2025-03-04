@@ -40,6 +40,7 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-common-editor-banner',
   templateUrl: './editor-banner.component.html',
   styleUrls: ['./editor-banner.component.scss'],
+  standalone: false,
 })
 export class EditorBannerComponent {
   @Input() title: string;

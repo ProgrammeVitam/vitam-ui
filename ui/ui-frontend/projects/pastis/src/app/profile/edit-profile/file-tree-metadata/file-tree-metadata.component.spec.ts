@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -50,6 +50,7 @@ import { FileService } from '../../../core/services/file.service';
 import { MetadataHeaders } from '../../../models/models';
 import { FileTreeMetadataComponent } from './file-tree-metadata.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FileTreeMetadataComponent', () => {
   let component: FileTreeMetadataComponent;
@@ -82,6 +83,15 @@ describe('FileTreeMetadataComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FileTreeMetadataComponent],
+      imports: [
+        ToastrModule.forRoot({
+          positionClass: 'toast-bottom-right',
+        }),
+        MatSnackBarModule,
+        RouterModule.forRoot([], {}),
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot({}),
+      ],
       providers: [
         FileTreeMetadataService,
         FileService,
@@ -94,16 +104,8 @@ describe('FileTreeMetadataComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: APP_BASE_HREF, useValue: '/' },
-      ],
-      imports: [
-        HttpClientTestingModule,
-        ToastrModule.forRoot({
-          positionClass: 'toast-bottom-right',
-        }),
-        MatSnackBarModule,
-        RouterModule.forRoot([], {}),
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({}),
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

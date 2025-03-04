@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -63,6 +63,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveComponent } from './archive.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchiveComponent', () => {
   let component: ArchiveComponent;
@@ -108,6 +109,8 @@ describe('ArchiveComponent', () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
+      declarations: [ArchiveComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatDatepickerModule,
         MatNativeDateModule,
@@ -115,7 +118,6 @@ describe('ArchiveComponent', () => {
         MatSidenavModule,
         InjectorModule,
         RouterTestingModule,
-        HttpClientTestingModule,
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
@@ -125,7 +127,6 @@ describe('ArchiveComponent', () => {
         TranslateModule.forRoot(),
         MatSnackBarModule,
       ],
-      declarations: [ArchiveComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
@@ -138,8 +139,9 @@ describe('ArchiveComponent', () => {
         },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

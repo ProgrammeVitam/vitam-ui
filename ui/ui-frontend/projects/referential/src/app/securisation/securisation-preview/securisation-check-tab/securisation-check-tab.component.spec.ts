@@ -40,8 +40,9 @@ import { of } from 'rxjs';
 import { AccessContractService, BASE_URL, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SecurisationCheckTabComponent', () => {
   let component: SecurisationCheckTabComponent;
@@ -104,8 +105,9 @@ describe('SecurisationCheckTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       declarations: [SecurisationCheckTabComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
@@ -120,8 +122,9 @@ describe('SecurisationCheckTabComponent', () => {
           },
         },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

@@ -34,21 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
 import { ExternalParamProfileService } from './external-param-profile.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExternalParamProfileService', () => {
   let service: ExternalParamProfileService;
   const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot()],
       providers: [
         ExternalParamProfileService,
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     service = TestBed.inject(ExternalParamProfileService);

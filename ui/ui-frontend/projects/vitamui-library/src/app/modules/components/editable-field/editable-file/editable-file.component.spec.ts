@@ -36,7 +36,7 @@
  */
 /* eslint-disable no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -50,6 +50,7 @@ import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { newFile } from '../../../models';
 import { VitamUIFieldErrorComponent } from '../../vitamui-field-error/vitamui-field-error.component';
 import { EditableFileComponent } from './editable-file.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   template: `
@@ -64,6 +65,7 @@ import { EditableFileComponent } from './editable-file.component';
       <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
     </vitamui-common-editable-file>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   value: File;
@@ -84,17 +86,16 @@ describe('EditableFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        OverlayModule,
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        TranslateModule.forRoot(),
-      ],
-      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
       declarations: [TesthostComponent, EditableFileComponent, VitamUIFieldErrorComponent],
+      imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, NoopAnimationsModule, TranslateModule.forRoot()],
+      providers: [
+        {
+          provide: WINDOW_LOCATION,
+          useValue: {},
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

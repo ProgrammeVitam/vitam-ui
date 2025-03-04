@@ -46,10 +46,18 @@ import { of } from 'rxjs';
 import { AuthService, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
-@Component({ selector: 'router-outlet', template: '' })
+@Component({
+  selector: 'router-outlet',
+  template: '',
+  standalone: false,
+})
 class RouterOutletStubComponent {}
 
-@Component({ selector: 'vitamui-common-subrogation-banner', template: '' })
+@Component({
+  selector: 'vitamui-common-subrogation-banner',
+  template: '',
+  standalone: false,
+})
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {

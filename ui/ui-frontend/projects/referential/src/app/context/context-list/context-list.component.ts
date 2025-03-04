@@ -61,6 +61,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

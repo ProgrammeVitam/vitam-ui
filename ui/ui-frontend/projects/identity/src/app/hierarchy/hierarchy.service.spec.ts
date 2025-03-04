@@ -36,21 +36,24 @@
  */
 import { BASE_URL, VitamUISnackBarService } from 'vitamui-library';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { HierarchyService } from './hierarchy.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HierarchyService', () => {
   beforeEach(() => {
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         HierarchyService,
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
   });

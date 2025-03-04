@@ -64,6 +64,7 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
   @Input() archiveUnit: Unit;

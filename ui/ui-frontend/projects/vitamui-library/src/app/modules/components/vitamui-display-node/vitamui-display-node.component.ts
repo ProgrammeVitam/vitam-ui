@@ -40,6 +40,7 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-common-display-node',
   templateUrl: './vitamui-display-node.component.html',
   styleUrls: ['./vitamui-display-node.component.scss'],
+  standalone: false,
 })
 export class VitamUIDisplayNodeComponent {
   @Input() node: any;

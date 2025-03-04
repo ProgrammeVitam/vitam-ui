@@ -48,6 +48,7 @@ import { Action, EditObject } from '../../models/edit-object.model';
   selector: 'vitamui-common-group-editor',
   templateUrl: './group-editor.component.html',
   styleUrls: ['./group-editor.component.scss'],
+  standalone: false,
 })
 export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() editObject: EditObject;

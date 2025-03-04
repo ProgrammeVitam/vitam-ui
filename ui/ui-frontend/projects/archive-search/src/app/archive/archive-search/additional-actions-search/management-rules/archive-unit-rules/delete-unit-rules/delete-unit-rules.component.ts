@@ -65,6 +65,7 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   selector: 'app-delete-unit-rules',
   templateUrl: './delete-unit-rules.component.html',
   styleUrls: ['./delete-unit-rules.component.css'],
+  standalone: false,
 })
 export class DeleteUnitRulesComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();

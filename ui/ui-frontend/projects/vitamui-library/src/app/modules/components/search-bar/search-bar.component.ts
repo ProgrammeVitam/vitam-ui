@@ -40,6 +40,7 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleCh
   selector: 'vitamui-common-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
+  standalone: false,
 })
 export class SearchBarComponent implements OnChanges {
   @Input() placeholder: string;
@@ -50,6 +51,7 @@ export class SearchBarComponent implements OnChanges {
 
   @Input() searchButtonColor: 'primary' | 'secondary' = 'secondary';
 
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() search = new EventEmitter<string>();
 
   @Output() searchChanged = new EventEmitter<string>();

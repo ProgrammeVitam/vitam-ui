@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APP_INITIALIZER, Inject, ModuleWithProviders, NgModule } from '@angular/core';
+import { Inject, ModuleWithProviders, NgModule, provideAppInitializer } from '@angular/core';
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 import { first, tap } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
@@ -50,11 +50,10 @@ import { OidcAuthenticatorService } from './services/oidc-authenticator.service'
   declarations: [],
   imports: [],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: AuthenticationModule.loadModule,
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = AuthenticationModule.loadModule();
+      return initializerFn();
+    }),
   ],
 })
 export class AuthenticationModule {

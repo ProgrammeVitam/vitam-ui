@@ -72,6 +72,7 @@ const TOOLTIP_TRIGGER_CLASS = 'tooltip-trigger';
 
 @Directive({
   selector: '[vitamuiTooltip]',
+  standalone: false,
 })
 export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   @Input('vitamuiTooltip') text?: string;

@@ -1,5 +1,4 @@
-@import 'mixins/material/select';
-@import 'mixins/badge';
-@import 'mixins/elevation';
-@import 'mixins/fonts';
-@import 'mixins/dot';
+@use 'mixins/material/select';
+@use 'mixins/badge';
+@use 'mixins/elevation' as elevation;
+@use 'mixins/fonts';

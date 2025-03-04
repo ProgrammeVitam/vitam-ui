@@ -132,6 +132,7 @@ function constantToTranslate() {
   selector: 'pastis-file-tree',
   templateUrl: './file-tree.component.html',
   styleUrls: ['./file-tree.component.scss'],
+  standalone: false,
 })
 export class FileTreeComponent implements OnInit, OnDestroy {
   static archiveUnits: FileNode;

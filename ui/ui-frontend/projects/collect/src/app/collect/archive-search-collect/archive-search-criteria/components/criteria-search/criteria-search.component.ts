@@ -42,6 +42,7 @@ import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriter
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
+  standalone: false,
 })
 export class CriteriaSearchComponent {
   constructor(private queryParamsService: QueryParamsService) {}

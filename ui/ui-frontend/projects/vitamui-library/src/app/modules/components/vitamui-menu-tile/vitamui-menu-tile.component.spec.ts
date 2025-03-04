@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApplicationId } from '../../application-id.enum';
@@ -44,9 +44,11 @@ import { SUBROGRATION_REFRESH_RATE_MS } from './../../injection-tokens';
 import { LoggerModule } from './../../logger/logger.module';
 import { StartupService } from './../../startup.service';
 import { VitamUIMenuTileComponent } from './vitamui-menu-tile.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Directive({
   selector: '[vitamuiCommonTooltip]',
+  standalone: false,
 })
 class TooltipStubDirective {
   @Input() vitamuiCommonTooltip: any;
@@ -62,14 +64,16 @@ describe('VitamUIMenuTileComponent', () => {
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
       declarations: [VitamUIMenuTileComponent, TooltipStubDirective],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [LoggerModule.forRoot()],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

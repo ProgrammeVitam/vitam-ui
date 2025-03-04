@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, provideAppInitializer } from '@angular/core';
 import { AuthenticatorService, AuthService } from 'vitamui-library';
 import { NoAuthenticatorService } from './no-authenticator.service';
 
@@ -45,11 +45,10 @@ export function initializeApp() {
 @NgModule({
   providers: [
     { provide: AuthenticatorService, useClass: NoAuthenticatorService },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = initializeApp();
+      return initializerFn();
+    }),
   ],
 })
 export class NoAuthenticationModule {

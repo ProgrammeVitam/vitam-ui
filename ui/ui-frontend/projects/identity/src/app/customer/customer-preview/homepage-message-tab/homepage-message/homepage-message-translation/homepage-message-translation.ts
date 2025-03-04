@@ -43,6 +43,7 @@ import { Option } from 'vitamui-library';
   selector: 'app-homepage-message-translation',
   templateUrl: './homepage-message-translation.html',
   styleUrls: ['./homepage-message-translation.scss'],
+  standalone: false,
 })
 export class HomepageMessageTranslationComponent implements OnInit, OnDestroy {
   @Input()

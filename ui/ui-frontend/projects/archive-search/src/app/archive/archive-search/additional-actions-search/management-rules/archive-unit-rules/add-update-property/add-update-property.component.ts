@@ -46,6 +46,7 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
   selector: 'app-add-update-property',
   templateUrl: './add-update-property.component.html',
   styleUrls: ['./add-update-property.component.css'],
+  standalone: false,
 })
 export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   @Input()

@@ -46,6 +46,7 @@ import { FormControl, Validators } from '@angular/forms';
   selector: 'app-logbook-management-operation-preview',
   templateUrl: './logbook-management-operation-preview.component.html',
   styleUrls: ['./logbook-management-operation-preview.component.scss'],
+  standalone: false,
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
   @Input() operation: OperationDetails;

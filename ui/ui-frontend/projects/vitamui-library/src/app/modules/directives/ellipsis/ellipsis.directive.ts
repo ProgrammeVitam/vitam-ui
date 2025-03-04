@@ -38,6 +38,7 @@ import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, Input,
 
 @Directive({
   selector: '[vitamuiCommonEllipsis]',
+  standalone: false,
 })
 export class EllipsisDirective implements OnInit, AfterViewInit {
   @Input() isToolTipOnMouseEnter = false;

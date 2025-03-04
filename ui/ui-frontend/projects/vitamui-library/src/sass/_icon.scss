@@ -1,5 +1,7 @@
+@use './mixins/fonts' as fonts;
+
 .vitamui-icon {
-  @include text-colors;
+  @include fonts.text-colors;
 }
 
 // App engine icon theming

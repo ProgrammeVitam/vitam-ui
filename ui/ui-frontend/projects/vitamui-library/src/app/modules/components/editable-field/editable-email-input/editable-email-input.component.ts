@@ -52,6 +52,7 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-email-input.component.html',
   styleUrls: ['./editable-email-input.component.scss'],
   providers: [EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableEmailInputComponent extends EditableFieldComponent {
   @ViewChild('select') select: MatSelect;

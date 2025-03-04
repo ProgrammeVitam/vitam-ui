@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
@@ -54,6 +54,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 import { InformationTabComponent } from './information-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 
 let expectedCustomer: Customer = {
@@ -96,6 +97,7 @@ let expectedCustomer: Customer = {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class EditableDomainInputStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -103,9 +105,12 @@ class EditableDomainInputStubComponent implements ControlValueAccessor {
   @Input() defaultDomain: string;
 
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
+
 @Component({
   selector: 'app-customer-colors-input',
   template: '',
@@ -116,19 +121,24 @@ class EditableDomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
+
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
 @Component({
-  template: `<app-information-tab [customer]="customer" [readOnly]="readOnly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"
-    >></app-information-tab
-  >`,
+  template: ` <app-information-tab [customer]="customer" [readOnly]="readOnly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"
+    >>
+  </app-information-tab>`,
+  standalone: false,
 })
 class TestHostComponent {
   customer = expectedCustomer;
@@ -180,7 +190,6 @@ describe('Customer InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         ReactiveFormsModule,
@@ -196,6 +205,8 @@ describe('Customer InformationTabComponent', () => {
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

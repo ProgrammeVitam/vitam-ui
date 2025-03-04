@@ -46,6 +46,7 @@ import { SubrogationService } from '../subrogation.service';
   selector: 'vitamui-common-subrogation-modal',
   templateUrl: './subrogation-modal.component.html',
   styleUrls: ['./subrogation-modal.component.scss'],
+  standalone: false,
 })
 export class SubrogationModalComponent implements OnInit {
   public stepIndex = 0;

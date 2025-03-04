@@ -49,6 +49,7 @@ const ATR_EXTENSION = '.xml';
   selector: 'app-transfer-acknowledgment',
   templateUrl: './transfer-acknowledgment.component.html',
   styleUrls: ['./transfer-acknowledgment.component.scss'],
+  standalone: false,
 })
 export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   stepIndex = 0;

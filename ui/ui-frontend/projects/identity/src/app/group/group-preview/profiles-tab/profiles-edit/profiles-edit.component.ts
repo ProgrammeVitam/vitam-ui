@@ -45,6 +45,7 @@ import { GroupService } from '../../../group.service';
   selector: 'app-profiles-edit',
   templateUrl: './profiles-edit.component.html',
   styleUrls: ['./profiles-edit.component.scss'],
+  standalone: false,
 })
 export class ProfilesEditComponent implements OnInit, OnDestroy {
   form: FormGroup;

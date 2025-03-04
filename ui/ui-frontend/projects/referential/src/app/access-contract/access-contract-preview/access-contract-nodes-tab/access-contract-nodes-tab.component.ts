@@ -51,6 +51,7 @@ import { AccessContractNodeUpdateComponent } from './access-contract-nodes-updat
   selector: 'app-access-contract-nodes-tab',
   templateUrl: './access-contract-nodes-tab.component.html',
   styleUrls: ['./access-contract-nodes-tab.component.scss'],
+  standalone: false,
 })
 export class AccessContractNodesTabComponent {
   @Input() tenantIdentifier: number;

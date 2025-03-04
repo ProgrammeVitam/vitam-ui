@@ -43,6 +43,7 @@ import { OwnerService } from '../owner.service';
 @Component({
   selector: 'app-owner-popup',
   template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>',
+  standalone: false,
 })
 export class OwnerPopupComponent {
   owner: Owner;

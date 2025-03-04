@@ -51,6 +51,7 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
   selector: 'app-ingest-contract-preview',
   templateUrl: './ingest-contract-preview.component.html',
   styleUrls: ['./ingest-contract-preview.component.scss'],
+  standalone: false,
 })
 export class IngestContractPreviewComponent implements OnChanges, AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

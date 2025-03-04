@@ -42,7 +42,6 @@ import { VitamUICommonModule } from 'vitamui-library';
 @Component({
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss'],
-  standalone: true,
   imports: [CommonModule, VitamUICommonModule],
 })
 export class BreadcrumbsComponent {

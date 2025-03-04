@@ -34,21 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from '../auth.service';
 import { BASE_URL, WINDOW_LOCATION } from '../injection-tokens';
 import { SubrogationApiService } from './subrogation-api.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SubrogationApiService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AuthService, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }),
   );

@@ -46,6 +46,7 @@ import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
   selector: 'vitamui-common-tenant-select',
   templateUrl: './vitamui-tenant-select.component.html',
   styleUrls: ['./vitamui-tenant-select.component.scss'],
+  standalone: false,
 })
 export class VitamUITenantSelectComponent implements OnInit {
   appId: ApplicationId;

@@ -1,4 +1,6 @@
-@import './mixins/elevation';
+@use './mixins/elevation' as elevation;
+@use './mixins/fonts' as fonts;
+@import './base/typography';
 
 @mixin disabled($background-color: var(--vitamui-grey-300), $color: var(--vitamui-grey-700), $border-color: var(--vitamui-grey-300)) {
   cursor: no-drop;
@@ -6,7 +8,7 @@
   border: 1px solid $border-color;
   color: $color;
 
-  @include shadow-0;
+  @include elevation.shadow-0;
 
   i {
     display: flex !important;
@@ -31,7 +33,7 @@
   &.link,
   &:disabled,
   &.btn-search {
-    @include shadow-0;
+    @include elevation.shadow-0;
   }
 
   &:not(:disabled) {
@@ -81,7 +83,9 @@
 }
 
 .btn {
-  @extend .button-medium;
+  @extend .text, .normal, .bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -287,7 +291,7 @@
     @include disabled(transparent, var(--vitamui-grey), transparent);
   }
 
-  @include text-colors;
+  @include fonts.text-colors;
 }
 
 .btn.outline {
@@ -320,52 +324,52 @@
 .mat-mdc-dialog-container {
   .btn.contrast,
   .btn.contrast-outline {
-    @include btn-dialog-elevation-dark;
+    @include elevation.btn-dialog-elevation-dark;
 
     &.contrast-primary,
     &.contrast-outline-primary {
-      @include btn-dialog-elevation-primary;
+      @include elevation.btn-dialog-elevation-primary;
     }
 
     &.contrast-secondary,
     &.contrast-outline-secondary {
-      @include btn-dialog-elevation-secondary;
+      @include elevation.btn-dialog-elevation-secondary;
     }
   }
 
   .btn.primary,
   .btn.outline-primary {
-    @include btn-dialog-elevation-primary;
+    @include elevation.btn-dialog-elevation-primary;
   }
 
   .btn.secondary,
   .btn.outline-secondary {
-    @include btn-dialog-elevation-secondary;
+    @include elevation.btn-dialog-elevation-secondary;
   }
 }
 
 .btn.primary,
 .btn.outline-primary {
-  @include btn-elevation-primary;
+  @include elevation.btn-elevation-primary;
 }
 
 .btn.secondary,
 .btn.outline-secondary {
-  @include btn-elevation-secondary;
+  @include elevation.btn-elevation-secondary;
 }
 
 .btn.contrast,
 .btn.contrast-outline {
-  @include btn-elevation-dark;
+  @include elevation.btn-elevation-dark;
 
   &.contrast-primary,
   &.contrast-outline-primary {
-    @include btn-elevation-primary;
+    @include elevation.btn-elevation-primary;
   }
 
   &.contrast-secondary,
   &.contrast-outline-secondary {
-    @include btn-elevation-secondary;
+    @include elevation.btn-elevation-secondary;
   }
 }
 

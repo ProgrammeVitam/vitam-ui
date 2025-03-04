@@ -57,6 +57,7 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input() applicationNameExclude: string[];

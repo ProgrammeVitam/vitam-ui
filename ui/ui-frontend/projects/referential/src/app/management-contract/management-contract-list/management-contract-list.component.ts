@@ -46,6 +46,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-management-contract-list',
   templateUrl: './management-contract-list.component.html',
   styleUrls: ['./management-contract-list.component.scss'],
+  standalone: false,
 })
 export class ManagementContractListComponent extends InfiniteScrollTable<ManagementContract> implements OnDestroy, OnInit {
   orderBy = 'Name';

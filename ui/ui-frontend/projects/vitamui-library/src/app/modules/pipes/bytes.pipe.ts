@@ -43,7 +43,10 @@ import localeFr from '@angular/common/locales/fr';
 
 registerLocaleData(localeFr, 'fr');
 
-@Pipe({ name: 'bytes' })
+@Pipe({
+  name: 'bytes',
+  standalone: false,
+})
 export class BytesPipe implements PipeTransform {
   private static NUMBER_OF_BYTES_IN_ONE_KB = 1024;
   private static DEFAULT_PRECISION = 2;

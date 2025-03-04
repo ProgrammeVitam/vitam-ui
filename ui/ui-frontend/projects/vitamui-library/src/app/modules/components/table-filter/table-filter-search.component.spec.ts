@@ -50,6 +50,7 @@ import { TableFilterComponent } from './table-filter.component';
     <vitamui-common-table-filter-search [(filter)]="filter" [options]="options" (filterClose)="onClose()">
     </vitamui-common-table-filter-search>
   `,
+  standalone: false,
 })
 export class TestHostComponent {
   filter: any;

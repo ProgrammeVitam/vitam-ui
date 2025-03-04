@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,8 +44,9 @@ import { TenantSelectContentModule } from '../tenant-select-content/tenant-selec
 import { VitamUITenantSelectComponent } from './vitamui-tenant-select.component';
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule, RouterModule, TenantSelectContentModule, TranslateModule],
   declarations: [VitamUITenantSelectComponent],
   exports: [VitamUITenantSelectComponent],
+  imports: [CommonModule, RouterModule, TenantSelectContentModule, TranslateModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class VitamUITenantSelectModule {}

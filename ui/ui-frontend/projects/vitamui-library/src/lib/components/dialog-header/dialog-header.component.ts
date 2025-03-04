@@ -45,7 +45,6 @@ import { CdkStepper } from '@angular/cdk/stepper';
   templateUrl: './dialog-header.component.html',
   styleUrl: './dialog-header.component.scss',
   imports: [MatDialogModule, NgIf, CommonProgressBarModule],
-  standalone: true,
 })
 export class DialogHeaderComponent {
   @Input() stepper?: CdkStepper;

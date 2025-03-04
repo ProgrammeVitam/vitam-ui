@@ -77,6 +77,7 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
   styleUrls: ['./confirm-action.component.scss'],
+  standalone: false,
 })
 export class ConfirmActionComponent {
   // delete or changeTab

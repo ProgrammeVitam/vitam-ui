@@ -42,6 +42,7 @@ import { Option } from '../../autocomplete';
   selector: 'vitamui-common-item-select',
   templateUrl: './item-select.component.html',
   styleUrls: ['./item-select.component.scss'],
+  standalone: false,
 })
 export class ItemSelectComponent {
   @Input() label: string;

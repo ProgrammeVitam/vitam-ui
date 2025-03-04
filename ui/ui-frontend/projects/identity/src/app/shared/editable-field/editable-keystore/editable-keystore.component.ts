@@ -44,6 +44,7 @@ import { IdentityProviderService } from '../../../customer/customer-preview/sso-
   selector: 'app-editable-keystore',
   templateUrl: './editable-keystore.component.html',
   styleUrls: ['./editable-keystore.component.scss'],
+  standalone: false,
 })
 export class EditableKeystoreComponent extends EditableFieldComponent {
   @Input() identityProvider: IdentityProvider;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -46,8 +46,10 @@ import { BASE_URL, InjectorModule, LoggerModule } from 'vitamui-library';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './title-and-description-criteria-search-collect.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
+
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
     return of(translations);
@@ -63,6 +65,7 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [TitleAndDescriptionCriteriaSearchCollectComponent],
       imports: [
         BrowserAnimationsModule,
         InjectorModule,
@@ -71,15 +74,15 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         MatSnackBarModule,
-        HttpClientTestingModule,
         RouterTestingModule,
       ],
-      declarations: [TitleAndDescriptionCriteriaSearchCollectComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialog, useValue: matDialogSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

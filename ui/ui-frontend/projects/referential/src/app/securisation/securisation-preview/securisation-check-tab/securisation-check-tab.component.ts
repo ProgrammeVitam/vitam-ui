@@ -51,6 +51,7 @@ import { SecurisationService } from '../../securisation.service';
   selector: 'app-securisation-check-tab',
   templateUrl: './securisation-check-tab.component.html',
   styleUrls: ['./securisation-check-tab.component.scss'],
+  standalone: false,
 })
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   @Input() id: string;

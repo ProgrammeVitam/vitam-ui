@@ -38,6 +38,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'empty',
+  standalone: false,
 })
 export class EmptyPipe implements PipeTransform {
   transform(value: any): any {

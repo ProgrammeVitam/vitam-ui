@@ -64,6 +64,7 @@ import { MatDialogConfig } from '@angular/material/dialog';
   selector: 'app-project-preview',
   templateUrl: './project-preview.component.html',
   styleUrls: ['./project-preview.component.scss'],
+  standalone: false,
 })
 export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()

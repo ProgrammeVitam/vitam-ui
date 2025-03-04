@@ -44,6 +44,7 @@ import { ArchiveUnitViewerService } from './archive-unit-viewer.service';
   templateUrl: './archive-unit-viewer.component.html',
   styleUrls: ['./archive-unit-viewer.component.scss'],
   providers: [{ provide: DisplayObjectService, useClass: ArchiveUnitViewerService }],
+  standalone: false,
 })
 export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
   @Input() data!: any;

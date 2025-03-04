@@ -47,6 +47,7 @@ import { ProfilesTabComponent } from './profiles-tab.component';
 
 @Component({
   template: ` <app-profiles-tab [group]="group" [readOnly]="readOnly"></app-profiles-tab> `,
+  standalone: false,
 })
 class TesthostComponent {
   readOnly = false;

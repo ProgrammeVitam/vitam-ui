@@ -52,6 +52,7 @@ export class TraceabilityFilter {
   selector: 'app-securisation-list',
   templateUrl: './securisation-list.component.html',
   styleUrls: ['./securisation-list.component.scss'],
+  standalone: false,
 })
 export class SecurisationListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -44,6 +44,7 @@ import { CustomerService } from '../../core/customer.service';
   selector: 'app-customer-preview',
   templateUrl: './customer-preview.component.html',
   styleUrls: ['./customer-preview.component.scss'],
+  standalone: false,
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
   @Input() customer: Customer;

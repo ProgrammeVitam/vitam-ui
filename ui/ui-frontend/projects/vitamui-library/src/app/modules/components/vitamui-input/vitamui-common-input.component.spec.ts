@@ -45,6 +45,7 @@ import { VitamUICommonInputComponent } from './vitamui-common-input.component';
 
 @Component({
   template: ` <vitamui-common-input [(ngModel)]="value" #input="ngModel"></vitamui-common-input> `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChild(VitamUICommonInputComponent) vitamuiInputComponent: VitamUICommonInputComponent;

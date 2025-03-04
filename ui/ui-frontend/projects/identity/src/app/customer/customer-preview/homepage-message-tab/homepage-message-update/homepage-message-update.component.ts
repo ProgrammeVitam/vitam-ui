@@ -46,6 +46,7 @@ import { CustomerService } from '../../../../core/customer.service';
   selector: 'app-homepage-message-update',
   templateUrl: './homepage-message-update.component.html',
   styleUrls: ['./homepage-message-update.component.scss'],
+  standalone: false,
 })
 export class HomepageMessageUpdateComponent implements OnDestroy {
   private destroy = new Subject<void>();

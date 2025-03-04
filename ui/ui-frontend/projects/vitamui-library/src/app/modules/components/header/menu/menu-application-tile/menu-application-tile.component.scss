@@ -1,5 +1,4 @@
-@import '../../../../../../sass/variables/colors';
-@import '../../../../../../sass/mixins/elevation';
+@use '../../../../../../sass/mixins/elevation' as elevation;
 
 :host {
   color: var(--vitamui-grey-600) !important;
@@ -10,7 +9,7 @@
     width: 35px;
     height: 35px;
     padding: 5px;
-    @include shadow-0;
+    @include elevation.shadow-0;
   }
 
   .tooltip {

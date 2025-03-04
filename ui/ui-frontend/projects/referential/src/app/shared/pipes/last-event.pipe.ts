@@ -40,6 +40,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'lastEvent',
+  standalone: false,
 })
 export class LastEventPipe implements PipeTransform {
   transform(event: IEvent): IEvent {

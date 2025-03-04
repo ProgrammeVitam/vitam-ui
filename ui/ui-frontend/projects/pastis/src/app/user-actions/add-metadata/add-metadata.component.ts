@@ -89,6 +89,7 @@ import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-me
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
   styleUrls: ['./add-metadata.component.scss'],
+  standalone: false,
 })
 export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   btnIsDisabled: boolean;
@@ -237,7 +238,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   }
 
   onResolveName(element: SedaData): string {
-    return this.sedaLanguage ? element.name : element.nameFr ?? element.name;
+    return this.sedaLanguage ? element.name : (element.nameFr ?? element.name);
   }
 
   ngOnDestroy(): void {
@@ -245,7 +246,10 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   }
 }
 
-@Pipe({ name: 'filterByName' })
+@Pipe({
+  name: 'filterByName',
+  standalone: false,
+})
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
     if (!listOfElements) {

@@ -47,6 +47,7 @@ import { ReferentialImportService } from './referential-import.service';
   selector: 'app-import-dialog',
   templateUrl: './import-dialog.component.html',
   styleUrls: ['./import-dialog.component.scss'],
+  standalone: false,
 })
 export class ImportDialogComponent implements OnDestroy {
   public fileToUpload: File;

@@ -64,6 +64,7 @@ type MeasurementDisplayMode = 'SYMBOL' | 'NAME';
   selector: 'vitamui-common-physical-archive-viewer',
   templateUrl: './physical-archive-viewer.component.html',
   styleUrls: ['./physical-archive-viewer.component.scss'],
+  standalone: false,
 })
 export class PhysicalArchiveViewerComponent implements OnInit {
   @Input() archive: VersionWithQualifierDto;

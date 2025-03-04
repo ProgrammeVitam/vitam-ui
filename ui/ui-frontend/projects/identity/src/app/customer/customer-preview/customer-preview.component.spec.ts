@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -47,27 +47,43 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { environment } from './../../../environments/environment';
 import { CustomerPreviewComponent } from './customer-preview.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: false,
+})
 export class InformationTabStubComponent {
   @Input() customer: Customer;
   @Input() readOnly: boolean;
   @Input() gdprReadOnlyStatus: boolean;
 }
 
-@Component({ selector: 'app-sso-tab', template: '' })
+@Component({
+  selector: 'app-sso-tab',
+  template: '',
+  standalone: false,
+})
 export class SsoTabStubComponent {
   @Input() customer: Customer;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-graphic-identity-tab', template: '' })
+@Component({
+  selector: 'app-graphic-identity-tab',
+  template: '',
+  standalone: false,
+})
 export class GraphicIdentityTabStubComponent {
   @Input() customer: Customer;
   @Input() readOnly: boolean;
 }
 
-@Component({ template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>' })
+@Component({
+  template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>',
+  standalone: false,
+})
 class TestHostComponent {
   customer: any;
 
@@ -87,15 +103,6 @@ describe('CustomerPreviewComponent', () => {
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
     await TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        HttpClientTestingModule,
-        LoggerModule.forRoot(),
-      ],
       declarations: [
         TestHostComponent,
         CustomerPreviewComponent,
@@ -103,13 +110,16 @@ describe('CustomerPreviewComponent', () => {
         SsoTabStubComponent,
         GraphicIdentityTabStubComponent,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot()],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

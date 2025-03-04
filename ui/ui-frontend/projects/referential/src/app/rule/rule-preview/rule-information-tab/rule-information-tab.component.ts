@@ -49,6 +49,7 @@ const RULES_APP = 'RULES_APP';
   selector: 'app-rule-information-tab',
   templateUrl: './rule-information-tab.component.html',
   styleUrls: ['./rule-information-tab.component.scss'],
+  standalone: false,
 })
 export class RuleInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

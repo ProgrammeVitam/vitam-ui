@@ -44,6 +44,7 @@ import { Logger } from '../../../logger/logger';
   selector: 'vitamui-common-archive-unit-count',
   templateUrl: './archive-unit-count.component.html',
   styleUrls: ['./archive-unit-count.component.scss'],
+  standalone: false,
 })
 export class ArchiveUnitCountComponent implements OnChanges {
   @Input() search: Observable<number>;

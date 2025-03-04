@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -68,8 +68,8 @@ describe('ErrorResponseModalComponent', () => {
 
   async function init(type: any, operationType: any) {
     await TestBed.configureTestingModule({
+      declarations: [PurgedPersistentIdentifierModalComponent],
       imports: [
-        HttpClientTestingModule,
         TranslateModule.forRoot({
           missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
           defaultLanguage: 'fr',
@@ -80,7 +80,6 @@ describe('ErrorResponseModalComponent', () => {
           },
         }),
       ],
-      declarations: [PurgedPersistentIdentifierModalComponent],
       providers: [
         {
           provide: MatDialogRef,
@@ -103,6 +102,8 @@ describe('ErrorResponseModalComponent', () => {
             },
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(PurgedPersistentIdentifierModalComponent);

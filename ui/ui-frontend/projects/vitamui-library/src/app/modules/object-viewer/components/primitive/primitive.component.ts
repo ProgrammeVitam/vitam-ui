@@ -43,6 +43,7 @@ import { DateDisplayService } from '../../services/date-display.service';
   selector: 'vitamui-common-primitive',
   templateUrl: './primitive.component.html',
   styleUrls: ['./primitive.component.scss'],
+  standalone: false,
 })
 export class PrimitiveComponent implements OnInit {
   @Input() displayObject: DisplayObject;

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
@@ -47,9 +47,9 @@ import { WelcomeMessageModule } from '../components/welcome-message/welcome-mess
 import { PortalComponent } from './portal.component';
 
 @NgModule({
+  declarations: [PortalComponent],
   imports: [
     CommonModule,
-    HttpClientModule,
     MatMenuModule,
     ReactiveFormsModule,
     RouterModule,
@@ -57,6 +57,6 @@ import { PortalComponent } from './portal.component';
     ContentListModule,
     MatProgressSpinnerModule,
   ],
-  declarations: [PortalComponent],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class PortalModule {}

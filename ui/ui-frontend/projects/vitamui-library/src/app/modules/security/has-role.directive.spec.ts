@@ -47,6 +47,7 @@ const TEST_ELEMENT_ID = 'test';
   template: ` <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasRole="{ appId: 'FAKE_APP', tenantIdentifier: 42, role: 'ROLE_UPDATE' }">
     Lorem ipsum
   </span>`,
+  standalone: false,
 })
 class TestHostComponent {}
 

@@ -53,6 +53,7 @@ import { TableFilterComponent } from './table-filter.component';
       <vitamui-common-table-filter-option [value]="3">Option 3</vitamui-common-table-filter-option>
     </vitamui-common-table-filter>
   `,
+  standalone: false,
 })
 export class TestHostComponent {
   filter: any;

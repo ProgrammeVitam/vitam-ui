@@ -1,4 +1,4 @@
-@import '../../../../../sass/mixins/elevation';
+@use '../../../../../sass/mixins/elevation' as elevation;
 
 :host::ng-deep {
   .selected-item-label,

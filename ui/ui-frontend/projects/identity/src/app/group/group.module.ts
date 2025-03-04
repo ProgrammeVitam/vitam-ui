@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -50,6 +50,7 @@ import { GroupRoutingModule } from './group-routing.module';
 import { GroupComponent } from './group.component';
 
 @NgModule({
+  declarations: [GroupComponent],
   imports: [
     CommonModule,
     VitamUICommonModule,
@@ -59,10 +60,9 @@ import { GroupComponent } from './group.component';
     GroupPreviewModule,
     MatDialogModule,
     MatMenuModule,
-    HttpClientModule,
     MatSidenavModule,
     GroupRoutingModule,
   ],
-  declarations: [GroupComponent],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class GroupModule {}

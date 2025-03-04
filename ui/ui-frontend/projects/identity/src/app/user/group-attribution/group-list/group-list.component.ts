@@ -43,6 +43,7 @@ import { GroupSelection } from './../../group-selection.interface';
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class GroupListComponent implements OnInit {
   public groupName: string;

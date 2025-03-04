@@ -49,18 +49,29 @@ import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[vitamuiCollapseTriggerFor]' })
+@Directive({
+  selector: '[vitamuiCollapseTriggerFor]',
+  standalone: false,
+})
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCollapseTriggerFor: any;
 }
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[vitamuiCollapse]', exportAs: 'vitamuiCollapse' })
+@Directive({
+  selector: '[vitamuiCollapse]',
+  exportAs: 'vitamuiCollapse',
+  standalone: false,
+})
 class CollapseStubDirective {
   @Input() vitamuiCollapse: any;
 }
 
-@Component({ selector: 'app-owner-list', template: '' })
+@Component({
+  selector: 'app-owner-list',
+  template: '',
+  standalone: false,
+})
 class OwnerListStubComponent {
   @Input() profileGroup: any;
   @Input() owners: any;

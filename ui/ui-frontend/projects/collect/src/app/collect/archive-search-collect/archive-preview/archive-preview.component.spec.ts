@@ -65,14 +65,20 @@ describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({ name: 'truncate' })
+  @Pipe({
+    name: 'truncate',
+    standalone: false,
+  })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({ name: 'unitI18n' })
+  @Pipe({
+    name: 'unitI18n',
+    standalone: false,
+  })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;

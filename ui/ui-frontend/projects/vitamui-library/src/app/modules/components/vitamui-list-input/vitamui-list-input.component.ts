@@ -52,6 +52,7 @@ export const LIST_INPUT_ACCESSOR: any = {
   templateUrl: './vitamui-list-input.component.html',
   styleUrls: ['./vitamui-list-input.component.scss'],
   providers: [LIST_INPUT_ACCESSOR],
+  standalone: false,
 })
 export class VitamUIListInputComponent implements AfterContentInit, ControlValueAccessor {
   @Input() placeholder: string;

@@ -46,7 +46,8 @@ import { BASE_URL, BytesPipe, ConfirmDialogService, LoggerModule, StartupService
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
 import { DecimalPipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -59,8 +60,8 @@ describe('UploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       declarations: [UploadComponent],
+      imports: [MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -71,6 +72,8 @@ describe('UploadComponent', () => {
         DecimalPipe,
         BytesPipe,
         { provide: BASE_URL, useValue: '/fake-api' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

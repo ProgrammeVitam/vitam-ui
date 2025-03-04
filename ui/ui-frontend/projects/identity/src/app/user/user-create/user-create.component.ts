@@ -68,6 +68,7 @@ const emailValidator: RegExp =
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.scss'],
+  standalone: false,
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
   public maxStreetLength: number;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,6 +42,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService, BASE_URL, StartupService, VitamUISnackBarService } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FileFormatListComponent', () => {
   let component: FileFormatListComponent;
@@ -49,8 +50,9 @@ describe('FileFormatListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), HttpClientTestingModule],
       declarations: [FileFormatListComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '' },
         FileFormatService,
@@ -58,8 +60,9 @@ describe('FileFormatListComponent', () => {
         { provide: VitamUISnackBarService, useValue: {} },
         { provide: MatDialog, useValue: {} },
         { provide: StartupService, useValue: { getConfigStringValue: (_param: string) => '' } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

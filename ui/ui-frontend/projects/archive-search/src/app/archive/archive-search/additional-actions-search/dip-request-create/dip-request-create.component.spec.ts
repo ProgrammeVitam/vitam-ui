@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -54,6 +54,7 @@ import {
 } from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { DipRequestCreateComponent } from './dip-request-create.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('DipRequestCreateComponent', () => {
   let component: DipRequestCreateComponent;
@@ -84,14 +85,7 @@ describe('DipRequestCreateComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DipRequestCreateComponent],
-      imports: [
-        InjectorModule,
-        TranslateModule.forRoot(),
-        MatButtonToggleModule,
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
-      ],
+      imports: [InjectorModule, TranslateModule.forRoot(), MatButtonToggleModule, MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -112,6 +106,8 @@ describe('DipRequestCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: StartupService, useValue: startupServiceStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

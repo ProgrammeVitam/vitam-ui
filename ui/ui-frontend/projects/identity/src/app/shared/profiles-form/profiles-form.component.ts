@@ -53,6 +53,7 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './profiles-form.component.html',
   styleUrls: ['./profiles-form.component.scss'],
   providers: [PROFILES_FORM_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   profiles: Profile[] = [];

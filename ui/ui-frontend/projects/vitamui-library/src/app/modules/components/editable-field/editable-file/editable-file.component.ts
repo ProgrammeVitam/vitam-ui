@@ -49,6 +49,7 @@ export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
   selector: 'vitamui-common-editable-file',
   templateUrl: './editable-file.component.html',
   providers: [EDITABLE_FILE_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableFileComponent extends EditableFieldComponent {
   @Input() accept: string;

@@ -37,12 +37,11 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateDirective } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-form-errors',
-  standalone: true,
-  imports: [MatFormFieldModule, TranslateModule],
+  imports: [MatFormFieldModule, TranslateDirective],
   templateUrl: './form-errors.component.html',
   styleUrl: './form-errors.component.scss',
 })

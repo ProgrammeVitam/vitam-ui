@@ -53,7 +53,6 @@ import { EditorSelectComponent } from './editor-select.component';
     ></vitamui-editor-select>
   `,
   imports: [EditorSelectComponent],
-  standalone: true,
 })
 export class EditorListSelectComponent implements OnInit, OnDestroy {
   @Input({ required: true }) editObject!: EditObject;

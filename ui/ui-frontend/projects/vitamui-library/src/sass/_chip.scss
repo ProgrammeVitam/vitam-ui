@@ -1,3 +1,5 @@
+@use './mixins/elevation' as elevation;
+
 .vitamui-chip-list {
   display: flex;
   flex-wrap: wrap;
@@ -37,7 +39,7 @@
 .mat-drawer,
 .mat-mdc-dialog-container {
   .vitamui-chip {
-    @include dialog-elevation-primary;
+    @include elevation.dialog-elevation-primary;
   }
 }
 .vitamui-chip {
@@ -47,7 +49,7 @@
   color: var(--vitamui-grey-900);
   font-size: 12px;
   font-weight: bold;
-  @include btn-elevation-primary;
+  @include elevation.btn-elevation-primary;
 
   &:disabled {
     border: 1px solid var(--vitamui-grey);

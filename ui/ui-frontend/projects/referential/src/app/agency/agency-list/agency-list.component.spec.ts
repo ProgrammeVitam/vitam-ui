@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
@@ -43,9 +43,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION, AgencyService } from 'vitamui-library';
+import { AgencyService, AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AgencyListComponent } from './agency-list.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const authServiceMock = { user: { proofTenantIdentifier: '1' } };
 const activatedRouteMock = { params: of({ tenantIdentifier: 1 }), paramMap: EMPTY };
@@ -63,7 +64,6 @@ describe('AgencyListComponent', () => {
         VitamUICommonTestModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
-        HttpClientTestingModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
@@ -74,6 +74,8 @@ describe('AgencyListComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: AuthService, useValue: authServiceMock },
         { provide: MatDialog, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
 

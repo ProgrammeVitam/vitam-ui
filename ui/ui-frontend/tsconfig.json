@@ -1,10 +1,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
     "module": "esnext",
@@ -23,26 +23,11 @@
     ],
     "noImplicitAny": true,
     "paths": {
-      "vitamui-demo": [
-        "./projects/demo/src"
-      ],
-      "vitamui-identity": [
-        "./projects/identity/src/app/"
-      ],
-      "vitamui-portal": [
-        "./projects/portal/src/app/"
-      ],
-      "vitamui-referential": [
-        "./projects/referential/src/app/"
-      ],
-      "vitamui-collect": [
-        "./projects/collect/src/app/"
-      ],
       "vitamui-library": [
         "dist/vitamui-library"
       ],
-      "vitamui-library/*": [
-        "dist/vitamui-library/*"
+      "vitamui-library/testing": [
+        "dist/vitamui-library/testing"
       ]
     },
     "noUnusedLocals": true,

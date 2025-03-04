@@ -73,6 +73,7 @@ export const VITAMUI_COMMON_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-common-input.component.html',
   styleUrls: ['./vitamui-common-input.component.scss'],
   providers: [VITAMUI_COMMON_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
   control: AbstractControl;

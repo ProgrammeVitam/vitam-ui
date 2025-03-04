@@ -68,6 +68,7 @@ export const VITAMUI_AUTOCOMPLETE_NG_VALIDATORS: any = {
   templateUrl: './vitamui-autocomplete.component.html',
   styleUrls: ['./vitamui-autocomplete.component.scss'],
   providers: [VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_AUTOCOMPLETE_NG_VALIDATORS],
+  standalone: false,
 })
 export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnInit, Validator, OnChanges {
   @ViewChild('input', { read: ElementRef, static: true }) inputElement: ElementRef;

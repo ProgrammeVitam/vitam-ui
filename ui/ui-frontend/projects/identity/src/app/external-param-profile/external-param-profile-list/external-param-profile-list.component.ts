@@ -55,6 +55,7 @@ import { SharedService } from '../shared.service';
   selector: 'app-external-param-profile-list',
   templateUrl: './external-param-profile-list.component.html',
   styleUrls: ['./external-param-profile-list.component.css'],
+  standalone: false,
 })
 export class ExternalParamProfileListComponent extends InfiniteScrollTable<ExternalParamProfile> implements OnDestroy, OnInit {
   orderBy = 'name';

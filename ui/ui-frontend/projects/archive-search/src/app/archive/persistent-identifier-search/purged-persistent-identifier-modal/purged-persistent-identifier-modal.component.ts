@@ -46,6 +46,7 @@ import {
   selector: 'app-purged-persistent-identifier-modal',
   templateUrl: './purged-persistent-identifier-modal.component.html',
   styleUrls: ['./purged-persistent-identifier-modal.component.scss'],
+  standalone: false,
 })
 export class PurgedPersistentIdentifierModalComponent implements OnInit {
   messageKey: string;

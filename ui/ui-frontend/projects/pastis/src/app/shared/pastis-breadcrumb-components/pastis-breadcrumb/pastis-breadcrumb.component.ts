@@ -45,6 +45,7 @@ import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-
   selector: 'pastis-breadcrumb',
   templateUrl: './pastis-breadcrumb.component.html',
   styleUrls: ['./pastis-breadcrumb.component.scss'],
+  standalone: false,
 })
 export class PastisBreadcrumbComponent {
   @Input()

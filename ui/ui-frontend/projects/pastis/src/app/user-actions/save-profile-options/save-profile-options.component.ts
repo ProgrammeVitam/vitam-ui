@@ -60,6 +60,7 @@ function constantToTranslate() {
   selector: 'save-profile-options',
   templateUrl: './save-profile-options.component.html',
   styleUrls: ['./save-profile-options.component.scss'],
+  standalone: false,
 })
 export class SaveProfileOptionsComponent implements OnInit {
   firstChoiceEnregistrement: string;

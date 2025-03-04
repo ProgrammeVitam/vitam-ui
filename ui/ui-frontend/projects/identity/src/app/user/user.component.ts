@@ -64,6 +64,7 @@ import { UserService } from './user.service';
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
+  standalone: false,
 })
 export class UserComponent extends SidenavPage<User> implements OnInit {
   public users: User[];

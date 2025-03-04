@@ -45,6 +45,7 @@ import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
   selector: 'vitamui-common-customer-select',
   templateUrl: './vitamui-customer-select.component.html',
   styleUrls: ['./vitamui-customer-select.component.scss'],
+  standalone: false,
 })
 export class VitamUICustomerSelectComponent implements OnInit, OnDestroy {
   public customers: MenuOption[];

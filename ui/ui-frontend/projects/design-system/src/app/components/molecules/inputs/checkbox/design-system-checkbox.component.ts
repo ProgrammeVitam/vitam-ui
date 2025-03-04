@@ -39,7 +39,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'design-system-checkbox',
-  standalone: true,
   imports: [MatCheckboxModule],
   templateUrl: './design-system-checkbox.component.html',
   styleUrl: './design-system-checkbox.component.scss',

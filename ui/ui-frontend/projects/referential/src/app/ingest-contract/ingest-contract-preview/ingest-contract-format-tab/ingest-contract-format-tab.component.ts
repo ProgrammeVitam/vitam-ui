@@ -47,6 +47,7 @@ import { IngestContractService } from '../../ingest-contract.service';
   selector: 'app-ingest-contract-format-tab',
   templateUrl: './ingest-contract-format-tab.component.html',
   styleUrls: ['./ingest-contract-format-tab.component.scss'],
+  standalone: false,
 })
 export class IngestContractFormatTabComponent implements OnInit {
   @Input() tenantIdentifier: number;

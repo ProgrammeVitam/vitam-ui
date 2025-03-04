@@ -48,6 +48,7 @@ import { AccountService } from './account.service';
   selector: 'vitamui-common-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
+  standalone: false,
 })
 export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
   public displayAppTab = false;

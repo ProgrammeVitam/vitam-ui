@@ -50,6 +50,7 @@ import { FileTypes } from 'vitamui-library';
   selector: 'app-rules',
   templateUrl: './rule.component.html',
   styleUrls: ['./rule.component.scss'],
+  standalone: false,
 })
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;

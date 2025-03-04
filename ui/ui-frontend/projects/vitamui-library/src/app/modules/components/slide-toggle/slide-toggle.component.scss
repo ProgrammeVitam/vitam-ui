@@ -1,5 +1,4 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 :host {
   display: inline-block;
@@ -23,7 +22,7 @@ label {
 .mat-mdc-dialog-container {
   .slide-toggle {
     .slide-toggle-thumb {
-      @include dialog-elevation-dark;
+      @include elevation.dialog-elevation-dark;
     }
   }
 }
@@ -91,7 +90,7 @@ label {
     height: 24px;
     border-radius: 12px;
     border: 2px solid white;
-    @include input-elevation-dark;
+    @include elevation.input-elevation-dark;
     cursor: pointer;
   }
 

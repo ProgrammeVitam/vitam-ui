@@ -47,6 +47,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-update-persistent-identifier-policy-form',
   templateUrl: './update-persistent-identifier-policy-form.component.html',
   styleUrls: ['./update-persistent-identifier-policy-form.component.scss'],
+  standalone: false,
 })
 export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges {
   @Input() form: FormGroup;

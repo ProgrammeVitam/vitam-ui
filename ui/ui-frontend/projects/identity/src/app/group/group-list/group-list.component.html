@@ -7,7 +7,7 @@
         </button>
 
         <ng-template #statusFilterTemplate>
-          <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+          <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
               <div class="table-filter-icon">
                 <span class="badge-state">{{ 'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate }}</span>

@@ -48,6 +48,7 @@ export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   templateUrl: './slide-toggle.component.html',
   styleUrls: ['./slide-toggle.component.scss'],
   providers: [SLIDE_TOGGLE_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class SlideToggleComponent implements ControlValueAccessor {
   @Input() required: boolean;

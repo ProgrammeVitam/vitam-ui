@@ -36,7 +36,7 @@
  */
 /* eslint-disable no-magic-numbers */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -46,8 +46,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { input } from '../../../../../testing/src';
 import { WINDOW_LOCATION } from '../../injection-tokens';
 import { VitamUIListInputComponent } from './vitamui-list-input.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>' })
+@Component({
+  template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>',
+  standalone: false,
+})
 class TestHostComponent {
   @ViewChild(VitamUIListInputComponent) component: VitamUIListInputComponent;
   values: string[];
@@ -60,9 +64,16 @@ let fixture: ComponentFixture<TestHostComponent>;
 describe('VitamUIListInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, HttpClientTestingModule, TranslateModule.forRoot()],
       declarations: [TestHostComponent, VitamUIListInputComponent],
-      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot()],
+      providers: [
+        {
+          provide: WINDOW_LOCATION,
+          useValue: {},
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 

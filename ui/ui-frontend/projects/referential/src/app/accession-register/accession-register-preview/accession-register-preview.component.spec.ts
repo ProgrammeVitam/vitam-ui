@@ -63,7 +63,10 @@ describe('AccessionRegisterPreviewComponent', () => {
   let component: AccessionRegisterPreviewComponent;
   let fixture: ComponentFixture<AccessionRegisterPreviewComponent>;
 
-  @Pipe({ name: 'truncate' })
+  @Pipe({
+    name: 'truncate',
+    standalone: false,
+  })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;

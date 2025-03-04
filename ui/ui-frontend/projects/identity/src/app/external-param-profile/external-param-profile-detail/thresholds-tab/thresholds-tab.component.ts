@@ -47,6 +47,7 @@ import { DecimalPipe } from '@angular/common';
   selector: 'app-thresholds-tab',
   templateUrl: './thresholds-tab.component.html',
   styleUrls: ['./thresholds-tab.component.css'],
+  standalone: false,
 })
 export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(

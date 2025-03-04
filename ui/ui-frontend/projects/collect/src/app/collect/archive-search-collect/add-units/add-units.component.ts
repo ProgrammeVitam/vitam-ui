@@ -59,6 +59,7 @@ import { HttpEventType } from '@angular/common/http';
   selector: 'app-add-units',
   templateUrl: './add-units.component.html',
   styleUrls: ['./add-units.component.scss'],
+  standalone: false,
 })
 export class AddUnitsComponent implements OnInit {
   protected readonly FilingPlanMode = FilingPlanMode;

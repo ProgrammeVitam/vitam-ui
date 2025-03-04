@@ -47,6 +47,7 @@ import { ProbativeValueListComponent } from './probative-value-list/probative-va
   selector: 'app-probative-value',
   templateUrl: './probative-value.component.html',
   styleUrls: ['./probative-value.component.scss'],
+  standalone: false,
 })
 export class ProbativeValueComponent extends SidenavPage<Event> implements OnDestroy {
   search: string;

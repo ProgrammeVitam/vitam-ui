@@ -65,6 +65,7 @@ import { ProviderApiService } from './provider-api.service';
       transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' }))]),
     ]),
   ],
+  standalone: false,
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
   providers: IdentityProvider[];

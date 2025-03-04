@@ -56,6 +56,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-access-contract-create',
   templateUrl: './access-contract-create.component.html',
   styleUrls: ['./access-contract-create.component.scss'],
+  standalone: false,
 })
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
   protected readonly FILLING_PLAN_MODE = FilingPlanMode;

@@ -46,6 +46,7 @@ import { transitionAnimation } from '../../animations/vitamui-common-animations'
   // by other components.
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
   animations: [transitionAnimation],
+  standalone: false,
 })
 export class StepperComponent extends CdkStepper {
   private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);

@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -45,12 +45,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import {
+  AccessContractService,
   BASE_URL,
   ConfirmDialogService,
   ExternalParameters,
   ExternalParametersService,
   LoggerModule,
-  AccessContractService,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
@@ -59,6 +59,7 @@ import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;
@@ -92,15 +93,9 @@ describe('IngestContractCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        VitamUICommonTestModule,
-        MatSnackBarModule,
-        HttpClientTestingModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot(),
-        MatButtonToggleModule,
-      ],
       declarations: [IngestContractCreateComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [VitamUICommonTestModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot(), MatButtonToggleModule],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -114,8 +109,9 @@ describe('IngestContractCreateComponent', () => {
         { provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: AccessContractService, useValue: accessContractServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

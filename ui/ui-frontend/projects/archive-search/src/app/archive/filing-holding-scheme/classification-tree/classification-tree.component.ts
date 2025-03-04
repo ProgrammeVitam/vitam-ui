@@ -43,6 +43,7 @@ import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, nodeToVitamuiIc
   selector: 'app-classification-tree',
   templateUrl: './classification-tree.component.html',
   styleUrls: ['./classification-tree.component.scss'],
+  standalone: false,
 })
 export class ClassificationTreeComponent {
   @Input() loadingHolding: boolean;

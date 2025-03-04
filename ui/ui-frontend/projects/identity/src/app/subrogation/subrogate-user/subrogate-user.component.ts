@@ -53,6 +53,7 @@ import { CustomerSelectService } from '../customer-select.service';
   selector: 'app-subrogate-user',
   templateUrl: './subrogate-user.component.html',
   styleUrls: ['./subrogate-user.component.scss'],
+  standalone: false,
 })
 export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
   public customer: Customer;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -44,6 +44,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedCustomer: Customer = {
   id: 'idCustomer',
@@ -100,12 +101,16 @@ const expectedCustomer: Customer = {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
+
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -117,14 +122,16 @@ describe('GraphicIdentityUpdateComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
       declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

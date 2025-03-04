@@ -51,7 +51,6 @@ import { EditorInputComponent } from './editor-input.component';
     ></vitamui-editor-input>
   `,
   imports: [EditorInputComponent],
-  standalone: true,
 })
 export class EditorListInputComponent implements OnInit, OnDestroy {
   @Input({ required: true }) editObject!: EditObject;

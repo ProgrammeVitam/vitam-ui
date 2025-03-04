@@ -49,6 +49,7 @@ interface PersistentIdentifierPolicyTypeOption {
   selector: 'app-create-persistent-identifier-policy-form',
   templateUrl: './create-persistent-identifier-policy-form.component.html',
   styleUrls: ['./create-persistent-identifier-policy-form.component.scss'],
+  standalone: false,
 })
 export class CreatePersistentIdentifierPolicyFormComponent implements OnChanges {
   @Input() form: FormGroup;

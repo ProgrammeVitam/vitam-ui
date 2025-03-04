@@ -66,7 +66,11 @@ class Page {
 
 let page: Page;
 
-@Component({ selector: 'app-group-list', template: '' })
+@Component({
+  selector: 'app-group-list',
+  template: '',
+  standalone: false,
+})
 class GroupListStubComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') searchText: string;
@@ -74,7 +78,11 @@ class GroupListStubComponent {
   search() {}
 }
 
-@Component({ selector: 'app-group-preview', template: '' })
+@Component({
+  selector: 'app-group-preview',
+  template: '',
+  standalone: false,
+})
 class GroupPreviewStubComponent {
   @Input() isPopup: boolean;
   @Input() group: Group;

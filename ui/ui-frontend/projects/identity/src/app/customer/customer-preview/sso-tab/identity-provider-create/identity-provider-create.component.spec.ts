@@ -58,6 +58,7 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
       multi: true,
     },
   ],
+  standalone: false,
 })
 class PatternStubComponent implements ControlValueAccessor {
   @Input() options: Array<{ value: string; disabled?: boolean }>;

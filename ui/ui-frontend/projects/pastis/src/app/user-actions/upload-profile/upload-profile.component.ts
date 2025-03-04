@@ -85,6 +85,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   selector: 'pastis-user-action-upload',
   templateUrl: './upload-profile.component.html',
   styleUrls: ['./upload-profile.component.scss'],
+  standalone: false,
 })
 export class UserActionUploadProfileComponent {
   @Input()

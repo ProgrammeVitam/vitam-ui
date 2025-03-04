@@ -61,6 +61,7 @@ import { CustomerListService } from './customer-list.service';
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class CustomerListComponent extends InfiniteScrollTable<Customer> implements OnDestroy, OnInit {
   @Output() customerClick = new EventEmitter<Customer>();

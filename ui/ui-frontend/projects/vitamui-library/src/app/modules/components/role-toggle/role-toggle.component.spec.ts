@@ -36,7 +36,7 @@
  */
 /* eslint-disable no-magic-numbers */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -46,6 +46,7 @@ import { WINDOW_LOCATION } from '../../injection-tokens';
 import { SlideToggleComponent } from '../slide-toggle/slide-toggle.component';
 import { RoleToggleComponent } from './role-toggle.component';
 import { RoleComponent } from './role.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   template: `
@@ -55,6 +56,7 @@ import { RoleComponent } from './role.component';
       <vitamui-common-role name="ROLE_TEST_3">Role Test 3</vitamui-common-role>
     </vitamui-common-role-toggle>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   roles: any[] = [{ name: 'ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_2' }];
@@ -66,9 +68,16 @@ describe('RoleToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
       declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent],
+      imports: [FormsModule, TranslateModule.forRoot()],
+      providers: [
+        {
+          provide: WINDOW_LOCATION,
+          useValue: {},
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 

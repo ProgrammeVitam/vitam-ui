@@ -56,7 +56,11 @@ import { UploadService } from '../core/common/upload.service';
 import { IngestListComponent } from './ingest-list/ingest-list.component';
 import { IngestService } from './ingest.service';
 
-@Component({ selector: 'app-ingest-list', template: '' })
+@Component({
+  selector: 'app-ingest-list',
+  template: '',
+  standalone: false,
+})
 export class IngestListStubComponent {
   emitOrderChange() {}
 }

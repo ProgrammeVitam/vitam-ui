@@ -43,6 +43,7 @@ import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-g
   selector: 'vitamui-radio',
   templateUrl: './vitamui-radio.component.html',
   styleUrls: ['./vitamui-radio.component.scss'],
+  standalone: false,
 })
 export class VitamUIRadioComponent implements OnInit {
   @Input()

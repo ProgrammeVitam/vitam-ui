@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -44,8 +44,10 @@ import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, Transaction, Transac
 import { UpdateUnitsMetadataComponent } from './update-units-metadata.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DecimalPipe } from '@angular/common';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
+
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
     return of(translations);
@@ -77,6 +79,7 @@ describe('UpdateUaMetadataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [UpdateUnitsMetadataComponent],
       imports: [
         BrowserAnimationsModule,
         InjectorModule,
@@ -85,9 +88,7 @@ describe('UpdateUaMetadataComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         MatSnackBarModule,
-        HttpClientTestingModule,
       ],
-      declarations: [UpdateUnitsMetadataComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -96,6 +97,8 @@ describe('UpdateUaMetadataComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         DecimalPipe,
         BytesPipe,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

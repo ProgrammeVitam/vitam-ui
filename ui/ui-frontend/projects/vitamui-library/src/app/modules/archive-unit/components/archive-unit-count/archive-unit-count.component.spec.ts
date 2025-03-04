@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend, HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -49,10 +49,7 @@ import { PipesModule } from '../../../pipes/pipes.module';
 import { ArchiveUnitCountComponent } from './archive-unit-count.component';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
-    { prefix: './assets/shared-i18n/', suffix: '.json' },
-    { prefix: './assets/i18n/', suffix: '.json' },
-  ]);
+  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
 }
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -87,7 +84,6 @@ describe('ArchiveUnitCountComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         LoggerModule.forRoot(),
-        HttpClientTestingModule,
         TranslateModule.forRoot({
           missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
           defaultLanguage: 'fr',
@@ -101,6 +97,7 @@ describe('ArchiveUnitCountComponent', () => {
         MatProgressSpinnerModule,
         LoggerModule.forRoot(),
       ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   });
 

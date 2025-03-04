@@ -1,4 +1,6 @@
-@import '../mixins/elevation';
+@use '../mixins/elevation' as elevation;
+@use '../spacing';
+@use '../bootstrap';
 
 :root {
   .cdk-overlay-pane.small .mat-mdc-dialog-container {
@@ -20,7 +22,7 @@
     width: 800px;
 
     .mdc-dialog__surface {
-      @include shadow-32dp-dark();
+      @include elevation.shadow-32dp-dark();
       @extend .p-6;
     }
 

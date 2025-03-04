@@ -66,6 +66,7 @@ const APPRAISAL_RULE_INHERITED_CRITERIA = 'APPRAISAL_RULE_INHERITED_CRITERIA';
   selector: 'app-unlock-rules-inheritance',
   templateUrl: './unlock-rules-inheritance.component.html',
   styleUrls: ['./unlock-rules-inheritance.component.css'],
+  standalone: false,
 })
 export class UnlockRulesInheritanceComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();

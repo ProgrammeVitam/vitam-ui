@@ -55,6 +55,7 @@ function constantToTranslate() {
   selector: 'select-notice',
   templateUrl: './select-notice.component.html',
   styleUrls: ['./select-notice.component.scss'],
+  standalone: false,
 })
 export class SelectNoticeComponent implements OnInit {
   profileOptions: Option[];

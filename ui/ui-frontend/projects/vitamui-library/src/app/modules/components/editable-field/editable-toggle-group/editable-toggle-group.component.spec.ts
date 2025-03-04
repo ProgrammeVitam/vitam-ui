@@ -53,6 +53,7 @@ import { EditableToggleGroupComponent } from './editable-toggle-group.component'
       <vitamui-common-editable-button-toggle value="value3" content="Content 3"></vitamui-common-editable-button-toggle>
     </vitamui-common-editable-toggle-group>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   value: string;

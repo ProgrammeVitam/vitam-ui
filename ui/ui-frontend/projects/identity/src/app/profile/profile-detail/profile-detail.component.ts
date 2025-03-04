@@ -44,6 +44,7 @@ import { ProfileService } from '../profile.service';
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.component.html',
   styleUrls: ['./profile-detail.component.scss'],
+  standalone: false,
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
   @Input()

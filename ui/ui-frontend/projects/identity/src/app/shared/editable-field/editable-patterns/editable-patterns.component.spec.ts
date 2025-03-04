@@ -55,6 +55,7 @@ import { EditablePatternsComponent } from './editable-patterns.component';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class PatternStubComponent implements ControlValueAccessor {
   @Input() options: Array<{ value: string; disabled?: boolean }>;
@@ -69,6 +70,7 @@ class PatternStubComponent implements ControlValueAccessor {
 
 @Component({
   template: ` <app-editable-patterns [(ngModel)]="value" [label]="label" [options]="options"></app-editable-patterns> `,
+  standalone: false,
 })
 class TesthostComponent {
   value: string[];

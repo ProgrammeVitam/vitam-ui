@@ -39,7 +39,7 @@ import { AppendStarPipe } from '../required.pipe';
 import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { PipesModule } from '../../pipes/pipes.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { VitamUICommonInputModule } from '../../components/vitamui-input/vitamui-common-input.module';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -51,13 +51,12 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
       <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
     </vitamui-common-input>
   `,
-  standalone: true,
   imports: [
     AppendStarPipe,
     HintComponent,
     FormErrorDisplayComponent,
     PipesModule,
-    TranslateModule,
+    TranslatePipe,
     VitamUICommonInputModule,
     ReactiveFormsModule,
   ],

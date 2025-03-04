@@ -57,6 +57,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-profile-list',
   templateUrl: './profile-list.component.html',
   styleUrls: ['./profile-list.component.scss'],
+  standalone: false,
 })
 export class ProfileListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
   @Input()

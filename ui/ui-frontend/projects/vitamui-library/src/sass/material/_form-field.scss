@@ -1,12 +1,15 @@
-@import '../../sass/mixins/elevation';
+@use '../../sass/mixins/elevation' as elevation;
+@use '../bootstrap';
 
 :root {
   .mat-mdc-form-field {
     --mdc-filled-text-field-container-color: transparent;
 
     --mdc-outlined-text-field-label-text-color: var(--vitamui-primary);
+    --mdc-outlined-text-field-hover-label-text-color: var(--vitamui-primary);
     --mdc-outlined-text-field-focus-label-text-color: var(--vitamui-primary);
     --mdc-outlined-text-field-error-label-text-color: var(--vitamui-primary);
+    --mdc-outlined-text-field-error-hover-label-text-color: var(--vitamui-primary);
     --mdc-outlined-text-field-error-focus-label-text-color: var(--vitamui-primary);
     --mdc-outlined-text-field-disabled-label-text-color: var(--vitamui-grey-700);
     --mdc-outlined-text-field-label-text-weight: 700;
@@ -31,7 +34,7 @@
 
         --mat-select-trigger-text-line-height: 40px;
 
-        @include shadow-accessible;
+        @include elevation.shadow-accessible;
       }
 
       &.mdc-text-field--filled {
@@ -52,7 +55,7 @@
       &--focused,
       &--disabled,
       &--invalid {
-        @include shadow-0;
+        @include elevation.shadow-0;
       }
 
       &--disabled {
@@ -167,7 +170,7 @@
   }
   /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .mat-form-field-flex {
-    @include input-elevation-dark;
+    @include elevation.input-elevation-dark;
 
     vertical-align: top;
     border-radius: 25px;

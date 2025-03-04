@@ -42,6 +42,7 @@ import { FilingHoldingSchemeNode } from '../../models/nodes';
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
+  standalone: false,
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
   @Input() node: FilingHoldingSchemeNode;

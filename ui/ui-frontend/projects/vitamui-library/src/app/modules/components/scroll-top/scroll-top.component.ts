@@ -42,6 +42,7 @@ import { Subscription } from 'rxjs';
   selector: 'vitamui-common-scroll-top',
   templateUrl: './scroll-top.component.html',
   styleUrls: ['./scroll-top.component.scss'],
+  standalone: false,
 })
 export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
   public windowScrolled: boolean;

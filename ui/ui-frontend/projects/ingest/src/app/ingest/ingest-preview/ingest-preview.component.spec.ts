@@ -38,15 +38,19 @@ import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { BASE_URL, LogbookService } from 'vitamui-library';
 import { LogbookOperation } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 import { IngestPreviewComponent } from './ingest-preview.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: string): string {
     return value;
@@ -61,7 +65,8 @@ describe('IngestPreviewComponent test:', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [IngestPreviewComponent, MockTruncatePipe],
-      imports: [HttpClientTestingModule, MatMenuModule, TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatMenuModule, TranslateModule.forRoot()],
       providers: [
         { provide: LogbookService, useValue: {} },
         {
@@ -72,8 +77,9 @@ describe('IngestPreviewComponent test:', () => {
           },
         },
         { provide: BASE_URL, useValue: '/fake-api' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

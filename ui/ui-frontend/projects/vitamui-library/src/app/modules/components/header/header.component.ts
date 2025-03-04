@@ -64,6 +64,7 @@ const MAX_ALERTS_TO_DISPLAY = 3;
   selector: 'vitamui-common-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  standalone: false,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input() hasLangSelection = false;

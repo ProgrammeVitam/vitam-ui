@@ -43,6 +43,7 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
+  standalone: false,
 })
 export class ArchiveUnitInformationTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;

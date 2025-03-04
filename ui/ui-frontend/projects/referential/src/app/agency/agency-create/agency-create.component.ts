@@ -44,6 +44,7 @@ import { AgencyCreateValidators } from './agency-create.validators';
   selector: 'app-agency-create',
   templateUrl: './agency-create.component.html',
   styleUrls: ['./agency-create.component.scss'],
+  standalone: false,
 })
 export class AgencyCreateComponent implements OnInit {
   form: FormGroup;

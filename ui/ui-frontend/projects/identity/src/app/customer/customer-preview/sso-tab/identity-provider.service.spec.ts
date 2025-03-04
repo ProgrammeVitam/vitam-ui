@@ -34,16 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { ENVIRONMENT, VitamUISnackBarService } from 'vitamui-library';
-import { BASE_URL, IdentityProvider, LoggerModule, Operators, CriteriaSearchQuery, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  BASE_URL,
+  CriteriaSearchQuery,
+  ENVIRONMENT,
+  IdentityProvider,
+  LoggerModule,
+  Operators,
+  VitamUISnackBarService,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { environment } from './../../../../environments/environment';
 
 import { Type } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { IdentityProviderService } from './identity-provider.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IdentityProviderService', () => {
   let httpTestingController: HttpTestingController;
@@ -85,7 +94,7 @@ describe('IdentityProviderService', () => {
     const snackBarSpy = jasmine.createSpyObj(['open']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot()],
       providers: [
         IdentityProviderService,
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
@@ -93,6 +102,8 @@ describe('IdentityProviderService', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 

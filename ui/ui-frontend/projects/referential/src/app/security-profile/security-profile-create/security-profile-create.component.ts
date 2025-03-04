@@ -46,6 +46,7 @@ import { SecurityProfileCreateValidators } from './security-profile-create.valid
   selector: 'app-security-profile-create',
   templateUrl: './security-profile-create.component.html',
   styleUrls: ['./security-profile-create.component.scss'],
+  standalone: false,
 })
 export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;

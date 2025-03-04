@@ -44,6 +44,7 @@ import { ThemeService } from '../../../theme.service';
   selector: 'vitamui-common-user-photo',
   templateUrl: './user-photo.component.html',
   styleUrls: ['./user-photo.component.scss'],
+  standalone: false,
 })
 export class UserPhotoComponent implements OnInit {
   @Input() photo: string;

@@ -43,6 +43,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'pastis-title-breadcrumb',
   templateUrl: './pastis-title-breadcrumb.component.html',
   styleUrls: ['./pastis-title-breadcrumb.component.scss'],
+  standalone: false,
 })
 export class PastisTitleBreadcrumbComponent {
   @Input()

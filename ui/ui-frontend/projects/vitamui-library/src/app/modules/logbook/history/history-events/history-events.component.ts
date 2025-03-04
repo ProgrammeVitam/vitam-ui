@@ -42,6 +42,7 @@ import { IEvent } from '../../../models';
   selector: 'vitamui-common-history-events',
   templateUrl: './history-events.component.html',
   styleUrls: ['./history-events.component.scss'],
+  standalone: false,
 })
 export class HistoryEventsComponent {
   @Input() events: IEvent[];

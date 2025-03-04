@@ -37,14 +37,13 @@
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ItemNode, MockSchemaService, SchemaElement, SchemaService, SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { delay } from 'rxjs/operators';
 
 @Component({
-  standalone: true,
-  imports: [ReactiveFormsModule, TranslateModule, AsyncPipe, SelectWithTreeComponent, FormsModule, VitamUICommonModule],
+  imports: [ReactiveFormsModule, TranslatePipe, AsyncPipe, SelectWithTreeComponent, FormsModule, VitamUICommonModule],
   templateUrl: './design-system-select-with-tree.component.html',
   styleUrl: './design-system-select-with-tree.component.scss',
   providers: [{ provide: SchemaService, useClass: MockSchemaService }],

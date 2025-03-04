@@ -27,7 +27,7 @@
       type="submit"
       class="btn primary mr-4"
       (click)="submitModification()"
-      [disabled]="!isUpdated || this.form.get('bulkOperationsThreshold').invalid"
+      [disabled]="!isUpdated || form.get('bulkOperationsThreshold').invalid"
     >
       {{ 'COMMON.SAVE' | translate }}
     </button>

@@ -61,6 +61,7 @@ import { RowCollapseDirective } from './row-collapse.directive';
       </ng-container>
     </div>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChildren(RowCollapseDirective) collapseDirectives: QueryList<RowCollapseDirective>;

@@ -1,3 +1,6 @@
+@use '../bootstrap';
+@use '../spacing';
+
 mat-radio-group mat-radio-button + *:not(mat-radio-button) {
   @extend .py-4;
   @extend .px-5;

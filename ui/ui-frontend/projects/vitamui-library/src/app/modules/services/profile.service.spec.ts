@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { BASE_URL } from '../injection-tokens';
 import { ProfileService } from './profile.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ProfileService', () => {
   let httpTestingController: HttpTestingController;
@@ -47,8 +48,16 @@ describe('ProfileService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ProfileService, { provide: BASE_URL, useValue: '/fake-api' }],
+      imports: [],
+      providers: [
+        ProfileService,
+        {
+          provide: BASE_URL,
+          useValue: '/fake-api',
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

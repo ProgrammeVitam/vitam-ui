@@ -42,6 +42,7 @@ import { DialogInputData } from './dialog-input-data.interface';
   selector: 'vitamui-common-close-popup-dialog',
   templateUrl: './close-popup-dialog.component.html',
   styleUrls: ['./close-popup-dialog.component.scss'],
+  standalone: false,
 })
 export class ClosePopupDialogComponent {
   constructor(

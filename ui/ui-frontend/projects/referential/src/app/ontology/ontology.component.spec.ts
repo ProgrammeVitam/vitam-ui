@@ -46,14 +46,22 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OntologyComponent } from './ontology.component';
 import { TranslateModule } from '@ngx-translate/core';
 
-@Component({ selector: 'app-ontology-preview', template: '' })
+@Component({
+  selector: 'app-ontology-preview',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-ontology-list', template: '' })
+@Component({
+  selector: 'app-ontology-list',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyListStub {}
 

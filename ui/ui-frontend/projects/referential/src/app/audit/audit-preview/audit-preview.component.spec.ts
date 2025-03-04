@@ -43,7 +43,10 @@ import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;

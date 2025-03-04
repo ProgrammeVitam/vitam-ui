@@ -48,6 +48,7 @@ const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 @Component({
   selector: 'app-title-and-description-criteria-search',
   templateUrl: './title-and-description-criteria-search.component.html',
+  standalone: false,
 })
 export class TitleAndDescriptionCriteriaSearchComponent {
   quickSearchCriteriaForm: FormGroup;

@@ -35,13 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, HostBinding, inject, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CdkStepper } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'vitamui-previous-step',
-  standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslatePipe],
   templateUrl: './previous-step.component.html',
   styleUrl: './previous-step.component.scss',
 })

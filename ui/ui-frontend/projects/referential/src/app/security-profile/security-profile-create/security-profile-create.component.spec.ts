@@ -98,6 +98,7 @@ import { SecurityProfileCreateValidators } from './security-profile-create.valid
       multi: true,
     },
   ],
+  standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -121,6 +122,7 @@ class DomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class SecurityProfileEditPermissionStubComponent implements ControlValueAccessor {
   writeValue() {}

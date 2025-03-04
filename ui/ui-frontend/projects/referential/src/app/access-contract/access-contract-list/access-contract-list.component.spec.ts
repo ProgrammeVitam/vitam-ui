@@ -39,12 +39,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BASE_URL, TableFilterModule, WINDOW_LOCATION, AccessContractService } from 'vitamui-library';
+import { AccessContractService, BASE_URL, TableFilterModule, WINDOW_LOCATION } from 'vitamui-library';
 import { AccessContractListComponent } from './access-contract-list.component';
 
 import { EMPTY, of } from 'rxjs';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessContractListComponent', () => {
   let component: AccessContractListComponent;
@@ -60,14 +61,16 @@ describe('AccessContractListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AccessContractListComponent],
-      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, HttpClientTestingModule, TableFilterModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, TableFilterModule],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: MatSnackBar, useValue: {} },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

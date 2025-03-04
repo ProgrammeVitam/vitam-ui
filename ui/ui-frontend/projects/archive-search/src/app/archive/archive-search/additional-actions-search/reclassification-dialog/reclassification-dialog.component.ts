@@ -72,6 +72,7 @@ const REPLACE = 'REPLACE';
 @Component({
   templateUrl: './reclassification-dialog.component.html',
   styleUrls: ['./reclassification-dialog.component.scss'],
+  standalone: false,
 })
 export class ReclassificationDialogComponent implements OnInit, OnDestroy {
   protected readonly FilingPlanMode = FilingPlanMode;

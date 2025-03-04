@@ -50,6 +50,7 @@ export const VITAMUI_DURATION_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-duration-input.component.html',
   styleUrls: ['./vitamui-duration-input.component.scss'],
   providers: [VITAMUI_DURATION_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class VitamUIDurationInputComponent implements ControlValueAccessor {
   public form: FormGroup;

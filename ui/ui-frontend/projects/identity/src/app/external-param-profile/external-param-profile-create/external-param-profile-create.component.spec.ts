@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -51,6 +51,7 @@ import { ExternalParamProfileValidators } from '../external-param-profile.valida
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { DecimalPipe } from '@angular/common';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExternalParamProfileCreateComponent', () => {
   let component: ExternalParamProfileCreateComponent;
@@ -70,11 +71,11 @@ describe('ExternalParamProfileCreateComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ExternalParamProfileCreateComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
         CollapseModule,
         FormsModule,
-        HttpClientTestingModule,
         MatButtonToggleModule,
         MatProgressBarModule,
         MatSelectModule,
@@ -89,11 +90,15 @@ describe('ExternalParamProfileCreateComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: ConfirmDialogService, useValue: { keydownEvents: () => EMPTY, listenToEscapeKeyPress: () => EMPTY } },
+        {
+          provide: ConfirmDialogService,
+          useValue: { keydownEvents: () => EMPTY, listenToEscapeKeyPress: () => EMPTY },
+        },
         { provide: ExternalParamProfileValidators, useValue: externalParamProfileValidators },
         { provide: ExternalParamProfileService, useValue: externalParamProfileService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

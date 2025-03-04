@@ -44,6 +44,7 @@ import { CustomerService } from '../../core/customer.service';
 @Component({
   selector: 'app-profile-group-popup',
   template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer" [isPopup]="true"></app-user-preview>',
+  standalone: false,
 })
 export class UserPopupComponent {
   user: User;

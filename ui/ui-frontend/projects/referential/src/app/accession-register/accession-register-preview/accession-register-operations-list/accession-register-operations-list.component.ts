@@ -51,6 +51,7 @@ import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vita
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {
   @Input() operationsIds: string[];

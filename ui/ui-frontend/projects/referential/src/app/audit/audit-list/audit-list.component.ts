@@ -53,6 +53,7 @@ export class AuditFilters {
   selector: 'app-audit-list',
   templateUrl: './audit-list.component.html',
   styleUrls: ['./audit-list.component.scss'],
+  standalone: false,
 })
 export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

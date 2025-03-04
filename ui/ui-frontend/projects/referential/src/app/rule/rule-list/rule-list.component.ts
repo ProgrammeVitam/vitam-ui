@@ -61,6 +61,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-rule-list',
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss'],
+  standalone: false,
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

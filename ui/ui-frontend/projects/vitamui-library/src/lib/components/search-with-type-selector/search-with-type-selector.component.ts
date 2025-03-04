@@ -60,7 +60,6 @@ export interface SearchWithTypeSelectorValue {
 
 @Component({
   selector: 'vitamui-search-with-type-selector',
-  standalone: true,
   imports: [ReactiveFormsModule, MatMenuModule, FormsModule, LowerCasePipe, NgIf, FormErrorsComponent],
   templateUrl: './search-with-type-selector.component.html',
   styleUrl: './search-with-type-selector.component.scss',

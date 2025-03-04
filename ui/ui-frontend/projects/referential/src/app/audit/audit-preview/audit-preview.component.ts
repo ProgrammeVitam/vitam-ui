@@ -42,6 +42,7 @@ import { AuditService } from '../audit.service';
   selector: 'app-audit-preview',
   templateUrl: './audit-preview.component.html',
   styleUrls: ['./audit-preview.component.scss'],
+  standalone: false,
 })
 export class AuditPreviewComponent implements OnInit {
   @Input() audit: Event;

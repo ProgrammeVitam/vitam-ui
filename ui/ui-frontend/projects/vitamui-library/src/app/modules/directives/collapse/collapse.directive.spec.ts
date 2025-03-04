@@ -61,6 +61,7 @@ import { CollapseDirective } from './collapse.directive';
       </ng-container>
     </div>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChildren(CollapseDirective) collapseDirectives: QueryList<CollapseDirective>;

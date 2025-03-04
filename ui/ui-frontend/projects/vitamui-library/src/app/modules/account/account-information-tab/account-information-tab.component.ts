@@ -44,6 +44,7 @@ import { AccountService } from '../account.service';
   selector: 'vitamui-common-account-information-tab',
   templateUrl: './account-information-tab.component.html',
   styleUrls: ['./account-information-tab.component.scss'],
+  standalone: false,
 })
 export class AccountInformationTabComponent implements OnInit {
   public form: FormGroup;

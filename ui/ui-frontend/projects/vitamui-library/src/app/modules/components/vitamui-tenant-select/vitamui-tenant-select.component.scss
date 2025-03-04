@@ -1,5 +1,4 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 .bg-tenant {
   z-index: -2;
@@ -25,7 +24,7 @@
 .mat-drawer,
 .mat-mdc-dialog-container {
   .tenant-box {
-    @include dialog-elevation-dark;
+    @include elevation.dialog-elevation-dark;
   }
 }
 
@@ -43,7 +42,7 @@
   color: var(--vitamui-grey-800);
   transition: box-shadow 240ms ease-out;
 
-  @include input-elevation-dark;
+  @include elevation.input-elevation-dark;
 
   i {
     color: var(--vitamui-primary);

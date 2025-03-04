@@ -48,6 +48,7 @@ import { TenantFormValidators } from './tenant-form.validators';
   selector: 'app-tenant-create',
   templateUrl: './tenant-create.component.html',
   styleUrls: ['./tenant-create.component.scss'],
+  standalone: false,
 })
 export class TenantCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

@@ -46,6 +46,7 @@ import { FileFormatInformationTabComponent } from './file-format-information-tab
   selector: 'app-file-format-preview',
   templateUrl: './file-format-preview.component.html',
   styleUrls: ['./file-format-preview.component.scss'],
+  standalone: false,
 })
 export class FileFormatPreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

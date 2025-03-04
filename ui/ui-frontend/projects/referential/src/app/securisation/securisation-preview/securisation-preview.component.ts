@@ -43,6 +43,7 @@ import { SecurisationService } from '../securisation.service';
   selector: 'app-securisation-preview',
   templateUrl: './securisation-preview.component.html',
   styleUrls: ['./securisation-preview.component.scss'],
+  standalone: false,
 })
 export class SecurisationPreviewComponent implements OnInit {
   @Input() securisation: Event;

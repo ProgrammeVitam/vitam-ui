@@ -55,6 +55,7 @@ const CURRENT_PAGE = 0;
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy {
   @Input()

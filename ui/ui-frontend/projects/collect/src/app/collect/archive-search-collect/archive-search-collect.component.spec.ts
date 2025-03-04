@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -66,6 +66,7 @@ import { ArchiveCollectService } from './archive-collect.service';
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -139,9 +140,10 @@ describe('ArchiveSearchCollectComponent', () => {
       : [ArchiveSearchCollectComponent];
 
     await TestBed.configureTestingModule({
+      declarations: declarations,
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
-        HttpClientTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatMenuModule,
@@ -152,7 +154,6 @@ describe('ArchiveSearchCollectComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
       ],
-      declarations: declarations,
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
@@ -164,8 +165,9 @@ describe('ArchiveSearchCollectComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
         { provide: environment, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ArchiveSearchCollectComponent);

@@ -46,6 +46,7 @@ import { ManagementContractService } from '../../management-contract.service';
   selector: 'app-management-contract-information-tab',
   templateUrl: './management-contract-information-tab.component.html',
   styleUrls: ['./management-contract-information-tab.component.scss'],
+  standalone: false,
 })
 export class ManagementContractInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

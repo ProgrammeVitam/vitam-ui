@@ -48,6 +48,7 @@ export const MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   selector: 'vitamui-common-multiple-email-input',
   templateUrl: './multiple-email-input.component.html',
   providers: [MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class MultipleEmailInputComponent extends EditableFieldComponent {
   private emailInputClicked = false;

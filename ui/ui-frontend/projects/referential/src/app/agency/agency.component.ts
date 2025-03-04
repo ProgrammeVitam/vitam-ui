@@ -50,6 +50,7 @@ import { AgencyListComponent } from './agency-list/agency-list.component';
   selector: 'app-agency',
   templateUrl: './agency.component.html',
   styleUrls: ['./agency.component.scss'],
+  standalone: false,
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;

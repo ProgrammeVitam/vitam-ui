@@ -1,6 +1,6 @@
 @use '../../../sass/base/typography';
-@import '../../../sass/mixins/elevation';
-@import 'bootstrap/scss/bootstrap-grid';
+@use '../../../sass/mixins/elevation' as elevation;
+@use 'bootstrap/scss/bootstrap-grid';
 
 ::ng-deep .vitamui-select-with-tree-panel {
   max-height: none !important;

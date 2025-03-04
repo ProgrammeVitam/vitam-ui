@@ -95,6 +95,7 @@ function constantToTranslate() {
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-pua-control.component.html',
   styleUrls: ['./add-pua-control.component.scss'],
+  standalone: false,
 })
 export class UserActionAddPuaControlComponent implements OnInit {
   btnIsDisabled: boolean;

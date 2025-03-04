@@ -42,6 +42,7 @@ import { OperationDetails } from '../../../models/operation-response.interface';
   selector: 'app-logbook-management-operation-information-tab',
   templateUrl: './logbook-management-operation-information-tab.component.html',
   styleUrls: ['./logbook-management-operation-information-tab.component.scss'],
+  standalone: false,
 })
 export class LogbookManagementOperationInformationTabComponent implements OnInit, OnChanges {
   @Input() operation: OperationDetails;

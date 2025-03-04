@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
+  AccessContractService,
   BASE_URL,
   Customer,
   ENVIRONMENT,
@@ -46,12 +47,12 @@ import {
   LoggerModule,
   OtpState,
   VitamUISnackBarService,
-  AccessContractService,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../../../../environments/environment';
 
 import { AccessContractNodeUpdateComponent } from './access-contract-node-update.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedCustomer: Customer = {
   id: 'idCustomer',
@@ -107,8 +108,8 @@ xdescribe('AccessContractNodeUpdateComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
       declarations: [AccessContractNodeUpdateComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
@@ -116,6 +117,8 @@ xdescribe('AccessContractNodeUpdateComponent', () => {
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: AccessContractService, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

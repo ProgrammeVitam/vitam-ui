@@ -63,6 +63,7 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './owner-form.component.html',
   styleUrls: ['./owner-form.component.scss'],
   providers: [OWNER_FORM_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
   public form: FormGroup;

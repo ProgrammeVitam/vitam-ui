@@ -47,6 +47,7 @@ import { ActivatedRoute } from '@angular/router';
       [isPopup]="true"
     ></app-logbook-operation-detail>
   `,
+  standalone: false,
 })
 export class LogbookOperationPopupComponent implements OnInit {
   eventId: string;

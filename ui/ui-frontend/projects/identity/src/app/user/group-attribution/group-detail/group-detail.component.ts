@@ -42,6 +42,7 @@ import { GroupService } from '../../../group/group.service';
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
+  standalone: false,
 })
 export class GroupDetailComponent implements OnInit {
   @Input() group: Group;

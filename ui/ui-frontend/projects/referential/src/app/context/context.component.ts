@@ -47,6 +47,7 @@ import { ContextListComponent } from './context-list/context-list.component';
   selector: 'app-context',
   templateUrl: './context.component.html',
   styleUrls: ['./context.component.scss'],
+  standalone: false,
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   search = '';

@@ -55,6 +55,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

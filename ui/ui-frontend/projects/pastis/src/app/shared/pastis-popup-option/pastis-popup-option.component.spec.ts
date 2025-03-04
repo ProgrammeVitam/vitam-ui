@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -46,6 +46,7 @@ import { BASE_URL } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { PastisPopupOptionComponent } from './pastis-popup-option.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -59,7 +60,6 @@ describe('PastisPopupOptionComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [PastisPopupOptionComponent],
       imports: [
-        HttpClientTestingModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ToastrModule.forRoot({
@@ -75,6 +75,8 @@ describe('PastisPopupOptionComponent', () => {
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MatSnackBar, useValue: snackBarSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

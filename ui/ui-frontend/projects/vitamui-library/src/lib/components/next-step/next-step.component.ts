@@ -36,12 +36,11 @@
  */
 import { Component, HostBinding, inject, Input } from '@angular/core';
 import { CdkStepper } from '@angular/cdk/stepper';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-next-step',
-  standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslatePipe],
   templateUrl: './next-step.component.html',
   styleUrl: './next-step.component.scss',
 })

@@ -36,13 +36,13 @@
  */
 
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpBackend } from '@angular/common/http';
 import localeFr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { AuthenticationModule, BytesPipe, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'vitamui-library';
@@ -52,10 +52,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './collect/core/core.module';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
-    { prefix: './assets/shared-i18n/', suffix: '.json' },
-    { prefix: './assets/i18n/', suffix: '.json' },
-  ]);
+  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
 }
 
 registerLocaleData(localeFr, 'fr');
@@ -70,7 +67,15 @@ registerLocaleData(localeFr, 'fr');
     VitamUICommonModule.forRoot(),
     QuicklinkModule,
     AppRoutingModule,
-    TranslateModule.forRoot({
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+  ],
+  providers: [
+    provideTranslateService({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',
       loader: {
@@ -79,14 +84,15 @@ registerLocaleData(localeFr, 'fr');
         deps: [HttpBackend],
       },
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    {
+      provide: WINDOW_LOCATION,
+      useValue: window.location,
+    },
+    DatePipe,
+    BytesPipe,
   ],
-  providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location }, DatePipe, BytesPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

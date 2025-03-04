@@ -1,3 +1,6 @@
+@use './base/utilities';
+@use './bootstrap';
+
 :root {
   $checkboxSize: 24px;
   $boxSize: 16px;

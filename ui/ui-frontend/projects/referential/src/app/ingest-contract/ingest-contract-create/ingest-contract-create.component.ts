@@ -59,6 +59,7 @@ import { IngestContractCreateValidators } from './ingest-contract-create.validat
   selector: 'app-ingest-contract-create',
   templateUrl: './ingest-contract-create.component.html',
   styleUrls: ['./ingest-contract-create.component.scss'],
+  standalone: false,
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;

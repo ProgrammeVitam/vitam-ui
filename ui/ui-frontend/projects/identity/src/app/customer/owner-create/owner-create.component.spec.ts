@@ -62,6 +62,7 @@ import { TranslateModule } from '@ngx-translate/core';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerId: any;

@@ -1,9 +1,11 @@
-@import '../mixins/elevation';
-@import '../mixins/material/panel';
+@use '../mixins/elevation' as elevation;
+@use '../mixins/material/panel' as panel;
+@use '../mixins/material/select' as select;
+@use '../base/typography';
 
 .mat-mdc-select-panel,
 .vitamui-autocomplete-panel {
-  @include panel;
+  @include panel.panel;
 
   --mat-option-label-text-color: var(--vitamui-grey-900);
   --mat-option-selected-state-label-text-color: var(--vitamui-grey-900);
@@ -36,7 +38,7 @@
 }
 
 .vitamui-mat-select.mat-mdc-select-panel {
-  @include mat-select-panel;
+  @include select.mat-select-panel;
 }
 
 mat-select-trigger.vitamui-mat-select {
@@ -65,7 +67,7 @@ mat-select-trigger.vitamui-mat-select {
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-flex {
       outline: none;
-      @include shadow-0;
+      @include elevation.shadow-0;
       border: 1px solid var(--vitamui-primary) !important;
     }
   }
@@ -76,7 +78,7 @@ mat-select-trigger.vitamui-mat-select {
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-flex {
       outline: none;
-      @include shadow-0;
+      @include elevation.shadow-0;
       border: 1px solid var(--vitamui-red) !important;
     }
   }
@@ -139,7 +141,7 @@ mat-select-trigger.vitamui-mat-select {
       .mat-form-field-flex {
         background-color: var(--vitamui-grey-300);
         border: none;
-        @include shadow-0;
+        @include elevation.shadow-0;
         /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
         .mat-mdc-select .mat-select-value {
           font-weight: normal;
@@ -178,7 +180,7 @@ mat-select-trigger.vitamui-mat-select {
     padding: 0 15px;
     border: none;
 
-    @include shadow-accessible;
+    @include elevation.shadow-accessible;
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-infix {
       border-top-width: 16px;
@@ -235,7 +237,7 @@ mat-select-trigger.vitamui-mat-select {
     height: 25px;
     padding: 0;
     border: none;
-    @include shadow-0;
+    @include elevation.shadow-0;
   }
   /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-infix {

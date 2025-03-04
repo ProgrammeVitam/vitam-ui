@@ -49,6 +49,7 @@ import { ArchiveUnitEditorService } from './archive-unit-editor.service';
   templateUrl: './archive-unit-editor.component.html',
   styleUrls: ['./archive-unit-editor.component.scss'],
   providers: [ArchiveUnitEditorService],
+  standalone: false,
 })
 export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() data!: ArchiveUnit;

@@ -44,18 +44,15 @@ import {
 } from 'vitamui-library';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'design-system-search-with-type-selector',
-  standalone: true,
   imports: [
     SearchWithTypeSelectorComponent,
     ReactiveFormsModule,
     FormFieldValueWrapperComponent,
     FormsModule,
     JsonPipe,
-    TranslateModule,
     VitamUICommonModule,
   ],
   templateUrl: './design-system-search-with-type-selector.component.html',

@@ -45,6 +45,7 @@ import { EventDisplayHelperService } from '../event-display-helper.service';
   selector: 'app-ingest-errors-details-tab',
   templateUrl: './ingest-errors-details-tab.component.html',
   styleUrls: ['./ingest-errors-details-tab.component.css'],
+  standalone: false,
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   @Input() ingest: LogbookOperation;

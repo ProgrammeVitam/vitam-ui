@@ -40,15 +40,14 @@ import { StartupService } from './../../../startup.service';
 import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ItemSelectModule } from '../item-select/item-select.module';
 
 @Component({
   selector: 'vitamui-common-select-tenant-dialog',
   templateUrl: './select-tenant-dialog.component.html',
   styleUrls: ['./select-tenant-dialog.component.scss'],
-  imports: [CommonModule, MatButtonModule, TranslateModule, ItemSelectModule, MatDialogModule],
-  standalone: true,
+  imports: [CommonModule, MatButtonModule, TranslatePipe, ItemSelectModule, MatDialogModule],
 })
 export class SelectTenantDialogComponent implements OnInit {
   public static readonly SELECT_TENANT_DIALOG_CONFIG: MatDialogConfig = {

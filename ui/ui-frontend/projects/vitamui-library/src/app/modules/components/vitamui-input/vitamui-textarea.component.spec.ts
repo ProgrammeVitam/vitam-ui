@@ -45,6 +45,7 @@ import { VitamUITextareaComponent } from './vitamui-textarea.component';
 
 @Component({
   template: ` <vitamui-common-textarea [(ngModel)]="value" #input="ngModel"></vitamui-common-textarea> `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChild(VitamUITextareaComponent) vitamuiTextareaComponent: VitamUITextareaComponent;

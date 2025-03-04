@@ -65,6 +65,7 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
   selector: 'app-logbook-operation-list',
   templateUrl: './logbook-operation-list.component.html',
   styleUrls: ['./logbook-operation-list.component.scss'],
+  standalone: false,
 })
 export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> implements OnInit, OnChanges, OnDestroy {
   @Input() tenantIdentifier: number;

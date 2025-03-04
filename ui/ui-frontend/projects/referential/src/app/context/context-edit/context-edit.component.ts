@@ -45,6 +45,7 @@ import { ContextCreateValidators } from '../context-create/context-create.valida
   selector: 'app-context-edit',
   templateUrl: './context-edit.component.html',
   styleUrls: ['./context-edit.component.scss'],
+  standalone: false,
 })
 export class ContextEditComponent implements OnInit, OnDestroy {
   form: FormGroup;

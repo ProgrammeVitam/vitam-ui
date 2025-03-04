@@ -46,7 +46,6 @@ const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
   templateUrl: './miscellaneous.component.html',
   styleUrls: ['./miscellaneous.component.scss'],
   imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule],
-  standalone: true,
 })
 export class MiscellaneousComponent {
   infiniteValues: number[] = [1, 2, 3, 4, 5];

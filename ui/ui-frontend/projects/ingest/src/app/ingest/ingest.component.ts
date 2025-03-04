@@ -50,6 +50,7 @@ import { IngestListComponent } from './ingest-list/ingest-list.component';
   selector: 'app-ingest',
   templateUrl: './ingest.component.html',
   styleUrls: ['./ingest.component.scss'],
+  standalone: false,
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
   IngestType = IngestType;

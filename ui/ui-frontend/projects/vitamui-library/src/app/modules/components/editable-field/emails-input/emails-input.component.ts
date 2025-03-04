@@ -49,6 +49,7 @@ export const EMAILS_INPUT_ACCESSOR: any = {
   templateUrl: './emails-input.component.html',
   styleUrls: ['./emails-input.component.scss'],
   providers: [EMAILS_INPUT_ACCESSOR],
+  standalone: false,
 })
 export class EmailsInputComponent implements ControlValueAccessor {
   @Input() placeholder: string;

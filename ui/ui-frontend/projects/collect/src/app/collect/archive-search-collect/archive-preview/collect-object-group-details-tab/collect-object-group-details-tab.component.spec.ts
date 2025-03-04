@@ -36,7 +36,7 @@
  */
 import createSpyObj = jasmine.createSpyObj;
 import { Clipboard } from '@angular/cdk/clipboard';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -62,6 +62,7 @@ import {
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CollectObjectGroupDetailsTabComponent', () => {
   let component: CollectObjectGroupDetailsTabComponent;
@@ -107,9 +108,9 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [CollectObjectGroupDetailsTabComponent],
       imports: [
         BrowserAnimationsModule,
-        HttpClientTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatSnackBarModule,
@@ -117,7 +118,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [CollectObjectGroupDetailsTabComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
@@ -125,6 +125,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         { provide: ArchiveCollectService, useValue: archiveCollectServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
         { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

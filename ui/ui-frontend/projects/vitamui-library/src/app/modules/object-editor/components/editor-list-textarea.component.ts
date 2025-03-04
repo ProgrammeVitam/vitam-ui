@@ -51,7 +51,6 @@ import { EditorTextareaComponent } from './editor-textarea.component';
     ></vitamui-editor-textarea>
   `,
   imports: [EditorTextareaComponent],
-  standalone: true,
 })
 export class EditorListTextareaComponent implements OnInit, OnDestroy {
   @Input({ required: true }) editObject!: EditObject;

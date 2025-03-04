@@ -1,5 +1,6 @@
-@import './mixins/breakpoints';
-@import './variables';
+@use './mixins/breakpoints' as breakpoints;
+@use './variables' as variables;
+@use './mixins/fonts' as fonts;
 
 html {
   // Hide scroll bars for our body container (but still scrollable)
@@ -11,31 +12,31 @@ html {
 }
 
 .vitamui-heading {
-  padding-top: $layout-margin-y;
+  padding-top: variables.$layout-margin-y;
   margin-bottom: 3rem;
 }
 
 // Defaut supported screen width is 1920px
 .vitamui-content,
 .vitamui-heading {
-  max-width: $large-width;
-  min-width: $min-width;
+  max-width: breakpoints.$large-width;
+  min-width: breakpoints.$min-width;
   margin-left: auto;
   margin-right: auto;
   padding-left: 50px;
   padding-right: 1rem;
 
-  @include breakpoint(mediumScreen) {
-    max-width: $medium-width;
+  @include breakpoints.breakpoint(mediumScreen) {
+    max-width: breakpoints.$medium-width;
   }
 
-  @include breakpoint(smallScreen) {
-    max-width: $small-width;
+  @include breakpoints.breakpoint(smallScreen) {
+    max-width: breakpoints.$small-width;
   }
 }
 
 .mat-drawer-container {
-  height: calc(100vh - #{$header-height});
+  height: calc(100vh - #{variables.$header-height});
 }
 
 /**** DEPRECATED : REMOVE AT THE END OF THE REDESIGN **/
@@ -65,7 +66,7 @@ html {
 
   > h2 {
     // TODO Rename this variable in angular-commons
-    @include login-title;
+    @include fonts.login-title;
     margin-top: 67.5px;
 
     img {
@@ -78,7 +79,7 @@ html {
 
 .vitamui-header > .vitamui-container > h2 {
   // TODO Rename this variable in angular-commons
-  @include login-title;
+  @include fonts.login-title;
   margin-top: 67.5px;
   font-weight: 500;
 
@@ -90,7 +91,7 @@ html {
 }
 
 .vitamui-body {
-  min-height: calc(100vh - #{$header-height + $footer-height});
+  min-height: calc(100vh - #{variables.$header-height + variables.$footer-height});
 }
 
 .vitamui-separator {

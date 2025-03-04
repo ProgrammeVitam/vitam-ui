@@ -60,6 +60,7 @@ import { EditableInputComponent } from './editable-input.component';
       <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
     </vitamui-common-editable-input>
   `,
+  standalone: false,
 })
 class TesthostComponent {
   value: string;

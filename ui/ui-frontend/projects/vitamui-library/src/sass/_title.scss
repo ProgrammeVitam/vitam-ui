@@ -1,6 +1,8 @@
+@use './mixins/fonts' as fonts;
+
 .vitamui-header > .vitamui-container > h2 {
   // TODO Rename this variable in angular-commons
-  @include login-title;
+  @include fonts.login-title;
   margin-top: 67.5px;
   font-weight: 500;
 

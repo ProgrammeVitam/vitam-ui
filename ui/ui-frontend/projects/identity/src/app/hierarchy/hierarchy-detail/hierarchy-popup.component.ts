@@ -42,6 +42,7 @@ import { Profile } from 'vitamui-library';
 @Component({
   selector: 'app-hierarchy-popup',
   template: '<app-hierarchy-detail (previewClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-hierarchy-detail>',
+  standalone: false,
 })
 export class HierarchyPopupComponent {
   profile: Profile;

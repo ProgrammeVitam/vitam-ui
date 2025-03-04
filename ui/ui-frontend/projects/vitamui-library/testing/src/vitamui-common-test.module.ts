@@ -39,14 +39,22 @@ import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 import { CdkStepper } from '@angular/cdk/stepper';
 
-@Component({ selector: 'vitamui-common-application-select-content', template: '<ng-content></ng-content>' })
+@Component({
+  selector: 'vitamui-common-application-select-content',
+  template: '<ng-content></ng-content>',
+  standalone: false,
+})
 export class ApplicationSelectContentStubComponent {
   @Input() applications: any[];
   @Input() categories: any;
   @Input() isModalMenu: boolean;
 }
 
-@Component({ selector: 'vitamui-common-customer-select', template: '<ng-content></ng-content>' })
+@Component({
+  selector: 'vitamui-common-customer-select',
+  template: '<ng-content></ng-content>',
+  standalone: false,
+})
 export class VitamUICustomerSelectStubComponent {}
 
 @Component({
@@ -59,6 +67,7 @@ export class VitamUICustomerSelectStubComponent {}
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIDurationInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -68,20 +77,29 @@ export class VitamUIDurationInputStubComponent implements ControlValueAccessor {
   registerOnTouched() {}
 }
 
-@Component({ selector: 'vitamui-common-tenant-select', template: '<ng-content></ng-content>' })
+@Component({
+  selector: 'vitamui-common-tenant-select',
+  template: '<ng-content></ng-content>',
+  standalone: false,
+})
 export class VitamUITenantSelectStubComponent {}
 
 @Component({
   selector: 'vitamui-common-stepper',
   template: '<ng-content></ng-content>',
   providers: [{ provide: CdkStepper, useExisting: StepperStubComponent }],
+  standalone: false,
 })
 export class StepperStubComponent {
   @Input() selectedIndex: number;
   steps: any[] = [];
 }
 
-@Component({ selector: 'vitamui-common-input-error', template: '<ng-content></ng-content>' })
+@Component({
+  selector: 'vitamui-common-input-error',
+  template: '<ng-content></ng-content>',
+  standalone: false,
+})
 export class VitamUIInputErrorStubComponent {}
 
 @Component({
@@ -94,6 +112,7 @@ export class VitamUIInputErrorStubComponent {}
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -113,6 +132,7 @@ export class VitamUIInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIInputPositiveNumberStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -132,6 +152,7 @@ export class VitamUIInputPositiveNumberStubComponent implements ControlValueAcce
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIListInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -151,6 +172,7 @@ export class VitamUIListInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUITextareaStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
@@ -170,6 +192,7 @@ export class VitamUITextareaStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
   @Input() disabled: boolean;
@@ -207,12 +230,17 @@ export class EditableFieldStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIEditableEmailInputStubComponent extends EditableFieldStubComponent {
   @Input() domains: string[];
 }
 
-@Component({ selector: 'vitamui-common-field-error', template: '<ng-content></ng-content>' })
+@Component({
+  selector: 'vitamui-common-field-error',
+  template: '<ng-content></ng-content>',
+  standalone: false,
+})
 export class VitamUIFieldErrorStubComponent {}
 
 @Component({
@@ -225,6 +253,7 @@ export class VitamUIFieldErrorStubComponent {}
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIEditableFileStubComponent extends EditableFieldStubComponent {}
 
@@ -238,6 +267,7 @@ export class VitamUIEditableFileStubComponent extends EditableFieldStubComponent
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIEditableInputStubComponent extends EditableFieldStubComponent {}
 
@@ -251,6 +281,7 @@ export class VitamUIEditableInputStubComponent extends EditableFieldStubComponen
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIEditableTextareaStubComponent extends EditableFieldStubComponent {}
 
@@ -264,6 +295,7 @@ export class VitamUIEditableTextareaStubComponent extends EditableFieldStubCompo
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIEditableSelectStubComponent extends EditableFieldStubComponent {}
 
@@ -277,10 +309,15 @@ export class VitamUIEditableSelectStubComponent extends EditableFieldStubCompone
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIAutocompleteMultiSelectStubComponent extends EditableFieldStubComponent {}
 
-@Component({ selector: 'vitamui-common-editable-option', template: '' })
+@Component({
+  selector: 'vitamui-common-editable-option',
+  template: '',
+  standalone: false,
+})
 export class VitamUIEditableOptionStubComponent {
   @Input() value: any;
   @Input() content: any;
@@ -297,10 +334,15 @@ export class VitamUIEditableOptionStubComponent {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class VitamUIEditableToggleGroupStubComponent extends EditableFieldStubComponent {}
 
-@Component({ selector: 'vitamui-common-editable-button-toggle', template: '' })
+@Component({
+  selector: 'vitamui-common-editable-button-toggle',
+  template: '',
+  standalone: false,
+})
 export class VitamUIEditableButtonToggleStubComponent {
   @Input() value: any;
 }
@@ -315,6 +357,7 @@ export class VitamUIEditableButtonToggleStubComponent {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class EditableLevelInputStubComponent implements ControlValueAccessor {
   @Input() validator: any;
@@ -326,35 +369,50 @@ export class EditableLevelInputStubComponent implements ControlValueAccessor {
   registerOnTouched() {}
 }
 
-@Pipe({ name: 'strongify' })
+@Pipe({
+  name: 'strongify',
+  standalone: false,
+})
 export class StrongifyStubPipe implements PipeTransform {
   transform(value: any): any {
     return value;
   }
 }
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 export class TruncateStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
 }
 
-@Pipe({ name: 'translate' })
+@Pipe({
+  name: 'translate',
+  standalone: false,
+})
 export class TranslateStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
 }
 
-@Pipe({ name: 'dateTime' })
+@Pipe({
+  name: 'dateTime',
+  standalone: false,
+})
 export class DateTimeStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
 }
 
-@Directive({ selector: '[vitamuiCommonInfiniteScroll]' })
+@Directive({
+  selector: '[vitamuiCommonInfiniteScroll]',
+  standalone: false,
+})
 export class InfiniteScrollStubDirective {
   @Input() vitamuiCommonInfiniteScrollThreshold: any;
   @Input() vitamuiCommonInfiniteScrollDisable: any;
@@ -364,6 +422,7 @@ export class InfiniteScrollStubDirective {
 @Directive({
   selector: '[vitamuiCommonRowCollapse]',
   exportAs: 'vitamuiRowCollapse',
+  standalone: false,
 })
 export class RowCollapseStubDirective {
   @Input() vitamuiCommonCollapse: any;
@@ -371,6 +430,7 @@ export class RowCollapseStubDirective {
 
 @Directive({
   selector: '[vitamuiCommonRowCollapseTriggerFor]',
+  standalone: false,
 })
 export class RowCollapseTriggerForStubDirective {
   @Input() vitamuiCommonRowCollapseTriggerFor: any;

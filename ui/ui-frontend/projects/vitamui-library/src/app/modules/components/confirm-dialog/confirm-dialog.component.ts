@@ -40,6 +40,7 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-common-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
+  standalone: false,
 })
 export class ConfirmDialogComponent {
   @Input() dialogTitle: string;

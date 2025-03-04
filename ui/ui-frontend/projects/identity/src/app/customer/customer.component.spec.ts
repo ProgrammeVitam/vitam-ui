@@ -65,19 +65,31 @@ class Page {
 
 let page: Page;
 
-@Component({ selector: 'app-customer-list', template: '' })
+@Component({
+  selector: 'app-customer-list',
+  template: '',
+  standalone: false,
+})
 class CustomerListStubComponent {
   search() {}
 }
 
-@Component({ selector: 'app-customer-preview', template: '' })
+@Component({
+  selector: 'app-customer-preview',
+  template: '',
+  standalone: false,
+})
 class CustomerPreviewStubComponent {
   @Input() customer: any;
   @Output() previewClose = new EventEmitter();
   @Input() gdprReadOnlySettingStatus: boolean;
 }
 
-@Component({ selector: 'app-owner-preview', template: '' })
+@Component({
+  selector: 'app-owner-preview',
+  template: '',
+  standalone: false,
+})
 class OwnerPreviewStubComponent {
   @Input() owner: any;
   @Input() tenant: any;

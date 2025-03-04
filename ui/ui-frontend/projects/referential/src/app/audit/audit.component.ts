@@ -47,6 +47,7 @@ import { AuditListComponent } from './audit-list/audit-list.component';
   selector: 'app-audit',
   templateUrl: './audit.component.html',
   styleUrls: ['./audit.component.scss'],
+  standalone: false,
 })
 export class AuditComponent extends SidenavPage<Event> {
   public dateRangeFilterForm: FormGroup;

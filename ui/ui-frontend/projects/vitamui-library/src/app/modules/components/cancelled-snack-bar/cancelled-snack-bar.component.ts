@@ -41,6 +41,7 @@ import { MatSnackBarRef } from '@angular/material/snack-bar';
   selector: 'vitamui-common-cancelled-snack-bar',
   templateUrl: './cancelled-snack-bar.component.html',
   styleUrls: ['./cancelled-snack-bar.component.scss'],
+  standalone: false,
 })
 export class CancelledSnackBarComponent {
   constructor(private matSnackBarRef: MatSnackBarRef<CancelledSnackBarComponent>) {}

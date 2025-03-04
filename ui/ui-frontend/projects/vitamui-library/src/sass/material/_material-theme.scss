@@ -1,6 +1,4 @@
 @use '@angular/material' as mat;
-@import '@angular/material/theming';
-@import '../variables/colors';
 
 // Plus imports for other components in your app.
 
@@ -24,20 +22,20 @@ $vitamui-primary: (
   A400: var(--vitamui-primary),
   A700: var(--vitamui-primary),
   contrast: (
-    50: $light-primary-text,
-    100: $light-primary-text,
-    200: $light-primary-text,
-    300: $light-primary-text,
-    400: $light-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-    A100: $light-primary-text,
-    A200: $light-primary-text,
-    A400: $light-primary-text,
-    A700: $light-primary-text,
+    50: var(--vitamui-white),
+    100: var(--vitamui-white),
+    200: var(--vitamui-white),
+    300: var(--vitamui-white),
+    400: var(--vitamui-white),
+    500: var(--vitamui-white),
+    600: var(--vitamui-white),
+    700: var(--vitamui-white),
+    800: var(--vitamui-white),
+    900: var(--vitamui-white),
+    A100: var(--vitamui-white),
+    A200: var(--vitamui-white),
+    A400: var(--vitamui-white),
+    A700: var(--vitamui-white),
   ),
 );
 
@@ -57,30 +55,30 @@ $vitamui-secondary: (
   A400: var(--vitamui-secondary),
   A700: var(--vitamui-secondary),
   contrast: (
-    50: $light-primary-text,
-    100: $light-primary-text,
-    200: $light-primary-text,
-    300: $light-primary-text,
-    400: $light-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-    A100: $light-primary-text,
-    A200: $light-primary-text,
-    A400: $light-primary-text,
-    A700: $light-primary-text,
+    50: var(--vitamui-white),
+    100: var(--vitamui-white),
+    200: var(--vitamui-white),
+    300: var(--vitamui-white),
+    400: var(--vitamui-white),
+    500: var(--vitamui-white),
+    600: var(--vitamui-white),
+    700: var(--vitamui-white),
+    800: var(--vitamui-white),
+    900: var(--vitamui-white),
+    A100: var(--vitamui-white),
+    A200: var(--vitamui-white),
+    A400: var(--vitamui-white),
+    A700: var(--vitamui-white),
   ),
 );
 
-$app-primary: mat.define-palette($vitamui-primary);
-$app-accent: mat.define-palette($vitamui-secondary);
+$app-primary: mat.m2-define-palette($vitamui-primary);
+$app-accent: mat.m2-define-palette($vitamui-secondary);
 
 // The warn palette is optional (defaults to red).
-$app-warn: mat.define-palette(mat.$red-palette);
+$app-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$custom-typography: mat.define-typography-config(
+$custom-typography: mat.m2-define-typography-config(
   $font-family: 'Mulish, sans-serif',
   //$headline-1: mat.define-typography-level(...), // TODO: define typography
   //$headline-2: mat.define-typography-level(...), // TODO: define typography
@@ -90,8 +88,7 @@ $custom-typography: mat.define-typography-config(
   //$headline-6: mat.define-typography-level(...), // TODO: define typography
   //$subtitle-1: mat.define-typography-level(...), // TODO: define typography
   //$subtitle-2: mat.define-typography-level(...), // TODO: define typography
-  $body-1:
-    mat.define-typography-level(
+  $body-1: mat.m2-define-typography-level(
       $font-weight: 400,
       $font-size: 14px,
       $line-height: 22px,
@@ -100,10 +97,10 @@ $custom-typography: mat.define-typography-config(
   //$body-2: mat.define-typography-level(...), // TODO: define typography
   //$caption: mat.define-typography-level(...), // TODO: define typography
   //$button: mat.define-typography-level(...), // TODO: define typography
-  //$overline: mat.define-typography-level(...), // TODO: define typography
+   //$overline: mat.define-typography-level(...), // TODO: define typography
 );
 
-$custom-theme: mat.define-light-theme(
+$custom-theme: mat.m2-define-light-theme(
   (
     typography: $custom-typography,
     color: (
@@ -117,4 +114,4 @@ $custom-theme: mat.define-light-theme(
 @include mat.all-component-themes($custom-theme);
 
 // In order to have 10px vertical padding on form fields, we need to set the density to -3 (otherwise it's 16px by default)
-@include mat.private-form-field-density(-3);
+@include mat.form-field-density(-3);

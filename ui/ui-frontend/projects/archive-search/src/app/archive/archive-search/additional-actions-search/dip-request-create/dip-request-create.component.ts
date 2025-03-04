@@ -58,6 +58,7 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
   selector: 'app-dip-request-create',
   templateUrl: './dip-request-create.component.html',
   styleUrls: ['./dip-request-create.component.scss'],
+  standalone: false,
 })
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
   formGroups: FormGroup[];

@@ -40,6 +40,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'vitamui-common-sidenav-header',
   templateUrl: './vitamui-sidenav-header.component.html',
   styleUrls: ['./vitamui-sidenav-header.component.scss'],
+  standalone: false,
 })
 export class VitamuiSidenavHeaderComponent {
   @Input() icon: string;

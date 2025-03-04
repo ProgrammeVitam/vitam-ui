@@ -44,11 +44,10 @@ import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
 import { SchemaListComponent } from './schema-list/schema-list.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  standalone: true,
-  imports: [MatTabsModule, CommonModule, TranslateModule, OntologyListComponent, SchemaListComponent],
+  imports: [MatTabsModule, CommonModule, TranslatePipe, OntologyListComponent, SchemaListComponent],
   selector: 'app-ontology-group',
   templateUrl: './ontology-group.component.html',
   styleUrls: ['./ontology-group.component.scss'],

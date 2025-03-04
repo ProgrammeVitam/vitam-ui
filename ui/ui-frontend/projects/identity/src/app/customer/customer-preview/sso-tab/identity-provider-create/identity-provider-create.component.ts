@@ -46,6 +46,7 @@ import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
   selector: 'app-identity-provider-create',
   templateUrl: './identity-provider-create.component.html',
   styleUrls: ['./identity-provider-create.component.scss'],
+  standalone: false,
 })
 export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

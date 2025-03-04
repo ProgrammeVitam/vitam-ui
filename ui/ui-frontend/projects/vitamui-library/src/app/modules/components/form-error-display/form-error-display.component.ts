@@ -36,7 +36,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { VitamUICommonInputModule } from '../vitamui-input/vitamui-common-input.module';
 
 @Component({
@@ -49,8 +49,7 @@ import { VitamUICommonInputModule } from '../vitamui-input/vitamui-common-input.
       </vitamui-common-input-error>
     }
   `,
-  imports: [TranslateModule, VitamUICommonInputModule],
-  standalone: true,
+  imports: [TranslatePipe, VitamUICommonInputModule],
 })
 export class FormErrorDisplayComponent {
   @Input() control: AbstractControl;

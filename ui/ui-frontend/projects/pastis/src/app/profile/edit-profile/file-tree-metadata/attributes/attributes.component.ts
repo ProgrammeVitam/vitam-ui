@@ -91,6 +91,7 @@ import { FileTreeMetadataService } from '../file-tree-metadata.service';
   selector: 'pastis-edit-attributes',
   templateUrl: './attributes.component.html',
   styleUrls: ['./attributes.component.scss'],
+  standalone: false,
 })
 export class AttributesPopupComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['selected', 'nomDuChamp', 'valeurFixe', 'commentaire'];

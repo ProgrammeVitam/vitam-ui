@@ -47,6 +47,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-ingest-contract-list',
   templateUrl: './ingest-contract-list.component.html',
   styleUrls: ['./ingest-contract-list.component.scss'],
+  standalone: false,
 })
 export class IngestContractListComponent extends InfiniteScrollTable<IngestContract> implements OnDestroy, OnInit {
   orderBy = 'Name';

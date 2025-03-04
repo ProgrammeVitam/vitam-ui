@@ -52,7 +52,11 @@ import { ENVIRONMENT } from './../injection-tokens';
 import { AccountComponent } from './account.component';
 import { AccountService } from './account.service';
 
-@Component({ selector: 'vitamui-common-account-information-tab', template: '' })
+@Component({
+  selector: 'vitamui-common-account-information-tab',
+  template: '',
+  standalone: false,
+})
 class InformationTabStubComponent {
   @Input() account: Account;
 }

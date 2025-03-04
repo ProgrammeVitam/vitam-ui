@@ -45,6 +45,7 @@ import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.componen
   selector: 'app-hierarchy',
   templateUrl: './hierarchy.component.html',
   styleUrls: ['./hierarchy.component.scss'],
+  standalone: false,
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   public profiles: Profile[];

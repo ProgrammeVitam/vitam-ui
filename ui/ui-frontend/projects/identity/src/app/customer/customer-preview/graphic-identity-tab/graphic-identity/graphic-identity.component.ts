@@ -53,6 +53,7 @@ interface ThemeColorGroup {
   selector: 'app-graphic-identity',
   templateUrl: './graphic-identity.component.html',
   styleUrls: ['./graphic-identity.component.scss'],
+  standalone: false,
 })
 export class GraphicIdentityComponent implements OnInit, OnDestroy {
   private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);

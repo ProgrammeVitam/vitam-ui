@@ -77,6 +77,7 @@ const RULE_END_DATE = 'RULE_END_DATE';
   selector: 'app-storage-rule-search',
   templateUrl: './storage-rule-search.component.html',
   styleUrls: ['./storage-rule-search.component.css'],
+  standalone: false,
 })
 export class StorageRuleSearchComponent implements OnInit, OnDestroy {
   @Input()

@@ -47,6 +47,7 @@ import { AccessContractCreateValidators } from '../../access-contract-create/acc
   selector: 'app-access-contract-information-tab',
   templateUrl: './access-contract-information-tab.component.html',
   styleUrls: ['./access-contract-information-tab.component.scss'],
+  standalone: false,
 })
 export class AccessContractInformationTabComponent {
   @Input() set accessContract(accessContract: AccessContract) {

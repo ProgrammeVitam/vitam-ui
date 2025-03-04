@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ENVIRONMENT } from 'vitamui-library';
-import { BASE_URL, Customer, Direction, LoggerModule, OtpState, PageRequest } from 'vitamui-library';
+import { BASE_URL, Customer, Direction, ENVIRONMENT, LoggerModule, OtpState, PageRequest } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
 import { CustomerListService } from './customer-list.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedCustomersPage: { values: Customer[]; pageNum: number; pageSize: number; hasMore: boolean } = {
   values: [
@@ -300,10 +300,12 @@ describe('CustomerListService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 

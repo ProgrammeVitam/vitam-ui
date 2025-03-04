@@ -1,5 +1,4 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 .modal-body {
   min-height: 100px;
@@ -8,12 +7,12 @@
 .mat-drawer,
 .mat-mdc-dialog-container {
   .customer-box {
-    @include dialog-elevation-dark;
+    @include elevation.dialog-elevation-dark;
   }
 }
 
 .customer-box {
-  @include input-elevation-dark;
+  @include elevation.input-elevation-dark;
   display: flex;
   height: 90px;
   align-items: center;

@@ -44,6 +44,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-customer-colors-input',
   templateUrl: './customer-colors-input.component.html',
   styleUrls: ['./customer-colors-input.component.scss'],
+  standalone: false,
 })
 export class CustomerColorsInputComponent implements OnInit {
   @Input() formGroup: FormGroup;

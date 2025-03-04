@@ -45,6 +45,7 @@ import { TableFilterDirective } from './table-filter.directive';
     <button [vitamuiCommonTableFilter]="filterTemplate"></button>
     <ng-template #filterTemplate> Overlay content </ng-template>
   `,
+  standalone: false,
 })
 export class TesthostComponent {}
 

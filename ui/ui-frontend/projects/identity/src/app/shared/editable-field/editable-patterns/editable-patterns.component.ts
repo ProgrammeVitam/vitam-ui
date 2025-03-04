@@ -51,6 +51,7 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   selector: 'app-editable-patterns',
   templateUrl: './editable-patterns.component.html',
   providers: [EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
   @Input() options: Array<{ value: string; disabled: boolean }>;

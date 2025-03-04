@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -53,6 +53,7 @@ import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-ba
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
 import { TransactionListComponent } from './transaction-list.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -120,13 +121,13 @@ describe('TransactionListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionListComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         InjectorModule,
         MatSidenavModule,
         MatSnackBarModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
-        HttpClientTestingModule,
         RouterTestingModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
@@ -155,8 +156,9 @@ describe('TransactionListComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

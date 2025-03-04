@@ -61,20 +61,27 @@ import {
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({ name: 'truncate' })
+  @Pipe({
+    name: 'truncate',
+    standalone: false,
+  })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({ name: 'unitI18n' })
+  @Pipe({
+    name: 'unitI18n',
+    standalone: false,
+  })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -94,8 +101,9 @@ describe('ArchivePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
+      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
-        HttpClientTestingModule,
         MatMenuModule,
         MatTreeModule,
         MatProgressSpinnerModule,
@@ -110,7 +118,6 @@ describe('ArchivePreviewComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
       ],
-      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -124,8 +131,9 @@ describe('ArchivePreviewComponent', () => {
             setTenantIdentifier: () => {},
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

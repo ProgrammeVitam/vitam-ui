@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -59,6 +59,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractCreateComponent', () => {
   let managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService;
@@ -87,9 +88,10 @@ describe('ManagementContractCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [ManagementContractCreateComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
-        HttpClientTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatSelectModule,
@@ -101,7 +103,6 @@ describe('ManagementContractCreateComponent', () => {
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
-      declarations: [ManagementContractCreateComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -111,8 +112,9 @@ describe('ManagementContractCreateComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         ManagementContractToFormGroupConverterService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
     managementContractToFormGroupConverterService = TestBed.inject(ManagementContractToFormGroupConverterService);
   });

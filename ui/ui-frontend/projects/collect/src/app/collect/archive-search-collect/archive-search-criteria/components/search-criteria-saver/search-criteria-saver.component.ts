@@ -52,6 +52,7 @@ import { SearchCriteriaSaverService } from '../../services/search-criteria-saver
   templateUrl: './search-criteria-saver.component.html',
   styleUrls: ['./search-criteria-saver.component.css'],
   providers: [TranslatePipe],
+  standalone: false,
 })
 export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   searchCriteriaForm: FormGroup;
