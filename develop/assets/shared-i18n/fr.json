@@ -4839,6 +4839,9 @@
       "DISSEMINATION_RULE": "Diffusion",
       "CLASSIFICATION": "Classification",
       "GEL": "Gel / Dégel"
+    },
+    "EXPORT_CSV": {
+      "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
     }
   },
   "ARCHIVE_UNIT": {
