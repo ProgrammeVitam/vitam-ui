@@ -1,86 +1,26 @@
 # Prérequis
 
-Vitam-UI fonctionne avec le socle applicatif Vitam qui doit être préinstallé.
+VitamUI fonctionne avec le socle applicatif Vitam qui doit être préinstallé.
 
-Tout comme Vitam, Vitam-UI est installé sur des vms (machines virtuelles) qui doivent être dimensionnées correctement.
+Tout comme Vitam, VitamUI est installé sur des VMs (machines virtuelles) qui doivent être dimensionnées correctement.
 
-Voici le détail de consommation mémoire par défaut des services Vitamui, ce qui va permettre de faire la répartition par
-vm(s).
+Voici le détail de consommation mémoire par défaut des services VitamUI permettant de faire la répartition par VMs.
 
-Par défaut les services java utilisent 512Mo de Ram et on a donc pour tous les services en présence:
+Les services Java de VitamUI ont pour configuration par défaut `-Xms128m -Xmx512m` ce qui est suffisant pour la majorité des cas d'usage. Cependant, il est possible de surcharger cette configuration par défaut à l'aide des variables `vitamui.<composant>.jvm_opts.memory` du fichier `environments/group_vars/all/jvm_opts.yml`.
 
-* cas-server 512Mo
-* consul ? (à voir)
-* mongod ? (à voir)
-* logstash :  -Xms{{ (ansible_memory_mb.real.total / 8) | int }}m => total Ram systeme. -Xmx{{ (
-  ansible_memory_mb.real.total / 4) | int }}m
-* rsyslog ? (à voir)
-* security-internal 512Mo
-* iam-external 512Mo
-* iam-internal 512Mo
-* archive-search-external 512Mo
-* ui-archive-search 512Mo
-* ingest-external 512Mo
-* ui-ingest 512Mo
-* referential-external 512Mo
-* ui-referential 512Mo
-* ui-identity 512Mo
-* ui-identity-admin 512Mo
-* ui-portal 512Mo
+De même, pour la base mongo-vitamui, une limitation de `mongod_memory=1` est suffisant vu la quantité de données stockée dans cette base (sans cette limitation, par défaut, la base mongo-vitamui consommera la moitié de la RAM disponible).
 
-NB: Ce paramétrage peut être modifié selon les besoins. Des variables sont prévues à cet effet (variable jvm_opts à
-utiliser pour chaque service).
+Ainsi, on peut envisager la répartition suivante tout en assurant un minimum de redondances des composants:
 
-Exemple de répartition sur 2 hosts (machines virtuelles) disposant de
+| Server | VCPUs | RAM  | Composants                                                   | Total RAM |
+|--------|:-----:|:----:|--------------------------------------------------------------|:---------:|
+| UI-1   | 2     | 4    | ReverseProxy<br/>  Tous les composants UIs                   | < 1Go     |
+| UI-2   | 2     | 4    | ReverseProxy<br/>  Tous les composants UIs                   | < 1Go     |
+| APP-1  | 4     | 8    | mongo-vitamui (1G)<br/>api-gateway (128m – 512m)<br/>iam (128m – 512m)<br/>ingest (128m – 512m)<br/>referential (128m – 512m)<br/>archive_search (128m – 512m)<br/>pastis (128m – 512m) | < 4Go    |
+| APP-2  | 4     | 8    | mongo-vitamui (1G)<br/>api-gateway (128m – 512m)<br/>iam (128m – 512m)<br/>ingest (128m – 512m)<br/>collect (128m – 512m)<br/>referential (128m – 512m)<br/>security (128m – 512m) | < 4Go    |
+| APP-3  | 4     | 8    | mongo-vitamui (1G)<br/>cas-server (128m – 512m)<br/>collect (128m – 512m)<br/>pastis (128m – 512m)<br/>archive_search (128m – 512m)<br/>security (128m – 512m) | < 4Go    |
 
-* 50Go de disque dur
-* 8Go de RAM
-* 2 VCPU
+Les composants suivants sont optionnels:
 
-HOST1:
-
-* (browser)
-* archive_search_external
-* security_internal
-* referential_external
-* ingest_external
-* iam_external
-* iam_internal
-* mongod
-
-HOST2:
-
-* (browser)
-* cas-server
-* ui-identity-admin
-* ui-identity
-* ui-portal
-* ui-ingest
-* ui-referential
-* ui-archive-search]
-* consul_server
+* consul
 * logstash
-* reverseproxy
-
-Prequis logiciel:
-
-Sous Centos :
-
-Sous /etc/yum.repo.d/
-
-* CentOS-Base.repo
-* CentOS-CR.repo
-* CentOS-Debuginfo.repo
-* CentOS-fasttrack.repo
-* CentOS-Sources.repo
-* CentOS-Vault.repo
-* CentOS-x86_64-kernel.repo
-* epel.repo
-* epel-testing.repo
-
-Les paquets de type "CentOS" sont standard à la distribution, les paquets "epel" sont nécessaires à l'installation des
-binaires "npm" et "nodjs" nécessaires à l'utilisation de "mongo-express".
-
-Sous Debian:
-
-S'assurer que nodejs est installé.

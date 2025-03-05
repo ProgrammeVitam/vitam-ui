@@ -1,0 +1,40 @@
+spring:
+  api:
+    name: API Ingest - Gestion des ingests
+    description: API de gestion des ingests
+    version: v1
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+
+ingest:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-external-client:
+    server-host: localhost
+    server-port: 8083
+    secure: true
+    ssl-configuration:
+      truststore:
+        key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
+      keystore:
+        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_archive-search.jks
+        key-password: changeme
+        type: JKS
+      hostname-verification: false
+
+swagger:
+  layer: api-external
+
+tmp_folder_path: "src/main/resources"
+
+logbook.scheduling.sendEventToVitamTasks.enabled: false

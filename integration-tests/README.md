@@ -3,14 +3,14 @@
 ## Pré-requis
 
 Installer les composants suivants :
- * Docker version > 17.x
- * Docker-compose > 1.18
- * Maven 3
- * Java 1.8
+
+* Docker version > 17.x
+* Docker-compose > 1.18
+* Maven 3
+* Java 17
 
 Les tests d'intégrations lancent une instance de VITAM via docker.
 L'IP du docker VITAM est 172.17.0.2
-
 
 ## Execution
 
@@ -23,9 +23,10 @@ Les instances docker sont démarrées et arrêtées automatiquement via l'utilis
 
 Il est nécessaire de démarrer les services utilisés par les tests d'intégration avant leur exécution en local.
 
- ##### Exemple:
-  - l'exécution des tests d'intégration Referential back-end nécessite : Referential external, Referential internal, IAM external, IAM internal, CAS, et Security
-  - l'exécution des tests d'intégration ArchiveSearch back-end nécessite : ArchiveSearch external, ArchiveSearch internal, IAM external, IAM internal, CAS, et Security
+### Exemple
+
+* l'exécution des tests d'intégration Referential back-end nécessite : Referential, IAM, CAS, et Security
+* l'exécution des tests d'intégration ArchiveSearch back-end nécessite : ArchiveSearch, IAM, CAS et Security
 
 ## Execution en développement
 
@@ -55,6 +56,6 @@ Pour lancer tous les tests d'intégration remplacer iam par dev-it
 
 	mvn clean verify -P dev-it
 
-
 ## Generation generic-it.jks
+
 Utiliser nginx.jks de l'envionnement rabbit et le renommer.

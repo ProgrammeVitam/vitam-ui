@@ -155,12 +155,12 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>referential-external</artifactId>
+                <artifactId>referential</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>referential-external-client</artifactId>
+                <artifactId>referential-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -171,12 +171,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>ingest-external</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>ingest-external-client</artifactId>
+                <artifactId>ingest</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -187,7 +182,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-search-external</artifactId>
+                <artifactId>archive-search</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -203,12 +198,12 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-external</artifactId>
+                <artifactId>collect</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-external-client</artifactId>
+                <artifactId>collect-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -226,7 +221,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>iam-external-client</artifactId>
+                <artifactId>iam-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -258,7 +253,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>pastis-external</artifactId>
+                <artifactId>pastis</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

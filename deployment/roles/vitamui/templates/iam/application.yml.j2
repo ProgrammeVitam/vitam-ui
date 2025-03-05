@@ -1,0 +1,127 @@
+#jinja2: lstrip_blocks: True
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: {{ hostvars[inventory_hostname][consul.network] if (inventory_hostname in groups['hosts_vitamui_consul_server'] or inventory_hostname in groups['hosts_consul_server']) else 'localhost' }}
+      discovery:
+        serviceName: vitamui-{{ vitamui_struct.vitamui_component }}
+        preferIpAddress: true
+        healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
+        tags: {{ consul_tags }}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+  data:
+    mongodb:
+      uri: "mongodb://{{ mongodb.iam.user }}:{{ mongodb.iam.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.iam.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    fr.gouv.vitamui.iam.external.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+
+server:
+  address: {{ ip_service }}
+  port: {{ vitamui_struct.port_service }}
+{% if vitamui_struct.secure | default(secure) | bool == true %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+    trust-store-password: {{ password_truststore }}
+    client-auth: want
+    client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
+  error:
+    path: /error
+{% endif %}
+  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
+  tomcat:
+    accesslog:
+      enabled: {{ vitamui_struct.accesslogs | default(accesslogs) | lower }}
+      max-days: {{ vitamui_struct.access_retention_days | default(access_retention_days) }}
+      directory: "{{ vitamui_folder_log }}"
+      prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+      file-date-format: ".yyyy-MM-dd"
+      suffix: ".log"
+
+gdpr_alert_readonly: {{ vitamui_struct.gdpr_alert_readonly | default(true) }}
+
+management:
+  server:
+    address: {{ ip_admin }}
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+gateway:
+  enabled: true
+
+security:
+  host: {{ vitamui.security.host }}
+  port: {{ vitamui.security.port_service }}
+{% if vitamui.security.secure | default(secure) | bool == true %}
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+      key-password: {{ password_truststore }}
+    hostname-verification: false
+{% endif %}
+
+login:
+{% if vitamui.cas_server.base_url is defined %}
+  url: {{ vitamui.cas_server.base_url }}
+{% else %}
+  url: {{ url_prefix }}/cas/login
+{% endif %}
+
+cas-client:
+  server-host: {{ vitamui.cas_server.host }}
+  server-port: {{ vitamui.cas_server.port_service }}
+{% if vitamui.cas_server.secure | default(secure) | bool == true %}
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+      key-password: {{ password_truststore }}
+    hostname-verification: false
+{% endif %}
+
+cas.reset.password.url: {{ vitamui.cas_server.base_url | default('/cas') }}{{ vitamui.cas_server.reset_password_url | default('/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day') }}
+
+login.attempts.maximum.failures: {{ vitamui_struct.login_max_failure | default(5) }}
+login.attempts.time.interval: {{ vitamui_struct.login_interval|default(20) }}
+
+vitam.tenant.init.mandatory: true # true/false, see with Romain for further info ... later...
+
+logbook:
+  scheduling:
+    enabled: {{ vitamui_struct.logbook.enabled | default('true') | lower }}
+    sendEventToVitamTasks:
+      delay: {{ vitamui_struct.logbook.delay | default(60000) }}
+
+customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml
+
+{% if inventory_hostname == groups['hosts_vitamui_iam'] | first %}
+instance.primary: true
+{% else %}
+instance.primary: false
+{% endif %}
+
+{% if opentracing.jaeger.enabled | default(false) | bool %}
+opentracing:
+  jaeger:
+    enabled: {{ opentracing.jaeger.enabled }}
+    logSpans: {{ opentracing.jaeger.log_spans }}
+    expandExceptionLogs: {{ opentracing.jaeger.expand_exception_logs }}
+    udp-sender:
+      host: {{ opentracing.jaeger.udp_sender.host }}
+      port: {{ opentracing.jaeger.udp_sender.port }}
+{% endif %}
+
+# Password configuration
+password:
+  max-old-password: {{ vitamui_password_configurations.password.max_old_password | default('12') }}
+
+address:
+  max-street-length: {{ vitamui_platform_informations.address.max_street_length | default(250) }}

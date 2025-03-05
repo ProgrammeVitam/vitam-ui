@@ -452,8 +452,8 @@ db.applications.updateOne(
     { "identifier" : "AUDIT_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/audit",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/audit",
 {% else %}
             "url" : "{{ url_prefix }}/referential/audit",
 {% endif %}
@@ -478,8 +478,8 @@ db.applications.updateOne(
     { "identifier" : "SECURE_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/securisation",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/securisation",
 {% else %}
             "url" : "{{ url_prefix }}/referential/securisation",
 {% endif %}
@@ -504,8 +504,8 @@ db.applications.updateOne(
     { "identifier" : "INGEST_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/ingest-contract",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/ingest-contract",
 {% else %}
             "url" : "{{ url_prefix }}/referential/ingest-contract",
 {% endif %}
@@ -530,8 +530,8 @@ db.applications.updateOne(
     { "identifier" : "ACCESS_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/access-contract",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/access-contract",
 {% else %}
             "url" : "{{ url_prefix }}/referential/access-contract",
 {% endif %}
@@ -556,8 +556,8 @@ db.applications.updateOne(
     { "identifier" : "AGENCIES_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/agency",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/agency",
 {% else %}
             "url" : "{{ url_prefix }}/referential/agency",
 {% endif %}
@@ -582,8 +582,8 @@ db.applications.updateOne(
     { "identifier" : "FILE_FORMATS_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/file-format",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/file-format",
 {% else %}
             "url" : "{{ url_prefix }}/referential/file-format",
 {% endif %}
@@ -608,8 +608,8 @@ db.applications.updateOne(
     { "identifier" : "CONTEXTS_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/context",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/context",
 {% else %}
             "url" : "{{ url_prefix }}/referential/context",
 {% endif %}
@@ -634,8 +634,8 @@ db.applications.updateOne(
     { "identifier" : "SECURITY_PROFILES_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/security-profile",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/security-profile",
 {% else %}
             "url" : "{{ url_prefix }}/referential/security-profile",
 {% endif %}
@@ -660,8 +660,8 @@ db.applications.updateOne(
     { "identifier" : "ONTOLOGY_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/ontology",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/ontology",
 {% else %}
             "url" : "{{ url_prefix }}/referential/ontology",
 {% endif %}
@@ -686,8 +686,8 @@ db.applications.updateOne(
     { "identifier" : "DSL_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/dsl",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/dsl",
 {% else %}
             "url" : "{{ url_prefix }}/referential/dsl",
 {% endif %}
@@ -712,8 +712,8 @@ db.applications.updateOne(
     { "identifier" : "PROBATIVE_VALUE_APP" },
     {
         "$set" : {
-{% if vitamui.referential.base_url is defined %}
-        	"url": "{{ vitamui.referential.base_url }}/probative-value",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"url": "{{ vitamui.ui_referential.base_url }}/probative-value",
 {% else %}
             "url" : "{{ url_prefix }}/referential/probative-value",
 {% endif %}
@@ -802,8 +802,8 @@ db.services.updateOne(
     {
         "$set" : {
             "_class": "org.apereo.cas.services.CasRegisteredService",
-{% if vitamui.referential.base_url is defined %}
-        	"serviceId": "^{{ vitamui.referential.base_url }}/.*",
+{% if vitamui.ui_referential.base_url is defined %}
+        	"serviceId": "^{{ vitamui.ui_referential.base_url }}/.*",
 {% else %}
 	        "serviceId": "^{{ url_prefix }}/referential/.*",
 {% endif %}

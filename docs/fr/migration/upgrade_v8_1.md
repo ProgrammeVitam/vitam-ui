@@ -4,7 +4,83 @@
 
 ## Adaptation des sources de déploiement ansible
 
-N/A
+### Fusion des couches externals & internals de VitamUI
+
+Évolution majeure de cette nouvelle release permettant de simplifier l'architecture applicative de VitamUI et aussi de réduire les ressources nécessaires à son fonctionnement.
+
+Ainsi, vous pouvez en profiter pour revoir l'architecture associée à votre déploiement (cf. Chapitre Prérequis de la DIN VitamUI).
+
+* Modification du fichier d'inventaire
+
+  Les groupes suivants ont étés fusionnés:
+
+  | Avant                                                                             | Après                        |
+  |-----------------------------------------------------------------------------------|------------------------------|
+  | hosts_vitamui_iam_external <br/> hosts_vitamui_iam_internal                       | hosts_vitamui_iam            |
+  | hosts_vitamui_ingest_external <br/> hosts_vitamui_ingest_internal                 | hosts_vitamui_ingest         |
+  | hosts_vitamui_archive_search_external <br/> hosts_vitamui_archive_search_internal | hosts_vitamui_archive_search |
+  | hosts_vitamui_collect_external <br/> hosts_vitamui_collect_internal               | hosts_vitamui_collect        |
+  | hosts_vitamui_referential_external <br/> hosts_vitamui_referential_internal       | hosts_vitamui_referential    |
+  | hosts_vitamui_security_internal                                                   | hosts_vitamui_security       |
+  | hosts_vitamui_pastis_external                                                     | hosts_vitamui_pastis         |
+
+  Ainsi, vous devrez renommer/supprimer les noms des groupes afin de n'en conserver qu'un seul avec le nouveau nom tel qu'attendu.
+
+  > PS: Si vous modifiez les machines associées à votre inventaire, n'oubliez pas de rejouer le playbook `ansible-vitamui-extra/generate_hostvars_for_1_network_interface.yml` ou `ansible-vitamui-extra/generate_hostvars_for_2_network_interfaces.yml` selon votre cas.
+
+* Modification de la configuration des services
+
+  Dans les fichiers de configuration suivants:
+
+  * `deployment/environments/group_vars/all/vitamui_vars.yml`
+  * `environments/group_vars/all/jvm_opts.yml`
+
+  > La suite ne s'applique que si vous avez surchargez les valeurs par défaut des services `vitamui:*`. Autrement, vous pouvez reprendre intégralement les fichiers livrés dans cette release.
+
+  Vous devrez supprimer les références aux anciens noms des services et/ou de reporter vos modifications selon la nouvelle convention de nommage.
+
+  En effet, les composants UI sont maintenant tous préfixés `vitamui.ui_xxx`.
+
+  Renommez les composants suivants:
+
+  * `vitamui.identity` -> `vitamui.ui_identity`
+  * `vitamui.identity_admin` -> `vitamui.ui_identity_admin`
+  * `vitamui.referential` -> `vitamui.ui_referential`
+  * `vitamui.portal` -> `vitamui.ui_portal`
+  * `vitamui.ingest` -> `vitamui.ui_ingest`
+  * `vitamui.archive_search` -> `vitamui.ui_archive_search`
+  * `vitamui.collect` -> `vitamui.ui_collect`
+  * `vitamui.pastis` -> `vitamui.ui_pastis`
+  * `vitamui.design_system` -> `vitamui.ui_design_system`
+
+  Les composants applicatifs ont perdu la notion de `-external` & `-internal` et, par défaut, les paramètres des externals ont étés transférés sur la couche fusionnée.
+
+  Ainsi, les ports des couches internals des services fusionnés ne sont plus utilisés. Vous pouvez donc retirer les ports suivants: `7201, 7205, 7208, 7209, 7210, 8201, 8205, 8208, 8209, 8210`
+
+  * `vitamui.xxx_internal` -> supprimé (exception pour `vitamui.security_internal` renommé en `vitamui.security`).
+  * `vitamui.xxx_external` -> modifié en `vitamui.xxx`.
+
+### Mise à jour des certificats
+
+À partir de la V8.1, la fusion des couches externals & internals nécessite la regénération des certificats.
+
+* Générer les nouveaux certificats
+
+  ```sh
+  ./pki/scripts/generate_certs.sh environments/<inventaire> true
+  ```
+
+* Mutualiser les certificats avec Vitam
+
+  ```sh
+  ./scripts/mutualize_certs_for_vitamui.sh -v <path_to_vitam_certs_dir> -u <path_to_vitamui_certs_dir>
+  ```
+
+* Regénérer les stores
+
+  ```sh
+  ./generate_stores.sh true
+  ```
 
 ---
 
@@ -44,6 +120,19 @@ VitamUI doit être arrêté :
 ```sh
 ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/stop_vitamui.yml --ask-vault-pass
 ```
+
+### Nettoyage des anciens composants externals & internals fusionnés en une couche
+
+Ce playbook va venir supprimer tous les anciens paquets externals & internals installés.
+
+> Cette opération doit être effectuée AVANT la montée de version vers la V8.1.
+> Cette opération doit être effectuée avec l'inventaire de l'ancienne version.
+
+```sh
+ansible-playbook -i environments/<inventaire-version-precedente> ansible-vitamui-migration/migration_vitamui_81.yml --ask-vault-pass
+```
+
+> Si vous souhaitez supprimer les répertoires et les données associées à ces anciens composants, vous pouvez ajouter le paramètre `-e delete_data=true` à la commande précédente.
 
 ---
 

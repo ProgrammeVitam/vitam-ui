@@ -9,12 +9,12 @@
 #       java: ""
 
 vitamui:
-  referential_external:
+  referential:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  iam_external:
+  iam:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
@@ -24,27 +24,27 @@ vitamui:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: "-Dhttp.nonProxyHosts=*.programmevitam.fr|localhost|127.0.0.1|*.service.consul -Dhttp.proxyHost=x.x.x.x -Dhttp.proxyPort=xxxx -Dhttps.proxyHost=x.x.x.x -Dhttps.proxyPort=xxxx"
-  security_internal:
+  security:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  ingest_external:
+  ingest:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  archive_search_external:
+  archive_search:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  collect_external:
+  collect:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  pastis_external:
+  pastis:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""

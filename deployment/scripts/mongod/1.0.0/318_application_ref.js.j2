@@ -6,9 +6,9 @@ print("START 318_application_ref.js");
 
 db.applications.insertOne({
     "identifier" : "ACCESSION_REGISTER_APP",
-{% if vitamui.referential.base_url is defined %}
-    "url": "{{ vitamui.referential.base_url }}/accession-register",
-    "serviceId": "^{{ vitamui.referential.base_url }}/.*",
+{% if vitamui.ui_referential.base_url is defined %}
+    "url": "{{ vitamui.ui_referential.base_url }}/accession-register",
+    "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/referential/accession-register",
     "serviceId": "^{{ url_prefix }}/referential/.*",

@@ -73,8 +73,8 @@ db.applications.updateOne(
     { "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP" },
     {
         "$set" : {
-{% if vitamui.archive_search.base_url is defined %}
-        	"url": "{{ vitamui.archive_search.base_url }}/archive-search",
+{% if vitamui.ui_archive_search.base_url is defined %}
+        	"url": "{{ vitamui.ui_archive_search.base_url }}/archive-search",
 {% else %}
             "url" : "{{ url_prefix }}/archive-search/archive-search",
 {% endif %}
@@ -147,22 +147,21 @@ print("INFO 01_archive_search.js : END security update for Archive search");
 print("INFO 01_archive_search.js : START cas database update");
 db = db.getSiblingDB('{{ mongodb.cas.db }}')
 
-
 db.services.updateOne(
-    { "_id" :  NumberInt(4) },
+    { "_id" : NumberInt(4) },
     {
         "$set" : {
             "_class": "org.apereo.cas.services.CasRegisteredService",
-        	"serviceId": "^{{ vitamui.archive_search.base_url | default(url_prefix) }}/archive-search/.*",
+            "serviceId": "^{{ vitamui.ui_archive_search.base_url | default(url_prefix) }}/archive-search/.*",
             "name": "Archive Application",
             "logoutType" : "FRONT_CHANNEL",
-            "logoutUrl": "{{ vitamui.archive_search.base_url | default(url_prefix) }}/archive-search/logout",
+            "logoutUrl": "{{ vitamui.ui_archive_search.base_url | default(url_prefix) }}/archive-search/logout",
             "attributeReleasePolicy": {
                 "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
             }
         },
         "$setOnInsert": {
-            "_id" :  NumberInt(4)
+            "_id" : NumberInt(4)
         }
     },
     { "upsert":true }

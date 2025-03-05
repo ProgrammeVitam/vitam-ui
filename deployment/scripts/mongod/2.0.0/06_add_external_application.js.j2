@@ -6,7 +6,7 @@ print("START 06_add_external_application.js.j2");
 
 db.applications.insertOne({
     "identifier" : "EXTERNAL_PARAMS",
-    "url": "{{ vitamui.portal.base_url|default(url_prefix) }}",
+    "url": "{{ vitamui.ui_portal.base_url | default(url_prefix) }}",
     "icon": "vitamui-icon vitamui-icon-user",
     "name": "Paramétrages externes",
     "position": NumberInt(10),
@@ -16,6 +16,5 @@ db.applications.insertOne({
     "tooltip": "Paramétrages externes",
     "target": "_self"
 });
-
 
 print("END 06_add_external_application.js.j2");

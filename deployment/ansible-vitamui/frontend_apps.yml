@@ -13,7 +13,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.portal }}"
+    vitamui_struct: "{{ vitamui.ui_portal }}"
 
 - hosts: hosts_ui_identity
   gather_facts: no
@@ -21,7 +21,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.identity }}"
+    vitamui_struct: "{{ vitamui.ui_identity }}"
 
 - hosts: hosts_ui_identity_admin
   gather_facts: no
@@ -29,7 +29,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.identity_admin }}"
+    vitamui_struct: "{{ vitamui.ui_identity_admin }}"
 
 - hosts: hosts_ui_referential
   gather_facts: no
@@ -37,7 +37,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.referential }}"
+    vitamui_struct: "{{ vitamui.ui_referential }}"
 
 - hosts: hosts_ui_archive_search
   gather_facts: no
@@ -45,7 +45,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.archive_search }}"
+    vitamui_struct: "{{ vitamui.ui_archive_search }}"
 
 - hosts: hosts_ui_pastis
   gather_facts: no
@@ -53,7 +53,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.pastis }}"
+    vitamui_struct: "{{ vitamui.ui_pastis }}"
 
 - hosts: hosts_ui_collect
   gather_facts: no
@@ -61,7 +61,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.collect }}"
+    vitamui_struct: "{{ vitamui.ui_collect }}"
 
 - hosts: hosts_ui_ingest
   gather_facts: no
@@ -69,7 +69,7 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.ingest }}"
+    vitamui_struct: "{{ vitamui.ui_ingest }}"
 
 - hosts: hosts_ui_design_system
   gather_facts: no
@@ -77,4 +77,4 @@
   roles:
     - nginx_webapp
   vars:
-    vitamui_struct: "{{ vitamui.design_system }}"
+    vitamui_struct: "{{ vitamui.ui_design_system }}"

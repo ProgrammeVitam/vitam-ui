@@ -3,7 +3,7 @@
 - include_role:
     name: nginx
 
-- name: 'Tasks > Reverse > configure_vitamui_vhost.yml | Adding vitamui vhost configuration'
+- name: 'Adding vitamui vhost configuration'
   template:
     src: "nginx/conf.d/{{ item }}.j2"
     dest: "{{ nginx_conf_dir }}/{{ item }}"

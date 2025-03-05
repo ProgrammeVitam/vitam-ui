@@ -4,8 +4,8 @@
 
     <artifactId>api-iam</artifactId>
     <packaging>pom</packaging>
-    <name>VITAMUI Iam API</name>
-    <description>VITAMUI Iam API</description>
+    <name>VITAMUI IAM API</name>
+    <description>VITAMUI IAM API</description>
 
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
@@ -16,9 +16,8 @@
     <modules>
         <module>iam-commons</module>
         <module>iam-security</module>
-        <module>iam-external</module>
-        <module>iam-external-client</module>
+        <module>iam</module>
+        <module>iam-client</module>
     </modules>
 
 </project>
-

@@ -51,14 +51,13 @@ pipeline {
                 sh 'mkdir -p reports'
                 script {
                     def dockerImages = [
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/security-internal',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/iam-external',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/referential-external',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ingest-external',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/archive-search-external',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/pastis-external',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/collect-external',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/collect-internal',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/security',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/iam',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/referential',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/ingest',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/archive-search',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/pastis',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/collect',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/api-gateway',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/cas-server',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/ui-portal',

@@ -8,14 +8,14 @@
 upstream IDENTITY {
   ip_hash;
 {% for h in groups['hosts_ui_identity'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.identity.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_identity.port_service }};
 {% endfor %}
 }
 
 upstream IDENTITY_ADMIN {
   ip_hash;
 {% for h in groups['hosts_ui_identity_admin'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.identity_admin.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_identity_admin.port_service }};
 {% endfor %}
 }
 
@@ -29,7 +29,7 @@ upstream CAS {
 upstream PORTAL {
   ip_hash;
 {% for h in groups['hosts_ui_portal'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.portal.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_portal.port_service }};
 {% endfor %}
 }
 
@@ -37,7 +37,7 @@ upstream PORTAL {
 upstream REFERENTIAL {
   ip_hash;
 {% for h in groups['hosts_ui_referential'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.referential.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_referential.port_service }};
 {% endfor %}
 }
 {% endif %}
@@ -46,7 +46,7 @@ upstream REFERENTIAL {
 upstream INGEST {
   ip_hash;
 {% for h in groups['hosts_ui_ingest'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.ingest.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_ingest.port_service }};
 {% endfor %}
 }
 {% endif %}
@@ -55,7 +55,7 @@ upstream INGEST {
 upstream ARCHIVE_SEARCH {
   ip_hash;
 {% for h in groups['hosts_ui_archive_search'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.archive_search.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_archive_search.port_service }};
 {% endfor %}
 }
 {% endif %}
@@ -64,7 +64,7 @@ upstream ARCHIVE_SEARCH {
 upstream COLLECT {
   ip_hash;
 {% for h in groups['hosts_ui_collect'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.collect.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_collect.port_service }};
 {% endfor %}
 }
 {% endif %}
@@ -73,7 +73,7 @@ upstream COLLECT {
 upstream PASTIS {
   ip_hash;
 {% for h in groups['hosts_ui_pastis'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.pastis.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_pastis.port_service }};
 {% endfor %}
 }
 {% endif %}
@@ -82,7 +82,7 @@ upstream PASTIS {
 upstream DESIGN_SYSTEM {
   ip_hash;
 {% for h in groups.get('hosts_ui_design_system', []) %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.design_system.port_service }};
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_design_system.port_service }};
 {% endfor %}
 }
 {% endif %}

@@ -7,7 +7,6 @@ These components are a set of REST/JSON web services to perform CRUD operations 
 
 There are composed of the web services themselves (api-security module), the REST clients of these web services (api-security-client module) and the DTOs shared between the two modules (api-security-common module).
 
-
 # Run the web services
 
 ```shell

@@ -13,8 +13,7 @@ Dans ce fichier, nous expliquerons l'architecture de VITAM-UI en tant qu'applica
 
 ## Les modules maven coté backend
 
-* **Modules internes**: Contient 3 applications maven (iam-internal) : ils représentent la couche interne qui permet de communiquer directement avec la base de données de VITAM-UI (MongoDB) et aussi avec les couches externes de VITAM.
-* **Modules externes**: Contient les applications (iam-external, ingest-external, archive-search-external et referential-external), ils représentent la couche externe qui permet de faire des vérifications des droits au niveau des différentes requêtes envoyées par les utilisateurs, et en se basant sur le profil de chaque utilisateur.
+Contient les applications (iam, ingest, archive-search et referential), ils représentent la couche applicative qui permet de faire des vérifications des droits au niveau des différentes requêtes envoyées par les utilisateurs ainsi que de communiquer avec la base de données de VITAM-UI (MongoDB) et aussi avec les couches externes de VITAM.
 
 ### Les Applications FrontEnd
 

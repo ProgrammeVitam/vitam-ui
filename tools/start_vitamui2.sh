@@ -26,7 +26,7 @@ NPMSTART="sh -c 'npm install; npm run start'"
 if [[ "$*" =~ --erase ]]
 then
      rm "${DIR}"/logs/*
-fi    
+fi
 
 log_count=0
 
@@ -58,17 +58,12 @@ function cmd() {
 function start_api() {
 
      # Start Iam Security
-     launch "../api/api-security/security-internal" "$SPRINGBOOT"
+     launch "../api/api-security/security" "$SPRINGBOOT"
 
      sleep 15
 
-     # Start Iam Server Internal
-     launch "../api/api-iam/iam-internal" "$SPRINGBOOT"
-
-     sleep 15
-
-     # Start Iam Server External
-     launch "../api/api-iam/iam-external" "$SPRINGBOOT"
+     # Start Iam Server
+     launch "../api/api-iam/iam" "$SPRINGBOOT"
 
      sleep 15
 
@@ -101,7 +96,7 @@ function start_ui_back_dev() {
      # Start UI Portal back
      clean "../ui/ui-portal"
      launch "../ui/ui-portal" "$SPRINGBOOT"
-     
+
      sleep 15
 }
 

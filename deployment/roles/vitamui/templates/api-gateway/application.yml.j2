@@ -28,7 +28,7 @@ authn:
 
 spring:
   application:
-    name: gateway-server
+    name: vitamui-{{ vitamui_struct.vitamui_component }}
   cloud:
     config:
       enabled: false
@@ -36,7 +36,7 @@ spring:
       enabled: true
       host: {{ hostvars[inventory_hostname][consul.network] if (inventory_hostname in groups['hosts_vitamui_consul_server'] or inventory_hostname in groups['hosts_consul_server']) else 'localhost' }}
       discovery:
-        serviceName: gateway-server
+        serviceName: vitamui-{{ vitamui_struct.vitamui_component }}
         preferIpAddress: true
         healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
         tags: {{ consul_tags }}
@@ -57,8 +57,8 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
       routes:
-        - id: iam-external-service
-          uri: {{ 'https' if vitamui.iam_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.iam_external.host }}:{{ vitamui.iam_external.port_service }}
+        - id: iam-service
+          uri: {{ 'https' if vitamui.iam.secure | default(secure) | bool else 'http' }}://{{ vitamui.iam.host }}:{{ vitamui.iam.port_service }}
           predicates:
             - >
               Path=
@@ -187,8 +187,8 @@ spring:
             - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/ingest-api/(?<segment>.*),/v1/$\{segment}
 
-        - id: referential-external-service
-          uri: {{ 'https' if vitamui.referential_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.referential_external.host }}:{{ vitamui.referential_external.port_service }}
+        - id: referential-service
+          uri: {{ 'https' if vitamui.referential.secure | default(secure) | bool else 'http' }}://{{ vitamui.referential.host }}:{{ vitamui.referential.port_service }}
           predicates:
             - >
               Path=
@@ -260,8 +260,8 @@ spring:
             - RewritePath=/collect-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/collect-api(?<segment>.*),/referential/v1$\{segment}
 
-        - id: archive-search-external-service
-          uri: {{ 'https' if vitamui.archive_search_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.archive_search_external.host }}:{{ vitamui.archive_search_external.port_service }}
+        - id: archive-search-service
+          uri: {{ 'https' if vitamui.archive_search.secure | default(secure) | bool else 'http' }}://{{ vitamui.archive_search.host }}:{{ vitamui.archive_search.port_service }}
           predicates:
             - >
               Path=
@@ -274,8 +274,8 @@ spring:
             - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
             - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archive-units/$\{segment}
 
-        - id: pastis-external-service
-          uri: {{ 'https' if vitamui.pastis_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.pastis_external.host }}:{{ vitamui.pastis_external.port_service }}
+        - id: pastis-service
+          uri: {{ 'https' if vitamui.pastis.secure | default(secure) | bool else 'http' }}://{{ vitamui.pastis.host }}:{{ vitamui.pastis.port_service }}
           predicates:
             - >
               Path=
@@ -285,8 +285,8 @@ spring:
             # Pastis API
             - RewritePath=/pastis-api/,/
 
-        - id: collect-external-service
-          uri: {{ 'https' if vitamui.collect_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.collect_external.host }}:{{ vitamui.collect_external.port_service }}
+        - id: collect-service
+          uri: {{ 'https' if vitamui.collect.secure | default(secure) | bool else 'http' }}://{{ vitamui.collect.host }}:{{ vitamui.collect.port_service }}
           predicates:
             - >
               Path=
@@ -307,9 +307,8 @@ spring:
             - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
 
-
-        - id: ingest-external-service
-          uri: {{ 'https' if vitamui.ingest_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.ingest_external.host }}:{{ vitamui.ingest_external.port_service }}
+        - id: ingest-service
+          uri: {{ 'https' if vitamui.ingest.secure | default(secure) | bool else 'http' }}://{{ vitamui.ingest.host }}:{{ vitamui.ingest.port_service }}
           predicates:
             - >
               Path=

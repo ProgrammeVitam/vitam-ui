@@ -1,0 +1,57 @@
+---
+# Migration to V8.1
+###################
+
+- hosts: localhost
+  any_errors_fatal: true
+  gather_facts: false
+  vars_prompt:
+    name: "confirmation"
+    prompt: "This playbook will remove the former externals and internals services since they are now merged into one layer.\n> Please use this playbook with your previous inventory !\n> If you want to delete associated data, add the -e delete_data=true parameter to the command line.\n\nAre you sure you want to run this playbook ?\nAnswer with 'YES'"
+    default: "NO"
+    private: false
+  tasks:
+    - name: Check Confirmation
+      fail: msg="Playbook run confirmation failed"
+      when: confirmation|upper != "YES"
+
+################################################################################
+
+- hosts: hosts_vitamui_*
+  gather_facts: false
+  tasks:
+    - name: Remove all externals & internals VitamUI services packages
+      package:
+        name:
+          - vitamui-*-external
+          - vitamui-*-internal
+        state: absent
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
+
+    - block:
+
+        - name: Find folders matching the pattern
+          find:
+            paths: "/vitamui"
+            patterns: "^.*-(internal|external)$"
+            use_regex: true
+            recurse: true
+            file_type: directory
+          register: folders_to_remove
+
+        - name: Remove folders matching the pattern
+          file:
+            path: "{{ item.path }}"
+            state: absent
+          with_items: "{{ folders_to_remove.files }}"
+
+      when: delete_data | default(false) | bool
+
+    - name: Reload systemd
+      command: systemctl daemon-reload
+
+    - name: Clean systemd
+      command: systemctl reset-failed

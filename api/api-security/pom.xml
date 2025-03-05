@@ -15,7 +15,7 @@
     <modules>
         <module>security-client</module>
         <module>security-commons</module>
-        <module>security-internal</module>
+        <module>security</module>
     </modules>
 
 </project>

@@ -26,8 +26,8 @@ spring:
       httpserver:
         wiretap: true
       routes:
-        - id: iam-external-service
-          uri: https://localhost:8083 # URL IAM EXTERNAL
+        - id: iam-service
+          uri: https://localhost:8083 # URL IAM
           predicates:
             - >
               Path=
@@ -156,8 +156,8 @@ spring:
             - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/ingest-api/(?<segment>.*),/v1/$\{segment}
 
-        - id: referential-external-service
-          uri: https://localhost:8087 # URL REFERENTIAL EXTERNAL
+        - id: referential-service
+          uri: https://localhost:8087 # URL REFERENTIAL
           predicates:
             - >
               Path=
@@ -229,8 +229,8 @@ spring:
             - RewritePath=/collect-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/collect-api(?<segment>.*),/referential/v1$\{segment}
 
-        - id: archive-search-external-service
-          uri: https://localhost:8089 # URL ARCHIVE-SEARCH EXTERNAL
+        - id: archive-search-service
+          uri: https://localhost:8089 # URL ARCHIVE-SEARCH
           predicates:
             - >
               Path=
@@ -243,8 +243,8 @@ spring:
             - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
             - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archive-units/$\{segment}
 
-        - id: pastis-external-service
-          uri: https://localhost:8015 # URL PASTIS EXTERNAL
+        - id: pastis-service
+          uri: https://localhost:8015 # URL PASTIS
           predicates:
             - >
               Path=
@@ -254,8 +254,8 @@ spring:
             # Pastis API
             - RewritePath=/pastis-api/,/
 
-        - id: collect-external-service
-          uri: https://localhost:8090 # URL COLLECT EXTERNAL
+        - id: collect-service
+          uri: https://localhost:8090 # URL COLLECT
           predicates:
             - >
               Path=
@@ -276,8 +276,8 @@ spring:
             - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
 
-        - id: ingest-external-service
-          uri: https://localhost:8088 # URL INGEST EXTERNAL
+        - id: ingest-service
+          uri: https://localhost:8088 # URL INGEST
           predicates:
             - >
               Path=

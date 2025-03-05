@@ -6,9 +6,9 @@ print("START 221_pastis_application_ref.js");
 
 db.applications.insertOne({
     "identifier" : "PASTIS_APP",
-{% if vitamui.pastis.base_url is defined %}
-    "url": "{{ vitamui.pastis.base_url }}/pastis",
-    "serviceId": "^{{ vitamui.pastis.base_url }}/.*",
+{% if vitamui.ui_pastis.base_url is defined %}
+    "url": "{{ vitamui.ui_pastis.base_url }}/pastis",
+    "serviceId": "^{{ vitamui.ui_pastis.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/pastis/pastis",
     "serviceId": "^{{ url_prefix }}/pastis/.*",
