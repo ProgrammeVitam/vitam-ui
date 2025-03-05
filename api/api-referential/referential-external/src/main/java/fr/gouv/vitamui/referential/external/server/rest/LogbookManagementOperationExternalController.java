@@ -113,8 +113,8 @@ public class LogbookManagementOperationExternalController {
 
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
         ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.updateOperationActionProcess(
-            operationId,
-            actionId
+            actionId,
+            operationId
         );
         if (processDetailDto != null) {
             operationResponseDto = processDetailDto.getOperations();
