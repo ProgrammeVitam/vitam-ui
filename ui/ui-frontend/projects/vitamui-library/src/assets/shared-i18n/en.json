@@ -4549,9 +4549,9 @@
       "TITLE": "Multi-criteria search",
       "UA_TYPE": "Type of archival units"
     },
-    "SEARCH_CRITERIA_GTE": "Après le ",
-    "SEARCH_CRITERIA_LTE": "Avant le ",
-    "SEARCH_CRITERIA_OR": "OU",
+    "SEARCH_CRITERIA_GTE": "After than ",
+    "SEARCH_CRITERIA_LTE": "Before than ",
+    "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",
       "DELETED_WITH_SUCCESS_1": "Your search criteria named  ",
@@ -4590,6 +4590,9 @@
       "PhysicalMaster": "Physical master",
       "TextContent": "Text content",
       "Thumbnail": "Thumbnail"
+    },
+    "EXPORT_CSV": {
+      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
     }
   },
   "ARCHIVE_UNIT": {
