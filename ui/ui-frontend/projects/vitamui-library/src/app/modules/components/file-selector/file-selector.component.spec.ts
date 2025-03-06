@@ -70,18 +70,19 @@ describe('FileSelectorComponent', () => {
   it('should filter files based on allowed extensions', () => {
     const file1 = new File([''], 'file1.json', { type: 'application/json' });
     const file2 = new File([''], 'file2.txt', { type: 'text/plain' });
+    component.multiple = true;
     component.extensions = ['.json'];
     component.handleFilesSelection([file1, file2]);
     expect(component.files.length).toBe(1);
     expect(component.files[0].name).toBe('file1.json');
   });
 
-  it('should limit files to one if multipleFiles is false', () => {
+  it('should prevent dropping multiple files if multipleFiles is false', () => {
     const file1 = new File([''], 'file1.json', { type: 'application/json' });
     const file2 = new File([''], 'file2.json', { type: 'application/json' });
-    component.multipleFiles = false;
+    component.multiple = false;
     component.handleFilesSelection([file1, file2]);
-    expect(component.files.length).toBe(1);
+    expect(component.files.length).toBe(0);
   });
 
   it('should emit filesChanged event with updated files', () => {
@@ -94,7 +95,7 @@ describe('FileSelectorComponent', () => {
   it('should emit filesChanged event with updated files when adding to an existing list', () => {
     const file1 = new File([''], 'file1.json', { type: 'application/json' });
     const file2 = new File([''], 'file2.json', { type: 'application/json' });
-    component.multipleFiles = true;
+    component.multiple = true;
     component.files = [file1];
 
     spyOn(component.filesChanged, 'emit');
@@ -153,6 +154,8 @@ describe('FileSelectorComponent', () => {
 
     const mockDisplayFile = { name: 'folder1', size: 1000, directory: true };
 
+    component.multiple = true;
+    component.directoryMode = true;
     component.displayFiles = [mockDisplayFile];
 
     spyOn(component.snackBar, 'open');

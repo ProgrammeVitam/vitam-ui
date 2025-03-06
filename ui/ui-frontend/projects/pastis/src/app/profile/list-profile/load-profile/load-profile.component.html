@@ -1,8 +1,7 @@
 <vitamui-dialog-header [subhead]="config.title" [title]="config.subTitle"></vitamui-dialog-header>
 
 <mat-dialog-content>
-  <vitamui-file-selector #fs class="d-flex" [extensions]="config.extensions" [multipleFiles]="config.multipleFiles">
-  </vitamui-file-selector>
+  <vitamui-file-selector #fs class="d-flex" [extensions]="config.extensions" [multiple]="config.multipleFiles"> </vitamui-file-selector>
 </mat-dialog-content>
 
 <mat-dialog-actions>

@@ -9,7 +9,7 @@
     type="file"
     (change)="handleFilesSelection($event.target.files)"
     [accept]="extensions?.join(',')"
-    [multiple]="multipleFiles"
+    [multiple]="multiple"
     [attr.webkitdirectory]="directoryMode ? '' : null"
   />
 
@@ -30,6 +30,7 @@
   <div class="vitamui-chip-list">
     <div *ngFor="let file of displayFiles" class="vitamui-chip">
       <div [title]="file.name" class="vitamui-chip-content">
+        <i class="vitamui-icon {{ file.directory ? 'vitamui-icon-folder' : 'vitamui-icon-file' }}"></i>
         {{ file.name }}
         <span class="file-size">{{ file.size | bytes }}</span>
       </div>
@@ -41,7 +42,7 @@
 </ng-template>
 
 <ng-template #defaultContent>
-  <h4 (click)="openFileSelectorOSDialog()" class="text-center text primary link">
+  <h4 *ngIf="multiple || directoryMode || !displayFiles?.length" (click)="openFileSelectorOSDialog()" class="text-center text primary link">
     {{ 'FILE_SELECTOR.DRAG_AND_DROP_OR_BROWSE' | translate }}
   </h4>
   <div *ngIf="extensions" class="text-center text primary">

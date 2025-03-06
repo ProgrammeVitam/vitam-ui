@@ -67,8 +67,12 @@ export class ZipFile {
     for (let i = 0; i < files.length; i++) {
       const item: CustomFile = files[i];
       const filePath = item?.webkitRelativePath || item?.relativePath || item?.name;
-      this.zipFile.file(filePath, item);
-      this.zipFileStatus.size += item.size;
+      if (item.isDirectory) {
+        this.zipFile.file(filePath, null, { dir: true });
+      } else {
+        this.zipFile.file(filePath, item);
+        this.zipFileStatus.size += item.size;
+      }
     }
     return this;
   }

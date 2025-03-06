@@ -16,8 +16,7 @@
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
         </div>
       } @else {
-        <vitamui-file-selector [extensions]="['.csv']" [multipleFiles]="false" (filesChanged)="handleFiles($event)">
-        </vitamui-file-selector>
+        <vitamui-file-selector [extensions]="['.csv']" [multiple]="false" (filesChanged)="handleFiles($event)"> </vitamui-file-selector>
       }
     </mat-dialog-content>
     <mat-dialog-actions>

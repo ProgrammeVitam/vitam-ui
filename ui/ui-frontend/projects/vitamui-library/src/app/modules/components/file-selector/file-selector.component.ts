@@ -55,17 +55,24 @@ export class FileSelectorComponent {
    * Allowed extensions. Ex: ['.json', '.rng']
    */
   @Input() extensions?: string[];
-  @Input() multipleFiles = false;
-  /** only a directory can be chosen */
+  /** Allows to select multiple files. Automatically set to true in directoryMode **/
+  @Input() set multiple(multiple: boolean) {
+    this.#multiple = multiple;
+  }
+  get multiple() {
+    return this.#multiple || this.directoryMode;
+  }
+  #multiple = false;
+  /** Only directories can be selected through OS picker. Drag&Drop allows both directories and files */
   @Input() directoryMode = false;
   @Input() maxSizeInBytes: number; // TODO: do some control on the file size?
-
-  @ViewChild('inputFiles') inputFiles: ElementRef;
 
   @ContentChild('fileList') fileList: TemplateRef<any>;
   @ContentChild('content') content: TemplateRef<any>;
 
   @Output() filesChanged = new EventEmitter<File[]>();
+
+  @ViewChild('inputFiles') inputFiles: ElementRef;
 
   files: File[] = [];
   displayFiles: DisplayFile[] = [];
@@ -76,17 +83,12 @@ export class FileSelectorComponent {
   ) {}
 
   handleFilesSelection(files: FileList | File[]) {
-    if (!this.multipleFiles && this.files?.length > 0) {
+    if (!this.multiple && (this.files?.length > 0 || files.length > 1)) {
       this.resetInput();
       return;
     }
 
-    const folderNames = Array.from(files)
-      .map((file: CustomFile) => (file?.webkitRelativePath || file?.relativePath)?.split('/')[0] || file.name)
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .map((folder) => folder);
-
-    if (this.isDirectoryAlreadyExists(folderNames)) {
+    if (this.hasDuplicateRootElement(files)) {
       this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, {
         panelClass: 'vitamui-snack-bar',
         duration: 10000,
@@ -98,10 +100,10 @@ export class FileSelectorComponent {
     // Filter to keep only the ones matching extension list (useful for drag & drop and to make sure no other type has been selected)
     const filteredFiles = Array.from(files)
       .filter((file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())))
-      .slice(0, this.multipleFiles ? undefined : 1);
+      .slice(0, this.multiple ? undefined : 1);
     this.files.push(...filteredFiles);
     if (this.directoryMode) {
-      this.displayFiles.push(...this.getDirectories(files).filter((directory) => !!directory));
+      this.displayFiles.push(...this.getRootElements(files));
     } else {
       const displayFiles: DisplayFile[] = Array.from(filteredFiles).map(
         (file: File): DisplayFile => ({
@@ -122,7 +124,7 @@ export class FileSelectorComponent {
 
   removeFile(displayFile: DisplayFile) {
     if (displayFile.directory) {
-      this.files = this.files.filter((file: CustomFile) => !(file?.webkitRelativePath || file?.relativePath).startsWith(displayFile.name));
+      this.files = this.files.filter((file: CustomFile) => !this.getPath(file).startsWith(displayFile.name));
     } else {
       this.files.splice(
         this.files.findIndex((file) => file.name === displayFile.name),
@@ -142,30 +144,34 @@ export class FileSelectorComponent {
     }
   }
 
-  private getDirectories(files: FileList | File[]): DisplayFile[] {
+  private getRootElements(files: FileList | File[]): DisplayFile[] {
     if (files.length === 0) return [];
 
-    const directoriesMap = new Map<string, number>();
+    const rootElementsMap = new Map<string, DisplayFile>();
 
     Array.from(files).forEach((file: CustomFile) => {
-      /** We need the file path, so we use the webkitRelativePath attribute when loading a folder via the native HTML file selector,
-          the relativePath attribute in the case of drag & drop, and the name attribute when uploading a file. */
-      let path = file?.webkitRelativePath || file?.relativePath || file?.name;
-      if (path.includes('/')) {
-        const directory = path.split('/')[0];
-        const currentSize = directoriesMap.get(directory) || 0;
-        directoriesMap.set(directory, currentSize + file.size);
-      }
+      const path = this.getPath(file);
+      const rootPath = path.split('/')[0];
+      rootElementsMap.set(rootPath, {
+        name: rootPath,
+        size: (rootElementsMap.get(rootPath)?.size || 0) + (file?.size || 0),
+        directory: rootElementsMap.get(rootPath)?.directory || rootPath !== path,
+      });
     });
 
-    return Array.from(directoriesMap.entries()).map(([name, size]) => ({
-      name,
-      size,
-      directory: true,
-    }));
+    return Array.from(rootElementsMap.values());
   }
 
-  private isDirectoryAlreadyExists(folderNames: string[]): boolean {
-    return folderNames.some((folderName) => this.displayFiles.some((dir) => dir.name?.toLowerCase() === folderName?.toLowerCase()));
+  /** We need the file path, so we use the webkitRelativePath attribute when loading a folder via the native HTML file selector,
+   the relativePath attribute in the case of drag & drop, and the name attribute when uploading a file. */
+  private getPath(file: CustomFile) {
+    return file?.webkitRelativePath || file?.relativePath || file?.name;
+  }
+
+  private hasDuplicateRootElement(files: FileList | File[]): boolean {
+    const rootElementNames = [...new Set(Array.from(files).map((file: CustomFile) => this.getPath(file)?.split('/')[0] || file.name))];
+    return rootElementNames.some((rootElementName) =>
+      this.displayFiles.some((displayElement) => displayElement.name?.toLowerCase() === rootElementName?.toLowerCase()),
+    );
   }
 }
