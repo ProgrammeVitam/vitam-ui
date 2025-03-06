@@ -15,7 +15,7 @@
       "UPDATE_CANCEL": "Annuler",
       "CONFIRM": "Confirmer",
       "CANCEL_UPDATE_TO_CONFIRM": "Êtes-vous sûr de vouloir annuler l'opération de mise à jour des métadonnées ?",
-      "ADD_FILE": "Glisser-déposer ",
+      "ADD_FILE": "Glisser-déposer",
       "BROWSE": "ou Parcourir",
       "ACCEPTED_FORMAT": "format accepté : csv",
       "FILE_BAD_FORMAT": "Le fichier déposé n'est pas au bon format",
@@ -156,5 +156,18 @@
     "PUBLIC_ARCHIVE": "Archives publiques",
     "PRIVATE_ARCHIVE": "Archives privées",
     "PUBLIC_PRIVATE_ARCHIVE": "Archives publiques et privées"
+  },
+  "ARCHIVE_SEARCH": {
+    "OTHER_ACTIONS": {
+      "DIALOG_MESSAGE": {
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l'opération demandée dépasse le seuil de plateforme autorisé.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l'action à réaliser ?"
+      }
+    }
+  },
+  "RULES": {
+    "ALERTE_MESSAGES": {
+      "BACK_TO_SELECTION": "Revenir à la sélection"
+    }
   }
 }

@@ -35,10 +35,10 @@
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirmez-vous votre action ?",
         "CONFIRM": "Confirmer",
         "CANCEL": "Annuler",
-        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l’opération demandée dépasse le seuil de plateforme autorisé.",
-        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l’action à réaliser ?",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L’action demandée n’est pas possible sur cette sélection",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L’opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l’opération"
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l'opération demandée dépasse le seuil de plateforme autorisé.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l'action à réaliser ?",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L'action demandée n’est pas possible sur cette sélection",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L'opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l’opération"
       },
       "PUA_UPDATE": {
         "TITLE": "Mettre à jour les profils d'unités archivistiques",

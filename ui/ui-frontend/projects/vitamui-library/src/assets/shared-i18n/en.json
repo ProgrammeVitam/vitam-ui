@@ -4549,8 +4549,8 @@
       "TITLE": "Multi-criteria search",
       "UA_TYPE": "Type of archival units"
     },
-    "SEARCH_CRITERIA_GTE": "After than ",
-    "SEARCH_CRITERIA_LTE": "Before than ",
+    "SEARCH_CRITERIA_GTE": "After the ",
+    "SEARCH_CRITERIA_LTE": "Before the ",
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",

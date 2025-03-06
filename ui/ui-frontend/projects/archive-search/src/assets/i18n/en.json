@@ -35,9 +35,9 @@
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirm you this action ?",
         "CONFIRM": "Confirm",
         "CANCEL": "Cancel",
-        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, the operation reach the plateform allowed threshold.",
-        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Validate rule change(s) ? ",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "This action is not allowed ont the selected items",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Warning, the requested operation exceeds the authorized platform threshold.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Would you like to confirm the action to be performed?",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "This action is not allowed on the selected items",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "The operation reach the allowed threshold, Please modify the selection and retry "
       },
       "PUA_UPDATE": {
@@ -205,7 +205,7 @@
       "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
       "ACTION_ALERTE_FIRST_MESSAGE": "Your selection includes at least one positioning tree type archival unit.",
       "UPDATE_RULES_ALERTE_SECOND_MESSAGE": "Change rule action is not allowed for this one(s). Please remove the corresponding archival units.",
-      "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
+      "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "The inherited rule calculation action is not allowed for this(them). Please remove the corresponding archive units."
     }
   },
   "RECLASSIFICATION": {

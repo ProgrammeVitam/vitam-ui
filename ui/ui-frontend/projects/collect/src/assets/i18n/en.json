@@ -152,5 +152,18 @@
     "PUBLIC_ARCHIVE": "Public archives",
     "PRIVATE_ARCHIVE": "Private archives",
     "PUBLIC_PRIVATE_ARCHIVE": "Public and private archives"
+  },
+  "ARCHIVE_SEARCH": {
+    "OTHER_ACTIONS": {
+      "DIALOG_MESSAGE": {
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Warning, the requested operation exceeds the authorized platform threshold.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Would you like to confirm the action to be performed?"
+      }
+    }
+  },
+  "RULES": {
+    "ALERTE_MESSAGES": {
+      "BACK_TO_SELECTION": "Return to selection"
+    }
   }
 }
