@@ -5,9 +5,9 @@ import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
@@ -65,13 +65,13 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         );
         when(configContext.getDelegatedClientNameExtractor()).thenReturn(mock(DelegatedClientNameExtractor.class));
 
-        CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
+        CasRestClient casRestClient = mock(CasRestClient.class);
         CustomerDto surrogateCustomerDto = new CustomerDto();
         surrogateCustomerDto.setCode(CODE);
         surrogateCustomerDto.setName(COMPANY);
         surrogateCustomerDto.setId(CUSTOMER_ID_2);
         doReturn(List.of(surrogateCustomerDto))
-            .when(casExternalRestClient)
+            .when(casRestClient)
             .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
 
         action = new CustomDelegatedClientAuthenticationAction(
@@ -82,7 +82,7 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
             mock(ProvidersService.class),
             mock(Utils.class),
             mock(TicketRegistry.class),
-            casExternalRestClient,
+            casRestClient,
             ""
         );
     }

@@ -42,7 +42,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.util.AccessExternalClientEmptyMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,8 +52,8 @@ import org.springframework.context.annotation.Profile;
 public class VitamAccessConfig extends VitamClientConfig {
 
     @Bean
-    public UnitService getSearchUnitVitam() {
-        return new UnitService(accessExternalClient());
+    public UnitCommonService getSearchUnitVitam() {
+        return new UnitCommonService(accessExternalClient());
     }
 
     @Bean

@@ -8,8 +8,8 @@ import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.PreventedException;
@@ -64,19 +64,19 @@ public final class UserAuthenticationHandlerTest {
 
     private UserAuthenticationHandler handler;
 
-    private CasExternalRestClient casExternalRestClient;
+    private CasRestClient casRestClient;
 
     private Credential credential;
     private LocalAttributeMap<Object> flowParameters;
 
     @Before
     public void setUp() {
-        casExternalRestClient = mock(CasExternalRestClient.class);
+        casRestClient = mock(CasRestClient.class);
         val utils = new Utils(null, 0, null, null, "");
         handler = new UserAuthenticationHandler(
             null,
             new DefaultPrincipalFactory(),
-            casExternalRestClient,
+            casRestClient,
             utils,
             IP_HEADER_NAME
         );
@@ -106,8 +106,8 @@ public final class UserAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PASSWORD),
@@ -134,8 +134,8 @@ public final class UserAuthenticationHandlerTest {
         givenSubrogationRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(SUPER_USER_EMAIL),
                 eq(SUPER_USER_CUSTOMER_ID),
                 eq(PASSWORD),
@@ -168,8 +168,8 @@ public final class UserAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(PASSWORD),
                 eq(CUSTOMER_ID),
@@ -189,8 +189,8 @@ public final class UserAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(PASSWORD),
                 eq(CUSTOMER_ID),
@@ -210,8 +210,8 @@ public final class UserAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PASSWORD),
@@ -233,8 +233,8 @@ public final class UserAuthenticationHandlerTest {
         val user = basicUser(UserStatusEnum.ENABLED);
         user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PASSWORD),
@@ -256,8 +256,8 @@ public final class UserAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PASSWORD),
@@ -277,8 +277,8 @@ public final class UserAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PASSWORD),
@@ -298,8 +298,8 @@ public final class UserAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         when(
-            casExternalRestClient.login(
-                any(ExternalHttpContext.class),
+            casRestClient.login(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PASSWORD),

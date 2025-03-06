@@ -42,17 +42,17 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
-import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.client.IamRestClientFactory;
+import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -87,41 +87,34 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService
-    ) {
-        return new ExternalApiAuthenticationProvider(externalAuthentificationService);
+    public ApiAuthenticationProvider apiAuthenticationProvider(final AuthentificationService authentificationService) {
+        return new ApiAuthenticationProvider(authentificationService);
     }
 
     @Bean
-    public ExternalSecurityService externalSecurityService() {
-        return new ExternalSecurityService();
+    public SecurityService externalSecurityService() {
+        return new SecurityService();
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(
+    public AuthentificationService externalAuthentificationService(
         final ContextRestClient contextRestClient,
-        final UserExternalRestClient userExternalRestClient
+        final UserRestClient userRestClient
     ) {
-        return new ExternalAuthentificationService(contextRestClient, userExternalRestClient);
+        return new AuthentificationService(contextRestClient, userRestClient);
     }
 
     @Bean
-    public IamExternalRestClientFactory iamExternalRestClientFactory(
+    public IamRestClientFactory iamExternalRestClientFactory(
         final ApiCollectApplicationProperties apiCollectApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamExternalRestClientFactory(
-            apiCollectApplicationProperties.getIamExternalClient(),
-            restTemplateBuilder
-        );
+        return new IamRestClientFactory(apiCollectApplicationProperties.getIamClient(), restTemplateBuilder);
     }
 
     @Bean
-    public UserExternalRestClient userInternalRestClient(
-        final IamExternalRestClientFactory iamExternalRestClientFactory
-    ) {
-        return iamExternalRestClientFactory.getUserExternalRestClient();
+    public UserRestClient userInternalRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getUserExternalRestClient();
     }
 
     @Bean
@@ -141,10 +134,10 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     @Bean
     public TransactionArchiveUnitService projectArchiveUnitInternalService(
         final CollectService collectService,
-        AgencyService agencyService,
+        AgencyCommonService agencyCommonService,
         ObjectMapper objectMapper
     ) {
-        return new TransactionArchiveUnitService(collectService, agencyService, objectMapper);
+        return new TransactionArchiveUnitService(collectService, agencyCommonService, objectMapper);
     }
 
     @Bean
@@ -165,20 +158,20 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
         final SequenceGeneratorService sequenceGeneratorService,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final ExternalSecurityService externalSecurityService
+        final SecurityService securityService
     ) {
         return new SearchCriteriaHistoryService(
             sequenceGeneratorService,
             searchCriteriaHistoryRepository,
             searchCriteriaHistoryConverter,
-            externalSecurityService
+            securityService
         );
     }
 
     @Bean
-    public ExternalParametersExternalRestClient externalParametersInternalRestClient(
-        final IamExternalRestClientFactory iamExternalRestClientFactory
+    public ExternalParametersRestClient externalParametersInternalRestClient(
+        final IamRestClientFactory iamRestClientFactory
     ) {
-        return iamExternalRestClientFactory.getExternalParametersExternalRestClient();
+        return iamRestClientFactory.getExternalParametersExternalRestClient();
     }
 }

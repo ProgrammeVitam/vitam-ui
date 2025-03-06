@@ -47,11 +47,11 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.client.CasRestClient;
+import fr.gouv.vitamui.iam.client.IamRestClientFactory;
+import fr.gouv.vitamui.iam.client.IdentityProviderRestClient;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
@@ -232,8 +232,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler(
-        final IamExternalRestClientFactory iamRestClientFactory,
-        final CasExternalRestClient casRestClient
+        final IamRestClientFactory iamRestClientFactory,
+        final CasRestClient casRestClient
     ) {
         return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient, utils(), ipHeaderName);
     }
@@ -243,7 +243,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public PrincipalResolver defaultPrincipalResolver(
         final ProvidersService providersService,
         @Qualifier("delegatedClientDistributedSessionStore") final SessionStore delegatedClientDistributedSessionStore,
-        final CasExternalRestClient casRestClient
+        final CasRestClient casRestClient
     ) {
         val emailMapping = new X509AttributeMapping(
             x509EmailAttribute,
@@ -297,20 +297,18 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public IamExternalRestClientFactory iamRestClientFactory(final RestTemplateBuilder restTemplateBuilder) {
+    public IamRestClientFactory iamRestClientFactory(final RestTemplateBuilder restTemplateBuilder) {
         LOGGER.debug("Iam client factory: {}", iamClientProperties);
-        return new IamExternalRestClientFactory(iamClientProperties, restTemplateBuilder);
+        return new IamRestClientFactory(iamClientProperties, restTemplateBuilder);
     }
 
     @Bean
-    public CasExternalRestClient casRestClient(final IamExternalRestClientFactory iamRestClientFactory) {
+    public CasRestClient casRestClient(final IamRestClientFactory iamRestClientFactory) {
         return iamRestClientFactory.getCasExternalRestClient();
     }
 
     @Bean
-    public IdentityProviderExternalRestClient identityProviderCrudRestClient(
-        final IamExternalRestClientFactory iamRestClientFactory
-    ) {
+    public IdentityProviderRestClient identityProviderCrudRestClient(final IamRestClientFactory iamRestClientFactory) {
         return iamRestClientFactory.getIdentityProviderExternalRestClient();
     }
 
@@ -323,7 +321,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public ProvidersService providersService(
         @Qualifier("builtClients") final Clients builtClients,
-        final IdentityProviderExternalRestClient identityProviderCrudRestClient
+        final IdentityProviderRestClient identityProviderCrudRestClient
     ) {
         return new ProvidersService(builtClients, identityProviderCrudRestClient, pac4jClientBuilder(), utils());
     }
@@ -391,7 +389,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @RefreshScope
     @Bean
     @SneakyThrows
-    public SurrogateAuthenticationService surrogateAuthenticationService(final CasExternalRestClient casRestClient) {
+    public SurrogateAuthenticationService surrogateAuthenticationService(final CasRestClient casRestClient) {
         return new IamSurrogateAuthenticationService(casRestClient, servicesManager, utils());
     }
 
@@ -400,7 +398,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public PasswordManagementService passwordChangeService(
         final ProvidersService providersService,
         final TicketRegistry ticketRegistry,
-        final CasExternalRestClient casRestClient
+        final CasRestClient casRestClient
     ) {
         return new IamPasswordManagementService(
             casProperties.getAuthn().getPm(),

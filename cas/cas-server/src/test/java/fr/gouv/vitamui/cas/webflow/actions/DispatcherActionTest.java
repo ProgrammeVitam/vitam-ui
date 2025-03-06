@@ -8,10 +8,10 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +50,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     private IdentityProviderHelper identityProviderHelper;
 
-    private CasExternalRestClient casExternalRestClient;
+    private CasRestClient casRestClient;
 
     private DispatcherAction action;
 
@@ -63,13 +63,13 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         ProvidersService providersService = mock(ProvidersService.class);
         identityProviderHelper = mock(IdentityProviderHelper.class);
-        casExternalRestClient = mock(CasExternalRestClient.class);
+        casRestClient = mock(CasRestClient.class);
 
         final Utils utils = new Utils(null, 0, null, null, "");
         action = new DispatcherAction(
             providersService,
             identityProviderHelper,
-            casExternalRestClient,
+            casRestClient,
             utils,
             mock(SessionStore.class)
         );
@@ -120,8 +120,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
         when(
-            casExternalRestClient.getUserByEmailAndCustomerId(
-                any(ExternalHttpContext.class),
+            casRestClient.getUserByEmailAndCustomerId(
+                any(HttpContext.class),
                 eq(USER_1),
                 eq(CUSTOMER_ID_1),
                 eq(Optional.empty())
@@ -155,8 +155,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
         when(
-            casExternalRestClient.getUserByEmailAndCustomerId(
-                any(ExternalHttpContext.class),
+            casRestClient.getUserByEmailAndCustomerId(
+                any(HttpContext.class),
                 eq(USER_2),
                 eq(CUSTOMER_ID_2),
                 eq(Optional.empty())
@@ -178,8 +178,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
         when(
-            casExternalRestClient.getUserByEmailAndCustomerId(
-                any(ExternalHttpContext.class),
+            casRestClient.getUserByEmailAndCustomerId(
+                any(HttpContext.class),
                 eq(USER_1),
                 eq(CUSTOMER_ID_1),
                 eq(Optional.empty())
@@ -217,8 +217,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
         when(
-            casExternalRestClient.getUserByEmailAndCustomerId(
-                any(ExternalHttpContext.class),
+            casRestClient.getUserByEmailAndCustomerId(
+                any(HttpContext.class),
                 eq(USER_1),
                 eq(CUSTOMER_ID_1),
                 eq(Optional.empty())
@@ -256,8 +256,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
         when(
-            casExternalRestClient.getUserByEmailAndCustomerId(
-                any(ExternalHttpContext.class),
+            casRestClient.getUserByEmailAndCustomerId(
+                any(HttpContext.class),
                 eq(USER_2),
                 eq(CUSTOMER_ID_2),
                 eq(Optional.empty())
@@ -281,8 +281,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
         when(
-            casExternalRestClient.getUserByEmailAndCustomerId(
-                any(ExternalHttpContext.class),
+            casRestClient.getUserByEmailAndCustomerId(
+                any(HttpContext.class),
                 eq(USER_1),
                 eq(CUSTOMER_ID_1),
                 eq(Optional.empty())

@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class RestClientPerson extends BasePaginatingAndSortingRestClient<PersonDto, ExternalHttpContext> {
+public class RestClientPerson extends BasePaginatingAndSortingRestClient<PersonDto, HttpContext> {
 
     public RestClientPerson(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

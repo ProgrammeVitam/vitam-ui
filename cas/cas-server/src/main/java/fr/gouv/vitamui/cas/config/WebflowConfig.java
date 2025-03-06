@@ -56,8 +56,8 @@ import fr.gouv.vitamui.cas.webflow.configurer.CustomCasSimpleMultifactorWebflowC
 import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
 import fr.gouv.vitamui.cas.webflow.resolver.CustomCasDelegatingWebflowEventResolver;
 import fr.gouv.vitamui.cas.x509.CustomRequestHeaderX509CertificateExtractor;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
@@ -148,7 +148,7 @@ public class WebflowConfig {
     private ConfigurableApplicationContext applicationContext;
 
     @Autowired
-    private CasExternalRestClient casRestClient;
+    private CasRestClient casRestClient;
 
     @Autowired
     private TicketRegistry ticketRegistry;

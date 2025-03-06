@@ -1,0 +1,61 @@
+package fr.gouv.vitamui.iam.client;
+
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class CasRestClientTest {
+
+    private CasRestClient client;
+
+    private final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
+
+    private final HttpContext header = new HttpContext(1, "", "", "");
+
+    @Before
+    public void setup() {
+        Mockito.reset(restTemplate);
+        client = new CasRestClient(restTemplate, "http://localhost:8080");
+    }
+
+    @Test
+    public void testLogout() {
+        final ArgumentCaptor<URI> argumentCaptor = ArgumentCaptor.forClass(URI.class);
+        Mockito.when(
+            restTemplate.exchange(
+                argumentCaptor.capture(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(Class.class)
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
+
+        final String superUser = "super-user@vitamui.com";
+        final String superUserCustomerId = "superCustomerId";
+        final String authToken = "TOK-1-F8lEhVif0FWjgDF32ov73TtKhE6mflRu";
+        client.logout(header, authToken, superUser, superUserCustomerId);
+        final String path =
+            RestApi.CAS_LOGOUT_PATH +
+            "?authToken=" +
+            authToken +
+            "&superUser=" +
+            superUser +
+            "&superUserCustomerId=" +
+            superUserCustomerId;
+        assertThat(argumentCaptor.getValue().toString()).endsWith(
+            path.replaceAll(CommonConstants.EMAIL_SEPARATOR, "%40")
+        );
+    }
+}

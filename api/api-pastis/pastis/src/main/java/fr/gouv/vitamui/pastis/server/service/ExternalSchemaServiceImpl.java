@@ -46,7 +46,7 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.schema.SchemaOrigin;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ import java.util.List;
 public class ExternalSchemaServiceImpl implements ExternalSchemaService {
 
     private final AdminExternalClient adminExternalClient;
-    private final ExternalSecurityService securityService;
+    private final SecurityService securityService;
 
     private VitamContext getVitamContext() {
         return new VitamContext(securityService.getTenantIdentifier()).setApplicationSessionId(

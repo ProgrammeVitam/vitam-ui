@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.cas.util;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apache.commons.collections4.CollectionUtils;
@@ -88,8 +88,8 @@ public class Utils {
 
     private final String casServerPrefix;
 
-    public ExternalHttpContext buildContext(final String username) {
-        return new ExternalHttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
+    public HttpContext buildContext(final String username) {
+        return new HttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
     }
 
     public Event performClientRedirection(

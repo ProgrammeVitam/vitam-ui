@@ -43,10 +43,10 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -86,7 +86,7 @@ public class ListCustomersAction extends AbstractAction {
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    private final CasExternalRestClient casExternalRestClient;
+    private final CasRestClient casRestClient;
 
     private final Utils utils;
 
@@ -265,7 +265,7 @@ public class ListCustomersAction extends AbstractAction {
             availableCustomerIds
         );
 
-        List<CustomerDto> customers = casExternalRestClient.getCustomersByIds(
+        List<CustomerDto> customers = casRestClient.getCustomersByIds(
             utils.buildContext(username),
             availableCustomerIds
         );
@@ -292,7 +292,7 @@ public class ListCustomersAction extends AbstractAction {
     }
 
     private List<UserDto> getUsers(String email) {
-        return casExternalRestClient.getUsersByEmail(utils.buildContext(email), email, Optional.empty());
+        return casRestClient.getUsersByEmail(utils.buildContext(email), email, Optional.empty());
     }
 
     private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {

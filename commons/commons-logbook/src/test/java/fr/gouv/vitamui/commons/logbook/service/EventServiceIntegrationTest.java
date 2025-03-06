@@ -5,7 +5,7 @@ import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
@@ -45,16 +45,7 @@ public class EventServiceIntegrationTest extends AbstractMongoTests {
     @Disabled
     public void createLogbook() {
         String evIdReq = UUID.randomUUID().toString();
-        InternalHttpContext context = new InternalHttpContext(
-            10,
-            "",
-            "",
-            "",
-            "x-application-id",
-            "identity",
-            evIdReq,
-            ""
-        );
+        HttpContext context = new HttpContext(10, "", "x-application-id", "identity", evIdReq, "");
         service.logCreate(context, "AC-000002", 10, "obId", "TEST", EventType.EXT_VITAMUI_CREATE_USER, "data");
         Optional<Event> logbook = repository.findOne(Query.query(Criteria.where("evIdReq").is(evIdReq)));
         assertThat(logbook).isPresent();

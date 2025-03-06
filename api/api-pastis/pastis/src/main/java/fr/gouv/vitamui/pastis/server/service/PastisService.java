@@ -45,8 +45,8 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundExce
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnyNameXML;
@@ -147,14 +147,14 @@ public class PastisService {
 
     private final JsonFromPUA jsonFromPUA;
 
-    private VitamProfileService vitamProfileService;
+    private VitamProfileCommonService vitamProfileCommonService;
 
     private final PuaFromJSON puaFromJSON;
 
     private List<PastisProfile> pastisProfiles = new ArrayList<>();
     private List<Notice> notices = new ArrayList<>();
 
-    private ExternalSecurityService externalSecurityService;
+    private SecurityService securityService;
 
     private Random rand;
 
@@ -166,8 +166,8 @@ public class PastisService {
         JsonFromPUA jsonFromPUA,
         PuaFromJSON puaFromJSON,
         MetaModelService metaModelService,
-        VitamProfileService vitamProfileService,
-        ExternalSecurityService externalSecurityService
+        VitamProfileCommonService vitamProfileCommonService,
+        SecurityService securityService
     ) {
         this.objectMapper = objectMapper;
         this.resourceLoader = resourceLoader;
@@ -175,8 +175,8 @@ public class PastisService {
         this.jsonFromPUA = jsonFromPUA;
         this.puaFromJSON = puaFromJSON;
         this.metaModelService = metaModelService;
-        this.vitamProfileService = vitamProfileService;
-        this.externalSecurityService = externalSecurityService;
+        this.vitamProfileCommonService = vitamProfileCommonService;
+        this.securityService = securityService;
     }
 
     public String getArchiveProfile(final ElementProperties json, ProfileVersion version) throws TechnicalException {
@@ -473,7 +473,7 @@ public class PastisService {
     }
 
     private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
+        return securityService.buildVitamContext(securityService.getTenantIdentifier());
     }
 
     public ResponseEntity<Resource> download(String id) {
@@ -483,7 +483,7 @@ public class PastisService {
         try {
             LOGGER.info("Download EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
-            response = vitamProfileService.downloadProfile(vitamContext, id);
+            response = vitamProfileCommonService.downloadProfile(vitamContext, id);
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);

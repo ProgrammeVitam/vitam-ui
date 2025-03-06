@@ -33,7 +33,7 @@ import fr.gouv.vitamui.collect.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,7 +55,7 @@ class SearchCriteriaHistoryServiceTest {
     SearchCriteriaHistoryService searchCriteriaHistoryService;
 
     @Mock
-    ExternalSecurityService externalSecurityService;
+    SecurityService securityService;
 
     @Mock
     SearchCriteriaHistoryRepository searchCriteriaHistoryRepository;
@@ -68,7 +68,7 @@ class SearchCriteriaHistoryServiceTest {
         final AuthUserDto authUserDto = factory.manufacturePojo(AuthUserDto.class);
         ArrayList resultedValues = factory.manufacturePojo(ArrayList.class, SearchCriteriaHistoryDto.class);
         final QueryDto queryDto = new QueryDto();
-        Mockito.when(externalSecurityService.getUser()).thenReturn(authUserDto);
+        Mockito.when(securityService.getUser()).thenReturn(authUserDto);
         Mockito.when(searchCriteriaHistoryService.getAll(queryDto)).thenReturn(resultedValues);
 
         // WHEN

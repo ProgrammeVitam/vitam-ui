@@ -55,7 +55,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "ingest", ignoreUnknownFields = false)
 public class ApiIngestApplicationProperties {
 
-    private RestClientConfiguration iamExternalClient;
+    private RestClientConfiguration iamClient;
 
     private RestClientConfiguration securityClient;
 }

@@ -57,7 +57,7 @@ import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -302,9 +302,9 @@ public class LogbookService {
     ) {
         try {
             // Check operation type
-            final LogbookOperationsResponseDto operation = responseMapping(
+            final LogbookOperationsCommonResponseDto operation = responseMapping(
                 selectOperationbyId(id, vitamContext).toJsonNode(),
-                LogbookOperationsResponseDto.class
+                LogbookOperationsCommonResponseDto.class
             );
             if (operation == null || operation.getResults() == null || operation.getResults().size() == 0) {
                 throw new IllegalArgumentException(

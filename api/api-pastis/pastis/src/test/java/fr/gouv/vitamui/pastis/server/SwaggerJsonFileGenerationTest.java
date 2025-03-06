@@ -42,11 +42,11 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.client.IamRestClientFactory;
+import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.junit.runner.RunWith;
@@ -71,19 +71,19 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     public ContextRestClient contextCrudRestClient;
 
     @MockBean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider;
+    public ApiAuthenticationProvider apiAuthenticationProvider;
 
     @MockBean
-    public ExternalSecurityService externalSecurityService;
+    public SecurityService securityService;
 
     @MockBean
-    public ExternalAuthentificationService externalAuthentificationService;
+    public AuthentificationService authentificationService;
 
     @MockBean
-    public IamExternalRestClientFactory iamExternalRestClientFactory;
+    public IamRestClientFactory iamRestClientFactory;
 
     @MockBean
-    public UserExternalRestClient userExternalRestClient;
+    public UserRestClient userRestClient;
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;

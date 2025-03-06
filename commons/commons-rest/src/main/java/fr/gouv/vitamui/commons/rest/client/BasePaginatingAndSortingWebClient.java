@@ -59,7 +59,7 @@ import java.util.Optional;
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpContext, D extends IdDto>
+public abstract class BasePaginatingAndSortingWebClient<C extends HttpContext, D extends IdDto>
     extends BaseCrudWebClient<C, D> {
 
     private static final String EMBEDDED_QUERY_PARAM = "embedded";

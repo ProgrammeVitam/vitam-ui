@@ -62,7 +62,7 @@ archive-search:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
-  iam-external-client:
+  iam-client:
     server-host: {{ vitamui.iam.host }}
     server-port: {{ vitamui.iam.port_service }}
 {% if vitamui.iam.secure | default(secure) | bool == true %}
@@ -90,6 +90,6 @@ ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.archives.search.external.*: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+    fr.gouv.vitamui.archives.search.*: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
     org.springframework.web.filter.CommonsRequestLoggingFilter: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
     fr.gouv.vitamui.iam.security: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}

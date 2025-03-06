@@ -45,7 +45,7 @@ import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.PreventedException;
@@ -79,7 +79,7 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthenticationHandler.class);
 
-    private final CasExternalRestClient casExternalRestClient;
+    private final CasRestClient casRestClient;
 
     private final Utils utils;
 
@@ -88,12 +88,12 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     public UserAuthenticationHandler(
         final ServicesManager servicesManager,
         final PrincipalFactory principalFactory,
-        final CasExternalRestClient casExternalRestClient,
+        final CasRestClient casRestClient,
         final Utils utils,
         final String ipHeaderName
     ) {
         super(UserAuthenticationHandler.class.getSimpleName(), servicesManager, principalFactory, 1);
-        this.casExternalRestClient = casExternalRestClient;
+        this.casRestClient = casRestClient;
         this.utils = utils;
         this.ipHeaderName = ipHeaderName;
     }
@@ -124,7 +124,7 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
         );
 
         try {
-            val user = casExternalRestClient.login(
+            val user = casRestClient.login(
                 context,
                 loginEmail,
                 loginCustomerId,

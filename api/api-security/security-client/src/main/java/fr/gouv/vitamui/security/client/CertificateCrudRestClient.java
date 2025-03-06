@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.security.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.security.common.dto.CertificateDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
@@ -50,7 +50,7 @@ import java.util.List;
  *
  *
  */
-public class CertificateCrudRestClient extends BaseCrudRestClient<CertificateDto, InternalHttpContext> {
+public class CertificateCrudRestClient extends BaseCrudRestClient<CertificateDto, HttpContext> {
 
     public CertificateCrudRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);

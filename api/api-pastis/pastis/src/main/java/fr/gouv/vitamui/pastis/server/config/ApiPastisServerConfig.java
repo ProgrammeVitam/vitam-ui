@@ -43,13 +43,13 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.client.IamRestClientFactory;
+import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
@@ -93,41 +93,34 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService
-    ) {
-        return new ExternalApiAuthenticationProvider(externalAuthentificationService);
+    public ApiAuthenticationProvider apiAuthenticationProvider(final AuthentificationService authentificationService) {
+        return new ApiAuthenticationProvider(authentificationService);
     }
 
     @Bean
-    public ExternalSecurityService externalSecurityService() {
-        return new ExternalSecurityService();
+    public SecurityService externalSecurityService() {
+        return new SecurityService();
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(
+    public AuthentificationService externalAuthentificationService(
         final ContextRestClient contextRestClient,
-        final UserExternalRestClient userExternalRestClient
+        final UserRestClient userRestClient
     ) {
-        return new ExternalAuthentificationService(contextRestClient, userExternalRestClient);
+        return new AuthentificationService(contextRestClient, userRestClient);
     }
 
     @Bean
-    public IamExternalRestClientFactory iamExternalRestClientFactory(
+    public IamRestClientFactory iamExternalRestClientFactory(
         final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamExternalRestClientFactory(
-            apiArchiveExternalApplicationProperties.getIamExternalClient(),
-            restTemplateBuilder
-        );
+        return new IamRestClientFactory(apiArchiveExternalApplicationProperties.getIamClient(), restTemplateBuilder);
     }
 
     @Bean
-    public UserExternalRestClient userExternalRestClient(
-        final IamExternalRestClientFactory iamExternalRestClientFactory
-    ) {
-        return iamExternalRestClientFactory.getUserExternalRestClient();
+    public UserRestClient userExternalRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getUserExternalRestClient();
     }
 
     @Bean
@@ -159,10 +152,10 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public VitamProfileService getVitamProfileService(
+    public VitamProfileCommonService getVitamProfileService(
         final AdminExternalClient adminClient,
         ObjectMapper objectMapper
     ) {
-        return new VitamProfileService(adminClient, objectMapper);
+        return new VitamProfileCommonService(adminClient, objectMapper);
     }
 }

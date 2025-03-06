@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.commons.rest;
 
-import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +33,9 @@ public class TestUri {
             LOGGER.error("Error Building URL : ", e);
         }
 
-        final InternalHttpContext context = new InternalHttpContext(0, "", "", "", "", "", "", "");
-        System.out.println(AbstractHttpContext.urlNeedsTenantIdHeader("/swagger-ui.html"));
+        System.out.println(HttpContext.urlNeedsTenantIdHeader("/swagger-ui.html"));
         System.out.println(
-            AbstractHttpContext.urlNeedsTenantIdHeader(
-                "/webjars/springfox-swagger-ui/favicon-16x16.png?v=2.8.0-SNAPSHOT"
-            )
+            HttpContext.urlNeedsTenantIdHeader("/webjars/springfox-swagger-ui/favicon-16x16.png?v=2.8.0-SNAPSHOT")
         );
 
         String fileName = "test.json";

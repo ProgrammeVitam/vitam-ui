@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.pastis.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
@@ -19,7 +19,7 @@ import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Optional;
 
-public class PastisTransformationWebClient extends BaseWebClient<ExternalHttpContext> {
+public class PastisTransformationWebClient extends BaseWebClient<HttpContext> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisTransformationWebClient.class);
 
@@ -27,7 +27,7 @@ public class PastisTransformationWebClient extends BaseWebClient<ExternalHttpCon
         super(webClient, baseUrl);
     }
 
-    public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, ExternalHttpContext context) {
+    public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, HttpContext context) {
         LOGGER.debug("Upload profile");
         return ResponseEntity.ok(
             multipartData(
@@ -41,8 +41,7 @@ public class PastisTransformationWebClient extends BaseWebClient<ExternalHttpCon
         );
     }
 
-    public ResponseEntity<ElementProperties> loadProfilePA(Resource resource, ExternalHttpContext context)
-        throws IOException {
+    public ResponseEntity<ElementProperties> loadProfilePA(Resource resource, HttpContext context) throws IOException {
         LOGGER.debug("Upload profile");
         CustomMultipartFile multipartFile = new CustomMultipartFile(resource.getInputStream().readAllBytes());
         return ResponseEntity.ok(

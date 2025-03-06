@@ -97,7 +97,7 @@ logging:
     fr.gouv.vitamui: DEBUG
     fr.gouv.vitamui.iam.security: DEBUG
     fr.gouv.vitamui.commons.mongo.service: DEBUG
-    fr.gouv.vitamui.iam.external.server: DEBUG
+    fr.gouv.vitamui.iam.server: DEBUG
     fr.gouv.vitamui.commons.logbook.scheduler: DEBUG
     # org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 

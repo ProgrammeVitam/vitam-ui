@@ -185,11 +185,6 @@
                 <artifactId>archive-search</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-search-external-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
