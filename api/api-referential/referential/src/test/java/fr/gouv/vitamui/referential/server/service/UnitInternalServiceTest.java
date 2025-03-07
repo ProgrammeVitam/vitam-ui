@@ -174,49 +174,6 @@ public class UnitInternalServiceTest {
     }
 
     @Test
-    public void findUnitById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
-        VitamContext vitamContext = new VitamContext(0);
-        String unitId = "id";
-
-        when(unitCommonService.findUnitById(any(String.class), any(VitamContext.class))).thenReturn(
-            new RequestResponseOK<JsonNode>().setHttpCode(200)
-        );
-
-        assertThatCode(() -> {
-            unitService.findUnitById(unitId, vitamContext);
-        }).doesNotThrowAnyException();
-    }
-
-    @Test
-    public void findUnitById_should_return_ok_when_vitamclient_400() throws VitamClientException {
-        VitamContext vitamContext = new VitamContext(0);
-        String unitId = "id";
-
-        when(unitCommonService.findUnitById(any(String.class), any(VitamContext.class))).thenReturn(
-            new RequestResponseOK<JsonNode>().setHttpCode(400)
-        );
-
-        assertThatCode(() -> {
-            unitService.findUnitById(unitId, vitamContext);
-        }).doesNotThrowAnyException();
-    }
-
-    @Test
-    public void findUnitById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
-        throws VitamClientException {
-        VitamContext vitamContext = new VitamContext(0);
-        String unitId = "id";
-
-        when(unitCommonService.findUnitById(any(String.class), any(VitamContext.class))).thenThrow(
-            new VitamClientException("Exception thrown by vitam")
-        );
-
-        assertThatCode(() -> {
-            unitService.findUnitById(unitId, vitamContext);
-        }).isInstanceOf(VitamClientException.class);
-    }
-
-    @Test
     public void findObjectMetadataById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";

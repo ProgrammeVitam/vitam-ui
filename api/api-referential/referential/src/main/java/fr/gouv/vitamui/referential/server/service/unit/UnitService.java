@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.Query;
-import fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -64,7 +63,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
@@ -121,12 +119,6 @@ public class UnitService extends AbstractService {
         return response.toJsonNode();
     }
 
-    public JsonNode findUnitById(final String unitId, final VitamContext vitamContext) throws VitamClientException {
-        LOGGER.info("Unit EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        RequestResponse<JsonNode> response = unitCommonService.findUnitById(unitId, vitamContext);
-        return response.toJsonNode();
-    }
-
     public JsonNode findObjectMetadataById(
         final String unitId,
         final JsonNode dslQuery,
@@ -150,30 +142,18 @@ public class UnitService extends AbstractService {
             return select.getFinalSelect();
         } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new UnexpectedDataException(
-                "Unexpected error occured while building holding dsl query : " + e.getMessage()
+                "Unexpected error occurred while building holding dsl query : " + e.getMessage()
             );
         }
     }
 
-    public JsonNode createQueryForUnitById(String unitId) {
-        try {
-            final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query = eq(VitamFieldsHelper.id(), unitId);
-            select.addQueries(query);
-            LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
-            return select.getFinalSelect();
-        } catch (InvalidCreateOperationException e) {
-            throw new UnexpectedDataException("Unexpected error occured while building dsl query : " + e.getMessage());
-        }
-    }
-
-    public VitamUISearchResponseDto findUnitById(final String id) {
+    public VitamUISearchResponseDto findUnitById(final String id) throws VitamClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
-        final JsonNode queryForUnitById = this.createQueryForUnitById(id);
-
+        final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
+        final JsonNode response = unitCommonService.findUnitById(id, vitamContext).toJsonNode();
         try {
-            return objectMapper.treeToValue(queryForUnitById, VitamUISearchResponseDto.class);
+            return objectMapper.treeToValue(response, VitamUISearchResponseDto.class);
         } catch (JsonProcessingException e) {
             throw new InternalServerException("Error while parsing Vitam response", e);
         }
