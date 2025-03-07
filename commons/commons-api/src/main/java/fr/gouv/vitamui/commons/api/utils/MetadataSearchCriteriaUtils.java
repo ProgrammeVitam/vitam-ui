@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
@@ -116,7 +115,7 @@ public final class MetadataSearchCriteriaUtils {
 
     private MetadataSearchCriteriaUtils() {}
 
-    public static JsonNode createDslQueryWithFacets(SearchCriteriaDto searchQuery)
+    public static SelectMultiQuery createDslQueryWithFacets(SearchCriteriaDto searchQuery)
         throws VitamClientException, InvalidCreateOperationException {
         fillWaitingToComputeCriteria(searchQuery);
 
@@ -138,7 +137,7 @@ public final class MetadataSearchCriteriaUtils {
                 searchQuery.getSize()
             );
         }
-        return selectMultiQuery.getFinalSelect();
+        return selectMultiQuery;
     }
 
     public static SelectMultiQuery getBasicQuery(SearchCriteriaDto searchQuery) throws VitamClientException {
