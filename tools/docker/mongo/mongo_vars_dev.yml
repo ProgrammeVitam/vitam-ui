@@ -89,31 +89,31 @@ vitamui_platform_informations:
 
 vitam_site_name: "dev"
 vitamui:
-  identity:
+  ui_identity:
     clientId: identity
     serviceId: "^https://dev.vitamui.com:4201/.*"
     name: Identity Access Management Application
     base_url: "https://dev.vitamui.com:4201"
-  identity_admin:
+  ui_identity_admin:
     clientId: identityadmin
     serviceId: "^https://dev.vitamui.com:4201/.*"
     name: Identity Admin Access Management Application
     base_url: "https://dev.vitamui.com:4201"
-  portal:
+  ui_portal:
     clientId: portal
     serviceId: "^https://dev.vitamui.com:4200/.*"
     name: Portal Application
     base_url: "https://dev.vitamui.com:4200"
-  referential:
+  ui_referential:
     clientId: referential
     serviceId: "^https://dev.vitamui.com:4202/.*"
     name: Referential Application
     base_url: "https://dev.vitamui.com:4202"
-  ingest:
+  ui_ingest:
     base_url: "https://dev.vitamui.com:4208"
-  archive_search:
+  ui_archive_search:
     base_url: "https://dev.vitamui.com:4209"
-  pastis:
+  ui_pastis:
     base_url: "https://dev.vitamui.com:4251"
-  collect:
+  ui_collect:
     base_url: "https://dev.vitamui.com:4210"
