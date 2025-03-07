@@ -43,7 +43,6 @@ L = paris
 O = vitamui
 CN = ${ENV::OPENSSL_CN}
 
-
 # Certificates creation parameters : extensions
 
 [ extension_server ]
@@ -66,13 +65,3 @@ basicConstraints                = critical,CA:FALSE
 keyUsage                        = digitalSignature
 nsCertType                      = client
 extendedKeyUsage                = clientAuth
-
-[ extension_timestamping ]
-nsComment                       = "Certificat Serveur SSL"
-subjectKeyIdentifier            = hash
-authorityKeyIdentifier          = keyid,issuer:always
-issuerAltName                   = issuer:copy
-basicConstraints                = critical,CA:FALSE
-keyUsage                        = digitalSignature, nonRepudiation
-nsCertType                      = server
-extendedKeyUsage                = critical,timeStamping

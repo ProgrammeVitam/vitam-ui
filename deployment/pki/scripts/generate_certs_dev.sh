@@ -29,38 +29,38 @@ function generateCerts {
     copyCAFromPki client-vitam
     copyCAFromPki server
 
-    # Generate hosts certificates
+    # Zone API
     pki_logger "Génération des certificats serveurs"
-    # Zone interne
-    generateHostCertAndStorePassphrase          security            hosts_vitamui_security
-    #Zone externe
-    generateHostCertAndStorePassphrase          iam                 hosts_vitamui_iam
-    generateHostCertAndStorePassphrase          cas-server          hosts_cas_server
-    generateHostCertAndStorePassphrase          referential         hosts_vitamui_referential
-    generateHostCertAndStorePassphrase          ingest              hosts_vitamui_ingest
-    generateHostCertAndStorePassphrase          archive-search      hosts_vitamui_archive_search
-    generateHostCertAndStorePassphrase          collect             hosts_vitamui_collect
-    generateHostCertAndStorePassphrase          pastis              hosts_vitamui_pastis
-    generateHostCertAndStorePassphrase          api-gateway         hosts_vitamui_api_gateway
+    generateHostCertAndStorePassphrase   security                hosts_vitamui_security
+    generateHostCertAndStorePassphrase   api-gateway             hosts_vitamui_api_gateway
+    generateHostCertAndStorePassphrase   iam                     hosts_vitamui_iam
+    generateHostCertAndStorePassphrase   referential             hosts_vitamui_referential
+    generateHostCertAndStorePassphrase   cas-server              hosts_cas_server
+    generateHostCertAndStorePassphrase   ingest                  hosts_vitamui_ingest
+    generateHostCertAndStorePassphrase   archive-search          hosts_vitamui_archive_search
+    generateHostCertAndStorePassphrase   collect                 hosts_vitamui_collect
+    generateHostCertAndStorePassphrase   pastis                  hosts_vitamui_pastis
+
     #Zone UI
-    generateHostCertAndStorePassphrase          ui-portal           hosts_ui_portal
-    generateHostCertAndStorePassphrase          ui-identity         hosts_ui_identity
-    generateHostCertAndStorePassphrase          ui-identity-admin   hosts_ui_identity_admin
-    generateHostCertAndStorePassphrase          ui-referential      hosts_ui_referential
-    generateHostCertAndStorePassphrase          ui-ingest           hosts_ui_ingest
-    generateHostCertAndStorePassphrase          ui-archive-search   hosts_ui_archive_search
-    generateHostCertAndStorePassphrase          ui-pastis           hosts_ui_pastis
-    generateHostCertAndStorePassphrase          ui-collect          hosts_ui_collect
-    generateHostCertAndStorePassphrase          ui-design-system    hosts_ui_design_system
+    pki_logger "Génération des certificats clients UI"
+    generateClientCertAndStorePassphrase ui-portal               client-external
+    generateClientCertAndStorePassphrase ui-identity             client-external
+    generateClientCertAndStorePassphrase ui-identity-admin       client-external
+    generateClientCertAndStorePassphrase ui-referential          client-external
+    generateClientCertAndStorePassphrase ui-ingest               client-external
+    generateClientCertAndStorePassphrase ui-archive-search       client-external
+    generateClientCertAndStorePassphrase ui-collect              client-external
+    generateClientCertAndStorePassphrase ui-pastis               client-external
+    generateClientCertAndStorePassphrase ui-design-system        client-external
 
     #Reverse
-    generateHostCertAndStorePassphrase          reverse             hosts_vitamui_reverseproxy
+    generateHostCertAndStorePassphrase   reverse                 hosts_vitamui_reverseproxy
 
-    # Example of generated client cert for a customer allowing to perform request on external APIs
-    generateClientCertAndStorePassphrase        customer_x          client-external
+    # Example of generated client cert for a customer allowing to perform request on APIs
+    generateClientCertAndStorePassphrase customer_x              client-external
 
     # Generate Vitam certificates for VitamUI
-    generateClientCertAndStorePassphrase        vitamui             client-vitam
+    generateClientCertAndStorePassphrase vitamui                 client-vitam
 }
 
 ######################################################################

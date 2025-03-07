@@ -83,50 +83,6 @@ function generateHostCertificate {
     purge_directory "${REPERTOIRE_CONFIG}/${TYPE_CERTIFICAT}"
 }
 
-# Génération du chemin d'un certificat de timestamping
-function getTimestampCertificatePath {
-    local TYPE_CERTIFICAT="${1}"
-    local HOSTNAME="${2}"
-    echo "${REPERTOIRE_CERTIFICAT}/${TYPE_CERTIFICAT}/vitam"
-}
-
-# Génération d'un certificat de timestamping ; le nom du certificat est dérivé de son usage
-function generateTimestampCertificate {
-    local USAGE="${1}"
-    local CERT_KEY="${2}"
-    local INTERMEDIATE_CA_KEY="${3}"
-    local TYPE_CERTIFICAT="${4}"
-    local CN_VALEUR="${USAGE}"
-
-    # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN="${CN_VALEUR}"
-    # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CRT_DIR=${TYPE_CERTIFICAT}
-
-    pki_logger "Création du certificat ${TYPE_CERTIFICAT} pour usage ${USAGE}"
-    local TIMESTAMP_CERTIFICATE_PATH=$(getTimestampCertificatePath ${TYPE_CERTIFICAT})
-    mkdir -p "${TIMESTAMP_CERTIFICATE_PATH}"
-    pki_logger "Generation de la clé..."
-    openssl req -newkey "${PARAM_KEY_CHIFFREMENT}" \
-        -passout pass:"${CERT_KEY}" \
-        -keyout "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.key" \
-        -out "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.req" \
-        -nodes \
-        -config "${REPERTOIRE_CONFIG}/crt-config" \
-        -batch
-
-    pki_logger "Generation du certificat signé avec CA ${TYPE_CERTIFICAT}..."
-    openssl ca -config "${REPERTOIRE_CONFIG}/crt-config" \
-        -passin pass:"${INTERMEDIATE_CA_KEY}" \
-        -out "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.crt" \
-        -in "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.req" \
-        -extensions extension_${TYPE_CERTIFICAT} -batch
-
-    purge_directory "${TIMESTAMP_CERTIFICATE_PATH}"
-    purge_directory "${REPERTOIRE_CONFIG}/${TYPE_CERTIFICAT}"
-}
-
-
 # Génération du chemin d'un certificat client
 function getClientCertificatePath {
     local CLIENT_TYPE="${1}"
@@ -208,30 +164,6 @@ function generateHostCertAndStorePassphrase {
             pki_logger "Le certificat SERVER - ${SERVER} - ${COMPONENT}.crt existe déjà, il ne sera pas recréé..."
         fi
     done
-}
-
-# Génération d'un certificat timestamp (utilise la fonction de génération de certificats serveur)
-function generateTimestampCertAndStorePassphrase {
-    local USAGE="${1}"
-
-    # Récupération du password de la CA_INTERMEDIATE dans le vault-ca
-    CA_INTERMEDIATE_PASSWORD=$(getComponentPassphrase ca "ca_intermediate_timestamping")
-    local TIMESTAMP_CERTIFICAT_TYPE="timestamping"
-    local TIMESTAMP_CERTIFICATE_PATH=$(getTimestampCertificatePath ${TIMESTAMP_CERTIFICAT_TYPE})
-    if [ ! -f "${SERVER_CERTIFICATE_PATH}/${USAGE}.crt" ]; then
-        # Generate the key
-        local CERT_KEY=$(generatePassphrase)
-        # Create the certificate
-        generateTimestampCertificate ${USAGE} \
-                                    ${CERT_KEY} \
-                                    ${CA_INTERMEDIATE_PASSWORD}
-                                    ${TIMESTAMP_CERTIFICAT_TYPE}
-        # Store the key to the vault
-        setComponentPassphrase certs "timestamping_${USAGE}_key" \
-                                    "${CERT_KEY}"
-    else
-        pki_logger "Le certificat ${TIMESTAMP_CERTIFICAT_TYPE} - ${USAGE}.crt existe déjà, il ne sera pas recréé..."
-    fi
 }
 
 # Génération du certificat client et stockage de la passphrase
