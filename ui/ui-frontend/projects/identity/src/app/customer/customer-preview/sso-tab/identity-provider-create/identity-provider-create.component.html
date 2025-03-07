@@ -164,37 +164,39 @@
         </mat-dialog-actions>
       } @else {
         <mat-dialog-content>
-          <div class="text small lighter mb-4 oidc-row">{{ 'CUSTOMER.SSO.MODAL.SUBTITLE_OIDC' | translate }}</div>
-          <div class="oidc-row">
-            <vitamui-common-input
-              class="col-11 p-0"
-              formControlName="clientId"
-              required
-              [placeholder]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate"
-            >
-            </vitamui-common-input>
-          </div>
-          <div class="oidc-row">
-            <vitamui-common-input
-              class="col-11 p-0"
-              formControlName="clientSecret"
-              required
-              [placeholder]="'CUSTOMER.SSO.CLIENT_SECRET' | translate"
-            >
-            </vitamui-common-input>
-          </div>
-          <div class="oidc-row">
-            <vitamui-common-input
-              class="col-11 p-0"
-              formControlName="discoveryUrl"
-              required
-              [placeholder]="'CUSTOMER.SSO.URL_DISCOVERY' | translate"
-            >
-            </vitamui-common-input>
-          </div>
-          <div class="oidc-row">
-            <vitamui-common-input class="col-11 p-0" formControlName="scope" [placeholder]="'CUSTOMER.SSO.PERIMETER' | translate">
-            </vitamui-common-input>
+          <div class="text small lighter mb-3 oidc-row">{{ 'CUSTOMER.SSO.MODAL.SUBTITLE_OIDC' | translate }}</div>
+          <div class="gap-3 align-items-stretch">
+            <div class="oidc-row">
+              <vitamui-common-input
+                class="col-11 p-0"
+                formControlName="clientId"
+                required
+                [placeholder]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate"
+              >
+              </vitamui-common-input>
+            </div>
+            <div class="oidc-row">
+              <vitamui-common-input
+                class="col-11 p-0"
+                formControlName="clientSecret"
+                required
+                [placeholder]="'CUSTOMER.SSO.CLIENT_SECRET' | translate"
+              >
+              </vitamui-common-input>
+            </div>
+            <div class="oidc-row">
+              <vitamui-common-input
+                class="col-11 p-0"
+                formControlName="discoveryUrl"
+                required
+                [placeholder]="'CUSTOMER.SSO.URL_DISCOVERY' | translate"
+              >
+              </vitamui-common-input>
+            </div>
+            <div class="oidc-row">
+              <vitamui-common-input class="col-11 p-0" formControlName="scope" [placeholder]="'CUSTOMER.SSO.PERIMETER' | translate">
+              </vitamui-common-input>
+            </div>
           </div>
           <div class="d-flex oidc-row">
             <div>

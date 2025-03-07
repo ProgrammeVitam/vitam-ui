@@ -1,4 +1,4 @@
-<form [formGroup]="form" *ngIf="user?.status !== 'REMOVED'">
+<form [formGroup]="form" *ngIf="user?.status !== 'REMOVED'" class="gap-3 align-items-stretch">
   <div class="row">
     <div class="col-10">
       <p *ngIf="user?.status === 'ENABLED'">{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</p>
@@ -128,15 +128,14 @@
 
     <div class="row">
       <div class="col-12">
-        <vitamui-common-editable-select
-          formControlName="country"
-          [label]="'COMMON.ADRESS.COUNTRY' | translate"
-          [validator]="form?.get('address.country')?.validator"
-          [asyncValidator]="form?.get('address.country')?.asyncValidator"
-        >
-          <vitamui-common-editable-option *ngFor="let country of countries" [value]="country.code" [content]="country.name">
-          </vitamui-common-editable-option>
-        </vitamui-common-editable-select>
+        <vitamui-form-field-value-wrapper formControlName="country">
+          <vitamui-select
+            [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+            [options]="countries"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </vitamui-form-field-value-wrapper>
       </div>
     </div>
   </ng-container>
@@ -165,14 +164,17 @@
   <div class="row">
     <div class="col-6">
       <form [formGroup]="userInfoForm">
-        <div>
-          <vitamui-common-editable-select formControlName="language" [label]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate">
-            <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate">
-            </vitamui-common-editable-option>
-            <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate">
-            </vitamui-common-editable-option>
-          </vitamui-common-editable-select>
-        </div>
+        <vitamui-form-field-value-wrapper formControlName="language">
+          <vitamui-select
+            [placeholder]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
+            [options]="[
+              { key: 'ENGLISH', label: 'COMMON.LANGUAGE.ENGLISH' | translate },
+              { key: 'FRENCH', label: 'COMMON.LANGUAGE.FRENCH' | translate },
+            ]"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </vitamui-form-field-value-wrapper>
       </form>
     </div>
     <div class="col-6">
@@ -185,18 +187,17 @@
 
   <div class="row">
     <div class="col-6">
-      <vitamui-common-editable-select formControlName="type" [label]="'USER.INFORMATIONS.TYPE' | translate">
-        <vitamui-common-editable-option
-          value="NOMINATIVE"
-          [content]="'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_NOMINATIVE' | translate"
-        >
-        </vitamui-common-editable-option>
-        <vitamui-common-editable-option
-          value="GENERIC"
-          [content]="'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_GENERIC' | translate"
-        >
-        </vitamui-common-editable-option>
-      </vitamui-common-editable-select>
+      <vitamui-form-field-value-wrapper formControlName="type">
+        <vitamui-select
+          [placeholder]="'USER.INFORMATIONS.TYPE' | translate"
+          [options]="[
+            { key: 'NOMINATIVE', label: 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_NOMINATIVE' | translate },
+            { key: 'GENERIC', label: 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_GENERIC' | translate },
+          ]"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
+      </vitamui-form-field-value-wrapper>
     </div>
   </div>
 

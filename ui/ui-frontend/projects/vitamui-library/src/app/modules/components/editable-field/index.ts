@@ -42,8 +42,6 @@ export { EditableFileComponent } from './editable-file/editable-file.component';
 export { EditableInputComponent } from './editable-input/editable-input.component';
 export { EditableLevelInputComponent } from './editable-level-input/editable-level-input.component';
 export { SubLevelPipe } from './editable-level-input/sub-level.pipe';
-export { EditableOptionComponent } from './editable-select/editable-option.component';
-export { EditableSelectComponent } from './editable-select/editable-select.component';
 export { EditableTextareaComponent } from './editable-textarea/editable-textarea.component';
 export { EditableButtonToggleComponent } from './editable-toggle-group/editable-button-toggle.component';
 export { EditableToggleGroupComponent } from './editable-toggle-group/editable-toggle-group.component';

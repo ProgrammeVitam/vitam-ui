@@ -41,14 +41,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterTestingModule } from '@angular/router/testing';
-import { VitamUISnackBar } from 'projects/ingest/src/app/shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { EMPTY, of } from 'rxjs';
 import { AuthService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ContextService } from '../context.service';
 import { ContextListComponent } from './context-list.component';
-
-const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
 describe('ContextListComponent', () => {
   let component: ContextListComponent;
@@ -84,8 +81,6 @@ describe('ContextListComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ContextService, useValue: contextServiceMock },
         { provide: AuthService, useValue: authServiceMock },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-
         { provide: WINDOW_LOCATION, useValue: window.location },
       ],
       schemas: [NO_ERRORS_SCHEMA],

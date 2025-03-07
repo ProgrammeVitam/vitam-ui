@@ -5,6 +5,8 @@
     formControlName="policyTypeOption"
     [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.IDENTIFIER_TYPE' | translate"
     [options]="policyTypeOptions"
+    [multiple]="false"
+    [enableSearch]="false"
     [errorMessageMap]="{
       required: 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_FEATURE.REMOVE',
     }"

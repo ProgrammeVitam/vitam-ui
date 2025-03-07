@@ -39,8 +39,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AdminUserProfile, CountryOption, CountryService, Customer, OtpState, StartupService, User, UserInfo, diff } from 'vitamui-library';
-import { UserInfoService } from './../../user-info.service';
+import {
+  AdminUserProfile,
+  CountryOption,
+  CountryService,
+  Customer,
+  diff,
+  Option,
+  OtpState,
+  StartupService,
+  User,
+  UserInfo,
+} from 'vitamui-library';
+import { UserInfoService } from '../../user-info.service';
 
 import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserService } from '../../user.service';
@@ -62,13 +73,10 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
   public maxStreetLength: number;
   public form: FormGroup;
   public userInfoForm: FormGroup;
-  public phoneForm: FormGroup;
-  public isPhoneRequired: boolean;
   public showTooltip: boolean;
   public isPopup: boolean;
-  public lastConnectionDate: Date;
   public customerEmailDomains: string[];
-  public countries: CountryOption[];
+  public countries: Option[];
   public previousValue: {
     firstname: string;
     lastname: string;
@@ -172,7 +180,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
       .subscribe((userInfo: UserInfo) => this.resetUserInfoForm(this.form, userInfo));
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      this.countries = values;
+      this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 

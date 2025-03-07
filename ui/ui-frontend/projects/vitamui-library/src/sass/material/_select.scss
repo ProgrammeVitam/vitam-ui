@@ -27,6 +27,7 @@
     &:not(.fake-option) {
       color: var(--vitamui-grey-600);
       background-color: var(--vitamui-grey-200);
+      pointer-events: unset; // To be able to trigger tooltip on hover of disabled option
     }
     .mdc-list-item__primary-text {
       opacity: 1;

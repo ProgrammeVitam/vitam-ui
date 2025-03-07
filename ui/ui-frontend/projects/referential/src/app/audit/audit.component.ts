@@ -75,12 +75,11 @@ export class AuditComponent extends SidenavPage<Event> {
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value };
+      this.filters = { ...this.filters, startDate: value ? moment(value).startOf('day') : null };
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
-      let updatedDate = value ? moment(value).endOf('day') : null;
-      this.filters = { ...this.filters, endDate: updatedDate };
+      this.filters = { ...this.filters, endDate: value ? moment(value).endOf('day') : null };
     });
   }
 
@@ -104,15 +103,6 @@ export class AuditComponent extends SidenavPage<Event> {
 
   onSearchSubmit(search: string) {
     this.search = search || '';
-  }
-
-  clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
-    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
-      this.dateRangeFilterForm.get(dateToClear).reset();
-    }
-
-    input.value = null;
-    $event.stopPropagation();
   }
 
   showAudit(item: Event) {

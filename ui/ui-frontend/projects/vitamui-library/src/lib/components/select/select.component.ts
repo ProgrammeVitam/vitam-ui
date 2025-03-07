@@ -108,7 +108,13 @@ export interface VitamuiSelectOptions {
     SearchBarModule,
     TranslateModule,
   ],
-  providers: [VITAMUI_SELECT_VALUE_ACCESSOR],
+  providers: [
+    VITAMUI_SELECT_VALUE_ACCESSOR,
+    {
+      provide: AbstractFormInputDirective,
+      useExisting: forwardRef(() => SelectComponent),
+    }, // This provider is required in order for the FormFieldValueWrapperComponent to be able to find a reference to that component
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -242,7 +248,8 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   ngAfterViewInit(): void {
-    this.filterAllOptionsValue();
+    this.updateSelectedOptionsFromValue(this.control.value);
+    this.overrideControlMethods();
 
     merge(this.sd.scrolled().pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable)), this.optionKeys.changes).subscribe(
       () => {
@@ -319,7 +326,6 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.showOnlySelectedOption = false;
     this.control.reset();
     this.onChange(this._multiple ? [] : undefined);
-    this.selectedOptions = [];
   }
 
   protected onSearch(value: string): void {
@@ -380,12 +386,25 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.updateMatSelectTriggerContent();
   }
 
-  private filterAllOptionsValue() {
+  private overrideControlMethods() {
     const previousSetValue = this.control.setValue;
     this.control.setValue = (value: any, options?: any) => {
       const filteredValue = value instanceof Array ? value.filter((v) => v !== this.SELECT_ALL_OPTIONS) : value;
       previousSetValue.bind(this.control)(filteredValue, options);
     };
+
+    const previousReset = this.control.reset;
+    this.control.reset = (value?: any, options?: any) => {
+      this.updateSelectedOptionsFromValue(value);
+      previousReset.bind(this.control)(value, options);
+    };
+  }
+
+  private updateSelectedOptionsFromValue(value: any) {
+    (this.control as any).resetValue = value;
+    this.selectedOptions = this._multiple
+      ? this.allOptions.filter((option) => (value || []).includes(option.key))
+      : this.allOptions.filter((option) => option.key === value);
   }
 
   private updateSelectAll(): void {

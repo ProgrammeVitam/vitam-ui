@@ -83,7 +83,7 @@ import { PastisMaterialModule } from '../../../material.module';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { EditableFieldModule, VitamUICommonModule } from 'vitamui-library';
+import { EditableFieldModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../../../core/core.module';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
@@ -92,16 +92,17 @@ import { FileTreeComponent } from './file-tree.component';
 @NgModule({
   imports: [
     CommonModule,
-    PastisMaterialModule,
-    FormsModule,
     CoreModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    SharedModule,
-    UserActionsModule,
     EditableFieldModule,
+    FormsModule,
+    MatTableModule,
+    PastisMaterialModule,
+    ReactiveFormsModule,
+    SharedModule,
     TranslateModule,
+    UserActionsModule,
     VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   exports: [FileTreeComponent, FileTreeMetadataComponent],
   providers: [{ provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { disabled: true } }],

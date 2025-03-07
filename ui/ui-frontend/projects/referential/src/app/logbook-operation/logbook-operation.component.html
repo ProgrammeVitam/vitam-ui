@@ -21,34 +21,17 @@
         </button>
       </vitamui-common-banner>
 
-      <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2">
-        <mat-form-field class="vitamui-input vitamui-date mr-4">
-          <input
-            [matDatepicker]="pickerStart"
-            [max]="dateRangeFilterForm.get('endDate').value"
-            matInput
-            placeholder="{{ 'LOGBOOK.HOME.START_DATE' | translate }}"
-            formControlName="startDate"
-            #stDateInput
-          />
-          <i class="vitamui-icon vitamui-icon-close" *ngIf="stDateInput.value" (click)="clearDate('startDate', $event, stDateInput)"></i>
-          <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
-          <mat-datepicker #pickerStart></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field class="vitamui-input vitamui-date">
-          <input
-            [matDatepicker]="pickerEnd"
-            [min]="dateRangeFilterForm.get('startDate').value"
-            matInput
-            placeholder="{{ 'LOGBOOK.HOME.END_DATE' | translate }}"
-            formControlName="endDate"
-            #endDateInput
-          />
-          <i class="vitamui-icon vitamui-icon-close" *ngIf="endDateInput.value" (click)="clearDate('endDate', $event, endDateInput)"></i>
-          <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
-          <mat-datepicker #pickerEnd></mat-datepicker>
-        </mat-form-field>
+      <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2 hgap-3">
+        <vitamui-common-multiple-options-datepicker
+          formControlName="startDate"
+          [label]="'LOGBOOK.HOME.START_DATE' | translate"
+          [max]="dateRangeFilterForm.get('endDate')?.value"
+        ></vitamui-common-multiple-options-datepicker>
+        <vitamui-common-multiple-options-datepicker
+          formControlName="endDate"
+          [label]="'LOGBOOK.HOME.END_DATE' | translate"
+          [min]="dateRangeFilterForm.get('startDate')?.value"
+        ></vitamui-common-multiple-options-datepicker>
       </form>
     </div>
 

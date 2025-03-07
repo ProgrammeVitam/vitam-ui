@@ -46,6 +46,7 @@ import {
   OtpState,
   User,
   UserInfo,
+  VitamUILibraryModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -60,6 +61,7 @@ import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserInfoService } from '../../user-info.service';
 import { UserService } from '../../user.service';
 import { UserInfoTabComponent } from './user-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 let expectedUser: User = {
   id: 'idUser',
@@ -282,12 +284,14 @@ describe('UserInfoTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        MatButtonToggleModule,
-        VitamUICommonTestModule,
-        LoggerModule.forRoot(),
         HttpClientTestingModule,
+        LoggerModule.forRoot(),
+        MatButtonToggleModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [UserInfoTabComponent, TestHostComponent],
       providers: [

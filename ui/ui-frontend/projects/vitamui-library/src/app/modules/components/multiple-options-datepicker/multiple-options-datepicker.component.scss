@@ -21,6 +21,9 @@ mat-datepicker-toggle mat-icon {
 ::ng-deep .mat-datepicker-content {
   @include shadow-8dp-dark('!important');
 
+  --mat-datepicker-calendar-navigation-button-icon-color: var(--vitamui-primary);
+  --mat-datepicker-calendar-navigation-button-disabled-icon-color: red;
+
   .mat-calendar {
     height: fit-content !important;
 
@@ -32,6 +35,10 @@ mat-datepicker-toggle mat-icon {
       .mat-calendar-previous-button,
       .mat-calendar-next-button {
         color: var(--vitamui-primary);
+
+        &[disabled] {
+          color: var(--vitamui-grey);
+        }
       }
     }
 

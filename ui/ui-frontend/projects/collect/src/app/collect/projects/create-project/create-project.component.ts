@@ -336,13 +336,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       .subscribe({
         next: (_result) => {
           this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
         },
         error: (_error) => {
           this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
         },
@@ -379,7 +377,6 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         finalize(() => {
           this.isLoading = false;
           this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
         }),

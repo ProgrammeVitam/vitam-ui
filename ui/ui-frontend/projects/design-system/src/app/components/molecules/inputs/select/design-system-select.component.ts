@@ -36,16 +36,33 @@
  */
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CountryOption, CountryService, Option, SelectComponent, SlideToggleModule, VitamuiSelectOptions } from 'vitamui-library';
+import {
+  CountryOption,
+  CountryService,
+  FormFieldValueWrapperComponent,
+  Option,
+  SelectComponent,
+  SlideToggleModule,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { extend } from 'underscore';
 import { Observable } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
 @Component({
   standalone: true,
-  imports: [TranslateModule, SelectComponent, FormsModule, ReactiveFormsModule, AsyncPipe, SlideToggleModule],
+  imports: [
+    AsyncPipe,
+    FormFieldValueWrapperComponent,
+    FormsModule,
+    JsonPipe,
+    ReactiveFormsModule,
+    SelectComponent,
+    SlideToggleModule,
+    TranslateModule,
+  ],
   templateUrl: './design-system-select.component.html',
   styleUrl: './design-system-select.component.scss',
 })
@@ -61,6 +78,8 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
   enableDisplaySelected = false;
 
   multiSelectOptions$: Observable<VitamuiSelectOptions>;
+
+  wrapperControl = new FormControl('FR');
 
   @ViewChildren(SelectComponent, { read: ElementRef }) components: QueryList<ElementRef>;
 

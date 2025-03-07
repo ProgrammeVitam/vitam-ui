@@ -42,25 +42,23 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
-import { SharedModule } from '../../shared/shared.module';
+import { PipesModule, VitamUICommonModule } from 'vitamui-library';
 import { UploadTrackingComponent } from './upload-tracking.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatSnackBarModule,
+    PipesModule,
     ReactiveFormsModule,
+    TranslateModule,
     VitamUICommonModule,
-    MatProgressBarModule,
   ],
 
   declarations: [UploadTrackingComponent],

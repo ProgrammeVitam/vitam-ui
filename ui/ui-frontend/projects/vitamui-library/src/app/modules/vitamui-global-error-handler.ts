@@ -59,7 +59,6 @@ export class GlobalErrorHandler implements ErrorHandler {
       if (!this.displayed && this.snackBar.open) {
         this.snackBar.dismiss();
         this.snackBar.open("Une erreur technique est survenue lors de l'affichage de la page.", null, {
-          panelClass: 'vitamui-snack-bar',
           duration: NOTIFICATION_DELAY_MS,
         });
         this.displayed = true;

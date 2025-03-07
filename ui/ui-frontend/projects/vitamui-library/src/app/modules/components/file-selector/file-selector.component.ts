@@ -88,7 +88,6 @@ export class FileSelectorComponent {
 
     if (this.isDirectoryAlreadyExists(folderNames)) {
       this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, {
-        panelClass: 'vitamui-snack-bar',
         duration: 10000,
       });
       this.resetInput();

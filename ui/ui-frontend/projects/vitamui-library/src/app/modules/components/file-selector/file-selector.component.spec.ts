@@ -163,6 +163,6 @@ describe('FileSelectorComponent', () => {
       expect(component.files).not.toContain(file);
     });
 
-    expect(component.snackBar.open).toHaveBeenCalledWith(jasmine.any(String), null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
+    expect(component.snackBar.open).toHaveBeenCalledWith(jasmine.any(String), null, { duration: 10000 });
   });
 });

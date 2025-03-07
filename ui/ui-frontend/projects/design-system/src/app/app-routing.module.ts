@@ -63,6 +63,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TabGroupComponent } from './components/organisms/tab-group/tab-group.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { DialogComponent } from './components/organisms/dialog/dialog.component';
+import { SnackbarComponent } from './components/organisms/snackbar/snackbar.component';
+
 export interface RouteData {
   // Alternative search terms
   altSearch?: {
@@ -119,9 +121,10 @@ const routes: Routes = [
     path: 'organisms',
     children: [
       { path: '', redirectTo: 'table', pathMatch: 'full' },
+      { path: 'dialog', component: DialogComponent },
+      { path: 'snackbar', component: SnackbarComponent },
       { path: 'table', component: TableComponent },
       { path: 'tab-group', component: TabGroupComponent },
-      { path: 'dialog', component: DialogComponent },
     ],
   },
   { path: 'miscellaneous', component: MiscellaneousComponent },

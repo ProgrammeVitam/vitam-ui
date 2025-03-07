@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable, Injector } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import moment from 'moment';
 import { Observable, throwError } from 'rxjs';
 
-import { catchError, tap, timeoutWith } from 'rxjs/operators';
+import { catchError, timeoutWith } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 import { VitamUISnackBarService } from './components/vitamui-snack-bar/vitamui-snack-bar.service';
@@ -139,11 +139,6 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
         URLS_INCREASED_TIMEOUT.some((url) => request.url.includes(url)) ? DEFAULT_DOWNLOAD_UPLOAD_API_TIMEOUT : this.apiTimeout,
         throwError(new VitamUITimeoutError()),
       ),
-      tap((ev: HttpEvent<any>) => {
-        if (ev instanceof HttpResponse) {
-          this.logger.log(this, 'processing response', ev);
-        }
-      }),
       catchError((response) => {
         if (response instanceof HttpErrorResponse && response.status !== errorToByPass) {
           this.logger.log(this, 'Processing http error', response);

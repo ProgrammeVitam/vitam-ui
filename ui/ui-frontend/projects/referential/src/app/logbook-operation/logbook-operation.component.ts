@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, SidenavPage, VitamuiCommonBannerComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-logbook-operation',
@@ -78,7 +79,10 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
       this.filters = {
         type: this.filters.type,
         status: this.filters.status,
-        dateRange: value,
+        dateRange: {
+          startDate: value.startDate ? moment(value.startDate).toDate() : null,
+          endDate: value.endDate ? moment(value.endDate).toDate() : null,
+        },
       };
     });
     this.route.queryParams.subscribe((params) => {
@@ -103,15 +107,6 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
 
   public onSearchSubmit(search: string): void {
     this.search = search || '';
-  }
-
-  public clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
-    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
-      this.dateRangeFilterForm.get(dateToClear).reset();
-    }
-
-    input.value = null;
-    $event.stopPropagation();
   }
 
   private openOperationDetail(): void {

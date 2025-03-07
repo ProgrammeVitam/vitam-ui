@@ -41,11 +41,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarModule } from 'vitamui-library';
+import {
+  ENVIRONMENT,
+  GlobalEventService,
+  InjectorModule,
+  LoggerModule,
+  MultipleOptionsDatepickerModule,
+  SearchBarComponent,
+  SearchBarModule,
+} from 'vitamui-library';
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 describe('LogbookOperationComponent', () => {
   let component: LogbookOperationComponent;
@@ -55,9 +65,19 @@ describe('LogbookOperationComponent', () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule, TranslateModule.forRoot()],
+      imports: [
+        InjectorModule,
+        LoggerModule.forRoot(),
+        MatMenuModule,
+        MatMomentDateModule,
+        MultipleOptionsDatepickerModule,
+        ReactiveFormsModule,
+        SearchBarModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [LogbookOperationComponent, SearchBarComponent],
       providers: [
+        DatePipe,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },

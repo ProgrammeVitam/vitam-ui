@@ -71,7 +71,7 @@ export class SecurisationComponent extends SidenavPage<Event> {
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value };
+      this.filters = { ...this.filters, startDate: value ? moment(value).startOf('day') : null };
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value) => {
@@ -86,15 +86,6 @@ export class SecurisationComponent extends SidenavPage<Event> {
 
   public onSearchSubmit(search: string): void {
     this.search = search || '';
-  }
-
-  public clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
-    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
-      this.dateRangeFilterForm.get(dateToClear).reset();
-    }
-
-    input.value = null;
-    $event.stopPropagation();
   }
 
   public showSecurisation(item: Event): void {

@@ -125,7 +125,6 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
           .pipe(
             map((message) => {
               this.snackBar.open(message, null, {
-                panelClass: 'vitamui-snack-bar',
                 duration: 10000,
               });
             }),

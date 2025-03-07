@@ -415,31 +415,13 @@
               </div>
               <div class="row col">
                 <div class="col-auto">
-                  <mat-form-field class="ml-3 vitamui-mat-select">
-                    <mat-select
-                      *ngIf="availableRegex?.length > 1; else valueUnique"
-                      disableRipple="true"
-                      panelClass="vitamui-mat-select"
-                      [(value)]="regex"
-                      (selectionChange)="radioExpressionReguliere = 'select'"
-                    >
-                      <mat-option *ngFor="let predefiniElement of availableRegex" [value]="predefiniElement.value">
-                        {{ predefiniElement.label }}
-                      </mat-option>
-                    </mat-select>
-
-                    <ng-template #valueUnique>
-                      <mat-select disableRipple="true" panelClass="vitamui-mat-select" [(value)]="regex" disabled>
-                        <mat-option *ngFor="let predefiniElement of availableRegex" [value]="availableRegex[0].value">
-                          {{ predefiniElement.label }}
-                        </mat-option>
-                      </mat-select>
-                    </ng-template>
-                    <div class="select-arrow">
-                      <i class="material-icons">keyboard_arrow_up</i>
-                      <i class="material-icons">keyboard_arrow_down</i>
-                    </div>
-                  </mat-form-field>
+                  <vitamui-select
+                    [disabled]="availableRegex?.length <= 1"
+                    [(ngModel)]="regex"
+                    (change)="radioExpressionReguliere = 'select'"
+                    [options]="availableRegex"
+                    [enableSearch]="false"
+                  ></vitamui-select>
                 </div>
               </div>
             </div>
@@ -453,6 +435,7 @@
               <div class="row col">
                 <div class="col-6">
                   <vitamui-common-textarea
+                    class="w-100"
                     [disabled]="isNotRegexCustomisable()"
                     [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' | translate"
                     [(ngModel)]="customRegex"
@@ -464,6 +447,7 @@
                 </div>
                 <div class="col-6">
                   <vitamui-common-textarea
+                    class="w-100"
                     [disabled]="isNotRegexCustomisable()"
                     [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PATTERN_COMMENT' | translate"
                     [(ngModel)]="commentaire"

@@ -145,7 +145,6 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
           console.log('Please update filter to reduce size of response' + errors.message);
 
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
             data: { type: 'exportCsvLimitReached' },
             duration: 10000,
           });
@@ -253,7 +252,6 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
       data: {
         type: 'WorkflowSuccessSnackBar',
         message,

@@ -40,18 +40,8 @@ import {
   ManagementContractValidationErrors,
   ManagementContractValidators,
 } from 'projects/referential/src/app/management-contract/validators/management-contract-validators';
-import { PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
-
-interface PersistentIdentifierPolicyTypeOption {
-  label: string;
-  value: PersistentIdentifierPolicyTypeEnum | string;
-}
-
-interface ObjectUsageOption {
-  label: string;
-  value: string;
-  disabled: false;
-}
+import { Option } from 'vitamui-library';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-update-persistent-identifier-policy-form',
@@ -65,26 +55,42 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
 
   readonly INVALID_AUTHORITY = ManagementContractValidationErrors.INVALID_AUTHORITY;
 
-  policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
-    ...Object.values(PersistentIdentifierPolicyTypeEnum).map((pipt) => ({
-      label: `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
-      value: pipt,
-    })),
-  ];
-  objectUsageOptions: ObjectUsageOption[] = [
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.BINARYMASTER.LABEL', value: 'BinaryMaster', disabled: false },
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.DISSEMINATION.LABEL', value: 'Dissemination', disabled: false },
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.PHYSICALMASTER.LABEL', value: 'PhysicalMaster', disabled: false },
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.TEXTCONTENT.LABEL', value: 'TextContent', disabled: false },
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.THUMBNAIL.LABEL', value: 'Thumbnail', disabled: false },
+  objectUsageOptions: Option[] = [
+    {
+      key: 'BinaryMaster',
+      label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.BINARYMASTER.LABEL'),
+      disabled: false,
+    },
+    {
+      key: 'Dissemination',
+      label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.DISSEMINATION.LABEL'),
+      disabled: false,
+    },
+    {
+      key: 'PhysicalMaster',
+      label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.PHYSICALMASTER.LABEL'),
+      disabled: false,
+    },
+    {
+      key: 'TextContent',
+      label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.TEXTCONTENT.LABEL'),
+      disabled: false,
+    },
+    {
+      key: 'Thumbnail',
+      label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.OBJECT_USAGE_OPTION.THUMBNAIL.LABEL'),
+      disabled: false,
+    },
   ];
 
   objectUsagePoliciesToggle = false;
   addButtonDisabled = false;
   isExistingTypeOption = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.form) {
@@ -108,6 +114,10 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
       });
 
       this.form.get('objectUsagePolicies').valueChanges.subscribe((objectUsagePolicies) => {
+        this.objectUsageOptions.forEach(
+          (objectUsageOption) => (objectUsageOption.disabled = this.isObjectUsageOptionDisabled(objectUsageOption.key)),
+        );
+
         this.form.get('shouldConcernObjects').setValue(objectUsagePolicies.length > 0);
       });
 
@@ -140,7 +150,7 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
 
     const objectUsagePolicy: FormGroup = this.formBuilder.group(
       {
-        objectUsage: [objectUsageOption.value, Validators.required],
+        objectUsage: [objectUsageOption.key, Validators.required],
         initialVersion: [true, Validators.required],
         intermediaryVersion: ['ALL', Validators.required],
       },
@@ -152,9 +162,9 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
     this.updateAddButtonState();
   }
 
-  findAvailableObjectUsageOption(): ObjectUsageOption {
+  private findAvailableObjectUsageOption(): Option {
     return this.objectUsageOptions.find((objectUsageOption) => {
-      return this.getObjectUsagePolicies().every((objectUsagePolicy) => objectUsagePolicy.value.objectUsage !== objectUsageOption.value);
+      return this.getObjectUsagePolicies().every((objectUsagePolicy) => objectUsagePolicy.value.objectUsage !== objectUsageOption.key);
     });
   }
 
@@ -162,7 +172,7 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
     return this.objectUsagePolicies.controls;
   }
 
-  isObjectUsageOptionDisabled(optionValue: string): boolean {
+  private isObjectUsageOptionDisabled(optionValue: string): boolean {
     return this.getObjectUsagePolicies().some((policy: FormGroup) => policy.get('objectUsage').value === optionValue);
   }
 

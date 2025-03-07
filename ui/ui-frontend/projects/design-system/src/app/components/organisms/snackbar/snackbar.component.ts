@@ -34,13 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonModule, VitamUILibraryModule, VitamUISnackBarService } from 'vitamui-library';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgForOf } from '@angular/common';
 
-import { VitamUISnackBarModule } from './vitamui-snack-bar/vitamui-snack-bar.module';
+const INFINITE_DURATION = 0;
 
-@NgModule({
-  imports: [CommonModule, VitamUISnackBarModule],
-  exports: [VitamUISnackBarModule],
+@Component({
+  templateUrl: './snackbar.component.html',
+  styleUrls: ['./snackbar.component.scss'],
+  imports: [TranslateModule, VitamUICommonModule, VitamUILibraryModule, FormsModule, ReactiveFormsModule, NgForOf],
+  standalone: true,
 })
-export class SharedModule {}
+export class SnackbarComponent implements OnInit {
+  form: FormGroup;
+  iconOptions: string[] = ['vitamui-icon-user', 'vitamui-icon-agent', 'vitamui-icon-contrat', 'vitamui-icon-link'];
+
+  buttons: FormArray = this.fb.array([]);
+
+  constructor(
+    private snackbarService: VitamUISnackBarService,
+    private fb: FormBuilder,
+  ) {
+    this.form = fb.group({
+      icon: [],
+      message: ['Some message', { updateOn: 'blur' }],
+      buttons: this.buttons,
+    });
+
+    this.form.valueChanges.subscribe(() => this.openSnackbar());
+  }
+
+  ngOnInit() {
+    this.openSnackbar();
+  }
+
+  private openSnackbar() {
+    this.snackbarService.open({ ...this.form.value, duration: INFINITE_DURATION });
+  }
+
+  addButton() {
+    this.buttons.push(this.fb.group({ label: ['Click me!', { updateOn: 'blur' }], url: ['', { updateOn: 'blur' }], outline: [false] }));
+  }
+
+  removeButton(i: number) {
+    this.buttons.removeAt(i);
+  }
+}

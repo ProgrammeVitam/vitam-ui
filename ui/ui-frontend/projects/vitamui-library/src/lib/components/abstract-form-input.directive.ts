@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Injector, Input, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, EventEmitter, Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import {
   AsyncValidatorFn,
   ControlContainer,
@@ -57,6 +57,9 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   @Input({ transform: coerceBooleanProperty }) required: boolean;
   @Input({ transform: coerceBooleanProperty }) disabled: boolean;
 
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  @Output() change = new EventEmitter(); // To be able to use (change)="..." on components
+
   protected control: FormControl;
 
   #subscription?: Subscription;
@@ -66,6 +69,9 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['required'] && this.control) {
       this.updateValidators();
+    }
+    if (changes['disabled'] && this.control) {
+      this.updateDisabled();
     }
   }
 
@@ -106,17 +112,21 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
     }
 
     this.updateValidators();
+    this.updateDisabled();
   }
 
   ngOnDestroy() {
     this.#subscription?.unsubscribe();
   }
 
-  onChange = (_: any) => {};
+  onChange = (value: any) => this.change.emit(value); // Emits value in EventEmitter, even when the component has no control (no [ngModel] nor formControlName)
   onTouched = () => {};
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
+    this.onChange = (value) => {
+      fn(value);
+      this.change.emit(value); // Emits value in EventEmitter
+    };
   }
 
   registerOnTouched(fn: any): void {
@@ -128,5 +138,13 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   private updateValidators() {
     if (this.required) this.control.addValidators(Validators.required);
     else if (this.required === false) this.control.removeValidators(Validators.required);
+  }
+
+  private updateDisabled() {
+    // We use setTimeout to prevent ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(() => {
+      if (this.disabled) this.control.disable();
+      else if (this.disabled === false) this.control.enable();
+    });
   }
 }

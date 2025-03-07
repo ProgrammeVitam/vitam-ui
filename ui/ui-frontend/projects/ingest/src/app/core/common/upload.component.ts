@@ -37,12 +37,12 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { BytesPipe, StartupService } from 'vitamui-library';
+import { BytesPipe, StartupService, VitamUISnackBarService } from 'vitamui-library';
 
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
+import { MatSnackBarRef } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-upload',
@@ -67,14 +67,17 @@ export class UploadComponent implements OnInit {
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
+  private snackbarRef: MatSnackBarRef<unknown>;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UploadComponent>,
     private formBuilder: FormBuilder,
     private uploadService: UploadService,
-    private snackBar: MatSnackBar,
+    private snackBarService: VitamUISnackBarService,
     private startupService: StartupService,
     private bytesPipe: BytesPipe,
+    private translateService: TranslateService,
   ) {
     this.sipForm = this.formBuilder.group({
       hasSip: null,
@@ -123,47 +126,41 @@ export class UploadComponent implements OnInit {
 
     this.uploadService
       .uploadIngest(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, (operationId) => {
-        this.snackBar.dismiss();
+        this.snackbarRef?.dismiss();
         if (
           this.contextId === IngestType.HOLDING_SCHEME ||
           this.contextId === IngestType.FILING_SCHEME ||
           this.contextId === IngestType.BLANK_TEST
         ) {
-          this.displaySnackBar({
-            type: 'fileUploaded',
-            messageKey:
+          this.snackbarRef = this.snackBarService.open({
+            icon: 'vitamui-icon-archive-ingest',
+            message:
               this.contextId === IngestType.BLANK_TEST
                 ? 'INGEST_UPLOAD.BLANK_UPLOAD_COMPLETE_MESSAGE'
                 : 'INGEST_UPLOAD.UPLOAD_COMPLETE_MESSAGE',
-            buttonAction: () => this.goToOperation(operationId),
-            buttonMessageKey: 'INGEST_UPLOAD.TO_OPERATION_APP',
+            translate: true,
+            buttons: [
+              {
+                url: `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.tenantIdentifier}?guid=${operationId}`,
+                label: this.translateService.instant('INGEST_UPLOAD.TO_OPERATION_APP'),
+              },
+            ],
           });
         }
       })
       .subscribe(
         () => {
           this.dialogRef.close();
-          this.displaySnackBar({
-            type: 'fileUploaded',
-            messageKey: 'INGEST_UPLOAD.ALERTE_MESSAGE',
+          this.snackbarRef = this.snackBarService.open({
+            icon: 'vitamui-icon-archive-ingest',
+            message: 'INGEST_UPLOAD.ALERTE_MESSAGE',
+            translate: true,
           });
         },
         (error: any) => {
           this.message = error.message;
         },
       );
-  }
-
-  goToOperation(operationId: string) {
-    window.location.href =
-      this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + operationId;
-  }
-
-  displaySnackBar(data: any) {
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
-      data,
-    });
   }
 
   isValidSIP() {

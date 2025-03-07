@@ -44,10 +44,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { BASE_URL, InjectorModule, LoggerModule, MultipleOptionsDatepickerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProbativeValueComponent } from './probative-value.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { PipesModule } from '../shared/pipes/pipes.module';
+import { DatePipe } from '@angular/common';
 
 describe('ProbativeValueComponent', () => {
   let component: ProbativeValueComponent;
@@ -60,17 +64,23 @@ describe('ProbativeValueComponent', () => {
     };
     await TestBed.configureTestingModule({
       imports: [
-        MatInputModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        NoopAnimationsModule,
-        MatSelectModule,
         InjectorModule,
-        MatSidenavModule,
         LoggerModule.forRoot(),
+        MatInputModule,
+        MatMomentDateModule,
+        MatSelectModule,
+        MatSidenavModule,
+        MultipleOptionsDatepickerModule,
+        NoopAnimationsModule,
+        PipesModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
       ],
       declarations: [ProbativeValueComponent],
       providers: [
+        { provide: BASE_URL, useValue: '/pastis-api' },
+        DatePipe,
         FormBuilder,
         { provide: MatDialog, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },

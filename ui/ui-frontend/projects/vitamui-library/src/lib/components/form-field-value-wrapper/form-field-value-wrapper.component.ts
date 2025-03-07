@@ -36,7 +36,7 @@
  */
 import { AfterContentInit, Component, ContentChild, ElementRef, forwardRef, HostListener, Injector, ViewChild } from '@angular/core';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
-import { AbstractControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
 export const FORM_FIELD_VALUE_WRAPPER_VALUE_ACCESSOR: any = {
@@ -55,7 +55,7 @@ export const FORM_FIELD_VALUE_WRAPPER_VALUE_ACCESSOR: any = {
 })
 export class FormFieldValueWrapperComponent extends AbstractFormInputDirective implements AfterContentInit {
   editMode: boolean;
-  private innerControl: AbstractControl;
+  private innerControl: FormControl;
 
   #cancelTimeout: number;
   #componentRef: Element;
@@ -113,14 +113,20 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
     this.innerControl = this.ref?.setControl(this.control);
   }
 
+  writeValue(value: any) {
+    this.ref?.writeValue(value);
+  }
+
   confirm() {
     if (!this.canConfirm) return;
+    (this.innerControl as any).resetValue = this.innerControl.value;
     this.onChange(this.innerControl.value);
     this.cancel();
   }
 
   cancel() {
-    this.innerControl.reset((this.innerControl as any)?.resetValue || undefined);
+    const resetValue = (this.innerControl as any)?.resetValue || undefined;
+    this.innerControl.reset(resetValue, { emitEvent: false });
     const isInside = this.isInside(document.activeElement, this.#componentRef);
     if (isInside) {
       (document.activeElement as HTMLElement)?.blur();

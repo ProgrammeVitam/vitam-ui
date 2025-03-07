@@ -118,7 +118,6 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
         this.searchCriteriaListService.deleteSearchCriteriaHistory(searchCriteriaHistory.id).subscribe(() => {
           this.clearElement(searchCriteriaHistory.id);
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
             data: { type: 'searchCriteriaHistoryDeleted', name: searchCriteriaHistory.name },
             duration: 10000,
           });

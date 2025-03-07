@@ -62,7 +62,7 @@ class TesthostComponent {
   @ViewChild(EditableToggleGroupComponent) component: EditableToggleGroupComponent;
 }
 
-describe('EditableSelectComponent', () => {
+describe('EditableToggleGroupComponent', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;

@@ -92,7 +92,7 @@ export class LogbookSearchService extends SearchService<IEvent> {
     }
 
     if (criteria.evDateTime_Start) {
-      operators.push({ $gte: { evDateTime: criteria.evDateTime_Start } });
+      operators.push({ $gte: { evDateTime: moment(criteria.evDateTime_Start).startOf('day') } });
     }
 
     if (criteria.evDateTime_End) {

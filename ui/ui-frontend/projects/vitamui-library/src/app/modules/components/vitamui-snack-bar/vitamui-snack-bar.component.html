@@ -1,13 +1,23 @@
 <div class="vitamui-snack-bar-container">
   <div class="vitamui-snack-bar-content">
-    <i *ngIf="data?.icon" class="vitamui-icon {{ data.icon }}"></i>
-    <div class="d-flex align-items-center" [class.clickable]="data.callBack">
-      <div [innerHTML]="data.message"></div>
-      <div *ngIf="data.htmlContent" class="ml-2" (click)="callBack()" [innerHTML]="html"></div>
+    <i *ngIf="data?.icon" class="vitamui-icon {{ data.icon }} mr-4"></i>
+    <div class="d-flex align-items-center">
+      <div class="text medium white">{{ data.message }}</div>
+      <div *ngIf="data.buttons?.length" class="ml-4 hgap-4">
+        <a
+          *ngFor="let button of data.buttons"
+          class="btn"
+          [class]="button.outline ? 'contrast-outline contrast-primary-outline' : 'contrast contrast-primary'"
+          [href]="button.url"
+          [target]="button.target || '_self'"
+        >
+          {{ button.label }}
+        </a>
+      </div>
     </div>
   </div>
 
-  <button (click)="close()" class="close-btn">
-    <i class="material-icons">clear</i>
+  <button (click)="close()" class="ml-3 close-btn">
+    <i class="vitamui-icon vitamui-icon-close"></i>
   </button>
 </div>

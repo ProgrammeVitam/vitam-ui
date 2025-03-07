@@ -43,23 +43,26 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
 import { OwnerPopupComponent } from './owner-popup.component';
 import { OwnerPreviewComponent } from './owner-preview.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
+    MatDividerModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
     MatTabsModule,
     ReactiveFormsModule,
-    MatDividerModule,
+    SharedModule,
+    TranslateModule,
     VitamUICommonModule,
-    MatProgressSpinnerModule,
+    VitamUILibraryModule,
   ],
   declarations: [OwnerPopupComponent, OwnerPreviewComponent, InformationTabComponent, OwnerOperationHistoryTabComponent],
   exports: [OwnerPopupComponent, OwnerPreviewComponent],
