@@ -9,7 +9,7 @@ db.services.insertOne({
   _id: NumberInt(8),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.ui_pastis.clientId | default('pastis') }}",
-  serviceId: "{{ vitamui.ui_pastis.serviceId | default('^' + vitamui.pastis.base_url | default(url_prefix+'/pastis') + '/.*') }}",
+  serviceId: "{{ vitamui.ui_pastis.serviceId | default('^' + vitamui.ui_pastis.base_url | default(url_prefix+'/pastis') + '/.*') }}",
   name: "{{ vitamui.ui_pastis.name | default('Pastis Application') }}",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],

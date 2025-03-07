@@ -9,7 +9,7 @@ db.services.insertOne({
   _id: NumberInt(7),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.ui_collect.clientId | default('collect') }}",
-  serviceId: "{{ vitamui.ui_collect.serviceId | default('^' + vitamui.collect.base_url | default(url_prefix+'/collect') + '/.*') }}",
+  serviceId: "{{ vitamui.ui_collect.serviceId | default('^' + vitamui.ui_collect.base_url | default(url_prefix+'/collect') + '/.*') }}",
   name: "{{ vitamui.ui_collect.name | default('Collect Application') }}",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],
