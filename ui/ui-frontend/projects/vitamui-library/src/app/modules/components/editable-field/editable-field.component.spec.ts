@@ -34,21 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 import { BASE_URL } from '../../injection-tokens';
 
 import { EditableFieldComponent } from './editable-field.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('EditableFieldComponent', () => {
   let component: EditableFieldComponent;
 
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, VitamUICommonTestModule],
-      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
+      imports: [VitamUICommonTestModule],
+      providers: [
+        {
+          provide: BASE_URL,
+          useValue: '/fake-api',
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }),
   );
   beforeEach(() => {

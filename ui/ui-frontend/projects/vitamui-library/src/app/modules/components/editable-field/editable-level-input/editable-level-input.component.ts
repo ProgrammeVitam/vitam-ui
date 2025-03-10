@@ -49,6 +49,7 @@ export const EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-level-input.component.html',
   styleUrls: ['./editable-level-input.component.scss'],
   providers: [EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableLevelInputComponent extends EditableFieldComponent {
   @Input() prefix: string;

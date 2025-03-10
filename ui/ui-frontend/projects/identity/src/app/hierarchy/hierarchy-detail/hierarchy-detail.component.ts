@@ -44,6 +44,7 @@ import { HierarchyService } from '../hierarchy.service';
   selector: 'app-hierarchy-detail',
   templateUrl: './hierarchy-detail.component.html',
   styleUrls: ['./hierarchy-detail.component.scss'],
+  standalone: false,
 })
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
   @Input()

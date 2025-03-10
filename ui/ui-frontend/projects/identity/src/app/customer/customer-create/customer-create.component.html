@@ -247,7 +247,7 @@
 
     <cdk-step>
       <app-homepage-message
-        [customer]="this.getCustomerFromForm()"
+        [customer]="getCustomerFromForm()"
         (formToSend)="homepageMessageForm = $event.form; portalTitles = $event.portalTitles; portalMessages = $event.portalMessages"
       ></app-homepage-message>
       <mat-dialog-actions>

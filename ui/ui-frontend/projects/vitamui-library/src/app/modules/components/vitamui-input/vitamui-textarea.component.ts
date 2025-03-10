@@ -61,6 +61,7 @@ export const VITAMUI_TEXTAREA_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-textarea.component.html',
   styleUrls: ['./vitamui-textarea.component.scss'],
   providers: [VITAMUI_TEXTAREA_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class VitamUITextareaComponent implements ControlValueAccessor, OnInit, OnDestroy {
   control: AbstractControl;

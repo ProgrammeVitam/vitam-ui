@@ -42,6 +42,7 @@ import { FileNode } from '../../models/file-node';
   selector: 'modify-text-button',
   templateUrl: './modify-text-button.component.html',
   styleUrls: ['./modify-text-button.component.scss'],
+  standalone: false,
 })
 export class ModifyTextButtonComponent {
   @Input()

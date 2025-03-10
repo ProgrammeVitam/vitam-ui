@@ -52,6 +52,7 @@ export class ProbativeValueFilters {
   selector: 'app-probative-value-list',
   templateUrl: './probative-value-list.component.html',
   styleUrls: ['./probative-value-list.component.scss'],
+  standalone: false,
 })
 export class ProbativeValueListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -36,23 +36,24 @@
  */
 import {
   BASE_URL,
+  CriteriaSearchQuery,
   Customer,
   ENVIRONMENT,
   LoggerModule,
   Operators,
   OtpState,
-  CriteriaSearchQuery,
   VitamUISnackBarService,
 } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { CustomerService } from './customer.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedCustomer: Customer = {
   id: '42',
@@ -106,13 +107,15 @@ describe('CustomerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot()],
       providers: [
         CustomerService,
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 

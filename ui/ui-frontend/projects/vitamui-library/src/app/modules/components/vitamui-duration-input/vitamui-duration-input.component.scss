@@ -1,15 +1,14 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 .mat-drawer,
 .mat-mdc-dialog-container {
   .vitamui-duration-input {
-    @include dialog-elevation-dark;
+    @include elevation.dialog-elevation-dark;
   }
 }
 
 .vitamui-duration-input {
-  @include input-elevation-dark;
+  @include elevation.input-elevation-dark;
   display: flex;
   justify-content: center; /* align horizontal */
   align-items: center;

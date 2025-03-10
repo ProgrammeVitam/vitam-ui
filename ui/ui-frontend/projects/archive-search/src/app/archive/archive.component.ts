@@ -59,6 +59,7 @@ import { ArchiveService } from './archive.service';
   selector: 'app-archive',
   templateUrl: './archive.component.html',
   styleUrls: ['./archive.component.scss'],
+  standalone: false,
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   show = true;

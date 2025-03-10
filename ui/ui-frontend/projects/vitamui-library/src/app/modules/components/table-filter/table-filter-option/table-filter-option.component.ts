@@ -40,6 +40,7 @@ import { Component, EventEmitter, HostBinding, HostListener, Input, Output } fro
   selector: 'vitamui-common-table-filter-option',
   templateUrl: './table-filter-option.component.html',
   styleUrls: ['./table-filter-option.component.scss'],
+  standalone: false,
 })
 export class TableFilterOptionComponent {
   @Input() value: any;

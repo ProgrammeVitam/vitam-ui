@@ -53,6 +53,7 @@ export const MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR: any = {
   templateUrl: './multiple-options-datepicker.component.html',
   styleUrl: './multiple-options-datepicker.component.scss',
   providers: [MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class MultipleOptionsDatepickerComponent extends AbstractFormInputDirective implements OnInit {
   @Input() pickerType: PickerType = 'day';

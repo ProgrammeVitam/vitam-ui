@@ -43,19 +43,28 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 import { ContextComponent } from './context.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-agency-preview', template: '' })
+@Component({
+  selector: 'app-agency-preview',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-agency-list', template: '' })
+@Component({
+  selector: 'app-agency-list',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextListStub {}
 
@@ -71,13 +80,8 @@ describe('ContextComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ContextComponent, ContextListStub, ContextPreviewStub],
-      providers: [
-        { provide: ApplicationService, useValue: applicationServiceMock },
-        { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY } },
-        { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },
-      ],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
-        HttpClientTestingModule,
         VitamUICommonTestModule,
         RouterTestingModule,
         InjectorModule,
@@ -86,7 +90,13 @@ describe('ContextComponent', () => {
         MatSidenavModule,
         MatDialogModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        { provide: ApplicationService, useValue: applicationServiceMock },
+        { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY } },
+        { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 

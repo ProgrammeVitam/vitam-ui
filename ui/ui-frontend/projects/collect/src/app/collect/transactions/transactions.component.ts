@@ -45,6 +45,7 @@ import { TransactionsService } from './transactions.service';
   selector: 'app-projects',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
+  standalone: false,
 })
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
   tenantIdentifier: string;

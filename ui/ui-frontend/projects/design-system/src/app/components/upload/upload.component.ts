@@ -42,7 +42,6 @@ import { VitamUICommonModule } from 'vitamui-library';
   selector: 'design-system-upload',
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
-  standalone: true,
   imports: [CommonModule, VitamUICommonModule],
 })
 export class UploadComponent {}

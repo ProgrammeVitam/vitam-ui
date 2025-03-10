@@ -54,6 +54,7 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   templateUrl: './context-edit-permission.component.html',
   styleUrls: ['./context-edit-permission.component.scss'],
   providers: [CONTEXT_PERMISSION_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
   constructor(

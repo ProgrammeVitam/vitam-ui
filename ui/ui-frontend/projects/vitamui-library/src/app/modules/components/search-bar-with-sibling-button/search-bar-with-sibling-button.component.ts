@@ -40,6 +40,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewC
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'search-bar-with-sibling-button',
   templateUrl: './search-bar-with-sibling-button.component.html',
+  standalone: false,
 })
 export class SearchBarWithSiblingButtonComponent {
   @Input() placeholder: string;
@@ -50,6 +51,7 @@ export class SearchBarWithSiblingButtonComponent {
 
   @Input() buttonLabel: string;
 
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() search = new EventEmitter<string>();
 
   @Output() searchChanged = new EventEmitter<string>();

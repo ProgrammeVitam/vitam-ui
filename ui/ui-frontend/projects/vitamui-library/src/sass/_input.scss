@@ -1,7 +1,9 @@
-$anim-timing: 150ms ease-out;
+@use './mixins/elevation' as elevation;
 
 .vitamui-input {
-  @include input-elevation-dark;
+  $anim-timing: 150ms ease-out;
+
+  @include elevation.input-elevation-dark;
   border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
@@ -102,7 +104,7 @@ $anim-timing: 150ms ease-out;
     &.mat-form-field-disabled {
       background-color: var(--vitamui-grey-300);
       border: none !important;
-      @include shadow-0;
+      @include elevation.shadow-0;
     }
 
     .mat-mdc-input-element {

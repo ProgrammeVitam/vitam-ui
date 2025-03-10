@@ -88,6 +88,7 @@ export interface CreateProfileFormResult {
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
   styleUrls: ['./create-profile.component.scss'],
+  standalone: false,
 })
 export class CreateProfileComponent implements OnInit {
   readonly ProfileType = ProfileType;

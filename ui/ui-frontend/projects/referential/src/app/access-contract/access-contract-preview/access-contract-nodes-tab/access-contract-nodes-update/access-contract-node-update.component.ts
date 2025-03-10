@@ -43,6 +43,7 @@ import { AccessContract, FilingPlanMode, AccessContractService } from 'vitamui-l
   selector: 'app-access-contract-node-update',
   templateUrl: './access-contract-node-update.component.html',
   styleUrls: ['./access-contract-node-update.component.scss'],
+  standalone: false,
 })
 export class AccessContractNodeUpdateComponent implements OnInit {
   accessContract: AccessContract;

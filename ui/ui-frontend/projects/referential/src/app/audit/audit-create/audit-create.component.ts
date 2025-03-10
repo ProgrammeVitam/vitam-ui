@@ -64,6 +64,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-audit-create',
   templateUrl: './audit-create.component.html',
   styleUrls: ['./audit-create.component.scss'],
+  standalone: false,
 })
 export class AuditCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;

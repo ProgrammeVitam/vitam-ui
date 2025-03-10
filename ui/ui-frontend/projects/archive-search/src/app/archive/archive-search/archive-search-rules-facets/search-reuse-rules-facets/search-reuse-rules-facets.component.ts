@@ -45,6 +45,7 @@ import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-e
   selector: 'app-search-reuse-rules-facets',
   templateUrl: './search-reuse-rules-facets.component.html',
   styleUrls: ['./search-reuse-rules-facets.component.scss'],
+  standalone: false,
 })
 export class SearchReuseRulesFacetsComponent implements OnChanges {
   constructor(

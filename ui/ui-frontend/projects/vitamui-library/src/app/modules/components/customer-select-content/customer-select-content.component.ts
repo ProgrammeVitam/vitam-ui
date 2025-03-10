@@ -44,6 +44,7 @@ import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
   selector: 'vitamui-common-customer-select-content',
   templateUrl: './customer-select-content.component.html',
   styleUrls: ['./customer-select-content.component.scss'],
+  standalone: false,
 })
 export class CustomerSelectContentComponent implements OnInit {
   @Input() customers: MenuOption[];

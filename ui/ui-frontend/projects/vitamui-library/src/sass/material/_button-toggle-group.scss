@@ -1,11 +1,10 @@
-@import '../variables/colors';
-@import '../mixins/elevation';
+@use '../mixins/elevation' as elevation;
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .vitamui-button-toggle-group.mat-button-toggle-group {
-  @include shadow-0;
+  @include elevation.shadow-0;
   border-radius: 5px;
   background-color: var(--vitamui-white);
   border: solid 1px var(--vitamui-primary);

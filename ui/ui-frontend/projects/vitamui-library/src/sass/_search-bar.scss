@@ -1,9 +1,12 @@
+@use './mixins/elevation' as elevation;
+@use './mixins/fonts' as fonts;
+
 .mat-drawer,
 .mat-mdc-dialog-container {
   .search {
     input[type='search'],
     input[type='text'] {
-      @include dialog-elevation-dark;
+      @include elevation.dialog-elevation-dark;
     }
   }
 }
@@ -22,7 +25,7 @@
 
   input[type='search'],
   input[type='text'] {
-    @include input-elevation-dark;
+    @include elevation.input-elevation-dark;
     border: none;
     width: 100%;
     height: 50px;
@@ -38,7 +41,7 @@
     }
 
     &::placeholder {
-      @include vitamui-input-placeholder;
+      @include fonts.vitamui-input-placeholder;
       font-weight: normal;
     }
 

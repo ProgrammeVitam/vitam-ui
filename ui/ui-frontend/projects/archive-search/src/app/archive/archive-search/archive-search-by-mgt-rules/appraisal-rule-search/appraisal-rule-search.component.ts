@@ -78,6 +78,7 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
   selector: 'app-appraisal-rule-search',
   templateUrl: './appraisal-rule-search.component.html',
   styleUrls: ['./appraisal-rule-search.component.css'],
+  standalone: false,
 })
 export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   @Input()

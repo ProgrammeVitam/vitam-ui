@@ -42,6 +42,7 @@ import { FacetDetails } from '../../models';
   selector: 'app-logbook-operation-facet',
   templateUrl: './logbook-operation-facet.component.html',
   styleUrls: ['./logbook-operation-facet.component.scss'],
+  standalone: false,
 })
 export class LogbookOperationFacetComponent {
   /**

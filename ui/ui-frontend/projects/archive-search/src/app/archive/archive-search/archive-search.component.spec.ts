@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
@@ -67,6 +67,8 @@ import { UpdateUnitManagementRuleService } from '../common-services/update-unit-
 import { ArchiveSearchComponent } from './archive-search.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
 const translations: any = { TEST: 'Mock translate test' };
 
 class FakeLoader implements TranslateLoader {
@@ -129,8 +131,9 @@ describe('ArchiveSearchComponent', () => {
     spyOn(archiveServiceStub, 'searchArchiveUnitsByCriteria').and.callThrough();
 
     await TestBed.configureTestingModule({
+      declarations: [ArchiveSearchComponent, SimpleCriteriaSearchComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
-        HttpClientTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatMenuModule,
@@ -143,7 +146,6 @@ describe('ArchiveSearchComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
       ],
-      declarations: [ArchiveSearchComponent, SimpleCriteriaSearchComponent],
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
@@ -157,8 +159,9 @@ describe('ArchiveSearchComponent', () => {
         { provide: Router, useValue: routerSpy },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         { provide: environment, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ArchiveSearchComponent);

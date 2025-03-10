@@ -51,6 +51,7 @@ import { FileFormatListComponent } from './file-format-list/file-format-list.com
   selector: 'app-file-format',
   templateUrl: './file-format.component.html',
   styleUrls: ['./file-format.component.scss'],
+  standalone: false,
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   search = '';

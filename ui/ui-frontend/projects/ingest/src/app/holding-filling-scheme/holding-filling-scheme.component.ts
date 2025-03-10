@@ -45,6 +45,7 @@ import { UploadComponent } from '../core/common/upload.component';
   selector: 'app-holding-filling-scheme',
   templateUrl: './holding-filling-scheme.component.html',
   styleUrls: ['./holding-filling-scheme.component.scss'],
+  standalone: false,
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
   IngestType = IngestType;

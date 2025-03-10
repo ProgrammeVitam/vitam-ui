@@ -50,6 +50,7 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   selector: 'editable-custom-params',
   templateUrl: './editable-custom-params.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableCustomParamsComponent extends EditableFieldComponent {
   array: any[] = [];

@@ -47,14 +47,22 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { of } from 'rxjs';
 import { SecurityProfileComponent } from './security-profile.component';
 
-@Component({ selector: 'app-SecurityProfile-preview', template: '' })
+@Component({
+  selector: 'app-SecurityProfile-preview',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfilePreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-SecurityProfile-list', template: '' })
+@Component({
+  selector: 'app-SecurityProfile-list',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfileListStub {}
 

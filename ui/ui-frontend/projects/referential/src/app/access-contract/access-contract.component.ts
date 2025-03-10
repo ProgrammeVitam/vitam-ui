@@ -53,6 +53,7 @@ import { AccessContractListComponent } from './access-contract-list/access-contr
   selector: 'app-access',
   templateUrl: './access-contract.component.html',
   styleUrls: ['./access-contract.component.scss'],
+  standalone: false,
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
   public search = '';

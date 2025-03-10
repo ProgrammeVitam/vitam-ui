@@ -57,6 +57,7 @@ import { ArchiveService } from '../../archive.service';
   selector: 'app-leaves-tree',
   templateUrl: './leaves-tree.component.html',
   styleUrls: ['./leaves-tree.component.scss'],
+  standalone: false,
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() loadingNodeUnit: boolean;

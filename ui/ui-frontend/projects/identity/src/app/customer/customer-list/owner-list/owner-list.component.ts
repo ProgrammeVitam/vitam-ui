@@ -50,6 +50,7 @@ import { TenantService } from '../../tenant.service';
   selector: 'app-owner-list',
   templateUrl: './owner-list.component.html',
   styleUrls: ['./owner-list.component.scss'],
+  standalone: false,
 })
 export class OwnerListComponent implements OnDestroy, OnInit {
   @Input()

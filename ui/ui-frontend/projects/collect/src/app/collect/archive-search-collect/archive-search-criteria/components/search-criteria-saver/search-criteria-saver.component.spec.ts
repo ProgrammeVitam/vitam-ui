@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -62,7 +61,10 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -112,7 +114,6 @@ describe('SearchCriteriaSaverComponent', () => {
       declarations: [SearchCriteriaSaverComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
-        HttpClientTestingModule,
         ArchiveSharedDataService,
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

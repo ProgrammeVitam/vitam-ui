@@ -55,6 +55,7 @@ import { InformationTabComponent } from './information-tab.component';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class EditableTextAreaStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -69,6 +70,7 @@ class EditableTextAreaStubComponent implements ControlValueAccessor {
 
 @Component({
   template: ` <app-information-tab [profile]="profile" [readOnly]="readOnly"></app-information-tab> `,
+  standalone: false,
 })
 class TestHostComponent {
   profile: Profile = {

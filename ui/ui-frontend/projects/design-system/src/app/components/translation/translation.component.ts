@@ -45,6 +45,7 @@ const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
   selector: 'design-system-translation',
   templateUrl: './translation.component.html',
   styleUrls: ['./translation.component.scss'],
+  standalone: false,
 })
 export class TranslationComponent implements OnInit {
   public nbApplesTextMap: { [k: string]: string } = {

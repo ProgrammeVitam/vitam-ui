@@ -54,6 +54,7 @@ import { HttpResponse } from '@angular/common/http';
   selector: 'app-ingest-contract',
   templateUrl: './ingest-contract.component.html',
   styleUrls: ['./ingest-contract.component.scss'],
+  standalone: false,
 })
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
   @ViewChild(IngestContractListComponent, { static: true }) ingestContractListComponent: IngestContractListComponent;

@@ -51,7 +51,7 @@ import {
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -61,6 +61,7 @@ import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserInfoService } from '../../user-info.service';
 import { UserService } from '../../user.service';
 import { UserInfoTabComponent } from './user-information-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 
 let expectedUser: User = {
@@ -161,12 +162,13 @@ let expectedAdminUserProfile: AdminUserProfile = {
 
 @Component({
   // eslint-disable-next-line max-len
-  template: `<app-user-info-tab
+  template: ` <app-user-info-tab
     [user]="user"
     [customer]="customer"
     [readOnly]="readOnly"
     [adminUserProfile]="adminUserProfile"
   ></app-user-info-tab>`,
+  standalone: false,
 })
 class TestHostComponent {
   user = expectedUser;
@@ -284,7 +286,6 @@ describe('UserInfoTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         LoggerModule.forRoot(),
         MatButtonToggleModule,
         NoopAnimationsModule,
@@ -302,6 +303,8 @@ describe('UserInfoTabComponent', () => {
         { provide: UserCreateValidators, useValue: userCreateValidatorsSpy },
         { provide: AuthService, useValue: { user: {} } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -85,6 +85,7 @@ import moment, { now } from 'moment';
   selector: 'app-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
+  standalone: false,
 })
 export class GroupComponent extends SidenavPage<Group> {
   public groups: Group[];

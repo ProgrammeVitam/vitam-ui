@@ -69,6 +69,7 @@ const RULE_END_DATE = 'RULE_END_DATE';
   selector: 'app-dissemination-rule-search',
   templateUrl: './dissemination-rule-search.component.html',
   styleUrls: ['./dissemination-rule-search.component.css'],
+  standalone: false,
 })
 export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
   @Input()

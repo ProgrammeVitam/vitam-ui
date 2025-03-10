@@ -42,7 +42,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   template: `<mat-spinner class="vitamui-spinner x-large my-3"></mat-spinner>`,
   styleUrls: ['spinner-component.scss'],
   imports: [MatProgressSpinnerModule],
-  standalone: true,
 })
 class SpinnerComponent {}
 

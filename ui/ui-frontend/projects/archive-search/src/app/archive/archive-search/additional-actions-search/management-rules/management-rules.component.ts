@@ -59,6 +59,7 @@ const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
   selector: 'app-management-rules',
   templateUrl: './management-rules.component.html',
   styleUrls: ['./management-rules.component.css'],
+  standalone: false,
 })
 export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;

@@ -52,6 +52,7 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: false,
 })
 export class InformationTabComponent implements OnChanges, OnInit {
   @Input() owner: Owner;

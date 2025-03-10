@@ -47,6 +47,7 @@ import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
   selector: 'app-graphic-identity-update',
   templateUrl: './graphic-identity-update.component.html',
   styleUrls: ['./graphic-identity-update.component.scss'],
+  standalone: false,
 })
 export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
   private destroy = new Subject<void>();

@@ -55,6 +55,7 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   templateUrl: './filing-plan.component.html',
   styleUrls: ['./filing-plan.component.scss'],
   providers: [NODE_SELECT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class FilingPlanComponent implements ControlValueAccessor, OnInit {
   @Input() dataSource: Unit[];

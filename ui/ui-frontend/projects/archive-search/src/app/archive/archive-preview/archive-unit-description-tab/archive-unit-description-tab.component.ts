@@ -41,8 +41,15 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, Logger, SpinnerOverlayService, StartupService } from 'vitamui-library';
-import { EditObject } from 'vitamui-library/app/modules/object-editor/models/edit-object.model';
+import {
+  ArchiveUnit,
+  ArchiveUnitEditorComponent,
+  EditObject,
+  JsonPatch,
+  Logger,
+  SpinnerOverlayService,
+  StartupService,
+} from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveUnitService } from './archive-unit.service';
 
@@ -50,6 +57,7 @@ import { ArchiveUnitService } from './archive-unit.service';
   selector: 'app-archive-unit-description-tab',
   templateUrl: './archive-unit-description-tab.component.html',
   styleUrls: ['./archive-unit-description-tab.component.scss'],
+  standalone: false,
 })
 export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   @Input() archiveUnit: ArchiveUnit;
@@ -144,7 +152,9 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     }
 
     // Utilise `reduce` pour accumuler les nœuds invalides des enfants
-    collectedNodes = collectedNodes.concat(editObject.children.reduce((acc, child) => acc.concat(this.collectInvalidNode(child)), []));
+    collectedNodes = collectedNodes.concat(
+      editObject.children.reduce((acc, child) => acc.concat(this.collectInvalidNode(child)), [] as EditObject[]),
+    );
 
     return collectedNodes;
   }

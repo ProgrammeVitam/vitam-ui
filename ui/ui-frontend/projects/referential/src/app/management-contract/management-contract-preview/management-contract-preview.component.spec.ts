@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -44,6 +44,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractPreviewComponent', () => {
   let component: ManagementContractPreviewComponent;
@@ -51,19 +52,25 @@ describe('ManagementContractPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [ManagementContractPreviewComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        HttpClientTestingModule,
         TranslateModule.forRoot(),
         RouterTestingModule,
         LoggerModule.forRoot(),
         MatDialogModule,
       ],
-      declarations: [ManagementContractPreviewComponent],
-      providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
-      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        {
+          provide: WINDOW_LOCATION,
+          useValue: window.location,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 

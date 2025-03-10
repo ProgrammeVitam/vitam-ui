@@ -44,6 +44,7 @@ import { IngestContractService } from '../../ingest-contract.service';
   selector: 'app-ingest-contract-signature-tab',
   templateUrl: './ingest-contract-signature-tab.component.html',
   styleUrls: ['./ingest-contract-signature-tab.component.scss'],
+  standalone: false,
 })
 export class IngestContractSignatureTabComponent implements OnChanges {
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;

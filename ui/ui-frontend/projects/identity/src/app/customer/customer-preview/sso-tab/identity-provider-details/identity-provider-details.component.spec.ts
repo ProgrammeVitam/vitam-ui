@@ -55,6 +55,7 @@ import { IdentityProviderDetailsComponent } from './identity-provider-details.co
       multi: true,
     },
   ],
+  standalone: false,
 })
 class EditableKeystoreStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -76,6 +77,7 @@ class EditableKeystoreStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class EditablePatternStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -90,6 +92,7 @@ class EditablePatternStubComponent implements ControlValueAccessor {
   template: `
     <app-identity-provider-details [identityProvider]="provider" [domains]="domains" [readOnly]="readOnly"> </app-identity-provider-details>
   `,
+  standalone: false,
 })
 class TestHostComponent {
   @ViewChild(IdentityProviderDetailsComponent, { static: false }) component: IdentityProviderDetailsComponent;

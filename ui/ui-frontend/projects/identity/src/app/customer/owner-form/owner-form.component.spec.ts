@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -48,9 +48,11 @@ import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
 import { TranslateModule } from '@ngx-translate/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   template: ` <app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>`,
+  standalone: false,
 })
 class TesthostComponent {
   owner: Owner = null;
@@ -65,13 +67,13 @@ describe('OwnerFormComponent', () => {
   beforeEach(async () => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', {
-      uniqueCode: () => timer(10).pipe(map(() => null)),
+      uniqueCode: () => timer(10).pipe(map((): any => null)),
     });
 
     await TestBed.configureTestingModule({
+      declarations: [OwnerFormComponent, TesthostComponent],
       imports: [
         FormsModule,
-        HttpClientTestingModule,
         LoggerModule.forRoot(),
         MatSelectModule,
         NoopAnimationsModule,
@@ -80,7 +82,6 @@ describe('OwnerFormComponent', () => {
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
-      declarations: [OwnerFormComponent, TesthostComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -88,6 +89,8 @@ describe('OwnerFormComponent', () => {
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
         { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

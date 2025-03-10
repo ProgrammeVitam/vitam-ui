@@ -91,6 +91,7 @@ import { tap } from 'rxjs/operators';
   selector: 'app-home',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  standalone: false,
 })
 export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('treeSelector', { static: true }) tree: any;

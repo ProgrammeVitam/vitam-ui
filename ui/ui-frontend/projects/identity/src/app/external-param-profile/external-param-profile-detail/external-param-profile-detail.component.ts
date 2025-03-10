@@ -44,6 +44,7 @@ import { SharedService } from '../shared.service';
   selector: 'app-external-param-profile-detail',
   templateUrl: './external-param-profile-detail.component.html',
   styleUrls: ['./external-param-profile-detail.component.css'],
+  standalone: false,
 })
 export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
   @Input() externalParamProfile: ExternalParamProfile;

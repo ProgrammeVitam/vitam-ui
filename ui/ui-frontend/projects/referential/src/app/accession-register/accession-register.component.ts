@@ -45,6 +45,7 @@ import { AccessionRegistersService } from './accession-register.service';
   selector: 'app-accession-register',
   templateUrl: './accession-register.component.html',
   styleUrls: ['./accession-register.component.scss'],
+  standalone: false,
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
   search: string;

@@ -43,6 +43,7 @@ import { debounceTime } from 'rxjs/operators';
   selector: 'vitamui-interval-date-picker',
   templateUrl: './vitamui-interval-date-picker.component.html',
   styleUrls: ['./vitamui-interval-date-picker.component.scss'],
+  standalone: false,
 })
 export class VitamuiIntervalDatePickerComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}

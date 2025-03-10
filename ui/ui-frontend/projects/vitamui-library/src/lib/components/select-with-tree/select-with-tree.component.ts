@@ -70,7 +70,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AccordionModule } from '../../../app/modules/components/accordion/accordion.module';
 
 const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
@@ -106,11 +106,10 @@ const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
     ReactiveFormsModule,
     ScrollingModule,
     SearchBarModule,
-    TranslateModule,
+    TranslatePipe,
   ],
   providers: [VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
 export class SelectWithTreeComponent<T> extends AbstractFormInputDirective implements ControlValueAccessor, AfterViewInit, OnDestroy {
   @Input() placeholder: string;

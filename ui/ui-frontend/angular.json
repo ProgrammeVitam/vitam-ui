@@ -90,10 +90,14 @@
             "port": 4201
           },
           "configurations": {
+            "development": {
+              "buildTarget": "identity:build:development"
+            },
             "production": {
               "buildTarget": "identity:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -224,10 +228,14 @@
             "port": 4200
           },
           "configurations": {
+            "development": {
+              "buildTarget": "portal:build:development"
+            },
             "production": {
               "buildTarget": "portal:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -352,10 +360,14 @@
             "port": 4202
           },
           "configurations": {
+            "development": {
+              "buildTarget": "referential:build:development"
+            },
             "production": {
               "buildTarget": "referential:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -416,9 +428,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/vitamui-library/tsconfig.lib.json",
             "project": "projects/vitamui-library/ng-package.json"
-          }
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/vitamui-library/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/vitamui-library/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -513,10 +533,14 @@
             "buildTarget": "design-system:build"
           },
           "configurations": {
+            "development": {
+              "buildTarget": "design-system:build:development"
+            },
             "production": {
               "buildTarget": "design-system:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -625,10 +649,14 @@
             "port": 4208
           },
           "configurations": {
+            "development": {
+              "buildTarget": "ingest:build:development"
+            },
             "production": {
               "buildTarget": "ingest:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -743,10 +771,14 @@
             "port": 4209
           },
           "configurations": {
+            "development": {
+              "buildTarget": "archive-search:build:development"
+            },
             "production": {
               "buildTarget": "archive-search:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -861,10 +893,14 @@
             "port": 4210
           },
           "configurations": {
+            "development": {
+              "buildTarget": "collect:build:development"
+            },
             "production": {
               "buildTarget": "collect:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -992,6 +1028,9 @@
             "port": 4251
           },
           "configurations": {
+            "development": {
+              "buildTarget": "pastis:build:development"
+            },
             "production": {
               "buildTarget": "pastis:build:production"
             },
@@ -1000,7 +1039,8 @@
               "host": "localhost",
               "port": 8097
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

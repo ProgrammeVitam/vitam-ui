@@ -1,5 +1,4 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 :host {
   width: 100%;
@@ -40,7 +39,7 @@
 
   &:not(.disabled),
   &:not(:disabled) {
-    @include shadow-0;
+    @include elevation.shadow-0;
   }
 }
 

@@ -35,13 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './spacing.component.html',
   styleUrls: ['./spacing.component.scss'],
-  imports: [TranslateModule],
-  standalone: true,
+  imports: [TranslatePipe],
 })
 export class SpacingComponent {
   paddings = [0, 1, 2, 3, 4, 5, 6, 7, 8];

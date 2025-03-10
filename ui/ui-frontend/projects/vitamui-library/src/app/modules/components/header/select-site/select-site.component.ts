@@ -47,6 +47,7 @@ import { AuthService } from './../../../auth.service';
   selector: 'vitamui-common-select-site',
   templateUrl: './select-site.component.html',
   styleUrls: ['./select-site.component.scss'],
+  standalone: false,
 })
 export class SelectSiteComponent implements OnInit {
   public selectedSite: any;

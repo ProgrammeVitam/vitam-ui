@@ -40,5 +40,6 @@ import { Component } from '@angular/core';
   selector: 'app-customer-alerting',
   templateUrl: './customer-alerting.component.html',
   styleUrls: ['./customer-alerting.component.scss'],
+  standalone: false,
 })
 export class CustomerAlertingComponent {}

@@ -66,6 +66,7 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   selector: 'app-portal',
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss'],
+  standalone: false,
 })
 export class PortalComponent implements OnInit, OnDestroy {
   public content: Map<Category, Content> = new Map();

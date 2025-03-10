@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -44,6 +44,7 @@ import { Direction, InfiniteScrollTable, PageRequest, SearchService, TableFilter
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterListComponent } from './accession-register-list.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessionRegisterListComponent', () => {
   let fixture: ComponentFixture<AccessionRegisterListComponent>;
@@ -68,12 +69,14 @@ describe('AccessionRegisterListComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [AccessionRegisterListComponent],
-      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule, HttpClientTestingModule, TableFilterModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule, TableFilterModule],
       providers: [
         { provide: AccessionRegistersService, useValue: accessionRegistersService },
         { provide: SearchService, useValue: searchService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
     fixture = TestBed.createComponent(AccessionRegisterListComponent);
     component = fixture.componentInstance;

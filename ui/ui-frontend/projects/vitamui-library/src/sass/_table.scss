@@ -1,4 +1,6 @@
-@import './mixins/elevation';
+@use './bootstrap';
+@use './base/typography';
+@use './mixins/elevation' as elevation;
 
 table.vitamui-table {
   color: var(--vitamui-grey-700);
@@ -66,10 +68,6 @@ td {
 
   &:first-child:not(.no-first-cell-padding) {
     padding-left: 40px;
-  }
-
-  &:last-child {
-    padding-right: 0px;
   }
 }
 
@@ -356,7 +354,7 @@ $row-padding: 0.8rem;
 
     &:hover {
       background-color: transparent;
-      @include shadow-8dp-dark;
+      @include elevation.shadow-8dp-dark;
 
       .actions > div {
         visibility: visible;
@@ -393,7 +391,7 @@ $row-padding: 0.8rem;
 
       &:hover {
         background-color: transparent;
-        @include shadow-8dp-dark;
+        @include elevation.shadow-8dp-dark;
 
         .actions > div {
           visibility: visible;
@@ -508,14 +506,12 @@ table.cdk-table {
     background: var(--vitamui-white);
 
     tr {
-      @include shadow-2dp-dark;
+      @include elevation.shadow-2dp-dark;
       border-radius: 5px;
 
       th,
       td {
-        @extend .pl-3;
-        @extend .pr-3;
-        @extend .py-3;
+        @extend .p-3;
         @extend .text;
         @extend .normal;
 
@@ -524,16 +520,14 @@ table.cdk-table {
           display: flex;
           align-items: center;
         }
-      }
 
-      th:first-child,
-      td:first-child {
-        @extend .pl-4;
-      }
+        &:first-child {
+          @extend .pl-4;
+        }
 
-      th:last-child,
-      td:last-child {
-        @extend .pr-4;
+        &:last-child {
+          @extend .pr-4;
+        }
       }
 
       th {

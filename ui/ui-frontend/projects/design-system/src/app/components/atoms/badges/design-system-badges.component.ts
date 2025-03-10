@@ -38,7 +38,6 @@ import { Component } from '@angular/core';
 import { BadgeComponent } from 'vitamui-library';
 
 @Component({
-  standalone: true,
   imports: [BadgeComponent],
   templateUrl: './design-system-badges.component.html',
   styleUrl: './design-system-badges.component.scss',

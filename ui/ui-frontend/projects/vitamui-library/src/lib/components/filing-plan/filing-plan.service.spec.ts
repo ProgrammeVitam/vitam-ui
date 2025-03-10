@@ -36,7 +36,7 @@
  */
 /* eslint-disable no-magic-numbers, max-lines */
 
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { LoggerModule, Node } from 'vitamui-library';
@@ -52,6 +52,7 @@ import {
 } from '../../../app/modules';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { EMPTY, of } from 'rxjs';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FilingPlanService', () => {
   let httpTestingController: HttpTestingController;
@@ -61,12 +62,14 @@ describe('FilingPlanService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         FilingPlanService,
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
         { provide: AccessContractService, useValue: accessContractServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 

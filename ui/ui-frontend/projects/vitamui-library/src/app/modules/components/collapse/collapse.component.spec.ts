@@ -42,6 +42,7 @@ import { CollapseComponent } from './collapse.component';
 
 @Component({
   template: ` <vitamui-common-collapse collapseTitle="Test Collapse Title"> Test Collapse Content </vitamui-common-collapse> `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChild(CollapseComponent) component: CollapseComponent;

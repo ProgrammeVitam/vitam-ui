@@ -44,6 +44,7 @@ import { ProjectsService } from '../projects.service';
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.css'],
+  standalone: false,
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
   @Input() tenantIdentifier: string;

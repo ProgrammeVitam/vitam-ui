@@ -45,7 +45,10 @@ import { input } from 'vitamui-library/testing';
 import { CustomerCreateValidators } from '../../customer/customer-create/customer-create.validators';
 import { DomainsInputComponent } from './domains-input.component';
 
-@Component({ template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>' })
+@Component({
+  template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>',
+  standalone: false,
+})
 export class TestHostComponent {
   @ViewChild(DomainsInputComponent, { static: false }) component: DomainsInputComponent;
   domains: string[];

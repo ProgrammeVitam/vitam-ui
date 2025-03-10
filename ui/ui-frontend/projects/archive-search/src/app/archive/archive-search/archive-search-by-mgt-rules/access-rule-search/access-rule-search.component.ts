@@ -69,6 +69,7 @@ const RULE_END_DATE = 'RULE_END_DATE';
   selector: 'app-access-rule-search',
   templateUrl: './access-rule-search.component.html',
   styleUrls: ['./access-rule-search.component.css'],
+  standalone: false,
 })
 export class AccessRuleSearchComponent implements OnInit, OnDestroy {
   @Input()

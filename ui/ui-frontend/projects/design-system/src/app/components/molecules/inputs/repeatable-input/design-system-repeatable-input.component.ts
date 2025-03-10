@@ -35,13 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MultipleOptionsDatepickerModule, SearchWithTypeSelectorComponent, VitamuiRepeatableInputModule } from 'vitamui-library';
+import { MultipleOptionsDatepickerModule, VitamuiRepeatableInputModule } from 'vitamui-library';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'design-system-repeatable-input',
-  standalone: true,
-  imports: [SearchWithTypeSelectorComponent, ReactiveFormsModule, MultipleOptionsDatepickerModule, VitamuiRepeatableInputModule],
+  imports: [ReactiveFormsModule, MultipleOptionsDatepickerModule, VitamuiRepeatableInputModule],
   templateUrl: './design-system-repeatable-input.component.html',
   styleUrl: './design-system-repeatable-input.component.scss',
 })

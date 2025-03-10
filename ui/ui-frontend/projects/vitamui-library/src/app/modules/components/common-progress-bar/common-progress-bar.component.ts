@@ -42,6 +42,7 @@ const PROGRESS_BAR_MULTIPLIER = 100;
   selector: 'vitamui-common-progress-bar',
   templateUrl: './common-progress-bar.component.html',
   styleUrls: ['./common-progress-bar.component.scss'],
+  standalone: false,
 })
 export class CommonProgressBarComponent {
   @Input() hideCounter = false;

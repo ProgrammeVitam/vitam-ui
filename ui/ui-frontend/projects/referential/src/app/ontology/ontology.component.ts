@@ -52,6 +52,7 @@ import { Observable } from 'rxjs';
   selector: 'app-ontology',
   templateUrl: './ontology.component.html',
   styleUrls: ['./ontology.component.scss'],
+  standalone: false,
 })
 export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;

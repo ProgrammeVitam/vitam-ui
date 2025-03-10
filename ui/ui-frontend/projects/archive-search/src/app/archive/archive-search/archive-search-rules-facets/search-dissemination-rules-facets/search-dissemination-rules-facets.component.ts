@@ -45,6 +45,7 @@ import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-e
   selector: 'app-search-dissemination-rules-facets',
   templateUrl: './search-dissemination-rules-facets.component.html',
   styleUrls: ['./search-dissemination-rules-facets.component.scss'],
+  standalone: false,
 })
 export class SearchDisseminationRulesFacetsComponent implements OnChanges {
   constructor(

@@ -58,6 +58,7 @@ import { ArchiveSharedDataService } from '../../../../../core/archive-shared-dat
   selector: 'app-leaves-tree',
   templateUrl: './leaves-tree.component.html',
   styleUrls: ['./leaves-tree.component.scss'],
+  standalone: false,
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;

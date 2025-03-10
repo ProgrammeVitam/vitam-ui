@@ -41,6 +41,7 @@ import { Event } from 'vitamui-library';
   selector: 'app-audit-information-tab',
   templateUrl: './audit-information-tab.component.html',
   styleUrls: ['./audit-information-tab.component.scss'],
+  standalone: false,
 })
 export class AuditInformationTabComponent {
   @Input()

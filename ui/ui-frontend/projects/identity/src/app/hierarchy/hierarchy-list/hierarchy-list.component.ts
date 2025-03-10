@@ -60,6 +60,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-hierarchy-list',
   templateUrl: './hierarchy-list.component.html',
   styleUrls: ['./hierarchy-list.component.scss'],
+  standalone: false,
 })
 export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
   @Input()

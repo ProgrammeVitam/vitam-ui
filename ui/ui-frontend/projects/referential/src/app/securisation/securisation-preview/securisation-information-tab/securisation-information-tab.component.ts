@@ -42,6 +42,7 @@ import { SecurisationService } from '../../securisation.service';
   selector: 'app-securisation-information-tab',
   templateUrl: './securisation-information-tab.component.html',
   styleUrls: ['./securisation-information-tab.component.scss'],
+  standalone: false,
 })
 export class SecurisationInformationTabComponent implements OnInit {
   @Input()

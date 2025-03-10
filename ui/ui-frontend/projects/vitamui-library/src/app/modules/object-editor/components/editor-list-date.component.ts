@@ -38,14 +38,12 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EditObject } from '../models/edit-object.model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { EditorInputComponent } from './editor-input.component';
 import { AppendStarPipe } from '../required.pipe';
 import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { MultipleOptionsDatepickerModule } from '../../components/multiple-options-datepicker/multiple-options-datepicker.module';
-import { NgSwitchCase } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-editor-list-date',
@@ -60,17 +58,14 @@ import { TranslateModule } from '@ngx-translate/core';
     </vitamui-common-multiple-options-datepicker>
   `,
   imports: [
-    EditorInputComponent,
     AppendStarPipe,
     HintComponent,
     FormErrorDisplayComponent,
     MultipleOptionsDatepickerModule,
-    NgSwitchCase,
     PipesModule,
-    TranslateModule,
+    TranslatePipe,
     ReactiveFormsModule,
   ],
-  standalone: true,
 })
 export class EditorListDateComponent implements OnInit, OnDestroy {
   @Input({ required: true }) editObject!: EditObject;

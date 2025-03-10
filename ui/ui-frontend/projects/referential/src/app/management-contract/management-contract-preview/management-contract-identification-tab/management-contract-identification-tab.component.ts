@@ -49,6 +49,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './management-contract-identification-tab.component.html',
   styleUrls: ['./management-contract-identification-tab.component.scss'],
   providers: [ManagementContractToFormGroupConverterService],
+  standalone: false,
 })
 export class ManagementContractIdentificationTabComponent implements OnChanges {
   @Input() managementContract: ManagementContract;

@@ -23,7 +23,7 @@
         (focus)="onFocus(i)"
         [ngModel]="item.value"
         (ngModelChange)="onValueChange($event, i)"
-        onInput="this.parentNode.dataset.replicatedValue = this.value"
+        onInput="parentNode.dataset.replicatedValue = value"
         [disabled]="disabled"
       ></textarea>
     </div>

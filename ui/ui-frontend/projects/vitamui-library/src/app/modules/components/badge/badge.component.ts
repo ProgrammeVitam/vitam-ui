@@ -41,7 +41,6 @@ import { NgIf } from '@angular/common';
   selector: 'vitamui-badge',
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.scss',
-  standalone: true,
   imports: [NgIf],
 })
 export class BadgeComponent {

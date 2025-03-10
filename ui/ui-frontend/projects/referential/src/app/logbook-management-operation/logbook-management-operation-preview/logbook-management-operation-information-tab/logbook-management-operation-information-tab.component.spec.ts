@@ -45,6 +45,7 @@ let expectedOperation: OperationDetails;
 
 @Component({
   template: ``,
+  standalone: false,
 })
 class TestLogbookInformationComponent {
   operation = expectedOperation;

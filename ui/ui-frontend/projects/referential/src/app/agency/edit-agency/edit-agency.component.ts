@@ -58,7 +58,7 @@ import { agencyTemplate } from '../agency.template';
 import { schema } from '../agency.schema';
 import { filter, finalize, of, Subscription, switchMap } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -74,9 +74,8 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
     ReactiveFormsModule,
     ObjectEditorModule,
     MatDialogModule,
-    TranslateModule,
+    TranslatePipe,
   ],
-  standalone: true,
 })
 export class EditAgencyComponent implements OnInit, OnDestroy {
   @ViewChild('confirmCancelDialog', { static: true })

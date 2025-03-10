@@ -43,6 +43,7 @@ import { StartupService } from './../startup.service';
   selector: 'vitamui-common-error-dialog',
   templateUrl: './error-dialog.component.html',
   styleUrls: ['./error-dialog.component.scss'],
+  standalone: false,
 })
 export class ErrorDialogComponent {
   trustedAppLogoUrl: SafeUrl;

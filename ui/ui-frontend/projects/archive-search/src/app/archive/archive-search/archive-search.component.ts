@@ -106,6 +106,7 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
   selector: 'app-archive-search',
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss'],
+  standalone: false,
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked, AfterViewInit {
   readonly UnitType = UnitType;

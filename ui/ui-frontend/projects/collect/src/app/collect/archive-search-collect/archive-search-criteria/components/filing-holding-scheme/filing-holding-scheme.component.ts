@@ -61,6 +61,7 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: ['./filing-holding-scheme.component.scss'],
+  standalone: false,
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   @Input() transactionId: string;

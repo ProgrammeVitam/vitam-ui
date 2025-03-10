@@ -48,6 +48,7 @@ import { ContextService } from '../../context.service';
   selector: 'app-context-information-tab',
   templateUrl: './context-information-tab.component.html',
   styleUrls: ['./context-information-tab.component.scss'],
+  standalone: false,
 })
 export class ContextInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

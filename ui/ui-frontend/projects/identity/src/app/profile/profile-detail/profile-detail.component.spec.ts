@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { EMPTY, of, Subject } from 'rxjs';
 import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
@@ -50,26 +50,42 @@ import { TranslateService } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProfileService } from '../profile.service';
 import { ProfileDetailComponent } from './profile-detail.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: false,
+})
 class InformationTabStubComponent {
   @Input() profile: Profile;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-profile-group-tab', template: '' })
+@Component({
+  selector: 'app-profile-group-tab',
+  template: '',
+  standalone: false,
+})
 class ProfileGroupTabStubComponent {
   @Input() profile: Profile;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-side-panel', template: `<ng-content></ng-content>` })
+@Component({
+  selector: 'app-side-panel',
+  template: ` <ng-content></ng-content>`,
+  standalone: false,
+})
 class SidePanelStubComponent {
   @Input() popup: boolean;
   @Input() popupUrl: string;
 }
 
-@Component({ template: '<app-profile-detail [profile]="profile" [isPopup]="isPopup"></app-profile-detail>' })
+@Component({
+  template: '<app-profile-detail [profile]="profile" [isPopup]="isPopup"></app-profile-detail>',
+  standalone: false,
+})
 class TestHostComponent {
   profile: any;
   isPopup = false;
@@ -122,14 +138,6 @@ describe('ProfileDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        LoggerModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
       declarations: [
         TestHostComponent,
         ProfileDetailComponent,
@@ -137,6 +145,8 @@ describe('ProfileDetailComponent', () => {
         InformationTabStubComponent,
         ProfileGroupTabStubComponent,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
       providers: [
         { provide: ActivatedRoute, useValue: { data: of({ isPopup: true, profile: expectedProfile }) } },
         { provide: ProfileService, useValue: { updated: new Subject() } },
@@ -145,8 +155,9 @@ describe('ProfileDetailComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

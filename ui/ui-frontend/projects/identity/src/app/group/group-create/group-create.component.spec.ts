@@ -96,6 +96,7 @@ import { GroupCreateComponent } from './group-create.component';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input() level: string;
@@ -114,6 +115,7 @@ class ProfilesFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class UnitsFormStubComponent implements ControlValueAccessor {
   writeValue() {}

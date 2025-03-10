@@ -49,6 +49,7 @@ const EVENT_LIMIT = 100;
   selector: 'vitamui-common-multi-operation-history-tab',
   templateUrl: './multi-operation-history-tab.component.html',
   styleUrls: ['./multi-operation-history-tab.component.scss'],
+  standalone: false,
 })
 export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   @Input() collectionsMap: Map<string, string>;

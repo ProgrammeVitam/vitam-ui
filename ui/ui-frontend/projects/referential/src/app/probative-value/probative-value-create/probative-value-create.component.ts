@@ -59,6 +59,7 @@ import { sizes } from '../../ontology/ontology-form-options';
   selector: 'app-probative-value-create',
   templateUrl: './probative-value-create.component.html',
   styleUrls: ['./probative-value-create.component.scss'],
+  standalone: false,
 })
 export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   public form: FormGroup;

@@ -44,6 +44,7 @@ import { Content } from './content.interface';
   selector: 'app-content-list',
   templateUrl: './content-list.component.html',
   styleUrls: ['./content-list.component.scss'],
+  standalone: false,
 })
 export class ContentListComponent {
   @Input() set content(content: Map<Category, Content>) {

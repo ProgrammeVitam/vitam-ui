@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -50,7 +50,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -69,6 +72,7 @@ describe('LogbookOperationDetailComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatSnackBarModule,
         InjectorModule,
@@ -79,7 +83,6 @@ describe('LogbookOperationDetailComponent', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        HttpClientModule,
       ],
       providers: [
         { provide: LogbookService, useValue: {} },
@@ -88,8 +91,8 @@ describe('LogbookOperationDetailComponent', () => {
         { provide: AuthService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

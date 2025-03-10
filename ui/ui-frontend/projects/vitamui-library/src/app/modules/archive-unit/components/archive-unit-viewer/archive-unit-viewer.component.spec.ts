@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,6 +46,7 @@ import { ObjectViewerModule } from '../../../object-viewer/object-viewer.module'
 import { ArchiveUnitViewerComponent } from './archive-unit-viewer.component';
 import { DescriptionLevel } from '../../../models/units/description-level.enum';
 import { ObjectEditorModule } from '../../../object-editor/object-editor.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchiveUnitViewerComponent', () => {
   let component: ArchiveUnitViewerComponent;
@@ -98,15 +99,15 @@ describe('ArchiveUnitViewerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        HttpClientTestingModule,
-        ObjectViewerModule,
-        ObjectEditorModule,
-        ReactiveFormsModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot(),
+      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      providers: [
+        {
+          provide: BASE_URL,
+          useValue: '/fake-api',
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
     }).compileComponents();
   });
 

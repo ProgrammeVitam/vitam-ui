@@ -86,6 +86,7 @@ const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
   selector: 'pastis-pastis-dialog-confirm',
   templateUrl: './pastis-dialog-confirm.component.html',
   styleUrls: ['./pastis-dialog-confirm.component.scss'],
+  standalone: false,
 })
 export class PastisDialogConfirmComponent implements OnInit {
   portal: ComponentPortal<any>;

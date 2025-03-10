@@ -61,6 +61,7 @@ import { AgencyCreateValidators } from './agency-create.validators';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;

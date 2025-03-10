@@ -35,14 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TenantSelectContentComponent } from './tenant-select-content.component';
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule, RouterModule],
   declarations: [TenantSelectContentComponent],
   exports: [TenantSelectContentComponent],
+  imports: [CommonModule, RouterModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class TenantSelectContentModule {}

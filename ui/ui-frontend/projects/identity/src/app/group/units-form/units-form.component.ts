@@ -52,6 +52,7 @@ export const UNITS_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './units-form.component.html',
   styleUrls: ['./units-form.component.scss'],
   providers: [UNITS_FORM_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class UnitsFormComponent implements ControlValueAccessor, OnInit {
   units: string[] = [];

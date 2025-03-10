@@ -46,6 +46,7 @@ import { Agency, ApplicationId, diff, Role, SecurityService, AgencyService } fro
   selector: 'app-agency-information-tab',
   templateUrl: './agency-information-tab.component.html',
   styleUrls: ['./agency-information-tab.component.scss'],
+  standalone: false,
 })
 export class AgencyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

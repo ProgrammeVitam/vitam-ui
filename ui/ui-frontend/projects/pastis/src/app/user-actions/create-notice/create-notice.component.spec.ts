@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -47,6 +47,7 @@ import { ProfileService } from '../../core/services/profile.service';
 
 import { PopupService } from '../../core/services/popup.service';
 import { CreateNoticeComponent } from './create-notice.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const matDialogData = jasmine.createSpyObj('MAT_DIALOG_DATA', ['open']);
 matDialogData.open.and.returnValue({ afterClosed: () => of(true) });
@@ -67,7 +68,7 @@ describe('CreateNoticeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateNoticeComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [RouterTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         ProfileService,
@@ -79,6 +80,8 @@ describe('CreateNoticeComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: matDialogData },
         { provide: PopupService, useValue: popupServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

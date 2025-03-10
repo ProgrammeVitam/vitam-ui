@@ -49,6 +49,7 @@ import { UserService } from '../../user.service';
   selector: 'app-user-group-tab',
   templateUrl: './user-group-tab.component.html',
   styleUrls: ['./user-group-tab.component.scss'],
+  standalone: false,
 })
 export class UserGroupTabComponent implements OnChanges, OnDestroy {
   @Input()

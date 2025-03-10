@@ -44,6 +44,7 @@ import { DisplayObjectType } from '../../types';
   selector: 'vitamui-common-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
+  standalone: false,
 })
 export class ListComponent implements OnChanges {
   @Input() displayObject: DisplayObject;

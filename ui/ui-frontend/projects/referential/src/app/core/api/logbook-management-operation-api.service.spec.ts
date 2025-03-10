@@ -34,16 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL, LoggerModule } from 'vitamui-library';
 import { LogbookManagementOperationApiService } from './logbook-management-operation-api.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LogbookManagementOperationApiService', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoggerModule.forRoot(), HttpClientTestingModule],
-      providers: [{ provide: BASE_URL, useValue: '' }],
+      imports: [LoggerModule.forRoot()],
+      providers: [
+        {
+          provide: BASE_URL,
+          useValue: '',
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 

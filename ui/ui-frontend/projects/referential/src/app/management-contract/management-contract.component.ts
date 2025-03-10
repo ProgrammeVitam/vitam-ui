@@ -46,6 +46,7 @@ import { ManagementContractListComponent } from './management-contract-list/mana
   selector: 'app-management-contract',
   templateUrl: './management-contract.component.html',
   styleUrls: ['./management-contract.component.scss'],
+  standalone: false,
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> implements OnInit, OnDestroy {
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;

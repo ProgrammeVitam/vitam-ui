@@ -49,6 +49,7 @@ export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-input.component.html',
   styleUrls: ['./vitamui-input.component.scss'],
   providers: [VITAMUI_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @Input() type = 'text';

@@ -64,6 +64,7 @@ function constantToTranslate() {
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
   styleUrls: ['./create-notice.component.scss'],
+  standalone: false,
 })
 export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;

@@ -50,6 +50,7 @@ export const LIST_INPUT_ACCESSOR: any = {
   templateUrl: './custom-params.component.html',
   styleUrls: ['./custom-params.component.scss'],
   providers: [LIST_INPUT_ACCESSOR],
+  standalone: false,
 })
 export class CustomParamsComponent implements AfterContentInit, ControlValueAccessor {
   @Input() keyPlaceholder: string;

@@ -49,6 +49,7 @@ import { ManagementRulesValidatorService } from '../../../../../validators/manag
   selector: 'app-block-rules-inheritance',
   templateUrl: './block-rules-inheritance.component.html',
   styleUrls: ['./block-rules-inheritance.component.css'],
+  standalone: false,
 })
 export class BlockRulesInheritanceComponent implements OnDestroy {
   @Input()

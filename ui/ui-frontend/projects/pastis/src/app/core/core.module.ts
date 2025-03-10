@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
@@ -44,8 +44,9 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, HttpClientModule, VitamUICommonModule, PastisMaterialModule, SharedModule, NgxUiLoaderModule],
   exports: [VitamUICommonModule, NgxUiLoaderModule],
+  imports: [CommonModule, VitamUICommonModule, PastisMaterialModule, SharedModule, NgxUiLoaderModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

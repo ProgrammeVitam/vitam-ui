@@ -45,7 +45,10 @@ import { Unit } from '../models/units/unit.interface';
  * Otherwise, it'll get any available translation.
  * Otherwise, empty string.
  */
-@Pipe({ name: 'unitI18n' })
+@Pipe({
+  name: 'unitI18n',
+  standalone: false,
+})
 export class UnitI18nPipe implements PipeTransform {
   transform(unit: Unit, attribute: 'Title' | 'Description') {
     return getUnitI18nAttribute(unit, attribute);

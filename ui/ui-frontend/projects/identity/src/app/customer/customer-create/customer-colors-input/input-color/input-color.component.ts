@@ -44,6 +44,7 @@ import { ColorErrorEnum } from './color-error.enum';
   selector: 'app-input-color',
   templateUrl: './input-color.component.html',
   styleUrls: ['./input-color.component.scss'],
+  standalone: false,
 })
 export class InputColorComponent implements OnInit {
   @Input() placeholder: string;

@@ -42,6 +42,7 @@ const EVENT_LIMIT = 100;
   selector: 'app-owner-operation-history-tab',
   templateUrl: './owner-operation-history-tab.component.html',
   styleUrls: ['./owner-operation-history-tab.component.scss'],
+  standalone: false,
 })
 export class OwnerOperationHistoryTabComponent implements OnChanges {
   @Input() id: string;

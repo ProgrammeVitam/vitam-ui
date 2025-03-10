@@ -45,6 +45,7 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
   selector: 'app-block-category-inheritance',
   templateUrl: './block-category-inheritance.component.html',
   styleUrls: ['./block-category-inheritance.component.css'],
+  standalone: false,
 })
 export class BlockCategoryInheritanceComponent implements OnDestroy {
   @Input()

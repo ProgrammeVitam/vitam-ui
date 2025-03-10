@@ -50,6 +50,7 @@ const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
   selector: 'app-persistent-identifier-search',
   templateUrl: './persistent-identifier-search.component.html',
   styleUrls: ['./persistent-identifier-search.component.scss'],
+  standalone: false,
 })
 export class PersistentIdentifierSearchComponent {
   appsHierarchy: BreadCrumbData[] = [

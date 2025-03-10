@@ -48,6 +48,7 @@ import { FileFormatService } from '../../file-format.service';
   selector: 'app-file-format-information-tab',
   templateUrl: './file-format-information-tab.component.html',
   styleUrls: ['./file-format-information-tab.component.scss'],
+  standalone: false,
 })
 export class FileFormatInformationTabComponent {
   private _dateFormat = 'dd/MM/yyyy';

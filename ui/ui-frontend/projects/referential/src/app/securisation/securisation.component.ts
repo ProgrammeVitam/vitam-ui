@@ -47,6 +47,7 @@ import { SecurisationListComponent } from './securisation-list/securisation-list
   selector: 'app-securisation',
   templateUrl: './securisation.component.html',
   styleUrls: ['./securisation.component.scss'],
+  standalone: false,
 })
 export class SecurisationComponent extends SidenavPage<Event> {
   search: string;

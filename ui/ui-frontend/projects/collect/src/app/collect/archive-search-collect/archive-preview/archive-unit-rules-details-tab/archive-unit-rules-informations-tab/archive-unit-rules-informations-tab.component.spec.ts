@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -56,11 +56,8 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
 
-export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpClient, [
-    { prefix: './assets/shared-i18n/', suffix: '.json' },
-    { prefix: './assets/i18n/', suffix: '.json' },
-  ]);
+export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
+  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
 }
 
 describe('ArchiveUnitRulesInformationsTabComponent', () => {
@@ -68,13 +65,20 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
   let fixture: ComponentFixture<ArchiveUnitRulesInformationsTabComponent>;
 
   // eslint-disable-next-line @angular-eslint/directive-selector
-  @Directive({ selector: '[app-VitamuiCommonCollapseTriggerFor]' })
+  @Directive({
+    selector: '[app-VitamuiCommonCollapseTriggerFor]',
+    standalone: false,
+  })
   class CollapseTriggerForStubDirective {
     @Input() vitamuiCommonCollapseTriggerFor: any;
   }
 
   // eslint-disable-next-line @angular-eslint/directive-selector
-  @Directive({ selector: '[app-vitamuiCommonCollapse]', exportAs: 'vitamuiCommonCollapse' })
+  @Directive({
+    selector: '[app-vitamuiCommonCollapse]',
+    exportAs: 'vitamuiCommonCollapse',
+    standalone: false,
+  })
   class CollapseStubDirective {
     @Input() vitamuiCommonCollapse: any;
   }
@@ -121,7 +125,6 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         MatSnackBarModule,
         NoopAnimationsModule,
         BrowserAnimationsModule,
-        HttpClientTestingModule,
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
         TranslateModule.forRoot({
@@ -130,10 +133,11 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
           loader: {
             provide: TranslateLoader,
             useFactory: httpLoaderFactory,
-            deps: [HttpClient],
+            deps: [HttpBackend],
           },
         }),
       ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   });
 

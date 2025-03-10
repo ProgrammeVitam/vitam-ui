@@ -46,6 +46,7 @@ import { OntologyInformationTabComponent } from './ontology-information-tab/onto
   selector: 'app-ontology-preview',
   templateUrl: './ontology-preview.component.html',
   styleUrls: ['./ontology-preview.component.scss'],
+  standalone: false,
 })
 export class OntologyPreviewComponent implements AfterViewInit {
   @Output()

@@ -75,6 +75,7 @@ interface NgxTranslateApp {
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   animations: [opacityAnimation, slideAnimation],
+  standalone: false,
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public state = '';

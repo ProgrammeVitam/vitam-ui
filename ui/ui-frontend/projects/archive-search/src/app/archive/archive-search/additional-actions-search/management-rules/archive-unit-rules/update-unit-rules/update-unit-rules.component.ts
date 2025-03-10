@@ -83,6 +83,7 @@ const LocalValidators = {
   selector: 'app-update-unit-rules',
   templateUrl: './update-unit-rules.component.html',
   styleUrls: ['./update-unit-rules.component.css'],
+  standalone: false,
 })
 export class UpdateUnitRulesComponent implements OnDestroy {
   @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;

@@ -49,7 +49,7 @@ import {
   VitamUICommonModule,
 } from 'vitamui-library';
 
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { OntologyService } from '../../ontology.service';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -57,8 +57,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, TranslateModule, VitamUICommonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
   selector: 'app-ontology-list',
   templateUrl: './ontology-list.component.html',
   styleUrls: ['./ontology-list.component.scss'],

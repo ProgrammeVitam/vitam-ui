@@ -45,6 +45,7 @@ import { SecurityProfileListComponent } from './security-profile-list/security-p
   selector: 'app-security-profile',
   templateUrl: './security-profile.component.html',
   styleUrls: ['./security-profile.component.scss'],
+  standalone: false,
 })
 export class SecurityProfileComponent extends SidenavPage<SecurityProfile> implements OnInit {
   search = '';

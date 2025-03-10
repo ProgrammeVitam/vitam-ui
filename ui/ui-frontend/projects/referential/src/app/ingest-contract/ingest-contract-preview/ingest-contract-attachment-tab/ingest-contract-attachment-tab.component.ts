@@ -51,6 +51,7 @@ import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-updat
   selector: 'app-ingest-contract-attachment-tab',
   templateUrl: './ingest-contract-attachment-tab.component.html',
   styleUrls: ['./ingest-contract-attachment-tab.component.scss'],
+  standalone: false,
 })
 export class IngestContractAttachmentTabComponent {
   @Input() tenantIdentifier: number;

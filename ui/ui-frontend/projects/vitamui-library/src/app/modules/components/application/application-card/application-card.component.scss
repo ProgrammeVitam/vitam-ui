@@ -1,4 +1,4 @@
-@import '../../../../../sass/mixins/elevation';
+@use '../../../../../sass/mixins/elevation' as elevation;
 
 mat-card {
   --mdc-outlined-card-outline-width: 0;
@@ -31,7 +31,7 @@ mat-card {
 }
 
 .appIcon {
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   border-radius: 5px;
   width: 100%;
   overflow: hidden;

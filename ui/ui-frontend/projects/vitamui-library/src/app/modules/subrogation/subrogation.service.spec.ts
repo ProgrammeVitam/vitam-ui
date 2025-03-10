@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -51,21 +51,31 @@ import { LoggerModule } from '../logger';
 import { environment } from './../../../environments/environment';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
 import { SubrogationService } from './subrogation.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SubrogationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatSnackBarModule, LoggerModule.forRoot(), VitamUICommonTestModule],
+      imports: [MatSnackBarModule, LoggerModule.forRoot(), VitamUICommonTestModule],
       providers: [
         SubrogationService,
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: 'subrogations/customers/customerId' } },
+        {
+          provide: Router,
+          useValue: {
+            navigate: () => {},
+            navigateByUrl: () => {},
+            url: 'subrogations/customers/customerId',
+          },
+        },
         { provide: BASE_URL, useValue: 'fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: AuthService, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
   });

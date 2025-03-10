@@ -62,7 +62,7 @@
     </vitamui-common-input>
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="(canUpdate$ | async) || (submitting$ | async) || unchanged() || this.form.invalid">
+  <button type="submit" class="btn primary" [disabled]="(canUpdate$ | async) || (submitting$ | async) || unchanged() || form.invalid">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

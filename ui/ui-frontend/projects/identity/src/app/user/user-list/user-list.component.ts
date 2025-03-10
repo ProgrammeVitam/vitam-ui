@@ -79,6 +79,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
   @Input()

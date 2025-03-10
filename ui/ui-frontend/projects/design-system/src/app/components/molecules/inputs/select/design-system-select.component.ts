@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
   CountryOption,
   CountryService,
@@ -52,7 +52,6 @@ import { Observable } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
 @Component({
-  standalone: true,
   imports: [
     AsyncPipe,
     FormFieldValueWrapperComponent,
@@ -61,7 +60,7 @@ import { delay, map } from 'rxjs/operators';
     ReactiveFormsModule,
     SelectComponent,
     SlideToggleModule,
-    TranslateModule,
+    TranslatePipe,
   ],
   templateUrl: './design-system-select.component.html',
   styleUrl: './design-system-select.component.scss',

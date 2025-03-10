@@ -49,6 +49,7 @@ const EVENT_LIMIT = 100;
   selector: 'vitamui-common-operation-history-tab',
   templateUrl: './operation-history-tab.component.html',
   styleUrls: ['./operation-history-tab.component.scss'],
+  standalone: false,
 })
 export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
   @Input() id: string;

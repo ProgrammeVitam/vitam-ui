@@ -41,6 +41,7 @@ import { Application } from './../../../../models/application';
   selector: 'vitamui-common-menu-application-tile',
   templateUrl: './menu-application-tile.component.html',
   styleUrls: ['./menu-application-tile.component.scss'],
+  standalone: false,
 })
 export class MenuApplicationTileComponent {
   @Input()

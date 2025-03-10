@@ -45,6 +45,7 @@ import { RouteData } from './app-routing.module';
   selector: 'design-system-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent {
   title = 'Design system App';

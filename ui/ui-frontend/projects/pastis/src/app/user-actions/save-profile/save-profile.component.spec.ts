@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -86,6 +86,7 @@ import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-me
 
 import { PopupService } from '../../core/services/popup.service';
 import { UserActionSaveProfileComponent } from './save-profile.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -112,7 +113,6 @@ describe('UserActionOpenProfileComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [UserActionSaveProfileComponent],
       imports: [
-        HttpClientTestingModule,
         RouterTestingModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot(),
@@ -133,6 +133,8 @@ describe('UserActionOpenProfileComponent', () => {
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: StartupService, useValue: startUpServiceMock },
         { provide: PopupService, useValue: popupServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

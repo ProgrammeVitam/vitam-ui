@@ -80,6 +80,7 @@ import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-lang
   selector: 'pastis-popup-metadata-language',
   templateUrl: './pastis-popup-metadata-language.component.html',
   styleUrls: ['./pastis-popup-metadata-language.component.scss'],
+  standalone: false,
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
   sedaLanguage: boolean;

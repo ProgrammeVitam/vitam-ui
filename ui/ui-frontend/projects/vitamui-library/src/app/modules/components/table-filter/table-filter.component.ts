@@ -57,6 +57,7 @@ import { TableFilterOptionComponent } from './table-filter-option/table-filter-o
   selector: 'vitamui-common-table-filter',
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss'],
+  standalone: false,
 })
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
   @Input()
@@ -69,6 +70,7 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
   @Input() multiSelect = true;
 
   @Output() readonly filterChange = new EventEmitter<any[]>();
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() readonly search = new EventEmitter<string>();
   @Output() readonly filterClose = new EventEmitter();
 

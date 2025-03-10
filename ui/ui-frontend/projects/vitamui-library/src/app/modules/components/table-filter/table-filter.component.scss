@@ -1,8 +1,7 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 .table-filter-panel {
-  @include shadow-8dp-dark;
+  @include elevation.shadow-8dp-dark;
   background: var(--vitamui-white);
   border: 1px solid var(--vitamui-grey-400);
   border-radius: 5px;

@@ -43,6 +43,7 @@ import { StartupService } from './../../startup.service';
   selector: 'vitamui-common-menu-tile',
   templateUrl: './vitamui-menu-tile.component.html',
   styleUrls: ['./vitamui-menu-tile.component.scss'],
+  standalone: false,
 })
 export class VitamUIMenuTileComponent implements OnInit {
   sameApp = false;

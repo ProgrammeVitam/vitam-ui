@@ -43,7 +43,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'design-system-multiple-options-datepicker',
-  standalone: true,
   imports: [ReactiveFormsModule, MultipleOptionsDatepickerModule, NgClass, NgTemplateOutlet, MatFormFieldModule, MatNativeDateModule],
   templateUrl: './design-system-multiple-options-datepicker.component.html',
   styleUrl: './design-system-multiple-options-datepicker.component.scss',

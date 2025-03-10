@@ -54,7 +54,6 @@ const placeholder = 'test';
 @Component({
   template:
     '<vitamui-search-with-type-selector [placeholder]="placeholder" [types]="types" [formControl]="control"></vitamui-search-with-type-selector>',
-  standalone: true,
   imports: [SearchWithTypeSelectorComponent, ReactiveFormsModule],
 })
 class TestHostComponent {

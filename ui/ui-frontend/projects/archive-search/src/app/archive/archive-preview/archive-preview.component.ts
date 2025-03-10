@@ -56,6 +56,7 @@ import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-t
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
+  standalone: false,
 })
 export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() archiveUnit: Unit;

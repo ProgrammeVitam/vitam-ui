@@ -40,6 +40,7 @@ const DEFAULT_SCROLL_THRESHOLD = 0.8;
 
 @Directive({
   selector: '[vitamuiCommonInfiniteScroll]',
+  standalone: false,
 })
 export class InfiniteScrollDirective implements OnInit, OnDestroy {
   @Input() vitamuiCommonInfiniteScrollThreshold = DEFAULT_SCROLL_THRESHOLD;

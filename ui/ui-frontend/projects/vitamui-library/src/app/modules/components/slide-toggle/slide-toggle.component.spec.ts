@@ -34,20 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { WINDOW_LOCATION } from '../../injection-tokens';
 import { SlideToggleComponent } from './slide-toggle.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   template: `<vitamui-common-slide-toggle [(ngModel)]="stateOn" [disabled]="disabled" [required]="required">
   </vitamui-common-slide-toggle>`,
+  standalone: false,
 })
 class TesthostComponent {
+  @ViewChild(SlideToggleComponent) toggle: SlideToggleComponent;
   stateOn = false;
   disabled = false;
 }
@@ -58,9 +61,16 @@ let testhost: TesthostComponent;
 describe('SlideToggleComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
       declarations: [TesthostComponent, SlideToggleComponent],
+      imports: [FormsModule, TranslateModule.forRoot()],
+      providers: [
+        {
+          provide: WINDOW_LOCATION,
+          useValue: {},
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 
@@ -81,14 +91,11 @@ describe('SlideToggleComponent', () => {
     expect(elInput.checked).toBeFalsy();
   });
 
-  it('should be on', () => {
-    const elInput = fixture.nativeElement.querySelector('input[type=checkbox]');
+  it('should be on', async () => {
     testhost.stateOn = true;
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(elInput.checked).toBeTruthy();
-    });
+    await fixture.whenStable();
+    expect(fixture.componentInstance.toggle.checked).toBeTruthy();
   });
 
   it('should turn on on click', () => {

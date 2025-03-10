@@ -38,7 +38,7 @@
 
 /* eslint-disable no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -50,9 +50,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { EmailsInputModule } from '../emails-input/emails-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   template: ` <vitamui-common-multiple-email-input [(ngModel)]="value" [label]="label"></vitamui-common-multiple-email-input> `,
+  standalone: false,
 })
 class TesthostComponent {
   value: string[];
@@ -74,6 +76,7 @@ describe('MultipleEmailInputComponent', () => {
     // );
 
     await TestBed.configureTestingModule({
+      declarations: [TesthostComponent, MultipleEmailInputComponent],
       imports: [
         OverlayModule,
         FormsModule,
@@ -81,14 +84,9 @@ describe('MultipleEmailInputComponent', () => {
         MatProgressSpinnerModule,
         EmailsInputModule,
         BrowserAnimationsModule,
-        HttpClientTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [TesthostComponent, MultipleEmailInputComponent],
-      providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-        // { provide: FlowValidators, useValue: flowValidatorsSpy },
-      ],
+      providers: [{ provide: WINDOW_LOCATION, useValue: {} }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

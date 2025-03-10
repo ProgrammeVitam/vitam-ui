@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ActivatedRouteSnapshot } from '@angular/router';
@@ -45,6 +45,7 @@ import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { StartupService } from './startup.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedApp = [
   {
@@ -75,10 +76,13 @@ const expectedApp = [
 
 class TranslateServiceStub {
   setDefaultLang() {}
+
   use() {}
+
   instant() {
     return EMPTY;
   }
+
   get onLangChange() {
     return of({ lang: 'en' });
   }
@@ -87,14 +91,25 @@ class TranslateServiceStub {
 describe('AppGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         AppGuard,
-        { provide: AuthService, useValue: { user: { profileGroup: { profiles: [{ applicationName: 'USERS_APP' }] } } } },
-        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
+        {
+          provide: AuthService,
+          useValue: { user: { profileGroup: { profiles: [{ applicationName: 'USERS_APP' }] } } },
+        },
+        {
+          provide: StartupService,
+          useValue: {
+            getPortalUrl: () => '',
+            setTenantIdentifier: () => {},
+          },
+        },
         { provide: ApplicationService, useValue: { applications: expectedApp } },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: TranslateService, useClass: TranslateServiceStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
   });

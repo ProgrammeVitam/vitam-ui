@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -48,6 +48,7 @@ import { ManagementRulesSharedDataService } from '../../../../core/management-ru
 import { ArchiveService } from '../../../archive.service';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../models/ruleAction.interface';
 import { ManagementRulesComponent } from './management-rules.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -145,6 +146,7 @@ describe('ManagementRulesComponent', () => {
     };
 
     await TestBed.configureTestingModule({
+      declarations: [ManagementRulesComponent],
       imports: [
         InjectorModule,
         LoggerModule.forRoot(),
@@ -152,10 +154,8 @@ describe('ManagementRulesComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         MatSnackBarModule,
-        HttpClientTestingModule,
         RouterTestingModule,
       ],
-      declarations: [ManagementRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -166,6 +166,8 @@ describe('ManagementRulesComponent', () => {
         { provide: ArchiveService, useValue: archiveServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

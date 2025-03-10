@@ -1,11 +1,12 @@
-@import '../mixins/elevation';
+@use '../mixins/elevation' as elevation;
+@use '../base/typography';
 
 :root {
   .mat-mdc-snack-bar-container {
     --mdc-snackbar-container-color: transparent;
 
     .mdc-snackbar__surface {
-      @include shadow-0;
+      @include elevation.shadow-0;
       max-width: unset;
       border: 0;
       flex: 1;

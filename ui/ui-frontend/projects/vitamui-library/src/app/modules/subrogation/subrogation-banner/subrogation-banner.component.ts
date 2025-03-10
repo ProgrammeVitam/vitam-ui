@@ -44,6 +44,7 @@ import { SubrogationService } from '../subrogation.service';
 @Component({
   selector: 'vitamui-common-subrogation-banner',
   templateUrl: './subrogation-banner.component.html',
+  standalone: false,
 })
 export class SubrogationBannerComponent implements OnInit {
   show = false;

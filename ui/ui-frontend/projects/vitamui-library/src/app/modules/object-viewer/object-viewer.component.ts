@@ -43,6 +43,7 @@ import { Mode } from './models/display-object.enum';
   selector: 'vitamui-common-object-viewer',
   templateUrl: './object-viewer.component.html',
   styleUrls: ['./object-viewer.component.scss'],
+  standalone: false,
 })
 export class ObjectViewerComponent implements OnInit, OnChanges {
   @Input() data!: any;

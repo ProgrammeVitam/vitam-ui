@@ -42,6 +42,7 @@ import { Group } from 'vitamui-library';
 @Component({
   selector: 'app-group-popup',
   template: '<app-group-preview (previewClose)="closePopup()" [group]="group" [isPopup]="true"></app-group-preview>',
+  standalone: false,
 })
 export class GroupPopupComponent {
   group: Group;

@@ -54,6 +54,7 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   templateUrl: './group-attribution.component.html',
   styleUrls: ['./group-attribution.component.scss'],
   providers: [GROUP_ATTRIBUTION_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class GroupAttributionComponent implements OnInit {
   user: User;

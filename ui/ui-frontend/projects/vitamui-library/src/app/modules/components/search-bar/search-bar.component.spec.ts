@@ -42,6 +42,7 @@ import { SearchBarComponent } from './search-bar.component';
 
 @Component({
   template: `<vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>`,
+  standalone: false,
 })
 export class TestHostComponent {}
 

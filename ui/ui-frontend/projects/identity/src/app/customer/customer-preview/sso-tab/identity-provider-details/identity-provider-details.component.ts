@@ -50,6 +50,7 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-identity-provider-details',
   templateUrl: './identity-provider-details.component.html',
   styleUrls: ['./identity-provider-details.component.scss'],
+  standalone: false,
 })
 export class IdentityProviderDetailsComponent {
   @Input()

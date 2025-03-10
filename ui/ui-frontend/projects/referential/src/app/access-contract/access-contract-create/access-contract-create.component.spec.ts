@@ -48,18 +48,19 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import {
+  AccessContractService,
+  AgencyService,
   BASE_URL,
   ConfirmDialogService,
   ExternalParametersService,
   LoggerModule,
-  AccessContractService,
-  AgencyService,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractCreateComponent } from './access-contract-create.component';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedAccessContract = {
   identifier: 'AC_ID',
@@ -111,6 +112,8 @@ describe('AccessContractCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
+      declarations: [AccessContractCreateComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         ReactiveFormsModule,
         MatFormFieldModule,
@@ -120,12 +123,10 @@ describe('AccessContractCreateComponent', () => {
         MatSnackBarModule,
         NoopAnimationsModule,
         MatProgressSpinnerModule,
-        HttpClientTestingModule,
         VitamUICommonTestModule,
         TranslateModule.forRoot(),
         LoggerModule.forRoot(),
       ],
-      declarations: [AccessContractCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -135,8 +136,9 @@ describe('AccessContractCreateComponent', () => {
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

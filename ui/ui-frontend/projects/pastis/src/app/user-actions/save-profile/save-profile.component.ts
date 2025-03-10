@@ -135,6 +135,7 @@ function constantToTranslate(edit: boolean) {
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
   styleUrls: ['./save-profile.component.scss'],
+  standalone: false,
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   popupSaveCancelLabel: string;

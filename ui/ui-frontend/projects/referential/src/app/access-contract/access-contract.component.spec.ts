@@ -49,14 +49,22 @@ import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-@Component({ selector: 'app-access-contract-preview', template: '' })
+@Component({
+  selector: 'app-access-contract-preview',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-access-contract-list', template: '' })
+@Component({
+  selector: 'app-access-contract-list',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractListStub {}
 

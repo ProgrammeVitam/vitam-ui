@@ -49,6 +49,7 @@ import { GroupService } from '../../../group.service';
   selector: 'app-units-edit',
   templateUrl: './units-edit.component.html',
   styleUrls: ['./units-edit.component.css'],
+  standalone: false,
 })
 export class UnitsEditComponent implements OnInit, OnDestroy {
   form: FormGroup;

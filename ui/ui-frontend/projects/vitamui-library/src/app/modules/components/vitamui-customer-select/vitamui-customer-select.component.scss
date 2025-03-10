@@ -1,5 +1,4 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 .customer-bg {
   z-index: -2;

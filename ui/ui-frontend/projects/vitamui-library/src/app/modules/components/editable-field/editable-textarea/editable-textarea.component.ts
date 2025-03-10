@@ -51,6 +51,7 @@ export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
   templateUrl: './editable-textarea.component.html',
   styleUrls: ['./editable-textarea.component.scss'],
   providers: [EDITABLE_TEXTAREA_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableTextareaComponent extends EditableFieldComponent {
   @Input() maxlength: number;

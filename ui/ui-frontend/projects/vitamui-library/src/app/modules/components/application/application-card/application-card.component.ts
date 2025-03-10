@@ -44,6 +44,7 @@ import { StartupService } from '../../../startup.service';
   selector: 'vitamui-common-application-card',
   templateUrl: './application-card.component.html',
   styleUrls: ['./application-card.component.scss'],
+  standalone: false,
 })
 export class ApplicationCardComponent {
   @Input() application: Application;

@@ -60,6 +60,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-file-format-list',
   templateUrl: './file-format-list.component.html',
   styleUrls: ['./file-format-list.component.scss'],
+  standalone: false,
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -50,6 +50,7 @@ export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-input.component.html',
   styleUrls: ['./editable-input.component.scss'],
   providers: [EDITABLE_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableInputComponent extends EditableFieldComponent {
   @Input() maxlength: number;

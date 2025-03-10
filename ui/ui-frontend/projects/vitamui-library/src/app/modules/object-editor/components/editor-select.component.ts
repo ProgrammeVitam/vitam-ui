@@ -38,9 +38,8 @@ import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
-import { AppendStarPipe } from '../required.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -64,17 +63,7 @@ import { MatSelectModule } from '@angular/material/select';
       <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
     </mat-form-field>
   `,
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    HintComponent,
-    FormErrorDisplayComponent,
-    TranslateModule,
-    PipesModule,
-    AppendStarPipe,
-    MatFormFieldModule,
-    MatSelectModule,
-  ],
+  imports: [ReactiveFormsModule, HintComponent, FormErrorDisplayComponent, TranslatePipe, PipesModule, MatFormFieldModule, MatSelectModule],
 })
 export class EditorSelectComponent {
   @Input({ required: true }) control!: FormControl;

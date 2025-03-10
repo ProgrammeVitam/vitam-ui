@@ -105,6 +105,7 @@ function constantToTranslate() {
   // Encapsulation has to be disabled in order for the
   // component style to apply to the select panel.
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;

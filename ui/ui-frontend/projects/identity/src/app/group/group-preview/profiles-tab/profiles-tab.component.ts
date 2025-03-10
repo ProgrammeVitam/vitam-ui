@@ -45,6 +45,7 @@ import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
   selector: 'app-profiles-tab',
   templateUrl: './profiles-tab.component.html',
   styleUrls: ['./profiles-tab.component.scss'],
+  standalone: false,
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
   @Input() group: Group;

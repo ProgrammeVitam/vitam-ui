@@ -41,6 +41,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar'
   selector: 'vitamui-common-notification-snack-bar',
   templateUrl: './notification-snack-bar.component.html',
   styleUrls: ['./notification-snack-bar.component.scss'],
+  standalone: false,
 })
 export class NotificationSnackBarComponent {
   constructor(

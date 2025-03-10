@@ -53,18 +53,29 @@ import { CustomerListComponent } from './customer-list.component';
 import { CustomerListService } from './customer-list.service';
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[vitamuiCommonCollapseTriggerFor]' })
+@Directive({
+  selector: '[vitamuiCommonCollapseTriggerFor]',
+  standalone: false,
+})
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCommonCollapseTriggerFor: any;
 }
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[vitamuiCommonCollapse]', exportAs: 'vitamuiCommonCollapse' })
+@Directive({
+  selector: '[vitamuiCommonCollapse]',
+  exportAs: 'vitamuiCommonCollapse',
+  standalone: false,
+})
 class CollapseStubDirective {
   @Input() vitamuiCommonCollapse: any;
 }
 
-@Component({ selector: 'app-owner-list', template: '' })
+@Component({
+  selector: 'app-owner-list',
+  template: '',
+  standalone: false,
+})
 class OwnerListStubComponent {
   @Input() customer: any;
 }

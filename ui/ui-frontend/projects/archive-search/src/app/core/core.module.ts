@@ -35,19 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
 import { environment } from '../../environments/environment';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, HttpClientModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
-
   exports: [VitamUICommonModule],
+  imports: [CommonModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
   providers: [
     { provide: BASE_URL, useValue: './archive-search-api' },
     { provide: ENVIRONMENT, useValue: environment },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 })
 export class CoreModule {

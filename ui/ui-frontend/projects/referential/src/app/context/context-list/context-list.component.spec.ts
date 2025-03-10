@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,6 +46,7 @@ import { AuthService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ContextService } from '../context.service';
 import { ContextListComponent } from './context-list.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ContextListComponent', () => {
   let component: ContextListComponent;
@@ -66,10 +67,10 @@ describe('ContextListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ContextListComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         VitamUICommonTestModule,
         MatProgressSpinnerModule,
-        HttpClientTestingModule,
         ReactiveFormsModule,
         InjectorModule,
         LoggerModule.forRoot(),
@@ -82,8 +83,9 @@ describe('ContextListComponent', () => {
         { provide: ContextService, useValue: contextServiceMock },
         { provide: AuthService, useValue: authServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

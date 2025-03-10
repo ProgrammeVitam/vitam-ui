@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { registerLocaleData } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { isDevMode, LOCALE_ID, NgModule } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { of } from 'rxjs';
 import {
@@ -69,11 +69,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localeFr, 'fr');
 
-export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpClient, [
-    { prefix: './assets/shared-i18n/', suffix: '.json' },
-    { prefix: './assets/i18n/', suffix: '.json' },
-  ]);
+export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
+  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
 }
 
 @NgModule({
@@ -89,15 +86,6 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     MatSidenavModule,
     TranslationModule,
     VitamUICommonModule,
-    TranslateModule.forRoot({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
@@ -108,6 +96,15 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     VitamUILibraryModule,
   ],
   providers: [
+    provideTranslateService({
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
+      defaultLanguage: 'fr',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpBackend],
+      },
+    }),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },

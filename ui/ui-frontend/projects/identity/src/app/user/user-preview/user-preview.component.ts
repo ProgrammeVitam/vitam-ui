@@ -50,6 +50,7 @@ import { UserService } from '../user.service';
   selector: 'app-user-preview',
   templateUrl: './user-preview.component.html',
   styleUrls: ['./user-preview.component.scss'],
+  standalone: false,
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
   @Input() isPopup: boolean;

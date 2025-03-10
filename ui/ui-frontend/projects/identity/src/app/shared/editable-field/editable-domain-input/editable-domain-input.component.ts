@@ -49,6 +49,7 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   selector: 'app-editable-domain-input',
   templateUrl: './editable-domain-input.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableDomainInputComponent extends EditableFieldComponent {
   @Input()

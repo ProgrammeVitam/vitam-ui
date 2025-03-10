@@ -1,9 +1,9 @@
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 $header-height: 72px !default;
 
 mat-toolbar {
-  @include shadow-128dp-dark;
+  @include elevation.shadow-128dp-dark;
   z-index: 10;
 }
 
@@ -34,7 +34,7 @@ mat-toolbar {
 vitamui-common-item-select {
   height: 100%;
   width: 100%;
-  @include shadow-0;
+  @include elevation.shadow-0;
 }
 
 vitamui-common-user-alerts-menu,

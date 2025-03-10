@@ -35,15 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { EllipsisDirectiveModule, CommonTooltipModule } from 'vitamui-library';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   templateUrl: './typography.component.html',
   styleUrls: ['./typography.component.scss'],
-  standalone: true,
-  imports: [TranslateModule, EllipsisDirectiveModule, NgClass, CommonTooltipModule, NgTemplateOutlet],
+  imports: [TranslatePipe, EllipsisDirectiveModule, NgClass, CommonTooltipModule, NgTemplateOutlet],
 })
 export class TypographyComponent {
   textFlavors = ['', 'bold'];

@@ -47,7 +47,7 @@ import {
   TableFilterModule,
   TenantSelectionService,
 } from 'vitamui-library';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { MatRow, MatTableModule } from '@angular/material/table';
@@ -59,11 +59,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './schema-delete-dialog/schema-delete-dialog.component';
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
-    TranslateModule,
+    TranslatePipe,
     TableFilterModule,
     MatButtonToggleModule,
     MatButtonModule,

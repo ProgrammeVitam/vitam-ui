@@ -47,6 +47,7 @@ import { ProbativeValueService } from '../probative-value.service';
   selector: 'app-probative-value-preview',
   templateUrl: './probative-value-preview.component.html',
   styleUrls: ['./probative-value-preview.component.scss'],
+  standalone: false,
 })
 export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   @Input() probativeValue: any;

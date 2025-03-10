@@ -1,4 +1,4 @@
-@import '../mixins/elevation';
+@use '../mixins/elevation' as elevation;
 
 .vitamui-autocomplete-panel {
   border-bottom-left-radius: 5px !important;
@@ -40,7 +40,7 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of autocomplete that may no longer apply for the MDC version.*/
 .mat-autocomplete-panel.mat-autocomplete-visible {
-  @include shadow-0;
+  @include elevation.shadow-0;
   width: 90%;
   left: 5%;
 }

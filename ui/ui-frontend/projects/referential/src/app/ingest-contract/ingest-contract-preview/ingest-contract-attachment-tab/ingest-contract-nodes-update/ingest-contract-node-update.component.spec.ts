@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -45,6 +45,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { IngestContractNodeUpdateComponent } from './ingest-contract-node-update.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 // TODO fix tests
 xdescribe('IngestContractNodeUpdateComponent', () => {
@@ -55,16 +56,9 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        HttpClientTestingModule,
-        VitamUICommonTestModule,
-        FilingPlanModule,
-        MatSnackBarModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-      ],
       declarations: [IngestContractNodeUpdateComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, FilingPlanModule, MatSnackBarModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         {
@@ -74,8 +68,9 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

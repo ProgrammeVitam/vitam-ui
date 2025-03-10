@@ -52,6 +52,7 @@ import { RULE_TYPES } from '../../../../rule/rules.constants';
   selector: 'app-access-contract-authorizations-update',
   templateUrl: './access-contract-authorizations-update.component.html',
   styleUrls: ['./access-contract-authorizations-update.component.scss'],
+  standalone: false,
 })
 export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   protected readonly AccessRightType = AccessRightType;

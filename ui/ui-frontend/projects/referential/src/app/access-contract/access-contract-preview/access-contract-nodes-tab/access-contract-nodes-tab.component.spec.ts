@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -52,6 +52,7 @@ import {
   Status,
 } from 'vitamui-library';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;
@@ -97,14 +98,16 @@ describe('AccessContractNodesTabComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [AccessContractNodesTabComponent],
-      imports: [MatSnackBarModule, HttpClientTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SearchUnitApiService, useValue: unitValueMock },
         { provide: MatDialog, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

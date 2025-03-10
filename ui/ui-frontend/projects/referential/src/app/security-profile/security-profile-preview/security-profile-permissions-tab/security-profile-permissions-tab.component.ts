@@ -46,6 +46,7 @@ import { SecurityProfileService } from '../../security-profile.service';
   selector: 'app-security-profile-permissions-tab',
   templateUrl: './security-profile-permissions-tab.component.html',
   styleUrls: ['./security-profile-permissions-tab.component.scss'],
+  standalone: false,
 })
 export class SecurityProfilePermissionsTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

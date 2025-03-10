@@ -67,6 +67,7 @@ const MAXIMUM_CRITICALITY = 2;
   selector: 'app-subrogate-user-list',
   templateUrl: './subrogate-user-list.component.html',
   styleUrls: ['./subrogate-user-list.component.scss'],
+  standalone: false,
 })
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
   @Input() emailDomains: string[];

@@ -49,6 +49,7 @@ export const VITAMUI_INPUT_POSITIVE_NUMBER_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-input-positive-number.component.html',
   styleUrls: ['./vitamui-input-positive-number.component.scss'],
   providers: [VITAMUI_INPUT_POSITIVE_NUMBER_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor {
   @Input() type = 'text';

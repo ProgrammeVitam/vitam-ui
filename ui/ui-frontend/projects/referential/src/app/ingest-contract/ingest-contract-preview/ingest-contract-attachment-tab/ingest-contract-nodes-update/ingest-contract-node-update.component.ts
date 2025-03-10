@@ -44,6 +44,7 @@ import { IngestContractService } from '../../../ingest-contract.service';
   selector: 'app-ingest-contract-node-update',
   templateUrl: './ingest-contract-node-update.component.html',
   styleUrls: ['./ingest-contract-node-update.component.scss'],
+  standalone: false,
 })
 export class IngestContractNodeUpdateComponent implements OnInit {
   ingestContract: IngestContract;

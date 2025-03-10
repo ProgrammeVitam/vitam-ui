@@ -83,7 +83,7 @@ label {
 
   $lineHeight: 1rem;
   line-height: $lineHeight;
-  margin-top: -$lineHeight/2;
+  margin-top: calc(-1 * $lineHeight / 2);
 
   span.ellipsis {
     overflow: hidden;

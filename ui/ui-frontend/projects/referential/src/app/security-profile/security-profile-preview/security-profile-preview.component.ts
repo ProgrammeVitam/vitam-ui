@@ -48,6 +48,7 @@ import { SecurityProfilePermissionsTabComponent } from './security-profile-permi
   selector: 'app-security-profile-preview',
   templateUrl: './security-profile-preview.component.html',
   styleUrls: ['./security-profile-preview.component.scss'],
+  standalone: false,
 })
 export class SecurityProfilePreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

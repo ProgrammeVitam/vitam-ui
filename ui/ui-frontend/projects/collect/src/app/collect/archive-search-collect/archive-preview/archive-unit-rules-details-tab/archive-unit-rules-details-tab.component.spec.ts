@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -42,6 +42,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
   let component: ArchiveUnitRulesDetailsTabComponent;
@@ -50,13 +51,15 @@ describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitRulesDetailsTabComponent],
-      imports: [InjectorModule, MatSnackBarModule, HttpClientTestingModule, TranslateModule.forRoot(), LoggerModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [InjectorModule, MatSnackBarModule, TranslateModule.forRoot(), LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

@@ -68,7 +68,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { normalizeString } from '../../utils/string.util';
 
 export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
@@ -106,7 +106,7 @@ export interface VitamuiSelectOptions {
     ReactiveFormsModule,
     ScrollingModule,
     SearchBarModule,
-    TranslateModule,
+    TranslatePipe,
   ],
   providers: [
     VITAMUI_SELECT_VALUE_ACCESSOR,
@@ -116,7 +116,6 @@ export interface VitamuiSelectOptions {
     }, // This provider is required in order for the FormFieldValueWrapperComponent to be able to find a reference to that component
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
 export class SelectComponent extends AbstractFormInputDirective implements AfterViewInit, AfterViewChecked {
   @Input() placeholder: string;

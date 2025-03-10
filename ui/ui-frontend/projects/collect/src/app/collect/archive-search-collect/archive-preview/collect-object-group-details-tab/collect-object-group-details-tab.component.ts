@@ -61,6 +61,7 @@ import { ArchiveCollectService } from '../../archive-collect.service';
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;

@@ -60,6 +60,7 @@ interface OperationSearch {
   selector: 'app-logbook-management-operation',
   templateUrl: './logbook-management-operation.component.html',
   styleUrls: ['./logbook-management-operation.component.scss'],
+  standalone: false,
 })
 export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   tenantIdentifier: number;

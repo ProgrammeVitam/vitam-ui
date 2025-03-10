@@ -47,6 +47,7 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
   selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss'],
+  standalone: false,
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
   public customers: Customer[];

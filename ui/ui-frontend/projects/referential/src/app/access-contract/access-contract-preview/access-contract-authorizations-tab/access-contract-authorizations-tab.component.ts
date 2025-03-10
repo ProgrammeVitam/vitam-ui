@@ -53,6 +53,7 @@ import { RULE_TYPES } from '../../../rule/rules.constants';
   selector: 'app-access-contract-authorizations-tab',
   templateUrl: './access-contract-authorizations-tab.component.html',
   styleUrls: ['./access-contract-authorizations-tab.component.scss'],
+  standalone: false,
 })
 export class AccessContractAuthorizationsTabComponent implements OnInit {
   AccessRightType = AccessRightType;

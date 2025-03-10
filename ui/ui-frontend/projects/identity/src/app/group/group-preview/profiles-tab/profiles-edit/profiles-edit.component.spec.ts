@@ -37,7 +37,7 @@
 import { EMPTY, of } from 'rxjs';
 import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -48,6 +48,7 @@ import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../../group.service';
 import { ProfilesEditComponent } from './profiles-edit.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-profiles-form',
@@ -59,12 +60,15 @@ import { ProfilesEditComponent } from './profiles-edit.component';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class ProfilesFormStubComponent {
   @Input() level: any;
 
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -76,16 +80,18 @@ describe('ProfilesEditComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
       declarations: [ProfilesEditComponent, ProfilesFormStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

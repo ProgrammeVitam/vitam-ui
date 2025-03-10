@@ -45,6 +45,7 @@ import { ExternalParamProfileListComponent } from './external-param-profile-list
   selector: 'app-external-param-profile',
   templateUrl: './external-param-profile.component.html',
   styleUrls: ['./external-param-profile.component.css'],
+  standalone: false,
 })
 export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProfile> implements OnInit {
   dto: ExternalParamProfile;

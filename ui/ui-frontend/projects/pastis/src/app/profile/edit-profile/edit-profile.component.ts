@@ -91,6 +91,7 @@ import { BreadcrumbService } from '../../core/services/breadcrumb.service';
   selector: 'pastis-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss'],
+  standalone: false,
 })
 export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   sedaVersionLabel = this.profileService.getSedaVersionLabel();

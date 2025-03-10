@@ -50,6 +50,7 @@ export const DOMAINS_INPUT_ACCESSOR: any = {
   templateUrl: './domains-input.component.html',
   styleUrls: ['./domains-input.component.scss'],
   providers: [DOMAINS_INPUT_ACCESSOR],
+  standalone: false,
 })
 export class DomainsInputComponent implements ControlValueAccessor {
   @Input() placeholder: string;

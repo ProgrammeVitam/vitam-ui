@@ -48,6 +48,7 @@ const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
   selector: 'app-update-units-metadata',
   templateUrl: './update-units-metadata.component.html',
   styleUrls: ['./update-units-metadata.component.scss'],
+  standalone: false,
 })
 export class UpdateUnitsMetadataComponent implements OnDestroy {
   isLoadingData = false;

@@ -59,6 +59,7 @@ import { ResizeVerticalDirective } from './resize-vertical.directive';
       }
     `,
   ],
+  standalone: false,
 })
 class ResizeVerticalBarTestComponent {}
 

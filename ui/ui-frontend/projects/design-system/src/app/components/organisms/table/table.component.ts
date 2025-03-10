@@ -41,7 +41,7 @@ import { SampleDialogComponent } from '../dialog/sample-dialog/sample-dialog.com
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MatTableModule } from '@angular/material/table';
 import { TableFilterModule } from 'vitamui-library';
 
@@ -49,7 +49,6 @@ import { TableFilterModule } from 'vitamui-library';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -57,7 +56,7 @@ import { TableFilterModule } from 'vitamui-library';
     VitamUILibraryModule,
     MatButtonToggleModule,
     TableFilterModule,
-    TranslateModule,
+    TranslatePipe,
     MatDialogModule,
     MatTableModule,
   ],

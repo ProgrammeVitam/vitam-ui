@@ -47,6 +47,7 @@ import { types, collections, sizes } from '../ontology-form-options';
   selector: 'app-ontology-create',
   templateUrl: './ontology-create.component.html',
   styleUrls: ['./ontology-create.component.scss'],
+  standalone: false,
 })
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

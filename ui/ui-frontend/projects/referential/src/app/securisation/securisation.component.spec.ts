@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -52,6 +52,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { SecurisationComponent } from './securisation.component';
 import { DatePipe } from '@angular/common';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SecurisationComponent', () => {
   let component: SecurisationComponent;
@@ -64,8 +65,9 @@ describe('SecurisationComponent', () => {
     };
 
     await TestBed.configureTestingModule({
+      declarations: [SecurisationComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
-        HttpClientTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatDatepickerModule,
@@ -76,16 +78,21 @@ describe('SecurisationComponent', () => {
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
       ],
-      declarations: [SecurisationComponent],
       providers: [
         DatePipe,
         FormBuilder,
         GlobalEventService,
         { provide: MatDialog, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: Router, useValue: { navigate: () => {} } },
+        {
+          provide: Router,
+          useValue: {
+            navigate: () => {},
+          },
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

@@ -41,6 +41,7 @@ import { AlertOption, UserAlerts } from '../../../models/user/user-alerts.interf
   selector: 'vitamui-common-user-alerts-menu',
   templateUrl: './user-alerts-menu.component.html',
   styleUrls: ['./user-alerts-menu.component.scss'],
+  standalone: false,
 })
 export class UserAlertsMenuComponent {
   @Input() userAlerts: UserAlerts;

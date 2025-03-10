@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -46,6 +46,7 @@ import { AddUnitsComponent } from './add-units.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DecimalPipe } from '@angular/common';
 import { ArchiveCollectService } from '../archive-collect.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -88,6 +89,7 @@ describe('AddUnitsComponent', () => {
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [AddUnitsComponent],
       imports: [
         BrowserAnimationsModule,
         InjectorModule,
@@ -96,9 +98,7 @@ describe('AddUnitsComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         MatSnackBarModule,
-        HttpClientTestingModule,
       ],
-      declarations: [AddUnitsComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -108,6 +108,8 @@ describe('AddUnitsComponent', () => {
         { provide: ArchiveCollectService, useValue: archiveCollectServiceMock },
         DecimalPipe,
         BytesPipe,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

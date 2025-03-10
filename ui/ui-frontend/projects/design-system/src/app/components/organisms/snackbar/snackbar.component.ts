@@ -35,18 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule, VitamUILibraryModule, VitamUISnackBarService } from 'vitamui-library';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgForOf } from '@angular/common';
 
 const INFINITE_DURATION = 0;
 
 @Component({
   templateUrl: './snackbar.component.html',
   styleUrls: ['./snackbar.component.scss'],
-  imports: [TranslateModule, VitamUICommonModule, VitamUILibraryModule, FormsModule, ReactiveFormsModule, NgForOf],
-  standalone: true,
+  imports: [VitamUICommonModule, VitamUILibraryModule, FormsModule, ReactiveFormsModule],
 })
 export class SnackbarComponent implements OnInit {
   form: FormGroup;

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable max-classes-per-file, @angular-eslint/directive-selector */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -66,6 +66,7 @@ import { TenantService } from '../tenant.service';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
 import { TranslateModule } from '@ngx-translate/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-domains-input',
@@ -77,6 +78,7 @@ import { TranslateModule } from '@ngx-translate/core';
       multi: true,
     },
   ],
+  standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -102,6 +104,7 @@ class DomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerInfo: any;
@@ -123,6 +126,7 @@ class OwnerFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: false,
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -208,8 +212,9 @@ describe('CustomerCreateComponent', () => {
       uniqueName: () => of(null),
     });
     await TestBed.configureTestingModule({
+      declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
-        HttpClientTestingModule,
         LoggerModule.forRoot(),
         MatButtonToggleModule,
         MatFormFieldModule,
@@ -222,7 +227,6 @@ describe('CustomerCreateComponent', () => {
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
-      declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -238,8 +242,9 @@ describe('CustomerCreateComponent', () => {
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
         { provide: MatDialog, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

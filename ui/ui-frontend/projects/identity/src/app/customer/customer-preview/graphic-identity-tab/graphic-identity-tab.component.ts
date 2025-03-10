@@ -47,6 +47,7 @@ import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
   selector: 'app-graphic-identity-tab',
   templateUrl: './graphic-identity-tab.component.html',
   styleUrls: ['./graphic-identity-tab.component.scss'],
+  standalone: false,
 })
 export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   @Input()

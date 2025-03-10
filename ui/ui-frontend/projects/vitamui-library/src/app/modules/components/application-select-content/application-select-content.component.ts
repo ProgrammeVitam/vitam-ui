@@ -43,6 +43,7 @@ import { Category } from '../../models/application/category.interface';
   selector: 'vitamui-common-application-select-content',
   templateUrl: './application-select-content.component.html',
   styleUrls: ['./application-select-content.component.scss'],
+  standalone: false,
 })
 export class ApplicationSelectContentComponent {
   @Input() isModalMenu: boolean;

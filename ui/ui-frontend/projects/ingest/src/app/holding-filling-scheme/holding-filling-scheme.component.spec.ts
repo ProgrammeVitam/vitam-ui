@@ -55,7 +55,11 @@ import { IngestType } from '../core/common/ingest-type.enum';
 import { IngestService } from '../ingest/ingest.service';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
-@Component({ selector: 'app-ingest-list', template: '' })
+@Component({
+  selector: 'app-ingest-list',
+  template: '',
+  standalone: false,
+})
 class IngestListStubComponent {}
 
 describe('HoldingFilingSchemeComponent', () => {

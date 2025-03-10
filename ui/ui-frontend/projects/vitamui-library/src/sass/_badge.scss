@@ -1,7 +1,7 @@
-@import './variables/colors';
+@use './mixins/badge' as mixins;
 
 .status-badge-green {
-  @include status-badge;
+  @include mixins.status-badge;
 
   &:after {
     background-color: var(--vitamui-green);
@@ -9,12 +9,12 @@
   }
 
   &.status-badge-mini {
-    @include status-badge-mini;
+    @include mixins.status-badge-mini;
   }
 }
 
 .status-badge-red {
-  @include status-badge;
+  @include mixins.status-badge;
 
   &:after {
     background-color: var(--vitamui-red);
@@ -22,12 +22,12 @@
   }
 
   &.status-badge-mini {
-    @include status-badge-mini;
+    @include mixins.status-badge-mini;
   }
 }
 
 .status-badge-orange {
-  @include status-badge;
+  @include mixins.status-badge;
 
   &:after {
     background-color: var(--vitamui-orange);
@@ -35,25 +35,25 @@
   }
 
   &.status-badge-mini {
-    @include status-badge-mini;
+    @include mixins.status-badge-mini;
   }
 }
 
 .status-badge-grey {
-  @include status-badge;
+  @include mixins.status-badge;
 
   &:after {
-    background-color: $light-grey;
+    background-color: var(--vitamui-grey);
     border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
-    @include status-badge-mini;
+    @include mixins.status-badge-mini;
   }
 }
 
 .status-badge-dark-grey {
-  @include status-badge;
+  @include mixins.status-badge;
 
   &:after {
     background-color: var(--vitamui-grey-300);
@@ -61,20 +61,20 @@
   }
 
   &.status-badge-mini {
-    @include status-badge-mini;
+    @include mixins.status-badge-mini;
   }
 }
 
 .status-badge-black {
-  @include status-badge;
+  @include mixins.status-badge;
 
   &:after {
-    background-color: $black;
+    background-color: black;
     border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
-    @include status-badge-mini;
+    @include mixins.status-badge-mini;
   }
 }
 

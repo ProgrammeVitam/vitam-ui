@@ -41,6 +41,7 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
   selector: 'vitamui-common-banner',
   templateUrl: './vitamui-common-banner.component.html',
   styleUrls: ['./vitamui-common-banner.component.scss'],
+  standalone: false,
 })
 export class VitamuiCommonBannerComponent {
   @Input() searchbarPlaceholder: string;
@@ -48,6 +49,7 @@ export class VitamuiCommonBannerComponent {
   @Input() searchValue: string = null;
 
   @Output() action = new EventEmitter<string>();
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() search = new EventEmitter<string>();
   @Output() searchChanged = new EventEmitter<string>();
 

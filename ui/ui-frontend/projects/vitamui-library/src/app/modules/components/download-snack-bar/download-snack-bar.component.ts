@@ -43,6 +43,7 @@ import { filter } from 'rxjs/operators';
   selector: 'vitamui-common-download-snack-bar',
   templateUrl: './download-snack-bar.component.html',
   styleUrls: ['./download-snack-bar.component.scss'],
+  standalone: false,
 })
 export class DownloadSnackBarComponent {
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;

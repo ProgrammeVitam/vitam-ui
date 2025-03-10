@@ -46,6 +46,7 @@ import { ArchiveFacetsService } from '../../../services/archive-facets.service';
   selector: 'app-search-access-rules-facets',
   templateUrl: './search-access-rules-facets.component.html',
   styleUrls: ['./search-access-rules-facets.component.scss'],
+  standalone: false,
 })
 export class SearchAccessRulesFacetsComponent implements OnChanges {
   constructor(

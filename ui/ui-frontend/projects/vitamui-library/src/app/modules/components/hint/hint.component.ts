@@ -37,7 +37,7 @@
 import { Component, Input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AbstractControl } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-hint',
@@ -48,8 +48,7 @@ import { TranslateModule } from '@ngx-translate/core';
     }
   `,
   styleUrls: ['./hint.component.scss'],
-  standalone: true,
-  imports: [MatFormFieldModule, TranslateModule],
+  imports: [MatFormFieldModule, TranslatePipe],
 })
 export class HintComponent {
   @Input({ required: true }) control!: AbstractControl;

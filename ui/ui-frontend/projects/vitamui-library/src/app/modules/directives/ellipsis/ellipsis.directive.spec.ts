@@ -45,6 +45,7 @@ import { EllipsisDirective } from './ellipsis.directive';
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc efficitur, eros a blandit rhoncus, neque nunc suscipit metus, ut pretium
     elit nunc a purus. In a lacus nulla. Maecenas sed malesuada nibh.
   </div>`,
+  standalone: false,
 })
 class TestHostComponent {
   @ViewChildren(EllipsisDirective) ellipsisDirective: EllipsisDirective;

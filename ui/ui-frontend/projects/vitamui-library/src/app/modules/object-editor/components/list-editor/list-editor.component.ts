@@ -43,6 +43,7 @@ import { EditObject } from '../../models/edit-object.model';
   selector: 'vitamui-common-list-editor',
   templateUrl: './list-editor.component.html',
   styleUrls: ['./list-editor.component.scss'],
+  standalone: false,
 })
 export class ListEditorComponent implements OnChanges {
   @Input() editObject: EditObject;

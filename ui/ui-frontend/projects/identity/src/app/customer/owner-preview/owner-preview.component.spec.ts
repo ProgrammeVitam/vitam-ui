@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -48,8 +48,13 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { environment } from './../../../environments/environment';
 import { OwnerPreviewComponent } from './owner-preview.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: false,
+})
 export class InformationTabStubComponent {
   @Input() owner: any;
   @Input() tenant: any;
@@ -62,23 +67,18 @@ describe('OwnerPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        LoggerModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
       declarations: [OwnerPreviewComponent, InformationTabStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

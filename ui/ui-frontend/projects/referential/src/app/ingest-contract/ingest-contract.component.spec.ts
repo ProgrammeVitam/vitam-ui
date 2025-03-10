@@ -43,11 +43,12 @@ import { of } from 'rxjs';
 import { ApplicationService, BASE_URL, GlobalEventService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { IngestContractComponent } from './ingest-contract.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { IngestContractService } from './ingest-contract.service';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
@@ -65,15 +66,9 @@ describe('IngestContractComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        VitamUICommonTestModule,
-        TranslateModule.forRoot(),
-        RouterTestingModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-      ],
       declarations: [IngestContractComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [VitamUICommonTestModule, TranslateModule.forRoot(), RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         GlobalEventService,
         { provide: ApplicationService, useValue: applicationServiceMock },
@@ -84,8 +79,9 @@ describe('IngestContractComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: IngestContractService, useValue: {} },
         { provide: DownloadSnackBarService, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

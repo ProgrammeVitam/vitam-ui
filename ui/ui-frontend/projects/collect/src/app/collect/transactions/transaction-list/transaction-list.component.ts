@@ -47,6 +47,7 @@ import { ArchiveCollectService } from '../../archive-search-collect/archive-coll
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
   styleUrls: ['./transaction-list.component.css'],
+  standalone: false,
 })
 export class TransactionListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
   direction = Direction.DESCENDANT;

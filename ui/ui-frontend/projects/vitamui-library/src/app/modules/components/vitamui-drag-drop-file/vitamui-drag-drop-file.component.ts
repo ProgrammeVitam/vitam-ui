@@ -42,6 +42,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'vitamui-common-drag-drop-file',
   templateUrl: './vitamui-drag-drop-file.component.html',
   styleUrls: ['./vitamui-drag-drop-file.component.scss'],
+  standalone: false,
 })
 export class VitamuiDragDropFileComponent {
   private IMAGE_TYPE_PREFIX = 'image';

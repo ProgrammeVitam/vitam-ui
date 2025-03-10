@@ -40,6 +40,7 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-common-event-type-label',
   templateUrl: './event-type-label.component.html',
   styleUrls: ['./event-type-label.component.scss'],
+  standalone: false,
 })
 export class EventTypeLabelComponent {
   @Input() key: string;

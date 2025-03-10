@@ -44,6 +44,7 @@ import { VitamUIInputComponent } from './vitamui-input.component';
 
 @Component({
   template: ` <vitamui-library-input [(ngModel)]="value"></vitamui-library-input> `,
+  standalone: false,
 })
 class TesthostComponent {
   @ViewChild(VitamUIInputComponent, { static: false }) vitamuiInputComponent: VitamUIInputComponent;

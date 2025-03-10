@@ -48,6 +48,7 @@ import { ContextPermissionTabComponent } from './context-permission-tab/context-
   selector: 'app-context-preview',
   templateUrl: './context-preview.component.html',
   styleUrls: ['./context-preview.component.scss'],
+  standalone: false,
 })
 export class ContextPreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

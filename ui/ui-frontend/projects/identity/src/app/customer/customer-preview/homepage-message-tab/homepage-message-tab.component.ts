@@ -44,6 +44,7 @@ import { HomepageMessageUpdateComponent } from './homepage-message-update/homepa
   selector: 'app-homepage-message-tab',
   templateUrl: './homepage-message-tab.component.html',
   styleUrls: ['./homepage-message-tab.component.scss'],
+  standalone: false,
 })
 export class HomepageMessageTabComponent implements OnDestroy {
   @Input()

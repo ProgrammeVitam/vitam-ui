@@ -50,6 +50,7 @@ import { UploadService } from '../../core/common/upload.service';
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class UploadTrackingComponent {
   ingestList: IngestList;

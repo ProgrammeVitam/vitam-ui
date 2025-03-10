@@ -51,6 +51,7 @@ import { EventDisplayHelperService } from '../../event-display-helper.service';
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
   @Input()

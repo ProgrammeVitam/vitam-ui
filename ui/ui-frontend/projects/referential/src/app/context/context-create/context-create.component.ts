@@ -47,6 +47,7 @@ import { ContextCreateValidators } from './context-create.validators';
   selector: 'app-context-create',
   templateUrl: './context-create.component.html',
   styleUrls: ['./context-create.component.scss'],
+  standalone: false,
 })
 export class ContextCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;

@@ -57,6 +57,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-management-contract-create',
   templateUrl: './management-contract-create.component.html',
   styleUrls: ['./management-contract-create.component.scss'],
+  standalone: false,
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   constructor(

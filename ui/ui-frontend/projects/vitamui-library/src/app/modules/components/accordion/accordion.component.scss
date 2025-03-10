@@ -1,4 +1,4 @@
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 :host {
   width: 100%;
@@ -28,7 +28,7 @@
 }
 
 .header {
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   min-height: 50px;
   padding: 0px 16px;
   border-radius: 5px;

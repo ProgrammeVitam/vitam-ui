@@ -1,6 +1,5 @@
 @use 'sass:math';
-@import '../../../../../sass/variables/colors';
-@import '../../../../../sass/mixins/elevation';
+@use '../../../../../sass/mixins/elevation' as elevation;
 
 $animation-time: 150ms;
 
@@ -20,7 +19,7 @@ $animation-time: 150ms;
 .mat-mdc-dialog-container {
   .vitamui-autocomplete {
     > input {
-      @include dialog-elevation-dark;
+      @include elevation.dialog-elevation-dark;
     }
   }
 }
@@ -39,7 +38,7 @@ $animation-time: 150ms;
     padding: 10px 40px 10px 29px;
     transition: padding $animation-time ease-out;
     margin-top: 0;
-    @include input-elevation-dark;
+    @include elevation.input-elevation-dark;
     &:focus {
       outline: none;
       border: solid 1px var(--vitamui-primary);
@@ -50,7 +49,7 @@ $animation-time: 150ms;
     > input {
       background: var(--vitamui-grey-300);
 
-      @include shadow-0;
+      @include elevation.shadow-0;
     }
 
     > i {

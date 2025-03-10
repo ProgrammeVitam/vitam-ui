@@ -51,6 +51,7 @@ import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } fr
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   @Input()

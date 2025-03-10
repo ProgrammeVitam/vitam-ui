@@ -40,6 +40,7 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-common-accordion',
   templateUrl: './accordion.component.html',
   styleUrls: ['./accordion.component.scss'],
+  standalone: false,
 })
 export class AccordionComponent {
   @Input()

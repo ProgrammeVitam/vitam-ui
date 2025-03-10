@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "declarationMap": false,
+    "sourceMap": false,
+    "inlineSourceMap": false,
+  },
+// FIXME: enable partial compilation mode
+//  "angularCompilerOptions": {
+//    "compilationMode": "partial"
+//  }
+}

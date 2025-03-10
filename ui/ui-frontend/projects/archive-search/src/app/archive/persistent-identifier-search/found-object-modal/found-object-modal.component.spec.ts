@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -66,9 +66,9 @@ describe('ErrorResponseModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [FoundObjectModalComponent],
       imports: [
         LoggerModule.forRoot(),
-        HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
         TranslateModule.forRoot({
@@ -81,7 +81,6 @@ describe('ErrorResponseModalComponent', () => {
           },
         }),
       ],
-      declarations: [FoundObjectModalComponent],
       providers: [
         {
           provide: MatDialogRef,
@@ -126,6 +125,8 @@ describe('ErrorResponseModalComponent', () => {
             },
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

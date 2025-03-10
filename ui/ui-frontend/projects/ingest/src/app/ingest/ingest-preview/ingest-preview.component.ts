@@ -44,6 +44,7 @@ import { IngestService } from '../ingest.service';
   selector: 'app-ingest-preview',
   templateUrl: './ingest-preview.component.html',
   styleUrls: ['./ingest-preview.component.scss'],
+  standalone: false,
 })
 export class IngestPreviewComponent implements OnInit, OnChanges {
   IngestStatus = IngestStatus;

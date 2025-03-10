@@ -62,6 +62,7 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-user-info-tab',
   templateUrl: './user-information-tab.component.html',
   styleUrls: ['./user-information-tab.component.scss'],
+  standalone: false,
 })
 export class UserInfoTabComponent implements OnChanges, OnInit {
   @Input() user: User;

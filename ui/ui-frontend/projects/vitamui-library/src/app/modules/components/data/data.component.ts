@@ -39,14 +39,13 @@ import { CommonModule } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-data',
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.scss'],
-  standalone: true,
-  imports: [CommonModule, PipesModule, CommonTooltipModule, TranslateModule],
+  imports: [CommonModule, PipesModule, CommonTooltipModule, TranslatePipe],
 })
 export class DataComponent {
   @Input() label: string;

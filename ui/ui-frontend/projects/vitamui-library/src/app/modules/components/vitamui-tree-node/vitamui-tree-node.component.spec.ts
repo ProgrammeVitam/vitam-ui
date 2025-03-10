@@ -39,7 +39,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilingHoldingSchemeNode, UnitType } from '../../models';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: false,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;

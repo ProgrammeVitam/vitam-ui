@@ -1,7 +1,7 @@
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 :host {
-  @include shadow-accessible;
+  @include elevation.shadow-accessible;
   cursor: text;
   border-radius: 5px;
   border: solid 1px transparent;
@@ -31,12 +31,12 @@
 
   &:focus-within {
     border: solid 1px var(--vitamui-primary);
-    @include shadow-0;
+    @include elevation.shadow-0;
   }
 
   &.ng-invalid.ng-touched {
     border: 1px solid var(--vitamui-red);
-    @include shadow-0;
+    @include elevation.shadow-0;
   }
 }
 
@@ -52,7 +52,7 @@ input {
   height: 44px !important;
   border-radius: 0 !important;
   background-color: transparent !important;
-  @include shadow-0;
+  @include elevation.shadow-0;
   border: none;
 
   &.first {

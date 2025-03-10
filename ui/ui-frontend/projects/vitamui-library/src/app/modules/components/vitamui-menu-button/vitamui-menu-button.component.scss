@@ -1,10 +1,10 @@
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 ::ng-deep {
   .more-action-menu.mat-mdc-menu-panel {
     max-width: max-content;
     background: none;
-    @include shadow-0;
+    @include elevation.shadow-0;
     border: none;
     overflow: visible;
 

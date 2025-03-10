@@ -45,6 +45,7 @@ import { Customer, LanguageService, Option, StartupService } from 'vitamui-libra
   selector: 'app-homepage-message',
   templateUrl: './homepage-message.component.html',
   styleUrls: ['./homepage-message.component.scss'],
+  standalone: false,
 })
 export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() homepageMessageForm: FormGroup;

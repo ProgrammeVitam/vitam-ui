@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -44,6 +44,7 @@ import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, Unit, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchiveUnitRulesDetailsTabComponent', () => {
   let component: ArchiveUnitRulesDetailsTabComponent;
@@ -72,14 +73,16 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitRulesDetailsTabComponent],
-      imports: [InjectorModule, MatSnackBarModule, HttpClientTestingModule, TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [InjectorModule, MatSnackBarModule, TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
         { provide: ArchiveService, useValue: archiveServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

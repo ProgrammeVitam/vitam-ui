@@ -47,6 +47,7 @@ import { collections, types, sizes } from '../../ontology-form-options';
   selector: 'app-ontology-information-tab',
   templateUrl: './ontology-information-tab.component.html',
   styleUrls: ['./ontology-information-tab.component.scss'],
+  standalone: false,
 })
 export class OntologyInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

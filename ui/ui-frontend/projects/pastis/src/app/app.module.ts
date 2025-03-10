@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpBackend } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { ToastrModule } from 'ngx-toastr';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
@@ -68,10 +68,7 @@ import { StandaloneThemeService } from './standalone/standalone-theme.service';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
-    { prefix: './assets/shared-i18n/', suffix: '.json' },
-    { prefix: './assets/i18n/', suffix: '.json' },
-  ]);
+  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
 }
 
 export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
@@ -123,15 +120,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AppRoutingModule,
     MatToolbarModule,
     QuicklinkModule,
-    TranslateModule.forRoot({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpBackend],
-      },
-    }),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-full-width',
       preventDuplicates: false,
@@ -148,18 +136,25 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), // FIXME: remove this pastis-specific loader in favor of vitam global loader
   ],
   providers: [
+    provideTranslateService({
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
+      defaultLanguage: 'fr',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpBackend],
+      },
+    }),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: WINDOW_LOCATION, useValue: window.location },
     PastisConfiguration,
     { provide: BASE_URL, useValue: './pastis-api' },
     { provide: ENVIRONMENT, useValue: environment },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: PastisConfigurationFactory,
-      deps: [PastisConfiguration],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = PastisConfigurationFactory(inject(PastisConfiguration));
+      return initializerFn();
+    }),
     { provide: StartupService, useClass: startupServiceClass },
     { provide: ThemeService, useClass: themeServiceClass },
     DatePipe,

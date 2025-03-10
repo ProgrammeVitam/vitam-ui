@@ -53,6 +53,7 @@ const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
   selector: 'app-unlock-category-inheritance',
   templateUrl: './unlock-category-inheritance.component.html',
   styleUrls: ['./unlock-category-inheritance.component.css'],
+  standalone: false,
 })
 export class UnlockCategoryInheritanceComponent implements OnDestroy {
   @Input()

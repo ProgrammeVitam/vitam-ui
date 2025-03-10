@@ -41,6 +41,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   selector: 'allow-additional-properties',
   templateUrl: './allow-additional-properties.component.html',
   styleUrls: ['./allow-additional-properties.component.scss'],
+  standalone: false,
 })
 export class AllowAdditionalPropertiesComponent implements OnInit {
   @Output() stateToggleButton = new EventEmitter<boolean>();

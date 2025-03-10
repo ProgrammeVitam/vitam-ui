@@ -57,6 +57,7 @@ interface CustomerInfo {
   selector: 'app-customer-create',
   templateUrl: './customer-create.component.html',
   styleUrls: ['./customer-create.component.scss'],
+  standalone: false,
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;

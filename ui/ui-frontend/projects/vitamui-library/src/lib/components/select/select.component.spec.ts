@@ -59,7 +59,6 @@ const options = {
 @Component({
   template:
     '<vitamui-select [placeholder]="placeholder" [options]="options" [formControl]="control" [multiple]="multiple"></vitamui-select>',
-  standalone: true,
   imports: [ReactiveFormsModule, SelectComponent],
 })
 class TestHostComponent {

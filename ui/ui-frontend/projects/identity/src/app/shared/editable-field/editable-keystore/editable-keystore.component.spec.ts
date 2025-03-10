@@ -48,6 +48,7 @@ import { EditableKeystoreComponent } from './editable-keystore.component';
 
 @Component({
   template: ` <app-editable-keystore [identityProvider]="identityProvider" [disabled]="disabled"></app-editable-keystore> `,
+  standalone: false,
 })
 class TesthostComponent {
   identityProvider: IdentityProvider = {

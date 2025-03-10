@@ -42,6 +42,7 @@ import { Owner, StartupService, Tenant } from 'vitamui-library';
   selector: 'app-owner-preview',
   templateUrl: './owner-preview.component.html',
   styleUrls: ['./owner-preview.component.scss'],
+  standalone: false,
 })
 export class OwnerPreviewComponent {
   @Input() owner: Owner;

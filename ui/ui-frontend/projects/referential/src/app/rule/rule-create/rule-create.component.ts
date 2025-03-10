@@ -47,6 +47,7 @@ import { sizes } from '../../ontology/ontology-form-options';
   selector: 'app-rule-create',
   templateUrl: './rule-create.component.html',
   styleUrls: ['./rule-create.component.scss'],
+  standalone: false,
 })
 export class RuleCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

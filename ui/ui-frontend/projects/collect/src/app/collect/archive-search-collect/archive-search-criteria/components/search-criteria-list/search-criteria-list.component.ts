@@ -51,6 +51,7 @@ import { ConfirmActionComponent } from './confirm-action/confirm-action.componen
   selector: 'app-search-criteria-list',
   templateUrl: './search-criteria-list.component.html',
   styleUrls: ['./search-criteria-list.component.css'],
+  standalone: false,
 })
 export class SearchCriteriaListComponent implements OnInit {
   @Output()

@@ -42,6 +42,7 @@ import { FacetDetails } from '../../models/operation/facet-details.interface';
   selector: 'app-vitamui-facet',
   templateUrl: './vitamui-facet.component.html',
   styleUrls: ['./vitamui-facet.component.scss'],
+  standalone: false,
 })
 export class VitamuiFacetComponent {
   /**

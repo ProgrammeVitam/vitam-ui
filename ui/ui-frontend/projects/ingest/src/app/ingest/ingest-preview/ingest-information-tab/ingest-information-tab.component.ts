@@ -53,6 +53,7 @@ import { map } from 'rxjs/operators';
   selector: 'app-ingest-information-tab',
   templateUrl: './ingest-information-tab.component.html',
   styleUrls: ['./ingest-information-tab.component.scss'],
+  standalone: false,
 })
 export class IngestInformationTabComponent implements OnChanges {
   @Input() ingest: LogbookOperation;

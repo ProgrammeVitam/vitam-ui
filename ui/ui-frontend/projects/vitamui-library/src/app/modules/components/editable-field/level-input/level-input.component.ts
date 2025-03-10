@@ -50,6 +50,7 @@ export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './level-input.component.html',
   styleUrls: ['./level-input.component.scss'],
   providers: [LEVEL_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class LevelInputComponent implements OnInit, ControlValueAccessor {
   @Input() prefix: string;

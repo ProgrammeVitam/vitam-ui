@@ -45,6 +45,7 @@ import { AgencyInformationTabComponent } from './agency-information-tab/agency-i
   selector: 'app-agency-preview',
   templateUrl: './agency-preview.component.html',
   styleUrls: ['./agency-preview.component.scss'],
+  standalone: false,
 })
 export class AgencyPreviewComponent implements AfterViewInit {
   @Input() agency: Agency;

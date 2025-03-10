@@ -40,6 +40,7 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-common-menu-button',
   templateUrl: './vitamui-menu-button.component.html',
   styleUrls: ['./vitamui-menu-button.component.scss'],
+  standalone: false,
 })
 export class VitamuiMenuButtonComponent {
   /** Set the menu overlay display (by defaut at start) */

@@ -36,12 +36,13 @@
  */
 /* eslint-disable no-magic-numbers */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { EMPTY } from 'rxjs';
 
 import { SearchService } from './search.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Injectable()
 class TestSearchService extends SearchService<any> {
@@ -55,8 +56,8 @@ describe('SearchService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [TestSearchService],
+      imports: [],
+      providers: [TestSearchService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
 
     testService = TestBed.inject(TestSearchService);

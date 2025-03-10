@@ -46,6 +46,7 @@ import { SecurityProfileService } from '../../security-profile.service';
   selector: 'app-security-profile-information-tab',
   templateUrl: './security-profile-information-tab.component.html',
   styleUrls: ['./security-profile-information-tab.component.scss'],
+  standalone: false,
 })
 export class SecurityProfileInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -48,6 +48,7 @@ import { StartupService } from '../../../startup.service';
   selector: 'vitamui-common-title-breadcrumb',
   templateUrl: './vitamui-title-breadcrumb.component.html',
   styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
+  standalone: false,
 })
 export class VitamuiTitleBreadcrumbComponent {
   @Input()

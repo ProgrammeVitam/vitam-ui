@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
@@ -64,14 +64,23 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-rule-preview', template: '' })
+@Component({
+  selector: 'app-rule-preview',
+  template: '',
+  standalone: false,
+})
 class RulePreviewStubComponent {
   @Input()
   rule: Rule;
 }
 
-@Component({ selector: 'app-rule-list', template: '' })
+@Component({
+  selector: 'app-rule-list',
+  template: '',
+  standalone: false,
+})
 class RuleListStubComponent {
   @Input()
   search: string;
@@ -108,9 +117,9 @@ describe('RuleComponent', () => {
     };
 
     await TestBed.configureTestingModule({
+      declarations: [RuleComponent, RuleListStubComponent, RulePreviewStubComponent],
       imports: [
         NoopAnimationsModule,
-        HttpClientTestingModule,
         RouterTestingModule,
         VitamUICommonTestModule,
         ReactiveFormsModule,
@@ -124,7 +133,6 @@ describe('RuleComponent', () => {
         TranslateModule.forRoot(),
         LoggerModule.forRoot(),
       ],
-      declarations: [RuleComponent, RuleListStubComponent, RulePreviewStubComponent],
       providers: [
         GlobalEventService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -134,6 +142,8 @@ describe('RuleComponent', () => {
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SecurityService, useValue: securityServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

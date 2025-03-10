@@ -78,5 +78,6 @@ import { Component } from '@angular/core';
   selector: 'pastis-under-construction',
   templateUrl: './pastis-under-construction.component.html',
   styleUrls: ['./pastis-under-construction.component.scss'],
+  standalone: false,
 })
 export class PastisUnderConstructionComponent {}

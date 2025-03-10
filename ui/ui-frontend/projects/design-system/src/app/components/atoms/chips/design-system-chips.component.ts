@@ -40,7 +40,6 @@ import { ChipComponent } from 'vitamui-library';
 @Component({
   templateUrl: './design-system-chips.component.html',
   styleUrls: ['./design-system-chips.component.scss'],
-  standalone: true,
   imports: [ChipComponent],
 })
 export class DesignSystemChipsComponent {}

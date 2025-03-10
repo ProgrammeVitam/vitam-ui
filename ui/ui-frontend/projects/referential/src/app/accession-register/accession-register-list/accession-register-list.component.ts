@@ -45,6 +45,7 @@ import { AccessionRegistersService } from '../accession-register.service';
   selector: 'app-accession-register-list',
   templateUrl: './accession-register-list.component.html',
   styleUrls: ['./accession-register-list.component.scss'],
+  standalone: false,
 })
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();

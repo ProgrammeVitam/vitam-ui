@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -46,6 +46,7 @@ import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { VitamUISnackBarService } from '../../components/vitamui-snack-bar';
 import { BASE_URL, WINDOW_LOCATION } from '../../injection-tokens';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SubrogationSnackBarComponent', () => {
   let component: SubrogationSnackBarComponent;
@@ -53,17 +54,31 @@ describe('SubrogationSnackBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule],
       declarations: [SubrogationSnackBarComponent],
+      imports: [MatSnackBarModule, VitamUICommonTestModule],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: BASE_URL, useValue: '/fakeapi' },
-        { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
-        { provide: Router, useValue: { navigate: () => {}, navigateByUrl: () => {}, url: 'subrogations/customers/customerId' } },
+        {
+          provide: MatSnackBarRef,
+          useValue: {
+            dismiss: () => {},
+          },
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate: () => {},
+            navigateByUrl: () => {},
+            url: 'subrogations/customers/customerId',
+          },
+        },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
         { provide: VitamUISnackBarService, useValue: {} },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

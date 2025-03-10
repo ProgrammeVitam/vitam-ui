@@ -79,6 +79,7 @@ function constantToTranslate(edit: boolean) {
   selector: 'pastis-popup-option',
   templateUrl: './pastis-popup-option.component.html',
   styleUrls: ['./pastis-popup-option.component.scss'],
+  standalone: false,
 })
 export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   popupSaveCancelLabel: string;

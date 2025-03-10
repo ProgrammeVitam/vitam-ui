@@ -42,6 +42,7 @@ import { fadeInOutAnimation } from '../../animations';
   templateUrl: './common-tooltip.component.html',
   styleUrls: ['./common-tooltip.component.scss'],
   animations: [fadeInOutAnimation],
+  standalone: false,
 })
 export class CommonTooltipComponent {
   public text = '';

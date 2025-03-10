@@ -1,4 +1,4 @@
-@import '../../../../../sass/mixins/elevation';
+@use '../../../../../sass/mixins/elevation' as elevation;
 
 :host::ng-deep {
   .btn-circle {
@@ -16,7 +16,7 @@
 button {
   position: relative;
   left: -2rem;
-  @include shadow-0;
+  @include elevation.shadow-0;
 }
 
 vitamui-common-breadcrumb {

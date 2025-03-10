@@ -83,6 +83,7 @@ const COMPLEX_INPUTS = ['otherCriteriaList'];
   selector: 'app-simple-criteria-search',
   templateUrl: './simple-criteria-search.component.html',
   styleUrls: ['./simple-criteria-search.component.css'],
+  standalone: false,
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   form: FormGroup;

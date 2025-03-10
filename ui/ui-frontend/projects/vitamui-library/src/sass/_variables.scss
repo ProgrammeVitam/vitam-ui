@@ -1,5 +1,4 @@
-@import 'variables/colors';
-@import 'variables/bootstrap-variables';
+@use './variables/bootstrap-variables';
 
 $header-height: 72px;
 $footer-height: 100px;

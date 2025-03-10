@@ -48,6 +48,7 @@ import { ManagementContractStorageTabComponent } from './management-contract-sto
   selector: 'app-management-contract-preview',
   templateUrl: './management-contract-preview.component.html',
   styleUrls: ['./management-contract-preview.component.scss'],
+  standalone: false,
 })
 export class ManagementContractPreviewComponent implements OnChanges, AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

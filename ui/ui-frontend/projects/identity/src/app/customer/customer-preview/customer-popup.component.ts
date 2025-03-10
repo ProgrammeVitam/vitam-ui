@@ -42,6 +42,7 @@ import { Customer } from 'vitamui-library';
 @Component({
   selector: 'app-customer-popup',
   template: '<app-customer-preview (previewClose)="closePopup()" [customer]="customer" [isPopup]="true"></app-customer-preview>',
+  standalone: false,
 })
 export class CustomerPopupComponent {
   customer: Customer;

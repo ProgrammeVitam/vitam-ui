@@ -1,8 +1,7 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@use '../../../../sass/mixins/elevation' as elevation;
 
 .app-box {
-  @include btn-elevation-dark;
+  @include elevation.btn-elevation-dark;
 
   height: 90px;
   display: flex;

@@ -44,7 +44,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'design-system-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, CommonTooltipModule, MatTooltipModule, FormsModule, VitamUICommonInputModule],
 })
 export class TooltipComponent implements AfterViewInit {

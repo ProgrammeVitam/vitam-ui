@@ -36,7 +36,7 @@
  */
 import { Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DisplayFile } from './display-file.interface';
@@ -47,8 +47,7 @@ import { CustomFile } from '../../../../lib/models/custom-file';
   selector: 'vitamui-file-selector',
   templateUrl: './file-selector.component.html',
   styleUrl: './file-selector.component.scss',
-  standalone: true,
-  imports: [DragAndDropDirective, TranslateModule, NgIf, NgForOf, PipesModule, NgTemplateOutlet],
+  imports: [DragAndDropDirective, TranslatePipe, NgIf, NgForOf, PipesModule, NgTemplateOutlet],
 })
 export class FileSelectorComponent {
   /**

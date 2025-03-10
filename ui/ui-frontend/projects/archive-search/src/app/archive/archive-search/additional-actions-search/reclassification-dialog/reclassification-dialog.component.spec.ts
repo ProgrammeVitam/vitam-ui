@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -61,6 +61,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
 import { ReclassificationDialogComponent } from './reclassification-dialog.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -135,9 +136,9 @@ describe('ReclassificationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ReclassificationDialogComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
-        HttpClientTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatSnackBarModule,
@@ -168,8 +169,9 @@ describe('ReclassificationComponent', () => {
         { provide: ArchiveUnitValidatorService, useValue: archiveUnitValidatorServicesSpy },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         { provide: ArchiveService, useValue: archiveServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

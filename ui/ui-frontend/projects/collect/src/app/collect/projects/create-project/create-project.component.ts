@@ -75,6 +75,7 @@ import { HttpEventType } from '@angular/common/http';
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
+  standalone: false,
 })
 export class CreateProjectComponent implements OnInit, AfterViewChecked {
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb

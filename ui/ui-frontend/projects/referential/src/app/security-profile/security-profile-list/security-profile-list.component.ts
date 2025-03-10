@@ -56,6 +56,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-security-profile-list',
   templateUrl: './security-profile-list.component.html',
   styleUrls: ['./security-profile-list.component.scss'],
+  standalone: false,
 })
 export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

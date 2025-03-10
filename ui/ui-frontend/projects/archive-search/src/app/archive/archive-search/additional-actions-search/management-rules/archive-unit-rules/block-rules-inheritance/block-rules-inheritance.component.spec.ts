@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -48,6 +48,7 @@ import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { BlockRulesInheritanceComponent } from './block-rules-inheritance.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
@@ -138,6 +139,7 @@ describe('BlockRulesInheritanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [BlockRulesInheritanceComponent],
       imports: [
         InjectorModule,
         LoggerModule.forRoot(),
@@ -145,11 +147,9 @@ describe('BlockRulesInheritanceComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         VitamUICommonTestModule,
-        HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
       ],
-      declarations: [BlockRulesInheritanceComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -159,6 +159,8 @@ describe('BlockRulesInheritanceComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

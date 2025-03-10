@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -45,6 +45,7 @@ import { environment } from 'projects/archive-search/src/environments/environmen
 import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaTypeEnum, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CriteriaSearchComponent } from './criteria-search.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CriteriaSearchComponent', () => {
   let component: CriteriaSearchComponent;
@@ -52,10 +53,11 @@ describe('CriteriaSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [CriteriaSearchComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         InjectorModule,
         RouterTestingModule,
-        HttpClientTestingModule,
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
@@ -63,13 +65,13 @@ describe('CriteriaSearchComponent', () => {
         TranslateModule.forRoot(),
         MatSnackBarModule,
       ],
-      declarations: [CriteriaSearchComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

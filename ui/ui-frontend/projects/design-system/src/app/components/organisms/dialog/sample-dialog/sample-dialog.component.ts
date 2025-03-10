@@ -37,7 +37,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { DialogHeaderComponent, NextStepComponent, PreviousStepComponent, SlideToggleModule, VitamUICommonModule } from 'vitamui-library';
@@ -48,7 +48,7 @@ import { DialogHeaderComponent, NextStepComponent, PreviousStepComponent, SlideT
   styleUrls: ['./sample-dialog.component.scss'],
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslatePipe,
     MatDialogModule,
     DialogHeaderComponent,
     SlideToggleModule,
@@ -58,7 +58,6 @@ import { DialogHeaderComponent, NextStepComponent, PreviousStepComponent, SlideT
     PreviousStepComponent,
     MatRadioModule,
   ],
-  standalone: true,
 })
 export class SampleDialogComponent {
   showSteps = true;

@@ -56,6 +56,7 @@ import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {
   @Output() groupClick = new EventEmitter<Group>();

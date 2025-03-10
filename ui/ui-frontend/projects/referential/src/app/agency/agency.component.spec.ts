@@ -49,14 +49,22 @@ import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
 import { TranslateModule } from '@ngx-translate/core';
 
-@Component({ selector: 'app-agency-preview', template: '' })
+@Component({
+  selector: 'app-agency-preview',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-agency-list', template: '' })
+@Component({
+  selector: 'app-agency-list',
+  template: '',
+  standalone: false,
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 

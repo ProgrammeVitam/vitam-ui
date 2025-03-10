@@ -45,6 +45,7 @@ import { switchMap } from 'rxjs/operators';
   selector: 'app-rule-preview',
   templateUrl: './rule-preview.component.html',
   styleUrls: ['./rule-preview.component.scss'],
+  standalone: false,
 })
 export class RulePreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

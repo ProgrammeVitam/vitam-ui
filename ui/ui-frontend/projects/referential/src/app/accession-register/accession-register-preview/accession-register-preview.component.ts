@@ -41,6 +41,7 @@ import { AccessionRegisterDetail } from 'vitamui-library';
   selector: 'app-accession-register-preview',
   templateUrl: './accession-register-preview.component.html',
   styleUrls: ['./accession-register-preview.component.scss'],
+  standalone: false,
 })
 export class AccessionRegisterPreviewComponent {
   @Input()

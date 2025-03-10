@@ -40,6 +40,7 @@ import { Component } from '@angular/core';
   selector: 'vitamui-common-body',
   templateUrl: './vitamui-body.component.html',
   styleUrls: ['./vitamui-body.component.scss'],
+  standalone: false,
 })
 export class VitamuiBodyComponent {
   constructor() {}

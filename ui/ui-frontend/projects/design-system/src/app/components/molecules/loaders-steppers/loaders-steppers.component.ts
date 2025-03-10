@@ -41,7 +41,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   templateUrl: './loaders-steppers.component.html',
   styleUrls: ['./loaders-steppers.component.scss'],
-  standalone: true,
   imports: [CommonProgressBarModule, MatProgressSpinnerModule],
 })
 export class LoadersSteppersComponent {

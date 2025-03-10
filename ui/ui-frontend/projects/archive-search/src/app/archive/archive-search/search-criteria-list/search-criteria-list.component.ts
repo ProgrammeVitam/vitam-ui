@@ -50,6 +50,7 @@ import { SearchCriteriaListService } from './search-criteria-list.service';
   selector: 'app-search-criteria-list',
   templateUrl: './search-criteria-list.component.html',
   styleUrls: ['./search-criteria-list.component.css'],
+  standalone: false,
 })
 export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   @Output()

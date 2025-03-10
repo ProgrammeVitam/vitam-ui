@@ -42,6 +42,7 @@ import { RuleFacets } from 'vitamui-library';
   selector: 'app-archive-search-rules-facets',
   templateUrl: './archive-search-rules-facets.component.html',
   styleUrls: ['./archive-search-rules-facets.component.css'],
+  standalone: false,
 })
 export class ArchiveSearchRulesFacetsComponent {
   @Input()

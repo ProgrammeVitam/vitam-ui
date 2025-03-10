@@ -50,6 +50,7 @@ export const EDITABLE_DURATION_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-duration-input.component.html',
   styleUrls: ['./editable-duration-input.component.scss'],
   providers: [EDITABLE_DURATION_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class EditableDurationInputComponent extends EditableFieldComponent {
   delaySlaForm: FormGroup;

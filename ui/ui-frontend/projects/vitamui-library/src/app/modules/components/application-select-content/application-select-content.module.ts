@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -43,8 +43,9 @@ import { VitamUIMenuTileModule } from '../vitamui-menu-tile/vitamui-menu-tile.mo
 import { ApplicationSelectContentComponent } from './application-select-content.component';
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule, RouterModule, VitamUIMenuTileModule],
   declarations: [ApplicationSelectContentComponent],
   exports: [ApplicationSelectContentComponent],
+  imports: [CommonModule, RouterModule, VitamUIMenuTileModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class ApplicationSelectContentModule {}

@@ -43,6 +43,7 @@ import { Node } from '../../models/node.interface';
   selector: 'vitamui-library-node',
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.scss'],
+  standalone: false,
 })
 export class NodeComponent {
   @Input() tenantIdentifier: number;

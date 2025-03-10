@@ -40,6 +40,7 @@ import { CollapseDirective } from './collapse.directive';
 
 @Directive({
   selector: '[vitamuiCommonCollapseTriggerFor]',
+  standalone: false,
 })
 export class CollapseTriggerForDirective {
   @Input() vitamuiCommonCollapseTriggerFor: CollapseDirective;

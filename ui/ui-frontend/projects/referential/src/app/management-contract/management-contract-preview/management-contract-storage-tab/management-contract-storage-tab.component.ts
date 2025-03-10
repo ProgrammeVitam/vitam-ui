@@ -46,6 +46,7 @@ import { ManagementContractService } from '../../management-contract.service';
   selector: 'app-management-contract-storage-tab',
   templateUrl: './management-contract-storage-tab.component.html',
   styleUrls: ['./management-contract-storage-tab.component.scss'],
+  standalone: false,
 })
 export class ManagementContractStorageTabComponent implements OnDestroy {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

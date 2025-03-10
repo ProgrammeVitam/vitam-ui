@@ -50,6 +50,7 @@ type InternalValue = { id: number; value: string | number | boolean };
   templateUrl: './vitamui-repeatable-input.component.html',
   styleUrls: ['./vitamui-repeatable-input.component.scss'],
   providers: [REPEATABLE_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
   @Input() placeholder: string;

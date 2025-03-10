@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -47,8 +47,13 @@ import { environment } from '../../../environments/environment.prod';
 import { TestHostComponent } from '../../shared/domains-input/domains-input.component.spec';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: false,
+})
 class InformationTabStubComponent {
   // @Input() profile: ExternalParamProfile;
   @Input() readOnly: boolean;
@@ -71,6 +76,8 @@ describe('ExternalParamProfilDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [TestHostComponent, ExternalParamProfileDetailComponent, InformationTabStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
@@ -78,18 +85,17 @@ describe('ExternalParamProfilDetailComponent', () => {
         MatMenuModule,
         MatTabsModule,
         NoopAnimationsModule,
-        HttpClientTestingModule,
         LoggerModule.forRoot(),
       ],
-      declarations: [TestHostComponent, ExternalParamProfileDetailComponent, InformationTabStubComponent],
       providers: [
         { provide: ExternalParamProfileService, useValue: { updated: new Subject() } },
         { provide: AuthService, useValue: authServiceMock },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

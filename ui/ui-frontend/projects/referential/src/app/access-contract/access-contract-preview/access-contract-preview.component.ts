@@ -47,6 +47,7 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
   selector: 'app-access-contract-preview',
   templateUrl: './access-contract-preview.component.html',
   styleUrls: ['./access-contract-preview.component.scss'],
+  standalone: false,
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
   @Input() accessContract: AccessContract;

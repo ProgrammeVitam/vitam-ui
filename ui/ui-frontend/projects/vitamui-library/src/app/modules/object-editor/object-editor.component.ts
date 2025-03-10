@@ -42,6 +42,7 @@ import { EditObject } from './models/edit-object.model';
   selector: 'vitamui-common-object-editor',
   templateUrl: './object-editor.component.html',
   styles: [],
+  standalone: false,
 })
 export class ObjectEditorComponent {
   @Input() editObject!: EditObject;

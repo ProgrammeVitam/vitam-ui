@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -49,20 +49,32 @@ import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCAT
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: false,
+})
 class InformationTabStubComponent {
   @Input() profile: Profile;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-side-panel', template: `<ng-content></ng-content>` })
+@Component({
+  selector: 'app-side-panel',
+  template: ` <ng-content></ng-content>`,
+  standalone: false,
+})
 class SidePanelStubComponent {
   @Input() popup: boolean;
   @Input() popupUrl: string;
 }
 
-@Component({ template: '<app-hierarchy-detail [profile]="profile" [isPopup]="isPopup"></app-hierarchy-detail>' })
+@Component({
+  template: '<app-hierarchy-detail [profile]="profile" [isPopup]="isPopup"></app-hierarchy-detail>',
+  standalone: false,
+})
 class TestHostComponent {
   profile: any;
   isPopup = false;
@@ -115,15 +127,9 @@ describe('HierarchyDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        LoggerModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
       declarations: [TestHostComponent, HierarchyDetailComponent, SidePanelStubComponent, InformationTabStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
       providers: [
         { provide: ActivatedRoute, useValue: { data: of({ isPopup: true, profile: expectedProfile }) } },
         { provide: HierarchyService, useValue: { updated: new Subject() } },
@@ -132,8 +138,9 @@ describe('HierarchyDetailComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

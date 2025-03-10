@@ -51,6 +51,7 @@ import { ProfileType } from '../../../../models/profile-type.enum';
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
   styleUrls: ['./profile-information-tab.component.scss'],
+  standalone: false,
 })
 export class ProfileInformationTabComponent {
   @Input()

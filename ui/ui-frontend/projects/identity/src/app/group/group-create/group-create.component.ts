@@ -48,6 +48,7 @@ import { GroupValidators } from '../group.validators';
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: false,
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

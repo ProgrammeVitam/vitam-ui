@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -58,6 +58,7 @@ import { OwnerService } from '../../owner.service';
 import { TenantFormValidators } from '../../tenant-create/tenant-form.validators';
 import { TenantService } from '../../tenant.service';
 import { InformationTabComponent } from './information-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 
 const expectedOwner: Owner = {
@@ -111,6 +112,7 @@ const owner = {
 
 @Component({
   template: ` <app-information-tab [owner]="owner" [tenant]="tenant" [readOnly]="readonly"></app-information-tab> `,
+  standalone: false,
 })
 class TestHostComponent {
   tenant: Tenant;
@@ -137,7 +139,6 @@ describe('Owner InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         LoggerModule.forRoot(),
         MatDividerModule,
         NoopAnimationsModule,
@@ -157,6 +158,8 @@ describe('Owner InformationTabComponent', () => {
         { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
         { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

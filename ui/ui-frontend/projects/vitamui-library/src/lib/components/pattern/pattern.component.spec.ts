@@ -51,6 +51,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 
 @Component({
   template: `<app-pattern [(ngModel)]="patterns" [options]="options"></app-pattern>`,
+  standalone: false,
 })
 class TestHostComponent {
   patterns: string[];

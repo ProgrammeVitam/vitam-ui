@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -48,6 +48,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ContextService } from '../../context.service';
 import { ContextPermissionTabComponent } from './context-permission-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
@@ -151,16 +152,16 @@ describe('ContextPermissionTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [ContextPermissionTabComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         ReactiveFormsModule,
         VitamUICommonTestModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        HttpClientTestingModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [ContextPermissionTabComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -169,8 +170,9 @@ describe('ContextPermissionTabComponent', () => {
         { provide: ContextService, useValue: { updated: EMPTY } },
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

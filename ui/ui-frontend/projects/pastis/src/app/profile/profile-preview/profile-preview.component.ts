@@ -54,6 +54,7 @@ import { ProfileInformationTabComponent } from './profile-information-tab/profil
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
   styleUrls: ['./profile-preview.component.scss'],
+  standalone: false,
 })
 export class ProfilePreviewComponent implements AfterViewInit {
   @Output()

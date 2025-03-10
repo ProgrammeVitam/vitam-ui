@@ -47,6 +47,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-admin-dsl',
   templateUrl: './admin-dsl.component.html',
   styleUrls: ['./admin-dsl.component.scss'],
+  standalone: false,
 })
 export class AdminDslComponent extends AppRootComponent {
   tenantId: number;

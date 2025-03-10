@@ -56,6 +56,7 @@ import { AccessionRegisterDetail, rotate90Animation } from 'vitamui-library';
     ]),
     rotate90Animation,
   ],
+  standalone: false,
 })
 export class AccessionRegisterDetailComponent implements OnInit {
   @Input()

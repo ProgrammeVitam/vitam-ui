@@ -45,6 +45,7 @@ import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface'
   selector: 'vitamui-common-breadcrumb',
   templateUrl: './vitamui-breadcrumb.component.html',
   styleUrls: ['./vitamui-breadcrumb.component.scss'],
+  standalone: false,
 })
 export class VitamuiBreadcrumbComponent implements OnInit {
   @Input()

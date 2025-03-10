@@ -60,6 +60,7 @@ import { ContextService } from '../../context.service';
   selector: 'app-context-permission-tab',
   templateUrl: './context-permission-tab.component.html',
   styleUrls: ['./context-permission-tab.component.scss'],
+  standalone: false,
 })
 export class ContextPermissionTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

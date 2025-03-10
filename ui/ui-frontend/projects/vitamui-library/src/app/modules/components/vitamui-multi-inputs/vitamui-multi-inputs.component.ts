@@ -51,6 +51,7 @@ export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-multi-inputs.component.html',
   styleUrls: ['./vitamui-multi-inputs.component.scss'],
   providers: [MULTIPLE_INPUT_VALUE_ACCESSOR],
+  standalone: false,
 })
 export class VitamuiMultiInputsComponent extends EditableFieldComponent implements OnDestroy, OnChanges {
   values: string[] = [];

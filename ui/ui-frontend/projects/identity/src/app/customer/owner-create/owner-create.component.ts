@@ -48,6 +48,7 @@ import { map, tap } from 'rxjs/operators';
   selector: 'app-owner-create',
   templateUrl: './owner-create.component.html',
   styleUrls: ['./owner-create.component.scss'],
+  standalone: false,
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
   public ownerForm: FormGroup;

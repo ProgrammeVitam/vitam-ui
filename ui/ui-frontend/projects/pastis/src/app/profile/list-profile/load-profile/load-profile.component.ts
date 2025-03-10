@@ -37,7 +37,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { FileSelectorComponent, PipesModule, VitamUILibraryModule } from 'vitamui-library';
-import { TranslateModule } from '@ngx-translate/core';
 
 export interface LoadProfileConfig {
   title: string;
@@ -55,8 +54,7 @@ export interface LoadProfileConfig {
   selector: 'vitamui-load-profile',
   templateUrl: './load-profile.component.html',
   styleUrl: './load-profile.component.scss',
-  standalone: true,
-  imports: [FileSelectorComponent, TranslateModule, PipesModule, MatDialogModule, VitamUILibraryModule],
+  imports: [FileSelectorComponent, PipesModule, MatDialogModule, VitamUILibraryModule],
 })
 export class LoadProfileComponent {
   constructor(

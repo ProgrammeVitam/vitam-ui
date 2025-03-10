@@ -43,6 +43,7 @@ import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
   selector: 'vitamui-common-tenant-select-content',
   templateUrl: './tenant-select-content.component.html',
   styleUrls: ['./tenant-select-content.component.scss'],
+  standalone: false,
 })
 export class TenantSelectContentComponent {
   @Input() tenants: MenuOption[];

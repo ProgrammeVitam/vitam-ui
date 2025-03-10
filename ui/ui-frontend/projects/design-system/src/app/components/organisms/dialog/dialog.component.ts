@@ -37,13 +37,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
-  imports: [TranslateModule],
-  standalone: true,
+  imports: [TranslatePipe],
 })
 export class DialogComponent implements OnInit {
   constructor(private dialog: MatDialog) {}

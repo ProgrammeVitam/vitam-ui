@@ -50,6 +50,7 @@ const DEBOUNCE_TIME = 400;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: false,
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
   form: FormGroup;

@@ -1,5 +1,4 @@
-@import '../../../../../sass/variables/colors';
-@import '../../../../../sass/mixins/elevation';
+@use '../../../../../sass/mixins/elevation' as elevation;
 
 :host::ng-deep {
   --width: 900px;
@@ -79,7 +78,7 @@
     background: var(--vitamui-white);
     width: var(--width);
     height: auto;
-    @include shadow-128dp-dark;
+    @include elevation.shadow-128dp-dark;
   }
 
   .header {

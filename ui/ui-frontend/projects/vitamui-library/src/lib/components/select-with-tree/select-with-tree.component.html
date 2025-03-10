@@ -72,7 +72,7 @@
               (onSelectionChange)="leafItemSelectionToggle($event, node)"
             >
               <span
-                [innerHTML]="getDisplayValue(node.item) | highlight: this.searchText"
+                [innerHTML]="getDisplayValue(node.item) | highlight: searchText"
                 vitamuiCommonEllipsis
                 [isToolTipOnMouseEnter]="true"
               ></span>
@@ -101,7 +101,7 @@
                 [ngClass]="treeControl.isExpanded(node) ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right'"
               ></i>
               <span
-                [innerHTML]="getDisplayValue(node.item) | highlight: this.searchText"
+                [innerHTML]="getDisplayValue(node.item) | highlight: searchText"
                 vitamuiCommonEllipsis
                 [isToolTipOnMouseEnter]="true"
               ></span>

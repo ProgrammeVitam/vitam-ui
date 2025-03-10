@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -51,13 +51,14 @@ import { SchemaService } from '../../../schema';
 import { MockSchemaService } from '../../../schema/mock-schema.service';
 import { ArchiveUnitViewerService } from './archive-unit-viewer.service';
 import { ObjectEditorModule } from '../../../object-editor/object-editor.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchiveUnitViewerService', () => {
   let service: ArchiveUnitViewerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ReactiveFormsModule, LoggerModule.forRoot(), ObjectEditorModule],
+      imports: [ReactiveFormsModule, LoggerModule.forRoot(), ObjectEditorModule],
       providers: [
         ArchiveUnitViewerService,
         TypeService,
@@ -68,6 +69,8 @@ describe('ArchiveUnitViewerService', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SchemaService, useClass: MockSchemaService },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     service = TestBed.inject(ArchiveUnitViewerService);

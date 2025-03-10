@@ -49,6 +49,7 @@ import { DecimalPipe } from '@angular/common';
   selector: 'app-external-param-profile-create',
   templateUrl: './external-param-profile-create.component.html',
   styleUrls: ['./external-param-profile-create.component.scss'],
+  standalone: false,
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   externalParamProfileForm: FormGroup;

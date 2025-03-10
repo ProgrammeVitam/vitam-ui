@@ -49,7 +49,7 @@ import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component
 import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';
 import { UserPopupComponent } from './user-popup.component';
 import { UserPreviewComponent } from './user-preview.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -61,7 +61,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     RouterModule,
     SharedModule,
-    TranslateModule,
+    TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,
   ],

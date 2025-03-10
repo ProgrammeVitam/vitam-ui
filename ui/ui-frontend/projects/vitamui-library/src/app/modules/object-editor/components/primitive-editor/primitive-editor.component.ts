@@ -46,6 +46,7 @@ import { DatePatternConstants } from '../../../dates.constants';
   selector: 'vitamui-common-primitive-editor',
   templateUrl: './primitive-editor.component.html',
   styleUrls: ['./primitive-editor.component.scss'],
+  standalone: false,
 })
 export class PrimitiveEditorComponent implements OnInit {
   @Input() editObject: EditObject;

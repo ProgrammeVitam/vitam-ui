@@ -43,6 +43,7 @@ import { PastisPopupSelectionService } from './pastis-popup-selection.service';
   selector: 'pastis-generic-popup',
   templateUrl: './pastis-generic-popup.component.html',
   styleUrls: ['./pastis-generic-popup.component.scss'],
+  standalone: false,
 })
 export class PastisGenericPopupComponent implements OnInit {
   donnees: string[];

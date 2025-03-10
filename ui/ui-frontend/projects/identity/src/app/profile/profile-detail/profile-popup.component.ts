@@ -42,6 +42,7 @@ import { Profile } from 'vitamui-library';
 @Component({
   selector: 'app-profile-popup',
   template: '<app-profile-detail (profileClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-profile-detail>',
+  standalone: false,
 })
 export class ProfilePopupComponent {
   profile: Profile;
