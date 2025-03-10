@@ -109,7 +109,6 @@ import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -130,7 +129,6 @@ import org.springframework.web.multipart.support.MultipartFilter;
     {
         RestExceptionHandler.class,
         SwaggerConfiguration.class,
-        HttpMessageConvertersAutoConfiguration.class,
         WebSecurityConfig.class,
         VitamAccessConfig.class,
         VitamAdministrationConfig.class,

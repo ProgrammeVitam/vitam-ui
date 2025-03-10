@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import lombok.EqualsAndHashCode;
@@ -66,8 +65,6 @@ public class SubrogationDto extends IdDto {
     @NotNull
     private SubrogationStatusEnum status;
 
-    // Somehow the date is serialized to number instead of iso date.
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Instant date;
 
     @NotNull
