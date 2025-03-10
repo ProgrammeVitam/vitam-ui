@@ -47,6 +47,7 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
     public SchemaElementDto convert(SchemaResponse schemaModel) {
         final SchemaStringSizeType stringTypeSize = schemaModel.getStringSize();
         final SchemaElementDto schemaElementDto = (SchemaElementDto) new SchemaElementDto()
+            .setTenant(schemaModel.getTenant())
             .setPath(schemaModel.getPath())
             .setStringSize(Optional.ofNullable(stringTypeSize).map(SchemaStringSizeType::value).orElse(null))
             .setCardinality(Cardinality.of(schemaModel.getCardinality().value()))
