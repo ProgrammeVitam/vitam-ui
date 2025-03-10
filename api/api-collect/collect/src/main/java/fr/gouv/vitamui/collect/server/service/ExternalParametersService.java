@@ -33,9 +33,9 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
-import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
+import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -54,9 +54,9 @@ public class ExternalParametersService {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersExternalRestClient externalParametersExternalRestClient;
-    private final ExternalSecurityService securityService;
-    private final AccessContractService accessContractService;
+    private final ExternalParametersRestClient externalParametersRestClient;
+    private final SecurityService securityService;
+    private final AccessContractCommonService accessContractCommonService;
 
     /**
      * Service to return the access contract defined on profil using external parameters
@@ -64,7 +64,7 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     private @Nonnull String retrieveAccessContractFromExternalParam() {
-        Map<String, String> myExternalParameter = externalParametersExternalRestClient.getMyExternalParameters(
+        Map<String, String> myExternalParameter = externalParametersRestClient.getMyExternalParameters(
             securityService.getHttpContext()
         );
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
@@ -84,7 +84,7 @@ public class ExternalParametersService {
     }
 
     public @Nullable AccessContractModel retrieveAccessContract() throws VitamClientException, JsonProcessingException {
-        final RequestResponse<AccessContractModel> response = accessContractService.findAccessContractById(
+        final RequestResponse<AccessContractModel> response = accessContractCommonService.findAccessContractById(
             buildVitamContextFromExternalParam(),
             retrieveAccessContractFromExternalParam()
         );

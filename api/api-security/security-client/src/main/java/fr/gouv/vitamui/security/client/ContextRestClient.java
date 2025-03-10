@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.security.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +60,7 @@ import static fr.gouv.vitamui.security.common.rest.RestApi.ADD_TENANT_TO_CONTEXT
  *
  *
  */
-public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHttpContext> {
+public class ContextRestClient extends BaseCrudRestClient<ContextDto, HttpContext> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextRestClient.class);
 
@@ -68,7 +68,7 @@ public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHt
         super(restTemplate, baseUrl);
     }
 
-    public ContextDto findByCertificate(final InternalHttpContext context, final String certificate) {
+    public ContextDto findByCertificate(final HttpContext context, final String certificate) {
         LOGGER.debug("certificate(truncated): {}****", StringUtils.substring(certificate, 0, 100));
         final HttpEntity<String> request = new HttpEntity<>(certificate, buildHeaders(context));
         final ResponseEntity<ContextDto> response = restTemplate.exchange(
@@ -88,7 +88,7 @@ public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHt
      * @param tenantIdentifier
      * @return
      */
-    public ContextDto addTenant(final InternalHttpContext context, final String id, final String tenantIdentifier) {
+    public ContextDto addTenant(final HttpContext context, final String id, final String tenantIdentifier) {
         LOGGER.debug("Add Tenant {}, to {}", tenantIdentifier, id);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(ADD_TENANT_TO_CONTEXT_PATH);

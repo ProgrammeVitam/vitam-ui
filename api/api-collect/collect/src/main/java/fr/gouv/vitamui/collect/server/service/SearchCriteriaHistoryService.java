@@ -37,7 +37,7 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -54,18 +54,18 @@ public class SearchCriteriaHistoryService
 
     private final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo;
     private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter;
-    private final ExternalSecurityService externalSecurityService;
+    private final SecurityService securityService;
 
     public SearchCriteriaHistoryService(
         final SequenceGeneratorService sequenceGeneratorService,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final ExternalSecurityService externalSecurityService
+        final SecurityService securityService
     ) {
         super(sequenceGeneratorService);
         this.searchCriteriaHistoryRepo = searchCriteriaHistoryRepo;
         this.searchCriteriaHistoryConverter = searchCriteriaHistoryConverter;
-        this.externalSecurityService = externalSecurityService;
+        this.securityService = securityService;
     }
 
     /**
@@ -75,7 +75,7 @@ public class SearchCriteriaHistoryService
      */
     public List<SearchCriteriaHistoryDto> getSearchCriteriaHistoryDtos() {
         LOGGER.debug("getSearchCriteriaHistoryDtos");
-        AuthUserDto authUserDto = externalSecurityService.getUser();
+        AuthUserDto authUserDto = securityService.getUser();
 
         LOGGER.debug("Get the search history for user : {}", authUserDto.getIdentifier());
         QueryDto criteria = new QueryDto();
@@ -85,7 +85,7 @@ public class SearchCriteriaHistoryService
 
     @Override
     protected void beforeCreate(final SearchCriteriaHistoryDto dto) {
-        AuthUserDto authUserDto = externalSecurityService.getUser();
+        AuthUserDto authUserDto = securityService.getUser();
         dto.setUserId(authUserDto.getIdentifier());
         List<SearchCriteriaHistoryDto> list = getSearchCriteriaHistoryDtos();
         if (null != list && list.size() >= 10) {

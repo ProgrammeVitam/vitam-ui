@@ -58,7 +58,7 @@ import java.util.Optional;
  * @param <C>
  * @param <D>
  */
-public abstract class BaseCrudWebClient<C extends AbstractHttpContext, D extends IdDto> extends BaseWebClient<C> {
+public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> extends BaseWebClient<C> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseCrudWebClient.class);
 

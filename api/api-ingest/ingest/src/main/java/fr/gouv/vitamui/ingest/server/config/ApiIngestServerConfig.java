@@ -48,18 +48,18 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamIngestConfig;
-import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.client.CustomerRestClient;
+import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.client.IamRestClientFactory;
+import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.ingest.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.ingest.server.service.IngestAccessContractService;
 import fr.gouv.vitamui.ingest.server.service.IngestExternalParametersService;
-import fr.gouv.vitamui.ingest.server.service.IngestExternalService;
 import fr.gouv.vitamui.ingest.server.service.IngestGeneratorODTFile;
+import fr.gouv.vitamui.ingest.server.service.IngestService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -113,48 +113,39 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService
-    ) {
-        return new ExternalApiAuthenticationProvider(externalAuthentificationService);
+    public ApiAuthenticationProvider apiAuthenticationProvider(final AuthentificationService authentificationService) {
+        return new ApiAuthenticationProvider(authentificationService);
     }
 
     @Bean
-    public ExternalSecurityService externalSecurityService() {
-        return new ExternalSecurityService();
+    public SecurityService externalSecurityService() {
+        return new SecurityService();
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(
+    public AuthentificationService externalAuthentificationService(
         final ContextRestClient contextRestClient,
-        final UserExternalRestClient userExternalRestClient
+        final UserRestClient userRestClient
     ) {
-        return new ExternalAuthentificationService(contextRestClient, userExternalRestClient);
+        return new AuthentificationService(contextRestClient, userRestClient);
     }
 
     @Bean
-    public IamExternalRestClientFactory iamExternalRestClientFactory(
+    public IamRestClientFactory iamExternalRestClientFactory(
         final ApiIngestApplicationProperties apiIngestApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamExternalRestClientFactory(
-            apiIngestApplicationProperties.getIamExternalClient(),
-            restTemplateBuilder
-        );
+        return new IamRestClientFactory(apiIngestApplicationProperties.getIamClient(), restTemplateBuilder);
     }
 
     @Bean
-    public UserExternalRestClient userInternalRestClient(
-        final IamExternalRestClientFactory iamExternalRestClientFactory
-    ) {
-        return iamExternalRestClientFactory.getUserExternalRestClient();
+    public UserRestClient userInternalRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getUserExternalRestClient();
     }
 
     @Bean
-    public CustomerExternalRestClient customerExternalRestClient(
-        final IamExternalRestClientFactory iamExternalRestClientFactory
-    ) {
-        return iamExternalRestClientFactory.getCustomerExternalRestClient();
+    public CustomerRestClient customerExternalRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getCustomerExternalRestClient();
     }
 
     @Bean
@@ -163,31 +154,31 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalParametersExternalRestClient externalParametersExternalRestClient(
-        final IamExternalRestClientFactory iamExternalRestClientFactory
+    public ExternalParametersRestClient externalParametersExternalRestClient(
+        final IamRestClientFactory iamRestClientFactory
     ) {
-        return iamExternalRestClientFactory.getExternalParametersExternalRestClient();
+        return iamRestClientFactory.getExternalParametersExternalRestClient();
     }
 
     @Bean
-    public IngestExternalService ingestInternalService(
-        final ExternalSecurityService externalSecurityService,
+    public IngestService ingestInternalService(
+        final SecurityService securityService,
         final LogbookService logbookService,
         final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient,
-        final CustomerExternalRestClient customerExternalRestClient,
+        final CustomerRestClient customerRestClient,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
         final IngestExternalParametersService ingestExternalParametersService,
         final IngestAccessContractService ingestAccessContractService,
-        final UserExternalRestClient userExternalRestClient
+        final UserRestClient userRestClient
     ) {
-        return new IngestExternalService(
-            externalSecurityService,
+        return new IngestService(
+            securityService,
             logbookService,
             objectMapper,
             ingestExternalClient,
-            customerExternalRestClient,
-            userExternalRestClient,
+            customerRestClient,
+            userRestClient,
             ingestGeneratorODTFile,
             ingestExternalParametersService,
             ingestAccessContractService

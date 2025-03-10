@@ -2,7 +2,7 @@ package fr.gouv.vitamui.commons.test.rest;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class TestHealthRestClient extends BaseCrudRestClient<IdDto, ExternalHttpContext> {
+public class TestHealthRestClient extends BaseCrudRestClient<IdDto, HttpContext> {
 
     public TestHealthRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -23,7 +23,7 @@ public class TestHealthRestClient extends BaseCrudRestClient<IdDto, ExternalHttp
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public ResponseEntity<String> getStatus(final ExternalHttpContext context) {
+    public ResponseEntity<String> getStatus(final HttpContext context) {
         final HttpEntity<?> request = new HttpEntity(buildHeaders(context));
         final ResponseEntity<String> response = restTemplate.exchange(
             getUrl() + "/actuator/health",

@@ -51,7 +51,7 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,11 +129,11 @@ public class LogbookUtils {
      */
     public static StatusCode getLogbookOperationStatus(final RequestResponse<LogbookOperation> response)
         throws JsonProcessingException {
-        final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(
+        final LogbookOperationsCommonResponseDto logbookOperationsCommonResponseDto = objectMapper.treeToValue(
             response.toJsonNode(),
-            LogbookOperationsResponseDto.class
+            LogbookOperationsCommonResponseDto.class
         );
-        final LogbookOperationDto logbookOperation = logbookOperationsResponseDto
+        final LogbookOperationDto logbookOperation = logbookOperationsCommonResponseDto
             .getResults()
             .stream()
             .findFirst()

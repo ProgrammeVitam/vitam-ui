@@ -39,8 +39,8 @@ package fr.gouv.vitamui.cas.authentication;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
@@ -61,17 +61,17 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IamSurrogateAuthenticationService.class);
 
-    private final CasExternalRestClient casExternalRestClient;
+    private final CasRestClient casRestClient;
 
     private final Utils utils;
 
     public IamSurrogateAuthenticationService(
-        final CasExternalRestClient casExternalRestClient,
+        final CasRestClient casRestClient,
         final ServicesManager servicesManager,
         final Utils utils
     ) {
         super(servicesManager);
-        this.casExternalRestClient = casExternalRestClient;
+        this.casRestClient = casRestClient;
         this.utils = utils;
     }
 
@@ -105,7 +105,7 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
         val id = principal.getId();
         boolean canAuthenticate = false;
         try {
-            val subrogations = casExternalRestClient.getSubrogationsBySuperUserId(utils.buildContext(id), id);
+            val subrogations = casRestClient.getSubrogationsBySuperUserId(utils.buildContext(id), id);
             canAuthenticate = subrogations
                 .stream()
                 .filter(s -> s.getStatus() == SubrogationStatusEnum.ACCEPTED)

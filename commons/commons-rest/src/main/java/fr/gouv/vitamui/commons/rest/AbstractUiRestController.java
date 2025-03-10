@@ -40,7 +40,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,23 +84,22 @@ public abstract class AbstractUiRestController {
         throw new UnAuthorizedException("User is not connected");
     }
 
-    protected ExternalHttpContext buildUiHttpContext() throws PreconditionFailedException {
+    protected HttpContext buildUiHttpContext() throws PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
-        return ExternalHttpContext.buildFromUiRequest(request, principal);
+        return HttpContext.buildFromUiRequest(request, principal);
     }
 
-    protected ExternalHttpContext buildUiHttpContext(final Integer tenantIdentifier)
-        throws PreconditionFailedException {
+    protected HttpContext buildUiHttpContext(final Integer tenantIdentifier) throws PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
-        return ExternalHttpContext.buildFromUiRequest(request, principal, tenantIdentifier, null);
+        return HttpContext.buildFromUiRequest(request, principal, tenantIdentifier, null);
     }
 
-    protected ExternalHttpContext buildUiHttpContext(final Integer tenantIdentifier, final String accessContractId)
+    protected HttpContext buildUiHttpContext(final Integer tenantIdentifier, final String accessContractId)
         throws InvalidParseOperationException, PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
-        return ExternalHttpContext.buildFromUiRequest(request, principal, tenantIdentifier, accessContractId);
+        return HttpContext.buildFromUiRequest(request, principal, tenantIdentifier, accessContractId);
     }
 }

@@ -2,10 +2,10 @@ package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.apereo.cas.authentication.principal.Principal;
@@ -50,14 +50,14 @@ public final class IamSurrogateAuthenticationServiceTest {
 
     private IamSurrogateAuthenticationService service;
 
-    private CasExternalRestClient casExternalRestClient;
+    private CasRestClient casRestClient;
 
     @Before
     public void setUp() {
-        casExternalRestClient = mock(CasExternalRestClient.class);
+        casRestClient = mock(CasRestClient.class);
 
         val utils = new Utils(null, 0, null, null, "");
-        service = new IamSurrogateAuthenticationService(casExternalRestClient, mock(ServicesManager.class), utils);
+        service = new IamSurrogateAuthenticationService(casRestClient, mock(ServicesManager.class), utils);
     }
 
     @After
@@ -69,7 +69,7 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testCanAuthenticateOk() {
         givenSubrogationInRequestContext();
 
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(
+        when(casRestClient.getSubrogationsBySuperUserId(any(HttpContext.class), eq(SU_ID))).thenReturn(
             List.of(surrogation())
         );
 
@@ -82,7 +82,7 @@ public final class IamSurrogateAuthenticationServiceTest {
 
         val subrogation = surrogation();
         subrogation.setSurrogate("anotherUser");
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(
+        when(casRestClient.getSubrogationsBySuperUserId(any(HttpContext.class), eq(SU_ID))).thenReturn(
             List.of(subrogation)
         );
 
@@ -95,7 +95,7 @@ public final class IamSurrogateAuthenticationServiceTest {
 
         val subrogation = surrogation();
         subrogation.setStatus(SubrogationStatusEnum.CREATED);
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(
+        when(casRestClient.getSubrogationsBySuperUserId(any(HttpContext.class), eq(SU_ID))).thenReturn(
             List.of(subrogation)
         );
 
@@ -107,8 +107,8 @@ public final class IamSurrogateAuthenticationServiceTest {
         givenSubrogationInRequestContext();
 
         when(
-            casExternalRestClient.getSubrogationsBySuperUserEmailAndCustomerId(
-                any(ExternalHttpContext.class),
+            casRestClient.getSubrogationsBySuperUserEmailAndCustomerId(
+                any(HttpContext.class),
                 eq(SU_EMAIL),
                 eq(SU_CUSTOMER_ID)
             )

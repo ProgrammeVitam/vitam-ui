@@ -46,9 +46,9 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
@@ -141,7 +141,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     private final PrincipalFactory principalFactory;
 
-    private final CasExternalRestClient casExternalRestClient;
+    private final CasRestClient casRestClient;
 
     private final Utils utils;
 
@@ -378,7 +378,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         LOGGER.debug("Computed embedded: {}", embedded);
 
-        final UserDto user = casExternalRestClient.getUser(
+        final UserDto user = casRestClient.getUser(
             utils.buildContext(loginEmail),
             loginEmail,
             loginCustomerId,
@@ -437,7 +437,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         if (subrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUserEmail));
             attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(superUserCustomerId));
-            superUser = casExternalRestClient.getUser(
+            superUser = casRestClient.getUser(
                 utils.buildContext(superUserEmail),
                 superUserEmail,
                 superUserCustomerId,

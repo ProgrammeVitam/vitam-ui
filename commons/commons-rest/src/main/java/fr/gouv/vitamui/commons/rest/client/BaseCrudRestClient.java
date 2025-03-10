@@ -68,7 +68,7 @@ import java.util.Optional;
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttpContext> extends BaseRestClient<C> {
+public abstract class BaseCrudRestClient<D extends IdDto, C extends HttpContext> extends BaseRestClient<C> {
 
     private static final String EMBEDDED_QUERY_PARAM = "embedded";
 

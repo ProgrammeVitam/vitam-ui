@@ -57,12 +57,10 @@ import java.util.List;
 
 /**
  * A REST client to check existence, read, created, update and delete an object with identifier.
- *
- *
  */
 @EqualsAndHashCode
 @ToString
-public abstract class BaseClient<C extends AbstractHttpContext> implements RestClient {
+public abstract class BaseClient<C extends HttpContext> implements RestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
 
@@ -72,32 +70,14 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         this.baseUrl = baseUrl;
     }
 
-    protected MultiValueMap<String, String> buildHeaders(final AbstractHttpContext context) {
+    protected MultiValueMap<String, String> buildHeaders(final HttpContext context) {
         final MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         Assert.notNull(context, "The call context cannot be null");
-        if (context instanceof InternalHttpContext) {
-            buildHeaders((InternalHttpContext) context, headers);
-        } else if (context instanceof ExternalHttpContext) {
-            buildHeaders((ExternalHttpContext) context, headers);
-        } else {
-            LOGGER.warn("Not implemented for type {}", context.getClass());
-        }
+        buildHeaders((HttpContext) context, headers);
         return headers;
     }
 
-    private void buildHeaders(final InternalHttpContext context, final MultiValueMap<String, String> headers) {
-        buildCommonHeaders(context, headers);
-        buildHeadersInternal(context, headers);
-    }
-
-    private void buildHeaders(final ExternalHttpContext context, final MultiValueMap<String, String> headers) {
-        buildCommonHeaders(context, headers);
-        buildHeadersExternal(context, headers);
-    }
-
-    private void buildHeadersExternal(final ExternalHttpContext context, final MultiValueMap<String, String> headers) {}
-
-    private void buildCommonHeaders(final AbstractHttpContext context, final MultiValueMap<String, String> headers) {
+    private void buildHeaders(final HttpContext context, final MultiValueMap<String, String> headers) {
         final Integer tenantIdentifier = context.getTenantIdentifier();
         final String userToken = context.getUserToken();
         final String applicationId = context.getApplicationId();
@@ -124,17 +104,6 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         }
         if (accessContractId != null) {
             headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContractId));
-        }
-    }
-
-    private void buildHeadersInternal(final InternalHttpContext context, final MultiValueMap<String, String> headers) {
-        final String customerId = context.getCustomerId();
-        final String userLevel = context.getUserLevel();
-        if (userLevel != null) {
-            headers.put(CommonConstants.X_USER_LEVEL_HEADER, Collections.singletonList(userLevel));
-        }
-        if (customerId != null) {
-            headers.put(CommonConstants.X_CUSTOMER_ID_HEADER, Collections.singletonList(customerId));
         }
     }
 

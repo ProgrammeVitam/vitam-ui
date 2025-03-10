@@ -287,7 +287,7 @@
                     <layout>JAR</layout>
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
-                    <mainClass>fr.gouv.vitamui.referential.external.server.ApiReferentialExternalServerApplication
+                    <mainClass>fr.gouv.vitamui.referential.server.ApiReferentialServerApplication
                     </mainClass>
                     <jvmArguments>-Xmx512m</jvmArguments>
                     <arguments>

@@ -49,8 +49,8 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -97,7 +97,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private final CasExternalRestClient casExternalRestClient;
+    private final CasRestClient casRestClient;
 
     private final ProvidersService providersService;
 
@@ -120,7 +120,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final CipherExecutor<Serializable, String> cipherExecutor,
         final String issuer,
         final PasswordHistoryService passwordHistoryService,
-        final CasExternalRestClient casExternalRestClient,
+        final CasRestClient casRestClient,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
         final CentralAuthenticationService centralAuthenticationService,
@@ -130,7 +130,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final PasswordConfiguration passwordConfiguration
     ) {
         super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
-        this.casExternalRestClient = casExternalRestClient;
+        this.casRestClient = casRestClient;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
         this.centralAuthenticationService = centralAuthenticationService;
@@ -189,7 +189,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         Assert.notNull(username, "username can not be null");
         UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
 
-        final UserDto user = casExternalRestClient.getUserByEmailAndCustomerId(
+        final UserDto user = casRestClient.getUserByEmailAndCustomerId(
             utils.buildContext(userLogin.getUserEmail()),
             userLogin.getUserEmail(),
             userLogin.getCustomerId(),
@@ -244,7 +244,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         );
 
         try {
-            casExternalRestClient.changePassword(
+            casRestClient.changePassword(
                 utils.buildContext(userLogin.getUserEmail()),
                 userLogin.getUserEmail(),
                 userLogin.getCustomerId(),
@@ -320,7 +320,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
         val usernameWithLowercase = username.toLowerCase().trim();
         try {
-            UserDto user = casExternalRestClient.getUserByEmailAndCustomerId(
+            UserDto user = casRestClient.getUserByEmailAndCustomerId(
                 utils.buildContext(usernameWithLowercase),
                 usernameWithLowercase,
                 customerId,

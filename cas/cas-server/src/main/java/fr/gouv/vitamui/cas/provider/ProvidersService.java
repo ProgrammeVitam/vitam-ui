@@ -37,10 +37,10 @@
 package fr.gouv.vitamui.cas.provider;
 
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.iam.client.IdentityProviderRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -74,7 +74,7 @@ public class ProvidersService {
 
     private final Clients clients;
 
-    private final IdentityProviderExternalRestClient identityProviderExternalRestClient;
+    private final IdentityProviderRestClient identityProviderRestClient;
 
     private final Pac4jClientBuilder pac4jClientBuilder;
 
@@ -97,7 +97,7 @@ public class ProvidersService {
     }
 
     protected void loadData() {
-        final List<IdentityProviderDto> temporaryProviders = identityProviderExternalRestClient.getAll(
+        final List<IdentityProviderDto> temporaryProviders = identityProviderRestClient.getAll(
             utils.buildContext(null),
             Optional.empty(),
             Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)

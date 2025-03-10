@@ -1,12 +1,12 @@
 package fr.gouv.vitamui.cas.provider;
 
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.iam.client.IdentityProviderRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public final class ProvidersServiceTest {
 
     private ProvidersService service;
 
-    private IdentityProviderExternalRestClient restClient;
+    private IdentityProviderRestClient restClient;
 
     private SAML2Client saml2Client;
 
@@ -56,7 +56,7 @@ public final class ProvidersServiceTest {
     public void setUp() {
         val clients = new Clients();
         val builder = mock(Pac4jClientBuilder.class);
-        restClient = mock(IdentityProviderExternalRestClient.class);
+        restClient = mock(IdentityProviderRestClient.class);
         val utils = new Utils(null, 0, null, null, "");
         service = new ProvidersService(clients, restClient, builder, utils);
 
@@ -77,7 +77,7 @@ public final class ProvidersServiceTest {
     public void testGetProviders() {
         when(
             restClient.getAll(
-                any(ExternalHttpContext.class),
+                any(HttpContext.class),
                 eq(Optional.empty()),
                 eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
             )
@@ -111,7 +111,7 @@ public final class ProvidersServiceTest {
     public void testNoProviderResponse() {
         when(
             restClient.getAll(
-                any(ExternalHttpContext.class),
+                any(HttpContext.class),
                 eq(Optional.empty()),
                 eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
             )
@@ -131,7 +131,7 @@ public final class ProvidersServiceTest {
     public void testBadProviderResponse() {
         when(
             restClient.getAll(
-                any(ExternalHttpContext.class),
+                any(HttpContext.class),
                 eq(Optional.empty()),
                 eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
             )

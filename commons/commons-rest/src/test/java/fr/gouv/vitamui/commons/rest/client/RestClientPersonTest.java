@@ -23,7 +23,7 @@ public class RestClientPersonTest {
 
     private final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 
-    private final ExternalHttpContext header = new ExternalHttpContext(1, "", "", "");
+    private final HttpContext header = new HttpContext(1, "", "", "");
 
     @Before
     public void setup() {

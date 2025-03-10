@@ -37,8 +37,8 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -100,7 +100,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     private final Utils utils;
 
-    private final CasExternalRestClient casExternalRestClient;
+    private final CasRestClient casRestClient;
 
     private final ServicesManager servicesManager;
 
@@ -121,7 +121,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         final ConfigurableApplicationContext applicationContext,
         final SingleLogoutRequestExecutor singleLogoutRequestExecutor,
         final Utils utils,
-        final CasExternalRestClient casExternalRestClient,
+        final CasRestClient casRestClient,
         final ServicesManager servicesManager,
         final CasConfigurationProperties casProperties,
         final Action frontChannelLogoutAction,
@@ -138,7 +138,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
             singleLogoutRequestExecutor
         );
         this.utils = utils;
-        this.casExternalRestClient = casExternalRestClient;
+        this.casRestClient = casRestClient;
         this.servicesManager = servicesManager;
         this.casProperties = casProperties;
         this.frontChannelLogoutAction = frontChannelLogoutAction;
@@ -171,11 +171,11 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                         SUPER_USER_CUSTOMER_ID_ATTRIBUTE
                     );
 
-                    final ExternalHttpContext externalHttpContext;
+                    final HttpContext httpContext;
                     if (StringUtils.isNotBlank(superUserCustomerId)) {
-                        externalHttpContext = utils.buildContext(superUserEmail);
+                        httpContext = utils.buildContext(superUserEmail);
                     } else {
-                        externalHttpContext = utils.buildContext(principalEmail);
+                        httpContext = utils.buildContext(principalEmail);
                     }
 
                     LOGGER.debug(
@@ -184,7 +184,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                         superUserEmail,
                         superUserCustomerId
                     );
-                    casExternalRestClient.logout(externalHttpContext, authToken, superUserEmail, superUserCustomerId);
+                    casRestClient.logout(httpContext, authToken, superUserEmail, superUserCustomerId);
                 }
             } catch (final InvalidTicketException e) {
                 LOGGER.warn("No TGT found for the CAS cookie: {}", tgtId);

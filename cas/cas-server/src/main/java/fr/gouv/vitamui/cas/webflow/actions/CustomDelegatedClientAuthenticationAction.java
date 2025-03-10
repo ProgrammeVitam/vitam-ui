@@ -40,9 +40,9 @@ import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
@@ -86,7 +86,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final TicketRegistry ticketRegistry;
 
-    private final CasExternalRestClient casExternalRestClient;
+    private final CasRestClient casRestClient;
 
     private final String vitamuiPortalUrl;
 
@@ -98,7 +98,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         final ProvidersService providersService,
         final Utils utils,
         final TicketRegistry ticketRegistry,
-        final CasExternalRestClient casExternalRestClient,
+        final CasRestClient casRestClient,
         final String vitamuiPortalUrl
     ) {
         super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
@@ -106,7 +106,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         this.providersService = providersService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
-        this.casExternalRestClient = casExternalRestClient;
+        this.casRestClient = casRestClient;
         this.vitamuiPortalUrl = vitamuiPortalUrl;
     }
 
@@ -162,7 +162,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 credential.setSurrogateUsername(surrogateEmail);
                 WebUtils.putCredential(context, credential);
 
-                CustomerDto surrogateCustomer = casExternalRestClient
+                CustomerDto surrogateCustomer = casRestClient
                     .getCustomersByIds(utils.buildContext(surrogateEmail), List.of(surrogateCustomerId))
                     .stream()
                     .findFirst()

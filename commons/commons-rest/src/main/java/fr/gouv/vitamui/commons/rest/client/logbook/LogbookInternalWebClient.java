@@ -37,8 +37,8 @@
 package fr.gouv.vitamui.commons.rest.client.logbook;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.CacheControl;
@@ -51,7 +51,7 @@ import reactor.core.publisher.Mono;
 /**
  * A Web flux client to get logbooks.
  */
-public class LogbookInternalWebClient<C extends AbstractHttpContext> extends BaseWebClient<C> {
+public class LogbookInternalWebClient<C extends HttpContext> extends BaseWebClient<C> {
 
     public LogbookInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

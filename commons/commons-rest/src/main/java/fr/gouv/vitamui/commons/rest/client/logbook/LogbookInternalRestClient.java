@@ -38,9 +38,8 @@ package fr.gouv.vitamui.commons.rest.client.logbook;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -58,7 +57,7 @@ import java.util.Objects;
  *
  *
  */
-public class LogbookInternalRestClient<C extends AbstractHttpContext> extends BaseRestClient<C> {
+public class LogbookInternalRestClient<C extends HttpContext> extends BaseRestClient<C> {
 
     public LogbookInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -211,14 +210,9 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         return response;
     }
 
-    private MultiValueMap<String, String> buildRequestHeaders(final AbstractHttpContext context) {
+    private MultiValueMap<String, String> buildRequestHeaders(final HttpContext context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
-        String accessContract = null;
-        if (context instanceof ExternalHttpContext) {
-            final ExternalHttpContext externalCallContext = (ExternalHttpContext) context;
-            accessContract = externalCallContext.getAccessContract();
-        }
-
+        String accessContract = context.getAccessContract();
         if (accessContract != null) {
             headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
         }

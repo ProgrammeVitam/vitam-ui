@@ -65,7 +65,7 @@ import java.util.Optional;
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C extends AbstractHttpContext>
+public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C extends HttpContext>
     extends BaseCrudRestClient<D, C> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BasePaginatingAndSortingRestClient.class);
@@ -226,27 +226,9 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
 
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();
 
-    protected MultiValueMap<String, String> buildSearchHeaders(final ExternalHttpContext context) {
+    protected MultiValueMap<String, String> buildSearchHeaders(final HttpContext context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
-        String accessContract = null;
-        if (context instanceof ExternalHttpContext) {
-            final ExternalHttpContext externalCallContext = context;
-            accessContract = externalCallContext.getAccessContract();
-        }
-        if (accessContract != null) {
-            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
-        }
-        return headers;
-    }
-
-    protected MultiValueMap<String, String> buildSearchHeaders(final InternalHttpContext context) {
-        final MultiValueMap<String, String> headers = buildHeaders(context);
-        String accessContract = null;
-        if (context instanceof InternalHttpContext) {
-            final InternalHttpContext externalCallContext = context;
-            accessContract = externalCallContext.getAccessContract();
-        }
-
+        String accessContract = context.getAccessContract();
         if (accessContract != null) {
             headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
         }

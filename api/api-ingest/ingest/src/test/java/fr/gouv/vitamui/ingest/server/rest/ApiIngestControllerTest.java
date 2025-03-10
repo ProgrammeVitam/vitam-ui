@@ -40,10 +40,10 @@ package fr.gouv.vitamui.ingest.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.rest.AbstractMockMvcCrudControllerTest;
-import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
+import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public abstract class ApiIngestControllerTest<T extends IdDto> extends AbstractM
 
     @Override
     protected Authentication buildUserAuthenticated() {
-        return new ExternalAuthentication(buildPrincipal(), buildCredentials(), null, buildUserRoles());
+        return new AuthenticationToken(buildPrincipal(), buildCredentials(), null, buildUserRoles());
     }
 
     protected AuthUserDto buildPrincipal() {
@@ -61,7 +61,7 @@ public abstract class ApiIngestControllerTest<T extends IdDto> extends AbstractM
         return user;
     }
 
-    protected ExternalHttpContext buildCredentials() {
+    protected HttpContext buildCredentials() {
         return null;
     }
 

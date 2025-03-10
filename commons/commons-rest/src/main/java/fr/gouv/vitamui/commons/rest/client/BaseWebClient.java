@@ -85,7 +85,7 @@ import java.util.function.Consumer;
  * with identifier.
  */
 @ToString
-public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseClient<C> {
+public abstract class BaseWebClient<C extends HttpContext> extends BaseClient<C> {
 
     protected WebClient webClient;
 
@@ -112,7 +112,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multipartData(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Map<String, Object> dto,
         final Optional<Entry<String, MultipartFile>> multipartFile,
         final Class<T> clazz
@@ -123,7 +123,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multiparts(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Map<String, Object> dto,
         final Optional<Entry<String, MultipartFile>> header,
         final Optional<Entry<String, MultipartFile>> footer,
@@ -148,7 +148,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multipartData(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Map<String, Object> dto,
         final Optional<Entry<String, MultipartFile>> multipartFile,
         final MultiValueMap<String, String> headers,
@@ -213,7 +213,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multiparts(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Map<String, Object> dto,
         final Optional<Entry<String, MultipartFile>> header,
         final Optional<Entry<String, MultipartFile>> footer,
@@ -279,7 +279,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multipartDataFromFile(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Optional<Entry<String, Path>> filePath,
         final Class<T> clazz
     ) {
@@ -298,7 +298,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multipartDataFromFile(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Map<String, Object> dto,
         final Optional<Entry<String, Path>> filePath,
         final Class<T> clazz
@@ -320,7 +320,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multipartDataFromFile(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Optional<Entry<String, Path>> filePath,
         final MultiValueMap<String, String> headers,
         final Class<T> clazz
@@ -340,7 +340,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected <T> T multipartDataFromFile(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Map<String, Object> dto,
         final Optional<Entry<String, Path>> filePath,
         final MultiValueMap<String, String> headers,
@@ -422,7 +422,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
     protected ClientResponse multipartDataFromFile(
         final String url,
         final HttpMethod httpMethod,
-        final AbstractHttpContext context,
+        final HttpContext context,
         final Optional<Entry<String, Path>> filePath,
         final MultiValueMap<String, String> headers
     ) {

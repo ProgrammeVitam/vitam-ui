@@ -1,0 +1,31 @@
+package fr.gouv.vitamui.iam.server.user.domain;
+
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ApplicationAnalyticsTest {
+
+    private ApplicationAnalytics sut;
+
+    @Test
+    void shouldCreateApplicationWithInitialValues() {
+        String applicationId = "PROFILES_APP";
+
+        sut = new ApplicationAnalytics(applicationId);
+
+        assertThat(sut.getApplicationId()).isEqualTo(applicationId);
+        assertThat(sut.getAccessCounter()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldIncrementAccessCounter() {
+        String applicationId = "GROUPS_APP";
+        sut = new ApplicationAnalytics(applicationId);
+
+        sut.tagAsLastUsed();
+
+        assertThat(sut.getApplicationId()).isEqualTo(applicationId);
+        assertThat(sut.getAccessCounter()).isEqualTo(2);
+    }
+}

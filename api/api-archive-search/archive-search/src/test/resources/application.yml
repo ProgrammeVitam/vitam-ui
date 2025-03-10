@@ -18,7 +18,7 @@ archive-search:
     server-host: localhost
     server-port: 8089
     secure: false
-  iam-external-client:
+  iam-client:
     server-host: localhost
     server-port: 8083
     secure: true

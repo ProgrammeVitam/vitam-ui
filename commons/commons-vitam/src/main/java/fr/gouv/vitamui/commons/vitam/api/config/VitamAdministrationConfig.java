@@ -38,13 +38,13 @@ package fr.gouv.vitamui.commons.vitam.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
-import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
-import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
-import fr.gouv.vitamui.commons.vitam.api.administration.RuleService;
-import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
-import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.commons.vitam.api.config.converter.RuleConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,28 +53,28 @@ import org.springframework.context.annotation.Configuration;
 public class VitamAdministrationConfig extends VitamClientConfig {
 
     @Bean
-    public AccessContractService getAccessContractService() {
-        return new AccessContractService(adminExternalClient());
+    public AccessContractCommonService getAccessContractService() {
+        return new AccessContractCommonService(adminExternalClient());
     }
 
     @Bean
-    public AgencyService getAgencyService() {
-        return new AgencyService(adminExternalClient());
+    public AgencyCommonService getAgencyService() {
+        return new AgencyCommonService(adminExternalClient());
     }
 
     @Bean
-    public VitamOperationService getVitamOperationService() {
-        return new VitamOperationService(adminExternalClient());
+    public VitamOperationCommonService getVitamOperationService() {
+        return new VitamOperationCommonService(adminExternalClient());
     }
 
     @Bean
-    public RuleService getRuleService() {
-        return new RuleService(adminExternalClient());
+    public RuleCommonService getRuleService() {
+        return new RuleCommonService(adminExternalClient());
     }
 
     @Bean
-    public IngestContractService geIngestContractService() {
-        return new IngestContractService(adminExternalClient());
+    public IngestContractCommonService geIngestContractService() {
+        return new IngestContractCommonService(adminExternalClient());
     }
 
     @Bean
@@ -83,15 +83,15 @@ public class VitamAdministrationConfig extends VitamClientConfig {
     }
 
     @Bean
-    public ManagementContractService getManagementContractService() {
-        return new ManagementContractService(adminExternalClient());
+    public ManagementContractCommonService getManagementContractService() {
+        return new ManagementContractCommonService(adminExternalClient());
     }
 
     @Bean
-    public VitamProfileService getVitamProfileService(
+    public VitamProfileCommonService getVitamProfileService(
         final AdminExternalClient adminClient,
         ObjectMapper objectMapper
     ) {
-        return new VitamProfileService(adminClient, objectMapper);
+        return new VitamProfileCommonService(adminClient, objectMapper);
     }
 }

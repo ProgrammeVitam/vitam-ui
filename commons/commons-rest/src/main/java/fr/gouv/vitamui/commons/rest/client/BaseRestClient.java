@@ -47,7 +47,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @EqualsAndHashCode
 @ToString
-public abstract class BaseRestClient<C extends AbstractHttpContext> extends BaseClient<C> {
+public abstract class BaseRestClient<C extends HttpContext> extends BaseClient<C> {
 
     protected RestTemplate restTemplate;
 

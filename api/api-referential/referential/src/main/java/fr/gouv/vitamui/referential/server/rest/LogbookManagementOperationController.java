@@ -1,0 +1,120 @@
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2021)
+ *
+ * contact.vitam@culture.gouv.fr
+ *
+ * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
+ * high volumetry securely and efficiently.
+ *
+ * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
+ * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
+ * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
+ * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
+ * successive licensors have only limited liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific status of free software, that may mean
+ * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
+ * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
+ * accept its terms.
+ */
+
+package fr.gouv.vitamui.referential.server.rest;
+
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.model.ProcessQuery;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.vitam.api.dto.CancelOperationRequestDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.referential.server.service.logbookmanagement.LogbookManagementOperationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RequestMapping(RestApi.LOGBOOK_MANAGEMENT_OPERATION_PATH)
+@RestController
+public class LogbookManagementOperationController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationController.class);
+
+    private final LogbookManagementOperationService logbookManagementOperationService;
+
+    public LogbookManagementOperationController(LogbookManagementOperationService logbookManagementOperationService) {
+        this.logbookManagementOperationService = logbookManagementOperationService;
+    }
+
+    @PostMapping(RestApi.OPERATIONS_PATH)
+    @Secured(ServicesData.ROLE_GET_ALL_LOGBOOK_OPERATION)
+    public VitamUIProcessDetailResponseDto searchOperationsDetails(@RequestBody final ProcessQuery processQuery)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(processQuery);
+        LOGGER.debug("All Operations details by Criteria={}", processQuery);
+        VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
+        ProcessDetailDto processDetailDto = logbookManagementOperationService.searchOperationsDetails(processQuery);
+        if (processDetailDto != null) {
+            operationResponseDto = processDetailDto.getOperations();
+        }
+        return operationResponseDto;
+    }
+
+    @PostMapping(RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
+    public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(
+        final @PathVariable("id") String operationId,
+        @RequestBody CancelOperationRequestDto request
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(operationId);
+        LOGGER.debug("Cancel the operation with id={}", operationId);
+        ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
+        VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
+        if (!request.isStepCancellable()) LOGGER.warn(
+            "Forced cancellation of operation {} with the following reason: {}",
+            operationId,
+            request.getReason()
+        );
+        ProcessDetailDto processDetailDto = logbookManagementOperationService.cancelOperationProcessExecution(
+            operationId
+        );
+        if (processDetailDto != null) {
+            operationResponseDto = processDetailDto.getOperations();
+        }
+        return operationResponseDto;
+    }
+
+    @PostMapping(RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
+    public VitamUIProcessDetailResponseDto updateOperationActionProcess(
+        final @PathVariable("id") String operationId,
+        @RequestBody final String actionId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(operationId, actionId);
+        LOGGER.debug("Update the operation id={} with actionId={}", operationId, actionId);
+
+        VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
+        ProcessDetailDto processDetailDto = logbookManagementOperationService.updateOperationActionProcess(
+            actionId,
+            operationId
+        );
+        if (processDetailDto != null) {
+            operationResponseDto = processDetailDto.getOperations();
+        }
+        return operationResponseDto;
+    }
+}

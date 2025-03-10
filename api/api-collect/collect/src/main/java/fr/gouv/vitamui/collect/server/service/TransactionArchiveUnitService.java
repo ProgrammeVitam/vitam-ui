@@ -68,7 +68,7 @@ import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
@@ -161,7 +161,7 @@ public class TransactionArchiveUnitService {
     private static final String TITLE_FIELD = "Title";
 
     private final CollectService collectService;
-    private final AgencyService agencyService;
+    private final AgencyCommonService agencyCommonService;
     private final ObjectMapper objectMapper;
 
     @Value("${ontologies_file_path}")
@@ -938,7 +938,7 @@ public class TransactionArchiveUnitService {
                     Optional.empty(),
                     Optional.empty()
                 );
-                RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(
+                RequestResponse<AgenciesModel> requestResponse = agencyCommonService.findAgencies(
                     vitamContext,
                     queryOriginAgencies
                 );

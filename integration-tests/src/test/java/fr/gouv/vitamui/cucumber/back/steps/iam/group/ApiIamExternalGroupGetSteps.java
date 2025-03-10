@@ -6,7 +6,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.iam.external.client.GroupExternalRestClient;
+import fr.gouv.vitamui.iam.client.GroupExternalRestClient;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
 import io.cucumber.java.en.Given;

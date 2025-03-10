@@ -46,7 +46,7 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,7 +82,7 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
     private ExternalParametersService externalParametersService;
 
     @MockBean
-    private ExternalSecurityService externalSecurityService;
+    private SecurityService securityService;
 
     private TransactionArchiveUnitController transactionArchiveUnitController;
 
@@ -91,7 +91,7 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
         transactionArchiveUnitController = new TransactionArchiveUnitController(
             transactionArchiveUnitService,
             externalParametersService,
-            externalSecurityService
+            securityService
         );
     }
 
@@ -164,7 +164,7 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
         List<VitamUiOntologyDto> expectedResponse = new ArrayList<>();
 
         // When
-        Mockito.when(externalSecurityService.getTenantIdentifier()).thenReturn(42);
+        Mockito.when(securityService.getTenantIdentifier()).thenReturn(42);
         Mockito.when(transactionArchiveUnitService.readExternalOntologiesFromFile(eq(42))).thenReturn(expectedResponse);
         List<VitamUiOntologyDto> response = transactionArchiveUnitController.getExternalOntologiesList();
 

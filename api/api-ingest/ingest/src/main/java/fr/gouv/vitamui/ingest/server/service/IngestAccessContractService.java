@@ -47,6 +47,7 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.converter.AccessContractConverter;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -61,23 +62,23 @@ public class IngestAccessContractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IngestAccessContractService.class);
 
-    private fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService accessContractService;
+    private AccessContractCommonService accessContractCommonService;
 
     private ObjectMapper objectMapper;
 
     @Autowired
     public IngestAccessContractService(
-        fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService accessContractService,
+        AccessContractCommonService accessContractCommonService,
         ObjectMapper objectMapper
     ) {
-        this.accessContractService = accessContractService;
+        this.accessContractCommonService = accessContractCommonService;
         this.objectMapper = objectMapper;
     }
 
     public Optional<AccessContractDto> getOne(VitamContext vitamContext, String identifier) {
         try {
             LOGGER.debug("Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(
+            RequestResponse<AccessContractModel> requestResponse = accessContractCommonService.findAccessContractById(
                 vitamContext,
                 identifier
             );

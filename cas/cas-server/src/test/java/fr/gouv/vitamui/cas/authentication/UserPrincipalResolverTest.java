@@ -14,11 +14,11 @@ import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
@@ -86,7 +86,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
     private UserPrincipalResolver resolver;
 
-    private CasExternalRestClient casExternalRestClient;
+    private CasRestClient casRestClient;
 
     private PrincipalFactory principalFactory;
 
@@ -100,7 +100,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         super.setUp();
 
-        casExternalRestClient = mock(CasExternalRestClient.class);
+        casRestClient = mock(CasRestClient.class);
         val utils = new Utils(null, 0, null, null, "");
         principalFactory = new DefaultPrincipalFactory();
         sessionStore = mock(SessionStore.class);
@@ -110,7 +110,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         val identifierMapping = new X509AttributeMapping("issuer_dn", null, null);
         resolver = new UserPrincipalResolver(
             principalFactory,
-            casExternalRestClient,
+            casRestClient,
             utils,
             sessionStore,
             identityProviderHelper,
@@ -124,8 +124,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveUserSuccessfully() {
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(null),
@@ -160,8 +160,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         );
 
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -196,8 +196,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         val provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -231,8 +231,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -268,8 +268,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setIdentifierAttribute(IDENTIFIER);
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -304,8 +304,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -336,8 +336,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setIdentifierAttribute(IDENTIFIER_ATTRIBUTE);
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -365,8 +365,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveSurrogateUser() {
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(null),
@@ -375,8 +375,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(ADMIN),
                 eq(ADMIN_CUSTOMER_ID),
                 eq(null),
@@ -401,8 +401,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationSurrogate() {
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(null),
@@ -411,8 +411,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(ADMIN),
                 eq(ADMIN_CUSTOMER_ID),
                 eq(null),
@@ -442,8 +442,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationSurrogateMailAttribute() {
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(null),
@@ -452,8 +452,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(ADMIN),
                 eq(ADMIN_CUSTOMER_ID),
                 eq(null),
@@ -488,8 +488,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationSurrogateMailAttributeNoMail() {
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(null),
@@ -498,8 +498,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(ADMIN),
                 eq(ADMIN_CUSTOMER_ID),
                 eq(null),
@@ -527,8 +527,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testResolveAddressDeserializeSuccessfully() {
         AuthUserDto authUserDto = userProfile(UserStatusEnum.ENABLED);
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(null),
@@ -565,8 +565,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(Optional.of(provider));
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -596,8 +596,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(Optional.of(provider));
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
@@ -627,8 +627,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(Optional.of(provider));
         when(
-            casExternalRestClient.getUser(
-                any(ExternalHttpContext.class),
+            casRestClient.getUser(
+                any(HttpContext.class),
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),

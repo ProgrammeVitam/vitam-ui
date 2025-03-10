@@ -42,7 +42,7 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -86,7 +86,7 @@ public class TransactionArchiveUnitController {
 
     private final TransactionArchiveUnitService transactionArchiveUnitService;
     private final ExternalParametersService externalParametersService;
-    private final ExternalSecurityService externalSecurityService;
+    private final SecurityService securityService;
 
     @ApiOperation(value = "find archive units by criteria")
     @Secured(ServicesData.ROLE_GET_PROJECTS)
@@ -161,9 +161,7 @@ public class TransactionArchiveUnitController {
     @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public List<VitamUiOntologyDto> getExternalOntologiesList() throws IOException {
         LOGGER.debug("[EXTERNAL] : Get external ontologies list");
-        return transactionArchiveUnitService.readExternalOntologiesFromFile(
-            externalSecurityService.getTenantIdentifier()
-        );
+        return transactionArchiveUnitService.readExternalOntologiesFromFile(securityService.getTenantIdentifier());
     }
 
     @PostMapping("/{transactionId}" + RestApi.UNIT_WITH_INHERITED_RULES)

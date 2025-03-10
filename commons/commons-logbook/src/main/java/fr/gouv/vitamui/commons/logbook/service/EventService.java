@@ -50,7 +50,7 @@ import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.logbook.scheduler.SendEventToVitamTasks;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
-import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +92,7 @@ public class EventService {
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public Event logUpdate(
-        final AbstractHttpContext context,
+        final HttpContext context,
         final String accessContractLogbookIdentifier,
         final Integer tenantIdentifier,
         final String objectIdentifier,
@@ -131,7 +131,7 @@ public class EventService {
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public Event logCreate(
-        final AbstractHttpContext context,
+        final HttpContext context,
         final String accessContractLogbookIdentifier,
         final Integer tenantIdentifier,
         final String objectIdentifier,

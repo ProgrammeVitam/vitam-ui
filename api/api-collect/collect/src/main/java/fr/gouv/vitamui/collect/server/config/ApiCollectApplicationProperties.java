@@ -44,7 +44,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "collect", ignoreUnknownFields = false)
 public class ApiCollectApplicationProperties {
 
-    private RestClientConfiguration iamExternalClient;
+    private RestClientConfiguration iamClient;
 
     private RestClientConfiguration securityClient;
 }

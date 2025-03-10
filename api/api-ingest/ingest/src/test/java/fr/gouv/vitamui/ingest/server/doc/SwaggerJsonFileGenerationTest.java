@@ -41,7 +41,7 @@ package fr.gouv.vitamui.ingest.server.doc;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.ingest.server.rest.IngestController;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -59,7 +59,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
     @MockBean
-    private ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
+    private ApiAuthenticationProvider apiAuthenticationProvider;
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;
