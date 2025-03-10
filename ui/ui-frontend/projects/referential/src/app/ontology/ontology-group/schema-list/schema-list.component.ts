@@ -45,6 +45,7 @@ import {
   SchemaElement,
   SchemaService,
   TableFilterModule,
+  TenantSelectionService,
 } from 'vitamui-library';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -89,6 +90,7 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     public schemaService: SchemaService,
     private translateService: TranslateService,
     public dialog: MatDialog,
+    private tenantSelectionService: TenantSelectionService,
   ) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -201,6 +203,10 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     this.nestedNodeMap.set(node.item, flatNode);
     return flatNode;
   };
+
+  canDelete(schemaElement: SchemaElement) {
+    return schemaElement.Origin === 'EXTERNAL' && schemaElement.Tenant === this.tenantSelectionService.getSelectedTenant().identifier;
+  }
 
   delete(itemNode: ItemFlatNode<SchemaElement>) {
     const paths = [itemNode, ...this.treeControl.getDescendants(itemNode)].map((node) => node.item.Path);

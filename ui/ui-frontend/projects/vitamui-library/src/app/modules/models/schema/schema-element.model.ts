@@ -51,7 +51,7 @@ export interface SchemaElement extends WithPath {
   readonly Description?: string;
   readonly CreationDate?: string;
   readonly LastUpdate?: string;
-  readonly TenantIds?: string[];
+  readonly Tenant?: number;
   readonly StringSize?: 'SHORT' | 'MEDIUM' | 'LARGE';
   readonly Cardinality: Cardinality;
   readonly SedaVersions: SedaVersion[];
