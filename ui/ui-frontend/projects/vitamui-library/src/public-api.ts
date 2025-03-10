@@ -169,6 +169,7 @@ export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.serv
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.module';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
+export * from './app/modules/directives/click-outside/click-outside.directive';
 export * from './app/modules/directives/ellipsis/ellipsis.directive';
 export * from './app/modules/directives/ellipsis/ellipsis.directive.module';
 export * from './app/modules/directives/resize-sidebar/resize-sidebar.directive';

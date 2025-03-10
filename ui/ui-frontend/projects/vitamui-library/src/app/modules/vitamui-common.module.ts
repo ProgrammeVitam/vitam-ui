@@ -95,6 +95,7 @@ import { ConfigService } from './config.service';
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
 import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
+import { ClickOutsideDirective } from './directives/click-outside/click-outside.directive';
 import { EllipsisDirectiveModule } from './directives/ellipsis/ellipsis.directive.module';
 import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
 import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
@@ -154,6 +155,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     DatepickerModule,
     MultipleOptionsDatepickerModule,
     DragAndDropDirective,
+    ClickOutsideDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
     FooterModule,
@@ -220,6 +222,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     MultipleOptionsDatepickerModule,
     DownloadSnackBarModule,
     DragAndDropDirective,
+    ClickOutsideDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
     FooterModule,

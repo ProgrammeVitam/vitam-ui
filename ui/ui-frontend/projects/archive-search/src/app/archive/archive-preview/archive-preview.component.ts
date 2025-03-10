@@ -126,7 +126,6 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
   async beforeunloadHandler(event: any) {
     if (this.descriptionTab.isModified()) {
       event.preventDefault();
-      await this.checkBeforeExit();
     }
   }
 

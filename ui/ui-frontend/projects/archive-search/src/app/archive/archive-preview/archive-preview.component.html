@@ -39,6 +39,7 @@
       <app-archive-unit-description-tab
         [archiveUnit]="archiveUnit"
         [(editMode)]="updateStarted"
+        (vitamuiClickOutside)="checkBeforeExit()"
         #descriptionTab
       ></app-archive-unit-description-tab>
     </mat-tab>
