@@ -159,25 +159,36 @@ export class SchemaListComponent implements OnInit, OnDestroy {
           (!this._searchText || this.itemContainsSearchText(node.item, this._searchText));
       }
     });
-    this.recursiveDisplayParents(this.dataSource.data);
+    this.displayAndOpenParent(this.treeControl.dataNodes?.filter((node) => node.display));
   }
 
-  private recursiveDisplayParents(nodes: ItemNode<SchemaElement>[]): boolean {
-    for (let node of nodes) {
-      if (node.item.id === this.schemaService.VIRTUAL_ROOT_NODES) {
-        this.recursiveDisplayParents(node.children);
-        continue;
-      }
-      const flatNode: ItemFlatNode<SchemaElement> = this.nestedNodeMap.get(node.item);
-      if (flatNode.display) {
-        return true;
-      }
-      if (node.children && this.recursiveDisplayParents(node.children)) {
-        flatNode.display = true;
-        return true;
+  private getParentNode = (node: ItemFlatNode<SchemaElement>): ItemFlatNode<SchemaElement> | null => {
+    const currentLevel = node.level;
+
+    if (currentLevel < 1) {
+      return null;
+    }
+
+    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+
+    for (let i = startIndex; i >= 0; i--) {
+      const currentNode = this.treeControl.dataNodes[i];
+
+      if (currentNode.level < currentLevel) {
+        return currentNode;
       }
     }
-    return false;
+    return null;
+  };
+
+  private displayAndOpenParent(nodes?: ItemFlatNode<SchemaElement>[]) {
+    const parentNodes = nodes?.map((node) => this.getParentNode(node)).filter((node) => !!node);
+    parentNodes?.forEach((parentNode) => {
+      parentNode.display = true;
+      if (this._searchText) this.treeControl.expand(parentNode);
+    });
+    if (parentNodes?.length) this.displayAndOpenParent(parentNodes);
+    if (!this._searchText) this.treeControl.collapseAll();
   }
 
   private itemContainsSearchText(item: SchemaElement, searchText: string) {
