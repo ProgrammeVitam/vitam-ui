@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-display-node/vitamui-display-node.component.scss"],
+  "sourcesContent": [".parent-label {\n  font-size: 14px;\n  font-weight: normal;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n}\n\nul,\nli {\n  margin-top: 0;\n  margin-bottom: 0;\n  list-style: none;\n  font-size: 14px;\n  font-weight: 500;\n  padding-left: 5px;\n}\n"],
+  "mappings": "AAAA,CAAA,aACE,UAAA,KACA,YAAA,IACA,cAAA,SACA,YAAA,OACA,SAAA,OAGF,GAAA,GAEE,WAAA,EACA,cAAA,EACA,WAAA,KACA,UAAA,KACA,YAAA,IACA,aAAA",
+  "names": []
+}

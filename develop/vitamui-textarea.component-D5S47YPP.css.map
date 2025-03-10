@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-input/vitamui-textarea.component.scss"],
+  "sourcesContent": ["@use '../../../../sass/mixins/elevation' as elevation;\n\n$input-height: 90px;\n\n:host {\n  display: inline-block;\n  height: $input-height;\n\n  &.ng-valid.ng-touched .vitamui-input {\n    border: 1px solid var(--vitamui-green);\n  }\n\n  &.ng-invalid.ng-touched .vitamui-input {\n    border: 1px solid var(--vitamui-red);\n  }\n}\n\n.vitamui-input {\n  height: 100% !important;\n  min-height: $input-height !important;\n}\n\n:host.ng-pending {\n  .vitamui-input mat-spinner {\n    display: block;\n  }\n}\n\nlabel {\n  top: 15px;\n  pointer-events: none;\n}\n\n.message-area {\n  min-height: 23px;\n}\n"],
+  "mappings": "AAIA,MACE,QAAA,aACA,OAJa,KAMb,KAAA,CAAA,QAAA,CAAA,WAAA,CAAA,cACE,OAAA,IAAA,MAAA,IAAA,iBAGF,KAAA,CAAA,UAAA,CAJA,WAIA,CAJA,cAKE,OAAA,IAAA,MAAA,IAAA,eAIJ,CATE,cAUA,OAAA,eACA,WAAA,eAIA,KAAA,CAAA,WAAA,CAfA,cAeA,YACE,QAAA,MAIJ,MACE,IAAA,KACA,eAAA,KAGF,CAAA,aACE,WAAA",
+  "names": []
+}
