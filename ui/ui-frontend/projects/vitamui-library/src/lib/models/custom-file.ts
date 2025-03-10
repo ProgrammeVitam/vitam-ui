@@ -38,4 +38,5 @@
 export class CustomFile extends File {
   // Used to retrieve the path when we upload via drag&drop
   relativePath?: string;
+  isDirectory?: boolean;
 }

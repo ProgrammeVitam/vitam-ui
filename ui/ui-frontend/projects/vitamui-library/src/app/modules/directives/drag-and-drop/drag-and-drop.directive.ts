@@ -36,6 +36,7 @@
  */
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { Logger } from '../../logger/logger';
+import { CustomFile } from '../../../../lib/models/custom-file';
 
 @Directive({
   standalone: true,
@@ -82,22 +83,16 @@ export class DragAndDropDirective {
     event.stopPropagation();
     this.elementRef.nativeElement.classList.remove(this.hoverClass);
 
-    let fileEntries = await this.getAllFileEntries(event.dataTransfer.items);
-    // Filter files
-    if (!this.enableFileDragAndDrop) {
-      fileEntries = fileEntries.filter((fileEntry) => fileEntry.fullPath.split('/').length - 1 !== 1);
-    }
-    // Filter folders
-    if (!this.enableFolderDragAndDrop) {
-      fileEntries = fileEntries.filter((fileEntry) => fileEntry.fullPath.split('/').length - 1 === 1);
-    }
+    const fileSystemEntries: FileSystemEntry[] = (await this.getAllFileEntries(event.dataTransfer.items)).filter(
+      (fileEntry) => (fileEntry.isFile && this.enableFileDragAndDrop) || (fileEntry.isDirectory && this.enableFolderDragAndDrop),
+    );
 
     Promise.all(
-      fileEntries.map(async (fileEntry) => {
-        const file: File = await this.getFile(fileEntry);
+      fileSystemEntries.map(async (fileSystemEntry) => {
+        const file: File = await this.getFile(fileSystemEntry);
         // Add relative path to folder files
-        if (fileEntry.fullPath.split('/').length - 1 !== 1) {
-          (file as any).relativePath = fileEntry.fullPath?.substring(1);
+        if (fileSystemEntry.fullPath.split('/').length - 1 !== 1) {
+          (file as any).relativePath = fileSystemEntry.fullPath?.substring(1);
         }
         return file;
       }),
@@ -115,6 +110,7 @@ export class DragAndDropDirective {
       event.stopPropagation();
     }
   }
+
   @HostListener('body:drop', ['$event'])
   onBodyDrop(event: DragEvent) {
     if (this.preventBodyDrop) {
@@ -122,18 +118,30 @@ export class DragAndDropDirective {
     }
   }
 
-  private getFile = async (fileEntry: any): Promise<File> => {
+  private getFile = async (fileEntry: FileSystemEntry): Promise<CustomFile> => {
     try {
-      return new Promise((resolve, reject) => fileEntry.file(resolve, reject));
+      return new Promise((resolve, reject) => {
+        if (fileEntry.isFile) {
+          (fileEntry as FileSystemFileEntry).file(resolve, reject);
+        } else {
+          // Return a "file" of type directory for directories. This allows empty directories to be kept in the list (and further be added to the zip file)
+          resolve({
+            name: (fileEntry as FileSystemDirectoryEntry).name,
+            webkitRelativePath: '',
+            relativePath: (fileEntry as FileSystemDirectoryEntry).fullPath.replace(/^\//, ''),
+            isDirectory: true,
+          } as CustomFile);
+        }
+      });
     } catch (err) {
       this.logger.error(this, err);
     }
   };
 
-  private getAllFileEntries = async (dataTransferItemList: DataTransferItemList) => {
-    const fileEntries = [];
+  private getAllFileEntries = async (dataTransferItemList: DataTransferItemList): Promise<FileSystemEntry[]> => {
+    const fileSystemEntries: FileSystemEntry[] = [];
     // Use BFS to traverse entire directory/file structure
-    const queue = [];
+    const queue: FileSystemEntry[] = [];
     // Unfortunately dataTransferItemList is not iterable i.e. no forEach
     for (let i = 0; i < dataTransferItemList.length; i++) {
       // Note webkitGetAsEntry a non-standard feature and may change
@@ -141,21 +149,20 @@ export class DragAndDropDirective {
       queue.push(dataTransferItemList[i].webkitGetAsEntry());
     }
     while (queue.length > 0) {
-      const entry: any = queue.shift();
-      if (entry.isFile) {
-        fileEntries.push(entry);
-      } else if (entry.isDirectory) {
-        const reader = entry.createReader();
+      const entry: FileSystemEntry = queue.shift();
+      fileSystemEntries.push(entry);
+      if (entry.isDirectory) {
+        const reader = (entry as FileSystemDirectoryEntry).createReader();
         queue.push(...(await this.readAllDirectoryEntries(reader)));
       }
     }
-    return fileEntries;
+    return fileSystemEntries;
   };
 
   // Get all the entries (files or sub-directories) in a directory by calling readEntries until it returns empty array
-  private readAllDirectoryEntries = async (directoryReader: any) => {
-    const entries = [];
-    let readEntries: File[] = await this.readEntriesPromise(directoryReader);
+  private readAllDirectoryEntries = async (directoryReader: any): Promise<FileSystemEntry[]> => {
+    const entries: FileSystemEntry[] = [];
+    let readEntries: FileSystemEntry[] = await this.readEntriesPromise(directoryReader);
     while (readEntries.length > 0) {
       entries.push(...readEntries);
       readEntries = await this.readEntriesPromise(directoryReader);
@@ -164,7 +171,7 @@ export class DragAndDropDirective {
   };
 
   // Wrap readEntries in a promise to make working with readEntries easier
-  private readEntriesPromise = async (directoryReader: any): Promise<File[]> => {
+  private readEntriesPromise = async (directoryReader: any): Promise<FileSystemEntry[]> => {
     try {
       return await new Promise((resolve, reject) => {
         directoryReader.readEntries(resolve, reject);

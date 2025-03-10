@@ -14,7 +14,7 @@
         </div>
       } @else {
         <vitamui-file-selector
-          [multipleFiles]="true"
+          [multiple]="true"
           [maxSizeInBytes]="maxSizeInBytes"
           [directoryMode]="true"
           (filesChanged)="setFilesToUpload($event)"

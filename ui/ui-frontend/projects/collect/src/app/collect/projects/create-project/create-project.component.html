@@ -215,7 +215,7 @@
         <div class="main-content">
           <div class="w-100">
             <vitamui-file-selector
-              [multipleFiles]="true"
+              [multiple]="true"
               [maxSizeInBytes]="uploadMaxSizeInBytes"
               [directoryMode]="true"
               (filesChanged)="setFilesToUpload($event)"
@@ -422,7 +422,7 @@
       <mat-dialog-content>
         <div class="w-100">
           <vitamui-file-selector
-            [multipleFiles]="false"
+            [multiple]="false"
             [maxSizeInBytes]="10 * 1024"
             [directoryMode]="false"
             [extensions]="['.jslt']"
