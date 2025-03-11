@@ -4,14 +4,14 @@
       "ANALYSIS": "Lancer une analyse d'élimination",
       "ELIMINATION_LAUNCHED": "Votre demande d'élimination a bien été prise en compte",
       "ELIMINATION_ANALYSIS_LAUNCHED": "Votre demande d'analyse d'élimination a bien été prise en compte",
-      "THRESHOLD_EXCEEDED": "L’analyse d’élimination ne peut être lancée. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum.",
-      "EXECUTION": "Eliminer des archives",
+      "THRESHOLD_EXCEEDED": "L'analyse d'élimination ne peut être lancée. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum.",
+      "EXECUTION": "Éliminer des archives",
       "TREE_ELIMINATION": "Supprimer des unités d'arbre",
       "TO_ELIMINATE": "Voulez-vous éliminer les",
-      "SELECTED_ITEMS": "éléments séléctionnés ?",
-      "ONE_SELECTED": "Voulez-vous éliminer l'élément séléctionné ?",
-      "EXECUTE": "Eliminer les archives",
-      "EXECUTE_ONE": "Eliminer l'archive",
+      "SELECTED_ITEMS": "éléments sélectionnés ?",
+      "ONE_SELECTED": "Voulez-vous éliminer l'élément sélectionné ?",
+      "EXECUTE": "Éliminer les archives",
+      "EXECUTE_ONE": "Éliminer l'archive",
       "ALERTE_MESSAGES": {
         "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
         "ACTION_ALERTE_FIRST_MESSAGE": "Veuillez sélectionner uniquement des unités archivistiques de type arbre de positionnement"
@@ -35,10 +35,10 @@
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirmez-vous votre action ?",
         "CONFIRM": "Confirmer",
         "CANCEL": "Annuler",
-        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l’opération demandée dépasse le seuil de plateforme autorisé.",
-        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l’action à réaliser ?",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L’action demandée n’est pas possible sur cette sélection",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L’opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l’opération"
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l'opération demandée dépasse le seuil de plateforme autorisé.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l'action à réaliser ?",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L'action demandée n'est pas possible sur cette sélection",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L'opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l'opération"
       },
       "PUA_UPDATE": {
         "TITLE": "Mettre à jour les profils d'unités archivistiques",
@@ -78,21 +78,21 @@
       "MAX_SIZE": "Taille maximale conseillée: 10 GB",
       "OPERATION_MESSAGE_IDENTIFIER": "Identifiant de la demande de transfert d'origine",
       "TRANSFER_REALISATION_DATE": "Date de la réalisation du transfert",
-      "ENTRY_CONTRACT": "Contrat d’entrée du transfert",
-      "ARCHIVAL_AGENCY_IDENTIFIER": "Identifiant du service d’archives",
+      "ENTRY_CONTRACT": "Contrat d'entrée du transfert",
+      "ARCHIVAL_AGENCY_IDENTIFIER": "Identifiant du service d'archives",
       "TRANSFERRING_AGENCY_IDENTIFIER": "Identifiant du service responsable du transfert",
-      "TRANSFER_ACKNOWLEDGMENT_STATUS": "Statut de l’opération de transfert",
+      "TRANSFER_ACKNOWLEDGMENT_STATUS": "Statut de l'opération de transfert",
       "CANCEL_ACTION": "Annuler",
-      "ACKNOWLEDGMENT_TRANSFER_CONTROL": "Controle de l’acquittement du transfert",
-      "ACKNOWLEDGMENT_TRANSFER_VALIDATION": "Validation de l’acquittement du transfert",
+      "ACKNOWLEDGMENT_TRANSFER_CONTROL": "Contrôle de l'acquittement du transfert",
+      "ACKNOWLEDGMENT_TRANSFER_VALIDATION": "Validation de l'acquittement du transfert",
       "ACKNOWLEDGMENT_TRANSFER_REPLY_CODE": "Le statut de l'accusé de réception du transfert est :",
       "CONFIRM_SUCCESS_TRANSFER": "Voulez-vous confirmer le SUCCÈS du transfert ?",
-      "CONFIRM_FAILURE_TRANSFER": "Voulez-vous confirmer l’ÉCHEC du transfert ? Aucune élimination ne sera réalisée à ce stade.",
+      "CONFIRM_FAILURE_TRANSFER": "Voulez-vous confirmer l'ÉCHEC du transfert ? Aucune élimination ne sera réalisée à ce stade.",
       "REPLY_TRANSFER": "Acquitter le transfert",
       "ACKNOWLEDGMENT_TRANSFER": "Acquittement de transfert",
       "CANCEL_TRANSFER_OPERATION": "Êtes-vous sûr de vouloir annuler l'opération d'acquittement du transfert ?",
       "TRANSFER_CONFIRM": "Confirmer",
-      "REQUEST_MESSAGE": "Votre demande d'acquittement de transfert a bien été prise en compte  "
+      "REQUEST_MESSAGE": "Votre demande d'acquittement de transfert a bien été prise en compte"
     },
     "FACETS": {
       "APPRAISAL_RULE": {
@@ -102,10 +102,10 @@
         "WITHOUT_RULES": "Dont sans règle définie",
         "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
         "KEEP": "Conservation",
-        "DESTROY": "Elimination",
+        "DESTROY": "Élimination",
         "CONFLICT": "Conflit",
-        "NOT_EXPIRED": "Non-Echue",
-        "EXPIRED": "Echue",
+        "NOT_EXPIRED": "Non-Échue",
+        "EXPIRED": "Échue",
         "DISTINCT_RULES": "Règles distinctes",
         "FROM_DATE": "A partir du",
         "SHOW_RULES_LIST": "AFFICHER LISTE",
@@ -118,8 +118,8 @@
         "FINAL_ACTIONS": "Sort final",
         "WITHOUT_RULES": "Dont sans règle définie",
         "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
-        "NOT_EXPIRED": "Non-Echue",
-        "EXPIRED": "Echue",
+        "NOT_EXPIRED": "Non-Échue",
+        "EXPIRED": "Échue",
         "DISTINCT_RULES": "Règles distinctes",
         "FROM_DATE": "A partir du",
         "SHOW_RULES_LIST": "AFFICHER LISTE",
@@ -135,8 +135,8 @@
         "COPY": "Copie",
         "TRANSFER": "Transfert",
         "RESTRICT_ACCESS": "Accès réservé",
-        "NOT_EXPIRED": "Non-Echue",
-        "EXPIRED": "Echue",
+        "NOT_EXPIRED": "Non-Échue",
+        "EXPIRED": "Échue",
         "DISTINCT_RULES": "Règles distinctes",
         "FROM_DATE": "A partir du",
         "SHOW_RULES_LIST": "AFFICHER LISTE",
@@ -149,8 +149,8 @@
         "FINAL_ACTIONS": "Sort final",
         "WITHOUT_RULES": "Dont sans règle définie",
         "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
-        "NOT_EXPIRED": "Non-Echue",
-        "EXPIRED": "Echue",
+        "NOT_EXPIRED": "Non-Échue",
+        "EXPIRED": "Échue",
         "DISTINCT_RULES": "Règles distinctes",
         "FROM_DATE": "A partir du",
         "SHOW_RULES_LIST": "AFFICHER LISTE",
@@ -163,8 +163,8 @@
         "FINAL_ACTIONS": "Sort final",
         "WITHOUT_RULES": "Dont sans règle définie",
         "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
-        "NOT_EXPIRED": "Non-Echue",
-        "EXPIRED": "Echue",
+        "NOT_EXPIRED": "Non-Échue",
+        "EXPIRED": "Échue",
         "DISTINCT_RULES": "Règles distinctes",
         "FROM_DATE": "A partir du",
         "SHOW_RULES_LIST": "AFFICHER LISTE",
@@ -274,7 +274,7 @@
     "OTHER_ACTIONS": "Autres actions",
     "BACK": "RETOUR",
     "EXECUTE_RULE_UPDATE": "Lancer la mise à jour",
-    "EXECUTE_RULE_UPDATE_MESSAGE": "L’opération de mise à jour des règles de gestion a bien été lancée",
+    "EXECUTE_RULE_UPDATE_MESSAGE": "L'opération de mise à jour des règles de gestion a bien été lancée",
     "ACTION_ON_RULES": "Action sur les règles",
     "UA_SELECTED": "{{ua_selected}} unités archivistiques sélectionnées",
     "RULES_TO_ADD": "Règle(s) à ajouter",
@@ -287,8 +287,8 @@
     "ACTIONS": {
       "ADD_RULE": "Ajouter une règle",
       "DELETE_RULE": "Supprimer une règle",
-      "BLOCK_RULE_INHERITANCE": "Bloquer l’héritage d’une règle",
-      "DELETE_BLOCK_RULE_INHERITANCE": "Supprimer le blocage d’héritage d’une règle",
+      "BLOCK_RULE_INHERITANCE": "Bloquer l'héritage d'une règle",
+      "DELETE_BLOCK_RULE_INHERITANCE": "Supprimer le blocage d'héritage d'une règle",
       "UPDATE_RULE": "Modifier une règle",
       "NOT_TO_ADD": "Action impossible pour ce type de règle : une modification ou une suppression est déjà en cours",
       "NOT_TO_UPDATE": "Action impossible pour ce type de règle : un ajout ou une suppression est déjà en cours",
@@ -299,10 +299,10 @@
     "MORE_ACTIONS": {
       "UPDATE_PROPERTY": "Ajouter ou modifier une propriété",
       "DELETE_PROPERTY": "Supprimer une propriété",
-      "BLOCK_PROPERTY_INHERITANCE": "Bloquer l’héritage de la catégorie",
-      "DELETE_BLOCK_PROPERTY_INHERITANCE": "Supprimer le blocage d’héritage de la catégorie"
+      "BLOCK_PROPERTY_INHERITANCE": "Bloquer l'héritage de la catégorie",
+      "DELETE_BLOCK_PROPERTY_INHERITANCE": "Supprimer le blocage d'héritage de la catégorie"
     },
-    "APRAISAL_RULES": {
+    "APPRAISAL_RULES": {
       "MANAGEMENT_RULES": "Règle de gestion",
       "START_DATE": "Date de début",
       "RULE_NAME": "Libellé",
@@ -315,17 +315,17 @@
       "UPDATED": "Modifié",
       "TARGET_START_DATE": "Date de début cible",
       "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
-      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
-      "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
-      "UA_WITH_NO_PREVENT_RULES": "Cette règle n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
-      "SAME_TARGET_RULE": "Régle cible identique: {{ value }}",
-      "REQUIRED_RULE_OR_START_DATE": "Nécessite au moins une régle ou une date de début pour la mise à jour"
+      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d'utilité administrative et seront ignorées",
+      "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n'est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
+      "UA_WITH_NO_PREVENT_RULES": "Cette règle n'est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
+      "SAME_TARGET_RULE": "Règle cible identique: {{ value }}",
+      "REQUIRED_RULE_OR_START_DATE": "Nécessite au moins une règle ou une date de début pour la mise à jour"
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",
       "SELECT_VALUE": "Sélectionner une valeur",
       "KEEP": "Conservation",
-      "ELIMINATION": "Elimination",
+      "ELIMINATION": "Élimination",
       "COPY": "Copie",
       "TRANSFER": "Transfert",
       "RESTRICT_ACCESS": "Accès réservé"
@@ -336,10 +336,10 @@
       "CONFIRM": "Confirmer"
     },
     "UA_CONTROL": {
-      "UA_FINAL_ACTION_MESSAGE": "L'ensemble des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
-      "UA_WITH_SAME_RULE": "{{ itemsWithSameRule }} des UA sélectionnée(s) portent déjà cette règle et seront ignorées.",
-      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
-      "UA_WITH_SAME_RULE_AND_DATE": "{{ itemsWithSameRuleAndDate }} des UA sélectionnée(s) portent déjà cette règle et cette date de début et seront ignorées."
+      "UA_FINAL_ACTION_MESSAGE": "L'ensemble des UA sélectionnées seront prises en compte lors de la mise à jour.",
+      "UA_WITH_SAME_RULE": "{{ itemsWithSameRule }} des UA sélectionnées portent déjà cette règle et seront ignorées.",
+      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }} des UA sélectionnées seront prises en compte lors de la mise à jour.",
+      "UA_WITH_SAME_RULE_AND_DATE": "{{ itemsWithSameRuleAndDate }} des UA sélectionnées portent déjà cette règle et cette date de début et seront ignorées."
     },
     "DIALOG_MESSAGE": {
       "UPDATE_CONFIRM_TITLE_MESSAGE": "Validation de changement(s) de règle(s)",
@@ -360,8 +360,8 @@
       "BACK_TO_SELECTION": "Revenir à la sélection",
       "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
       "ACTION_ALERTE_FIRST_MESSAGE": "Votre sélection comporte au moins une unité archivistique de type arbre de positionnement.",
-      "UPDATE_RULES_ALERTE_SECOND_MESSAGE": "L’action de changement de règle n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes.",
-      "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
+      "UPDATE_RULES_ALERTE_SECOND_MESSAGE": "L'action de changement de règle n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes.",
+      "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "L'action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
     }
   },
   "RECLASSIFICATION": {

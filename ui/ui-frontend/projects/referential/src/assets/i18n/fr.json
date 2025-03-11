@@ -5,7 +5,7 @@
     "SUBMIT": "Confirmer",
     "TERMINATE": "Terminer",
     "UPDATE": "Modifier",
-    "APPLY_UPDATE": "Appliquer les modifications ",
+    "APPLY_UPDATE": "Appliquer les modifications",
     "REQUIRED": "Champ requis",
     "MIN_LENGTH": "La taille minimale est {{minlength.requiredLength}}, actuellement {{minlength.actualLength}}",
     "MAX_LENGTH": "La taille maximale est {{maxlength.requiredLength}}, actuellement {{maxlength.actualLength}}",
@@ -45,7 +45,7 @@
       "FILE_MUST_RESPECT_COLUMNS_LENGTH": "Le fichier doit respecter le nombre de colonnes.",
       "FILE_MUST_RESPECT_COLUMN_NAME": "Colonne {{ column }}, ligne {{ line }} : le nom de colonne attendu est '{{ data }}'",
       "AT_LEAST_ONE_LINE": "Le fichier doit contenir au moins 1 ligne en plus de l'en-tête.",
-      "BAD_ROWS_LENGTH_IN_LINE": "la ligne {{ line }} ne respecte par le nombre de colonnes.",
+      "BAD_ROWS_LENGTH_IN_LINE": "la ligne {{ line }} ne respecte pas le nombre de colonnes.",
       "MANDATORY_VALUE": "Colonne {{ column }}, ligne {{ line }} : la valeur doit être renseignée.",
       "NOT_ALLOWED_VALUE": "Colonne {{ column }}, ligne {{ line }} : la valeur '{{ data }}' ne fait pas partie des valeurs autorisées.",
       "ISO_8859_1_ONLY": "Colonne {{ column }}, ligne {{ line }} : la valeur '{{ data }}' ne respecte pas les caractères ISO-8859-1.",
@@ -99,7 +99,7 @@
       "IDENTIFIER": "Identifiant du contrat",
       "NAME": "Nom du contrat",
       "CREATION_DATE": "Date de création",
-      "LAST_UPDATE_DATE": "Date de la derniere modification",
+      "LAST_UPDATE_DATE": "Date de la dernière modification",
       "ACTIVE": "Actif",
       "INACTIVE": "Inactif",
       "NO_RESULT_FOUND": "Fin des résultats"
@@ -115,7 +115,7 @@
         "DESCRIPTION": "Description du contrat",
         "CONTRACT_ACTIVE_STATUS": "Contrat de gestion actif ",
         "CREATION_DATE": "Date de création",
-        "LAST_UPDATE_DATE": "Date de la derniere modification",
+        "LAST_UPDATE_DATE": "Date de la dernière modification",
         "SAVE": "Enregistrer"
       },
       "STORAGE_DETAILS": {
@@ -143,7 +143,7 @@
       "TECHNICAL_OBJECT": "Objet technique",
       "FORMAT": "Format",
       "REMOVE_USAGE": "Supprimer cet usage",
-      "TARGET_USAGE": "Usage cible ",
+      "TARGET_USAGE": "Usage cible",
       "INITIAL_VERSION": "Version initiale",
       "YES": "Oui",
       "NO": "Non",
@@ -185,7 +185,7 @@
     "HOUR": "Heure",
     "NEXT": "Suivant",
     "PREVIOUS": "Précédent",
-    "STATE": "Etat",
+    "STATE": "État",
     "STATUS": "Statut",
     "RESULTS": "Résultats",
     "ONE_RESULT": "Résultat",
@@ -268,7 +268,7 @@
     "STARTED": "Démarré"
   },
   "LOGBOOK_OPERATION_INFORMATIONS": {
-    "PAUSE_STEP": " Mettre en pause l'opération en cours",
+    "PAUSE_STEP": "Mettre en pause l'opération en cours",
     "NEXT_STEP": "Poursuivre l'étape en cours et passer l'opération en mode pas à pas",
     "RESUME_OPERATION": "Poursuivre l'opération jusqu'à la fin du traitement",
     "REPLAY_STEP": "Rejouer l'étape en cours et passer l'opération en mode pas à pas",
@@ -284,7 +284,7 @@
     "OPERATION_DATE": "Date de l'opération",
     "MORE_DETAILS": "Information complémentaire sur l'opération",
     "FINAL_DATE": "Fin de l'opération",
-    "STATE": "Etat",
+    "STATE": "État",
     "STATUS": "Statut"
   },
   "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
@@ -295,9 +295,9 @@
     "POP_UP_REPLAY_SECOND_MESSAGE": "Avez-vous eu la confirmation que le problème technique à l'origine de la mise en pause fatale a été corrigé avant de relancer l'opération ?",
     "POP_UP_RESUME_MESSAGE": "Finaliser l'opération",
     "POP_UP_CANCEL_TITLE": "Forcer l'arrêt",
-    "POP_UP_CANCEL_FORCED_MODE_MESSAGE": "Attention vous demandez l’annulation de l’opération à une étape où l’intervention de votre administrateur technique ou du support de la plateforme est nécessaire.<br/>Si vous validez cette action l’opération sera terminée en erreur et les éléments permettant l’analyse du problème seront détruits. Vous devez saisir un motif pour indiquer la raison de cette action d’arrêt forcé.",
-    "POP_UP_CANCEL_NON_FORCED_MODE_MESSAGE": "Attention l’opération sera terminée en ERREUR.",
-    "POP_UP_CANCEL_FORCED_MODE_REASON": "Vous devez saisir un motif pour indiquer la raison de cette action d’arrêt forcé.",
+    "POP_UP_CANCEL_FORCED_MODE_MESSAGE": "Attention vous demandez l'annulation de l'opération à une étape où l'intervention de votre administrateur technique ou du support de la plateforme est nécessaire.<br/>Si vous validez cette action l'opération sera terminée en erreur et les éléments permettant l'analyse du problème seront détruits. Vous devez saisir un motif pour indiquer la raison de cette action d'arrêt forcé.",
+    "POP_UP_CANCEL_NON_FORCED_MODE_MESSAGE": "Attention l'opération sera terminée en ERREUR.",
+    "POP_UP_CANCEL_FORCED_MODE_REASON": "Vous devez saisir un motif pour indiquer la raison de cette action d'arrêt forcé.",
     "POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER": "Motif",
     "POP_UP_CANCEL_ACTION": "Forcer l'arrêt",
     "POP_UP_PAUSE_MESSAGE": "Mettre en pause l'opération"
@@ -352,7 +352,7 @@
       "OPERATIONS_YES_RADIO": "Oui",
       "OPERATIONS_NO_RADIO": "Non",
       "OPERATIONS_ALL_RADIO": "Tous",
-      "OPERATION_ELIMINATIONS": "Eliminations",
+      "OPERATION_ELIMINATIONS": "Éliminations",
       "OPERATION_TRANSFERTS": "Transferts",
       "OPERATION_PRESERVATIONS": "Préservations"
     },
@@ -382,7 +382,7 @@
           "INGEST": "Entrée",
           "PRESERVATION": "Préservation",
           "TRANSFER_REPLY": "Transfert",
-          "ELIMINATION": "Elimination"
+          "ELIMINATION": "Élimination"
         }
       }
     }
@@ -570,7 +570,7 @@
     "SCHEMA": "Schéma",
     "FILTER": {
       "INTERNAL": "Métadonnées internes",
-      "EXTERNAL": "Métadonnées externe"
+      "EXTERNAL": "Métadonnées externes"
     },
     "SCHEMA_DELETE_DIALOG": {
       "TITLE": "Suppression d'extension du schéma",
@@ -658,7 +658,7 @@
         "ARRAY": {
           "SERVICE": "Service",
           "READ": "Lecture",
-          "WRITE": "Ecriture",
+          "WRITE": "Écriture",
           "DELETE": "Suppression"
         }
       }
@@ -720,14 +720,14 @@
       "IDENTIFICATION": "Identification",
       "IDENTIFIER": "Identifiant",
       "NAME": "Nom",
-      "ENTITY_TYPE": "Type d’entité",
+      "ENTITY_TYPE": "Type d'entité",
       "NAME_ENTRY_PARALLEL": "Formes parallèles du nom",
-      "AUTHORIZED_FORM": "Formes du nom normalisées selon d’autres conventions",
+      "AUTHORIZED_FORM": "Formes du nom normalisées selon d'autres conventions",
       "ALTERNATIVE_FORM": "Autres formes du nom",
-      "ENTITY_ID": "Numéro d’immatriculation des collectivités",
+      "ENTITY_ID": "Numéro d'immatriculation des collectivités",
       "DESCRIPTION": "Description",
-      "FROM_DATE": "Date de début d’existence",
-      "TO_DATE": "Date de fin d’existence",
+      "FROM_DATE": "Date de début d'existence",
+      "TO_DATE": "Date de fin d'existence",
       "FUNCTIONS": "Fonctions et activités",
       "BIOGHIST": "Histoire",
       "PLACES": "Lieux",
@@ -738,7 +738,7 @@
       "CONTROL": "Contrôle",
       "CREATION_DATE": "Date de création de la notice",
       "UPDATE_DATE": "Date de dernière révision de la notice",
-      "MAINTENANCE_STATUS": "Niveau d’élaboration",
+      "MAINTENANCE_STATUS": "Niveau d'élaboration",
       "LOCAL_STATUS": "Niveau de détail",
       "SOURCES": "Sources",
       "EVENT_DESCRIPTION": "Notes relatives à la mise à jour de la notice"
@@ -822,7 +822,7 @@
       },
       "OBJECTS": {
         "TITLE": "Usages",
-        "BINARY_MENDATORY": "Original numérique obligatoire",
+        "BINARY_MANDATORY": "Original numérique obligatoire",
         "ALL_USAGES": "Tous usages autorisés",
         "SELECT_FORMAT": "Sélectionner les usages"
       },
@@ -944,10 +944,10 @@
       "TITLE": "Requêtes DSL",
       "SEARCH_CATEGORY": "Catégorie de recherche",
       "IDENTIFIER": "Identifiant",
-      "ACCESS_CONTRACT": "Contract d'accès",
+      "ACCESS_CONTRACT": "Contrat d'accès",
       "ARCHIVE_UNIT": "Unité d'archive",
       "TECHNICAL_OBJECT_GROUP": "Groupe d'objet technique",
-      "IDIENTIFIER_LENGTH_ERROR": "L'identfiant d'une unité doit contenir {{ length }} caractères",
+      "IDIENTIFIER_LENGTH_ERROR": "L'identifiant d'une unité doit contenir {{ length }} caractères",
       "UNKOWN_UNIT": "Unité inconnue",
       "REQUEST": "Requête DSL (Format JSON)",
       "REQUEST_RESULT": "Résultat de la requête DSL",
@@ -1047,7 +1047,7 @@
       "CHOOSE_AU_CREATION_PERIOD": "Choisir une période de création d'unité archivistique",
       "PERIOD_FROM": "Période du :",
       "PERIOD_TO": "Au :",
-      "INGEST_OPERATION_DATE_PLACEHOLDER": "Date d'opération d’entrée",
+      "INGEST_OPERATION_DATE_PLACEHOLDER": "Date d'opération d'entrée",
       "AU_CREATION_DATE_PLACEHOLDER": "Date de création d'UA",
       "DATE_GMT_TIME_CAPTION": "Date à l'heure GMT",
       "START_AUDIT": "Lancer l'audit",
@@ -1055,7 +1055,7 @@
       "END_PERIOD_DATE_BEFORE_START_PERIOD_DATE": "La date de fin de période est antérieure à la date de début",
       "OPERATIONS_CATEGORIES": {
         "AUDIT_FILE_EXISTING": "Existence",
-        "AUDIT_FILE_INTEGRITY": "Integrité",
+        "AUDIT_FILE_INTEGRITY": "Intégrité",
         "AUDIT_FILE_CONSISTENCY": "Cohérence",
         "AUDIT_FILE_RECTIFICATION": "Correctif"
       },
@@ -1074,8 +1074,8 @@
     "INGEST_CONTRACT_CREATED": "Le contrat d'entrée a bien été créé",
     "INGEST_CONTRACT_UPDATED": "Le contrat d'entrée a bien été mis à jour",
     "INGEST_CONTRACT_IMPORTED": "Contrats d'entrée importés avec succès",
-    "AGENCY_CONTRACT_IMPORTED": "Import terminé avec succès. Veuillez-consulter le détail de l'import dans le journal des opérations",
-    "AGENCY_CONTRACT_IMPORT_FAIL": "L'import a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations",
+    "AGENCY_CONTRACT_IMPORTED": "Import terminé avec succès. Veuillez consulter le détail de l'import dans le journal des opérations",
+    "AGENCY_CONTRACT_IMPORT_FAIL": "L'import a échoué. Veuillez consulter le détail des erreurs dans le journal des opérations",
     "AGENCY_CONTRACT_CREATED": "Le service agent a bien été créé",
     "AGENCY_CONTRACT_UPDATED": "Le service agent a bien été mis à jour",
     "AGENCY_CONTRACT_DELETED": "Le service agent a bien été supprimé",
@@ -1094,14 +1094,14 @@
     "ONTOLOGY_UPDATED": "L'ontologie a bien été mis à jour",
     "ONTOLOGY_DELETED": "L'ontologie a bien été supprimé",
     "VOCABULARY_DELETED": "Le vocabulaire a été supprimé avec succès",
-    "VOCABULARY_DELETION_FAILED": "Le vocabulaire n'a pas pu être supprimé. Veuillez-consulter le détail dans le journal des opérations",
+    "VOCABULARY_DELETION_FAILED": "Le vocabulaire n'a pas pu être supprimé. Veuillez consulter le détail dans le journal des opérations",
     "AUDIT_RUN": "L'audit \"{{type}}\" a bien été lancé",
     "PROBATIVE_VALUE_RUN": "Le relevé de valeur probante a été lancé",
     "FORMAT_INVALID": "Format de la requête invalide",
     "RULE_DELETION_START": "Suppression de la règle de gestion {{ name }} en cours...",
     "DOWNLOAD_NOT_ALLOWED": "Impossible de télécharger le rapport pour cette opération",
-    "IMPORT_REFERENTIAL_SUCCESSED": "Import terminé avec succès. Veuillez-consulter le détail de l'import dans le journal des opérations",
-    "IMPORT_REFERENTIAL_FAILED": "L'import a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations",
+    "IMPORT_REFERENTIAL_SUCCESSED": "Import terminé avec succès. Veuillez consulter le détail de l'import dans le journal des opérations",
+    "IMPORT_REFERENTIAL_FAILED": "L'import a échoué. Veuillez consulter le détail des erreurs dans le journal des opérations",
     "RULE_CREATE_SUCCESS": "La règle de gestion {{ name }} a bien été créée.",
     "RULE_CREATE_FAILED": "La règle de gestion {{ name }} n'a pas pu être créée",
     "RULE_UPDATE_SUCCESS": "La règle de gestion {{ name }} a bien été mise à jour.",

@@ -192,7 +192,7 @@ describe('BlockRulesInheritanceComponent', () => {
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);
-      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.APRAISAL_RULES.SOURCE_RULE');
+      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.APPRAISAL_RULES.SOURCE_RULE');
     });
 
     it('should have 1 vitamui editable input', () => {

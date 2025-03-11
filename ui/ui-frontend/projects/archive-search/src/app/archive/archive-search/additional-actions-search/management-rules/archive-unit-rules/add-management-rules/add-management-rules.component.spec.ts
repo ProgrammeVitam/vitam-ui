@@ -254,7 +254,7 @@ describe('AddManagementRulesComponent', () => {
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);
-      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.APRAISAL_RULES.MANAGEMENT_RULES');
+      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.APPRAISAL_RULES.MANAGEMENT_RULES');
     });
 
     it('should have 1 vitamui editable input', () => {

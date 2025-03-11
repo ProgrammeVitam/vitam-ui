@@ -2,7 +2,7 @@
   "COLLECT": {
     "ADD_UNITS": {
       "ACTION_TITLE": "Ajouter des unités archivistiques",
-      "TITLE": "Ajouter des unités archivistiques au projet de versement ",
+      "TITLE": "Ajouter des unités archivistiques au projet de versement",
       "UPLOAD_FILES_TITLE": "Chargement des répertoires et documents à verser",
       "ATTACHMENT_POSITION_TITLE": "Position de rattachement"
     },
@@ -15,18 +15,18 @@
       "UPDATE_CANCEL": "Annuler",
       "CONFIRM": "Confirmer",
       "CANCEL_UPDATE_TO_CONFIRM": "Êtes-vous sûr de vouloir annuler l'opération de mise à jour des métadonnées ?",
-      "ADD_FILE": "Glisser-déposer ",
+      "ADD_FILE": "Glisser-déposer",
       "BROWSE": "ou Parcourir",
       "ACCEPTED_FORMAT": "format accepté : csv",
       "FILE_BAD_FORMAT": "Le fichier déposé n'est pas au bon format",
-      "SUCCESS_MESSAGE": "L’opération de mise à jour des métadonnées a bien été traitée",
-      "WAIT_MESSAGE": "L'opération est en cours, merci de ne pas éteindre ou rafraichir votre navigateur"
+      "SUCCESS_MESSAGE": "L'opération de mise à jour des métadonnées a bien été traitée",
+      "WAIT_MESSAGE": "L'opération est en cours, merci de ne pas éteindre ou rafraîchir votre navigateur"
     },
     "UPDATE_PROJECT": {
       "SAVE": "Enregistrer",
       "TERMINATED": "Le projet a été bien mis à jour",
       "TRANSACTIONS_KO": "par contre il y a des transactions ko",
-      "POPUP_ACTIONS_TITLE": " Action sur un projet de versement",
+      "POPUP_ACTIONS_TITLE": "Action sur un projet de versement",
       "POPUP_ACTIONS_CONTENT_MAJ": "Vous avez {{nb}} versements en édition. Voulez-vous mettre à jour automatiquement ces versements&nbsp;? En cas de réponse négative, seuls les nouveaux versements intègreront ces modifications",
       "DIALOGS_CANCEL_TITLE": "Sauvegarder les modifications en cours",
       "DIALOGS_CANCEL_CONTENT": "Vous avez effectué des modifications sur les métadonnées descriptives d'un projet. Souhaitez-vous les enregistrer ou les annuler ?"
@@ -46,7 +46,7 @@
     "FIELD_SUBMISSION_AGENCY_IDENTIFIER": "Identifiant du service versant",
     "FIELD_CREATED_ON": "Date de création",
     "FIELD_LAST_MODIFY_ON": "Dernière modification",
-    "FIELD_STATUS": "Etat et suivi",
+    "FIELD_STATUS": "État et suivi",
     "FIELD_OPERATION_ID": "Identifiant de l'opération",
     "FIELD_STATUS_TRANSACTION": "Statut du versement",
     "NO_RESULT": "Aucun résultat",
@@ -78,7 +78,7 @@
       "ZIP_TRACKING_TITLE": "Compression",
       "STATUS": "Chargement",
       "WEIGHT": "Poids",
-      "ADD_FILE": "Glisser-déposer ",
+      "ADD_FILE": "Glisser-déposer",
       "BROWSE": "ou Parcourir",
       "DRAG_AND_DROP_OR_BROWSE": "Glisser-déposer ou Parcourir",
       "ADD_FILE_DESCRIPTION": "Poids maximal conseillé: 1 GB"
@@ -103,8 +103,8 @@
       "SET_VALUE": "Définir la valeur",
       "VALUE": "Valeur de la Métadonnée",
       "ATTACH_POSITION": "Définir la position de rattachement",
-      "PROJECT_CREATION_ERROR": "Erreur lors de la creation du projet de versement",
-      "UPLOAD_SUB_TITLE": "Chargement des répertoires et des documents à verser ",
+      "PROJECT_CREATION_ERROR": "Erreur lors de la création du projet de versement",
+      "UPLOAD_SUB_TITLE": "Chargement des répertoires et des documents à verser",
       "ARCHIVE_POSITION_SUB_TITLE": "Définir la position fixe de rattachement",
       "AUTO_INGEST": "Gestion automatique des transactions :",
       "AUTO_INGEST_TRUE": "Oui",
@@ -118,8 +118,8 @@
     "OTHER_ACTION": "Autres actions",
     "INGEST_TRANSACTION_LAUNCHED": "La demande de versement du projet a été bien lancée",
     "VALIDATE_TRANSACTION_VALIDATED": "La demande de versement du projet a été bien validée",
-    "TRANSACTION_ABORTED": "La demande de versement du projet a été bien abandonné",
-    "TRANSACTION_REOPENED": "La demande de versement du projet a été bien reouvert",
+    "TRANSACTION_ABORTED": "La demande de versement du projet a été bien abandonnée",
+    "TRANSACTION_REOPENED": "La demande de versement du projet a été bien rouverte",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
         "SHOW_TRANSACTIONS": "Accéder à la liste des versements du projet",

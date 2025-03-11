@@ -63,7 +63,7 @@
     "ADD_FILE": "Drag and drop",
     "BROWSE": "or Browse",
     "ADD_FILE_DESCRIPTION_1": "(Accepted formats: .zip, .tar, .tar.gz, .tar.bz2",
-    "ADD_FILE_DESCRIPTION_2": "Max size: 10 GB ) ",
+    "ADD_FILE_DESCRIPTION_2": "Max size: 10 GB)",
     "CONFIRM": "Confirm the deposit",
     "CONFIRM_BLANK": "Confirm test deposit",
     "ALERTE_MESSAGE": "One or more installment (s) are downloading (Please do not leave this page during the deposit process and open a new tab if necessary)",
@@ -83,16 +83,16 @@
     "START_DATE": "Deposit start date",
     "END_DATE": "Deposit end date",
     "PRODUCT_SERVICE": "Producer service",
-    "VERSATILE_SERVICE": "Versatile Service",
+    "VERSATILE_SERVICE": "Submission service",
     "ENTRY_CONTRACT": "Entry contract",
-    "ARCHIVING_PROFIL": "Archiving profil",
+    "ARCHIVING_PROFIL": "Archiving profile",
     "STATUS": "Legal status",
     "MESSAGE": "Message",
     "OPERATION_DETAILS": "Additional information about the operation",
     "INGEST_ERROR_DETAIL": "Details"
   },
   "FILLING_HOLDING_SCHEME": {
-    "IMPORT_FILLING": "New Filling Scheme",
+    "IMPORT_FILLING": "New Filing Scheme",
     "IMPORT_HOLDING": "New Holding Scheme",
     "SEARCH": "Holding or Filling scheme node"
   }

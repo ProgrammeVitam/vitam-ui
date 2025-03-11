@@ -27,7 +27,7 @@
       "TERMINATED": "The project has been well updated",
       "TRANSACTIONS_KO": "on the other hand there are KO transactions",
       "POPUP_ACTIONS_TITLE": "Action on a project",
-      "POPUP_ACTIONS_CONTENT_MAJ": "You have {{nb}} ingest in edit. Do you want to update automatically these ingests? If the answer is negative, only the new ingests will include these modifications",
+      "POPUP_ACTIONS_CONTENT_MAJ": "You have {{nb}} ingests in edit. Do you want to update automatically these ingests? If the answer is negative, only the new ingests will include these modifications",
       "DIALOGS_CANCEL_TITLE": "Save the current changes",
       "DIALOGS_CANCEL_CONTENT": "You have made changes to the descriptive metadata of a project. Do you want to save or discard them ?"
     },
@@ -84,7 +84,7 @@
       "WORKFLOW_CHOICE": "Choose the type of upload plan you want to create",
       "MANUAL_WORKFLOW": "Manual upload project.",
       "FLOW_WORKFLOW": "Automatic flow upload project.",
-      "FLOW_WORKFLOW_TYPE_CHOICE": "Choose the type of attachment you want to make",
+      "FLOW_WORKFLOW_TYPE_CHOICE": "Choose the type of attachment you want to do",
       "FIX_FLOW_WORKFLOW": "Fixed attachment position",
       "RULES_FLOW_WORKFLOW": "Attachment rule setting",
       "RULES_TITLE": "Set up attachment rules",
@@ -127,7 +127,7 @@
         "READY": "Ready",
         "SENDING": "Preparation and sending of the SIP",
         "SENT": "Sent, processing SAE",
-        "ACK_OK": "Ingested into success",
+        "ACK_OK": "Successfully ingested",
         "ACK_WARNING": "Ingested",
         "ACK_KO": "Ingest failed",
         "KO": "Technical error"

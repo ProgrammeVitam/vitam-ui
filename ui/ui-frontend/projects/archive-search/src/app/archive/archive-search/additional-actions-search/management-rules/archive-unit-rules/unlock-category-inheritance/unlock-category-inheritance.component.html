@@ -20,12 +20,12 @@
 <ng-template #okTotalFound>
   <div *ngIf="showText && itemsCategoryToUnlock !== '0'" class="row message-text-ok">
     <div class="col-1"><i class="material-icons">check_circle</i></div>
-    <div class="col-11">{{ itemsCategoryToUnlock }} {{ 'RULES.APRAISAL_RULES.UA_TO_UPDATE' | translate }}</div>
+    <div class="col-11">{{ itemsCategoryToUnlock }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</div>
   </div>
 
   <div *ngIf="showText && itemsToNotUpdate !== '0'" class="row message-text-ko">
     <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">{{ 'RULES.APRAISAL_RULES.UA_INHERITANCE_TO_IGNORE' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</div>
+    <div class="col-11">{{ 'RULES.APPRAISAL_RULES.UA_INHERITANCE_TO_IGNORE' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</div>
   </div>
 </ng-template>
 

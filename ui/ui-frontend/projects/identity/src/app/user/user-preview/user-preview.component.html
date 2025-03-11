@@ -10,7 +10,7 @@
       {{ 'USER.OTHER_ACTION.ACTIVATE' | translate }}
     </button>
     <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">
-      {{ 'USER.OTHER_ACTION.DESACTIVATE' | translate }}
+      {{ 'USER.OTHER_ACTION.DEACTIVATE' | translate }}
     </button>
     <button
       mat-menu-item
@@ -56,7 +56,7 @@
 <ng-template #confirmDisabledUserDialog>
   <mat-dialog-content>
     <p>
-      {{ 'USER.OTHER_ACTION.DESACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
+      {{ 'USER.OTHER_ACTION.DEACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
     </p></mat-dialog-content
   >
 
