@@ -149,7 +149,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   private refreshTreeNodes() {
     const data = this.nestedDataSourceLeaves.data;
-    this.nestedDataSourceLeaves.data = [];
+    this.nestedDataSourceLeaves.data = null;
     this.nestedDataSourceLeaves.data = data;
   }
 

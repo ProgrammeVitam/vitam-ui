@@ -156,7 +156,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   loadAttachementUnits() {
     const sortingCriteria = { criteria: 'Title', sorting: Direction.ASCENDANT };
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: '#management.UpdateOperation.SystemId',
+      criteria: '#management.UpdateOperation',
       values: [{ id: 'true', value: 'true' }],
       category: SearchCriteriaTypeEnum.FIELDS,
       operator: CriteriaOperator.EXISTS,
