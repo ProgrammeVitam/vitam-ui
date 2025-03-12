@@ -28,7 +28,20 @@ export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy 
     this.archiveUnitEditorService.setTemplate(this.template);
     this.archiveUnitEditorService.setData(this.data);
 
-    this.subscriptions.add(this.archiveUnitEditorService.editObject$.subscribe(this.editObject$));
+    this.subscriptions.add(
+      this.archiveUnitEditorService.editObject$.subscribe((data) => {
+        // TODO en attendant que les balises avec attribut ( 'Title_', 'Description_')  seront géré avec l’US story #12147, on les affiche pas en mode edition
+        data?.children.map((node) => {
+          if ('Generalities' === node.key) {
+            node?.children.map((child) => {
+              if (['Title_', 'Description_'].includes(child.key))
+                child.displayRule = { ...child.displayRule, ui: { ...child.displayRule.ui, display: false } };
+            });
+          }
+        });
+        this.editObject$.next(data);
+      }),
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
