@@ -50,6 +50,7 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   Unit,
+  UnitType,
 } from 'vitamui-library';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
@@ -135,6 +136,20 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
         }
         // Re-init attachment units to render children by criteria
         this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
+
+        const withKeyValueNodes = this.nestedDataSourceLeaves.data.filter((node) => node.unitType === UnitType.WITH_KEY_VALUE);
+        if (!isEmpty(withKeyValueNodes)) {
+          this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
+            this.nestedDataSourceLeaves.data,
+            withKeyValueNodes,
+          );
+          FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
+            this.nestedDataSourceLeaves.data,
+            withKeyValueNodes,
+            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.KEY_VALUE_NODE'),
+          );
+        }
+
         if (this.searchRequestTotalResults > 0 && (isEmpty(this.attachmentNodes) || this.hasDynamicAttachment)) {
           FilingHoldingSchemeHandler.addOrphansNodeFromTree(
             this.nestedDataSourceLeaves.data,
@@ -183,12 +198,20 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     }
     this.attachmentNodes = [];
     for (const unit of this.attachmentUnits) {
-      const treeNode = FilingHoldingSchemeHandler.foundNode(this.fullNodes, unit['#management'].UpdateOperation.SystemId);
+      const key = unit['#management'].UpdateOperation.ArchiveUnitIdentifierKey?.MetadataName;
+      const value = key
+        ? unit['#management'].UpdateOperation.ArchiveUnitIdentifierKey?.MetadataValue
+        : unit['#management'].UpdateOperation.SystemId;
+      const treeNode = FilingHoldingSchemeHandler.foundNode(this.fullNodes, value, key);
       const node = FilingHoldingSchemeHandler.convertUnitToNode(unit);
-      node.vitamId = treeNode.id;
-      node.title = treeNode.title;
-      node.unitType = treeNode.unitType;
-      node.hasObject = treeNode.hasObject;
+      if (key) {
+        node.unitType = UnitType.WITH_KEY_VALUE;
+      } else {
+        node.vitamId = treeNode?.id;
+        node.title = treeNode?.title;
+        node.unitType = treeNode?.unitType;
+        node.hasObject = treeNode?.hasObject;
+      }
       this.attachmentNodes.push(node);
     }
   }

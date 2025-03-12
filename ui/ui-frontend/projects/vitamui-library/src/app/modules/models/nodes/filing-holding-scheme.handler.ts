@@ -43,17 +43,19 @@ import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface'
 import { copyNodeWithoutChildren } from './node.utils';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';
+export const KEY_VALUE_NODE_ID = 'KEY_VALUE_NODE';
 
 export class FilingHoldingSchemeHandler {
-  public static foundNode(nodes: FilingHoldingSchemeNode[], nodeId: string): FilingHoldingSchemeNode {
+  public static foundNode(nodes: FilingHoldingSchemeNode[], value: string, key = 'id'): FilingHoldingSchemeNode {
     if (isEmpty(nodes)) {
       return null;
     }
     for (const node of nodes) {
-      if (node.id === nodeId) {
+      const nodeValue = (node as any)[key]; // Accès dynamique
+      if (nodeValue === value) {
         return node;
       }
-      const nodeFound = FilingHoldingSchemeHandler.foundNode(node.children, nodeId);
+      const nodeFound = FilingHoldingSchemeHandler.foundNode(node.children, value, key);
       if (nodeFound) {
         return nodeFound;
       }
@@ -171,6 +173,31 @@ export class FilingHoldingSchemeHandler {
         parentNodes[0].count = orphansNumber;
       }
     }
+  }
+
+  public static addKeyValueNodeFromTree(
+    parentNodes: FilingHoldingSchemeNode[],
+    childrenNodes: FilingHoldingSchemeNode[],
+    nodeTitle: string,
+  ) {
+    const nodeWithKeyValue: FilingHoldingSchemeNode = {
+      checked: false,
+      children: childrenNodes,
+      id: KEY_VALUE_NODE_ID,
+      title: nodeTitle,
+      vitamId: KEY_VALUE_NODE_ID,
+    };
+    parentNodes.unshift(nodeWithKeyValue);
+  }
+
+  public static removeWithKeyValueNodeFromTree(
+    source: FilingHoldingSchemeNode[],
+    toRemove: FilingHoldingSchemeNode[],
+  ): FilingHoldingSchemeNode[] {
+    if (!isEmpty(source) && !isEmpty(toRemove)) {
+      return source.filter((parent) => !toRemove.some((child) => parent.id === child.id));
+    }
+    return source;
   }
 
   public static removeOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[]) {

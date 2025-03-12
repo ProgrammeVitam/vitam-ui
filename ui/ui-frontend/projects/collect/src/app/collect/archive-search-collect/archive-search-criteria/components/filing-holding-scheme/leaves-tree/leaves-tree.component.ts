@@ -114,7 +114,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       this.leavesTreeService.setTransactionId(this.transactionId);
     }
     this.nonOrphanNodeSelected = this.allNonOrphanNodes.some((node) => node.id === this.unitId);
-    this.nonOrphanChildNodeSelected = this.allNonOrphanNodes.some((node) => this.allunitups.includes(node.id));
+    this.nonOrphanChildNodeSelected = this.allNonOrphanNodes.some((node) => this.allunitups?.includes(node.id));
   }
 
   ngOnDestroy(): void {
@@ -277,7 +277,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
           this.allunitups = [];
         }
         this.nonOrphanNodeSelected = this.allNonOrphanNodes.some((node) => node.id === this.unitId);
-        this.nonOrphanChildNodeSelected = this.allNonOrphanNodes.some((node) => this.allunitups.includes(node.id));
+        this.nonOrphanChildNodeSelected = this.allNonOrphanNodes.some((node) => this.allunitups?.includes(node.id));
       }),
     );
   }

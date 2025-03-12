@@ -3725,7 +3725,8 @@
       "TREE_LEAVES_TITLE": "Attachment position(s)",
       "TREE_TITLE": "Trees and plans",
       "LOAD_MORE": "Load more",
-      "ORPHANS_NODE": "Without attachment"
+      "ORPHANS_NODE": "Without attachment",
+      "KEY_VALUE_NODE": "Attachment order"
     },
     "HIDE_SEARCH_CRITERIA": "Hide search criteria",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
