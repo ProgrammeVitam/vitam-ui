@@ -254,7 +254,7 @@ describe('UpdateUnitRulesComponent', () => {
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(3);
-      expect(formTitlesHtmlElements[1].textContent).toContain('RULES.APRAISAL_RULES.TARGET_RULE');
+      expect(formTitlesHtmlElements[1].textContent).toContain('RULES.APPRAISAL_RULES.TARGET_RULE');
     });
 
     it('should have 2 vitamui editables inputs', () => {

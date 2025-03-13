@@ -29,8 +29,8 @@
     },
     "ERROR": {
       "WRONG_FORMAT": "Wrong format",
-      "STRING_MAX_LENGTH": "{{max}} characters maximum",
-      "STRING_MIN_LENGTH": "{{min}} characters minimum",
+      "STRING_MAX_LENGTH": "{{ max }} characters maximum",
+      "STRING_MIN_LENGTH": "{{ min }} characters minimum",
       "NAME_ALREADY_EXISTS": "Name already exists",
       "REQUIRED": "Required field"
     }
@@ -199,7 +199,7 @@
       "USE_PKCE": "With Pkce",
       "PROTOCOL_TYPE": "protocol type",
       "MODAL": {
-        "TITLE": "IDP Creation for \"{{name}}\"",
+        "TITLE": "IDP Creation for \"{{ name }}\"",
         "KEYSTORE_PWD": "Keystore password",
         "WRONG_PASSWORD": "Wrong password",
         "UPLOAD_KEYSTORE": "Upload the CAS keystore file",
@@ -257,14 +257,14 @@
       "NAME_ALREADY_EXIST": "Name already exists",
       "CODE_ALREADY_EXIST": "Code already exists",
       "CREATE": {
-        "TITLE": "Creation of an owner for \"{{name}}\"",
+        "TITLE": "Creation of an owner for \"{{ name }}\"",
         "PROOF_ELEMENTS": "This owner will hold the proof elements transverse to the organization."
       },
       "LIST": {
         "PROOF_ELEMENTS": "Tenant containing the proof elements transverse to the organization"
       },
       "MODAL": {
-        "SAFE_TITLE": "Safe creation for \"{{name}}\"",
+        "SAFE_TITLE": "Safe creation for \"{{ name }}\"",
         "ACTION_BUTTON": "Create a safe",
         "NAME_ALREADY_EXIST": "Name already exists",
         "CODE_ALREADY_EXIST": "Code already exists"
@@ -346,8 +346,8 @@
           "GROUP_TYPE": "Assignable profile groups",
           "GROUP_TYPE_NOMINATIVE": "Nominative",
           "GROUP_TYPE_GENERIC": "Generic",
-          "WRONG_FORMAT": "Wrong mail format",
-          "MAIL_ALREADY_EXIST": "Mail already exists",
+          "WRONG_FORMAT": "Incorrect email format",
+          "MAIL_ALREADY_EXIST": "Email already exists",
           "CONTINUE_AUTH": "Continue by managing authentication"
         },
         "CONTACT_STEP": {
@@ -381,9 +381,9 @@
     },
     "OTHER_ACTION": {
       "ACTIVATE": "Activate",
-      "DESACTIVATE": "Desactivate",
+      "DEACTIVATE": "Deactivate",
       "DELETE_PERSONAL_DATA": "Delete personal data",
-      "DESACTIVATE_MESSAGE": "Are you sure you want to deactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?",
+      "DEACTIVATE_MESSAGE": "Are you sure you want to deactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?",
       "REACTIVATE_MESSAGE": "Are you sure you want to reactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?",
       "DELETE_MESSAGE": "You are about to delete the personal data of the user {{ firstname }} {{ lastname }}. This action cannot be undone, do you want to confirm?"
     }
@@ -465,7 +465,7 @@
         "TITLE": "Create profile groups",
         "EXISTING_NAME": "Name already exists",
         "WRONG_FORMAT": "Wrong format (alphanumeric characters separated by characters .)",
-        "PROVISIONNING_GROUP": "Group Provisioning \"{{ name }}\"",
+        "PROVISIONNING_GROUP": "Provisioning of group \"{{ name }}\"",
         "UNITS_INFORMATION": "Entering the membership units",
         "UPDATE_UNITS": "Editing membership units of \"{{ name }}\""
       }
@@ -542,7 +542,7 @@
     "MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL": "Max authorized thresholds",
     "MAX_BULK_OPERATIONS_THRESHOLD_HELPER": "Select a max threshold value authorized on mass proccessings for audits operations",
     "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Set plateform thresholds",
-    "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} archive units",
+    "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{ threshold }} archive units",
     "TABS": {
       "INFORMATIONS": "Informations",
       "THRESHOLDS": "Thresholds",

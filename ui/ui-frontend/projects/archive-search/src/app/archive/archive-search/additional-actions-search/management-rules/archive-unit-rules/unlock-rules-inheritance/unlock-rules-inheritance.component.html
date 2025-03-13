@@ -1,24 +1,24 @@
 <div class="container">
   <form [formGroup]="ruleDetailsForm">
-    <label class="text bold normal primary"> {{ 'RULES.APRAISAL_RULES.SOURCE_RULE' | translate }}</label>
+    <label class="text bold normal primary"> {{ 'RULES.APPRAISAL_RULES.SOURCE_RULE' | translate }}</label>
     <div class="row content vitamui-form" style="margin-right: 0px">
       <vitamui-common-editable-input
         class="col-6"
         formControlName="rule"
         [validator]="ruleDetailsForm?.get('rule')?.validator"
         [asyncValidator]="ruleDetailsForm?.get('rule')?.asyncValidator"
-        label="{{ 'RULES.APRAISAL_RULES.RULE_ID' | translate }}"
+        label="{{ 'RULES.APPRAISAL_RULES.RULE_ID' | translate }}"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="uniquePreventRuleId">
-          {{ 'RULES.APRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
+          {{ 'RULES.APPRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
         >
         <vitamui-common-field-error errorKey="ruleIdPattern"
           >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
         </vitamui-common-field-error>
 
         <vitamui-common-field-error errorKey="ruleIdExists"
-          >{{ 'RULES.APRAISAL_RULES.RULE_NOT_EXIST' | translate }}
+          >{{ 'RULES.APPRAISAL_RULES.RULE_NOT_EXIST' | translate }}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
 
@@ -28,7 +28,7 @@
         minlength="2"
         maxlength="100"
         required
-        placeholder="{{ 'RULES.APRAISAL_RULES.RULE_NAME' | translate }}"
+        placeholder="{{ 'RULES.APPRAISAL_RULES.RULE_NAME' | translate }}"
       >
         <vitamui-common-input-error
           *ngIf="ruleDetailsForm?.get('ruleName')?.touched && ruleDetailsForm?.get('ruleName')?.hasError('required')"
@@ -57,12 +57,12 @@
 <ng-template #okTotalFound>
   <div *ngIf="showText && itemsWithSameRule !== '0'" class="row message-text-ok">
     <div class="col-1"><i class="material-icons">check_circle</i></div>
-    <div class="col-11">{{ itemsWithSameRule }} {{ 'RULES.APRAISAL_RULES.UA_TO_UPDATE' | translate }}</div>
+    <div class="col-11">{{ itemsWithSameRule }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</div>
   </div>
 
   <div *ngIf="showText && itemsToNotUpdate !== '0'" class="row message-text-ko">
     <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">{{ 'RULES.APRAISAL_RULES.UA_WITH_NO_PREVENT_RULES' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</div>
+    <div class="col-11">{{ 'RULES.APPRAISAL_RULES.UA_WITH_NO_PREVENT_RULES' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</div>
   </div>
 </ng-template>
 

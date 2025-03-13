@@ -133,7 +133,7 @@
       "ERROR_MESSAGES": {
         "INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET": "Persistent identifier policy required at least one target",
         "INVALID_OBJECT_USAGE_POLICY": "Invalid object usage policy",
-        "INVALID_AUTHORITY": "Naming authority must have 5 ou 9 digit",
+        "INVALID_AUTHORITY": "Naming authority must have 5 or 9 digits",
         "INVALID_PERSISTENT_IDENTIFIER_POLICY_FEATURE": {
           "REMOVE": "Is not possible to remove a persistent identifier policy already defined in a management contract"
         }
@@ -222,7 +222,7 @@
         "OPERATION_IDENTIFIER": "Operation identifier",
         "INTERNAL_ACTORS": "Internal actor(s)",
         "REPORT": "Report",
-        "ADDITIONAL_OPERATION_INFORMATIONS": "Additonal operation informations",
+        "ADDITIONAL_OPERATION_INFORMATIONS": "Additional operation informations",
         "MESSAGE": "Message"
       },
       "DETAILS": {
@@ -822,7 +822,7 @@
       },
       "OBJECTS": {
         "TITLE": "Uses",
-        "BINARY_MENDATORY": "Mandatory digital original",
+        "BINARY_MANDATORY": "Mandatory digital original",
         "ALL_USAGES": "All authorized uses",
         "SELECT_FORMAT": "Select uses"
       },
@@ -846,7 +846,7 @@
     },
     "CREATE_DIALOG": {
       "TITLE": "Creation of an ingest contract",
-      "INFORMATIONS": "Informations",
+      "INFORMATIONS": "Information",
       "INGEST_CONTRACT_ACTIVE": "Ingest contract active",
       "NAME_ALREADY_EXISTS": "Name already in use",
       "NAME": "Name",
@@ -1011,13 +1011,13 @@
         "OPERATION_CATEGORY": "Operation category",
         "EXTERNAL_AGENTS_INDENTIFIERS": "External agents identifiers",
         "ASSOCIATED_CONTRACT": "Associated contract",
-        "ASSIGMENT_DATE": "Assigment date",
+        "ASSIGMENT_DATE": "Assignment date",
         "OPERATION_IDENTIFIER": "Operation identifier",
         "TRANSACTION_NUMBER": "Transaction number",
         "APPLICATION_IDENTIFIER": "Application identifier",
         "OBJECT_IDENTIFIER": "Object identifier",
         "REPORT": "Report",
-        "ADDITIONAL_OPERATION_INFORMATIONS": "Additonal operation informations",
+        "ADDITIONAL_OPERATION_INFORMATIONS": "Additional operation informations",
         "MESSAGE": "Result"
       },
       "DETAILS": {

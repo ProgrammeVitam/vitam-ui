@@ -28,8 +28,8 @@
     "MORE_RESULT": "Afficher plus de résultats...",
     "ERROR": {
       "WRONG_FORMAT": "Format incorrect",
-      "STRING_MAX_LENGTH": "{{max}} caractères maximum",
-      "STRING_MIN_LENGTH": "{{min}} caractères minimum",
+      "STRING_MAX_LENGTH": "{{ max }} caractères maximum",
+      "STRING_MIN_LENGTH": "{{ min }} caractères minimum",
       "NAME_ALREADY_EXISTS": "Nom déjà existant",
       "REQUIRED": "Champ requis"
     }
@@ -57,9 +57,9 @@
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(déjà utilisé)",
     "SNACKBAR": {
-      "CUSTOMER_CREATE": "L'organisation {{ param1 }} a bien été créé",
-      "CUSTOMER_CREATE_ERROR": "L'organisation n'a pas pu être créé, veuillez contacter un administrateur",
-      "CUSTOMER_UPDATE": "L'organisation {{ param1 }} a bien été modifié",
+      "CUSTOMER_CREATE": "L'organisation {{ param1 }} a bien été créée",
+      "CUSTOMER_CREATE_ERROR": "L'organisation n'a pas pu être créée, veuillez contacter un administrateur",
+      "CUSTOMER_UPDATE": "L'organisation {{ param1 }} a bien été modifiée",
       "PROVIDER_CREATE": "L'IDP {{ param1 }} a bien été créé",
       "PROVIDER_CREATE_RESTART_NEED": "L'IDP {{ param1 }} a bien été créé, la prise en compte du changement de ces paramètres nécessite un redémarrage du système d'authentification",
       "PROVIDER_UPDATE": "L'IDP {{ param1 }} a bien été modifié",
@@ -84,8 +84,8 @@
       "ACCOUNT_UPDATE": "Les informations ont été mises à jour",
       "OIDC_UPDATE": "Pour le protocole OIDC, ces champs doivent être renseignés : url discovery, client identifier et client secret pour que la modification ait lieu",
       "SAML_UPDATE_ERROR": "Pour le protocole SAML, ces champs doivent être renseignés : Nom de l'IDP, Patterns, Keystore de CAS, Metadata de l'IDP pour que la modification ait lieu",
-      "USER_ALREADY_DELETED": "L'utilisateur que vous cherchez est déja supprimé",
-      "USER_TO_DELETE": "Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles",
+      "USER_ALREADY_DELETED": "L'utilisateur que vous cherchez est déjà supprimé",
+      "USER_TO_DELETE": "Un ou plusieurs utilisateur(s) inactif(s) dans votre organisation nécessitent l'effacement de leurs données personnelles",
       "USER_EXPORT_SUCCESS": "Export des utilisateurs effectué avec succès.",
       "GROUP_EXPORT_SUCCESS": "Export des groupes de profils effectué avec succès."
     }
@@ -125,7 +125,7 @@
       "DEFAULT_LANGUAGE_1": "Langue de l'interface",
       "DEFAULT_LANGUAGE_2": "(par défaut pour l'utilisateur)",
       "PASSWORD_DURATION": "Durée de révocation du mot de passe (depuis le dernier changement)",
-      "PASSWORDS_DURATION": "Durée de révocation des mot de passe",
+      "PASSWORDS_DURATION": "Durée de révocation des mots de passe",
       "PASSWORD_DURATION_1": "Durée de révocation du mot de passe",
       "PASSWORD_DURATION_2": "(depuis le dernier changement)",
       "VALIDATIONS": "Validation en deux étapes",
@@ -134,7 +134,7 @@
       "ALERT_DURATION_ON_INACTIVE_USERS": {
         "LABEL": "Durée d'alerte sur les utilisateurs inactifs (mois)",
         "REQUIRED": "Champ obligatoire et il faut une valeur supérieure à 0",
-        "WRONG_FORMAT": "Format incorrecte",
+        "WRONG_FORMAT": "Format incorrect",
         "MIN_VALUE": "Il faut une valeur supérieure à 0"
       },
       "CODE_ALREADY_EXIST": "Code déjà existant",
@@ -196,13 +196,13 @@
       "USE_PKCE": "Avec Pkce",
       "PROTOCOL_TYPE": "Type de protocole",
       "MODAL": {
-        "TITLE": "Création d'un IDP pour \"{{name}}\"",
+        "TITLE": "Création d'un IDP pour \"{{ name }}\"",
         "KEYSTORE_PWD": "Mot de passe du keystore",
         "WRONG_PASSWORD": "Mot de passe incorrect",
         "UPLOAD_KEYSTORE": "Uploader le fichier keystore de CAS",
         "UPLOAD_METADATA": "Uploader le fichier metadata de l'IDP",
-        "SUBTITLE_SAML": "Paramètres spécificiques SAML",
-        "SUBTITLE_OIDC": "Paramètres spécificiques OIDC"
+        "SUBTITLE_SAML": "Paramètres spécifiques SAML",
+        "SUBTITLE_OIDC": "Paramètres spécifiques OIDC"
       },
       "AUTO_PROVISIONING": "Mise à jour automatique des utilisateurs",
       "MAXIMUM_AUTHENTICATION_LIFETIME": "Temps maximum de connexion (secondes)",
@@ -254,14 +254,14 @@
       "NAME_ALREADY_EXIST": "Nom déjà existant",
       "CODE_ALREADY_EXIST": "Code déjà existant",
       "CREATE": {
-        "TITLE": "Création d'un propriétaire pour \"{{name}}\"",
-        "PROOF_ELEMENTS": "Ce propriétaire détiendra les éléments de preuve transverses à l’organisation."
+        "TITLE": "Création d'un propriétaire pour \"{{ name }}\"",
+        "PROOF_ELEMENTS": "Ce propriétaire détiendra les éléments de preuve transverses à l'organisation."
       },
       "LIST": {
-        "PROOF_ELEMENTS": "Coffre contenant les éléments de preuve transverses à l’organisation"
+        "PROOF_ELEMENTS": "Coffre contenant les éléments de preuve transverses à l'organisation"
       },
       "MODAL": {
-        "SAFE_TITLE": "Création du coffre pour \"{{name}}\"",
+        "SAFE_TITLE": "Création du coffre pour \"{{ name }}\"",
         "ACTION_BUTTON": "Créer un coffre",
         "NAME_ALREADY_EXIST": "Nom déjà existant",
         "CODE_ALREADY_EXIST": "Code déjà existant"
@@ -378,9 +378,9 @@
     },
     "OTHER_ACTION": {
       "ACTIVATE": "Activer",
-      "DESACTIVATE": "Désactiver",
+      "DEACTIVATE": "Désactiver",
       "DELETE_PERSONAL_DATA": "Supprimer les données personnelles",
-      "DESACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir désactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
+      "DEACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir désactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
       "REACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir réactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
       "DELETE_MESSAGE": "Vous allez procéder à l'effacement des données personnelles de l'utilisateur {{ firstname }} {{ lastname }}. Cette action ne peut pas être annulée, voulez-vous confirmer ?"
     }
@@ -415,12 +415,12 @@
       "ANONYMOUS": "Anonymisation",
       "USERS_MANAGEMENT": "Gestion des utilisateurs génériques",
       "EXISTING_NAME": "Nom déjà utilisé",
-      "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)",
+      "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractère .)",
       "MODAL": {
         "TITLE": "Création d'un profil Administrateur",
         "DESCRIPTION": "Description du Profil",
         "EXISTING_NAME": "Nom déjà existant",
-        "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)"
+        "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractère .)"
       }
     }
   },
@@ -457,11 +457,11 @@
       "MODIF_UNITS_BUTTON": "Modifier les unités d'appartenance",
       "UNITS_TABLE_TITLE": "Unités d'appartenance",
       "EXISTING_NAME": "Nom déjà utilisé",
-      "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractères .)",
+      "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractère .)",
       "MODAL": {
         "TITLE": "Création d'un groupe de profils",
         "EXISTING_NAME": "Nom déjà utilisé",
-        "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractères .)",
+        "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractère .)",
         "PROVISIONNING_GROUP": "Provisionnement du groupe \"{{ name }}\"",
         "UNITS_INFORMATION": "Saisie des unités d'appartenance",
         "UPDATE_UNITS": "Modification des unités de \"{{ name }}\""
@@ -469,7 +469,7 @@
     },
     "PROFILE": {
       "MODAL": {
-        "TITLE": "Modification des profils de \"{{name}}\"",
+        "TITLE": "Modification des profils de \"{{ name }}\"",
         "APP": "Application",
         "SAFE": "Coffre",
         "PROFILE": "Profil"
@@ -507,19 +507,19 @@
       "SUBLEVEL_TOOLTIP": "Ce profil est affecté à un groupe",
       "DESCRIPTION": "Description",
       "EXISTING_NAME": "Nom déjà utilisé",
-      "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)",
+      "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractère .)",
       "MODAL": {
         "TITLE": "Duplication de profil",
         "DUPLICATE_PROFILE": "Profil à dupliquer",
         "APP": "Application",
         "PROFILE": "Profil",
         "EXISTING_NAME": "Nom déjà utilisé",
-        "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)"
+        "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractère .)"
       }
     }
   },
   "EXTERNAL_PARAM_PROFILE": {
-    "CREATE_EXTERNAL_PARAM_PROFILE": "CREER UN PROFIL PARAMETRAGES EXTERNES",
+    "CREATE_EXTERNAL_PARAM_PROFILE": "CRÉER UN PROFIL PARAMÉTRAGES EXTERNES",
     "INPUT_REQUIRED": "Champ requis",
     "NAME_ALREADY_USED": "Nom déjà utilisé",
     "SELECT_ACCESSCONTRACT": "Sélectionner un contrat d'accès",
@@ -539,7 +539,7 @@
     "MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL": "Seuil maximal autorisé",
     "MAX_BULK_OPERATIONS_THRESHOLD_HELPER": "Sélectionner une valeur de seuil maximal autorisé sur les opérations de traitement de masse et sur les opérations d'audit",
     "USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE": "Appliquer les seuils de plateforme",
-    "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{threshold}} unités archivistiques",
+    "MAX_BULK_OPERATIONS_THRESHOLD_VALUES": "{{ threshold }} unités archivistiques",
     "TABS": {
       "INFORMATIONS": "Informations",
       "THRESHOLDS": "Seuils",

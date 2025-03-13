@@ -1,5 +1,5 @@
 <div class="container">
-  <label class="text bold normal primary"> {{ 'RULES.APRAISAL_RULES.MANAGEMENT_RULES' | translate }}</label>
+  <label class="text bold normal primary"> {{ 'RULES.APPRAISAL_RULES.MANAGEMENT_RULES' | translate }}</label>
   <form [formGroup]="ruleDetailsForm">
     <div class="row content vitamui-form" style="margin-right: 0px">
       <vitamui-common-editable-input
@@ -7,18 +7,18 @@
         formControlName="rule"
         [validator]="ruleDetailsForm?.get('rule')?.validator"
         [asyncValidator]="ruleDetailsForm?.get('rule')?.asyncValidator"
-        label="{{ 'RULES.APRAISAL_RULES.RULE_ID' | translate }}"
+        label="{{ 'RULES.APPRAISAL_RULES.RULE_ID' | translate }}"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="uniqueRuleId">
-          {{ 'RULES.APRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
+          {{ 'RULES.APPRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
         >
         <vitamui-common-field-error errorKey="ruleIdPattern"
           >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
         </vitamui-common-field-error>
 
         <vitamui-common-field-error errorKey="ruleIdExists"
-          >{{ 'RULES.APRAISAL_RULES.RULE_NOT_EXIST' | translate }}
+          >{{ 'RULES.APPRAISAL_RULES.RULE_NOT_EXIST' | translate }}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
 
@@ -27,7 +27,7 @@
         formControlName="name"
         minlength="2"
         maxlength="100"
-        placeholder="{{ 'RULES.APRAISAL_RULES.RULE_NAME' | translate }}"
+        placeholder="{{ 'RULES.APPRAISAL_RULES.RULE_NAME' | translate }}"
       >
         <vitamui-common-input-error *ngIf="ruleDetailsForm?.get('name')?.touched && ruleDetailsForm?.get('name')?.hasError('required')">{{
           'COMMON.REQUIRED' | translate
@@ -43,7 +43,7 @@
             (click)="pickerSatrDate.open()"
             class="search-date-label"
           >
-            {{ 'RULES.APRAISAL_RULES.START_DATE' | translate }}</span
+            {{ 'RULES.APPRAISAL_RULES.START_DATE' | translate }}</span
           >
 
           <ng-template #showStartDate
@@ -76,7 +76,7 @@
         formControlName="endDate"
         minlength="2"
         maxlength="100"
-        placeholder=" {{ 'RULES.APRAISAL_RULES.END_DATE' | translate }}"
+        placeholder=" {{ 'RULES.APPRAISAL_RULES.END_DATE' | translate }}"
       >
         <vitamui-common-input-error
           *ngIf="ruleDetailsForm?.get('endDate')?.touched && ruleDetailsForm?.get('endDate')?.hasError('required')"
