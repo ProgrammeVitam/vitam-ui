@@ -73,7 +73,7 @@ import { EditObjectService } from './services/edit-object.service';
 import { PathService } from './services/path.service';
 import { SchemaService } from './services/schema.service';
 import { TemplateService } from './services/template.service';
-import { DialogHeaderComponent } from '../../../lib/components/dialog-header/dialog-header.component';
+import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-header/dialog-header.component';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],

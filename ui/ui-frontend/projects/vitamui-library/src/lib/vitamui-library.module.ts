@@ -46,7 +46,7 @@ import { MAT_TABS_CONFIG } from '@angular/material/tabs';
 import { SelectComponent } from './components/select/select.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
-import { DialogHeaderComponent } from './components/dialog-header/dialog-header.component';
+import { DialogHeaderComponent } from './components/dialog/dialog-header/dialog-header.component';
 import { PreviousStepComponent } from './components/previous-step/previous-step.component';
 import { NextStepComponent } from './components/next-step/next-step.component';
 import { SelectWithTreeComponent } from './components/select-with-tree/select-with-tree.component';
@@ -56,10 +56,16 @@ import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 import { PatternComponent } from './components/pattern/pattern.component';
 import { MAT_BUTTON_TOGGLE_DEFAULT_OPTIONS } from '@angular/material/button-toggle';
 import { ReclassificationDialogComponent } from './components/reclassification-dialog/reclassification-dialog.component';
+import { AlertDialogComponent } from './components/dialog/alert-dialog/alert-dialog.component';
+import { DialogContentWithStateComponent } from './components/dialog/dialog-content-with-state/dialog-content-with-state.component';
+import { ErrorDialogComponent } from './components/dialog/error-dialog/error-dialog.component';
 
 const components = [
+  AlertDialogComponent,
   ConfirmActionModule,
   DialogHeaderComponent,
+  DialogContentWithStateComponent,
+  ErrorDialogComponent,
   FilingPlanModule,
   FormFieldValueWrapperComponent,
   NextStepComponent,

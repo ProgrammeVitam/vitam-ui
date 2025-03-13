@@ -34,32 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { NgIf } from '@angular/common';
-import { CommonProgressBarModule } from '../../../app/modules/components/common-progress-bar/common-progress-bar.module';
-import { CdkStepper } from '@angular/cdk/stepper';
+import { Component } from '@angular/core';
+import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
+import { DialogContentWithStateComponent } from '../dialog-content-with-state/dialog-content-with-state.component';
 
 @Component({
-  selector: 'vitamui-dialog-header',
-  templateUrl: './dialog-header.component.html',
-  styleUrl: './dialog-header.component.scss',
-  imports: [MatDialogModule, NgIf, CommonProgressBarModule],
+  selector: 'vitamui-common-error-dialog',
+  templateUrl: './error-dialog.component.html',
+  styleUrls: ['./error-dialog.component.scss'],
+  imports: [MatDialogContent, MatDialogActions, TranslatePipe, MatDialogClose, DialogContentWithStateComponent],
 })
-export class DialogHeaderComponent {
-  @Input() stepper?: CdkStepper;
-  @Input() title?: string | string[];
-  @Input() subhead?: string;
-
-  getTitle(): string {
-    if (this.stepper) {
-      return this.title instanceof Array
-        ? this.title[this.stepper.selectedIndex] != null
-          ? this.title[this.stepper.selectedIndex]
-          : `MISSING TITLE AT INDEX ${this.stepper.selectedIndex}`
-        : this.title;
-    } else {
-      return this.title instanceof Array ? `TITLE SHOULDN'T BE AN ARRAY` : this.title;
-    }
-  }
-}
+export class ErrorDialogComponent {}

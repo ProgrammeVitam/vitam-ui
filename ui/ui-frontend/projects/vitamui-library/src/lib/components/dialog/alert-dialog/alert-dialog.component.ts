@@ -38,13 +38,14 @@
 import { Component, Inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { DialogHeaderComponent } from '../../../../lib/components/dialog-header/dialog-header.component';
+import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
+import { DialogContentWithStateComponent } from '../dialog-content-with-state/dialog-content-with-state.component';
 
 @Component({
   selector: 'vitamui-alert-dialog',
   templateUrl: './alert-dialog.component.html',
   styleUrls: ['./alert-dialog.component.scss'],
-  imports: [TranslatePipe, MatDialogModule, DialogHeaderComponent],
+  imports: [TranslatePipe, MatDialogModule, DialogHeaderComponent, DialogContentWithStateComponent],
 })
 export class AlertDialogComponent {
   constructor(

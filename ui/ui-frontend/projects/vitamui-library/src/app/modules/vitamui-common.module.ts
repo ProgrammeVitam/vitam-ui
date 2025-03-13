@@ -100,7 +100,6 @@ import { EllipsisDirectiveModule } from './directives/ellipsis/ellipsis.directiv
 import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
 import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
 import { RowCollapseModule } from './directives/row-collapse/row-collapse.module';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
 import { LoggerModule } from './logger/logger.module';
@@ -113,7 +112,6 @@ import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
-import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -139,7 +137,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
 }
 
 @NgModule({
-  declarations: [ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
+  declarations: [VitamuiIntervalDatePickerComponent],
   exports: [
     AccordionModule,
     AccountModule,
@@ -200,7 +198,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     VitamuiTreeNodeModule,
-    AlertDialogComponent,
     FileSelectorComponent,
     ChipComponent,
     BadgeComponent,
@@ -268,7 +265,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     FileSelectorComponent,
-    AlertDialogComponent,
     ChipComponent,
     BadgeComponent,
   ],

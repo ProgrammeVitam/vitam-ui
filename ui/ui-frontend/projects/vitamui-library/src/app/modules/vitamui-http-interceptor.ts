@@ -44,7 +44,7 @@ import { catchError, timeoutWith } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 import { VitamUISnackBarService } from './components/vitamui-snack-bar/vitamui-snack-bar.service';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { ErrorDialogComponent } from '../../lib/components/dialog/error-dialog/error-dialog.component';
 import { ENVIRONMENT } from './injection-tokens';
 import { Logger } from './logger/logger';
 

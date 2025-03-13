@@ -40,7 +40,14 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
-import { DialogHeaderComponent, NextStepComponent, PreviousStepComponent, SlideToggleModule, VitamUICommonModule } from 'vitamui-library';
+import {
+  DialogContentWithStateComponent,
+  DialogHeaderComponent,
+  NextStepComponent,
+  PreviousStepComponent,
+  SlideToggleModule,
+  VitamUICommonModule,
+} from 'vitamui-library';
 
 @Component({
   selector: 'design-system-sample-dialog',
@@ -57,6 +64,7 @@ import { DialogHeaderComponent, NextStepComponent, PreviousStepComponent, SlideT
     NextStepComponent,
     PreviousStepComponent,
     MatRadioModule,
+    DialogContentWithStateComponent,
   ],
 })
 export class SampleDialogComponent {
@@ -66,7 +74,7 @@ export class SampleDialogComponent {
   smallDialog = false;
   radioValue = 1;
 
-  titles = ['Dialog customization', 'Drag & Drop', 'Choose a value'];
+  titles = ['Dialog customization', 'Drag & Drop', 'Choose a value', 'Displaying an error', 'Displaying a success message'];
 
   constructor(
     private dialogRef: MatDialogRef<SampleDialogComponent>,

@@ -34,31 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { StartupService } from './../startup.service';
+import { Component, Input } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgIf } from '@angular/common';
+import { CommonProgressBarModule } from '../../../../app/modules/components/common-progress-bar/common-progress-bar.module';
+import { CdkStepper } from '@angular/cdk/stepper';
 
 @Component({
-  selector: 'vitamui-common-error-dialog',
-  templateUrl: './error-dialog.component.html',
-  styleUrls: ['./error-dialog.component.scss'],
-  standalone: false,
+  selector: 'vitamui-dialog-header',
+  templateUrl: './dialog-header.component.html',
+  styleUrl: './dialog-header.component.scss',
+  imports: [MatDialogModule, NgIf, CommonProgressBarModule],
 })
-export class ErrorDialogComponent {
-  trustedAppLogoUrl: SafeUrl;
+export class DialogHeaderComponent {
+  @Input() stepper?: CdkStepper;
+  @Input() title?: string | string[];
+  @Input() subhead?: string;
 
-  constructor(
-    private matDialogRef: MatDialogRef<ErrorDialogComponent>,
-    startupService: StartupService,
-    private domSanitizer: DomSanitizer,
-  ) {
-    this.trustedAppLogoUrl = startupService.getAppLogoURL()
-      ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL())
-      : null;
-  }
-
-  goBack() {
-    this.matDialogRef.close();
+  getTitle(): string {
+    if (this.stepper) {
+      return this.title instanceof Array
+        ? this.title[this.stepper.selectedIndex] != null
+          ? this.title[this.stepper.selectedIndex]
+          : `MISSING TITLE AT INDEX ${this.stepper.selectedIndex}`
+        : this.title;
+    } else {
+      return this.title instanceof Array ? `TITLE SHOULDN'T BE AN ARRAY` : this.title;
+    }
   }
 }

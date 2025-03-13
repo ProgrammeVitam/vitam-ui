@@ -64,7 +64,7 @@ import {
 import { Subscription } from 'rxjs';
 import { StartupService } from '../../../app/modules/startup.service';
 import { ReclassificationValidatorService } from './reclassification-validator.service';
-import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
+import { DialogHeaderComponent } from '../dialog/dialog-header/dialog-header.component';
 import { StepperModule } from '../../../app/modules/components/stepper/stepper.module';
 import { I18nPluralPipe, NgForOf, NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';

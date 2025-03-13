@@ -57,7 +57,10 @@ export * from './lib/components/vitamui-radio/vitamui-radio.module';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.component';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.module';
 
-export * from './lib/components/dialog-header/dialog-header.component';
+export * from './lib/components/dialog/alert-dialog/alert-dialog.component';
+export * from './lib/components/dialog/dialog-content-with-state/dialog-content-with-state.component';
+export * from './lib/components/dialog/dialog-header/dialog-header.component';
+export * from './lib/components/dialog/error-dialog/error-dialog.component';
 export * from './lib/components/next-step/next-step.component';
 export * from './lib/components/pattern/pattern.component';
 export * from './lib/components/previous-step/previous-step.component';
