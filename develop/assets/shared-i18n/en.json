@@ -3730,7 +3730,7 @@
     "HIDE_SEARCH_CRITERIA": "Hide search criteria",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "MORE_THAN": "+ than ",
-    "MORE_THAN_THRESHOLD": "+ than 10 000",
+    "MORE_THAN_THRESHOLD": "+ than 10,000",
     "NO_MORE_RESULTS": "No more results",
     "ONE_SELECTED": "selected",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criteria",
@@ -4028,7 +4028,7 @@
       "Thumbnail": "Thumbnail"
     },
     "EXPORT_CSV": {
-      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
+      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10,000 results, please update your filters."
     },
     "PERSISTENT_IDENTIFIER_SEARCH": {
       "GO_TO_PAGE": "Search by permanent identifier"
@@ -4261,7 +4261,7 @@
     "HIDE_SEARCH_CRITERIA": "Hide search criteria",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "MORE_THAN": "+ de ",
-    "MORE_THAN_THRESHOLD": "+ de 10 000",
+    "MORE_THAN_THRESHOLD": "+ de 10,000",
     "NO_MORE_RESULTS": "Fin des résultats",
     "ONE_SELECTED": "selected",
     "PROJECT_UNIT_PREVIEW": {
@@ -4592,7 +4592,7 @@
       "Thumbnail": "Thumbnail"
     },
     "EXPORT_CSV": {
-      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
+      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10,000 results, please update your filters."
     }
   },
   "ARCHIVE_UNIT": {
