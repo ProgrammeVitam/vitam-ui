@@ -161,6 +161,9 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
 
   onCancel() {
     if (!this.isModified()) return this.backToDisplayMode();
+    if (this.dialog.openDialogs.length > 0) {
+      return; // A dialog is already open
+    }
     this.subscriptions.add(
       this.dialog
         .open(this.cancelDialog, this.dialogConfig)
@@ -171,10 +174,14 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
           this.updateArchiveUnit,
         )
         .subscribe({
-          next: ({ operationId }) => this.handleUpdateSuccess({ operationId }),
+          next: ({ operationId }) => {
+            this.handleUpdateSuccess({ operationId });
+            this.dialog.closeAll();
+          },
           error: (err) => {
             this.logger.error(this, err);
             this.backToDisplayMode();
+            this.dialog.closeAll();
           },
         }),
     );
@@ -191,10 +198,14 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
           this.updateArchiveUnit,
         )
         .subscribe({
-          next: ({ operationId }) => this.handleUpdateSuccess({ operationId }),
+          next: ({ operationId }) => {
+            this.handleUpdateSuccess({ operationId });
+            this.dialog.closeAll();
+          },
           error: (err) => {
             this.logger.error(this, err);
             this.spinnerOverlayService.close();
+            this.dialog.closeAll();
           },
         }),
     );
