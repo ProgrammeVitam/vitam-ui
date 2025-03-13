@@ -44,11 +44,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UpdateOperationDto {
+public class ArchiveUnitIdentifierKey {
 
-    @JsonProperty("SystemId")
-    private String systemId;
+    @JsonProperty("MetadataName")
+    private String metadataName;
 
-    @JsonProperty("ArchiveUnitIdentifierKey")
-    private ArchiveUnitIdentifierKey archiveUnitIdentifierKey;
+    @JsonProperty("MetadataValue")
+    private String metadataValue;
 }
