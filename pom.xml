@@ -81,8 +81,8 @@
         <npm.version>10.7.0</npm.version>
 
         <!--Spring dependencies version override-->
-        <!--Snakeyaml version override to 1.32 is required for compatibility with Vitam core (before 1.32, snakeyaml API is not compatible with version 2.2 used in Vitam core)-->
-        <snakeyaml.version>1.32</snakeyaml.version>
+        <!--Snakeyaml version override to 2.x to fix CVE-2022-1471-->
+        <snakeyaml.version>2.4</snakeyaml.version>
 
         <!--Plugins version -->
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
