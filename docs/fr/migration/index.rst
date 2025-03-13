@@ -17,3 +17,4 @@ Documentation de montée de version Vitam-UI
    upgrade_v6.md
    upgrade_v7_1.md
    upgrade_v8_0.md
+   migration_container.md
