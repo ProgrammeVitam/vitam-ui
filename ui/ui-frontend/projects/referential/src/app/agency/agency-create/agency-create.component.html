@@ -41,7 +41,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="submit" class="btn primary" [disabled]="form.invalid || form.pending || isLoading">
+  <button type="submit" (click)="onSubmit()" class="btn primary" [disabled]="form.invalid || form.pending || isLoading">
     <span>{{ 'COMMON.TERMINATE' | translate }}</span>
   </button>
 
