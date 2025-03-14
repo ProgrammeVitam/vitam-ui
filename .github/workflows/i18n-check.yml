@@ -1,0 +1,26 @@
+name: Check i18n translations
+run-name: Checking i18n translations on branch ${{ github.ref }}
+on:
+  pull_request: # run on every pull request
+  push:
+    branches: # run only on protected branches (develop & master_*)
+      - develop
+      - master_*
+    paths: # only run when translation files might have changed
+      - 'ui/ui-frontend/projects/**/src/assets/i18n/**'
+      - 'ui/ui-frontend/projects/**/src/assets/shared-i18n/**'
+      - 'ui/ui-frontend/projects/check-i18n.js'
+
+jobs:
+  check-i18n:
+    name: Check i18n translations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.20.3"
+      - name: Run i18n comparison script
+        working-directory: tools
+        run: node check-i18n.js
+        continue-on-error: true # We don't want the workflow to fail if the i18n comparison script fails
