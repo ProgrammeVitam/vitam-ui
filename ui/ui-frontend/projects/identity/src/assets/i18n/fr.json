@@ -52,7 +52,7 @@
     "EDITABLE_PARAMS": {
       "KEY": "Clé",
       "VALUE": "Valeur",
-      "CUSTOM_SETTINGS": "Paramétrages customs"
+      "CUSTOM_SETTINGS": "Paramètres personnalisés"
     },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(déjà utilisé)",
