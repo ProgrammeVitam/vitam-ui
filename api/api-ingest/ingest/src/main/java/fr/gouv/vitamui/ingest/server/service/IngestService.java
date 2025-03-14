@@ -53,6 +53,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -363,7 +364,7 @@ public class IngestService {
             final String operationId = ingestResponse.getVitamHeaders().get(GlobalDataRest.X_REQUEST_ID);
             LOGGER.debug("Ingest passed successfully : " + ingestResponse + " with operationId = " + operationId);
 
-            return ResponseEntity.ok().header(GlobalDataRest.X_REQUEST_ID, operationId).build();
+            return ResponseEntity.ok().header(CommonConstants.X_OPERATION_ID_HEADER, operationId).build();
         } catch (Exception e) {
             LOGGER.debug("Error sending upload to vitam ", e);
             throw new IngestExternalException(e);
