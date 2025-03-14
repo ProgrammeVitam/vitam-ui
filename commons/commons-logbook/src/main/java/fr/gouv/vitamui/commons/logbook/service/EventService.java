@@ -55,7 +55,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -90,7 +89,7 @@ public class EventService {
      * @param evDetData should be as JSON format
      * @param outcome
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public Event logUpdate(
         final HttpContext context,
         final String accessContractLogbookIdentifier,
@@ -129,7 +128,7 @@ public class EventService {
      * @param evDetData should be as JSON format
      * @param outcome
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     public Event logCreate(
         final HttpContext context,
         final String accessContractLogbookIdentifier,
