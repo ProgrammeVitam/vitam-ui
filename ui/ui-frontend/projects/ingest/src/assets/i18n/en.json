@@ -49,9 +49,6 @@
       }
     }
   },
-  "INGEST_PAGE": {
-    "TITLE": "Track and follow deposits"
-  },
   "INGEST_TRACKING": {
     "SIP_NAME": "SIP Name",
     "STATUS": "Progression",
