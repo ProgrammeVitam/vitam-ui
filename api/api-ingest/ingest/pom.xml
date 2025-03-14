@@ -46,10 +46,6 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-security</artifactId>
         </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>ingest-commons</artifactId>
-        </dependency>
         <!-- APACHE ODFtoolKit-->
         <dependency>
             <groupId>org.odftoolkit</groupId>
