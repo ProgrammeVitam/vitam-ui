@@ -90,19 +90,16 @@ export class SedaService {
     this.sedaNode.next(metaModel);
   }
 
-  // For all correspondent values beetween seda and tree elements,
-  // return a SedaData array of elements that does not have
-  // an optional (0-1) or an obligatory (1) cardinality.
-  // If an element have an 'n' cardinality (e.g. 0-N), the element will
-  // aways be included in the list
+  // For all correspondent values between seda and tree elements,
+  // return a SedaData array of elements that do not appear in fileNode
+  // or have "many" or "many_required" cardinality
   findSelectableElementList(sedaNode: SedaData, fileNode: FileNode): SedaData[] {
     const fileNodesNames = fileNode.children.map((e) => e.name);
 
     return sedaNode.children.filter(
       (x: SedaData) =>
-        (!fileNodesNames.includes(x.name) && x.cardinality !== CardinalityConstants.ONE_REQUIRED.valueOf()) ||
-        (fileNodesNames.includes(x.name) &&
-          (x.cardinality === CardinalityConstants.MANY.valueOf() || x.cardinality === CardinalityConstants.MANY_REQUIRED.valueOf())),
+        !fileNodesNames.includes(x.name) ||
+        [CardinalityConstants.MANY.valueOf(), CardinalityConstants.MANY_REQUIRED.valueOf()].includes(x.cardinality),
     );
   }
 
