@@ -24,10 +24,6 @@
 
         <!-- VITAMUI -->
         <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>collect-commons</artifactId>
-        </dependency>
-        <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-api</artifactId>
         </dependency>

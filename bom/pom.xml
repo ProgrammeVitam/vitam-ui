@@ -166,11 +166,6 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>ingest-commons</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>ingest</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -186,11 +181,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-commons</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>collect</artifactId>
