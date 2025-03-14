@@ -130,7 +130,7 @@
       <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     } @else {
       <div>
-        <vitamui-next-step [disabled]="form.errors"></vitamui-next-step>
+        <vitamui-next-step [disabled]="form.errors" (click)="onValidate()"></vitamui-next-step>
         <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
       </div>
       <vitamui-previous-step></vitamui-previous-step>

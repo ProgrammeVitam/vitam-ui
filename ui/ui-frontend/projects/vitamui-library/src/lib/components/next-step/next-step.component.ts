@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostBinding, inject, Input } from '@angular/core';
+import { Component, EventEmitter, HostBinding, inject, Input, Output } from '@angular/core';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -50,6 +50,9 @@ export class NextStepComponent {
    * A reference to the CdkStepper instance. It is automatically injected by Angular if the component is a child of vitamui-common-stepper. Otherwise, a reference must be provided.
    */
   @Input() stepper: CdkStepper = inject(CdkStepper, { optional: true });
+
+  // eslint-disable-next-line @angular-eslint/no-output-native
+  @Output() click = new EventEmitter();
 
   @HostBinding('style.display')
   get display(): string {
