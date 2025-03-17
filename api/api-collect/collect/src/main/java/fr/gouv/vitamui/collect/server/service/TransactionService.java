@@ -79,10 +79,6 @@ public class TransactionService {
 
     private static final String ACTION = "$action";
 
-    public TransactionInternalService(CollectService collectService) {
-        this.collectService = collectService;
-    }
-
     public void validateTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
         try {
             RequestResponse requestResponse = collectService.validateTransaction(vitamContext, idTransaction);

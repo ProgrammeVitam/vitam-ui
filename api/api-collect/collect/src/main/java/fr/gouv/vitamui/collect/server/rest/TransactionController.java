@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.collect.server.rest;
 
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
@@ -180,10 +181,14 @@ public class TransactionController {
     public String reclassification(
         final @PathVariable("transactionId") String transactionId,
         @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto
-    ) throws PreconditionFailedException {
+    ) throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
-        return transactionExternalService.reclassification(transactionId, reclassificationCriteriaDto);
+        return transactionService.reclassification(
+            transactionId,
+            reclassificationCriteriaDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 }
