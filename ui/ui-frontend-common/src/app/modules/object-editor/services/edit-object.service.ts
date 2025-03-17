@@ -66,8 +66,9 @@ export class EditObjectService {
     });
     this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
       const child = editObject.children[i];
+      const canRemove = Boolean(['MANY', 'MANY_REQUIRED'].includes(child.cardinality));
 
-      if (!child.required && !child.virtual) child.actions.remove = action;
+      if (canRemove && !child.required && !child.virtual) child.actions.remove = action;
     });
     this.sort(editObject, orderedFields);
 
@@ -291,7 +292,10 @@ export class EditObjectService {
             editObject.childrenChange.next(editObject.children);
 
             this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
-              editObject.children[i].actions.remove = action;
+              const child = editObject.children[i];
+              const canRemove = Boolean(['MANY', 'MANY_REQUIRED'].includes(child.cardinality));
+
+              if (canRemove) child.actions.remove = action;
             });
 
             eo.actions.add = add;
