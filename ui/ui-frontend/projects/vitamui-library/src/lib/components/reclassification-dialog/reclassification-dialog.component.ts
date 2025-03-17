@@ -34,76 +34,118 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatOptionSelectionChange } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FilingPlanMode } from '../filing-plan/filing-plan.service';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { SelectComponent, VitamuiSelectOptions } from '../select/select.component';
+import { Option } from '../../../app/modules/components/autocomplete';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ConfirmDialogService } from '../../../app/modules/components/confirm-dialog';
+import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  PagedResult,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+  Unit,
+} from '../../../app/modules/models';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Logger } from '../../../app/modules/logger';
+import { Direction } from '../../../app/modules/vitamui-table';
 import { intersection } from 'lodash-es';
-import { Subscription } from 'rxjs';
-import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
-import { ArchiveService } from '../../../archive.service';
 import {
   ReclassificationAction,
   ReclassificationCriteriaDto,
   ReclassificationQueryActionType,
-  ReclassificationToggle,
-} from '../../../models/reclassification-request.interface';
-import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
-import {
-  ConfirmDialogService,
-  CriteriaDataType,
-  CriteriaOperator,
-  FilingPlanMode,
-  Logger,
-  Option,
-  PagedResult,
-  SearchCriteriaDto,
-  SearchCriteriaTypeEnum,
-  StartupService,
-  Unit,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+} from '../../../app/modules/services/reclassification.interface';
+import { Subscription } from 'rxjs';
+import { StartupService } from '../../../app/modules/startup.service';
+import { ReclassificationValidatorService } from './reclassification-validator.service';
+import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
+import { StepperModule } from '../../../app/modules/components/stepper/stepper.module';
+import { I18nPluralPipe, NgForOf, NgIf } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { BadgeComponent } from '../../../app/modules/components/badge/badge.component';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { FilingPlanModule } from '../filing-plan/filing-plan.module';
+import { VitamUICommonInputModule } from '../../../app/modules/components/vitamui-input/vitamui-common-input.module';
+import { VitamUISnackBarService } from '../../../app/modules/components/vitamui-snack-bar';
+import { NextStepComponent } from '../next-step/next-step.component';
+import { PreviousStepComponent } from '../previous-step/previous-step.component';
 
 const PULL = 'PULL';
 const REPLACE = 'REPLACE';
 
+export enum ReclassificationToggle {
+  RECLASSIFICATION_TOGGLE_TREE_PLAN = 'RECLASSIFICATION_TOGGLE_TREE_PLAN',
+  RECLASSIFICATION_TOGGLE_UA_ID = 'RECLASSIFICATION_TOGGLE_UA_ID',
+}
+
 @Component({
+  selector: 'vitamui-reclassification-dialog',
   templateUrl: './reclassification-dialog.component.html',
   styleUrls: ['./reclassification-dialog.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    StepperModule,
+    ReactiveFormsModule,
+    NgIf,
+    MatProgressSpinner,
+    BadgeComponent,
+    TranslatePipe,
+    I18nPluralPipe,
+    SelectComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    NgForOf,
+    FilingPlanModule,
+    VitamUICommonInputModule,
+    MatDialogContent,
+    MatDialogActions,
+    NextStepComponent,
+    PreviousStepComponent,
+  ],
 })
 export class ReclassificationDialogComponent implements OnInit, OnDestroy {
   protected readonly FilingPlanMode = FilingPlanMode;
   form: FormGroup;
   stepIndex = 0;
   private keyPressSubscription: Subscription;
+
+  actionChosen: string;
+
   targetGuidFiling = new FormControl({ included: [], excluded: [] });
   actionToFilterSelect = new FormControl();
   actionToFilterOptions: VitamuiSelectOptions;
 
   isDisabledButton = false;
 
+  appName: string;
   itemSelected: number;
-  actionChosen: string;
-  accessContract: string;
-
-  totalChilds: number = null;
-  hasParents = true;
-  waitingForLoadExactTotalTrackHits = false;
-  pendingGetFixedCount = false;
-  pendingGetChilds = true;
-  precided = false;
   archiveUnitGuidsSelected: string[];
   archiveUnitAllunitup: string[];
+  accessContract: string;
+  transactionId: string = null;
+
   archiveUnitFetchedParents: Array<{ title: string; id: string }> = [];
   subscriptionAuTitle: Subscription;
-  badgeMessageMoreThan: string;
+  pendingGetChilds = true;
+  waitingForLoadExactTotalTrackHits = false;
+  totalChilds: number = null;
   badgeMessageIncluding: string;
+  badgeMessageMoreThan: string;
+  pendingGetFixedCount = false;
+  precided = false;
+  hasParents = true;
   space = ' ';
 
-  archiveUnits: Unit[];
+  projectUnits: Unit[];
+  selectedTargetUnits = new FormControl({ included: [], excluded: [] });
+
+  RECLASSIFICATION_THRESHOLD = 10_000;
 
   actions: Option[] = [
     { key: 'REPLACE', label: this.translateService.instant('RECLASSIFICATION.REPLACE_STEP.TITLE') },
@@ -125,41 +167,41 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     public dialogRef: MatDialogRef<ReclassificationDialogComponent>,
     private formBuilder: FormBuilder,
-    private archiveService: ArchiveService,
-    private archiveUnitValidator: ArchiveUnitValidatorService,
-    private startupService: StartupService,
+    private reclassificationService: ReclassificationService,
+    private reclassificationValidator: ReclassificationValidatorService,
     private confirmDialogService: ConfirmDialogService,
-    private shared: ArchiveSharedDataService,
+    private startupService: StartupService,
     private logger: Logger,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      itemSelected: number;
+      appName: string;
       reclassificationCriteria: SearchCriteriaDto;
-      accessContract: string;
-      tenantIdentifier: string;
-      selectedItemCountKnown?: boolean;
+      itemSelected: number;
       archiveUnitGuidSelected: string[];
       archiveUnitAllunitup: string[];
+      accessContract: string;
+      transactionId: string;
+      tenantIdentifier: number;
     },
+    private snackBarService: VitamUISnackBarService,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.appName = this.data.appName;
     this.itemSelected = this.data.itemSelected;
-    this.accessContract = this.data.accessContract;
     this.archiveUnitGuidsSelected = this.data.archiveUnitGuidSelected;
     this.archiveUnitAllunitup = this.data.archiveUnitAllunitup;
+    this.accessContract = this.data.accessContract;
+    this.transactionId = this.data.transactionId;
 
     this.form = this.formBuilder.group({
-      identifier: [null],
-      name: [null],
-      description: [null],
       actionToFilter: [null, Validators.required],
       targetGuid: [
         { value: null, disabled: this.archiveUnitAllunitup.length < 1 && this.actionChosen === REPLACE },
         null,
         [
-          this.archiveUnitValidator.alreadyExistParents(null, this.archiveUnitAllunitup),
-          this.archiveUnitValidator.existArchiveUnit(this.data.reclassificationCriteria),
+          this.reclassificationValidator.alreadyExistParents(null, this.archiveUnitAllunitup),
+          this.reclassificationValidator.existArchiveUnit(this.data.reclassificationCriteria),
         ],
       ],
       targetAuTitle: [{ value: null, disabled: true }],
@@ -167,12 +209,15 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       allunitupsGuidsFormAttribute: new FormArray([], [Validators.required]),
     });
 
-    if (this.archiveUnitAllunitup.length > 0) {
-      this.getArchiveUnitParents(this.archiveUnitAllunitup);
-    } else {
-      this.hasParents = false;
-      this.isDisabledButton = false;
-    }
+    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+
+    this.subscriptionAuTitle = this.reclassificationValidator.getArchiveUnitTitle().subscribe((title) => {
+      if (title != null) {
+        this.form.get('targetAuTitle').setValue(title);
+      } else {
+        this.form.get('targetAuTitle').setValue(null);
+      }
+    });
 
     this.form.controls.toggleOption.valueChanges.subscribe((toggle) => {
       if (toggle === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID) {
@@ -181,6 +226,13 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
         this.form.get('targetGuid').setValue(this.targetGuidFiling.value.included[0]);
       }
     });
+
+    if (this.archiveUnitAllunitup.length > 0) {
+      this.getArchiveUnitParents(this.archiveUnitAllunitup);
+    } else {
+      this.hasParents = false;
+      this.isDisabledButton = false;
+    }
 
     this.actionToFilterOptions = {
       options: this.actions,
@@ -193,16 +245,8 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       this.actionChosen = value;
     });
 
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
-
-    this.subscriptionAuTitle = this.shared.getArchiveUnitTitle().subscribe((title) => {
-      if (title != null) {
-        this.form.get('targetAuTitle').setValue(title);
-      } else {
-        this.form.get('targetAuTitle').setValue(null);
-      }
-    });
-    this.calculateChildren();
+    this.calculateChilds();
+    this.loadProjectUnits();
 
     this.badgeMessageMoreThan =
       this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN') +
@@ -211,13 +255,17 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       this.space +
       this.translateService.instant('RECLASSIFICATION.FIRST_STEP.CHILDS');
 
-    this.actions
-      .filter((action) => action.key === REPLACE || action.key === PULL)
-      .map((action) => (action.disabled = !this.archiveUnitAllunitup.length));
+    this.actions.find((action) => action.key === REPLACE).disabled = !this.archiveUnitAllunitup.length;
+    this.actions.find((action) => action.key === PULL).disabled = !this.archiveUnitAllunitup.length;
   }
 
-  calculateChildren() {
+  public getReclassificationToggleOptions(): String[] {
+    return Object.keys(ReclassificationToggle);
+  }
+
+  calculateChilds() {
     this.pendingGetChilds = true;
+
     const criteriaSearchList = [
       {
         criteria: '#allunitups',
@@ -227,15 +275,14 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
         dataType: CriteriaDataType.STRING,
       },
     ];
-
     const searchCriteria: any = {
       criteriaList: criteriaSearchList,
       pageNumber: 0,
       size: 1,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
-      (pagedResult: PagedResult) => {
-        this.totalChilds = pagedResult.totalResults;
+    this.reclassificationService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).subscribe(
+      (pagedResults: PagedResult) => {
+        this.totalChilds = pagedResults.totalResults;
         this.badgeMessageIncluding = this.translateService.instant('RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS', {
           nbDocuments: this.totalChilds,
         });
@@ -266,7 +313,7 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
         },
       ];
 
-      this.archiveService.getTotalTrackHitsByCriteria(criteriaSearchList).subscribe(
+      this.reclassificationService.getTotalTrackHitsByCriteria(criteriaSearchList).subscribe(
         (exactCountResults: number) => {
           if (exactCountResults !== -1) {
             this.totalChilds = exactCountResults;
@@ -287,60 +334,6 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  get unitupsFormArraySelectedIds(): string[] {
-    const unitups: string[] = this.archiveUnitFetchedParents
-      .filter((_cat, catIdx) => this.allunitupsControl.some((control, controlIdx) => catIdx === controlIdx && control.value))
-      .map((cat) => cat.id);
-    return unitups;
-  }
-
-  stepInvalid(): boolean {
-    if (this.stepIndex === 0) {
-      return this.form.get('actionToFilter').invalid || this.form.get('actionToFilter').pending;
-    }
-    if (this.stepIndex === 1) {
-      if (this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN) {
-        if (this.actionChosen === REPLACE) {
-          return this.isTargetGuidFilingValid();
-        } else if (this.actionChosen === PULL) {
-          return this.unitupsFormArraySelectedIds.length < 1;
-        } else {
-          return this.isTargetGuidFilingValid();
-        }
-      } else {
-        if (this.actionChosen === REPLACE) {
-          return this.isTargetGuidValid() || this.unitupsFormArraySelectedIds.length < 1;
-        } else if (this.actionChosen === PULL) {
-          return this.unitupsFormArraySelectedIds.length < 1;
-        } else {
-          return this.isTargetGuidValid();
-        }
-      }
-    }
-  }
-
-  selectedAction(event: MatOptionSelectionChange) {
-    this.form.get('targetGuid').reset();
-    this.form.get('targetAuTitle').reset();
-    this.actionChosen = event.source.value;
-  }
-
-  isTargetGuidValid() {
-    return this.form.get('targetGuid').invalid || this.form.get('targetGuid').pending;
-  }
-
-  isTargetGuidFilingValid() {
-    return this.targetGuidFiling.value && this.targetGuidFiling.value.included && this.targetGuidFiling.value.included.length == 0;
-  }
-
-  get parentGuidArray() {
-    return this.form.get('allunitupsGuidsFormAttribute') as FormArray;
-  }
-
-  public getReclassificationToggleOptions(): String[] {
-    return Object.keys(ReclassificationToggle);
-  }
-
   getArchiveUnitParents(allunitupsIds: string[]) {
     const allunitups = allunitupsIds.map((unitUp) => ({ id: unitUp, value: unitUp }));
     const criteriaSearchList = [
@@ -358,15 +351,39 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       pageNumber: 0,
       size: allunitupsIds.length,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe((pagedResult: PagedResult) => {
+    this.reclassificationService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).subscribe((pagedResult: PagedResult) => {
       if (pagedResult.results) {
         pagedResult.results.map((ua) => {
-          const title = ArchiveService.fetchTitle(ua.Title, ua.Title_);
+          const title = this.reclassificationService.fetchTitle(ua.Title, ua.Title_);
           this.archiveUnitFetchedParents.push({ title, id: ua['#id'] });
           this.addAllUnitUpsDynamically();
         });
       }
     });
+  }
+
+  loadProjectUnits() {
+    const sortingCriteria = { criteria: 'Title', sorting: Direction.ASCENDANT };
+    const criteriaWithId: SearchCriteriaEltDto = {
+      criteria: 'DescriptionLevel',
+      values: [{ id: 'RecordGrp', value: 'RecordGrp' }],
+      category: SearchCriteriaTypeEnum.FIELDS,
+      operator: CriteriaOperator.EQ,
+      dataType: CriteriaDataType.STRING,
+    };
+    const searchCriteria = {
+      criteriaList: Array.of(criteriaWithId),
+      pageNumber: 0,
+      size: 100,
+      sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: false,
+    };
+    this.reclassificationService
+      .searchArchiveUnitsByCriteria(searchCriteria, this.data.transactionId)
+      .subscribe((pagedResult: PagedResult) => {
+        this.projectUnits = pagedResult.results;
+      });
   }
 
   addAllUnitUpsDynamically(): any {
@@ -375,27 +392,66 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     this.parentGuidArray.updateValueAndValidity();
   }
 
-  get allunitupsControl() {
-    return (this.form.get('allunitupsGuidsFormAttribute') as FormArray).controls;
+  get unitupsFormArraySelectedIds(): string[] {
+    const unitups: string[] = this.archiveUnitFetchedParents
+      .filter((_cat, catIdx) => this.allunitupsControl.some((control, controlIdx) => catIdx === controlIdx && control.value))
+      .map((cat) => cat.id);
+    return unitups;
   }
 
-  onSubmit() {
-    const reclassificationQuery = this.getReclassificationQuery();
-    this.archiveService.reclassification(reclassificationQuery).subscribe(
-      (response) => {
-        this.dialogRef.close(true);
-        const serviceUrl =
-          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
+  stepInvalid(): boolean {
+    if (this.stepIndex === 0) {
+      return this.form.get('actionToFilter').invalid || this.form.get('actionToFilter').pending;
+    }
+    if (this.stepIndex === 1) {
+      if (this.appName === 'ARCHIVE') {
+        if (this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN) {
+          if (this.actionChosen === REPLACE) {
+            return this.isTargetGuidFilingValid();
+          } else if (this.actionChosen === PULL) {
+            return this.unitupsFormArraySelectedIds.length < 1;
+          } else {
+            return this.isTargetGuidFilingValid();
+          }
+        } else {
+          if (this.actionChosen === REPLACE) {
+            return this.isTargetGuidValid() || this.unitupsFormArraySelectedIds.length < 1;
+          } else if (this.actionChosen === PULL) {
+            return this.unitupsFormArraySelectedIds.length < 1;
+          } else {
+            return this.isTargetGuidValid();
+          }
+        }
+      } else {
+        if (this.actionChosen !== PULL) {
+          return this.isTargetGuidFilingValid();
+        } else {
+          return this.unitupsFormArraySelectedIds.length < 1;
+        }
+      }
+    }
+  }
 
-        this.archiveService.openSnackBarForWorkflow(
-          this.translateService.instant('RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE'),
-          serviceUrl,
-        );
-      },
-      (error: any) => {
-        this.logger.error('Error message :', error);
-      },
-    );
+  isTargetGuidValid() {
+    return this.form.get('targetGuid').invalid || this.form.get('targetGuid').pending;
+  }
+
+  isTargetGuidFilingValid() {
+    if (this.appName == 'ARCHIVE') {
+      return this.targetGuidFiling.value && this.targetGuidFiling.value.included && this.targetGuidFiling.value.included.length == 0;
+    } else {
+      return (
+        this.selectedTargetUnits.value && this.selectedTargetUnits.value.included && this.selectedTargetUnits.value.included.length == 0
+      );
+    }
+  }
+
+  get parentGuidArray() {
+    return this.form.get('allunitupsGuidsFormAttribute') as FormArray;
+  }
+
+  get allunitupsControl() {
+    return (this.form.get('allunitupsGuidsFormAttribute') as FormArray).controls;
   }
 
   getReclassificationQuery(): ReclassificationCriteriaDto {
@@ -403,9 +459,11 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       const parentToPull: string[] = this.getTargetedParentToPull(this.unitupsFormArraySelectedIds, this.archiveUnitAllunitup);
       const reclassificationQueryPull = parentToPull.length ? this.getReclassificationQueryActionType(parentToPull) : null;
       const parentToAdd =
-        this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
-          ? [this.form.get('targetGuid').value]
-          : this.targetGuidFiling.value.included;
+        this.appName === 'ARCHIVE'
+          ? this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
+            ? [this.form.get('targetGuid').value]
+            : this.targetGuidFiling.value.included
+          : this.selectedTargetUnits.value.included;
       const reclassificationQueryAdd = this.getReclassificationQueryActionType(parentToAdd);
 
       const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, reclassificationQueryPull);
@@ -429,9 +487,11 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       return reclassificationCriteriaDto;
     } else {
       const parentToAdd =
-        this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
-          ? [this.form.get('targetGuid').value]
-          : this.targetGuidFiling.value.included;
+        this.appName === 'ARCHIVE'
+          ? this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
+            ? [this.form.get('targetGuid').value]
+            : this.targetGuidFiling.value.included
+          : this.selectedTargetUnits.value.included;
       const reclassificationQueryAdd = this.getReclassificationQueryActionType(parentToAdd);
 
       const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, null);
@@ -461,7 +521,7 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     return intersection(archiveUnitAllunitup, unitupsFormArraySelectedIds);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.keyPressSubscription.unsubscribe();
   }
 
@@ -471,6 +531,31 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     } else {
       this.dialogRef.close();
     }
+  }
+
+  onSubmit() {
+    const reclassificationQuery = this.getReclassificationQuery();
+    this.reclassificationService.reclassification(this.transactionId, reclassificationQuery).subscribe(
+      (response) => {
+        this.dialogRef.close(true);
+        const serviceUrl =
+          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
+
+        this.snackBarService.open({
+          message: this.translateService.instant('RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE'),
+          buttons: [
+            {
+              url: serviceUrl,
+              label: this.translateService.instant('SNACK_BAR.TO_OPERATION_APP'),
+            },
+          ],
+          duration: 100000,
+        });
+      },
+      (error: any) => {
+        this.logger.error('Error message :', error);
+      },
+    );
   }
 
   protected readonly ReclassificationToggle = ReclassificationToggle;

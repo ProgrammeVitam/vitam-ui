@@ -72,7 +72,6 @@ import { UnlockCategoryInheritanceComponent } from './archive-search/additional-
 import { UnlockRulesInheritanceComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/unlock-rules-inheritance/unlock-rules-inheritance.component';
 import { UpdateUnitRulesComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { ManagementRulesComponent } from './archive-search/additional-actions-search/management-rules/management-rules.component';
-import { ReclassificationDialogComponent } from './archive-search/additional-actions-search/reclassification-dialog/reclassification-dialog.component';
 import { TransferRequestModalComponent } from './archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
 import { AccessRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/access-rule-search/access-rule-search.component';
 import { AppraisalRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/appraisal-rule-search/appraisal-rule-search.component';
@@ -153,7 +152,6 @@ import { TranslateModule } from '@ngx-translate/core';
     FilingHoldingSchemeComponent,
     LeavesTreeComponent,
     ManagementRulesComponent,
-    ReclassificationDialogComponent,
     ReuseRuleSearchComponent,
     SearchAccessRulesFacetsComponent,
     SearchAppraisalRulesFacetsComponent,

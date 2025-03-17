@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ModuleWithProviders, NgModule, inject, provideAppInitializer } from '@angular/core';
+import { inject, ModuleWithProviders, NgModule, provideAppInitializer } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -90,7 +90,6 @@ import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vita
 import { VitamuiRepeatableInputModule } from './components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
-import { VitamuiSnackBarModule } from './reclassification-dialog/shared/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
 import { ConfigService } from './config.service';
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
@@ -115,11 +114,6 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
-import { ReclassificationDialogComponent } from './reclassification-dialog/reclassification-dialog.component';
-import { SelectComponent } from '../../lib/components/select/select.component';
-import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { FilingPlanModule } from '../../lib/components/filing-plan/filing-plan.module';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -145,7 +139,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
 }
 
 @NgModule({
-  declarations: [ErrorDialogComponent, VitamuiIntervalDatePickerComponent, ReclassificationDialogComponent],
+  declarations: [ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
   exports: [
     AccordionModule,
     AccountModule,
@@ -210,10 +204,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     FileSelectorComponent,
     ChipComponent,
     BadgeComponent,
-    SelectComponent,
-    MatLegacyProgressSpinnerModule,
-    FilingPlanModule,
-    MatButtonToggleModule,
   ],
   imports: [
     AccordionModule,
@@ -277,14 +267,10 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
-    VitamuiSnackBarModule,
-    VitamuiTreeNodeModule,
-    AlertDialogComponent,
     FileSelectorComponent,
     AlertDialogComponent,
     ChipComponent,
     BadgeComponent,
-    ReclassificationDialogComponent,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })

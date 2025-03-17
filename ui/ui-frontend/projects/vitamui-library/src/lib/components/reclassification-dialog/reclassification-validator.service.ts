@@ -38,8 +38,8 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../models';
-import { ReclassificationService } from '../../../services/reclassification.service';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models';
+import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 
 @Injectable({
   providedIn: 'root',

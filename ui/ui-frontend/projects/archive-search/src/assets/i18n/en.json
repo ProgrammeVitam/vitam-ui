@@ -207,57 +207,5 @@
       "UPDATE_RULES_ALERTE_SECOND_MESSAGE": "Change rule action is not allowed for this one(s). Please remove the corresponding archival units.",
       "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "The inherited rules calculation action is not allowed for these. Please remove the corresponding archival units."
     }
-  },
-  "RECLASSIFICATION": {
-    "EXECUTION_ACTION": "Reclassify archival units",
-    "CONFIRM": "Confirm",
-    "CANCEL": "Cancel",
-    "ALERTE_MESSAGES": {
-      "RECLASSE_TITLE": "Reclassify archival units",
-      "BACK_TO_SELECTION": "Return to selection",
-      "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
-      "ACTION_ALERTE_ONE_UNIT_1": "The selection exceeds the threshold of 10,000 archival units",
-      "ACTION_ALERTE_ONE_UNIT_2": "Please revise your selection"
-    },
-    "EXECUTE_RECLASSEMENT_MESSAGE": "The reclassification request has been successfully launched",
-    "COMMON": {
-      "TITLE": "Reclassify archival units",
-      "ATTACHMENT_GUID_LABEL": "Technical identifier of the attachment position",
-      "TARGET_GUID_TITLE_LABEL": "Entitled of the target position",
-      "SELECT_TARGET_GUID": "Select target position",
-      "SELECT_TARGET_PARENT": "Select the source position(s) to remove",
-      "SELECT_TARGET_PARENT_REPLACE": "Select the source position(s) to preserve / to remove",
-      "FROM_PARENT_SOURCE_MESSAGE": "Current parent folder(s)",
-      "ARCHIVE_WITH_NO_PARENTS": "The archival unit has no parents",
-      "GUID_ALREADY_EXISTS": "The technical identifier already exists",
-      "ATTACHMENT_ALREADY_EXISTS": "The attachment already exists",
-      "RECLASSIFICATION_TOGGLE_TREE_PLAN": "Trees & Plans",
-      "RECLASSIFICATION_TOGGLE_UA_ID": "Archive unit Identifier"
-    },
-    "FIRST_STEP": {
-      "SUBTITLE": "Reclassification action",
-      "SELECTED_UNIT": "selected archive unit",
-      "SELECTED_UNIT_PLURAL": "selected archive units",
-      "CHILDS": "Child(s)",
-      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Including {{ nbDocuments }} folders and documents",
-      "SELECT_ACTION_MESSAGE_1": "Select a reclassification action",
-      "SELECT_ACTION_MESSAGE_2": "Reclassification action",
-      "CURRENT_PARENT_FOLDERS": "There is 1 current parent folder",
-      "CURRENT_PARENT_FOLDERS_PLURAL": "There are {{ nbParents }} current parent folders",
-      "MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS": "There are more than five current parent folders",
-      "ALERT_REMOVED_CURRENT_PARENTS_FOLDERS": "Attention: the current parent folders will be removed",
-      "ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS": "Attention: the selected archive units will be without attachment"
-    },
-    "REPLACE_STEP": {
-      "TITLE": "Move to another folder",
-      "FROM_PARENT_SOURCE_MESSAGE": "From folder(s)"
-    },
-    "DELETE_STEP": {
-      "TITLE": "Remove from parent folder"
-    },
-    "ADD_STEP": {
-      "TITLE": "Add to a folder",
-      "ADD_TO_FOLDER": "Add to folder"
-    }
   }
 }

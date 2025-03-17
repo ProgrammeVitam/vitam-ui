@@ -44,18 +44,13 @@ import { HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ReclassificationCriteriaDto } from './reclassification.interface';
-import { VitamuiSnackBarComponent } from '../reclassification-dialog/shared/vitamui-snack-bar/vitamui-snack-bar.component';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { getUnitI18nAttribute } from '../pipes/unitI18n.pipe';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReclassificationService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  constructor(
-    private reclassificationApiService: ReclassificationApiService,
-    private snackBar: MatSnackBar,
-  ) {
+  constructor(private reclassificationApiService: ReclassificationApiService) {
     super(reclassificationApiService, 'ALL');
   }
 
@@ -74,7 +69,6 @@ export class ReclassificationService extends SearchService<any> implements Searc
       size: 1,
       trackTotalHits: true,
     };
-    console.log(searchCriteria);
     return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult: PagedResult) => {
         return pagedResult.totalResults;
@@ -121,17 +115,5 @@ export class ReclassificationService extends SearchService<any> implements Searc
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.reclassificationApiService.reclassification(transactionId, criteriaDto, headers).pipe();
-  }
-
-  openSnackBarForWorkflow(message: string, serviceUrl?: string) {
-    this.snackBar.openFromComponent(VitamuiSnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
-      data: {
-        type: 'WorkflowSuccessSnackBar',
-        message,
-        serviceUrl,
-      },
-      duration: 100000,
-    });
   }
 }

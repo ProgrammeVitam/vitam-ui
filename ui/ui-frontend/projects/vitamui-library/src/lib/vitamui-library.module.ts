@@ -55,6 +55,7 @@ import { FormFieldValueWrapperComponent } from './components/form-field-value-wr
 import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 import { PatternComponent } from './components/pattern/pattern.component';
 import { MAT_BUTTON_TOGGLE_DEFAULT_OPTIONS } from '@angular/material/button-toggle';
+import { ReclassificationDialogComponent } from './components/reclassification-dialog/reclassification-dialog.component';
 
 const components = [
   ConfirmActionModule,
@@ -64,6 +65,7 @@ const components = [
   NextStepComponent,
   PatternComponent,
   PreviousStepComponent,
+  ReclassificationDialogComponent,
   SearchWithTypeSelectorComponent,
   SelectComponent,
   SelectWithTreeComponent,

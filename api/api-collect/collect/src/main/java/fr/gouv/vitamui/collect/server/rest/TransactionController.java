@@ -76,10 +76,8 @@ public class TransactionController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionController.class);
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
-    private static final String MANDATORY_RECLASSIFICATION_CRITERIA =
-        "The ReclassificationCriteria is a mandatory parameter: ";
-    private static final String TRANSACTION_ID = "The transaction id {} ";
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
+    private static final String TRANSACTION_ID = "The transaction id {} ";
 
     private final TransactionService transactionService;
     private final ExternalParametersService externalParametersService;
@@ -184,7 +182,7 @@ public class TransactionController {
         final @PathVariable("transactionId") String transactionId,
         @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto
     ) throws PreconditionFailedException, VitamClientException {
-        ParameterChecker.checkParameter(MANDATORY_RECLASSIFICATION_CRITERIA, reclassificationCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
         return transactionService.reclassification(

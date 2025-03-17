@@ -167,8 +167,6 @@ export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.inte
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component';
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.service';
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.module';
-export * from './app/modules/reclassification-dialog/shared/vitamui-snack-bar/vitamui-snack-bar.component';
-export * from './app/modules/reclassification-dialog/shared/vitamui-snack-bar/vitamui-snack-bar.module';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
 export * from './app/modules/directives/click-outside/click-outside.directive';
@@ -201,7 +199,7 @@ export * from './app/modules/pipes/plural.pipe';
 export * from './app/modules/pipes/safe-style.pipe';
 export * from './app/modules/pipes/truncate.pipe';
 export * from './app/modules/pipes/yes-no.pipe';
-export * from './app/modules/reclassification-dialog/reclassification-dialog.component';
+export * from './lib/components/reclassification-dialog/reclassification-dialog.component';
 export * from './app/modules/security/has-any-role.directive';
 export * from './app/modules/security/has-role.directive';
 export * from './app/modules/security/security.module';

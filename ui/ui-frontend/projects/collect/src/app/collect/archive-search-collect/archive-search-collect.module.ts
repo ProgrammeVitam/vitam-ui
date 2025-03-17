@@ -47,90 +47,39 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { SelectComponent, SelectWithTreeComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import {
-  ArchiveUnitDescriptionTabComponent
-} from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
+import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
-import {
-  ArchiveUnitInformationTabComponent
-} from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
-import {
-  ArchiveUnitRulesDetailsTabComponent
-} from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
-import {
-  ArchiveUnitRulesInformationsTabComponent
-} from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
-import {
-  CollectObjectGroupDetailsTabComponent
-} from './archive-preview/collect-object-group-details-tab/collect-object-group-details-tab.component';
+import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
+import { CollectObjectGroupDetailsTabComponent } from './archive-preview/collect-object-group-details-tab/collect-object-group-details-tab.component';
 import { ArchiveSearchCollectRoutingModule } from './archive-search-collect-routing.module';
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
-import {
-  AccessRuleSearchComponent
-} from './archive-search-criteria/components/access-rule-search/access-rule-search.component';
-import {
-  AppraisalRuleSearchComponent
-} from './archive-search-criteria/components/appraisal-rule-search/appraisal-rule-search.component';
-import {
-  ArchiveSearchRulesFacetsComponent
-} from './archive-search-criteria/components/archive-search-rules-facets/archive-search-rules-facets.component';
-import {
-  SearchAccessRulesFacetsComponent
-} from './archive-search-criteria/components/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
-import {
-  SearchAppraisalRulesFacetsComponent
-} from './archive-search-criteria/components/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
-import {
-  SearchDisseminationRulesFacetsComponent
-} from './archive-search-criteria/components/archive-search-rules-facets/search-dissemination-rules-facets/search-dissemination-rules-facets.component';
-import {
-  SearchReuseRulesFacetsComponent
-} from './archive-search-criteria/components/archive-search-rules-facets/search-reuse-rules-facets/search-reuse-rules-facets.component';
-import {
-  SearchStorageRulesFacetsComponent
-} from './archive-search-criteria/components/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
-import {
-  CriteriaSearchComponent
-} from './archive-search-criteria/components/criteria-search/criteria-search.component';
-import {
-  DisseminationRuleSearchComponent
-} from './archive-search-criteria/components/dissemination-rule-search/dissemination-rule-search.component';
-import {
-  ClassificationTreeComponent
-} from './archive-search-criteria/components/filing-holding-scheme/classification-tree/classification-tree.component';
-import {
-  FilingHoldingSchemeComponent
-} from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
-import {
-  LeavesTreeComponent
-} from './archive-search-criteria/components/filing-holding-scheme/leaves-tree/leaves-tree.component';
-import {
-  ReuseRuleSearchComponent
-} from './archive-search-criteria/components/reuse-rule-search/reuse-rule-search.component';
-import {
-  ConfirmActionModule
-} from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
-import {
-  SearchCriteriaListComponent
-} from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
-import {
-  SearchCriteriaSaverComponent
-} from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
+import { AccessRuleSearchComponent } from './archive-search-criteria/components/access-rule-search/access-rule-search.component';
+import { AppraisalRuleSearchComponent } from './archive-search-criteria/components/appraisal-rule-search/appraisal-rule-search.component';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchAccessRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchDisseminationRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-dissemination-rules-facets/search-dissemination-rules-facets.component';
+import { SearchReuseRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-reuse-rules-facets/search-reuse-rules-facets.component';
+import { SearchStorageRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
+import { CriteriaSearchComponent } from './archive-search-criteria/components/criteria-search/criteria-search.component';
+import { DisseminationRuleSearchComponent } from './archive-search-criteria/components/dissemination-rule-search/dissemination-rule-search.component';
+import { ClassificationTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/classification-tree/classification-tree.component';
+import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
+import { LeavesTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/leaves-tree/leaves-tree.component';
+import { ReuseRuleSearchComponent } from './archive-search-criteria/components/reuse-rule-search/reuse-rule-search.component';
+import { ConfirmActionModule } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
+import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
+import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 // eslint-disable-next-line max-len
-import {
-  SimpleCriteriaSearchComponent
-} from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
-import {
-  StorageRuleSearchComponent
-} from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
-import {
-  TitleAndDescriptionCriteriaSearchCollectComponent
-} from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
+import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
+import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
+import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -152,7 +101,6 @@ import { MatMenuModule } from '@angular/material/menu';
     TranslateModule,
     SelectComponent,
     SelectWithTreeComponent,
-    MatMenuModule,
   ],
   declarations: [
     AccessRuleSearchComponent,

@@ -134,41 +134,6 @@
       }
     }
   },
-  "RECLASSIFICATION": {
-    "EXECUTION_ACTION": "Reclassify archival units",
-    "EXECUTE_RECLASSEMENT_MESSAGE": "The reclassification request demand is successfully lunched",
-    "COMMON": {
-      "TITLE": "Reclassify archival units",
-      "ARCHIVE_WITH_NO_PARENTS": "The archival unit has no parents"
-    },
-    "FIRST_STEP": {
-      "SUBTITLE": "Reclassification action",
-      "SELECTED_UNIT": "selected archive unit",
-      "SELECTED_UNIT_PLURAL": "selected archive units",
-      "CHILDS": "Child(s)",
-      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Including {{ nbDocuments }} folders and documents",
-      "SELECT_ACTION_MESSAGE_1": "Select a reclassification action",
-      "SELECT_ACTION_MESSAGE_2": "Reclassification action",
-      "CURRENT_PARENT_FOLDERS": "There is 1 current parent folder",
-      "CURRENT_PARENT_FOLDERS_PLURAL": "There is {{ nbParents }} current parents folders",
-      "ALERT_REMOVED_CURRENT_PARENTS_FOLDERS": "Attention : the current parents folders will be removed",
-      "ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS": "Attention : the selected archive units will be without attachment"
-    },
-    "REPLACE_STEP": {
-      "TITLE": "Move to another folder",
-      "FROM_PARENT_SOURCE_MESSAGE": "From folder(s)"
-    },
-    "DELETE_STEP": {
-      "TITLE": "Remove from parent folder"
-    },
-    "ADD_STEP": {
-      "TITLE": "Add to a folder",
-      "ADD_TO_FOLDER": "Add to folder"
-    },
-    "SNACK_BAR": {
-      "TO_OPERATION_APP": "VIEW THE OPERATIONS APP"
-    }
-  },
   "ACQUISITION_INFORMATION": {
     "PAYMENT": "Payment",
     "PROTOCOL": "Protocol",

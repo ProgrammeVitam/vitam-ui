@@ -93,7 +93,6 @@ import { ArchiveUnitEliminationService } from '../common-services/archive-unit-e
 import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
 import { ActionsRules } from '../models/ruleAction.interface';
-import { ReclassificationDialogComponent } from './additional-actions-search/reclassification-dialog/reclassification-dialog.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
