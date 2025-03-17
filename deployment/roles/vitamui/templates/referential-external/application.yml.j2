@@ -67,7 +67,7 @@ referential-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
   iam-internal-client:
     server-host: {{ vitamui.iam_internal.host }}
@@ -78,7 +78,7 @@ referential-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
   referential-internal-client:
     server-host: {{ vitamui.referential_internal.host }}
@@ -92,7 +92,7 @@ referential-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}
