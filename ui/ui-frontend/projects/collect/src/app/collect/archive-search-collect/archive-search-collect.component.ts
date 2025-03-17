@@ -1101,10 +1101,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
   }
 
-  updateUnitsMetadataDisabled(): boolean {
-    return !this.transaction || this.transaction.status !== TransactionStatus.OPEN;
-  }
-
   isArchiveUnitsEmpty(): boolean {
     return this.archiveUnits?.length === 0;
   }

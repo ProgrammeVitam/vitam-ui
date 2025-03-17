@@ -203,14 +203,6 @@ describe('ArchiveSearchCollectComponent', () => {
       expect(component.isAllChecked).toBeFalsy();
       expect(component.itemNotSelected).toBe(0);
     });
-
-    it('should return true', () => {
-      // When
-      const response = component.updateUnitsMetadataDisabled();
-
-      // Then
-      expect(response).toBeTruthy();
-    });
   });
 
   describe('queryParams', () => {
