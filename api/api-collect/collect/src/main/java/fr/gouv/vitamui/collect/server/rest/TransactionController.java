@@ -176,7 +176,7 @@ public class TransactionController {
         );
     }
 
-    @Secured(ServicesData.ROLE_RECLASSIFICATION)
+    @Secured(ServicesData.ROLE_COLLECT_RECLASSIFICATION)
     @PostMapping(CommonConstants.TRANSACTION_PATH_ID + "/reclassification")
     public String reclassification(
         final @PathVariable("transactionId") String transactionId,

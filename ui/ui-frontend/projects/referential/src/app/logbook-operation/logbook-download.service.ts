@@ -39,12 +39,12 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import {
   DownloadUtils,
+  IEvent,
   LogbookApiService,
   LogbookOperationReportState,
   SearchService,
-  VitamUISnackBarService,
-  IEvent,
   VitamuiHttpHeaders,
+  VitamUISnackBarService,
 } from 'vitamui-library';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
@@ -72,7 +72,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'STP_IMPORT_GRIFFIN',
     'PRESERVATION',
     'INGEST_CLEANUP',
-    'COLLECT_DELETION',
+    'COLLECT_DELETION_ACTION',
   ];
   private evTypeProcAllowed = [
     'AUDIT',
@@ -82,7 +82,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'INGEST',
     'MASS_UPDATE',
     'BULK_UPDATE',
-    'COLLECT_DELETION',
+    'COLLECT_DELETION_ACTION',
   ];
 
   constructor(
@@ -149,7 +149,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       case 'PRESERVATION':
       case 'MASS_UPDATE':
       case 'BULK_UPDATE':
-      case 'COLLECT_DELETION':
+      case 'COLLECT_DELETION_ACTION':
         return DOWNLOAD_TYPE_BATCH_REPORT;
       case 'INGEST':
         return DOWNLOAD_TYPE_OBJECT;

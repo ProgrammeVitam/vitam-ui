@@ -255,7 +255,7 @@ public class ArchivesSearchController {
     }
 
     @PostMapping(RestApi.RECLASSIFICATION)
-    @Secured(ServicesData.ROLE_RECLASSIFICATION)
+    @Secured(ServicesData.ROLE_COLLECT_RECLASSIFICATION)
     public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
         throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);

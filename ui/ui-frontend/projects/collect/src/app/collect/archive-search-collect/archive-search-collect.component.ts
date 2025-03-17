@@ -60,6 +60,7 @@ import {
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
+  ReclassificationDialogComponent,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -74,7 +75,6 @@ import {
   TransactionStatus,
   Unit,
   UnitType,
-  ReclassificationDialogComponent,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -394,7 +394,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.hasCloseTransactionRole = result;
     });
 
-    this.archiveUnitCollectService.hasCollectRole('ROLE_RECLASSIFICATION', Number(this.tenantIdentifier)).subscribe((result) => {
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_RECLASSIFICATION', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasReclassificationRole = result;
     });
   }
