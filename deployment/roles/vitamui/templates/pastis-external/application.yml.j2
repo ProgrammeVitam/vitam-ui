@@ -46,11 +46,11 @@ server:
     trust-store-password: {{ password_truststore }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
+{% endif %}
+
   error:
     path: /error
   max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
-
-{% endif %}
   tomcat:
     connection-timeout: {{ vitamui_struct.server_connection_timeout }}
     accesslog:
@@ -79,7 +79,7 @@ pastis-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
   iam-internal-client:
     server-host: {{ vitamui.iam_internal.host }}
@@ -91,7 +91,7 @@ pastis-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
   referential-internal-client:
     server-host: {{ vitamui.referential_internal.host }}
@@ -103,7 +103,7 @@ pastis-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
 
 server-identity:
