@@ -31,9 +31,10 @@ server:
     trust-store-password: {{ password_truststore }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
+{% endif %}
+
   error:
     path: /error
-{% endif %}
   max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     accesslog:
@@ -65,7 +66,7 @@ security:
     truststore:
       key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
       key-password: {{ password_truststore }}
-    hostname-verification: false
+    hostname-verification: true
 {% endif %}
 
 login:
@@ -84,7 +85,7 @@ cas-client:
     truststore:
       key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
       key-password: {{ password_truststore }}
-    hostname-verification: false
+    hostname-verification: true
 {% endif %}
 
 cas.reset.password.url: {{ vitamui.cas_server.base_url | default('/cas') }}{{ vitamui.cas_server.reset_password_url | default('/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day') }}

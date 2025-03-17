@@ -46,11 +46,11 @@ server:
     trust-store-password: {{ password_truststore }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
+{% endif %}
+
   error:
     path: /error
   max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
-
-{% endif %}
   tomcat:
     connection-timeout: {{ vitamui_struct.server_connection_timeout }}
     accesslog:
@@ -79,7 +79,7 @@ pastis:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
   iam-client:
     server-host: {{ vitamui.iam.host }}
@@ -90,7 +90,7 @@ pastis:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}

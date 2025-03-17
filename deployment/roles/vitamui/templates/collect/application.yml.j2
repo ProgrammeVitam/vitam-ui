@@ -36,6 +36,7 @@ server:
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
+
   error:
     path: /error
   max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
@@ -68,7 +69,7 @@ collect:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
   iam-client:
     server-host: {{ vitamui.iam.host }}
@@ -79,7 +80,7 @@ collect:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: false
+      hostname-verification: true
 {% endif %}
 
 ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json

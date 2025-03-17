@@ -24,7 +24,7 @@ management:
       enabled: false
 
 authn:
-  client-certificate-header-name: x-ssl-cert
+  client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 
 spring:
   application:
