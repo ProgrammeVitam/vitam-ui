@@ -72,7 +72,7 @@
             matTooltip="{{ 'COLLECT.OTHER_ACTION' | translate }}"
             matTooltipClass="vitamui-tooltip"
           >
-            <button mat-menu-item [disabled]="updateUnitsMetadataDisabled() || isArchiveUnitsEmpty()" (click)="openUpdateUnitsForm()">
+            <button mat-menu-item [disabled]="(isNotOpen$ | async) || isArchiveUnitsEmpty()" (click)="openUpdateUnitsForm()">
               {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
             </button>
             <button mat-menu-item (click)="validateTransaction()" [disabled]="isArchiveUnitsEmpty() || (isNotOpen$ | async)">
