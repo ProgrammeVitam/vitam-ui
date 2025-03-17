@@ -106,12 +106,12 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
     return this.http.get<any>(this.apiUrl + '/archive-units/archiveunit/' + unitId, { headers });
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, tranasctionId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${tranasctionId}/search`, criteriaDto, { headers });
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders): Observable<SearchResponse> {
+    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${transactionId}/search`, criteriaDto, { headers });
   }
 
-  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, tranasctionId: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}/archive-units/${tranasctionId}/export-csv-search`, criteriaDto, {
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/archive-units/${transactionId}/export-csv-search`, criteriaDto, {
       responseType: 'blob',
       headers,
     });
@@ -126,7 +126,13 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
     return this.http.get<IOntology[]>(`${this.apiUrl}/external-ontologies`);
   }
 
-  selectUnitWithInheritedRules(tranasctionId: string, criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
-    return this.http.post<Unit>(`${this.apiUrl}/${tranasctionId}/unit-with-inherited-rules`, criteriaDto, { headers });
+  selectUnitWithInheritedRules(transactionId: string, criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
+    return this.http.post<Unit>(`${this.apiUrl}/${transactionId}/unit-with-inherited-rules`, criteriaDto, { headers });
+  }
+
+  launchDeletionAction(transactionId: string, criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${transactionId}/deletion/action`, criteriaDto, {
+      headers,
+    });
   }
 }

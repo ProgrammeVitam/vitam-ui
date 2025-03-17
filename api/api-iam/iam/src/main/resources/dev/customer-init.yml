@@ -290,12 +290,14 @@ customer-init:
         - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT
         - ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT
+        - ROLE_COLLECT_DELETE_ARCHIVE_UNIT
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_UNITS
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_COLLECT_RECLASSIFICATION
 
 
     - name: Archiviste - gestion et collecte
@@ -324,6 +326,7 @@ customer-init:
         - ROLE_GET_UNITS
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_COLLECT_RECLASSIFICATION
 
     - name: Service producteur
       description: Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE

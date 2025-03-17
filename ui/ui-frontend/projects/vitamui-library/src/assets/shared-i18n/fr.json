@@ -1,6 +1,7 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :"
+    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :",
+    "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPERATIONS"
   },
   "COMMON": {
     "ADD": "Ajouter",
@@ -1021,23 +1022,23 @@
     "CHECK_UNIT_SCHEMA.WARNING": "Avertissement lors de la vérification globale de l'unité archivistique",
     "CHECK_UNIT_SCHEMA": "Vérification globale de l'unité archivistique",
     "COLLECT_RECLASSIFICATION": "Modification d'arborescence des unités archivistiques",
-    "COLLECT_DELETION": "Suppression des unités archivistiques",
-    "STP_COLLECT_DELETION_PREPARATION": "Processus de préparation de l'analyse de la suppression des unités archivistiques",
-    "STP_COLLECT_DELETION_PREPARATION.STARTED": "Début du processus de préparation de l'analyse de la suppression des unités archivistiques",
+    "COLLECT_DELETION_ACTION": "Suppression des unités archivistiques",
+    "STP_DELETION_ACTION_PREPARATION": "Processus de préparation de l'analyse de la suppression des unités archivistiques",
+    "STP_DELETION_ACTION_PREPARATION.STARTED": "Début du processus de préparation de l'analyse de la suppression des unités archivistiques",
     "COLLECT_DELETION_UNIT_PREPARATION": "Préparation de la suppression définitive des unités archivistiques",
-    "STP_COLLECT_DELETION_DELETE_UNIT.STARTED": "Début du processus de suppression définitive des unités archivistiques éliminables",
-    "STP_COLLECT_DELETION_DELETE_UNIT": "Processus de suppression définitive des unités archivistiques éliminables",
-    "STP_COLLECT_DELETION_OBJECT_GROUP_PREPARATION.STARTED": "Début du processus de préparation de la suppression définitive des groupes d'objets techniques",
-    "STP_COLLECT_DELETION_OBJECT_GROUP_PREPARATION": "Processus de préparation de la suppression définitive des groupes d'objets techniques",
-    "STP_COLLECT_DELETION_DELETE_OBJECT_GROUP.STARTED": "Début du processus de suppression définitive des groupes d'objets techniques dont les unités archivistiques parentes sont éliminées",
-    "STP_COLLECT_DELETION_DELETE_OBJECT_GROUP": "Processus de suppression définitive des groupes d'objets techniques dont les unités archivistiques parentes sont éliminées",
-    "STP_COLLECT_DELETION_DETACH_OBJECT_GROUP.STARTED": "Début du processus de détachement des groupes d'objets techniques dont certaines unités archivistiques parentes sont éliminées",
-    "STP_COLLECT_DELETION_DETACH_OBJECT_GROUP": "Processus de détachement des groupes d'objets techniques dont certaines unités archivistiques parentes sont éliminées",
-    "STP_COLLECT_DELETION_REPORT_GENERATION.STARTED": "Début du processus de génération du rapport de suppression définitive des unités archivistiques",
-    "STP_COLLECT_DELETION_REPORT_GENERATION": "Processus de génération du rapport de suppression définitive des unités archivistiques",
-    "STP_COLLECT_DELETION_FINALIZATION.STARTED": "Début du processus de finalisation de la suppression définitive des unités archivistiques",
-    "STP_COLLECT_DELETION_FINALIZATION": "Processus de finalisation de la suppression définitive des unités archivistiques",
-    "STP_COLLECT_DELETION_PREPARATION.STARTED.OK": "Succès du processus de préparation de la suppression définitive des unités archivistiques",
+    "STP_DELETION_ACTION_DELETE_UNIT.STARTED": "Début du processus de suppression définitive des unités archivistiques éliminables",
+    "STP_DELETION_ACTION_DELETE_UNIT": "Processus de suppression définitive des unités archivistiques éliminables",
+    "STP_DELETION_ACTION_OBJECT_GROUP_PREPARATION.STARTED": "Début du processus de préparation de la suppression définitive des groupes d'objets techniques",
+    "STP_DELETION_ACTION_OBJECT_GROUP_PREPARATION": "Processus de préparation de la suppression définitive des groupes d'objets techniques",
+    "STP_DELETION_ACTION_DELETE_OBJECT_GROUP.STARTED": "Début du processus de suppression définitive des groupes d'objets techniques dont les unités archivistiques parentes sont éliminées",
+    "STP_DELETION_ACTION_DELETE_OBJECT_GROUP": "Processus de suppression définitive des groupes d'objets techniques dont les unités archivistiques parentes sont éliminées",
+    "STP_DELETION_ACTION_DETACH_OBJECT_GROUP.STARTED": "Début du processus de détachement des groupes d'objets techniques dont certaines unités archivistiques parentes sont éliminées",
+    "STP_DELETION_ACTION_DETACH_OBJECT_GROUP": "Processus de détachement des groupes d'objets techniques dont certaines unités archivistiques parentes sont éliminées",
+    "STP_DELETION_ACTION_REPORT_GENERATION.STARTED": "Début du processus de génération du rapport de suppression définitive des unités archivistiques",
+    "STP_DELETION_ACTION_REPORT_GENERATION": "Processus de génération du rapport de suppression définitive des unités archivistiques",
+    "STP_DELETION_ACTION_FINALIZATION.STARTED": "Début du processus de finalisation de la suppression définitive des unités archivistiques",
+    "STP_DELETION_ACTION_FINALIZATION": "Processus de finalisation de la suppression définitive des unités archivistiques",
+    "STP_DELETION_ACTION_PREPARATION.STARTED.OK": "Succès du processus de préparation de la suppression définitive des unités archivistiques",
     "COMMIT_LIFE_CYCLE_OBJECT_GROUP.ALREADY_EXECUTED": "Action déjà exécutée : Pas d'enregistrement des journaux de cycle de vie des groupes d'objets",
     "COMMIT_LIFE_CYCLE_OBJECT_GROUP.FATAL": "Erreur technique lors de l'enregistrement des journaux du cycle de vie des groupes d'objets",
     "COMMIT_LIFE_CYCLE_OBJECT_GROUP.OK": "Succès de l'enregistrement des journaux du cycle de vie des groupes d'objets",
@@ -4455,6 +4456,7 @@
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
       "FIELDS": {
+        "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORPHANS_NODE": "Position",
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
@@ -5799,6 +5801,56 @@
       "DESCRIPTION": "Métadonnées descriptives",
       "MANAGEMENT": "Métadonnées de gestion",
       "OTHER": "Métadonnées système"
+    }
+  },
+  "RECLASSIFICATION": {
+    "EXECUTION_ACTION": "Reclasser des unités archivistiques",
+    "ALERTE_MESSAGES": {
+      "RECLASSE_TITLE": "Reclasser des unités archivistiques",
+      "BACK_TO_SELECTION": "Revenir à la sélection",
+      "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+      "ACTION_ALERTE_ONE_UNIT_1": "La sélection dépasse le seuil des 10 000 unités archivistiques",
+      "ACTION_ALERTE_ONE_UNIT_2": "Veuillez revoir votre sélection"
+    },
+    "EXECUTE_RECLASSEMENT_MESSAGE": "La demande de reclassement a bien été lancée",
+    "COMMON": {
+      "TITLE": "Reclasser des unités archivistiques",
+      "ATTACHMENT_GUID_LABEL": "Identifiant technique de la position de rattachement",
+      "TARGET_GUID_TITLE_LABEL": "Intitulé de la position cible",
+      "SELECT_TARGET_GUID": "Sélectionner la position cible",
+      "SELECT_TARGET_PARENT": "Sélectionner la ou les position(s) source(s) à retirer",
+      "SELECT_TARGET_PARENT_REPLACE": "Sélectionner la ou les position(s) source(s) à conserver / à retirer",
+      "FROM_PARENT_SOURCE_MESSAGE": "Dossier(s) parent(s) actuel(s)",
+      "ARCHIVE_WITH_NO_PARENTS": "Le dossier n'a pas de parents",
+      "GUID_ALREADY_EXISTS": "L'identifiant technique n'existe pas",
+      "ATTACHMENT_ALREADY_EXISTS": "Le rattachement existe déjà",
+      "RECLASSIFICATION_TOGGLE_TREE_PLAN": "Arbres & Plans",
+      "RECLASSIFICATION_TOGGLE_UA_ID": "Identifiant d'unité archivistique"
+    },
+    "FIRST_STEP": {
+      "SUBTITLE": "Action de reclassement",
+      "SELECTED_UNIT": "unité archivistique sélectionnée",
+      "SELECTED_UNIT_PLURAL": "unités archivistiques sélectionnées",
+      "CHILDS": "fils",
+      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Comprenant {{ nbDocuments }} dossiers et documents",
+      "SELECT_ACTION_MESSAGE_1": "Sélectionner une action de reclassement",
+      "SELECT_ACTION_MESSAGE_2": "Action de reclassement",
+      "CURRENT_PARENT_FOLDERS": "Il y a 1 dossier parent actuel",
+      "CURRENT_PARENT_FOLDERS_PLURAL": "Il y a {{ nbParents }} dossiers parents actuels",
+      "MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS": "Il y a plus de 5 dossiers parents actuels",
+      "ALERT_REMOVED_CURRENT_PARENTS_FOLDERS": "Attention : les dossiers parents actuels seront retirés",
+      "ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS": "Attention : les unités archivistiques sélectionnées seront sans rattachement"
+    },
+    "REPLACE_STEP": {
+      "TITLE": "Déplacer vers un autre dossier",
+      "FROM_PARENT_SOURCE_MESSAGE": "Depuis le ou les dossier(s)"
+    },
+    "DELETE_STEP": {
+      "TITLE": "Retirer du dossier parent"
+    },
+    "ADD_STEP": {
+      "TITLE": "Ajouter à un dossier",
+      "ADD_TO_FOLDER": "Ajouter au dossier"
     }
   }
 }

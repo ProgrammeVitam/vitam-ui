@@ -34,43 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  CriteriaDataType,
-  CriteriaOperator,
-  InjectorModule,
-  LoggerModule,
-  SearchCriteriaDto,
-  SearchCriteriaTypeEnum,
-  StartupService,
-  VitamUILibraryModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { ArchiveService } from '../../../archive.service';
-import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
+
 import { ReclassificationDialogComponent } from './reclassification-dialog.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BASE_URL, WINDOW_LOCATION } from '../../../app/modules/injection-tokens';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoggerModule } from '../../../app/modules/logger';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models';
+import { of } from 'rxjs';
+import { ConfirmDialogService } from '../../../app/modules/components/confirm-dialog';
+import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-
-const startupServiceStub = {
-  getPortalUrl: () => '',
-  getConfigStringValue: () => '',
-  getReferentialUrl: () => '',
-};
 
 const confirmDialogServiceMock = {
   confirm: () => of(true),
@@ -78,24 +58,17 @@ const confirmDialogServiceMock = {
   confirmBeforeClosing: () => of(),
 };
 
-const archiveServiceMock = {
-  archive: () => of('test archive'),
-  search: () => of([]),
-  getAccessContractById: () => of({}),
+const reclassificationServiceMock = {
   reclassification: () => of({}),
   searchArchiveUnitsByCriteria: () => of({}),
-  getTotalTrackHitsByCriteria: () => of({}),
   openSnackBarForWorkflow: () => of({}),
+  getTotalTrackHitsByCriteria: () => of({}),
 };
 
-describe('ReclassificationComponent', () => {
+describe('ReclassificationDialogComponent', () => {
   let component: ReclassificationDialogComponent;
   let fixture: ComponentFixture<ReclassificationDialogComponent>;
 
-  const archiveUnitValidatorServicesSpy = jasmine.createSpyObj('ArchiveUnitValidatorService', {
-    alreadyExistParents: () => of(),
-    existArchiveUnit: () => of(),
-  });
   const searchCriteriaDto: SearchCriteriaDto = {
     criteriaList: [
       {
@@ -135,65 +108,49 @@ describe('ReclassificationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReclassificationDialogComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatSnackBarModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-        VitamUILibraryModule,
-      ],
+      imports: [NoopAnimationsModule, TranslateModule.forRoot(), HttpClientTestingModule, MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
-        FormBuilder,
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: StartupService, useValue: startupServiceStub },
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
+            appName: 'COLLECT',
             itemSelected: 25,
             reclassificationCriteria: searchCriteriaDto,
             accessContract: 'ContratTNR',
-            tenantIdentifier: '2',
+            tenantIdentifier: 2,
+            transactionId: '1234567890',
             selectedItemCountKnown: true,
             archiveUnitGuidSelected: 'erer545ddfd87f5dfdf1d2fes1df2sdfs5er4e5r',
             archiveUnitAllunitup: [],
           },
         },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ArchiveUnitValidatorService, useValue: archiveUnitValidatorServicesSpy },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
-        { provide: ArchiveService, useValue: archiveServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
+        { provide: ReclassificationService, useValue: reclassificationServiceMock },
       ],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ReclassificationDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it(' component should be created', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call reclassification of archiveService', () => {
+  it('should call reclassification of reclassificationService', () => {
     // Given
-    spyOn(archiveServiceMock, 'reclassification').and.callThrough();
+    spyOn(reclassificationServiceMock, 'reclassification').and.callThrough();
 
     // When
     component.onSubmit();
 
     // Then
-    expect(archiveServiceMock.reclassification).toHaveBeenCalled();
+    expect(reclassificationServiceMock.reclassification).toHaveBeenCalled();
   });
 
   it('items Selected should be grather than 0 ', () => {
@@ -201,56 +158,44 @@ describe('ReclassificationComponent', () => {
     expect(component.itemSelected).toEqual(25);
   });
 
-  it('Should have an accessContract ', () => {
-    expect(component.data.accessContract).toBeDefined();
-    expect(component.data.accessContract).not.toBeNull();
-    expect(component.data.accessContract).toEqual('ContratTNR');
+  it('Should have an app Name ', () => {
+    expect(component.data.appName).toBeDefined();
+    expect(component.data.appName).not.toBeNull();
+    expect(component.data.appName).toEqual('COLLECT');
   });
 
   it('Should have a tenant identifier ', () => {
     expect(component.data.tenantIdentifier).toBeDefined();
     expect(component.data.tenantIdentifier).not.toBeNull();
-    expect(component.data.tenantIdentifier).toEqual('2');
+    expect(component.data.tenantIdentifier).toEqual(2);
+  });
+
+  it('Should have a transactionId ', () => {
+    expect(component.data.transactionId).toBeDefined();
+    expect(component.data.transactionId).not.toBeNull();
+    expect(component.data.transactionId).toEqual('1234567890');
   });
 
   it('should call searchArchiveUnitsByCriteria of archiveService', () => {
     // Given
-    spyOn(archiveServiceMock, 'searchArchiveUnitsByCriteria').and.callThrough();
+    spyOn(reclassificationServiceMock, 'searchArchiveUnitsByCriteria').and.callThrough();
 
     // When
-    component.calculateChildren();
+    component.calculateChilds();
 
     // Then
     expect(component.pendingGetChilds).toBeFalsy();
-    expect(archiveServiceMock.searchArchiveUnitsByCriteria).toHaveBeenCalled();
-  });
-
-  it('should call searchArchiveUnitsByCriteria of archiveService', () => {
-    // Given
-    spyOn(archiveServiceMock, 'searchArchiveUnitsByCriteria').and.callThrough();
-
-    // When
-    component.calculateChildren();
-
-    // Then
-    expect(archiveServiceMock.searchArchiveUnitsByCriteria).toHaveBeenCalled();
+    expect(reclassificationServiceMock.searchArchiveUnitsByCriteria).toHaveBeenCalled();
   });
 
   it('should call getTotalTrackHitsByCriteria of archiveService', () => {
     // Given
-    spyOn(archiveServiceMock, 'getTotalTrackHitsByCriteria').and.callThrough();
+    spyOn(reclassificationServiceMock, 'getTotalTrackHitsByCriteria').and.callThrough();
 
     // When
     component.loadExactCount();
 
     // Then
-    expect(archiveServiceMock.getTotalTrackHitsByCriteria).toHaveBeenCalled();
-  });
-
-  describe('DOM', () => {
-    it('should have 2 cdk steps', () => {
-      const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
-      expect(elementCdkStep.length).toBe(2);
-    });
+    expect(reclassificationServiceMock.getTotalTrackHitsByCriteria).toHaveBeenCalled();
   });
 });

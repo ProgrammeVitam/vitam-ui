@@ -1,0 +1,37 @@
+dbSecurity = db.getSiblingDB("security");
+dbIam = db.getSiblingDB("iam");
+
+print("START 008_update_collect_context_to_add_reclassification_role.js");
+
+dbSecurity.contexts.updateOne(
+  {
+    _id: "ui_collect_context",
+  },
+  {
+    $addToSet: {
+      roleNames: {
+        $each: ["ROLE_COLLECT_RECLASSIFICATION"],
+      },
+    },
+  },
+);
+
+db.profiles.updateMany(
+  {
+    "name": { $regex: /^Archiviste/i },
+    "applicationName": "COLLECT_APP",
+  },
+  {
+    $addToSet: {
+      roles: {
+        $each: [
+          {
+            name: "ROLE_COLLECT_RECLASSIFICATION"
+          },
+        ],
+      },
+    },
+  },
+);
+
+print("END 008_update_collect_context_to_add_reclassification_role.js");

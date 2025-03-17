@@ -1,0 +1,39 @@
+db = db.getSiblingDB('iam')
+dbSecurity = db.getSiblingDB('security')
+
+print("START_009_add_delete_archive_unit_role.js");
+
+db.profiles.updateMany(
+  {
+    "applicationName": "COLLECT_APP",
+    $or: [
+      { "name": { $regex: /^Archiviste/i } },   // Commence par "Archiviste"
+      { "name": { $regex: /^Administrateur/i } } // Commence par "Administrateur"
+    ]
+  },
+  {
+    $addToSet: {
+      "roles": {
+        $each: [
+          { "name": "ROLE_COLLECT_DELETE_ARCHIVE_UNIT" }
+        ]
+      }
+    }
+  }
+);
+
+
+dbSecurity.contexts.updateOne({
+    "_id":"ui_collect_context"
+  },
+  {
+    $addToSet:{
+      "roleNames":{
+        $each:[
+          "ROLE_COLLECT_DELETE_ARCHIVE_UNIT"
+        ]
+      }
+    }
+  });
+
+print("END_009_add_delete_archive_unit_role.js");

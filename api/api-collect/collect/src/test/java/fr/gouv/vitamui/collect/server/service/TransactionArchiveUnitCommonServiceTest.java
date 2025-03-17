@@ -44,6 +44,7 @@ import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.apache.commons.lang.StringUtils;
@@ -82,6 +83,9 @@ class TransactionArchiveUnitCommonServiceTest {
     @Mock
     AgencyCommonService agencyCommonService;
 
+    @Mock
+    RuleCommonService ruleCommonService;
+
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -96,6 +100,7 @@ class TransactionArchiveUnitCommonServiceTest {
         transactionArchiveUnitService = new TransactionArchiveUnitService(
             collectService,
             agencyCommonService,
+            ruleCommonService,
             objectMapper
         );
     }
@@ -119,6 +124,7 @@ class TransactionArchiveUnitCommonServiceTest {
         transactionArchiveUnitService = new TransactionArchiveUnitService(
             collectService,
             agencyCommonService,
+            ruleCommonService,
             objectMapper
         );
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
@@ -154,6 +160,7 @@ class TransactionArchiveUnitCommonServiceTest {
         transactionArchiveUnitService = new TransactionArchiveUnitService(
             collectService,
             agencyCommonService,
+            ruleCommonService,
             objectMapper
         );
 
@@ -189,6 +196,7 @@ class TransactionArchiveUnitCommonServiceTest {
         transactionArchiveUnitService = new TransactionArchiveUnitService(
             collectService,
             agencyCommonService,
+            ruleCommonService,
             objectMapper
         );
         // THEN

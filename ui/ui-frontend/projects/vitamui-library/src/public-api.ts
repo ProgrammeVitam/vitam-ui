@@ -199,6 +199,7 @@ export * from './app/modules/pipes/plural.pipe';
 export * from './app/modules/pipes/safe-style.pipe';
 export * from './app/modules/pipes/truncate.pipe';
 export * from './app/modules/pipes/yes-no.pipe';
+export * from './lib/components/reclassification-dialog/reclassification-dialog.component';
 export * from './app/modules/security/has-any-role.directive';
 export * from './app/modules/security/has-role.directive';
 export * from './app/modules/security/security.module';

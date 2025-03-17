@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID, TemplateRef } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver-es';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, filter, map } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
@@ -60,9 +60,15 @@ import {
   Transaction,
   Unit,
   VitamuiHttpHeaders,
+  StartupService,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
+import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+
+const PAGE_SIZE = 10;
 
 @Injectable({
   providedIn: 'root',
@@ -71,11 +77,14 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
   constructor(
     private projectsApiService: ProjectsApiService,
     private transactionApiService: TransactionApiService,
+    private translateService: TranslateService,
     private searchUnitApiService: SearchUnitApiService,
+    private startupService: StartupService,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private accessContractApiService: AccessContractApiService,
     private securityService: SecurityService,
+    public dialog: MatDialog,
   ) {
     super(projectsApiService, 'ALL');
   }
@@ -302,9 +311,51 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return this.transactionApiService.selectUnitWithInheritedRules(transactionId, criteriaDto, headers);
   }
 
+  private launchDeletionAction(
+    transactionId: string,
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
+    tenantIdentifier: number,
+    currentPage: number,
+  ) {
+    const unitsForDeletionCriteria = {
+      criteriaList: listOfUACriteriaSearch,
+      pageNumber: currentPage,
+      size: PAGE_SIZE,
+      language: this.translateService.currentLang,
+    };
+
+    this.transactionApiService.launchDeletionAction(transactionId, unitsForDeletionCriteria).subscribe((data) => {
+      const eliminationActionResponse = data.$results;
+
+      if (eliminationActionResponse && eliminationActionResponse[0].itemId) {
+        const guid = eliminationActionResponse[0].itemId;
+        const message = this.translateService.instant('COLLECT.DELETION.DELETION_LAUNCHED');
+        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
+
+        this.openSnackBarForWorkflow(message, serviceUrl);
+      }
+    });
+  }
+
   hasCollectRole(role: string, tenantIdentifier: number): Observable<boolean> {
     const applicationIdentifier = 'COLLECT_APP';
     return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
+  }
+
+  launchDeletionModal(
+    transactionId: string,
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
+    tenantIdentifier: number,
+    currentPage: number,
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchCollectComponent>,
+  ) {
+    this.dialog
+      .open(confirmSecondActionBigNumberOfResultsActionDialog)
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.launchDeletionAction(transactionId, listOfUACriteriaSearch, tenantIdentifier, currentPage);
+      });
   }
 }
 

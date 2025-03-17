@@ -39,9 +39,12 @@ import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.facet.RangeFacetValue;
+import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
+import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
+import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -49,6 +52,8 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitam.common.model.administration.FileRulesModel;
+import fr.gouv.vitam.common.model.elimination.DeletionRequestBody;
 import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
@@ -58,6 +63,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.ExportSearchResultParam;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
@@ -70,10 +76,12 @@ import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import lombok.RequiredArgsConstructor;
@@ -111,8 +119,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
@@ -144,6 +154,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.UPDATE_OPERATION_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.COMPUTED_FIELDS;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.FINAL_ACTION_FIELD;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.FINAL_QUERY;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.MAX_END_DATE_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.RULES_RULE_ID_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.SOME_FUTUR_DATE;
@@ -152,7 +163,6 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.clea
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createDslQueryWithFacets;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createSelectMultiQuery;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.getBasicQuery;
-import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Service
@@ -167,6 +177,7 @@ public class TransactionArchiveUnitService {
 
     private final CollectService collectService;
     private final AgencyCommonService agencyCommonService;
+    private final RuleCommonService ruleCommonService;
     private final ObjectMapper objectMapper;
 
     @Value("${ontologies_file_path}")
@@ -910,34 +921,6 @@ public class TransactionArchiveUnitService {
         }
     }
 
-    public void mapAgenciesNameToCodes(SearchCriteriaDto searchQuery, VitamContext vitamContext)
-        throws VitamClientException {
-        LOGGER.debug("calling mapAgenciesNameToCodes  {} ", searchQuery.toString());
-        Set<String> agencyOriginNamesCriteria = new HashSet<>();
-        searchQuery
-            .getCriteriaList()
-            .stream()
-            .filter(criteriaElt -> criteriaElt.getCriteria().equals(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD))
-            .forEach(
-                criteriaElt ->
-                    agencyOriginNamesCriteria.addAll(
-                        criteriaElt.getValues().stream().map(CriteriaValue::getValue).collect(Collectors.toList())
-                    )
-            );
-        List<AgencyModelDto> agenciesOrigins;
-        if (!agencyOriginNamesCriteria.isEmpty()) {
-            LOGGER.debug(" trying to mapping agencies labels {} ", agencyOriginNamesCriteria.toString());
-            agenciesOrigins = findOriginAgenciesByCriteria(
-                vitamContext,
-                "Name",
-                new ArrayList<>(agencyOriginNamesCriteria)
-            );
-            if (!CollectionUtils.isEmpty(agenciesOrigins)) {
-                mapAgenciesNamesToAgenciesCodesInCriteria(searchQuery, agenciesOrigins);
-            }
-        }
-    }
-
     public List<AgencyModelDto> findOriginAgenciesByCriteria(
         VitamContext vitamContext,
         String field,
@@ -1098,5 +1081,248 @@ public class TransactionArchiveUnitService {
             resultsDto = archiveUnitsFound.getArchives().getResults().get(0);
         }
         return resultsDto;
+    }
+
+    public List<AgencyModelDto> findOriginAgenciesByNames(VitamContext vitamContext, Set<String> originAgenciesCodes)
+        throws VitamClientException {
+        List<String> originAgenciesCodesList = new ArrayList<>(originAgenciesCodes);
+        return findOriginAgenciesByCriteria(vitamContext, "Name", originAgenciesCodesList);
+    }
+
+    public void mapAgenciesNameToCodes(SearchCriteriaDto searchQuery, VitamContext vitamContext)
+        throws VitamClientException {
+        LOGGER.debug("calling mapAgenciesNameToCodes  {} ", searchQuery.toString());
+        Set<String> agencyOriginNamesCriteria = new HashSet<>();
+        searchQuery
+            .getCriteriaList()
+            .stream()
+            .filter(criteriaElt -> criteriaElt.getCriteria().equals(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD))
+            .forEach(
+                criteriaElt ->
+                    agencyOriginNamesCriteria.addAll(
+                        criteriaElt.getValues().stream().map(CriteriaValue::getValue).toList()
+                    )
+            );
+        List<AgencyModelDto> agenciesOrigins;
+        if (!agencyOriginNamesCriteria.isEmpty()) {
+            LOGGER.debug(" trying to mapping agencies labels {} ", agencyOriginNamesCriteria.toString());
+            agenciesOrigins = findOriginAgenciesByNames(vitamContext, agencyOriginNamesCriteria);
+            if (!CollectionUtils.isEmpty(agenciesOrigins)) {
+                mapAgenciesNamesToAgenciesCodesInCriteria(searchQuery, agenciesOrigins);
+            }
+        }
+    }
+
+    public List<FileRulesModel> findRulesByCriteria(
+        VitamContext vitamContext,
+        String field,
+        List<String> rulesIdentifiers,
+        String ruleType
+    ) throws VitamClientException {
+        List<FileRulesModel> rules = new ArrayList<>();
+        if (rulesIdentifiers != null && !rulesIdentifiers.isEmpty()) {
+            LOGGER.debug("Finding management rules by field {}  values {} ", field, rulesIdentifiers);
+            try {
+                final Select select = new Select();
+                final BooleanQuery query = and();
+                BooleanQuery queryOr = or();
+                for (String elt : rulesIdentifiers) {
+                    queryOr.add(eq(field, elt));
+                }
+                query.add(queryOr);
+                select.setLimitFilter(0, rulesIdentifiers.size());
+                if (ruleType != null) {
+                    query.add(eq(ArchiveSearchConsts.RULE_TYPE_FIELD, ruleType));
+                }
+                select.setQuery(query);
+                JsonNode queryRules = select.getFinalSelect();
+
+                RequestResponse<FileRulesModel> requestResponse = ruleCommonService.findRules(vitamContext, queryRules);
+                rules = objectMapper.treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
+            } catch (InvalidCreateOperationException e) {
+                throw new VitamClientException("Unable to find the rules ", e);
+            } catch (JsonProcessingException e1) {
+                throw new BadRequestException("Error parsing query ", e1);
+            }
+        }
+        LOGGER.debug("management rules  found {} ", rules);
+        return rules;
+    }
+
+    /**
+     * Search rules by their names
+     *
+     * @param vitamContext : the Vitam context
+     * @param rulesIdentifiers : list of rule identifiers
+     * @return : list of vitam rules
+     * @throws VitamClientException
+     */
+    public List<FileRulesModel> findRulesByNames(
+        VitamContext vitamContext,
+        List<String> rulesIdentifiers,
+        String ruleType
+    ) throws VitamClientException {
+        List<String> rulesIdentifiersList = new ArrayList<>(rulesIdentifiers);
+        return findRulesByCriteria(vitamContext, ArchiveSearchConsts.RULE_NAME_FIELD, rulesIdentifiersList, ruleType);
+    }
+
+    public void mapManagementRulesTitlesToCodes(SearchCriteriaDto searchQuery, VitamContext vitamContext)
+        throws VitamClientException {
+        if (!CollectionUtils.isEmpty(searchQuery.getCriteriaList())) {
+            for (ArchiveSearchConsts.CriteriaMgtRulesCategory mgtRulesCategory : ArchiveSearchConsts.CriteriaMgtRulesCategory.values()) {
+                ArchiveSearchConsts.CriteriaCategory category = ArchiveSearchConsts.CriteriaCategory.valueOf(
+                    mgtRulesCategory.name()
+                );
+                List<SearchCriteriaEltDto> titleRulesCriteriaList =
+                    searchQuery.extractCriteriaListByCategoryAndFieldNames(
+                        category,
+                        List.of(ArchiveSearchConsts.RULE_TITLE)
+                    );
+
+                List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed = searchQuery
+                    .getCriteriaList()
+                    .stream()
+                    .filter(
+                        criteriaElt ->
+                            !category.equals(criteriaElt.getCategory()) ||
+                            !criteriaElt.getCriteria().equals(ArchiveSearchConsts.RULE_TITLE)
+                    )
+                    .collect(Collectors.toList());
+
+                if (!CollectionUtils.isEmpty(titleRulesCriteriaList)) {
+                    for (SearchCriteriaEltDto titleCriteriaElt : titleRulesCriteriaList) {
+                        if (!CollectionUtils.isEmpty(titleCriteriaElt.getValues())) {
+                            List<String> mgtRulesIdsFound = findRulesByNames(
+                                vitamContext,
+                                titleCriteriaElt
+                                    .getValues()
+                                    .stream()
+                                    .map(CriteriaValue::getValue)
+                                    .collect(Collectors.toList()),
+                                ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping()
+                            )
+                                .stream()
+                                .map(FileRulesModel::getRuleId)
+                                .collect(Collectors.toList());
+                            handleFoundRules(
+                                searchQuery,
+                                category,
+                                appraisalMgtRulesCriteriaListProcessed,
+                                mgtRulesIdsFound
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleFoundRules(
+        SearchCriteriaDto searchQuery,
+        ArchiveSearchConsts.CriteriaCategory category,
+        List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed,
+        List<String> mgtRulesIdsFound
+    ) {
+        if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
+            Map<String, SearchCriteriaEltDto> appraisalMgtRulesCriteriaMap = appraisalMgtRulesCriteriaListProcessed
+                .stream()
+                .collect(Collectors.toMap(SearchCriteriaEltDto::getCriteria, Function.identity()));
+            SearchCriteriaEltDto ruleIdCriteria;
+            if (appraisalMgtRulesCriteriaMap.containsKey(ArchiveSearchConsts.RULE_IDENTIFIER)) {
+                ruleIdCriteria = appraisalMgtRulesCriteriaMap.get(ArchiveSearchConsts.RULE_IDENTIFIER);
+                if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
+                    mgtRulesIdsFound.addAll(ruleIdCriteria.getValues().stream().map(CriteriaValue::getValue).toList());
+                }
+            } else {
+                ruleIdCriteria = new SearchCriteriaEltDto();
+                ruleIdCriteria.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+                ruleIdCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+                ruleIdCriteria.setCategory(category);
+            }
+            ruleIdCriteria.setValues(mgtRulesIdsFound.stream().map(CriteriaValue::new).collect(Collectors.toList()));
+            appraisalMgtRulesCriteriaMap.put(ArchiveSearchConsts.RULE_IDENTIFIER, ruleIdCriteria);
+            searchQuery.setCriteriaList(new ArrayList<>(appraisalMgtRulesCriteriaMap.values()));
+        }
+    }
+
+    public static SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery)
+        throws VitamClientException {
+        if (searchQuery == null) {
+            throw new BadRequestException("Can't parse null criteria");
+        }
+        SelectMultiQuery selectMultiQuery;
+        Optional<String> orderBy = Optional.empty();
+        Optional<DirectionDto> direction = Optional.empty();
+        try {
+            if (searchQuery.getSortingCriteria() != null) {
+                direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
+                orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
+            }
+            selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
+            if (orderBy.isPresent()) {
+                if (DirectionDto.DESC.equals(direction.get())) {
+                    selectMultiQuery.addOrderByDescFilter(orderBy.get());
+                } else {
+                    selectMultiQuery.addOrderByAscFilter(orderBy.get());
+                }
+            }
+            selectMultiQuery.setLimitFilter(
+                (long) searchQuery.getPageNumber() * searchQuery.getSize(),
+                searchQuery.getSize()
+            );
+            selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
+            LOGGER.debug(FINAL_QUERY, selectMultiQuery.getFinalSelect().toPrettyString());
+
+            if (searchQuery.getThreshold() != null) {
+                selectMultiQuery.setThreshold(searchQuery.getThreshold());
+            }
+        } catch (InvalidCreateOperationException ioe) {
+            throw new VitamClientException("Unable to find archive units with pagination", ioe);
+        } catch (InvalidParseOperationException e) {
+            throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
+        }
+        return selectMultiQuery;
+    }
+
+    public JsonNode mapRequestToDslQuery(SearchCriteriaDto searchQuery) throws VitamClientException {
+        SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
+        return selectMultiQuery.getFinalSelect();
+    }
+
+    public JsonNode prepareDslQuery(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
+        throws VitamClientException {
+        searchQuery.setPageNumber(0);
+        mapAgenciesNameToCodes(searchQuery, vitamContext);
+        mapManagementRulesTitlesToCodes(searchQuery, vitamContext);
+        return mapRequestToDslQuery(searchQuery);
+    }
+
+    public DeletionRequestBody getDeletionRequestBody(JsonNode updateSet, Long threshold) {
+        ObjectNode query = JsonHandler.createObjectNode();
+        query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
+        query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
+        if (threshold != null) {
+            query.set(BuilderToken.GLOBAL.THRESOLD.exactToken(), objectMapper.convertValue(threshold, JsonNode.class));
+        }
+        DeletionRequestBody requestBody = new DeletionRequestBody();
+        requestBody.setDslRequest(query);
+        return requestBody;
+    }
+
+    public JsonNode startDeletionAction(VitamContext vitamContext, String transactionId, SearchCriteriaDto searchQuery)
+        throws VitamClientException {
+        LOGGER.debug("Deletion action by criteria {} ", searchQuery.toString());
+
+        JsonNode dslQuery = prepareDslQuery(searchQuery, vitamContext);
+        DeletionRequestBody deletionRequestBody = getDeletionRequestBody(dslQuery, searchQuery.getThreshold());
+        LOGGER.debug("Deletion action final query {} ", JsonHandler.prettyPrint(deletionRequestBody.getDslRequest()));
+
+        RequestResponse<JsonNode> jsonNodeRequestResponse = collectService.startDeletionAction(
+            vitamContext,
+            transactionId,
+            deletionRequestBody
+        );
+
+        return jsonNodeRequestResponse.toJsonNode();
     }
 }

@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, merge, Observable, Subject, Subscription, zip } from 'rxjs';
-import { debounceTime, map, mergeMap, share, take, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, share, take, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import {
   AccessContract,
@@ -60,6 +60,7 @@ import {
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
+  ReclassificationDialogComponent,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -100,6 +101,8 @@ const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
   readonly UnitType = UnitType;
 
+  DEFAULT_DELETION_THRESHOLD = 10_000;
+
   accessContract: string;
 
   subscriptions: Subscription = new Subscription();
@@ -110,11 +113,13 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   accessContractAllowUpdating = false;
   accessContractUpdatingRestrictedDesc: boolean;
   hasUnitaryUpdateUnitRole = false;
+  hasDeleteArchiveUnitActionRole = false;
   hasBulkUpdateUnitRole = false;
   isLPExtended = false;
   show = true;
   hasSendTransactionRole = false;
   hasCloseTransactionRole = false;
+  hasReclassificationRole = false;
 
   searchCriteriaKeys: string[];
   searchCriterias: Map<string, CriteriaSearchCriteria>;
@@ -160,6 +165,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   submitedGetFixedCount = false;
   rulesFacetsCanBeComputed = false;
 
+  bulkOperationsThreshold = -1;
+
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly orderChange = new Subject<void>();
   isNotOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -169,9 +176,21 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   projectName: string;
   breadcrumbData: BreadCrumbData[];
 
+  archiveUnitGuidSelected: string[];
+  archiveUnitAllunitup: string[];
+
   selectedArchive$: Observable<Unit>;
 
   search$: Observable<number>;
+
+  @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
+  confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchCollectComponent>;
+  @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
+  actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
+  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
+  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchCollectComponent>;
+
+  actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -254,8 +273,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.selectedArchive$ = archiveExchangeDataService.selectedUnit$;
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
   }
 
   public ngOnInit(): void {
@@ -331,6 +351,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       }),
     );
 
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
+      const threshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
+      this.bulkOperationsThreshold = threshold;
+    });
+
     this.checkUpdateUnitPermissions();
   }
 
@@ -350,6 +375,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       .subscribe((result) => {
         this.hasUnitaryUpdateUnitRole = result;
       });
+
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_DELETE_ARCHIVE_UNIT', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasDeleteArchiveUnitActionRole = result;
+    });
+
     this.archiveUnitCollectService
       .hasCollectRole('ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT', Number(this.tenantIdentifier))
       .subscribe((result) => {
@@ -363,6 +393,52 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.archiveUnitCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasCloseTransactionRole = result;
     });
+
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_RECLASSIFICATION', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasReclassificationRole = result;
+    });
+  }
+
+  launchReclassification() {
+    this.archiveUnitGuidSelected = this.isAllChecked
+      ? this.archiveUnits.map((unit) => unit['#id'])
+      : this.listOfUAIdToInclude.map((unit) => unit.id);
+    let unitUps = this.archiveUnits
+      .filter((archiveUnit) => this.archiveUnitGuidSelected.includes(archiveUnit['#id']))
+      .map((archiveUnit) => archiveUnit['#unitups']);
+    this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(unitUps);
+    this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
+    const reclassificationCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      language: this.translateService.currentLang,
+      tenantIdentifier: this.tenantIdentifier,
+    };
+    const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: false,
+      data: {
+        appName: 'COLLECT',
+        reclassificationCriteria,
+        itemSelected: this.itemSelected,
+        archiveUnitGuidSelected: this.archiveUnitGuidSelected,
+        archiveUnitAllunitup: this.archiveUnitAllunitup,
+        transactionId: this.transaction.id,
+        tenantIdentifier: this.tenantIdentifier,
+      },
+    });
+    this.subscriptions.add(
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          return;
+        }
+      }),
+    );
+  }
+
+  public initArchiveUnitAllunitup(values: string[][]) {
+    return [...new Set(values.flat())];
   }
 
   private addInitialCriteriaValues() {
@@ -460,6 +536,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   submit() {
+    this.listOfUAIdToInclude = [];
+    this.listOfUAIdToExclude = [];
+
     this.archiveExchangeDataService.emitSelectedUnit(null);
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
@@ -874,6 +953,75 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.pendingComputeFacets = false;
         this.logger.error('Error message :', error.message);
       },
+    );
+  }
+
+  public shouldReadSelectedItemCount(): boolean {
+    return !this.waitingToGetFixedCount || !this.isAllChecked;
+  }
+
+  async prepareToLaunchVitamAction() {
+    this.loadExactCount();
+    this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
+  }
+
+  private bulkOperationWarningWorkflow(operation: () => void): void {
+    const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+    const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount);
+
+    dialogConfirmActionWithImportantAllowedCountRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(operation);
+  }
+
+  private bulkOperationErrorWorkflow(): void {
+    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog);
+
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {});
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+  }
+
+  private async launchBulkOperationWorkflow(operation: () => void, defaultBulkOperationThreshold: number) {
+    await this.prepareToLaunchVitamAction();
+
+    if (!(this.shouldReadSelectedItemCount() && this.itemSelected > 0)) {
+      return;
+    }
+
+    const hasBulkOperationThreshold = this.bulkOperationsThreshold !== -1;
+    const isGreaterThanBulkOperationThreshold = this.itemSelected > this.bulkOperationsThreshold;
+    const isGreaterThanDefaultBulkOperationThreshold = this.itemSelected > defaultBulkOperationThreshold;
+
+    if (hasBulkOperationThreshold) {
+      if (isGreaterThanBulkOperationThreshold) {
+        this.bulkOperationErrorWorkflow();
+      } else if (isGreaterThanDefaultBulkOperationThreshold) {
+        this.bulkOperationWarningWorkflow(operation);
+      } else {
+        operation();
+      }
+    } else if (isGreaterThanDefaultBulkOperationThreshold) {
+      this.bulkOperationErrorWorkflow();
+    } else {
+      operation();
+    }
+  }
+
+  async launchDeletionModal() {
+    this.launchBulkOperationWorkflow(
+      () =>
+        this.archiveUnitCollectService.launchDeletionModal(
+          this.transaction.id,
+          this.listOfUACriteriaSearch,
+          Number(this.tenantIdentifier),
+          this.currentPage,
+          this.confirmSecondActionBigNumberOfResultsActionDialog,
+        ),
+      this.DEFAULT_DELETION_THRESHOLD,
     );
   }
 

@@ -20,7 +20,8 @@
       "ACCEPTED_FORMAT": "Accepted format: csv",
       "FILE_BAD_FORMAT": "The uploaded file is not in the correct format",
       "SUCCESS_MESSAGE": "The metadata update operation was successfully processed",
-      "WAIT_MESSAGE": "The operation is in progress, please do not shut down or refresh your browser"
+      "WAIT_MESSAGE": "The operation is in progress, please do not shut down or refresh your browser",
+      "ACTION_DELETE": "Delete archive unit"
     },
     "UPDATE_PROJECT": {
       "SAVE": "Save",
@@ -106,6 +107,24 @@
       "AUTO_INGEST_TRUE": "Yes",
       "AUTO_INGEST_FALSE": "No"
     },
+    "OTHER_ACTIONS": {
+      "DIALOG_MESSAGE": {
+        "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT": "Action on {{elementsSize}} archive units",
+        "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT": "Action on more than 10 000 archive units",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT": "Are you sure to launch this action on {{elementsSize}} selected archive units ?",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_WITHOUT_EXACT_COUNT": "Are you sure to launch this action on more than 10 000 selected archives units ?",
+        "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE": "Action on one archive unit",
+        "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT_ONE": "Action on one archive unit",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE": "Are you sure to launch this action on the selected archive unit ?",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirm you this action ?",
+        "CONFIRM": "Confirm",
+        "CANCEL": "Cancel",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, the operation reach the plateform allowed threshold.",
+        "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Validate rule change(s) ? ",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "This action is not allowed ont the selected items",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "The operation reach the allowed threshold, Please modify the selection and retry "
+      }
+    },
     "TITLE_TRANSACTIONS_MONITORING": "Transaction monitoring of project",
     "INGEST_ACTION": "Ingest",
     "VALIDATE_ACTION": "Validate",
@@ -132,6 +151,12 @@
         "ACK_KO": "Ingest failed",
         "KO": "Technical error"
       }
+    },
+    "DELETION": {
+      "DELETION_LAUNCHED": "Your request for deletion has been taken into account"
+    },
+    "DIP": {
+      "TO_OPERATION_APP": "VIEW THE OPERATIONS LOG"
     }
   },
   "ACQUISITION_INFORMATION": {

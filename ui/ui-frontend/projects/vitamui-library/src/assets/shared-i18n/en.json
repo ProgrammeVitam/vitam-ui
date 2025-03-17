@@ -1,6 +1,7 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "List of tenants not found for :"
+    "TENANT_NOT_FOUND": "List of tenants not found for :",
+    "TO_OPERATION_APP": "VIEW THE OPERATIONS APP"
   },
   "COMMON": {
     "ADD": "Add",
@@ -3420,23 +3421,23 @@
     "DELETE_EXTERNAL_SCHEMA.KO": "External schema deletion failed",
     "DELETE_EXTERNAL_SCHEMA.FATAL": "External schema deletion failed",
     "DELETE_EXTERNAL_SCHEMA.WARNING": "External schema deletion warning",
-    "COLLECT_DELETION": "Deletion of archival units",
-    "STP_COLLECT_DELETION_PREPARATION": "Preparation process for the analysis of the deletion of archival units",
-    "STP_COLLECT_DELETION_PREPARATION.STARTED": "Beginning of the preparation process for the analysis of the deletion of archival units",
+    "COLLECT_DELETION_ACTION": "Deletion of archival units",
+    "STP_DELETION_ACTION_PREPARATION": "Preparation process for the analysis of the deletion of archival units",
+    "STP_DELETION_ACTION_PREPARATION.STARTED": "Beginning of the preparation process for the analysis of the deletion of archival units",
     "COLLECT_DELETION_UNIT_PREPARATION": "Preparation for the final deletion of archival units",
-    "STP_COLLECT_DELETION_DELETE_UNIT.STARTED": "Beginning of the process of definitive deletion of disposable archival units",
-    "STP_COLLECT_DELETION_DELETE_UNIT": "Final deletion process for disposable archival units",
-    "STP_COLLECT_DELETION_OBJECT_GROUP_PREPARATION.STARTED": "Beginning of the preparation process for the final deletion of groups of technical objects",
-    "STP_COLLECT_DELETION_OBJECT_GROUP_PREPARATION": "Preparation process for the final deletion of groups of technical objects",
-    "STP_COLLECT_DELETION_DELETE_OBJECT_GROUP.STARTED": "Beginning of the process of definitive deletion of groups of technical objects whose parent archival units are deleted",
-    "STP_COLLECT_DELETION_DELETE_OBJECT_GROUP": "Final deletion process for groups of technical objects whose parent archival units are deleted",
-    "STP_COLLECT_DELETION_DETACH_OBJECT_GROUP.STARTED": "Beginning of the process of detaching groups of technical objects from which certain parent archival units are eliminated",
-    "STP_COLLECT_DELETION_DETACH_OBJECT_GROUP": "Detachment process for groups of technical objects from which certain parent archival units are eliminated",
-    "STP_COLLECT_DELETION_REPORT_GENERATION.STARTED": "Beginning of the process for generating the final deletion report for archival units",
-    "STP_COLLECT_DELETION_REPORT_GENERATION": "Process for generating the final deletion report for archival units",
-    "STP_COLLECT_DELETION_FINALIZATION.STARTED": "Beginning of the process of finalizing the final deletion of archival units",
-    "STP_COLLECT_DELETION_FINALIZATION": "Finalization process for the final deletion of archival units",
-    "STP_COLLECT_DELETION_PREPARATION.STARTED.OK": "Success of the preparation process for the final deletion of archival units"
+    "STP_DELETION_ACTION_DELETE_UNIT.STARTED": "Beginning of the process of definitive deletion of disposable archival units",
+    "STP_DELETION_ACTION_DELETE_UNIT": "Final deletion process for disposable archival units",
+    "STP_DELETION_ACTION_OBJECT_GROUP_PREPARATION.STARTED": "Beginning of the preparation process for the final deletion of groups of technical objects",
+    "STP_DELETION_ACTION_OBJECT_GROUP_PREPARATION": "Preparation process for the final deletion of groups of technical objects",
+    "STP_DELETION_ACTION_DELETE_OBJECT_GROUP.STARTED": "Beginning of the process of definitive deletion of groups of technical objects whose parent archival units are deleted",
+    "STP_DELETION_ACTION_DELETE_OBJECT_GROUP": "Final deletion process for groups of technical objects whose parent archival units are deleted",
+    "STP_DELETION_ACTION_DETACH_OBJECT_GROUP.STARTED": "Beginning of the process of detaching groups of technical objects from which certain parent archival units are eliminated",
+    "STP_DELETION_ACTION_DETACH_OBJECT_GROUP": "Detachment process for groups of technical objects from which certain parent archival units are eliminated",
+    "STP_DELETION_ACTION_REPORT_GENERATION.STARTED": "Beginning of the process for generating the final deletion report for archival units",
+    "STP_DELETION_ACTION_REPORT_GENERATION": "Process for generating the final deletion report for archival units",
+    "STP_DELETION_ACTION_FINALIZATION.STARTED": "Beginning of the process of finalizing the final deletion of archival units",
+    "STP_DELETION_ACTION_FINALIZATION": "Finalization process for the final deletion of archival units",
+    "STP_DELETION_ACTION_PREPARATION.STARTED.OK": "Success of the preparation process for the final deletion of archival units"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
@@ -3805,6 +3806,7 @@
         "Strict": "Exact search"
       },
       "FIELDS": {
+        "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
@@ -4951,6 +4953,56 @@
       "DESCRIPTION": "Descriptive metadata",
       "MANAGEMENT": "Management metadata",
       "OTHER": "System metadata"
+    }
+  },
+  "RECLASSIFICATION": {
+    "EXECUTION_ACTION": "Reclassify archival units",
+    "ALERTE_MESSAGES": {
+      "RECLASSE_TITLE": "Reclassify archival units",
+      "BACK_TO_SELECTION": "Return to selection",
+      "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
+      "ACTION_ALERTE_ONE_UNIT_1": "The selection exceeds the threshold of 10,000 archival units",
+      "ACTION_ALERTE_ONE_UNIT_2": "Please revise your selection"
+    },
+    "EXECUTE_RECLASSEMENT_MESSAGE": "The reclassification request has been successfully launched",
+    "COMMON": {
+      "TITLE": "Reclassify archival units",
+      "ATTACHMENT_GUID_LABEL": "Technical identifier of the attachment position",
+      "TARGET_GUID_TITLE_LABEL": "Entitled of the target position",
+      "SELECT_TARGET_GUID": "Select target position",
+      "SELECT_TARGET_PARENT": "Select the source position(s) to remove",
+      "SELECT_TARGET_PARENT_REPLACE": "Select the source position(s) to preserve / to remove",
+      "FROM_PARENT_SOURCE_MESSAGE": "Current parent folder(s)",
+      "ARCHIVE_WITH_NO_PARENTS": "The archival unit has no parents",
+      "GUID_ALREADY_EXISTS": "The technical identifier already exists",
+      "ATTACHMENT_ALREADY_EXISTS": "The attachment already exists",
+      "RECLASSIFICATION_TOGGLE_TREE_PLAN": "Trees & Plans",
+      "RECLASSIFICATION_TOGGLE_UA_ID": "Archive unit Identifier"
+    },
+    "FIRST_STEP": {
+      "SUBTITLE": "Reclassification action",
+      "SELECTED_UNIT": "selected archive unit",
+      "SELECTED_UNIT_PLURAL": "selected archive units",
+      "CHILDS": "Child(s)",
+      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Including {{ nbDocuments }} folders and documents",
+      "SELECT_ACTION_MESSAGE_1": "Select a reclassification action",
+      "SELECT_ACTION_MESSAGE_2": "Reclassification action",
+      "CURRENT_PARENT_FOLDERS": "There is 1 current parent folder",
+      "CURRENT_PARENT_FOLDERS_PLURAL": "There are {{ nbParents }} current parent folders",
+      "MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS": "There are more than five current parent folders",
+      "ALERT_REMOVED_CURRENT_PARENTS_FOLDERS": "Attention: the current parent folders will be removed",
+      "ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS": "Attention: the selected archive units will be without attachment"
+    },
+    "REPLACE_STEP": {
+      "TITLE": "Move to another folder",
+      "FROM_PARENT_SOURCE_MESSAGE": "From folder(s)"
+    },
+    "DELETE_STEP": {
+      "TITLE": "Remove from parent folder"
+    },
+    "ADD_STEP": {
+      "TITLE": "Add to a folder",
+      "ADD_TO_FOLDER": "Add to folder"
     }
   }
 }
