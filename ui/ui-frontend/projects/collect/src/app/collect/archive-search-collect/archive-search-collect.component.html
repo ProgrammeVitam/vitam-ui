@@ -73,12 +73,12 @@
           >
             <button
               mat-menu-item
-              [disabled]="updateUnitsMetadataDisabled() || isArchiveUnitsEmpty() || !hasBulkUpdateUnitRole"
+              [disabled]="(isNotOpen$ | async) || isArchiveUnitsEmpty() || !hasBulkUpdateUnitRole"
               (click)="openUpdateUnitsForm()"
             >
               {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
             </button>
-            <button mat-menu-item (click)="openAddUnitsForm()">
+            <button mat-menu-item [disabled]="isNotOpen$ | async" (click)="openAddUnitsForm()">
               {{ 'COLLECT.ADD_UNITS.ACTION_TITLE' | translate }}
             </button>
             <button
