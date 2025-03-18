@@ -36,21 +36,57 @@
  */
 import { SearchCriteriaAddAction, SearchCriteriaTypeEnum } from './search-criteria.interface';
 import { CriteriaDataType, CriteriaOperator } from './criteria.enums';
-import { searchCriteriaConfigs } from './search-criteria-configs';
+import {
+  ACCESS_RULE,
+  APPRAISAL_RULE,
+  CLASSIFICATION_RULE,
+  DISSEMINATION_RULE,
+  ELIM_TECH_ID_DUA,
+  END_DATE_ACCESS,
+  END_DATE_DISSEMINATION,
+  END_DATE_DUA,
+  END_DATE_DUC,
+  END_DATE_FIELDS,
+  END_DATE_REUSE,
+  FINAL_ACTION_PREFIX,
+  FINAL_ACTION_TYPES,
+  FINAL_ACTION_TYPE_PREFIX,
+  HOLD_RULE,
+  ID_ACCESS,
+  ID_DISSEMINATION,
+  ID_DUA,
+  ID_DUC,
+  ID_REUSE,
+  INTERVAL_DATE_ACCESS,
+  INTERVAL_DATE_DISSEMINATION,
+  INTERVAL_DATE_DUA,
+  INTERVAL_DATE_DUC,
+  INTERVAL_DATE_FIELDS,
+  INTERVAL_DATE_REUSE,
+  MAP_KEY_ELT,
+  NODES,
+  ORIGIN_HAS_AT_LEAST_ONE,
+  ORIGIN_HAS_NO_ONE,
+  REUSE_RULE,
+  RULE_ORIGIN_PREFIX,
+  searchCriteriaConfigs,
+  STORAGE_RULE,
+  TITLE_ACCESS,
+  TITLE_DISSEMINATION,
+  TITLE_DUA,
+  TITLE_DUC,
+  TITLE_REUSE,
+  translatedKeys,
+  RULE_ORIGINS,
+  FINAL_ACTIONS,
+} from './search-criteria-configs';
 import { Injectable } from '@angular/core';
 import { SearchWithTypeSelectorValue } from '../../../../lib/components/search-with-type-selector/search-with-type-selector.component';
 import { SchemaService } from '../../schema';
 import { Collection, Schema } from '../schema';
 import { firstValueFrom } from 'rxjs';
 
-export type ArchiveUnitType =
-  | 'ARCHIVE_UNIT_FILING_UNIT'
-  | 'ARCHIVE_UNIT_HOLDING_UNIT'
-  | 'ARCHIVE_UNIT_WITH_OBJECTS'
-  | 'ARCHIVE_UNIT_WITHOUT_OBJECTS'
-  | 'FINAL_ACTION_TYPE'
-  | 'ALL_ARCHIVE_UNIT_TYPES'
-  | string;
+const SEPARATOR = '|';
 
 @Injectable({
   providedIn: 'root',
@@ -98,8 +134,8 @@ export class SearchCriteriaService {
     return [...criteriaList, ...next];
   }
 
-  isValueTranslated(type: ArchiveUnitType) {
-    return type === 'FINAL_ACTION_TYPE' || type === 'ALL_ARCHIVE_UNIT_TYPES';
+  isValueTranslated(type: string) {
+    return translatedKeys.includes(type);
   }
 
   private async entryToSearchCriteria(
@@ -111,20 +147,29 @@ export class SearchCriteriaService {
     return Promise.all(
       fragments.map(async (fragment) => {
         const formattedValue = fragment.trim();
-        const dataType = await this.getDataType(key);
+        // TODO : Implement this method if needed
+        // const dataType = await this.getDataType(key);
+
+        const categoryForKey = this.setCategory(key);
+        const operator = this.setOperator(fragment, key);
+
+        const keyElt = this.setKeyElt(fragment, key);
+        const beginDate = this.setBeginDate(fragment, key);
+        const endDate = this.setEndDate(fragment, key);
+        const dataType = this.getDataType(key);
 
         const defaultCriteriaConfig: Partial<SearchCriteriaAddAction> = {
-          valueElt: { id: key, value: formattedValue },
+          valueElt: { id: key, value: formattedValue, beginInterval: beginDate, endInterval: endDate },
           labelElt: formattedValue,
-          keyTranslated: false,
-          operator: CriteriaOperator.EQ,
-          category: SearchCriteriaTypeEnum.FIELDS,
+          keyTranslated: categoryForKey !== SearchCriteriaTypeEnum.FIELDS,
+          operator: operator,
+          category: categoryForKey,
           dataType: dataType,
         };
 
         const completeCriteriaConfig: SearchCriteriaAddAction = {
           ...defaultCriteriaConfig,
-          ...(searchCriteriaConfigs[key] || { keyElt: key }),
+          ...(searchCriteriaConfigs[key] || { keyElt: keyElt }),
         } as SearchCriteriaAddAction;
 
         return {
@@ -135,8 +180,122 @@ export class SearchCriteriaService {
     );
   }
 
-  private async getDataType(key: string): Promise<CriteriaDataType> {
-    const type = (await this.schema).find((s) => s.ApiField === key)?.Type;
-    return type === 'DATE' ? CriteriaDataType.DATE : CriteriaDataType.STRING;
+  // TODO : Implement this method if needed
+  // private async getDataType(key: string): Promise<CriteriaDataType> {
+  //   const type = (await this.schema).find((s) => s.ApiField === key)?.Type;
+  //   return type === 'DATE' ? CriteriaDataType.DATE : CriteriaDataType.STRING;
+  // }
+
+  private setCategory(key: string) {
+    let categoryForKey = SearchCriteriaTypeEnum.FIELDS;
+    switch (key) {
+      case APPRAISAL_RULE:
+      case ID_DUA:
+      case TITLE_DUA:
+      case END_DATE_DUA:
+      case INTERVAL_DATE_DUA:
+      case ELIM_TECH_ID_DUA:
+        categoryForKey = SearchCriteriaTypeEnum.APPRAISAL_RULE;
+        break;
+      case ACCESS_RULE:
+      case ID_ACCESS:
+      case TITLE_ACCESS:
+      case END_DATE_ACCESS:
+      case INTERVAL_DATE_ACCESS:
+        categoryForKey = SearchCriteriaTypeEnum.ACCESS_RULE;
+        break;
+      case CLASSIFICATION_RULE:
+        categoryForKey = SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
+        break;
+      case DISSEMINATION_RULE:
+      case ID_DISSEMINATION:
+      case TITLE_DISSEMINATION:
+      case END_DATE_DISSEMINATION:
+      case INTERVAL_DATE_DISSEMINATION:
+        categoryForKey = SearchCriteriaTypeEnum.DISSEMINATION_RULE;
+        break;
+      case REUSE_RULE:
+      case ID_REUSE:
+      case TITLE_REUSE:
+      case END_DATE_REUSE:
+      case INTERVAL_DATE_REUSE:
+        categoryForKey = SearchCriteriaTypeEnum.REUSE_RULE;
+        break;
+      case STORAGE_RULE:
+      case ID_DUC:
+      case TITLE_DUC:
+      case END_DATE_DUC:
+      case INTERVAL_DATE_DUC:
+        categoryForKey = SearchCriteriaTypeEnum.STORAGE_RULE;
+        break;
+      case HOLD_RULE:
+        categoryForKey = SearchCriteriaTypeEnum.HOLD_RULE;
+        break;
+      case NODES:
+        categoryForKey = SearchCriteriaTypeEnum.NODES;
+        break;
+    }
+
+    return categoryForKey;
+  }
+
+  private setOperator(fragment: string, key: string) {
+    let operator = CriteriaOperator.EQ;
+    if (fragment === ORIGIN_HAS_NO_ONE) {
+      operator = CriteriaOperator.MISSING;
+    } else if (fragment === ORIGIN_HAS_AT_LEAST_ONE) {
+      operator = CriteriaOperator.EXISTS;
+    } else if (INTERVAL_DATE_FIELDS.includes(key)) {
+      operator = CriteriaOperator.BETWEEN;
+    } else if (END_DATE_FIELDS.includes(key)) {
+      operator = CriteriaOperator.LTE;
+    }
+
+    return operator;
+  }
+
+  private setKeyElt(fragment: string, key: string) {
+    let keyElt = '';
+    if (MAP_KEY_ELT.has(key)) {
+      keyElt = MAP_KEY_ELT.get(key);
+    } else if (RULE_ORIGINS.includes(fragment)) {
+      keyElt = RULE_ORIGIN_PREFIX + key;
+    } else if (FINAL_ACTIONS.includes(fragment)) {
+      keyElt = FINAL_ACTION_PREFIX + key;
+    } else if (FINAL_ACTION_TYPES.includes(fragment)) {
+      keyElt = FINAL_ACTION_TYPE_PREFIX + key;
+    } else {
+      keyElt = key;
+    }
+
+    return keyElt;
+  }
+
+  private setBeginDate(fragment: string, key: string) {
+    let beginDate = '';
+    if (INTERVAL_DATE_FIELDS.includes(key)) {
+      beginDate = fragment.split(SEPARATOR)[0];
+    }
+    return beginDate;
+  }
+
+  private setEndDate(fragment: string, key: string) {
+    let endDate = '';
+    if (INTERVAL_DATE_FIELDS.includes(key)) {
+      endDate = fragment.split(SEPARATOR)[1];
+    } else if (END_DATE_FIELDS.includes(key)) {
+      endDate = fragment;
+    }
+    return endDate;
+  }
+
+  private getDataType(key: string) {
+    let dataType: CriteriaDataType;
+    if (END_DATE_FIELDS.includes(key) || INTERVAL_DATE_FIELDS.includes(key)) {
+      dataType = CriteriaDataType.INTERVAL;
+    } else {
+      dataType = CriteriaDataType.STRING;
+    }
+    return dataType;
   }
 }
