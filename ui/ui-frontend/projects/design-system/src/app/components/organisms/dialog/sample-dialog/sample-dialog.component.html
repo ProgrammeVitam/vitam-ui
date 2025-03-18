@@ -38,6 +38,26 @@
         </mat-radio-button>
       </mat-radio-group>
     </cdk-step>
+
+    <!-- Step 4 -->
+    <cdk-step *ngIf="showSteps">
+      <vitamui-dialog-content-with-state state="invalid" title="In y a une erreur">
+        <div class="text normal bold">Lorem ipsum dolor sit amet</div>
+        <div class="text normal">
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+      </vitamui-dialog-content-with-state>
+    </cdk-step>
+
+    <!-- Step 5 -->
+    <cdk-step *ngIf="showSteps">
+      <vitamui-dialog-content-with-state state="valid" title="Tout est OK">
+        <div class="text normal bold">Lorem ipsum dolor sit amet</div>
+        <div class="text normal">
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+      </vitamui-dialog-content-with-state>
+    </cdk-step>
   </vitamui-common-stepper>
 </mat-dialog-content>
 <mat-dialog-actions>

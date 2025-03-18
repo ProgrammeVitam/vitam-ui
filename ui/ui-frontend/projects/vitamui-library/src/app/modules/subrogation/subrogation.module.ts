@@ -54,7 +54,7 @@ import { NotificationSnackBarComponent } from './notification-snack-bar/notifica
 import { SubrogationBannerComponent } from './subrogation-banner/subrogation-banner.component';
 import { SubrogationModalComponent } from './subrogation-modal/subrogation-modal.component';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
-import { DialogHeaderComponent } from '../../../lib/components/dialog-header/dialog-header.component';
+import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-header/dialog-header.component';
 import { SelectComponent } from '../../../lib/components/select/select.component';
 
 @NgModule({

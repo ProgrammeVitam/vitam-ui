@@ -1,0 +1,9 @@
+<div class="d-flex align-items-start hgap-4">
+  <div class="icon-container">
+    <i class="vitamui-icon" [class.vitamui-icon-done]="state === 'valid'" [class.vitamui-icon-close]="state === 'invalid'"></i>
+  </div>
+  <div class="d-flex flex-column">
+    <div class="mt-2 mb-4 text large bold" [class.success]="state === 'valid'" [class.danger]="state === 'invalid'">{{ title }}</div>
+    <ng-content></ng-content>
+  </div>
+</div>

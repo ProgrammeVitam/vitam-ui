@@ -34,39 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
-import { VitamUICommonTestModule } from '../../../../testing/src';
+import { Component, HostBinding, Input } from '@angular/core';
 
-import { LoggerModule } from './../logger/logger.module';
-import { StartupService } from './../startup.service';
-
-import { ErrorDialogComponent } from './error-dialog.component';
-
-describe('ErrorDialogComponent', () => {
-  let component: ErrorDialogComponent;
-  let fixture: ComponentFixture<ErrorDialogComponent>;
-
-  beforeEach(async () => {
-    const startupServiceStub = { getPortalUrl: () => {}, getLogo: () => {}, getAppLogoURL: () => {}, getCustomerLogoURL: () => {} };
-
-    await TestBed.configureTestingModule({
-      imports: [LoggerModule.forRoot(), VitamUICommonTestModule],
-      declarations: [ErrorDialogComponent],
-      providers: [
-        { provide: MatDialogRef, useValue: {} },
-        { provide: StartupService, useValue: startupServiceStub },
-      ],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ErrorDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+@Component({
+  selector: 'vitamui-dialog-content-with-state',
+  templateUrl: './dialog-content-with-state.component.html',
+  styleUrls: ['./dialog-content-with-state.component.scss'],
+  imports: [],
+})
+export class DialogContentWithStateComponent {
+  @HostBinding('class')
+  @Input({ required: true })
+  state: 'valid' | 'invalid';
+  @Input({ required: true }) title: string;
+}
