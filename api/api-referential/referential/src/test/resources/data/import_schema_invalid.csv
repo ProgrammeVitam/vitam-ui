@@ -1,9 +1,6 @@
-"Path";"Cardinality";"IsObject";"ShortName";"Description"
-"MyKeyword";"ONE";"false";"Mot-clé";"Description"
-"MyText";"ONE_REQUIRED";"";"";""
-"MyKeyword2";"MANY";"false";"Mot-clé";"Description"
-"MyText2";"MANY_REQUIRED";"";"";""
-"Blob.MyText";"MANY_REQUIRED";"true";"blob";"blob"
-"Blob2.MyText";"ONE_REQUIRED";"true";"blob";"blob"
-"Blob2.MyText";"ONE";"true";"blob";"blob"
-"Blob2.MyText";"MANY";"true";"blob";"blob"
+Path;Cardinality;IsObject;ShortName;Description
+MyObjectOne;ONE;true;Mon objet ONE;MyObject - extension
+MyObjectOne.MyText;ONEWWW;false;Mon texte ONE;MyObject.MyText - extension
+MyObjectOne.MyKeyword;ONE;false;Mon mot clé ONE;MyObject.MyKeyword - extension
+MyObjectOne.MyDouble;;false;Mon décimal ONE;MyObject.MyDouble - extension
+MyObjectOne.MyLong;ONE;false;Mon entier ONE;MyObject.MyLong - extension
