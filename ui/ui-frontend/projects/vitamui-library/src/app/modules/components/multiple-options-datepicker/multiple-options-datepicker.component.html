@@ -1,13 +1,13 @@
-<div class="vitamui-input" [class.disabled]="date.disabled">
+<div class="vitamui-input" [class.disabled]="control.disabled">
   <label> {{ label | translate }} </label>
   <input class="hidden-input" [matDatepicker]="datepicker" [value]="datePickerValue" (dateChange)="setYearMonthAndDay($event.value)" />
   <input
     #vitamUIInput
-    [disabled]="date.disabled"
-    [required]="required"
+    [disabled]="control.disabled"
+    [required]="control.hasValidator(Validators.required)"
     (focus)="onFocus()"
     (blur)="onBlur()"
-    [ngModel]="date.value"
+    [ngModel]="control.value"
     (ngModelChange)="onTextChange($event)"
   />
   <mat-datepicker-toggle [for]="datepicker" matSuffix>
@@ -17,20 +17,17 @@
     #datepicker
     panelClass="picker"
     [startView]="startView"
-    [disabled]="date.disabled"
+    [disabled]="control.disabled"
     (yearSelected)="setYear($event)"
     (monthSelected)="setYearAndMonth($event)"
   ></mat-datepicker>
 </div>
 <div #hintArea class="hint-area">
-  <div class="info" *ngIf="date.valid || date.disabled || date.pristine">
-    <i class="vitamui-icon vitamui-icon-info"></i>
-  </div>
-  <div class="error" *ngIf="date.dirty && !!date.errors?.pattern">
+  <div class="error" *ngIf="control.touched && !!control.errors?.pattern">
     <i class="vitamui-icon vitamui-icon-anomalie"></i>
     <mat-hint> {{ 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate } }} </mat-hint>
   </div>
-  <div class="error" *ngIf="date.dirty && !!date.errors?.required">
+  <div class="error" *ngIf="control.touched && !!control.errors?.required">
     <i class="vitamui-icon vitamui-icon-anomalie"></i>
     <mat-hint> {{ 'DATE.ERROR.REQUIRED_FIELD' | translate }} </mat-hint>
   </div>

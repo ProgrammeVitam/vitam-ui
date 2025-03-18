@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input } from '@angular/core';
+import { NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
 
 export const REPEATABLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,7 +52,7 @@ type InternalValue = { id: number; value: string | number | boolean };
   styleUrls: ['./vitamui-repeatable-input.component.scss'],
   providers: [REPEATABLE_INPUT_VALUE_ACCESSOR],
 })
-export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
+export class VitamuiRepeatableInputComponent extends AbstractFormInputDirective {
   @Input() placeholder: string;
   @Input() autofocus: boolean;
   @HostBinding('class.textarea')
@@ -84,7 +85,12 @@ export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
     }
   }
 
-  constructor(private elRef: ElementRef) {}
+  constructor(
+    injector: Injector,
+    private elRef: ElementRef,
+  ) {
+    super(injector);
+  }
 
   writeValue(values: InternalValue['value'][]) {
     this.items = (values && values.length ? values : ['']).map((v, i) => ({ id: i, value: v.toString() }));
@@ -139,4 +145,6 @@ export class VitamuiRepeatableInputComponent implements ControlValueAccessor {
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
+
+  protected readonly Validators = Validators;
 }
