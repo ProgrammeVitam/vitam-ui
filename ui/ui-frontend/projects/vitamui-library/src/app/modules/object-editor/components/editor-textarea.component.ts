@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { AppendStarPipe } from '../required.pipe';
 import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -46,20 +45,12 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'vitamui-editor-textarea',
   template: `
-    <vitamui-common-textarea [formControl]="control" [placeholder]="label | translate | empty | appendStar: required" class="w-100">
+    <vitamui-common-textarea [formControl]="control" [placeholder]="label | translate | empty" [required]="required" class="w-100">
       <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
       <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
     </vitamui-common-textarea>
   `,
-  imports: [
-    AppendStarPipe,
-    HintComponent,
-    FormErrorDisplayComponent,
-    PipesModule,
-    TranslatePipe,
-    VitamUICommonInputModule,
-    ReactiveFormsModule,
-  ],
+  imports: [HintComponent, FormErrorDisplayComponent, PipesModule, TranslatePipe, VitamUICommonInputModule, ReactiveFormsModule],
 })
 export class EditorTextareaComponent {
   @Input({ required: true }) control!: FormControl;

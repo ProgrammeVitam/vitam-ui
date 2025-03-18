@@ -69,4 +69,14 @@ export class DesignSystemRepeatableInputComponent {
     fc.disable();
     return fc;
   })();
+  public repeatableEmptyAndRequired = (() => {
+    const fc = new FormControl([]);
+    fc.markAsTouched();
+    return fc;
+  })();
+  public repeatableRequired = (() => {
+    const fc = new FormControl(['Lorem Ipsum']);
+    fc.markAsTouched();
+    return fc;
+  })();
 }

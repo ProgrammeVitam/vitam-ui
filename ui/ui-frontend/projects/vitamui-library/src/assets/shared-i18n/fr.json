@@ -5669,7 +5669,7 @@
     "WRONG_FILE_SIZE": "Les dimensions du fichier que vous essayez de déposer sont supérieures à {{width}} * {{height}}px"
   },
   "ERRORS": {
-    "required": "Ce champ est requis.",
+    "required": "Ce champ est obligatoire.",
     "minlength": "La longueur minimale est de {{ requiredLength }} caractères.",
     "maxlength": "La longueur maximale est de {{ requiredLength }} caractères.",
     "email": "Adresse e-mail invalide.",

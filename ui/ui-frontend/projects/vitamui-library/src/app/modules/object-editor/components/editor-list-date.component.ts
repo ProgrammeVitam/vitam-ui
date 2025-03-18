@@ -38,7 +38,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EditObject } from '../models/edit-object.model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AppendStarPipe } from '../required.pipe';
 import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { MultipleOptionsDatepickerModule } from '../../components/multiple-options-datepicker/multiple-options-datepicker.module';
@@ -50,22 +49,15 @@ import { TranslatePipe } from '@ngx-translate/core';
   template: `
     <vitamui-common-multiple-options-datepicker
       [formControl]="control"
-      [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
+      [label]="editObject.displayRule.ui.label | translate | empty"
+      [required]="editObject.required"
       pickerType="day"
     >
       <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
       <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
     </vitamui-common-multiple-options-datepicker>
   `,
-  imports: [
-    AppendStarPipe,
-    HintComponent,
-    FormErrorDisplayComponent,
-    MultipleOptionsDatepickerModule,
-    PipesModule,
-    TranslatePipe,
-    ReactiveFormsModule,
-  ],
+  imports: [HintComponent, FormErrorDisplayComponent, MultipleOptionsDatepickerModule, PipesModule, TranslatePipe, ReactiveFormsModule],
 })
 export class EditorListDateComponent implements OnInit, OnDestroy {
   @Input({ required: true }) editObject!: EditObject;

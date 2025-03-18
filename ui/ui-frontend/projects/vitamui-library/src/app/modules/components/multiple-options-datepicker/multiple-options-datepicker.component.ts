@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, ViewChild, OnInit } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { PickerType } from './multiple-options-datepicker.interface';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -60,7 +60,6 @@ export class MultipleOptionsDatepickerComponent extends AbstractFormInputDirecti
   @Input() startView: MatDatepicker<Date>['startView'];
   @Input() label = 'DATE.DATE';
   @Input() hint: string;
-  @Input() isRequired = false;
   @Input() min?: Date;
   @Input() max?: Date;
 
@@ -156,4 +155,6 @@ export class MultipleOptionsDatepickerComponent extends AbstractFormInputDirecti
       this.datepicker.close();
     }
   }
+
+  protected readonly Validators = Validators;
 }
