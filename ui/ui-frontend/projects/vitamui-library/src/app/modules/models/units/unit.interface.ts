@@ -145,7 +145,13 @@ export interface ManagementRule {
 }
 
 export interface UpdateOperation {
-  SystemId: string;
+  SystemId?: string;
+  ArchiveUnitIdentifierKey?: ArchiveUnitIdentifierKey;
+}
+
+export interface ArchiveUnitIdentifierKey {
+  MetadataName: string;
+  MetadataValue: string;
 }
 
 export interface RuleCategoryVitamUiDto {
