@@ -175,7 +175,7 @@ export class ArchiveUnitEditorService {
     const consistentUpdatedValue = this.filterByCriteria(updatedValue, criteria);
 
     const changes = diff(consistentUpdatedValue, consistentOriginalValue);
-    const replaceEntries = Object.entries(changes);
+    const replaceEntries = Object.entries(changes).filter(([key]) => Object.keys(consistentOriginalValue).includes(key));
     const addEntries = Object.entries(consistentUpdatedValue).filter(([key]) => !Object.keys(consistentOriginalValue).includes(key));
     const removeEntries = Object.entries(consistentOriginalValue).filter(([key]) => !Object.keys(consistentUpdatedValue).includes(key));
     const jsonPatch: JsonPatch = [];

@@ -40,12 +40,17 @@ import { isArray, isEqual, isObject, mapObject, omit } from 'underscore';
 // The value of the properties are that of the first object
 export function diff(o1: { [key: string]: any }, o2: { [key: string]: any }): { [key: string]: any } {
   const diffObj = omit(o1, (value: any, key: string) => {
-    if (o2.hasOwnProperty(key)) {
+    if (o2 && o2.hasOwnProperty(key)) {
       return isObject(value) ? isEqual(o2[key], value) : o2[key] === value;
     }
-
-    return true;
+    return value === null;
   });
-
+  // Empty arrays not present in o1 but present in o2
+  for (const k in o2) {
+    const v = o2[k];
+    if (isArray(v) && !o1.hasOwnProperty(k)) {
+      diffObj[k] = [];
+    }
+  }
   return mapObject(diffObj, (value: any, key: string) => (isObject(value) && !isArray(value) ? diff(value, o2[key]) : value));
 }
