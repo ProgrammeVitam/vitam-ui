@@ -207,8 +207,12 @@ public class PastisService {
 
     public String getArchiveUnitProfile(final ProfileNotice json, final boolean standalone) throws TechnicalException {
         Notice notice = new Notice();
-        if (!standalone && json.getNotice() != null) {
-            notice = json.getNotice();
+        if (json.getNotice() != null) {
+            if (standalone) {
+                notice.setSedaVersion(json.getNotice().getSedaVersion());
+            } else {
+                notice = json.getNotice();
+            }
         }
         String controlSchema;
         try {
