@@ -45,8 +45,8 @@ describe('Diff', () => {
     expect(diff({ a: 'x', b: 'y', c: 'c' }, { a: 'a', b: 'b', c: 'c' })).toEqual({ a: 'x', b: 'y' });
   });
 
-  it('should return { a: "x" }', () => {
-    expect(diff({ a: 'x', b: 'b', c: 'c' }, { a: 'a', b: 'b' })).toEqual({ a: 'x' });
+  it('should return { a: "x", c: "c" }', () => {
+    expect(diff({ a: 'x', b: 'b', c: 'c' }, { a: 'a', b: 'b' })).toEqual({ a: 'x', c: 'c' });
   });
 
   it('should return { a: "x", b: { c: "y" } }', () => {
@@ -59,5 +59,21 @@ describe('Diff', () => {
 
   it('should return { b: { c: "x", d: "y" } }', () => {
     expect(diff({ a: 'a', b: { c: 'x', d: 'y' } }, { a: 'a', b: { c: 'c', d: 'd' } })).toEqual({ b: { c: 'x', d: 'y' } });
+  });
+
+  it('should return { a: "x", b: [] }', () => {
+    expect(diff({ a: 'x' }, { a: 'a', b: [1, 2, 3] })).toEqual({ a: 'x', b: [] });
+  });
+
+  it('should return { a: "x" }', () => {
+    expect(diff({ a: 'x', b: [1, 2, 3] }, { a: 'a', b: [1, 2, 3] })).toEqual({ a: 'x' });
+  });
+
+  it('should return { a: "x", b: [1, 2, 3] }', () => {
+    expect(diff({ a: 'x', b: [1, 2, 3] }, { a: 'a', b: [1, 2] })).toEqual({ a: 'x', b: [1, 2, 3] });
+  });
+
+  it('should return { a: "x", b: [1, 2, 3] }', () => {
+    expect(diff({ a: 'x', b: [1, 2, 3] }, { a: 'a' })).toEqual({ a: 'x', b: [1, 2, 3] });
   });
 });
