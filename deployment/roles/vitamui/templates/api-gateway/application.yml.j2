@@ -45,7 +45,10 @@ spring:
       httpclient:
         wiretap: false
         ssl:
-          use-insecure-trust-manager: true
+          trustedX509Certificates:
+{% for cert_file in copied_cert_files %}
+          - {{ vitamui_folder_conf }}/{{ cert_file }}
+{% endfor %}
       httpserver:
         wiretap: false
       globalcors:

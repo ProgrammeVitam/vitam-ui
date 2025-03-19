@@ -44,7 +44,15 @@
     when: ansible_os_family == "RedHat"
 
   when: force_vitamui_version is defined and install_mode != "container"
+
 #### Configuration ####
+
+- name: Prepare api-gateway trusted certificates
+  include_tasks: "prepare_api_gateway_conf.yml"
+  when: vitamui_struct.vitamui_component == 'api-gateway'
+  tags:
+  - update_vitam_configuration
+  - update_vitamui_certificates
 
 - name: Check that the directories exist (must be removed when the RPM plugin will be patched)
   file:

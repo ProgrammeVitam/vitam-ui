@@ -1,0 +1,60 @@
+- name: Initialize cert_files list
+  set_fact:
+    prefix: "trusted-ca-certs-"
+  tags:
+    - update_vitam_configuration
+    - update_vitamui_certificates
+
+- name: List existing CA certs
+  find:
+    paths: "{{ vitamui_folder_conf }}/"
+    patterns: "{{ prefix }}*.crt"
+  register: existing_ca_certs
+  tags:
+    - update_vitam_configuration
+    - update_vitamui_certificates
+
+- name: List trusted CA files
+  find:
+    paths: "{{ inventory_dir }}/certs/server/ca/"
+    patterns: "*.crt"
+  delegate_to: localhost
+  register: trusted_ca_certs
+  tags:
+    - update_vitam_configuration
+    - update_vitamui_certificates
+
+- name: Check trusted CA files present
+  fail: msg="CA certificates missing from {{ inventory_dir }}/certs/server/ca/ directory"
+  when: trusted_ca_certs | length == 0
+
+- name: Copy trusted CA certs
+  copy:
+    src: "{{ item }}"
+    dest: "{{ vitamui_folder_conf }}/{{ prefix }}{{ item | basename }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+  with_items: "{{ trusted_ca_certs.files | map(attribute='path') }}"
+  notify: restart service
+  tags:
+    - update_vitam_configuration
+    - update_vitamui_certificates
+
+- name: Store copied filenames in a variable
+  set_fact:
+    # regex is used to prefix file-names
+    copied_cert_files: "{{ trusted_ca_certs.files | map(attribute='path') | map('basename') | map('regex_replace', '^(.*)$', prefix + '\\1') | list }}"
+  tags:
+    - update_vitam_configuration
+    - update_vitamui_certificates
+
+- name: Deleting obsolete certs
+  file:
+    path: "{{ vitamui_folder_conf }}/{{ item }}"
+    state: absent
+  with_items: "{{ existing_ca_certs['files'] | map(attribute='path') | map('basename') | difference(copied_cert_files) }}"
+  tags:
+    - update_vitam_configuration
+    - update_vitamui_certificates
+  notify: restart service
