@@ -114,8 +114,10 @@ export class ArchiveUnitEditObjectService {
     categories: string[],
   ): void {
     const schemaElement = this.getSchemaElement(displayObject, schemaByApiPath);
+    const isHiddenCategory = schemaElement && categories.includes(schemaElement.Category);
+    const isExcludedKey = ['#originating_agency', '#originating_agencies'].includes(displayObject.key);
 
-    if (Boolean(schemaElement) && categories.includes(schemaElement.Category)) {
+    if (isHiddenCategory && !isExcludedKey) {
       displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: false } };
     }
 
