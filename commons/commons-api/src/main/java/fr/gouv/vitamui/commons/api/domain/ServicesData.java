@@ -440,7 +440,7 @@ public class ServicesData {
     public static final String ROLE_TRANSFER_REQUEST = ROLE_PREFIX + "TRANSFER_REQUEST";
     public static final String ROLE_ELIMINATION = ROLE_PREFIX + "ELIMINATION";
     public static final String ROLE_COMPUTED_INHERITED_RULES = ROLE_PREFIX + "COMPUTED_INHERITED_RULES";
-    public static final String ROLE_COLLECT_RECLASSIFICATION = ROLE_PREFIX + "COLLECT_RECLASSIFICATION";
+    public static final String ROLE_RECLASSIFICATION = ROLE_PREFIX + "RECLASSIFICATION";
     public static final String ROLE_TRANSFER_ACKNOWLEDGMENT = ROLE_PREFIX + "TRANSFER_ACKNOWLEDGMENT";
 
     //------------------------------------ Collect  Roles -----------------------------------------
@@ -450,7 +450,7 @@ public class ServicesData {
     public static final String COLLECT_DELETE_ARCHIVE_UNIT_ROLE = "ROLE_COLLECT_DELETE_ARCHIVE_UNIT";
 
     public static final String COLLECT_GET_ARCHIVE_SEARCH_ROLE = "ROLE_COLLECT_GET_ARCHIVE_SEARCH";
-
+    public static final String ROLE_COLLECT_RECLASSIFICATION = ROLE_PREFIX + "COLLECT_RECLASSIFICATION";
     public static final String COLLECT_ROLE_GET_ARCHIVE_BINARY = "ROLE_COLLECT_GET_ARCHIVE_BINARY";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
@@ -653,6 +653,7 @@ public class ServicesData {
         ROLE_GET_ALL_LOGBOOK_OPERATION,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
+        ROLE_RECLASSIFICATION,
         ROLE_COLLECT_RECLASSIFICATION,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
@@ -664,7 +665,6 @@ public class ServicesData {
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
 
-        ROLE_COLLECT_RECLASSIFICATION,
 
 
         ROLE_GET_PROJECTS,
@@ -826,6 +826,7 @@ public class ServicesData {
         ROLE_GET_ALL_LOGBOOK_OPERATION,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
+        ROLE_RECLASSIFICATION,
         ROLE_COLLECT_RECLASSIFICATION,
 
         ROLE_CREATE_TRANSACTIONS,
@@ -849,7 +850,6 @@ public class ServicesData {
         ROLE_UPDATE_MANAGEMENT_CONTRACT,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
-        ROLE_COLLECT_RECLASSIFICATION,
         ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE
 
             );
