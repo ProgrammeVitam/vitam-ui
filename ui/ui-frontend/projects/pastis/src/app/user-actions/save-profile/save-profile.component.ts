@@ -275,7 +275,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         if (this.profileService.isMode(ProfileType.PUA)) {
           const profileDescription = this.editProfile
             ? this.fileService.notice.getValue()
-            : this.noticeService.profileFromNotice(createNoticeDialogParams, this.editProfile, true);
+            : this.noticeService.profileFromNotice(createNoticeDialogParams, profileVersion, this.editProfile, true);
           this.subscriptions.add(this.saveArchiveUnitProfile(profileDescription, this.data).subscribe());
         }
         if (this.profileService.isMode(ProfileType.PA)) {
@@ -284,7 +284,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             // CREER NOTICE PUIS ASSIGNER LE PROFIL A LA NOTICE
             this.profile = { ...this.profile, ...profile };
             this.profileDescription = {
-              ...this.noticeService.profileFromNotice(createNoticeDialogParams, this.editProfile, false),
+              ...this.noticeService.profileFromNotice(createNoticeDialogParams, profileVersion, this.editProfile, false),
               ...this.profileDescription,
             };
           } else {
