@@ -52,6 +52,7 @@ import {
   TypeService,
   VitamUICommonModule,
   VitamUILibraryModule,
+  VitamUISnackBarService,
   AgencyService,
 } from 'vitamui-library';
 import { agencyTemplate } from '../agency.template';
@@ -101,6 +102,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
     private tenantSelectionService: TenantSelectionService,
     private dialog: MatDialog,
     private translateService: TranslateService,
+    private snackBarService: VitamUISnackBarService,
   ) {
     this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
   }
@@ -150,7 +152,20 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
           filter((agency) => this.typeService.isConsistent(agency)),
           tap(() => this.spinnerService.open()),
           switchMap((agency) => this.agencyService.patch(agency as Agency)),
-          finalize(() => this.spinnerService.close()),
+          finalize(() => {
+            this.spinnerService.close();
+            this.snackBarService
+              .openWithAppUrlBtn(
+                {
+                  message: 'SNACKBAR.SUCCESSFUL_UPDATE',
+                  icon: 'vitamui-icon-agent',
+                },
+                ApplicationId.LOGBOOK_OPERATION_APP,
+                'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
+              )
+              .subscribe();
+            this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
+          }),
         )
         .subscribe((agency) => {
           this.agency = agency;
