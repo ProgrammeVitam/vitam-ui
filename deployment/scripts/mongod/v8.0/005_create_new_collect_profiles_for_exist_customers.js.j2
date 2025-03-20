@@ -6,8 +6,8 @@ print("START_005_create_new_collect_profiles_for_exist_customers.js");
 // Get sequence for profiles
 var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
-// For each tenants (except cas tenant)
-db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+// For each tenants (except cas and system tenant)
+db.tenants.find({ "identifier": { $nin: [ {{ vitamui_platform_informations.cas_tenant | default(-1) }}, {{ vitamui_platform_informations.proof_tenant | default(1) }} ] } }).forEach(function (tenant) {
 
     //CREATE NEW PROFILES FOR COLLECT_APP except Archiviste - Administrateur (replace the default profile already created)
 
