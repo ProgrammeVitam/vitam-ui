@@ -1115,6 +1115,7 @@
     "TRACEABILITY_OPERATION_FAILED": "Secure log verification audit failed.",
     "OPEN_LOGBOOK": "Open logbook",
     "INVALID_DSL_REQUEST_FORMAT": "Invalid request format",
-    "VIEW_THE_OPERATIONS_LOG": "View the operations log"
+    "VIEW_THE_OPERATIONS_LOG": "View the operations log",
+    "SUCCESSFUL_UPDATE": "The update was successful !"
   }
 }

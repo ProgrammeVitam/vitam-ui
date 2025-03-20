@@ -1115,6 +1115,7 @@
     "TRACEABILITY_OPERATION_FAILED": "L'audit de vérification des journaux sécurisés a échoué.",
     "OPEN_LOGBOOK": "Voir le journal des opérations",
     "INVALID_DSL_REQUEST_FORMAT": "Format de la requête invalide",
-    "VIEW_THE_OPERATIONS_LOG": "Consulter le journal des opérations"
+    "VIEW_THE_OPERATIONS_LOG": "Consulter le journal des opérations",
+    "SUCCESSFUL_UPDATE": "La mise à jour a été réalisée avec succès !"
   }
 }
