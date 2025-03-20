@@ -60,7 +60,7 @@ public class IngestContractDto extends IdDto implements Serializable {
 
     private Integer version;
 
-    @CsvBindByName(column = "Name*", required = true)
+    @CsvBindByName(column = "Name", required = true)
     private String name;
 
     @CsvBindByName(column = "Identifier")

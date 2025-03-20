@@ -1,4 +1,4 @@
-Identifier;Name*;Description;Status;WritingPermission;EveryOriginatingAgency;OriginatingAgencies;EveryDataObjectVersion;DataObjectVersion;RootUnits;ExcludedRootUnits;AccessLog;RuleCategoryToFilter;WritingRestrictedDesc;RuleCategoryToFilterForTheOtherOriginatingAgencies;DoNotFilterFilingSchemes
+Identifier;Name;Description;Status;WritingPermission;EveryOriginatingAgency;OriginatingAgencies;EveryDataObjectVersion;DataObjectVersion;RootUnits;ExcludedRootUnits;AccessLog;RuleCategoryToFilter;WritingRestrictedDesc;RuleCategoryToFilterForTheOtherOriginatingAgencies;DoNotFilterFilingSchemes
 ;Contrats d'accès Full accès 0;;;;;;;;;;;;;;
 ;Contrats d'accès Full accès 1;;;;;;;;;;;;;;
 ;Contrats d'accès RH;Autorisation RH et Finances. Exclusion contrats (RH);INACTIVE;true;true;IdArcDLab | IdArcCommerce;true;PhysicalMaster|BinaryMaster;;;ACTIVE;;true;;

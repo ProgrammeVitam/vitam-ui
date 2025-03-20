@@ -1,4 +1,4 @@
-Identifier;Name*;Description;Status;WritingPermission;EveryOriginatingAgency;OriginatingAgencies;EveryDataObjectVersion;DataObjectVersion;RootUnits;ExcludedRootUnits;AccessLog;RuleCategoryToFilter;WritingRestrictedDesc;RuleCategoryToFilterForTheOtherOriginatingAgencies;DoNotFilterFilingSchemes
+Identifier;Name;Description;Status;WritingPermission;EveryOriginatingAgency;OriginatingAgencies;EveryDataObjectVersion;DataObjectVersion;RootUnits;ExcludedRootUnits;AccessLog;RuleCategoryToFilter;WritingRestrictedDesc;RuleCategoryToFilterForTheOtherOriginatingAgencies;DoNotFilterFilingSchemes
 ggggg;toto-1;;;;;tyty | toto ;;;;;;;;;
 ggggg;toto-2;;;;;;;;tata |tete;;;;;;
 ggggg;toto-3;;;;;;;;;tutu|titi;;;;;
