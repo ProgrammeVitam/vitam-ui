@@ -30,6 +30,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -46,6 +47,7 @@ public class ImportCSVUtils {
         private int index;
         private String columnName;
         private boolean mandatory;
+        private Collection<String> allowedValues;
         private ColumnType columnType;
     }
 
@@ -251,6 +253,21 @@ public class ImportCSVUtils {
                     .column(numberToLetter(rowNumber))
                     .line(lineNumber)
                     .error(ErrorImportFileMessage.MANDATORY_VALUE)
+                    .build()
+            );
+        }
+
+        if (
+            !StringUtils.isBlank(value) &&
+            columnDetails.getAllowedValues() != null &&
+            !columnDetails.getAllowedValues().contains(value)
+        ) {
+            lineErrors.add(
+                ErrorImportFile.builder()
+                    .column(numberToLetter(rowNumber))
+                    .line(lineNumber)
+                    .data(value)
+                    .error(ErrorImportFileMessage.NOT_ALLOWED_VALUE)
                     .build()
             );
         }

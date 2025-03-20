@@ -1,9 +1,11 @@
 package fr.gouv.vitamui.referential.server.service.schema;
 
+import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.server.service.utils.ImportCSVUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ImportSchemaCSVUtils extends ImportCSVUtils {
@@ -31,6 +33,7 @@ public class ImportSchemaCSVUtils extends ImportCSVUtils {
                 .columnName(CARDINALITY)
                 .columnType(ColumnType.STRING)
                 .mandatory(true)
+                .allowedValues(Arrays.stream(Cardinality.values()).map(Cardinality::name).toList())
                 .build()
         );
         expectedColumns.add(

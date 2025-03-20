@@ -39,7 +39,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { VitamUISnackBarService, ApplicationId } from 'vitamui-library';
+import { ApplicationId, VitamUISnackBarService } from 'vitamui-library';
 import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
 import { ReferentialImportService } from './referential-import.service';
 
@@ -87,25 +87,21 @@ export class ImportDialogComponent implements OnDestroy {
           this.dialogRef.close({ successfulImport: true });
         },
         error: (error) => {
-          if (this.dialogParams.errorMessage) {
-            this.snackBarService
-              .openWithAppUrlBtn(
-                {
-                  message: this.dialogParams.errorMessage,
-                  icon: this.dialogParams.iconMessage,
-                },
-                ApplicationId.LOGBOOK_OPERATION_APP,
-                'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
-              )
-              .subscribe();
-          }
+          let showSnackbar = true;
           if (error.error) {
             const errorJson = JSON.parse(error.error);
             if (errorJson.args) {
               (errorJson.args as []).forEach((arg) => {
                 this.errorsDuringImport.push(JSON.parse(arg));
+                showSnackbar = false;
               });
             }
+          }
+          if (showSnackbar && this.dialogParams.errorMessage) {
+            this.snackBarService.open({
+              message: this.dialogParams.errorMessage,
+              icon: this.dialogParams.iconMessage,
+            });
           }
         },
       });

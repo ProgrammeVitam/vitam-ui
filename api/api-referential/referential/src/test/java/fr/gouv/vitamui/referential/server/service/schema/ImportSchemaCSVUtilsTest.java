@@ -32,12 +32,13 @@ class ImportSchemaCSVUtilsTest {
     @Mock
     private MultipartFile mockFile;
 
-    private static final String TEST_FILE_NAME = "import_schema_valid.csv";
+    private static final String TEST_FILE_NAME = "/data/import_schema_valid.csv";
+    private static final String TEST_BAD_FILE_NAME = "/data/import_schema_invalid.csv";
     private static final String TEST_FILE_CONTENT_TYPE = "text/csv";
 
     // Method to load test file content
     private byte[] loadTestFileContent(String fileName) throws IOException {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/" + fileName)) {
+        try (InputStream inputStream = getClass().getResourceAsStream(fileName)) {
             if (inputStream == null) {
                 throw new IOException("File not found in resources: " + fileName);
             }
@@ -66,8 +67,8 @@ class ImportSchemaCSVUtilsTest {
     }
 
     @Test
-    @DisplayName("Should throw exception for empty or invalid schema file")
-    void shouldThrowExceptionForInvalidFile() throws Exception {
+    @DisplayName("Should throw exception for empty schema file")
+    void shouldThrowExceptionForEmptyFile() throws Exception {
         // Arrange: Mock the file to simulate an empty file
         when(mockFile.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
 
@@ -79,6 +80,34 @@ class ImportSchemaCSVUtilsTest {
 
         // Verify exception message
         assertEquals("The file is empty", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should throw exception for invalid schema file")
+    void shouldThrowExceptionForInvalidFile() throws Exception {
+        MultipartFile mockFile = new MockMultipartFile(
+            "file",
+            TEST_BAD_FILE_NAME,
+            TEST_FILE_CONTENT_TYPE,
+            getClass().getResourceAsStream(TEST_BAD_FILE_NAME)
+        );
+
+        // Act & Assert: Verify exception is thrown with the expected message
+        BadRequestException exception = assertThrows(
+            BadRequestException.class,
+            () -> ImportSchemaCSVUtils.checkImportFile(mockFile)
+        );
+
+        // Verify exception message
+        assertEquals("Errors in rows found", exception.getMessage());
+        assertEquals(
+            "{\"line\":3,\"column\":\"B\",\"error\":\"NOT_ALLOWED_VALUE\",\"data\":\"ONEWWW\"}",
+            exception.getArgs().get(0)
+        );
+        assertEquals(
+            "{\"line\":5,\"column\":\"B\",\"error\":\"MANDATORY_VALUE\",\"data\":null}",
+            exception.getArgs().get(1)
+        );
     }
 
     @Test
