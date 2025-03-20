@@ -1070,14 +1070,16 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     const searchCriteria = {
       criteriaList: criteriaList,
       pageNumber: 0,
-      size: 1,
+      size: 10,
       trackTotalHits: false,
       computeFacets: false,
     };
     this.archiveUnitCollectService
       .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)
       .subscribe((response: PagedResult) => {
-        this.hasDynamicAttachment = response.results != null && !isEmpty(response.results);
+        const isStaticProject =
+          response.results != null && response.results.length === 1 && response.results[0].Title === 'STATIC_ATTACHEMENT';
+        this.hasDynamicAttachment = !isEmpty(response.results) && !isStaticProject;
       });
   }
 }
