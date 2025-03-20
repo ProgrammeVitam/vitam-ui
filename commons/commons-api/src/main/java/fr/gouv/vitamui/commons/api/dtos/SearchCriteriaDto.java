@@ -53,6 +53,14 @@ public class SearchCriteriaDto implements Serializable {
 
     private List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
     private List<String> fieldsList = new ArrayList<>();
+    /**
+     * Allows to include fields for projection.
+     */
+    private List<String> includedFields = new ArrayList<>();
+    /**
+     * Allows to exclude fields for projection.
+     */
+    private List<String> excludedFields = new ArrayList<>();
     private SearchCriteriaSort sortingCriteria;
     private Integer pageNumber = 0;
     private Integer size = 1;

@@ -114,6 +114,8 @@ export interface SearchCriteriaDto {
   language?: string;
   trackTotalHits?: boolean;
   computeFacets?: boolean;
+  includedFields?: string[];
+  excludedFields?: string[];
 }
 
 export interface PagedResult {

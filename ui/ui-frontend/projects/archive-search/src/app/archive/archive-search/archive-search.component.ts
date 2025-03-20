@@ -184,7 +184,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   rulesFacetsComputed = false;
   showingFacets = false;
 
-  archiveUnitGuidSelected: string[];
   archiveUnitAllunitup: string[];
   hasAccessContractManagementPermissionsMessage = '';
   bulkOperationsThreshold = -1;
@@ -985,19 +984,21 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           .pipe(filter((result) => !!result))
           .subscribe(() => {}),
       );
-    } else if (this.selectedItemCount <= this.RECLASSIFICATION_THRESHOLD) {
-      this.archiveUnitGuidSelected = this.isAllChecked
-        ? this.archiveUnits.map((unit) => unit['#id'])
+    } else {
+      const archiveUnitGuidSelected = this.isAllChecked
+        ? this.archiveUnits
+            .map((unit) => unit['#id'])
+            .filter((unit) => !this.listOfUAIdToExclude.some((unitToExclude) => unit === unitToExclude.id))
         : this.listOfUAIdToInclude.map((unit) => unit.id);
       let obj = this.archiveUnits
-        .filter((archiveUnit) => this.archiveUnitGuidSelected.includes(archiveUnit['#id']))
+        .filter((archiveUnit) => archiveUnitGuidSelected.includes(archiveUnit['#id']))
         .map((archiveUnit) => archiveUnit['#unitups']);
       this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(obj);
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
       const reclassificationCriteria = {
         criteriaList: this.listOfUACriteriaSearch,
-        pageNumber: this.currentPage,
-        size: PAGE_SIZE,
+        pageNumber: 0,
+        size: this.selectedItemCount,
         language: this.translateService.currentLang,
       };
 
@@ -1008,7 +1009,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           itemSelected: this.selectedItemCount,
           reclassificationCriteria,
           tenantIdentifier: this.tenantIdentifier,
-          archiveUnitGuidSelected: this.archiveUnitGuidSelected,
+          archiveUnitGuidSelected: archiveUnitGuidSelected,
           archiveUnitAllunitup: this.archiveUnitAllunitup,
         },
       });
