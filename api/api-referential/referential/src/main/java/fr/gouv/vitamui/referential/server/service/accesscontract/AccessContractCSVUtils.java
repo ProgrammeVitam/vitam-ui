@@ -11,7 +11,7 @@ public class AccessContractCSVUtils extends ImportCSVUtils {
     private AccessContractCSVUtils() {}
 
     public static final String IDENTIFIER = "Identifier";
-    public static final String NAME = "Name*";
+    public static final String NAME = "Name";
     public static final String DESCRIPTION = "Description";
     public static final String STATUS = "Status";
     public static final String WRITING_PERMISSION = "WritingPermission";

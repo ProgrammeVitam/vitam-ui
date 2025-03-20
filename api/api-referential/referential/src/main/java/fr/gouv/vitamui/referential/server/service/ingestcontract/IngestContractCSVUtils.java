@@ -11,7 +11,7 @@ public class IngestContractCSVUtils extends ImportCSVUtils {
     private IngestContractCSVUtils() {}
 
     public static final String IDENTIFIER = "Identifier";
-    public static final String NAME = "Name*";
+    public static final String NAME = "Name";
     public static final String DESCRIPTION = "Description";
     public static final String STATUS = "Status";
     public static final String ARCHIVE_PROFILES = "ArchiveProfiles";
