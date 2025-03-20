@@ -67,9 +67,7 @@ export class EditObjectService {
     });
     this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
       const child = editObject.children[i];
-      const canRemove = Boolean(['MANY', 'MANY_REQUIRED'].includes(child.cardinality));
-
-      if (canRemove && !child.required && !child.virtual) child.actions.remove = action;
+      if (this.canAddAndRemove(child) && !child.required && !child.virtual) child.actions.remove = action;
     });
     this.sort(editObject, orderedFields);
 
@@ -78,7 +76,6 @@ export class EditObjectService {
     if (editObject.pattern) control.addValidators(CustomValidators.pattern(editObject.pattern, editObject.hint));
     if (['primitive-array', 'object-array'].includes(editObject.kind) && editObject.cardinality === 'ONE_REQUIRED')
       control.addValidators(Validators.maxLength(1));
-    if (editObject.kind === 'object-array' && editObject.children.length === 0) editObject.actions.add.handler();
 
     this.removeCardinalityZero(editObject);
 
@@ -267,9 +264,8 @@ export class EditObjectService {
     return kind;
   }
 
-  private computeChildrenRemoveActions = (editObject: Partial<EditObject>): Action[] => {
-    const canRemove = Boolean(['MANY', 'MANY_REQUIRED'].includes(editObject.cardinality));
-    if (!canRemove) return [];
+  private computeChildrenRemoveActions = (editObject: EditObject): Action[] => {
+    if (!this.canAddAndRemove(editObject)) return [];
 
     if (editObject.kind === 'object-array') {
       return editObject.children.map((child) => ({
@@ -313,7 +309,9 @@ export class EditObjectService {
 
   private computeAddActions =
     (template: Template, schema: Schema) =>
-    (editObject: Partial<EditObject>): Action[] => {
+    (editObject: EditObject): Action[] => {
+      if (!this.canAddAndRemove(editObject)) return [];
+
       if (editObject.kind === 'object-array') {
         const add: Action = {
           name: 'add',
@@ -321,27 +319,20 @@ export class EditObjectService {
           handler: (data: any = null) => {
             const defaultValue = this.schemaService.data(this.schemaService.normalize(editObject.path), schema);
             const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
-            const eo = this.editObject(`${editObject.path}[${editObject.children.length}]`, fullData, template, schema);
-            const canAdd =
-              Boolean(editObject.cardinality !== 'ZERO') &&
-              (Boolean(['ONE', 'ONE_REQUIRED'].includes(editObject.cardinality) && editObject.children.length < 1) ||
-                Boolean(['MANY', 'MANY_REQUIRED'].includes(editObject.cardinality)));
+            const object = this.editObject(`${editObject.path}[${editObject.children.length}]`, fullData, template, schema);
 
-            if (canAdd) {
-              (editObject.control as FormArray).push(eo.control);
-              (editObject.control as FormArray).markAsDirty();
-              editObject.children.push(eo);
-              this.sort(editObject as EditObject, orderedFields);
-              editObject.childrenChange.next(editObject.children);
+            (editObject.control as FormArray).push(object.control);
+            (editObject.control as FormArray).markAsDirty();
+            editObject.children.push(object);
+            this.sort(editObject as EditObject, orderedFields);
+            editObject.childrenChange.next(editObject.children);
 
-              this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
-                const child = editObject.children[i];
-                const canRemove = Boolean(['MANY', 'MANY_REQUIRED'].includes(child.cardinality));
-                if (canRemove) child.actions.remove = action;
-              });
+            this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
+              const child = editObject.children[i];
+              if (this.canAddAndRemove(child)) child.actions.remove = action;
+            });
 
-              eo.actions.add = add;
-            }
+            object.actions.add = add;
           },
         };
 
@@ -354,4 +345,8 @@ export class EditObjectService {
 
       return [];
     };
+
+  private canAddAndRemove(editObject: EditObject) {
+    return Boolean(['MANY', 'MANY_REQUIRED'].includes(editObject.cardinality));
+  }
 }
