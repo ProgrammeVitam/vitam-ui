@@ -25,11 +25,10 @@
 <div #hintArea class="hint-area">
   <div class="info" *ngIf="date.valid || date.disabled || date.pristine">
     <i class="vitamui-icon vitamui-icon-info"></i>
-    <mat-hint> {{ 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate } }} </mat-hint>
   </div>
   <div class="error" *ngIf="date.dirty && !!date.errors?.pattern">
     <i class="vitamui-icon vitamui-icon-anomalie"></i>
-    <mat-hint> {{ 'DATE.ERROR.INCORRECT_FORMAT' | translate }} </mat-hint>
+    <mat-hint> {{ 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate } }} </mat-hint>
   </div>
   <div class="error" *ngIf="date.dirty && !!date.errors?.required">
     <i class="vitamui-icon vitamui-icon-anomalie"></i>

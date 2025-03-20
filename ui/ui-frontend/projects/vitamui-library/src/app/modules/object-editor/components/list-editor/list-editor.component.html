@@ -43,7 +43,8 @@
     ['textfield', 'textarea'].includes(editObject?.displayRule?.ui?.component)
   ) {
     <vitamui-common-repeatable-input
-      [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
+      [placeholder]="editObject.displayRule.ui.label | translate | empty"
+      [required]="editObject.required"
       [textarea]="editObject.displayRule.ui.layout.size === 'large'"
       [formControl]="editObject.control"
     >

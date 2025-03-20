@@ -30,7 +30,6 @@ import { EditObject } from '../models/edit-object.model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditorInputComponent } from './editor-input.component';
-import { AppendStarPipe } from '../required.pipe';
 import { EditorHintComponent } from './editor-hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { MultipleOptionsDatepickerModule } from '../../components/multiple-options-datepicker/multiple-options-datepicker.module';
@@ -43,7 +42,8 @@ import { TranslateModule } from '@ngx-translate/core';
   template: `
     <vitamui-common-multiple-options-datepicker
       [formControl]="control"
-      [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
+      [label]="editObject.displayRule.ui.label | translate | empty"
+      [required]="editObject.required"
       pickerType="day"
     >
       <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
@@ -52,7 +52,6 @@ import { TranslateModule } from '@ngx-translate/core';
   `,
   imports: [
     EditorInputComponent,
-    AppendStarPipe,
     EditorHintComponent,
     FormErrorDisplayComponent,
     MultipleOptionsDatepickerModule,

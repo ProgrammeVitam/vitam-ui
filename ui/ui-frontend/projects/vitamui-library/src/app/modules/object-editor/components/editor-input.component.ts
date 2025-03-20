@@ -26,7 +26,6 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { AppendStarPipe } from '../required.pipe';
 import { EditorHintComponent } from './editor-hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -37,21 +36,13 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'vitamui-editor-input',
   template: `
-    <vitamui-common-input [formControl]="control" [placeholder]="label | translate | empty | appendStar: required" class="w-100">
+    <vitamui-common-input [formControl]="control" [placeholder]="label | translate | empty" [required]="required" class="w-100">
       <vitamui-editor-hint [control]="control" [hint]="hint"></vitamui-editor-hint>
       <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
     </vitamui-common-input>
   `,
   standalone: true,
-  imports: [
-    AppendStarPipe,
-    EditorHintComponent,
-    FormErrorDisplayComponent,
-    PipesModule,
-    TranslateModule,
-    VitamUICommonInputModule,
-    ReactiveFormsModule,
-  ],
+  imports: [EditorHintComponent, FormErrorDisplayComponent, PipesModule, TranslateModule, VitamUICommonInputModule, ReactiveFormsModule],
 })
 export class EditorInputComponent {
   @Input({ required: true }) control!: FormControl;
