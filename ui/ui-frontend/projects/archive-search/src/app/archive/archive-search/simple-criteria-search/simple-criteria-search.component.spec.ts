@@ -88,6 +88,7 @@ describe('SimpleCriteriaSearchComponent', () => {
     schema = new BehaviorSubject<ItemNode<SchemaElement>[]>([]);
     const schemaServiceMock = {
       getDescriptiveSchemaTree: () => schema,
+      getSchema: () => of(),
     };
 
     await TestBed.configureTestingModule({

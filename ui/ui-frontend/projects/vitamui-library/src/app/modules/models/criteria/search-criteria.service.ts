@@ -39,6 +39,9 @@ import { CriteriaDataType, CriteriaOperator } from './criteria.enums';
 import { searchCriteriaConfigs } from './search-criteria-configs';
 import { Injectable } from '@angular/core';
 import { SearchWithTypeSelectorValue } from '../../../../lib/components/search-with-type-selector/search-with-type-selector.component';
+import { SchemaService } from '../../schema';
+import { Collection, Schema } from '../schema';
+import { firstValueFrom } from 'rxjs';
 
 export type ArchiveUnitType =
   | 'ARCHIVE_UNIT_FILING_UNIT'
@@ -54,29 +57,43 @@ export type ArchiveUnitType =
 })
 export class SearchCriteriaService {
   private splittableValues = ['guid', 'guidopi'];
+  private schema: Promise<Schema>;
 
-  toSearchCriteria(
+  constructor(schemaService: SchemaService) {
+    this.schema = firstValueFrom(schemaService.getSchema(Collection.ARCHIVE_UNIT));
+  }
+
+  async ready(): Promise<void> {
+    await this.schema;
+  }
+
+  async toSearchCriteria(
     object: unknown,
     criteriaList: SearchCriteriaAddAction[] = [],
     splittableValues = this.splittableValues,
-  ): SearchCriteriaAddAction[] {
-    const next: SearchCriteriaAddAction[] = Object.entries(object)
-      .filter(([_key, value]) => typeof value === 'boolean' || Boolean(value))
-      .flatMap(([key, value]) => {
-        if (value instanceof Date) return this.entryToSearchCriteria([key, value.toISOString()], splittableValues);
-        if (typeof value === 'string' || value instanceof Array) return this.entryToSearchCriteria([key, value], splittableValues);
-        if (typeof value === 'object' && value.value && value.type?.value !== undefined) {
-          const searchWithTypeSelectorValue = value as SearchWithTypeSelectorValue;
-          const type = searchWithTypeSelectorValue.type.value;
-          const keyWithType = type ? `${key.toLowerCase()}.${type}` : key.toLowerCase();
-          return this.toSearchCriteria({ [keyWithType]: searchWithTypeSelectorValue.value });
-        }
-        if (typeof value === 'object' && Object.entries(value).length) return this.toSearchCriteria(value, criteriaList);
+  ): Promise<SearchCriteriaAddAction[]> {
+    const next: SearchCriteriaAddAction[] = (
+      await Promise.all(
+        Object.entries(object)
+          .filter(([_key, value]) => typeof value === 'boolean' || Boolean(value))
+          .flatMap(async ([key, value]): Promise<SearchCriteriaAddAction[]> => {
+            if (value instanceof Date) return await this.entryToSearchCriteria([key, value.toISOString()], splittableValues);
+            if (typeof value === 'string' || value instanceof Array)
+              return await this.entryToSearchCriteria([key, value], splittableValues);
+            if (typeof value === 'object' && value.value && value.type?.value !== undefined) {
+              const searchWithTypeSelectorValue = value as SearchWithTypeSelectorValue;
+              const type = searchWithTypeSelectorValue.type.value;
+              const keyWithType = type ? `${key.toLowerCase()}.${type}` : key.toLowerCase();
+              return await this.toSearchCriteria({ [keyWithType]: searchWithTypeSelectorValue.value });
+            }
+            if (typeof value === 'object' && Object.entries(value).length) return await this.toSearchCriteria(value, criteriaList);
 
-        console.error('Unhandled case', object, key, value);
+            console.error('Unhandled case', object, key, value);
 
-        return [];
-      });
+            return [];
+          }),
+      )
+    ).flat();
 
     return [...criteriaList, ...next];
   }
@@ -85,33 +102,41 @@ export class SearchCriteriaService {
     return type === 'FINAL_ACTION_TYPE' || type === 'ALL_ARCHIVE_UNIT_TYPES';
   }
 
-  private entryToSearchCriteria(
+  private async entryToSearchCriteria(
     [key, value]: [key: string, value: string | string[]],
     splittableValues = this.splittableValues,
-  ): SearchCriteriaAddAction[] {
+  ): Promise<SearchCriteriaAddAction[]> {
     const fragments = value instanceof Array ? value : splittableValues.includes(key) ? value.trim().split(',') : [value.trim()];
 
-    return fragments.map((fragment) => {
-      const formattedValue = fragment.trim();
+    return Promise.all(
+      fragments.map(async (fragment) => {
+        const formattedValue = fragment.trim();
+        const dataType = await this.getDataType(key);
 
-      const defaultCriteriaConfig: Partial<SearchCriteriaAddAction> = {
-        valueElt: { id: key, value: formattedValue },
-        labelElt: formattedValue,
-        keyTranslated: false,
-        operator: CriteriaOperator.EQ,
-        category: SearchCriteriaTypeEnum.FIELDS,
-        dataType: CriteriaDataType.STRING,
-      };
+        const defaultCriteriaConfig: Partial<SearchCriteriaAddAction> = {
+          valueElt: { id: key, value: formattedValue },
+          labelElt: formattedValue,
+          keyTranslated: false,
+          operator: CriteriaOperator.EQ,
+          category: SearchCriteriaTypeEnum.FIELDS,
+          dataType: dataType,
+        };
 
-      const completeCriteriaConfig: SearchCriteriaAddAction = {
-        ...defaultCriteriaConfig,
-        ...(searchCriteriaConfigs[key] || { keyElt: key }),
-      } as SearchCriteriaAddAction;
+        const completeCriteriaConfig: SearchCriteriaAddAction = {
+          ...defaultCriteriaConfig,
+          ...(searchCriteriaConfigs[key] || { keyElt: key }),
+        } as SearchCriteriaAddAction;
 
-      return {
-        ...completeCriteriaConfig,
-        valueTranslated: this.isValueTranslated(completeCriteriaConfig.keyElt),
-      } as SearchCriteriaAddAction;
-    });
+        return {
+          ...completeCriteriaConfig,
+          valueTranslated: this.isValueTranslated(completeCriteriaConfig.keyElt),
+        } as SearchCriteriaAddAction;
+      }),
+    );
+  }
+
+  private async getDataType(key: string): Promise<CriteriaDataType> {
+    const type = (await this.schema).find((s) => s.ApiField === key)?.Type;
+    return type === 'DATE' ? CriteriaDataType.DATE : CriteriaDataType.STRING;
   }
 }

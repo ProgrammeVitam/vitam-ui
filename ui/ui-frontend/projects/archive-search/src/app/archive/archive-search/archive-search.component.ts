@@ -76,6 +76,7 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaRemoveAction,
+  SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   Unit,
@@ -222,6 +223,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private accessContractService: AccessContractService,
     private cdr: ChangeDetectorRef,
     private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
@@ -405,8 +407,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   ngAfterViewInit() {
-    // Trigger the search if we land on the page with query params
-    if (this.route.snapshot.queryParamMap.keys.length) setTimeout(() => this.submit());
+    // Trigger the search if we land on the page with query params, but only after searchCriteriaService is ready (i.e.: schema has been retrieved) in order to trigger search only after criteria have been set from the URL query params
+    if (this.route.snapshot.queryParamMap.keys.length) this.searchCriteriaService.ready().then(() => setTimeout(() => this.submit()));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
