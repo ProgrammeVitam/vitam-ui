@@ -48,6 +48,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
@@ -59,12 +60,8 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,13 +73,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 /**
@@ -101,6 +95,11 @@ public class LogbookController {
     private final LogbookService logbookService;
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+
+    private static final String DOWNLOAD_TYPE_DIP = "dip";
+    private static final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";
+    private static final String DOWNLOAD_TYPE_BATCH_REPORT = "batchreport";
+    private static final String DOWNLOAD_TYPE_OBJECT = "object";
 
     private final TenantService tenantService;
 
@@ -244,13 +243,13 @@ public class LogbookController {
     )
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
-    public Mono<ResponseEntity<Resource>> downloadReport(
+    public void downloadReport(
         @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @PathVariable final String id,
         @PathVariable final String downloadType,
         final HttpServletResponse response
-    ) throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+    ) throws VitamClientException, IOException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id, downloadType, accessContractId);
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
@@ -261,12 +260,30 @@ public class LogbookController {
             accessContractId
         );
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        Mono<Resource> resourceMono = Mono.fromCallable(() -> {
-            Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext);
-            return new InputStreamResource((InputStream) vitamResponse.getEntity());
-        });
-        return resourceMono
-            .subscribeOn(Schedulers.boundedElastic())
-            .flatMap(resource -> Mono.just(ResponseEntity.ok().cacheControl(CacheControl.noCache()).body(resource)));
+        try (Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext)) {
+            String fileName = getDownloadReportFileName(id, downloadType);
+            response.setHeader(RestUtils.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
+            VitamRestUtils.writeFileResponse(vitamResponse, response);
+        }
+    }
+
+    private static String getDownloadReportFileName(String id, String downloadType) {
+        String fileName = id;
+        switch (downloadType) {
+            case DOWNLOAD_TYPE_OBJECT:
+                fileName += ".xml";
+                break;
+            case DOWNLOAD_TYPE_BATCH_REPORT:
+                fileName += ".jsonl";
+                break;
+            case DOWNLOAD_TYPE_DIP:
+            case DOWNLOAD_TYPE_TRANSFER_SIP:
+                fileName += ".zip";
+                break;
+            default:
+                fileName += ".json";
+                break;
+        }
+        return fileName;
     }
 }

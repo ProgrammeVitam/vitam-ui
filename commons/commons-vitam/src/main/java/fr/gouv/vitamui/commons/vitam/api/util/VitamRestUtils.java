@@ -102,7 +102,7 @@ public class VitamRestUtils {
 
         // Copies content-disposition header from Vitam response
         final Optional<String> contentDispositionOpt = getContentDisposition(vitamObjectStreamResponse);
-        if (contentDispositionOpt.isPresent()) {
+        if (contentDispositionOpt.isPresent() && !response.containsHeader(HttpHeaders.CONTENT_DISPOSITION)) {
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDispositionOpt.get());
         }
 
