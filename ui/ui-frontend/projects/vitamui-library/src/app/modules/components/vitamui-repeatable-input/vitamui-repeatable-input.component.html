@@ -5,7 +5,10 @@
   [class.vitamui-focused]="i === focused"
 >
   <div class="vitamui-input" [class.first]="first">
-    <label *ngIf="first">{{ placeholder }}</label>
+    <label *ngIf="first">
+      {{ placeholder }}
+      <span *ngIf="control.hasValidator(Validators.required)" class="required-marker">*</span>
+    </label>
 
     <input
       *ngIf="!textarea"

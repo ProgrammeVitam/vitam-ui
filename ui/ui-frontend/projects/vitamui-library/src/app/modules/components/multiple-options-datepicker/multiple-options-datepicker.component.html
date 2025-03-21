@@ -1,7 +1,7 @@
 <div class="vitamui-input" [class.disabled]="control.disabled">
   <label>
     {{ label | translate }}
-    <span *ngIf="isRequired" class="required-marker">*</span>
+    <span *ngIf="control.hasValidator(Validators.required)" class="required-marker">*</span>
   </label>
   <input
     class="hidden-input"
@@ -14,7 +14,7 @@
   <input
     #vitamUIInput
     [disabled]="control.disabled"
-    [required]="isRequired"
+    [required]="control.hasValidator(Validators.required)"
     (focus)="onFocus()"
     (blur)="onBlur()"
     [ngModel]="control.value"
@@ -36,16 +36,12 @@
   <div class="info" *ngIf="hint && (control.valid || control.disabled || control.pristine)">
     <i class="vitamui-icon vitamui-icon-info"></i>
     <mat-hint *ngIf="hint"> {{ hint | translate }} </mat-hint>
-    <!-- FIXME: we probably shouldn't ALWAYS show a hint -->
-    <!--    <mat-hint *ngIf="!hint">-->
-    <!--      {{ 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate } }}-->
-    <!--    </mat-hint>-->
   </div>
-  <div class="error" *ngIf="control.dirty && !!control.errors?.pattern">
+  <div class="error" *ngIf="control.touched && !!control.errors?.pattern">
     <i class="vitamui-icon vitamui-icon-anomalie"></i>
-    <mat-hint> {{ 'DATE.ERROR.INCORRECT_FORMAT' | translate }} </mat-hint>
+    <mat-hint> {{ 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate } }} </mat-hint>
   </div>
-  <div class="error" *ngIf="control.dirty && !!control.errors?.required">
+  <div class="error" *ngIf="control.touched && !!control.errors?.required">
     <i class="vitamui-icon vitamui-icon-anomalie"></i>
     <mat-hint> {{ 'DATE.ERROR.REQUIRED_FIELD' | translate }} </mat-hint>
   </div>

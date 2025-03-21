@@ -26,6 +26,38 @@
       ></vitamui-common-repeatable-input>
     </div>
   </div>
+  <div class="row mb-4">
+    <div class="col-3">
+      <vitamui-common-repeatable-input
+        [required]="true"
+        [formControl]="repeatableEmptyAndRequired"
+        [placeholder]="'Input obligatoire sans valeur'"
+      ></vitamui-common-repeatable-input>
+    </div>
+    <div class="col-3">
+      <vitamui-common-repeatable-input
+        [required]="true"
+        [formControl]="repeatableRequired"
+        [placeholder]="'Input obligatoire avec valeur'"
+      ></vitamui-common-repeatable-input>
+    </div>
+    <div class="col-3">
+      <vitamui-common-repeatable-input
+        [textarea]="true"
+        [required]="true"
+        [formControl]="repeatableEmptyAndRequired"
+        [placeholder]="'Textarea obligatoire sans valeur'"
+      ></vitamui-common-repeatable-input>
+    </div>
+    <div class="col-3">
+      <vitamui-common-repeatable-input
+        [textarea]="true"
+        [required]="true"
+        [formControl]="repeatableTextareaOneValue"
+        [placeholder]="'Textarea obligatoire avec valeur'"
+      ></vitamui-common-repeatable-input>
+    </div>
+  </div>
   <div class="row">
     <div class="col-3">
       <vitamui-common-repeatable-input
