@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/design-system/src/app/components/spacing/spacing.component.scss"],
-  "sourcesContent": [".outer {\n  background-color: var(--vitamui-primary);\n}\n\n.inner {\n  background-color: var(--vitamui-secondary);\n  color: white;\n}\n\n.m-auto {\n  max-width: 50%;\n}\n"],
-  "mappings": "AAAA,CAAA,MACE,iBAAA,IAAA,mBAGF,CAAA,MACE,iBAAA,IAAA,qBACA,MAAA,KAGF,CAAA,OACE,UAAA",
-  "names": []
-}

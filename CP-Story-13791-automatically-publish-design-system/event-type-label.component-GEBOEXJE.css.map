@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/logbook/event-type-label/event-type-label.component.scss"],
-  "sourcesContent": [":host-context(.history-event-item.event-error) .history-event-type {\n  color: #ea0101;\n}\n"],
-  "mappings": "AAAA,cAAA,CAAA,kBAAA,CAAA,aAAA,CAAA,mBACE,MAAA",
-  "names": []
-}

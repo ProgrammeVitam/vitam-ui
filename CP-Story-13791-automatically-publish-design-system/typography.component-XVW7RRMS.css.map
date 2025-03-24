@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/design-system/src/app/components/typography/typography.component.scss"],
-  "sourcesContent": [":host > div {\n  background-color: var(--vitamui-background);\n  padding: 20px;\n}\n\n.d-flex {\n  gap: 1rem;\n}\n"],
-  "mappings": "AAAA,KAAA,CAAA,IACE,iBAAA,IAAA,sBADF,QAEE,KAGF,CAAA,OACE,IAAA",
-  "names": []
-}

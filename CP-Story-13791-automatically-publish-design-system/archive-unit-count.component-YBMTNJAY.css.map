@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/archive-unit/components/archive-unit-count/archive-unit-count.component.scss"],
-  "sourcesContent": [".link-without-underline {\n  cursor: pointer;\n  color: #702382;\n  font-weight: bold;\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\n"],
-  "mappings": "AAAA,CAAA,uBACE,OAAA,QACA,MAAA,QACA,YAAA,IACA,WAAA,KACA,cAAA",
-  "names": []
-}

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;2183b9aab06e83f7d5a47e26565929afe4878c304eec85f045db29bbbbc807f1;/home/runner/work/vitam-ui/vitam-ui/ui/ui-frontend/projects/vitamui-library/src/app/modules/object-editor/components/editor-hint.component.ts"],
-  "sourcesContent": ["\n    i {\n      font-size: 1rem;\n    }\n  "],
-  "mappings": "AACI,EACE,UAAW,IACb",
-  "names": []
-}
