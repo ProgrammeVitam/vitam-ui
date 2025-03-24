@@ -217,14 +217,6 @@
       "NAME": "Filing plan",
       "TOOLTIP": "Configure the filing plan of a safe and the characteristics of each position in this plan"
     },
-    "EXT_ALFRESCO_APP": {
-      "NAME": "Alfresco",
-      "TOOLTIP": "Access to Alfresco"
-    },
-    "EXT_DOCUWARE_APP": {
-      "NAME": "Docuware",
-      "TOOLTIP": "Access to Docuware"
-    },
     "RECORD_MANAGEMENT_APP": {
       "NAME": "Records management",
       "TOOLTIP": "Organize the repository of management rules and manage the archive life cycle"
@@ -240,18 +232,6 @@
     "ARCHIVE_TYPE_APP": {
       "NAME": "Forms",
       "TOOLTIP": "Configure indexing forms and metadata display rules for users when searching"
-    },
-    "ARCHIVE_ROOM_APP": {
-      "NAME": "Physical archives center",
-      "TOOLTIP": "Configure archive centers, sites, buildings and rooms. Monitor occupancy rates"
-    },
-    "ARCHIVE_ROOM_PROFILE_APP": {
-      "NAME": "Rights in the \"Physical archives center\" APP",
-      "TOOLTIP": "Set up access profiles for the \"Physical archives center\" APP"
-    },
-    "BARCODES_APP": {
-      "NAME": "Barcode",
-      "TOOLTIP": "Reserve physical archive identifiers and print barcode labels"
     },
     "CUSTOMERS_ADVANCED_PARAM_APP": {
       "NAME": "Advanced parameters of customers",
@@ -3495,7 +3475,7 @@
       "ALL": "All",
       "NONE": "None",
       "SELECTION": "Selection",
-      "OBJECT_GROUPS": "groups of objects :",
+      "OBJECT_GROUPS": "Groups of objects :",
       "DIP_REQUEST_MESSAGE": "Your DIP request has been taken into account",
       "TRANSFER_REQUEST_MESSAGE": "Your archive transfer request has been taken into account",
       "TRANSFER_REQUEST_WARNING_MESSAGE": "Warning: You have not included any digital originals in your transfer request.",
@@ -3538,10 +3518,6 @@
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
-      "ACTIONS": {
-        "SHOW_MORE_DETAILS": "Show all metadata",
-        "SHOW_ONLY_INFORMATION_DETAILS": "Hide management metadata"
-      },
       "FIELDS": {
         "ALGORITHM": "Footprint - ",
         "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH",
@@ -3651,9 +3627,7 @@
       "ADD": "Add criteria",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
-      "COMMUNICABILITY": "Communicability",
       "DISSEMINATION": "Dissemination",
-      "DUC": "Current useful life",
       "GEL": "Freezing",
       "REUSE": "Reuse"
     },
@@ -3661,7 +3635,6 @@
       "ACCESS_RULE": "Access",
       "APPRAISAL_RULE": "Appraisal",
       "CLASSIFICATION": "Classification",
-      "DIFFUSION": "Diffusion",
       "DISSEMINATION_RULE": "Dissemination",
       "GEL": "Gel",
       "REUSE_RULE": "Reuse",
@@ -3789,12 +3762,9 @@
       },
       "ACCESS_TITLE": "Access",
       "APPRAISAL_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "DUA Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "DUA Rule title",
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
         "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
@@ -3833,7 +3803,6 @@
         "Strict": "Exact search"
       },
       "FIELDS": {
-        "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
@@ -3978,17 +3947,12 @@
         "RULE_TITLE_REUSE_RULE": "Reuse rule title"
       },
       "REUSE_TITLE": "Reuse",
-      "REUSEDISSEMINATION_TITLE": "Dissemination",
       "STORAGE_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "Storage Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Storage Rule title",
         "CREATE_INTERVAL": "Create interval",
         "DELETE_INTERVAL": "remove interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
-        "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
         "FINAL_ACTION_TYPE_COPY": "Copy",
         "FINAL_ACTION_TYPE_RESTRICT_ACCESS": "Restrict access",
         "FINAL_ACTION_TYPE_TRANSFER": "Transfer",
@@ -3996,17 +3960,9 @@
         "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
         "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
-        "RULE_END_DATE_ACCESS_RULE": "Storage rule end date",
-        "RULE_END_DATE_APPRAISAL_RULE": "Storage End Date",
         "RULE_END_DATE_BEGIN": "Storage: Min end date",
         "RULE_END_DATE_END": "Storage: Max end date",
-        "RULE_IDENTIFIER_ACCESS_RULE": "Storage rule identifier",
-        "RULE_IDENTIFIER_APPRAISAL_RULE": "Storage Rule identifier",
-        "RULE_ORIGIN_ACCESS_RULE": "Storage rule",
-        "RULE_ORIGIN_APPRAISAL_RULE": "Storage Rule",
-        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
-        "RULE_START_DATE_ACCESS_RULE": "Storage rule start date",
-        "RULE_TITLE_ACCESS_RULE": "Storage rule title"
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule"
       },
       "STORAGE_TITLE": "Storage",
       "TITLE": "Multi-criteria search",
@@ -4076,10 +4032,8 @@
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "SP": "Service producteur",
-        "SP_CODE": "Identifiant SP",
         "SP_COMM": "Service Prod Comm",
         "SP_COMM_DT": "Service Prod Comm DT",
-        "SP_LABEL": "Nom SP",
         "START_DATE": "Date de début",
         "TITLE": "Intitulé",
         "TYPE": "Type"
@@ -4125,9 +4079,7 @@
         "UAID": "Archive Technical ID",
         "URI": "URI",
         "USAGE": "Usage",
-        "USAGE_VERSION": "Usage version",
-        "PERSISTENT_IDENTIFIER": "Persistent Identifier",
-        "PERSISTENT_IDENTIFIER_CONTENT": "Identifier"
+        "USAGE_VERSION": "Usage version"
       },
       "TABS": {
         "INFORMATIONS": "Informations",
@@ -4197,9 +4149,7 @@
       "ADD": "Add criteria",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
-      "COMMUNICABILITY": "Communicability",
       "DISSEMINATION": "Dissemination",
-      "DUC": "Current useful life",
       "GEL": "Freezing",
       "REUSE": "Reuse"
     },
@@ -4207,7 +4157,6 @@
       "ACCESS_RULE": "Access",
       "APPRAISAL_RULE": "Appraisal",
       "CLASSIFICATION": "Classification",
-      "DIFFUSION": "Diffusion",
       "DISSEMINATION_RULE": "Dissemination",
       "GEL": "Gel",
       "REUSE_RULE": "Reuse",
@@ -4362,12 +4311,9 @@
       },
       "ACCESS_TITLE": "Access",
       "APPRAISAL_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "DUA Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "DUA Rule title",
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
         "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
@@ -4510,7 +4456,6 @@
         "START_DATE_DUA": "End Date",
         "START_DATE_SEARCH": "Start date",
         "TITLE": "Title",
-        "Title.Strict": "Title (strict)",
         "TITLE_ACCESS": "Title",
         "TITLE_DUA": "Title",
         "TITLE_OR_DESCRIPTION": "Title or Description",
@@ -4545,17 +4490,12 @@
         "RULE_TITLE_REUSE_RULE": "Reuse rule title"
       },
       "REUSE_TITLE": "Reuse",
-      "REUSEDISSEMINATION_TITLE": "Dissemination",
       "STORAGE_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "Storage Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Storage Rule title",
         "CREATE_INTERVAL": "Create interval",
         "DELETE_INTERVAL": "remove interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
-        "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
         "FINAL_ACTION_TYPE_COPY": "Copy",
         "FINAL_ACTION_TYPE_RESTRICT_ACCESS": "Restrict access",
         "FINAL_ACTION_TYPE_TRANSFER": "Transfer",
@@ -4563,17 +4503,9 @@
         "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
         "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
-        "RULE_END_DATE_ACCESS_RULE": "Storage rule end date",
-        "RULE_END_DATE_APPRAISAL_RULE": "Storage End Date",
         "RULE_END_DATE_BEGIN": "Storage: Min end date",
         "RULE_END_DATE_END": "Storage: Max end date",
-        "RULE_IDENTIFIER_ACCESS_RULE": "Storage rule identifier",
-        "RULE_IDENTIFIER_APPRAISAL_RULE": "Storage Rule identifier",
-        "RULE_ORIGIN_ACCESS_RULE": "Storage rule",
-        "RULE_ORIGIN_APPRAISAL_RULE": "Storage Rule",
-        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
-        "RULE_START_DATE_ACCESS_RULE": "Storage rule start date",
-        "RULE_TITLE_ACCESS_RULE": "Storage rule title"
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule"
       },
       "STORAGE_TITLE": "Storage",
       "TITLE": "Multi-criteria search",
