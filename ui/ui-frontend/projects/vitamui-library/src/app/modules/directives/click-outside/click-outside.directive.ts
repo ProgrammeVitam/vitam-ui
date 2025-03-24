@@ -41,14 +41,30 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
   standalone: true,
 })
 export class ClickOutsideDirective {
-  @Output() vitamuiClickOutside = new EventEmitter<void>(); // Événement émis quand un clic est détecté à l'extérieur
+  @Output() vitamuiClickOutside = new EventEmitter<void>(); // Event emitted when a click is detected outside
 
   constructor(private elementRef: ElementRef) {}
 
   @HostListener('document:mousedown', ['$event'])
   onClick(event: Event) {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.vitamuiClickOutside.emit(); // Émettre un événement si le clic est hors de l'élément
+    const target = event.target as HTMLElement;
+
+    // Check if the clicked element is inside the component
+    if (this.elementRef.nativeElement.contains(target)) {
+      return; // Do nothing if the click is inside
     }
+
+    // Check if the clicked element belongs to an Angular Material overlay
+    if (
+      target.closest('.cdk-overlay-container') ||
+      target.closest('.mat-datepicker-content') ||
+      target.closest('.mat-select-panel') ||
+      target.closest('.mat-dialog-container')
+    ) {
+      return; // Ignore the click if it’s a MatMenu, MatDatepicker, etc.
+    }
+
+    // Emit the event only if it's not a click on an overlay
+    this.vitamuiClickOutside.emit();
   }
 }
