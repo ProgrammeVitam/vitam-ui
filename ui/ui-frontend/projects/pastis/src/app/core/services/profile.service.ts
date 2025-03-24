@@ -38,8 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { BehaviorSubject, combineLatest, filter, from, mergeMap, Observable, pipe, Subscription, toArray } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, filter, from, mergeMap, Observable, of, pipe, Subscription, toArray } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { FileNode } from '../../models/file-node';
@@ -201,8 +201,11 @@ export class ProfileService implements OnDestroy {
     return this.puaService.create(archivalUnitProfile);
   }
 
-  updateProfilePa(profile: Profile) {
-    return this.paService.updateProfilePa(profile);
+  updateProfilePa(profile: Profile): Observable<Profile | null> {
+    return this.paService.updateProfilePa(profile).pipe(
+      mergeMap(() => of(profile)), // Retourne le profil si succès
+      catchError(() => of(null)), // Retourne null en cas d'erreur
+    );
   }
 
   updateProfilePua(archivalUnitProfile: ArchivalProfileUnit) {
