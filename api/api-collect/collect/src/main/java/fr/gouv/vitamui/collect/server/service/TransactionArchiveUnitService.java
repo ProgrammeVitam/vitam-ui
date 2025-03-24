@@ -781,7 +781,7 @@ public class TransactionArchiveUnitService {
             // create a csv writer
             ICSVWriter csvWriter = new CSVWriterBuilder(writer)
                 .withSeparator(exportSearchResultParam.getSeparator())
-                .withQuoteChar(ICSVWriter.NO_QUOTE_CHARACTER)
+                .withQuoteChar(ICSVWriter.DEFAULT_QUOTE_CHARACTER)
                 .withEscapeChar(ICSVWriter.DEFAULT_ESCAPE_CHARACTER)
                 .withLineEnd(ICSVWriter.DEFAULT_LINE_END)
                 .build();
