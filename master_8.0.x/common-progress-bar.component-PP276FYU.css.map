@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/common-progress-bar/common-progress-bar.component.scss"],
+  "sourcesContent": [".steps {\n  margin: 0 0 5px 0;\n}\n\n.right {\n  text-align: right;\n}\n"],
+  "mappings": "AAAA,CAAA,MAAA,OACE,EAAA,EAAA,IAGF,CAAA,MACE,WAAA",
+  "names": []
+}

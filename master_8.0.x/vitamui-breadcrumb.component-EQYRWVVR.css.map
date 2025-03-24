@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-content-breadcrumb/vitamui-breadcrumb/vitamui-breadcrumb.component.scss"],
+  "sourcesContent": [".breadcrumb {\n  display: inline-flex;\n  align-items: center;\n\n  span {\n    font-weight: 700;\n\n    &:not(:last-child) {\n      cursor: pointer;\n      color: var(--vitamui-primary);\n    }\n\n    &:last-child {\n      color: var(--vitamui-grey-900);\n    }\n  }\n\n  i:not(:nth-last-child(2)) {\n    color: var(--vitamui-primary);\n  }\n\n  i:nth-last-child(2) {\n    color: var(--vitamui-grey-900);\n  }\n}\n"],
+  "mappings": "AAAA,CAAA,WACE,QAAA,YACA,YAAA,OAEA,CAJF,WAIE,KACE,YAAA,IAEA,CAPJ,WAOI,IAAA,KAAA,aACE,OAAA,QACA,MAAA,IAAA,mBAGF,CAZJ,WAYI,IAAA,YACE,MAAA,IAAA,oBAIJ,CAjBF,WAiBE,CAAA,KAAA,oBACE,MAAA,IAAA,mBAGF,CArBF,WAqBE,CAAA,mBACE,MAAA,IAAA",
+  "names": []
+}

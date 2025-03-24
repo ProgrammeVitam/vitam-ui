@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/archive-unit/components/archive-unit-editor/components/editor-banner/editor-banner.component.scss"],
+  "sourcesContent": [":host {\n  display: flex;\n  background-color: var(--vitamui-primary);\n  height: 72px;\n  color: white;\n  font-weight: 700;\n  justify-content: space-between;\n}\n\n.title {\n  display: flex;\n  align-items: center;\n  font-size: 12px;\n  line-height: 16px;\n  letter-spacing: -0.2px;\n  position: relative;\n  left: 40px;\n}\n\n.actions {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n}\n"],
+  "mappings": "AAAA,MACE,QAAA,KACA,iBAAA,IAAA,mBACA,OAAA,KACA,MAAA,KACA,YAAA,IACA,gBAAA,cAGF,CAAA,MACE,QAAA,KACA,YAAA,OACA,UAAA,KACA,YAAA,KACA,eAAA,MACA,SAAA,SACA,KAAA,KAGF,CAAA,QACE,QAAA,KACA,YAAA,OACA,gBAAA",
+  "names": []
+}
