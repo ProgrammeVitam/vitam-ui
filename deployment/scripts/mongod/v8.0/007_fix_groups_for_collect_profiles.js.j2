@@ -1,0 +1,34 @@
+db = db.getSiblingDB('iam');
+
+print('START_007_fix_groups_for_collect_profiles.js');
+
+// Remove profiles that were incorrectly created for tenant 1
+db.profiles.deleteMany({
+    _id: {
+        $in: [
+            'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ORIGINATING_AGENCY',
+            'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
+            'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ORIGINATING_AGENCY',
+            'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
+       ]
+    }
+});
+
+// Modify groups to remove these profiles
+db.groups.updateMany(
+    { "identifier": { $in: [{{ vitamui_platform_informations.cas_tenant | default(-1) }}, {{ vitamui_platform_informations.proof_tenant | default(1) }}] } },
+    {
+        $pull: {
+            "profileIds": {
+                $in: [
+                    'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ORIGINATING_AGENCY',
+                    'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
+                    'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ORIGINATING_AGENCY',
+                    'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
+                ]
+            }
+        }
+    }
+);
+
+print('END_007_fix_groups_for_collect_profiles.js');
