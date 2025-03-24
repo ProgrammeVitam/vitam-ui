@@ -25,13 +25,15 @@
 
   "bootstrap_expect": {{ groups['hosts_vitamui_consul_server']|length }},
   "server": true,
-  "ui": true,
+  "ui_config": {
+    "enabled": true
+  },
   "addresses" : {
       "http": "{{ ip_admin }}"
   },
 {% endif %}
 
-  "enable_script_checks": true,
+  "enable_local_script_checks": true,
   "disable_remote_exec": true,
   "disable_update_check": true,
   "encrypt": "{{ consul_encrypt }}",
@@ -43,6 +45,7 @@
   "log_level": "{{ consul.log_level | default('ERROR') }}",
   "log_file": "{{ consul_folder_log }}/consul.log",
   "enable_syslog": {{ false | bool | lower if install_mode == 'container' else consul.enable_syslog | default(true) | bool | lower }},
+
   "checks" : [
     {
         "name": "Check Consul DNS resolution for node",
