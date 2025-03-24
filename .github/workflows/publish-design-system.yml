@@ -1,0 +1,50 @@
+name: Publish design system
+run-name: Publishing design system for branch ${{ github.ref }}
+on:
+  workflow_dispatch: # run when triggered manually
+  push:
+      branches: # run automatically on protected branches (develop & master_*)
+        - develop
+        - master_*
+        - '!master_3.*'
+        - '!master_4.*'
+        - '!master_5.*'
+        - '!master_6.*'
+        - '!master_7.*'
+      paths: # only if design system or library changed
+        - 'ui/ui-frontend/projects/design-system/**'
+        - 'ui/ui-frontend/projects/vitamui-library/**'
+jobs:
+  build-and-publish-design-system:
+    name: Build design system
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.20.3"
+          cache: "npm"
+          cache-dependency-path: |
+            ui/ui-frontend/package-lock.json
+      - name: Install ui-frontend dependencies
+        working-directory: ui/ui-frontend
+        run: npm ci
+      - name: Build vitamui-library
+        working-directory: ui/ui-frontend
+        run: npm run build:vitamui-library
+      - name: Build design-system app
+        working-directory: ui/ui-frontend
+        run: npm run build:design-system -- --base-href=/vitam-ui/${{ github.ref_name }}/ --deploy-url=/vitam-ui/${{ github.ref_name }}/
+      - name: Publish design system to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ui/ui-frontend/dist/design-system/browser
+          destination_dir: ${{ github.ref_name }}
+          keep_files: true
+          allow_empty_commit: false
+          commit_message: "Publish design system for branch ${{ github.ref_name }}"
+      - name: Update index.html
+        uses: ./.github/actions/update-gh-pages-index
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
