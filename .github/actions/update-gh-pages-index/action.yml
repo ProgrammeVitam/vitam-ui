@@ -1,0 +1,51 @@
+name: Update index.html
+description: "Update the index.html file to reflect available branch directories"
+inputs:
+  github_token:
+    description: 'Set a generated GITHUB_TOKEN for pushing to the remote branch.'
+    required: true
+  branch_to_delete:
+    description: "Name of the branch to delete (optional)"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Clone the gh-pages branch
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git clone --depth 1 --branch gh-pages https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} gh-pages
+      shell: bash
+    - name: Remove directory for deleted branch (if applicable)
+      if: inputs.branch_to_delete != ''
+      run: |
+        cd gh-pages
+        rm -rf "${{ inputs.branch_to_delete }}/"
+      shell: bash
+    - name: Update the index.html file
+      run: |
+        cd gh-pages
+        # Generate the index.html
+        echo '<!DOCTYPE html>' > index.html
+        echo "<html lang='en'>" >> index.html
+        echo "<head><meta charset='UTF-8'><title>Available Design System versions</title></head>" >> index.html
+        echo "<body><h1>Available Design System versions</h1><ul>" >> index.html
+        for dir in */; do
+          echo "<li><a href='${dir}'>${dir}</a></li>" >> index.html
+        done
+        echo "</ul></body></html>" >> index.html
+      shell: bash
+    - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      run: |
+        cd gh-pages
+        git add index.html
+        if [ -n "${{ inputs.branch_to_delete }}" ]; then
+          git add "${{ inputs.branch_to_delete }}" || echo "Directory already deleted"
+        fi
+        git commit -m "Update index.html" || echo "No changes to commit"
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} gh-pages
+      shell: bash
