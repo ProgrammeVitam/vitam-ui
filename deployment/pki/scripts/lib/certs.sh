@@ -277,7 +277,7 @@ function getConsulDomain {
 function getDcName {
     # Get DC_NAME
     VITAMUI_SITE_NAME=$(read_ansible_var "vitamui_site_name" "hosts_vitamui_consul_server[0]")
-    if [[ "$VITAMUI_SITE_NAME" =~ "VARIABLEISNOTDEFINED" ]]; then
+    if [[ -z "$VITAMUI_SITE_NAME" || "$VITAMUI_SITE_NAME" =~ "VARIABLEISNOTDEFINED" ]]; then
         VITAM_SITE_NAME=$(read_ansible_var "vitam_site_name" "hosts_cas_server[0]")
         echo $VITAM_SITE_NAME
     else
