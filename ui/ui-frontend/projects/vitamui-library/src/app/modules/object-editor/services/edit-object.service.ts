@@ -268,10 +268,14 @@ export class EditObjectService {
     const hint = Control?.Comment;
     const cardinality = EffectiveCardinality || schemaElement.Cardinality;
 
+    const isSelectComponent = displayRule && kind === 'primitive-array' && options?.length;
+    if (isSelectComponent) displayRule.ui.component = 'select';
+
     return {
       ...partialEditObject,
       required: this.schemaService.isRequired(schemaElement as ProfiledSchemaElement),
       virtual: this.schemaService.isVirtual(schemaElement),
+      displayRule,
       pattern,
       options,
       hint,

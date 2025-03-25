@@ -39,11 +39,11 @@ import { Layout } from './layout.model';
 import { WithPath } from './with-path.model';
 
 export interface Ui extends WithPath {
-  readonly component?: ComponentType;
   readonly layout?: Layout;
   readonly favoriteKeys?: string[];
   readonly open?: boolean;
   readonly display?: boolean;
+  component?: ComponentType;
   label?: string;
   disabled?: boolean;
 }
