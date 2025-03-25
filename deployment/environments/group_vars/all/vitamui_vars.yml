@@ -17,6 +17,8 @@ vitamui_defaults:
   services:
     ### The following values can be overwritten for each components in vitamui: parameters.
     start_timeout: 300
+    status_retries_number: 60
+    status_retries_delay: 5
     at_boot: false
     secure: true
     jvm_log: false
