@@ -137,6 +137,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
             node.count = 0;
             node.hidden = true;
           }
+          this.requestResultsInFilingPlan = 0;
         }
         // fullNodes is a Graph .
         // keeps last child with result only
