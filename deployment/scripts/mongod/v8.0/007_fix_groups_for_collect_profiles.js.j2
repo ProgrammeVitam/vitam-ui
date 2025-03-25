@@ -7,7 +7,7 @@ db.profiles.deleteMany({
     _id: {
         $in: [
             'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ORIGINATING_AGENCY',
-            'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
+            'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT',
             'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ORIGINATING_AGENCY',
             'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
        ]
@@ -22,7 +22,7 @@ db.groups.updateMany(
             "profileIds": {
                 $in: [
                     'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ORIGINATING_AGENCY',
-                    'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
+                    'PROFIL_{{ vitamui_platform_informations.cas_tenant | default(-1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT',
                     'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ORIGINATING_AGENCY',
                     'PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT'
                 ]
