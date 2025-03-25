@@ -60,6 +60,10 @@
     {
       "name": "Utilisateurs",
       "description": "Ensemble des APIs permettant la gestion des utilisateurs (création, modification, récupération et vérification de l'existence)"
+    },
+    {
+      "name": "UserInfos",
+      "description": "Ensemble des APIs permettant la gestion des informations utilisateurs (création, modification)"
     }
   ],
   "produces": [
