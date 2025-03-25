@@ -8,7 +8,7 @@
   retries: "{{ packages_install_retries_number }}"
   until: package_installed is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  tags: update_package_vitamui
+  tags: update_vitamui_package
   notify: reload nginx
 
 - name: Install static ressources for ui-identity-admin - Copy folder

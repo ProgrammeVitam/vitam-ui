@@ -15,8 +15,15 @@ vitamui_defaults:
     vitamuidb: "vitamuidb"
     group: "vitamui"
   services:
+    ### Temporary parameters for migration
+    # In case of minor upgrade of vitam-ui 7.1.x or 8.1.x without PKI update, set "ssl_hostname_verification" to false
+    # in order to disable HTTPS certificate hostname verification (non-recommended).
+    # See migration documentation for more information.
+    ssl_hostname_verification: true
     ### The following values can be overwritten for each components in vitamui: parameters.
     start_timeout: 300
+    status_retries_number: 60
+    status_retries_delay: 5
     at_boot: false
     secure: true
     jvm_log: false
