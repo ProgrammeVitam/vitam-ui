@@ -2,7 +2,6 @@
 
 This component is the CAS server.
 
-
 # Start
 
 ```shell
@@ -68,6 +67,7 @@ VitamUI/CAS support the configuration of multiple identity providers.
 ## Internally managed password authentication
 
 CAS supports a fully featured password authentication mode :
+
 - Configurable password pattern policy (min length, special characters...)
 - Previously used passwords
 - Password expiration
@@ -106,6 +106,7 @@ the smsmode API, or to get a real test token from smsmode...
 CAS can be configured to use client x509 certificates to authenticate the user.
 
 Local test configuration is available in the `tools/docker/nginx-cas-x509` folder. It provides:
+
 - A set of test certificates generated using a test openssl PKI: root ca, intermediate ca, client & server cert
 - Client certificate has an identifier encoded in its Subject DN (`/CN=UserCN/C=FR`), and an email `user@domain.com`
   encoded as a SUBJECT_ALTERNATE_NAME.
@@ -141,6 +142,7 @@ Nginx reverse proxy may be accessed using https://dev.vitamui.com:443/cas/login 
 https://dev.vitamui.com:8080/cas/login).
 
 **Warnings:**
+
 - For now, the above configuration is only available locally. VitamUI Ansible configuration must be updated to support
   these settings.
 - Certificate authentication does work NOT with subrogation (superuser cannot be authenticated with X509 certificate).
@@ -157,7 +159,8 @@ To configure an external provider in VitamUI, you will need to follow the proced
 - Choose the email domain concerned by the provider.
 - Client Identifier: The OIDC client's information `Client ID`
 - Client Secret: The OIDC client's information `Client Secret`
-- Discovery URL: This is the discovery URL, typically ending with `.openid-configuration` (e.g., https://my-oidc-provider.com/.well-known/openid-configuration)
+- Discovery URL: This is the discovery URL, typically ending with `.openid-configuration` (
+  e.g., https://my-oidc-provider.com/.well-known/openid-configuration)
 - Scope: `openid email`
 - JWS Algorithm: The Access token signature algorithm, it depends on the configuration of the OIDC client (ex: ES256).
 
@@ -174,24 +177,24 @@ To ensure these configurations work properly, there are certain rules to follow:
 
 - you need to add the CAS Url and Vitamui Url to OIDC Client into the fields:
 
-  - `Valid redirect URIs`
-  - `Valid post logout redirect URIs`
-  - `Web origins`
-  **Example**
-     ```json
-       "redirectUris": [
-        "https://dev.vitamui.com:4200/*",
-        "https://dev.vitamui.com:8080/*"
-        "https://myfirst-env.fr/*",
-        "https://mysecond-env.fr/*"
-      ],
-      "webOrigins": [
-        "https://dev.vitamui.com:4200/*",
-        "https://dev.vitamui.com:8080/*"
-        "https://myfirst-env.fr/*",
-        "https://mysecond-env.fr/*"
-      ]
-      ```
+    - `Valid redirect URIs`
+    - `Valid post logout redirect URIs`
+    - `Web origins`
+      **Example**
+       ```json
+         "redirectUris": [
+          "https://dev.vitamui.com:4200/*",
+          "https://dev.vitamui.com:8080/*"
+          "https://myfirst-env.fr/*",
+          "https://mysecond-env.fr/*"
+        ],
+        "webOrigins": [
+          "https://dev.vitamui.com:4200/*",
+          "https://dev.vitamui.com:8080/*"
+          "https://myfirst-env.fr/*",
+          "https://mysecond-env.fr/*"
+        ]
+        ```
 
 - The external provider must be accessible from CAS VM, at least the `Discovery URL`.
 - You need to restart the CAS service after adding the provider.
@@ -201,8 +204,10 @@ To ensure these configurations work properly, there are certain rules to follow:
 Bellow an example on OIDC authentication provider based on a pre-configured keycloak.
 
 To test the authentication delegation in the OIDC protocol, you will find an example of ready-made configuration here.
+
 - Simply launch the `tools/docker/external-idp-cas/run-dev.sh` script,
-- This script will create a Docker container with a Keycloak and its database, create an OIDC client, and create a test user.
+- This script will create a Docker container with a Keycloak and its database, create an OIDC client, and create a test
+  user.
 - The keycloak is accessible on the url `http://localhost:8041`
 - The keycloak credentials for admin are:
     - user: `admin`,
@@ -254,7 +259,6 @@ Based on the test container, bellow an example of OIDC authentication provider f
 
 ```
 
-
 ## SAML V2 authentication delegation
 
 To set up Saml V2 authentication with vitamui, please follow these steps:
@@ -266,13 +270,15 @@ To set up Saml V2 authentication with vitamui, please follow these steps:
         keytool -importcert -keystore environments/keystores/server/my_server/keystore_cas-server.jks -storepass xxx -alias orga-saml -file environments/certs/orga-SAML.crt
         ```
     - In Vitamui interface, we create an external provider of SAML type with the following informations:
-        - Email attribute: The attribute containing the user email sent by the idp after authentication, please check that the attribute 'nameid-format' to 'emailAddress' instead of 'transient'
+        - Email attribute: The attribute containing the user email sent by the idp after authentication, please check
+          that the attribute 'nameid-format' to 'emailAddress' instead of 'transient'
         - Upload the CAS keystore file (with the associated password) (keystore_cas-server.jks)
         - Upload the IDP metadata file (e.g., FederationMetadata.xml)
         - After provider creation, we need to download the metadata file of the vitamui provider (spmetadata.xml), and
           provide it to the external IDP provider, this file is used to declare our vitamui provider as a service.
 
 **Warnings:**
+
 - You need to restart the CAS service after adding the provider.
 
 **Settings example for local test**
@@ -280,188 +286,206 @@ To set up Saml V2 authentication with vitamui, please follow these steps:
 To test the saml authentication, bellow an example with an external CAS on version 6.6.x :
 
 - clone the example project ```https://github.com/casinthecloud/cas-overlay-demo.git```
-  - Checkout the branch ```6.6.x```
-  - Create a directory ```/etc/cas``` with ```777``` permissions on the folder.
-  - To run the test as a war without an application server, you need to update some settings:
-      - in the ```pom.xml```:
-          - Replace each occurance of ```cas-server-webapp``` by ```cas-server-webapp-tomcat```
-          - Add the following dependencies:
-               ```xml
-                 <dependency>
-                    <groupId>org.apereo.cas</groupId>
-                    <artifactId>cas-server-support-saml-idp</artifactId>
-                    <version>${cas.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apereo.cas</groupId>
-                    <artifactId>cas-server-support-oidc</artifactId>
-                    <version>${cas.version}</version>
-                </dependency>
-                ```
-          - Add the plugin:
-            ```xml
-               <plugin>
-                  <groupId>org.springframework.boot</groupId>
-                  <artifactId>spring-boot-maven-plugin</artifactId>
-                  <version>2.7.3</version>
-                  <configuration>
-                      <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
-                      <excludes>
-                          <exclude>
-                              <groupId>org.apereo.cas</groupId>
-                              <artifactId>cas-server-webapp-tomcat</artifactId>
-                          </exclude>
-                      </excludes>
-                  </configuration>
-                  <executions>
-                      <execution>
-                          <goals>
-                              <goal>repackage</goal>
-                          </goals>
-                      </execution>
-                  </executions>
-              </plugin>
-            ```
-        - in the ```application.yml```:
-          - update the port of the external cas by change the default port from ```8080``` to another port ex(```8383```)
-          and add these settings:
-              ```yaml
-            cas.server.name: http://localhost:8383
-            cas.server.prefix: http://localhost:8383/cas
-            server.port: 8383
-            server.ssl.enabled: false
-            cas.server.tomcat.httpProxy.enabled: false
-            cas.server.tomcat.http:
-              - enabled: false
-             ```
-          - add a test user/password:
-            ```yaml
-              cas.authn.accept.users: myusernam@mydomainmail.fr::mypassword
-              cas.authn.attribute-repository.stub.attributes.email: myusernam@mydomainmail.fr
-             ```
-          - **myusernam@mydomainmail.fr**  is the user email for testing, and **mypassword** is the password
+    - Checkout the branch ```6.6.x```
+    - Create a directory ```/etc/cas``` with ```777``` permissions on the folder.
+    - To run the test as a war without an application server, you need to update some settings:
+        - in the ```pom.xml```:
+            - Replace each occurance of ```cas-server-webapp``` by ```cas-server-webapp-tomcat```
+            - Add the following dependencies:
+                 ```xml
+                   <dependency>
+                      <groupId>org.apereo.cas</groupId>
+                      <artifactId>cas-server-support-saml-idp</artifactId>
+                      <version>${cas.version}</version>
+                  </dependency>
+                  <dependency>
+                      <groupId>org.apereo.cas</groupId>
+                      <artifactId>cas-server-support-oidc</artifactId>
+                      <version>${cas.version}</version>
+                  </dependency>
+                  ```
+            - Add the plugin:
+              ```xml
+                 <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>2.7.3</version>
+                    <configuration>
+                        <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.apereo.cas</groupId>
+                                <artifactId>cas-server-webapp-tomcat</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+              ```
+            - in the ```application.yml```:
+                - update the port of the external cas by change the default port from ```8080``` to another port
+                  ex(```8383```)
+                  and add these settings:
+                    ```yaml
+                  cas.server.name: http://localhost:8383
+                  cas.server.prefix: http://localhost:8383/cas
+                  server.port: 8383
+                  server.ssl.enabled: false
+                  cas.server.tomcat.httpProxy.enabled: false
+                  cas.server.tomcat.http:
+                    - enabled: false
+                   ```
+                - add a test user/password:
+                  ```yaml
+                    cas.authn.accept.users: myusernam@mydomainmail.fr::mypassword
+                    cas.authn.attribute-repository.stub.attributes.email: myusernam@mydomainmail.fr
+                   ```
+                - **myusernam@mydomainmail.fr**  is the user email for testing, and **mypassword** is the password
 
-      - run ```mvn clean package``` on the project.
-      - run ```java -jar target/cas.war```
-      - After launching,cas will generate some settings files inside the directory ```/etc/cas/saml```
-      - Login in into Vitamui as a superadmin, create a SAML provider with the following information:
-        - Pattern: email domain configured before: ```mydomainmail.fr```
-        - Type: ```SAML```
-        - Email attribute: The attribute containing the user email sent by the idp after authentication, please check that the attribute 'nameid-format' to 'emailAddress' instead of 'transient'
-        - CAS Keystore: for testing: you upload any keystore with the right passowrd.
-        - IDP Metadata: upload the file generated by running external CAS, from the path ```/etc/cas/saml/idp-metadata.xml```
-        - Assertions : false
-        - Signed request: false.
-      - On vitamui, after creating the provider (SSO list) :
-        - we download the ```SPS-metadata.xml``` file and copy it in a directory accessible by external CAS,
-            example ```/some-path-of-cas/SPS-metadata.xml```.
-        - create a new resource file on the project external CAS , example: ```saml-metadata.json``` in the directory:
-             src/main/resources/services with the following content:
-        ```json
-           {
-          "@class" : "org.apereo.cas.support.saml.services.SamlRegisteredService",
-          "name" : "SAMLService",
-          "id" : 1,
-          "evaluationOrder" : 1,
-          "metadataLocation" : "/some-path-of-cas/SPS-metadata.xml",
-          "skipGeneratingTransientNameId": true,
-          "serviceId" : "https://vitamui_host/cas/login/{{technical-provider-id}}"
-          }
-        ```
-        We have to check the following important informations:
-        **vitamui_host** is the url of the vitamui.
-        **some-path-of-cas** is a directory path on the CAS external path vm.
-        **technical-provider-id** is the ```technicalName``` of the provider in providers collection in vitamui db created before.
-    - run ```mvn clean package``` on the project.
-    - run ```java -jar target/cas.war```
+        - run ```mvn clean package``` on the project.
+        - run ```java -jar target/cas.war```
+        - After launching,cas will generate some settings files inside the directory ```/etc/cas/saml```
+        - Login in into Vitamui as a superadmin, create a SAML provider with the following information:
+            - Pattern: email domain configured before: ```mydomainmail.fr```
+            - Type: ```SAML```
+            - Email attribute: change the value of the attribute `nameid-format` to `emailAddress` instead
+              of `transient` in the sp-metadata file
+              `<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat> ` to send the
+              user email from the idp after authentication
+            - CAS Keystore: for testing: you upload any keystore with the right passowrd.
+            - IDP Metadata: upload the file generated by running external CAS, from the
+              path ```/etc/cas/saml/idp-metadata.xml```
+            - Assertions : false
+            - Signed request: false.
+        - On vitamui, after creating the provider (SSO list) :
+            - we download the ```SPS-metadata.xml``` file and copy it in a directory accessible by external CAS,
+              example ```/some-path-of-cas/SPS-metadata.xml```.
+            - create a new resource file on the project external CAS , example: ```saml-metadata.json``` in the
+              directory:
+              src/main/resources/services with the following content:
+          ```json
+             {
+            "@class" : "org.apereo.cas.support.saml.services.SamlRegisteredService",
+            "name" : "SAMLService",
+            "id" : 1,
+            "evaluationOrder" : 1,
+            "metadataLocation" : "/some-path-of-cas/SPS-metadata.xml",
+            "skipGeneratingTransientNameId": true,
+            "serviceId" : "https://vitamui_host/cas/login/{{technical-provider-id}}"
+            }
+          ```
+          We have to check the following important informations:
+          **vitamui_host** is the url of the vitamui.
+          **some-path-of-cas** is a directory path on the CAS external path vm.
+          **technical-provider-id** is the ```technicalName``` of the provider in providers collection in vitamui db
+          created before.
+        - run ```mvn clean package``` on the project.
+        - run ```java -jar target/cas.war```
 
 - You need to restart the CAS service on the Vitamui environment, after adding the provider.
 - Create a user into the organisation with email address ```myusernam@mydomainmail.fr```
 - We can test the SAML delegated authentication using the external CAS.
 
-
 ## Auto provisioning:
 
 The auto provisioning allows the creation and the updating of users after authentication on external IdP.
-When enabled, the auto-provisioning of user call an ad-hoc back-end API that retrn user information based on their primary email address, which is the main authentication information.
+When enabled, the auto-provisioning of user call an ad-hoc back-end API that retrn user information based on their
+primary email address, which is the main authentication information.
 This requires configuring a provisioning API within the iam service. Below is an example configuration to achieve this.
 
 ```yaml
 provisioning-client:
-  identity-providers:
-    - idp-identifier: 662f3f36f0fb0f340240221df27815df8c0a490d8f2f73b120d78a3fc0de2a7b
-      uri: http://127.0.0.1:8990/users
-      client:
-        secure: false
-        ssl-configuration:
-          truststore:
-            key-path: /vitamui/conf/iam/truststore_server.jks
-            key-password: AJ2Ft14CQHiU3eegIAlPqxPRp5uLNMizGadu8SficFja7nQN
-          hostname-verification: false
+    identity-providers:
+        -   idp-identifier: 662f3f36f0fb0f340240221df27815df8c0a490d8f2f73b120d78a3fc0de2a7b
+            uri: http://127.0.0.1:8990/users
+            client:
+                secure: false
+                ssl-configuration:
+                    truststore:
+                        key-path: /vitamui/conf/iam/truststore_server.jks
+                        key-password: AJ2Ft14CQHiU3eegIAlPqxPRp5uLNMizGadu8SficFja7nQN
+                    hostname-verification: false
 ```
-- The value of the parameter ```idp-identifier``` should be the ```_id``` of the provider from the collection iam->providers
-  - The parameter ```uri``` is the url of the provisioning api that should return user information when it is called with request parameter ```email```
-    - The api call has this format : ```GET {{provisionning-api}}/users?email={{user-email}}```
-    - The api response for user should have the following model :
-      ```json
-      {
-        "lastname": "some lastname",
-        "firstname": "some firstname",
-        "email": "eme email",
-        "unit": "SOME_UNIT",
-        "address": {
-        "street": "some street",
-        "zipCode": "Some ZIP code",
-        "city": "Some town",
-        "country": "Some country"
-        },
-        "siteCode": "Some site",
-        "internalCode": "Some internal code"
-        }
-      ```
-    - ***Important***
-      - The information ```unit``` is very important for provisioning feature, this value is the main information to
-        match the group to affect to the user after authentication, we should have a group having a field ```unit```
-        with value this returned value from provisoning api.
-        ```mongodb-json
-             {
-                _id: '662fd94ed0092f16fcadf37507657badae834cfda87af1110d2de0f2a821a60f',
-                identifier: '134',
-                name: 'Groupe provisionning',
-                enabled: true,
-                profileIds: [***],
-                units: [
-                'VITAM'
-                ]
+
+- The value of the parameter ```idp-identifier``` should be the ```_id``` of the provider from the collection iam->
+  providers
+    - The parameter ```uri``` is the url of the provisioning api that should return user information when it is called
+      with request parameter ```email```
+        - The api call has this format : ```GET {{provisionning-api}}/users?email={{user-email}}```
+        - The api response for user should have the following model :
+          ```json
+          {
+            "lastname": "some lastname",
+            "firstname": "some firstname",
+            "email": "eme email",
+            "unit": "SOME_UNIT",
+            "address": {
+            "street": "some street",
+            "zipCode": "Some ZIP code",
+            "city": "Some town",
+            "country": "Some country"
+            },
+            "siteCode": "Some site",
+            "internalCode": "Some internal code"
             }
-        ```
+          ```
+        - ***Important***
+            - The information ```unit``` is very important for provisioning feature, this value is the main information
+              to
+              match the group to affect to the user after authentication, we should have a group having a
+              field ```unit```
+              with value this returned value from provisoning api.
+              ```mongodb-json
+                   {
+                      _id: '662fd94ed0092f16fcadf37507657badae834cfda87af1110d2de0f2a821a60f',
+                      identifier: '134',
+                      name: 'Groupe provisionning',
+                      enabled: true,
+                      profileIds: [***],
+                      units: [
+                      'VITAM'
+                      ]
+                  }
+              ```
 
 # Development
 
 Développement des pages html - en static grace à thymeleaf et avec sass :
+
 ```
 npm install -g sass
 sass --watch src/main/config/sass/cas.scss src/main/resources/static/css/cas.css
 ```
 
 ### Pour les parcours utilisant l'envois de mail :
+
 lancez dans un conteneur votre webmail Mailhog.
+
 ```shell
 docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
 ```
+
 Et dans `cas-server-application-dev.yml` passez les parametres suivant:
+
 ```shell
 spring.mail.host: localhost
 spring.mail.port: 1025
 ```
+
 et rendez-vous sur l'url http://localhost:8025/
 
 # SAML metadata generation
 
 1) Retrieval of the IdP metadata, IdP metadata are ignored, so test metdata can be used instead
-2) Creation of a keystore for the IdP: `keytool -genkeypair -alias idp-test -keypass password -keystore idp-test-keystore.jks -storepass password -keyalg RSA -keysize 2048 -validity 3650`
+2) Creation of a keystore for the
+   IdP: `keytool -genkeypair -alias idp-test -keypass password -keystore idp-test-keystore.jks -storepass password -keyalg RSA -keysize 2048 -validity 3650`
 3) Generation of the SP metadata using the `GenerateSpMetadata` class (in `api-iam-server`) and saving into a file
-
 
 # Security
 
@@ -480,11 +504,10 @@ Import the keys:
 `keytool -importcert -alias cas-client-public -keystore api-iam-admin-server-truststore.jks -file cas-client-public.der`
 `keytool -importcert -alias api-iam-admin-server-public -keystore cas-client-truststore.jks -file api-iam-admin-server-public.der`
 
-
 # URL
 
-The login URL is `https://dev.vitamui.com:8080/cas/login`, with or without the `service` parameter which is the application the user wants to log in.
-
+The login URL is `https://dev.vitamui.com:8080/cas/login`, with or without the `service` parameter which is the
+application the user wants to log in.
 
 # Users
 
@@ -496,7 +519,6 @@ IdP fails at CAS: kevin@total.com
 password reset link: jerome.leleu@vitamui.com
 julien@vitamui.com can surrogate pierre@vitamui.com
 
-
 # CAS server customizations
 
 CAS is deployed in as a war-overlay (the officially recommended deployment method) with many customizations.
@@ -504,10 +526,13 @@ CAS is deployed in as a war-overlay (the officially recommended deployment metho
 CAS implements standard workflows using spring WebFlow; an old yet flexible framework.
 
 CAS customizations include :
+
 - Overriding static resources
 - Rewriting new Spring services that override partially or completely core CAS behavior.
-- Overwriting authentication workflows: Ex. Supporting multi-domain organizations / multiple-users with the same login...
-- Overriding persistence: IAM is used for persisting of user account information, organizations (customers), authentication providers...
+- Overwriting authentication workflows: Ex. Supporting multi-domain organizations / multiple-users with the same
+  login...
+- Overriding persistence: IAM is used for persisting of user account information, organizations (customers),
+  authentication providers...
 - ...
 
 **/!\ WARNING:**
@@ -527,6 +552,7 @@ The `ProvidersService` loads the identity providers from the IAM API every minut
 ## Webflow
 
 Spring WebFlow workflows can be highly customizable. A workflow consists of :
+
 - Views: templated pages rendered to the used
 - Actions: Java code handlers to process user actions (like a POST request)
 - Transitions / states: From a specific state, executing an action returns a transition to a target state (a view or
@@ -538,6 +564,7 @@ Spring WebFlow workflows can be highly customizable. A workflow consists of :
 
 Login workflow (`webflow/login/login-webflow` file) has been (deeply) customized to perform the login process in 3
 steps:
+
 - login input (`templates/emailForm.html`)
 - customer selection (`templates/customerForm.html`) : Optional, only when multiple user accounts match the input email.
 - password input (new file: `templates/passwordForm.html`) or authentication delegation.
@@ -549,6 +576,7 @@ If multiple user accounts match the provided email, then the user if asked to se
 (customerId) that he wants to log into.
 
 If the provided email is invalid / does not exist in the system :
+
 - If the domain does not match any configured organization email domains ==> KO
 - If the domain matches a single organization, user is prompted to enter its credentials.
   Only after credential validation, then he will be rejected with an "email or password is invalid" error message
@@ -562,9 +590,11 @@ using the `DispatcherAction` (called by the webflow) which redirects the user: t
 selected, or an external IdP OIDC / SAML.
 TLS X509 certificate authentication is automatic, and does not follow this workflow.
 
-The external IdP can be forced using the `idp` request parameter (the `cas_idp` parameter must be used at the applications level via the `VitamUICasAuthenticationEntryPoint`).
+The external IdP can be forced using the `idp` request parameter (the `cas_idp` parameter must be used at the
+applications level via the `VitamUICasAuthenticationEntryPoint`).
 
 **Important:** Information disclosure is still possible in some cases :
+
 - The client enters too many bad credentials and locks the account: this is a global problem for most authentication
   providers.
 - The list of configured organizations for an email domain: this is currently not considered as sensitive information.
@@ -575,26 +605,34 @@ The external IdP can be forced using the `idp` request parameter (the `cas_idp` 
 ## Authentication
 
 The login/password authentication is handled by the `UserAuthenticationHandler` (which uses the IAM API).
-In all cases (login/pwd or authentication delegation), the `UserPrincipalResolver` is called based on the identifier (email) to retrieve the user from the IAM API.
+In all cases (login/pwd or authentication delegation), the `UserPrincipalResolver` is called based on the identifier (
+email) to retrieve the user from the IAM API.
 
 The default authentication handler is disabled (`cas.authn.accept.users` property).
 
 ## Password management
 
-The password management is done by the `cas-server-support-surrogate-webflow` module (which is a dependency in the `pom.xml` file).
-It is configured via the overriden `RestPasswordManagementConfiguration` class to use the new `IamRestPasswordManagementService` component based on the `UserExternalRestClient` (IAM API).
+The password management is done by the `cas-server-support-surrogate-webflow` module (which is a dependency in
+the `pom.xml` file).
+It is configured via the overriden `RestPasswordManagementConfiguration` class to use the
+new `IamRestPasswordManagementService` component based on the `UserExternalRestClient` (IAM API).
 The link to use is on the login page: "Reset your password".
 
-A password change may be triggered (whether the user is authenticated or not) thanks to the `TriggerChangePasswordAction` and the request parameter: `doChangePassword=true`.
+A password change may be triggered (whether the user is authenticated or not) thanks to
+the `TriggerChangePasswordAction` and the request parameter: `doChangePassword=true`.
 
-A password reset may be requested via the URL: `/extras/resetPassword?username=xxx&ttl=1day` using the `ResetPasswordController`.
+A password reset may be requested via the URL: `/extras/resetPassword?username=xxx&ttl=1day` using
+the `ResetPasswordController`.
 
 ## Surrogation
 
-The surrogation is handled by the `cas-server-support-surrogate-webflow` module (dependency in the `pom.xml` file) configured in REST mode (using the IAM API).
-It is triggered by the '|' character before the identifier: "|julien@vitamui.com" to choose who Julien can surrogate or "pierre@vitamui.com|julien@vitamui.com" so that Julien surrogates Pierre.
+The surrogation is handled by the `cas-server-support-surrogate-webflow` module (dependency in the `pom.xml` file)
+configured in REST mode (using the IAM API).
+It is triggered by the '|' character before the identifier: "|julien@vitamui.com" to choose who Julien can surrogate
+or "pierre@vitamui.com|julien@vitamui.com" so that Julien surrogates Pierre.
 
-The `DelegatedSurrogateAuthenticationPostProcessor` component is used to handle surrogation with authentication delegation.
+The `DelegatedSurrogateAuthenticationPostProcessor` component is used to handle surrogation with authentication
+delegation.
 
 ## Logout
 
@@ -606,10 +644,10 @@ No more than 1 login per 3 seconds is accepted.
 
 ## MFA by SMS
 
-A specific only SMS MFA provider has been developed in the `mfa` package. It is globally applied with a bypass based on the IAM web service.
+A specific only SMS MFA provider has been developed in the `mfa` package. It is globally applied with a bypass based on
+the IAM web service.
 
 The underneath SMS provider is smsmode.
-
 
 # Database
 
@@ -625,24 +663,28 @@ The underneath SMS provider is smsmode.
 mongosh --port 27018 -u "mongod_dbuser_cas" -p "mongod_dbpwd_cas" --authenticationDatabase "cas"
 ```
 
-
 # OAuth support
 
-The OAuth server support is enabled in the CAS server. To support the resource owner password grant type, an appropriate service must be declared:
+The OAuth server support is enabled in the CAS server. To support the resource owner password grant type, an appropriate
+service must be declared:
 
 ```json
 db.services.insertOne({
-  "_id" : NumberInt(61),
-  "_class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "testclientid",
-  "clientSecret": "testclientsecret",
-  "serviceId" : "testclientid",
-  "name" : "Test OAuth",
-  "supportedGrantTypes": [ "password" ],
-  "attributeReleasePolicy" : {
-    "_class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "allowedAttributes" : [ "authtoken" ]
-  }
+    "_id": NumberInt(61),
+    "_class": "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
+    "clientId": "testclientid",
+    "clientSecret": "testclientsecret",
+    "serviceId": "testclientid",
+    "name": "Test OAuth",
+    "supportedGrantTypes": [
+        "password"
+    ],
+    "attributeReleasePolicy": {
+        "_class": "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+        "allowedAttributes": [
+            "authtoken"
+        ]
+    }
 });
 ```
 
@@ -650,18 +692,22 @@ or with a JSON response:
 
 ```json
 db.services.insertOne({
-  "_id" : NumberInt(61),
-  "_class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "testclientid",
-  "clientSecret": "testclientsecret",
-  "serviceId" : "testclientid",
-  "name" : "Test OAuth",
-  "supportedGrantTypes": [ "password" ],
-  "attributeReleasePolicy" : {
-    "_class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "allowedAttributes" : [ "authtoken" ]
-  },
-  "jsonFormat": true
+    "_id": NumberInt(61),
+    "_class": "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
+    "clientId": "testclientid",
+    "clientSecret": "testclientsecret",
+    "serviceId": "testclientid",
+    "name": "Test OAuth",
+    "supportedGrantTypes": [
+        "password"
+    ],
+    "attributeReleasePolicy": {
+        "_class": "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+        "allowedAttributes": [
+            "authtoken"
+        ]
+    },
+    "jsonFormat": true
 });
 ```
 

@@ -648,6 +648,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
 
     /**
      * Method for load or not file contents
+     *
      * @param dto
      * @param embeddedList
      */
@@ -750,7 +751,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
     ) {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        final IdentityProviderDto dto = getOne(id, embedded);
+        final IdentityProviderDto dto = getOne(id, Optional.empty(), embedded);
         return new ByteArrayResource(
             ProviderEmbeddedOptions.IDPMETADATA.equals(option)
                 ? dto.getIdpMetadata().getBytes()
