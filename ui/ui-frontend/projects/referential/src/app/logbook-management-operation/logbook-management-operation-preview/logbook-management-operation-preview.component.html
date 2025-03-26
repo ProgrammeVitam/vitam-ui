@@ -17,41 +17,21 @@
     <button
       mat-menu-item
       (click)="updateOperationStatus(operation, 'RESUME')"
-      [disabled]="
-        operation?.globalState === 'COMPLETED' ||
-        !(
-          operation?.stepByStep &&
-          operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
-        )
-      "
+      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.RESUME_OPERATION' | translate }}
     </button>
     <button
       mat-menu-item
       (click)="updateOperationStatus(operation, 'NEXT')"
-      [disabled]="
-        operation?.globalState === 'COMPLETED' ||
-        !(
-          operation?.stepByStep &&
-          operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
-        )
-      "
+      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.NEXT_STEP' | translate }}
     </button>
     <button
       mat-menu-item
       (click)="updateOperationStatus(operation, 'REPLAY')"
-      [disabled]="
-        operation?.globalState === 'COMPLETED' ||
-        !(
-          operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
-        )
-      "
+      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.REPLAY_STEP' | translate }}
     </button>
@@ -92,7 +72,7 @@
     <div class="row row-data">
       <div class="col-3">
         <div class="vitamui-cell-content">
-          <vitamui-common-event-type-label [key]="operation.processType"> </vitamui-common-event-type-label>
+          <vitamui-common-event-type-label [key]="operation.processType"></vitamui-common-event-type-label>
         </div>
       </div>
       <div class="col-3">
