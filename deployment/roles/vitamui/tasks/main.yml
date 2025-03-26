@@ -239,3 +239,18 @@
     - name: printing error logs
       fail:
         msg: "{{ journalctl_logs.stdout_lines }}"
+
+- name: Enable logrotate for vitamui
+  template:
+    src: logrotate.d.vitamui.j2
+    dest: /etc/logrotate.d/{{ service_name }}
+    owner: root
+    group: root
+    mode: 0644
+  when: vitamui_struct.access_logrotate | default(access_logrotate) | lower == 'enabled'
+
+- name: Disable logrotate for vitamui
+  file:
+    path: /etc/logrotate.d/{{ service_name }}
+    state: absent
+  when: vitamui_struct.access_logrotate | default(access_logrotate) | lower == 'disabled'
