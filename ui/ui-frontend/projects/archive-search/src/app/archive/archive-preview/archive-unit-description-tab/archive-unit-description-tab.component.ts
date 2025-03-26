@@ -115,9 +115,8 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   }
 
   onCancel() {
-    if (!this.isModified()) return this.backToDisplayMode();
-    if (this.dialog.openDialogs.length > 0) {
-      return; // A dialog is already open
+    if (!this.isModified() || this.dialog.openDialogs.length > 0) {
+      return; // form not modified or dialog already open
     }
     this.subscriptions.add(
       this.dialog
