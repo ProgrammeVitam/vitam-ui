@@ -25,7 +25,7 @@
           [placeholder]="'GROUP.INFORMATIONS.NAME' | translate"
         >
           <ng-container *ngIf="form.get('name')?.touched">
-            <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
+            <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.requiredNotBlank">{{
               'COMMON.ERROR.REQUIRED' | translate
             }}</vitamui-common-input-error>
             <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">{{
@@ -41,7 +41,7 @@
           required
           [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"
         >
-          <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('required')">{{
+          <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('requiredNotBlank')">{{
             'COMMON.ERROR.REQUIRED' | translate
           }}</vitamui-common-input-error>
         </vitamui-common-input>
