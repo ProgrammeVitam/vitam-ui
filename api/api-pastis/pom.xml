@@ -16,11 +16,8 @@
 
     <modules>
         <module>pastis-commons</module>
-        <module>pastis-client</module>
         <module>pastis</module>
-
         <module>pastis-standalone</module>
-
     </modules>
 
 </project>

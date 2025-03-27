@@ -28,10 +28,6 @@
             <artifactId>pastis-commons</artifactId>
         </dependency>
         <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>pastis-client</artifactId>
-        </dependency>
-        <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-api</artifactId>
         </dependency>
@@ -50,10 +46,6 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>referential-client</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
