@@ -85,7 +85,7 @@ export class NoticeService {
     return profile;
   }
 
-  profileFromNotice(retour: any, edit: boolean, pua: boolean): ProfileDescription {
+  profileFromNotice(retour: any, sedaVersion: ProfileVersion, edit: boolean, pua: boolean): ProfileDescription {
     const profile = new ProfileDescriptionModel();
     profile.identifier = retour.identifier;
     profile.name = retour.intitule;
@@ -94,7 +94,7 @@ export class NoticeService {
     if (!edit && !pua) {
       profile.format = 'RNG';
     }
-
+    profile.sedaVersion = sedaVersion;
     return profile;
   }
 
