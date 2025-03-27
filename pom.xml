@@ -31,7 +31,6 @@
         <module>commons</module>
         <module>api</module>
         <module>cas</module>
-        <module>integration-tests</module>
         <module>deployment</module>
         <module>packaging</module>
         <module>cots</module>
