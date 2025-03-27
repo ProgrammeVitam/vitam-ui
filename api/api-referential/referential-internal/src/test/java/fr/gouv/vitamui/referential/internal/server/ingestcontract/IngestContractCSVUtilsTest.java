@@ -175,7 +175,7 @@ class IngestContractCSVUtilsTest {
                     .line(1)
                     .column('B')
                     .error(ErrorImportFileMessage.FILE_MUST_RESPECT_COLUMN_NAME)
-                    .data("Name*")
+                    .data("Name")
                     .build()
             )
         );
