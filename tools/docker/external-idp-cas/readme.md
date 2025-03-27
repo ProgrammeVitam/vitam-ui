@@ -1,20 +1,28 @@
-# Readme  
+# Readme
+
 To test the authentication delegation in the OIDC protocol, you will find an example of ready-made configuration here.
-- Simply launch the `run-dev.sh` script, 
-- This script will create a Docker container with a Keycloak and its database, create an OIDC client, and create a test user.
-- The keycloak is the url `http://localhost:8041`  
-- The keycloak credentials for admin are: 
-  - user: `admin`, 
-  - password: `changeme`
-- The OIDC client created has the following informations:
-  - identifier: `vitamui-oidc`
-  - secret: `QQXbm6947N5kYVL0yLDAHwlo3ZW2I8ui`
-  - OpenID Endpoint Configuration: `http://localhost:8041/realms/vitamui-test/.well-known/openid-configuration`
-- The user created has the following informations:
-  - Username: `demo@change-me.fr`
-  - Email: `demo@change-me.fr`
-  - Name: `demo oidc vitamui`
-  - Password: `ChangeIt.2024` 
+
+- Simply launch the `run-dev.sh` script,
+- This script will create a Docker container with a Keycloak and its database, create an OIDC client, and create a test
+  user.
+- The keycloak is the url `http://localhost:8041`
+- The keycloak credentials for admin are:
+    - user: `admin`,
+    - password: `changeme`
+- The OIDC client created has the following information:
+    - identifier: `vitamui-oidc`
+    - secret: `QQXbm6947N5kYVL0yLDAHwlo3ZW2I8ui`
+    - OpenID Endpoint Configuration: `http://localhost:8041/realms/vitamui-test/.well-known/openid-configuration`
+
+- The user created has the following information:
+    - Username: `demo@change-me.fr`
+    - Email: `demo@change-me.fr`
+    - Name: `demo oidc vitamui`
+    - Password: `ChangeIt.2024`
+
+- The client is configured for local tests. To test on another environment, you need to change the settings on the
+  oidc-client `vitamui-oidc` on keycloak by replacing http://localhost:8080 with the main vitamui url of the
+  environment.
 
 **Full example**
 Based on the test container, bellow an example on OIDC authentication provider based on the script run-dev.sh :

@@ -265,12 +265,11 @@ To set up Saml V2 authentication with vitamui, please follow these steps:
       ```sh
         keytool -importcert -keystore environments/keystores/server/my_server/keystore_cas-server.jks -storepass xxx -alias orga-saml -file environments/certs/orga-SAML.crt
         ```
-    - In Vitamui interface, we create an external provider of SAML type with the following informations:
-        - Email attribute: The attribute containing the user email sent by the idp after authentication, please check that the attribute 'nameid-format' to 'emailAddress' instead of 'transient'
+        - In Vitamui interface, we create an external provider of SAML type with the following information:
+        - Email attribute: change the value of the attribute `nameid-format` to `emailAddress` instead of `transient` in the sp-metadata file to send the user email from the idp after authentication
         - Upload the CAS keystore file (with the associated password) (keystore_cas-server.jks)
         - Upload the IDP metadata file (e.g., FederationMetadata.xml)
-        - After provider creation, we need to download the metadata file of the vitamui provider (spmetadata.xml), and
-          provide it to the external IDP provider, this file is used to declare our vitamui provider as a service.
+        - After provider creation, we need to download the metadata file of the vitamui provider (spmetadata.xml), and provide it to the external IDP provider, this file is used to declare our vitamui provider as a service.
 
 **Warnings:**
 - You need to restart the CAS service after adding the provider.
