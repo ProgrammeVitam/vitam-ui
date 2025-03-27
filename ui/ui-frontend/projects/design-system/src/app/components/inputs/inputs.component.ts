@@ -51,6 +51,16 @@ export class InputsComponent implements OnInit, OnDestroy {
     fc.disable();
     return fc;
   })();
+  public repeatableEmptyAndRequired = (() => {
+    const fc = new FormControl([]);
+    fc.markAsTouched();
+    return fc;
+  })();
+  public repeatableRequired = (() => {
+    const fc = new FormControl(['Lorem Ipsum']);
+    fc.markAsTouched();
+    return fc;
+  })();
 
   public streetEmpty = new FormControl('', [Validators.maxLength(3)]);
   public streetInvalid = new FormControl('azerty', [Validators.maxLength(3)]);
