@@ -72,8 +72,15 @@ export class IngestContractInformationTabComponent implements OnInit {
 
   private _ingestContract: IngestContract;
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
+  previousValue = (): any => {
+    return {
+      identifier: this._ingestContract.identifier,
+      status: this._ingestContract.status,
+      name: this._ingestContract.name,
+      description: this._ingestContract.description,
+      archiveProfiles: this._ingestContract.archiveProfiles,
+      managementContractId: this._ingestContract.managementContractId,
+    };
   };
 
   @Input()
@@ -124,7 +131,7 @@ export class IngestContractInformationTabComponent implements OnInit {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
+      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.ruleFilter.valueChanges.subscribe((val) => {
@@ -146,12 +153,18 @@ export class IngestContractInformationTabComponent implements OnInit {
     });
 
     this.archiveProfileService.getAllByParams(params, headers).subscribe((archiveProfiles) => {
-      this.archiveProfiles = archiveProfiles.map((archiveProfile) => ({ key: archiveProfile.identifier, label: archiveProfile.name }));
+      this.archiveProfiles = archiveProfiles.map((archiveProfile) => ({
+        key: archiveProfile.identifier,
+        label: archiveProfile.name,
+      }));
     });
   }
 
   unchanged(): boolean {
-    const currentFormValue = { ...this.form.getRawValue(), managementContractId: this.form.get('managementContractId').value || '' };
+    const currentFormValue = {
+      ...this.form.getRawValue(),
+      managementContractId: this.form.get('managementContractId').value || '',
+    };
     const unchanged = JSON.stringify(diff(currentFormValue, this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;

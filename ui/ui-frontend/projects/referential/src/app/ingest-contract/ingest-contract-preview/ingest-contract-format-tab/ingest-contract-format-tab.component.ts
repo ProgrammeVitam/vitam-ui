@@ -81,14 +81,17 @@ export class IngestContractFormatTabComponent implements OnInit {
   @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  submited = false;
-  formatTypeList: FileFormat[];
+  submitted = false;
   formatOptions: VitamuiSelectOptions;
 
   private _ingestContract: IngestContract;
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
+  previousValue = (): any => {
+    return {
+      everyFormatType: this._ingestContract.everyFormatType,
+      formatType: this._ingestContract.formatType.sort() ?? null,
+      formatUnidentifiedAuthorized: this._ingestContract.formatUnidentifiedAuthorized,
+    };
   };
 
   constructor(
@@ -98,7 +101,7 @@ export class IngestContractFormatTabComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       everyFormatType: [true, Validators.required],
-      formatType: [new Array<string>()],
+      formatType: [null],
       formatUnidentifiedAuthorized: [false, Validators.required],
     });
   }
@@ -124,15 +127,14 @@ export class IngestContractFormatTabComponent implements OnInit {
     }
 
     this.form.controls.everyFormatType.valueChanges.subscribe((value: boolean) => {
+      this.form.controls.formatType.setValue(null);
       if (value) {
         this.form.controls.formatType.setValidators([]);
-        this.form.controls.formatType.setValue([]);
-        this.form.controls.formatType.updateValueAndValidity();
       } else {
         this.form.controls.formatType.setValidators(Validators.required);
         this.form.controls.formatType.markAllAsTouched();
-        this.form.controls.formatType.updateValueAndValidity();
       }
+      this.form.controls.formatType.updateValueAndValidity();
     });
   }
 
@@ -152,7 +154,14 @@ export class IngestContractFormatTabComponent implements OnInit {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => {
+        // prevent having error from backend
+        if (formData.formatType === null) {
+          formData.formatType = [];
+        }
+        return formData;
+      }),
+      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
@@ -160,16 +169,16 @@ export class IngestContractFormatTabComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submited = true;
+    this.submitted = true;
     this.prepareSubmit().subscribe(
       () => {
         this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
-          this.submited = false;
+          this.submitted = false;
           this.ingestContract = response;
         });
       },
       () => {
-        this.submited = false;
+        this.submitted = false;
       },
     );
   }

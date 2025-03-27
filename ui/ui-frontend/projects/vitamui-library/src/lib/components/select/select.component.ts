@@ -50,7 +50,6 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
-import { merge } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Option, SearchBarComponent, SearchBarModule } from '../../../app/modules';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
@@ -250,12 +249,13 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.updateSelectedOptionsFromValue(this.control.value);
     this.overrideControlMethods();
 
-    merge(this.sd.scrolled().pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable)), this.optionKeys.changes).subscribe(
-      () => {
+    this.sd
+      .scrolled()
+      .pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable))
+      .subscribe(() => {
         this.updateCheckboxes();
         this.updateSelectAll();
-      },
-    );
+      });
 
     this.addEventListeners();
   }
@@ -389,7 +389,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     const previousSetValue = this.control.setValue;
     this.control.setValue = (value: any, options?: any) => {
       const filteredValue = value instanceof Array ? value.filter((v) => v !== this.SELECT_ALL_OPTIONS) : value;
-      previousSetValue.bind(this.control)(filteredValue, options);
+      previousSetValue.bind(this.control)(filteredValue, { ...options, emitModelToViewChange: true });
     };
 
     const previousReset = this.control.reset;
@@ -414,9 +414,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     ) {
       const selectedOptionsCount = this.getSelectedOptionsCount();
       if (selectedOptionsCount === this.allOptions.length) {
-        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).select();
+        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).select(false);
       } else {
-        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).deselect();
+        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).deselect(false);
       }
       this.cd.detectChanges();
     }
@@ -492,10 +492,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       const selected = this.selectedOptions.filter((selectedOption) => selectedOption.key === optionKey.value);
 
       if (selected.length > 0 && !optionKey.selected) {
-        optionKey.select();
+        optionKey.select(false);
         needUpdate = true;
       } else if (selected.length === 0 && optionKey.selected) {
-        optionKey.deselect();
+        optionKey.deselect(false);
         needUpdate = true;
       }
     });

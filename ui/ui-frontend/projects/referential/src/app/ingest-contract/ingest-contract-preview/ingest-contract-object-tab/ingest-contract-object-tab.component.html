@@ -1,28 +1,26 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-slide-toggle formControlName="masterMandatory" class="w-100">
+  <vitamui-common-slide-toggle formControlName="masterMandatory" class="w-100 p-0">
     <span>{{ 'INGEST_CONTRACT.TAB.OBJECTS.BINARY_MANDATORY' | translate }}</span>
   </vitamui-common-slide-toggle>
 
-  <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">
+  <vitamui-common-slide-toggle formControlName="everyDataObjectVersion" class="w-100 p-0">
     <span>{{ 'INGEST_CONTRACT.TAB.OBJECTS.ALL_USAGES' | translate }}</span>
   </vitamui-common-slide-toggle>
 
-  <ng-container *ngIf="!form?.controls.everyDataObjectVersion?.value">
-    <mat-form-field class="vitamui-mat-select w-100">
-      <mat-select
+  <div *ngIf="!form?.controls.everyDataObjectVersion?.value" class="py-3">
+    <ng-container *ngIf="!form?.controls.everyDataObjectVersion?.value">
+      <vitamui-select
+        [multiple]="true"
         formControlName="dataObjectVersion"
-        placeholder="{{ 'INGEST_CONTRACT.TAB.OBJECTS.SELECT_FORMAT' | translate }}"
-        panelclass="vitamui-mat-select"
-        multiple
+        [placeholder]="'INGEST_CONTRACT.TAB.OBJECTS.SELECT_FORMAT' | translate"
+        [options]="usages"
+        [enableSearch]="false"
+        [enableSelectAll]="false"
+        [enableDisplaySelected]="false"
       >
-        <mat-option *ngFor="let usage of usages" [value]="usage.key"> {{ usage.label }}</mat-option>
-      </mat-select>
-      <div class="select-arrow">
-        <i class="material-icons">keyboard_arrow_up</i>
-        <i class="material-icons">keyboard_arrow_down</i>
-      </div>
-    </mat-form-field>
-  </ng-container>
+      </vitamui-select>
+    </ng-container>
+  </div>
 
   <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submited">
     {{ 'COMMON.SAVE' | translate }}
