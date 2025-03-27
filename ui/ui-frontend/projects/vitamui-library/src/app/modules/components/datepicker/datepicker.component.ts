@@ -63,15 +63,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class DatepickerComponent implements ControlValueAccessor {
   @Input() label!: string;
   @Input() value: string;
-  /**
-   * When true:
-   * - do not display time
-   * - emits the date as a ISOString (without the time part)
-   * When false:
-   * - displays date and time
-   * - emits a Date object (with time)
-   */
-  @Input() onlyDate = false;
   disabled = false;
 
   propagateChange = (_: any) => {};
@@ -99,14 +90,7 @@ export class DatepickerComponent implements ControlValueAccessor {
   }
 
   onChange(date: Date): void {
-    const isoDatetime = date?.toISOString();
-
-    if (this.onlyDate) {
-      this.value = isoDatetime && isoDatetime.split('T')[0];
-      this.propagateChange(this.value);
-    } else {
-      this.value = isoDatetime;
-      this.propagateChange(date);
-    }
+    this.value = date?.toISOString();
+    this.propagateChange(date);
   }
 }

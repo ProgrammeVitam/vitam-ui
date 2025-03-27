@@ -68,6 +68,7 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaRemoveAction,
+  SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SidenavPage,
@@ -204,6 +205,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     super(route, globalEventService);
 
@@ -360,8 +362,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   ngAfterViewInit() {
-    // Trigger the search after getting the transaction and the view is init
-    this.transaction$.pipe().subscribe(() => {
+    // Trigger the search after getting the transaction and the view is init. Also making sure that searchCriteriaService is ready (i.e.: schema has been retrieved) in order to trigger search only after criteria have been set from the URL query params
+    zip(this.transaction$, this.searchCriteriaService.ready()).subscribe(() => {
       this.archiveExchangeDataService
         .receiveSimpleSearchCriteriaSubject()
         .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS), take(1)) // For some reason, we have to use that complex observable to trigger the submit() at the correct time (i.e.: the criteria have been set from the URL query params, if any)
@@ -496,9 +498,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.accessContract = accessConctractId;
           this.foundAccessContract = true;
           this.fetchVitamAccessContract();
-          if (!this.archiveUnits?.length) {
-            this.searchArchiveUnits(true);
-          }
         } else {
           this.subscriptions.add(
             this.translateService

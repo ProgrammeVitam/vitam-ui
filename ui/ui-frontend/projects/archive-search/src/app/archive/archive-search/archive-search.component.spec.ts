@@ -55,6 +55,7 @@ import {
   PagedResult,
   SearchCriteriaDto,
   SearchCriteriaStatusEnum,
+  SchemaService,
   VitamuiRoles,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
@@ -157,6 +158,7 @@ describe('ArchiveSearchComponent', () => {
         { provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
+        { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         { provide: environment, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),
