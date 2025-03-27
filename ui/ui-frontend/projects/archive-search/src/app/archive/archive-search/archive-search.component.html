@@ -346,7 +346,7 @@
           <button
             mat-menu-item
             (click)="launchComputedInheritedRulesModal()"
-            [disabled]="!hasComputedInheritedRulesRole || selectedItemCount === 0"
+            [disabled]="!hasComputedInheritedRulesRole || selectedItemCount === 0 || accessContractUpdatingRestrictedDesc"
           >
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
           </button>
