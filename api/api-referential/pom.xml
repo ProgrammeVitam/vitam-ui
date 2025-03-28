@@ -17,7 +17,6 @@
     <modules>
         <module>referential-commons</module>
         <module>referential</module>
-        <module>referential-client</module>
     </modules>
 
 </project>

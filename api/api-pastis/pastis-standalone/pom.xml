@@ -39,10 +39,6 @@
             <artifactId>pastis</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>pastis-client</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>fr.gouv.vitamui.commons</groupId>
                     <artifactId>commons-rest</artifactId>
                 </exclusion>
