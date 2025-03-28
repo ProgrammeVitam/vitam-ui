@@ -38,7 +38,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthService, ConfirmDialogService, buildValidators, collapseAnimation, rotateAnimation } from 'vitamui-library';
+import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, MiscValidators, rotateAnimation } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
@@ -67,10 +67,10 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: [null, Validators.required, this.groupValidators.nameExists(this.authService.user.customerId)],
+      name: [null, MiscValidators.requiredNotBlank, this.groupValidators.nameExists(this.authService.user.customerId)],
       enabled: [true],
       level: ['', buildValidators(this.authService.user)],
-      description: [null, Validators.required],
+      description: [null, MiscValidators.requiredNotBlank],
       profileIds: [null, Validators.required],
       customerId: [this.authService.user.customerId],
       units: [null],
