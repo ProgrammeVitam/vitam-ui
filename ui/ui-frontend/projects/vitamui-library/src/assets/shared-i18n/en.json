@@ -3502,19 +3502,10 @@
       "FIELDS": {
         "DESCRIPTION": "Description",
         "END_DATE": "End date",
-        "GUID": "Ingest GUID",
         "NAME": "Name",
-        "OTHER_FIELD": "Another criteria",
-        "SELECT_OTHER_FIELD": "Select another criteria",
         "SP": "Originating agency",
-        "SP_CODE": "Originating agency code",
-        "SP_COMM": "Originating agency Comm",
-        "SP_COMM_DT": "Originating agency Comm DT",
-        "SP_LABEL": "Originating agency name",
         "START_DATE": "Start date",
-        "TITLE": "Title",
-        "TYPE": "Type",
-        "UAID": "Archive unit GUID"
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {

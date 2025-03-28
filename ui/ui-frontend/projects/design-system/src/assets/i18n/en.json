@@ -125,9 +125,7 @@
     "EDITABLE_LEVEL_DISABLED": "Editable level disabled"
   },
   "SAMPLE_DIALOG": {
-    "OPEN": "Open the sample dialog",
-    "STEP_0": "First Step",
-    "STEP_1": "Second Step"
+    "OPEN": "Open the sample dialog"
   },
   "COLORS": {
     "PRIMARY": "Primary color",
