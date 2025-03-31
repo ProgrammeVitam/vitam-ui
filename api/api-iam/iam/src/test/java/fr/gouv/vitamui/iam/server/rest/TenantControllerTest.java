@@ -33,7 +33,6 @@ import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -50,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -77,28 +77,33 @@ public class TenantControllerTest extends ApiIamControllerTest<TenantDto> {
     }
 
     @Test
+    @WithMockUser(roles = "GET_TENANTS")
     public void testGetAllTenants() {
         LOGGER.debug("testGetAllEntity");
         super.testGetAllEntityWithCriteria();
     }
 
     @Test
+    @WithMockUser(roles = "UPDATE_TENANTS")
     public void testUpdateTenant() {
         super.testUpdateEntity();
     }
 
     @Test
+    @WithMockUser(roles = "UPDATE_TENANTS")
     public void testPatchTenant() {
         LOGGER.debug("testPatchTenant");
         super.testPatchEntity();
     }
 
     @Test
+    @WithMockUser(roles = "GET_TENANTS")
     public void testGetTenant() {
         super.testGetEntityById();
     }
 
     @Test
+    @WithMockUser(roles = "GET_ALL_TENANTS")
     public void testCheckExistByName() {
         Mockito.when(tenantService.checkExist(any(String.class))).thenReturn(true);
         final QueryDto criteria = QueryDto.criteria().addCriterion("name", "tenantName", CriterionOperator.EQUALS);
@@ -106,6 +111,7 @@ public class TenantControllerTest extends ApiIamControllerTest<TenantDto> {
     }
 
     @Test
+    @WithMockUser(roles = "GET_ALL_TENANTS")
     public void testCheckExistByBadCriteriaScriptThenReturnBadRequest() {
         Mockito.when(tenantService.checkExist(any(String.class))).thenReturn(true);
         final QueryDto criteria = QueryDto.criteria()
@@ -118,6 +124,7 @@ public class TenantControllerTest extends ApiIamControllerTest<TenantDto> {
     }
 
     @Test
+    @WithMockUser(roles = "GET_ALL_TENANTS")
     public void testCheckExistByBadCriteriaForbiddenFieldTypeThenReturnBadRequest() {
         Mockito.when(tenantService.checkExist(any(String.class))).thenReturn(true);
         final QueryDto criteria = QueryDto.criteria()
@@ -130,6 +137,7 @@ public class TenantControllerTest extends ApiIamControllerTest<TenantDto> {
     }
 
     @Test
+    @WithMockUser(roles = "GET_TENANTS")
     public void testGetPaginatedTenant() {
         LOGGER.debug("testGetPaginatedTenant");
         super.testGetPaginatedEntities();
@@ -155,7 +163,7 @@ public class TenantControllerTest extends ApiIamControllerTest<TenantDto> {
 
     @Override
     protected String[] getServices() {
-        return new String[] { ServicesData.SERVICE_TENANTS };
+        return new String[] {};
     }
 
     @Override

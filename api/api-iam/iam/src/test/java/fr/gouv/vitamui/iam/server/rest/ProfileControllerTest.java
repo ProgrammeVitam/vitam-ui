@@ -3,6 +3,7 @@ package fr.gouv.vitamui.iam.server.rest;
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
@@ -77,7 +78,7 @@ public class ProfileControllerTest extends ApiIamControllerTest<ProfileDto> {
 
     @Override
     protected String[] getServices() {
-        return new String[] {};
+        return new String[] { ServicesData.SERVICE_PROFILES };
     }
 
     @Override

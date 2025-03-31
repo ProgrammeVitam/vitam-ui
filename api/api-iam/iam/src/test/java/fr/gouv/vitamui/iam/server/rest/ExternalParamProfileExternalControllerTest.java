@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -42,6 +43,7 @@ public class ExternalParamProfileExternalControllerTest extends ApiIamController
     }
 
     @Test
+    @WithMockUser(roles = "SEARCH_EXTERNAL_PARAM_PROFILE")
     public void testGetPaginatedExternalParamProfile() {
         LOGGER.debug("testGetPaginatedExternalParamProfile");
         doReturn(new PaginatedValuesDto<>())
@@ -51,6 +53,7 @@ public class ExternalParamProfileExternalControllerTest extends ApiIamController
     }
 
     @Test(expected = AssertionError.class)
+    @WithMockUser(roles = "EDIT_EXTERNAL_PARAM_PROFILE")
     public void testUpdatePaginatedExternalParamProfile() {
         LOGGER.debug("testUpdatePaginatedExternalParamProfile");
         super.testUpdateEntity();

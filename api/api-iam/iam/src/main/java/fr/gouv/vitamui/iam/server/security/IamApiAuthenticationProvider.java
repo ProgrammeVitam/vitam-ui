@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.security;
 
+import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
@@ -72,11 +73,23 @@ public class IamApiAuthenticationProvider implements AuthenticationProvider {
 
             if (httpContext != null) {
                 final AuthUserDto userProfile = iamAuthentificationService.getUserFromHttpContext(httpContext);
-                return new AuthenticationToken(userProfile, httpContext, null, List.of());
+                List<String> roles = computeRoles(userProfile);
+                LOGGER.debug("Roles: {}", roles);
+                return new AuthenticationToken(userProfile, httpContext, null, roles);
             }
         }
 
         throw new BadCredentialsException("Unable to authenticate REST call");
+    }
+
+    private List<String> computeRoles(AuthUserDto userProfile) {
+        return userProfile
+            .getProfileGroup()
+            .getProfiles()
+            .stream()
+            .flatMap(p -> p.getRoles().stream())
+            .map(Role::getName)
+            .toList();
     }
 
     @Override
