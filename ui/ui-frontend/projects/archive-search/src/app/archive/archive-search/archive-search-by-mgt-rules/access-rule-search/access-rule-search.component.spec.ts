@@ -69,6 +69,7 @@ const archiveSharedDataServiceSpy = {
   receiveAccessFromMainSearchCriteriaSubject: () => of({}),
   addSimpleSearchCriteriaSubject: () => of({}),
   sendRemoveFromChildSearchCriteriaAction: () => of({}),
+  searchCriteria$: of([]),
 };
 
 describe('AccessRuleSearchComponent', () => {

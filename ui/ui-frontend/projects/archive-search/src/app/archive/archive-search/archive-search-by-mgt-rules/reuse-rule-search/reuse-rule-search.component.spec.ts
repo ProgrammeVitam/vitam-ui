@@ -69,6 +69,7 @@ const archiveSharedDataServiceSpy = {
   receiveReuseFromMainSearchCriteriaSubject: () => of({}),
   addSimpleSearchCriteriaSubject: () => of({}),
   sendRemoveFromChildSearchCriteriaAction: () => of({}),
+  searchCriteria$: of([]),
 };
 
 describe('ReuseRuleSearchComponent', () => {

@@ -38,32 +38,36 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription, merge } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
   ManagementRuleValidators,
-  SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
+  CriteriaSearchCriteria,
+  SearchCriteriaValue,
+  DISSEMINATION_RULE,
+  ORIGIN_WAITING_RECALCULATE,
+  ORIGIN_HAS_NO_ONE,
+  ORIGIN_HAS_AT_LEAST_ONE,
+  ORIGIN_INHERITE_AT_LEAST_ONE,
+  RULE_ORIGIN,
+  RULE_TITLE,
+  RULE_END_DATE,
+  RULE_IDENTIFIER,
+  ID_DISSEMINATION,
+  TITLE_DISSEMINATION,
+  END_DATE_DISSEMINATION,
+  INTERVAL_DATE_DISSEMINATION,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleValidator } from '../../rule.validator';
 
-const RULE_TYPE_SUFFIX = '_DISSEMINATION_RULE';
-
-const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
-const ORIGIN_INHERITE_AT_LEAST_ONE = 'ORIGIN_INHERITE_AT_LEAST_ONE';
-const ORIGIN_HAS_NO_ONE = 'ORIGIN_HAS_NO_ONE';
-const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-
-const RULE_ORIGIN = 'RULE_ORIGIN';
-
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
-const RULE_TITLE = 'RULE_TITLE';
-const RULE_END_DATE = 'RULE_END_DATE';
+const RULE_TYPE = DISSEMINATION_RULE;
+const RULE_TYPE_SUFFIX = '_' + DISSEMINATION_RULE;
 
 @Component({
   selector: 'app-dissemination-rule-search',
@@ -77,7 +81,6 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
 
   disseminationRuleCriteriaForm: FormGroup;
 
-  disseminationCriteriaList: SearchCriteriaEltDto[] = [];
   disseminationAdditionalCriteria: Map<any, boolean> = new Map();
   subscriptionDisseminationFromMainSearchCriteria: Subscription;
 
@@ -92,18 +95,6 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
     disseminationRuleOriginHasNoOne: boolean;
     disseminationRuleOriginWaitingRecalculate: boolean;
   };
-  emptyDisseminationCriteriaForm = {
-    disseminationRuleIdentifier: '',
-    disseminationRuleTitle: '',
-    disseminationRuleStartDate: '',
-    disseminationRuleEndDate: '',
-    disseminationRuleOriginInheriteAtLeastOne: true,
-    disseminationRuleOriginHasAtLeastOne: true,
-    disseminationRuleOriginHasNoOne: false,
-    disseminationRuleOriginWaitingRecalculate: false,
-  };
-
-  showUnitPreviewBlock = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -137,7 +128,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       ) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value },
+          { id: TITLE_DISSEMINATION, value },
           value,
           true,
           CriteriaOperator.EQ,
@@ -172,7 +163,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { value: ORIGIN_INHERITE_AT_LEAST_ONE, id: ORIGIN_INHERITE_AT_LEAST_ONE },
+            { id: RULE_TYPE, value: ORIGIN_INHERITE_AT_LEAST_ONE },
             ORIGIN_INHERITE_AT_LEAST_ONE,
             true,
             CriteriaOperator.EQ,
@@ -182,7 +173,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_INHERITE_AT_LEAST_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_INHERITE_AT_LEAST_ONE,
           });
         }
@@ -192,7 +183,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_NO_ONE, value: ORIGIN_HAS_NO_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_NO_ONE },
             ORIGIN_HAS_NO_ONE,
             true,
             CriteriaOperator.MISSING,
@@ -202,7 +193,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_NO_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_NO_ONE,
           });
         }
@@ -232,7 +223,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_AT_LEAST_ONE, value: ORIGIN_HAS_AT_LEAST_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_AT_LEAST_ONE },
             ORIGIN_HAS_AT_LEAST_ONE,
             true,
             CriteriaOperator.EXISTS,
@@ -242,7 +233,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_AT_LEAST_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_AT_LEAST_ONE,
           });
         }
@@ -258,7 +249,8 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.disseminationRuleCriteriaForm.value.disseminationRuleStartDate + '-',
+          id: END_DATE_DISSEMINATION,
+          value: this.disseminationRuleCriteriaForm.value.disseminationRuleStartDate.toISOString(),
           beginInterval: '',
           endInterval: this.disseminationRuleCriteriaForm.value.disseminationRuleStartDate,
         },
@@ -273,26 +265,6 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addCriteriaRulePostCheck() {
-    if (this.disseminationRuleCriteriaForm.value.disseminationRuleIdentifier) {
-      this.addCriteria(
-        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-        {
-          id: this.disseminationRuleCriteriaForm.value.disseminationRuleIdentifier.trim(),
-          value: this.disseminationRuleCriteriaForm.value.disseminationRuleIdentifier.trim(),
-        },
-
-        this.disseminationRuleCriteriaForm.value.disseminationRuleIdentifier.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.DISSEMINATION_RULE,
-      );
-      this.disseminationRuleCriteriaForm.controls.disseminationRuleIdentifier.setValue(null);
-    }
-  }
-
   addIntervalDtDisseminationRuleCriteria() {
     if (
       this.disseminationRuleCriteriaForm.value.disseminationRuleStartDate &&
@@ -301,10 +273,11 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id:
-            this.disseminationRuleCriteriaForm.value.disseminationRuleStartDate +
-            '-' +
-            this.disseminationRuleCriteriaForm.value.disseminationRuleEndDate,
+          id: INTERVAL_DATE_DISSEMINATION,
+          value:
+            this.disseminationRuleCriteriaForm.value.disseminationRuleStartDate.toISOString() +
+            '|' +
+            this.disseminationRuleCriteriaForm.value.disseminationRuleEndDate.toISOString(),
           beginInterval: this.disseminationRuleCriteriaForm.value.disseminationRuleStartDate,
           endInterval: this.disseminationRuleCriteriaForm.value.disseminationRuleEndDate,
         },
@@ -325,7 +298,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       if (formData.disseminationRuleIdentifier) {
         this.addCriteria(
           RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: formData.disseminationRuleIdentifier.trim(), value: formData.disseminationRuleIdentifier.trim() },
+          { id: ID_DISSEMINATION, value: formData.disseminationRuleIdentifier.trim() },
 
           formData.disseminationRuleIdentifier.trim(),
           true,
@@ -339,7 +312,7 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       } else if (formData.disseminationRuleTitle) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: formData.disseminationRuleTitle.trim(), value: formData.disseminationRuleTitle.trim() },
+          { id: TITLE_DISSEMINATION, value: formData.disseminationRuleTitle.trim() },
           formData.disseminationRuleTitle.trim(),
           true,
           CriteriaOperator.EQ,
@@ -385,28 +358,57 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       disseminationRuleOriginWaitingRecalculate: this.hasWaitingToRecalculateCriteria,
     };
 
-    this.addCriteria(
-      RULE_ORIGIN + RULE_TYPE_SUFFIX,
-      { value: ORIGIN_HAS_AT_LEAST_ONE, id: ORIGIN_HAS_AT_LEAST_ONE },
-      ORIGIN_HAS_AT_LEAST_ONE,
-      true,
-      CriteriaOperator.EXISTS,
-      true,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.DISSEMINATION_RULE,
-    );
-    this.addCriteria(
-      RULE_ORIGIN + RULE_TYPE_SUFFIX,
-      { value: ORIGIN_INHERITE_AT_LEAST_ONE, id: ORIGIN_INHERITE_AT_LEAST_ONE },
-      ORIGIN_INHERITE_AT_LEAST_ONE,
-      true,
-      CriteriaOperator.EXISTS,
-      true,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.DISSEMINATION_RULE,
-    );
-    this.disseminationAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);
-    this.disseminationAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+    this.archiveExchangeDataService.searchCriteria$
+      .pipe(
+        filter((searchCriteria) => !!searchCriteria),
+        take(1),
+      )
+      .subscribe((searchCriteria) => {
+        const filteredCriterias: Map<string, CriteriaSearchCriteria> = new Map(
+          [...searchCriteria.entries()].filter(([key, _]) => key === RULE_ORIGIN + RULE_TYPE_SUFFIX),
+        );
+
+        if (filteredCriterias && filteredCriterias.size > 0) {
+          filteredCriterias.forEach((value, key) => {
+            value.values.forEach((searchCriteria: SearchCriteriaValue) => {
+              this.addCriteria(
+                key,
+                { value: searchCriteria.value.value, id: searchCriteria.value.id },
+                searchCriteria.value.value,
+                true,
+                value.operator,
+                true,
+                CriteriaDataType.STRING,
+                SearchCriteriaTypeEnum.ACCESS_RULE,
+              );
+              this.disseminationAdditionalCriteria.set(searchCriteria.value.value, true);
+            });
+          });
+        } else {
+          this.addCriteria(
+            RULE_ORIGIN + RULE_TYPE_SUFFIX,
+            { id: RULE_TYPE, value: ORIGIN_HAS_AT_LEAST_ONE },
+            ORIGIN_HAS_AT_LEAST_ONE,
+            true,
+            CriteriaOperator.EXISTS,
+            true,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.DISSEMINATION_RULE,
+          );
+          this.addCriteria(
+            RULE_ORIGIN + RULE_TYPE_SUFFIX,
+            { id: RULE_TYPE, value: ORIGIN_INHERITE_AT_LEAST_ONE },
+            ORIGIN_INHERITE_AT_LEAST_ONE,
+            true,
+            CriteriaOperator.EXISTS,
+            true,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.DISSEMINATION_RULE,
+          );
+          this.disseminationAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);
+          this.disseminationAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+        }
+      });
   }
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {

@@ -69,6 +69,7 @@ const archiveSharedDataServiceSpy = {
   receiveAppraisalFromMainSearchCriteriaSubject: () => of({}),
   addSimpleSearchCriteriaSubject: () => of({}),
   sendRemoveFromChildSearchCriteriaAction: () => of({}),
+  searchCriteria$: of([]),
 };
 
 describe('AppraisalRuleSearchComponent', () => {

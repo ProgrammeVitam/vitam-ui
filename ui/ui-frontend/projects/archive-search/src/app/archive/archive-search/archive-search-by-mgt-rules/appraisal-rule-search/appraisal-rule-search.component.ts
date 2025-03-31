@@ -38,41 +38,46 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription, merge } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
   ManagementRuleValidators,
-  SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
+  CriteriaSearchCriteria,
+  SearchCriteriaValue,
+  APPRAISAL_RULE,
+  FINAL_ACTION_TYPE_ELIMINATION,
+  FINAL_ACTION_TYPE_KEEP,
+  ORIGIN_WAITING_RECALCULATE,
+  ORIGIN_HAS_NO_ONE,
+  ORIGIN_HAS_AT_LEAST_ONE,
+  ORIGIN_INHERITE_AT_LEAST_ONE,
+  FINAL_ACTION_HAS_FINAL_ACTION,
+  FINAL_ACTION_INHERITE_FINAL_ACTION,
+  FINAL_ACTION,
+  FINAL_ACTION_TYPE,
+  RULE_ORIGIN,
+  RULE_TITLE,
+  RULE_END_DATE,
+  RULE_IDENTIFIER,
+  ELIMINATION_TECHNICAL_ID,
+  ID_DUA,
+  TITLE_DUA,
+  INTERVAL_DATE_DUA,
+  END_DATE_DUA,
+  ELIM_TECH_ID_DUA,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleValidator } from '../../rule.validator';
 
-const RULE_TYPE_SUFFIX = '_APPRAISAL_RULE';
+const RULE_TYPE = APPRAISAL_RULE;
+const RULE_TYPE_SUFFIX = '_' + APPRAISAL_RULE;
 
-const FINAL_ACTION_TYPE_ELIMINATION = 'FINAL_ACTION_TYPE_ELIMINATION';
-const FINAL_ACTION_TYPE_KEEP = 'FINAL_ACTION_TYPE_KEEP';
-
-const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
-const ORIGIN_INHERITE_AT_LEAST_ONE = 'ORIGIN_INHERITE_AT_LEAST_ONE';
-const ORIGIN_HAS_NO_ONE = 'ORIGIN_HAS_NO_ONE';
-const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-
-const FINAL_ACTION_INHERITE_FINAL_ACTION = 'FINAL_ACTION_INHERITE_FINAL_ACTION';
-const FINAL_ACTION_HAS_FINAL_ACTION = 'FINAL_ACTION_HAS_FINAL_ACTION';
-
-const FINAL_ACTION = 'FINAL_ACTION';
-const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
-const RULE_ORIGIN = 'RULE_ORIGIN';
-
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
-const RULE_TITLE = 'RULE_TITLE';
-const RULE_END_DATE = 'RULE_END_DATE';
-const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
+const keysList = [RULE_ORIGIN + RULE_TYPE_SUFFIX, FINAL_ACTION + RULE_TYPE_SUFFIX, FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX];
 
 @Component({
   selector: 'app-appraisal-rule-search',
@@ -86,7 +91,6 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
 
   appraisalRuleCriteriaForm: FormGroup;
 
-  appraisalCriteriaList: SearchCriteriaEltDto[] = [];
   appraisalAdditionalCriteria: Map<any, boolean> = new Map();
   subscriptionAppraisalFromMainSearchCriteria: Subscription;
 
@@ -107,23 +111,6 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
 
     appraisalRuleEliminationIdentifier?: string;
   };
-  emptyAppraisalCriteriaForm = {
-    appraisalRuleIdentifier: '',
-    appraisalRuleTitle: '',
-    appraisalRuleStartDate: '',
-    appraisalRuleEndDate: '',
-    appraisalRuleOriginInheriteAtLeastOne: true,
-    appraisalRuleOriginHasAtLeastOne: true,
-    appraisalRuleOriginHasNoOne: false,
-    appraisalRuleOriginWaitingRecalculate: false,
-    eliminationFinalActionType: false,
-    keepFinalActionType: false,
-    appraisalRuleFinalActionHasFinalAction: false,
-    appraisalRuleFinalActionInheriteFinalAction: false,
-    appraisalRuleEliminationIdentifier: '',
-  };
-
-  showUnitPreviewBlock = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -157,7 +144,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       ) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value },
+          { id: TITLE_DUA, value },
           value,
           true,
           CriteriaOperator.EQ,
@@ -192,7 +179,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { value: ORIGIN_INHERITE_AT_LEAST_ONE, id: ORIGIN_INHERITE_AT_LEAST_ONE },
+            { id: RULE_TYPE, value: ORIGIN_INHERITE_AT_LEAST_ONE },
             ORIGIN_INHERITE_AT_LEAST_ONE,
             true,
             CriteriaOperator.EQ,
@@ -202,7 +189,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_INHERITE_AT_LEAST_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_INHERITE_AT_LEAST_ONE,
           });
         }
@@ -212,7 +199,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_NO_ONE, value: ORIGIN_HAS_NO_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_NO_ONE },
             ORIGIN_HAS_NO_ONE,
             true,
             CriteriaOperator.MISSING,
@@ -222,7 +209,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_NO_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_NO_ONE,
           });
         }
@@ -252,7 +239,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_AT_LEAST_ONE, value: ORIGIN_HAS_AT_LEAST_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_AT_LEAST_ONE },
             ORIGIN_HAS_AT_LEAST_ONE,
             true,
             CriteriaOperator.EXISTS,
@@ -262,7 +249,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_AT_LEAST_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_AT_LEAST_ONE,
           });
         }
@@ -272,7 +259,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_TYPE_ELIMINATION, value: FINAL_ACTION_TYPE_ELIMINATION },
+            { id: RULE_TYPE, value: FINAL_ACTION_TYPE_ELIMINATION },
             FINAL_ACTION_TYPE_ELIMINATION,
             true,
             CriteriaOperator.EQ,
@@ -282,7 +269,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_TYPE_ELIMINATION,
+            id: RULE_TYPE,
             value: FINAL_ACTION_TYPE_ELIMINATION,
           });
         }
@@ -292,7 +279,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_TYPE_KEEP, value: FINAL_ACTION_TYPE_KEEP },
+            { id: RULE_TYPE, value: FINAL_ACTION_TYPE_KEEP },
             FINAL_ACTION_TYPE_KEEP,
             true,
             CriteriaOperator.EQ,
@@ -302,7 +289,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_TYPE_KEEP,
+            id: RULE_TYPE,
             value: FINAL_ACTION_TYPE_KEEP,
           });
         }
@@ -312,7 +299,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_HAS_FINAL_ACTION, value: FINAL_ACTION_HAS_FINAL_ACTION },
+            { id: RULE_TYPE, value: FINAL_ACTION_HAS_FINAL_ACTION },
             FINAL_ACTION_HAS_FINAL_ACTION,
             true,
             CriteriaOperator.EQ,
@@ -322,7 +309,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_HAS_FINAL_ACTION,
+            id: RULE_TYPE,
             value: FINAL_ACTION_HAS_FINAL_ACTION,
           });
         }
@@ -332,7 +319,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_INHERITE_FINAL_ACTION, value: FINAL_ACTION_INHERITE_FINAL_ACTION },
+            { id: RULE_TYPE, value: FINAL_ACTION_INHERITE_FINAL_ACTION },
             FINAL_ACTION_INHERITE_FINAL_ACTION,
             true,
             CriteriaOperator.EQ,
@@ -342,7 +329,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_INHERITE_FINAL_ACTION,
+            id: RULE_TYPE,
             value: FINAL_ACTION_INHERITE_FINAL_ACTION,
           });
         }
@@ -359,7 +346,8 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate + '-',
+          id: END_DATE_DUA,
+          value: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate.toISOString(),
           beginInterval: '',
           endInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate,
         },
@@ -374,32 +362,16 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addCriteriaRulePostCheck() {
-    if (this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier) {
-      this.addCriteria(
-        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-        {
-          id: this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier.trim(),
-          value: this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier.trim(),
-        },
-
-        this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.APPRAISAL_RULE,
-      );
-      this.appraisalRuleCriteriaForm.controls.appraisalRuleIdentifier.setValue(null);
-    }
-  }
-
   addIntervalDtDuaCriteria() {
     if (this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate && this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate) {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate + '-' + this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate,
+          id: INTERVAL_DATE_DUA,
+          value:
+            this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate.toISOString() +
+            '|' +
+            this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate.toISOString(),
           beginInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate,
           endInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate,
         },
@@ -420,8 +392,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       if (formData.appraisalRuleIdentifier) {
         this.addCriteria(
           RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: formData.appraisalRuleIdentifier.trim(), value: formData.appraisalRuleIdentifier.trim() },
-
+          { id: ID_DUA, value: formData.appraisalRuleIdentifier.trim() },
           formData.appraisalRuleIdentifier.trim(),
           true,
           CriteriaOperator.EQ,
@@ -434,7 +405,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       } else if (formData.appraisalRuleTitle) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: formData.appraisalRuleTitle.trim(), value: formData.appraisalRuleTitle.trim() },
+          { id: TITLE_DUA, value: formData.appraisalRuleTitle.trim() },
           formData.appraisalRuleTitle.trim(),
           true,
           CriteriaOperator.EQ,
@@ -446,7 +417,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       } else if (formData.appraisalRuleEliminationIdentifier) {
         this.addCriteria(
           ELIMINATION_TECHNICAL_ID + RULE_TYPE_SUFFIX,
-          { id: formData.appraisalRuleEliminationIdentifier.trim(), value: formData.appraisalRuleEliminationIdentifier.trim() },
+          { id: ELIM_TECH_ID_DUA, value: formData.appraisalRuleEliminationIdentifier.trim() },
           formData.appraisalRuleEliminationIdentifier.trim(),
           true,
           CriteriaOperator.EQ,
@@ -506,28 +477,57 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       appraisalRuleEliminationIdentifier: '',
     };
 
-    this.addCriteria(
-      RULE_ORIGIN + RULE_TYPE_SUFFIX,
-      { value: ORIGIN_HAS_AT_LEAST_ONE, id: ORIGIN_HAS_AT_LEAST_ONE },
-      ORIGIN_HAS_AT_LEAST_ONE,
-      true,
-      CriteriaOperator.EXISTS,
-      true,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.APPRAISAL_RULE,
-    );
-    this.addCriteria(
-      RULE_ORIGIN + RULE_TYPE_SUFFIX,
-      { value: ORIGIN_INHERITE_AT_LEAST_ONE, id: ORIGIN_INHERITE_AT_LEAST_ONE },
-      ORIGIN_INHERITE_AT_LEAST_ONE,
-      true,
-      CriteriaOperator.EXISTS,
-      true,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.APPRAISAL_RULE,
-    );
-    this.appraisalAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);
-    this.appraisalAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+    this.archiveExchangeDataService.searchCriteria$
+      .pipe(
+        filter((searchCriteria) => !!searchCriteria),
+        take(1),
+      )
+      .subscribe((searchCriteria) => {
+        const filteredCriterias: Map<string, CriteriaSearchCriteria> = new Map(
+          [...searchCriteria.entries()].filter(([key, _]) => keysList.includes(key)),
+        );
+
+        if (filteredCriterias && filteredCriterias.size > 0) {
+          filteredCriterias.forEach((value, key) => {
+            value.values.forEach((searchCriteria: SearchCriteriaValue) => {
+              this.addCriteria(
+                key,
+                { value: searchCriteria.value.value, id: searchCriteria.value.id },
+                searchCriteria.value.value,
+                true,
+                value.operator,
+                true,
+                CriteriaDataType.STRING,
+                SearchCriteriaTypeEnum.ACCESS_RULE,
+              );
+              this.appraisalAdditionalCriteria.set(searchCriteria.value.value, true);
+            });
+          });
+        } else {
+          this.addCriteria(
+            RULE_ORIGIN + RULE_TYPE_SUFFIX,
+            { id: RULE_TYPE, value: ORIGIN_HAS_AT_LEAST_ONE },
+            ORIGIN_HAS_AT_LEAST_ONE,
+            true,
+            CriteriaOperator.EXISTS,
+            true,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
+          );
+          this.addCriteria(
+            RULE_ORIGIN + RULE_TYPE_SUFFIX,
+            { id: RULE_TYPE, value: ORIGIN_INHERITE_AT_LEAST_ONE },
+            ORIGIN_INHERITE_AT_LEAST_ONE,
+            true,
+            CriteriaOperator.EXISTS,
+            true,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.APPRAISAL_RULE,
+          );
+          this.appraisalAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+          this.appraisalAdditionalCriteria.set(ORIGIN_INHERITE_AT_LEAST_ONE, true);
+        }
+      });
   }
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {

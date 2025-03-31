@@ -147,15 +147,13 @@ export class SearchCriteriaService {
     return Promise.all(
       fragments.map(async (fragment) => {
         const formattedValue = fragment.trim();
-        // TODO : Implement this method if needed
-        // const dataType = await this.getDataType(key);
 
-        const categoryForKey = this.setCategory(key);
-        const operator = this.setOperator(fragment, key);
+        const categoryForKey = this.getCategory(key);
+        const operator = this.getOperator(fragment, key);
 
-        const keyElt = this.setKeyElt(fragment, key);
-        const beginDate = this.setBeginDate(fragment, key);
-        const endDate = this.setEndDate(fragment, key);
+        const keyElt = this.getKeyElt(fragment, key);
+        const beginDate = this.getBeginDate(fragment, key);
+        const endDate = this.getEndDate(fragment, key);
         const dataType = this.getDataType(key);
 
         const defaultCriteriaConfig: Partial<SearchCriteriaAddAction> = {
@@ -180,13 +178,7 @@ export class SearchCriteriaService {
     );
   }
 
-  // TODO : Implement this method if needed
-  // private async getDataType(key: string): Promise<CriteriaDataType> {
-  //   const type = (await this.schema).find((s) => s.ApiField === key)?.Type;
-  //   return type === 'DATE' ? CriteriaDataType.DATE : CriteriaDataType.STRING;
-  // }
-
-  private setCategory(key: string) {
+  private getCategory(key: string) {
     let categoryForKey = SearchCriteriaTypeEnum.FIELDS;
     switch (key) {
       case APPRAISAL_RULE:
@@ -239,7 +231,7 @@ export class SearchCriteriaService {
     return categoryForKey;
   }
 
-  private setOperator(fragment: string, key: string) {
+  private getOperator(fragment: string, key: string) {
     let operator = CriteriaOperator.EQ;
     if (fragment === ORIGIN_HAS_NO_ONE) {
       operator = CriteriaOperator.MISSING;
@@ -254,7 +246,7 @@ export class SearchCriteriaService {
     return operator;
   }
 
-  private setKeyElt(fragment: string, key: string) {
+  private getKeyElt(fragment: string, key: string) {
     let keyElt = '';
     if (MAP_KEY_ELT.has(key)) {
       keyElt = MAP_KEY_ELT.get(key);
@@ -271,7 +263,7 @@ export class SearchCriteriaService {
     return keyElt;
   }
 
-  private setBeginDate(fragment: string, key: string) {
+  private getBeginDate(fragment: string, key: string) {
     let beginDate = '';
     if (INTERVAL_DATE_FIELDS.includes(key)) {
       beginDate = fragment.split(SEPARATOR)[0];
@@ -279,7 +271,7 @@ export class SearchCriteriaService {
     return beginDate;
   }
 
-  private setEndDate(fragment: string, key: string) {
+  private getEndDate(fragment: string, key: string) {
     let endDate = '';
     if (INTERVAL_DATE_FIELDS.includes(key)) {
       endDate = fragment.split(SEPARATOR)[1];
