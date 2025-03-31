@@ -217,14 +217,6 @@
       "NAME": "Filing plan",
       "TOOLTIP": "Configure the filing plan of a safe and the characteristics of each position in this plan"
     },
-    "EXT_ALFRESCO_APP": {
-      "NAME": "Alfresco",
-      "TOOLTIP": "Access to Alfresco"
-    },
-    "EXT_DOCUWARE_APP": {
-      "NAME": "Docuware",
-      "TOOLTIP": "Access to Docuware"
-    },
     "RECORD_MANAGEMENT_APP": {
       "NAME": "Records management",
       "TOOLTIP": "Organize the repository of management rules and manage the archive life cycle"
@@ -241,25 +233,9 @@
       "NAME": "Forms",
       "TOOLTIP": "Configure indexing forms and metadata display rules for users when searching"
     },
-    "ARCHIVE_ROOM_APP": {
-      "NAME": "Physical archives center",
-      "TOOLTIP": "Configure archive centers, sites, buildings and rooms. Monitor occupancy rates"
-    },
-    "ARCHIVE_ROOM_PROFILE_APP": {
-      "NAME": "Rights in the \"Physical archives center\" APP",
-      "TOOLTIP": "Set up access profiles for the \"Physical archives center\" APP"
-    },
-    "BARCODES_APP": {
-      "NAME": "Barcode",
-      "TOOLTIP": "Reserve physical archive identifiers and print barcode labels"
-    },
     "CUSTOMERS_ADVANCED_PARAM_APP": {
       "NAME": "Advanced parameters of customers",
       "TOOLTIP": "Define the advanced parameters of customers and tenants"
-    },
-    "PHYSICAL_CUSTOMERS_APP": {
-      "NAME": "Physical archives Services",
-      "TOOLTIP": "Configure the physical archive services and the rights of the client organization"
     },
     "ARCHIVE_BATCH_INGEST_PROFILE_APP": {
       "NAME": "Deposit by slip",
@@ -359,6 +335,14 @@
       "NAME": "Accession register",
       "TOOLTIP": "View all of the accession register data"
     },
+    "COLLECT_APP": {
+      "NAME": "Collection and preparation of deposits",
+      "TOOLTIP": "Collect archives and prepare deposits"
+    },
+    "EXTERNAL_PARAMS": {
+      "NAME": "Profile for creating external configuration profiles",
+      "TOOLTIP": "Manage and view all external configuration profiles"
+    },
     "MANAGEMENT_CONTRACT_APP": {
       "NAME": "Management contract",
       "TITLE": "Management contracts referential",
@@ -374,11 +358,8 @@
     },
     "PASTIS_APP": {
       "NAME": "Documentary profiles",
+      "TITLE": "Repository of documentary profiles",
       "TOOLTIP": "Access, create, edit, or delete archive profiles and unit profiles"
-    },
-    "BNPP_UNITS_APP": {
-      "NAME": "BNPP units",
-      "TOOLTIP": "Configure BNPP's membership units"
     },
     "CUSTOMERS_SUPERVISION_APP": {
       "NAME": "Customers supervision",
@@ -415,7 +396,9 @@
     "supervision_and_audits": "Supervision & audits",
     "security_and_application_rights": "Security & application rights",
     "organization_and_user_rights": "Organization & user rights",
-    "USER_ALERTS": "My actions"
+    "USER_ALERTS": "My actions",
+    "movements": "Movements",
+    "tools": "Tools"
   },
   "MENU_APPLICATION_TILE": {
     "ENTER_APPLICATION": "Enter to launch the application"
@@ -476,8 +459,7 @@
       "SINGULAR": "on {{ total }} (1 element not downloaded)",
       "PLURAL": "on {{ total }} ({{ count }} elements not downloaded)"
     },
-    "DOWNLOAD_FILE": "Downloading file",
-    "FILE_TRANSFER": "Transferring file"
+    "DOWNLOAD_FILE": "Downloading file"
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Are you sure you want to make this change?"
@@ -524,7 +506,7 @@
     },
     "ACTIONS": {
       "INDEX_ITEM_PREPARATION": "adding documents",
-      "INDEXING_DOCUMENTS": "indexing",
+      "DOCUMENTS_INDEXATION": "indexing",
       "PHYSICAL_SIGNIFICATIVE_INDEXATION": "indexing",
       "DOCUMENTS_SIGNIFICATIVE_INDEXATION": "indexation",
       "PHYSICAL_BANALISE_INDEXATION": "indexation",
@@ -741,7 +723,7 @@
     "LFC.PRESERVATION_BINARY_HASH.STARTED": "Start of calculation of a hash in SHA-512",
     "STP_VERIFY_STAMP.FATAL": "Technical error during the timestamp verification process",
     "CHECK_SEDA.NOT_XSD_VALID.FATAL": "Technical error during the global SIP check",
-    "CHECK_DATAOBJECTPACKAGE.CHECK_MANIFEST_DATAOBJECT_VERSION.INVALID_DATAOBJECTVERSION.KO": "At least one object declares an incorrect usage. The usage must be written as [usage] or [usage] _ [version]. \"Usage \" must be among the DataObjectVersion enumeration defined for Vitam: \"version\" must be a positive integer ",
+    "CHECK_DATAOBJECTPACKAGE.CHECK_MANIFEST_DATAOBJECT_VERSION.INVALID_DATAOBJECTVERSION.KO": "At least one object declares an incorrect usage. The usage must be written as [usage] or [usage] _ [version]. \"Usage \" must be among the DataObjectVersion enumeration defined for Vitam: \"version\" must be a positive integer",
     "ELIMINATION_ACTION_DELETE_OBJECT_GROUP.STARTED.OK": "Success of the start of the final elimination of groups of technical objects whose parent archival units are eliminated",
     "ELIMINATION_ACTION_COLLECT_DELETE_OBJECT_GROUP.STARTED.OK": "Success of the start of the final elimination of groups of technical objects whose parent archival units are eliminated",
     "STP_IMPORT_PRESERVATION_SCENARIO.STARTED": "Beginning of the process of importing the repository of preservation scenarios",
@@ -1123,7 +1105,7 @@
     "CHECK_MERKLE_TREE.COMPARE_MERKLE_HASH_WITH_INDEXED_HASH.FATAL": "Technical error when comparing the MERKLE tree with the indexed Hash",
     "STP_OG_STORING.KO": "Failed to write object group metadata to storage offerings",
     "BACKUP_AGENCIES.STARTED.OK": "Successful start of the agent services repository backup process",
-    "STP_UPDATE_SECURITY_PROFILE ": " Security profile update process ",
+    "STP_UPDATE_SECURITY_PROFILE": "Security profile update process",
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP": "Timestamp of object group lifecycle logs",
     "UNITS_RULES_COMPUTE.UNKNOWN": "Application of management rules and calculation of due dates",
     "MIGRATION_OBJECT_GROUPS_LIST": "Distribution of groups of objects",
@@ -1193,10 +1175,9 @@
     "IMPORT_AGENCIES.USED_AU.OK": "Success of the verification process for agent services referenced by archival units",
     "OBJECT_GROUP_GRAPH_COMPUTE": "Update of the graphs of groups of objects",
     "ELIMINATION_ACTION_DELETE_OBJECT_GROUP.STARTED": "Beginning of the definitive elimination of groups of technical objects whose parent archival units are eliminated",
-    "ELIMINATION_ACTION_COLLECT_DELETE_OBJECT_GROUP.STARTED": "Beginning of the definitive elimination of groups of technical objects whose parent archival units are eliminated",
     "STP_UPDATE_PROFILE_JSON.KO": "Archive profile update process failed",
     "HOLDINGSCHEME.STARTED": "Beginning of importing the positioning tree",
-    "OG_OBJECTS_FORMAT_CHECK.REJECTED_FORMAT.KO": "Failed to identify formats: the input contract prohibits the upload of an object in an unknown format and the paid SIP contains at least one object in an unknown format, or the SIP contains a format prohibited by the entry contract ",
+    "OG_OBJECTS_FORMAT_CHECK.REJECTED_FORMAT.KO": "Failed to identify formats: the input contract prohibits the upload of an object in an unknown format and the paid SIP contains at least one object in an unknown format, or the SIP contains a format prohibited by the entry contract",
     "LFC.CHECK_MANIFEST_WRONG_ATTACHMENT_LINK.STARTED": "Beginning of the checking of the attachments of archival units and groups of objects",
     "STP_ELIMINATION_ACTION_ACCESSION_REGISTER_PREPARATION.STARTED.OK": "Success of the start of the preparation process of the Register of Funds following the final elimination of archival units",
     "STP_UPDATE_UNIT.OK": "Success of the archival unit metadata update process",
@@ -1491,7 +1472,7 @@
     "PROBATIVE_VALUE_CHECK_OBJECT_GROUP.KO": "Failed to retrieve data from the database",
     "STP_VERIFY_STAMP.WARNING": "Warning during the timestamp verification process",
     "UNIT_METADATA_UPDATE_CHECK_DT.WARNING": "Warning when checking the association with an archival unit profile",
-    "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC.STARTED": "Beginning of the deletion process of the Register of Symbolic Funds ",
+    "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC.STARTED": "Beginning of the deletion process of the Register of Symbolic Funds",
     "ELIMINATION_ACTION_DELETE_UNIT.KO": "Failure to permanently dispose of disposable archival units",
     "PROBATIVE_VALUE_LIST_OBJECT.OK": "Successful creation of the list of objects of the statement of probative value",
     "MASS_UPDATE_UNITS_RULES.OK": "Successful update of archival unit management metadata",
@@ -1669,7 +1650,7 @@
     "LFC.UPDATE_OBJECT_GROUP.OK": "Successful update of the object group",
     "LFC.UNITS_RULES_COMPUTE.UNKNOWN.FATAL": "Technical error when checking the expiration of management rules",
     "MIGRATION_UNITS": "Migration of archival units",
-    "LFC.UNITS_RULES_COMPUTE.UNKNOWN.KO": "Failed to check the expiration of the business rules: At least one declared business rule is unknown to the system or the calculated deadline is after 01/01/9000 (Date start + Duration of the rule) ",
+    "LFC.UNITS_RULES_COMPUTE.UNKNOWN.KO": "Failed to check the expiration of the business rules: At least one declared business rule is unknown to the system or the calculated deadline is after 01/01/9000 (Date start + Duration of the rule)",
     "STP_PROBATIVE_VALUE_LIST_SECURED_FILES_TO_DOWNLOAD.OK": "Success of the process for preparing the list of signatures in secure files",
     "EVIDENCE_AUDIT_CHECK_DATABASE.FATAL": "Technical error while retrieving data from the database",
     "MASS_UPDATE": "Update of archival unit metadata",
@@ -1679,7 +1660,7 @@
     "STP_INVALIDATE": "Invalidation of calculated rules",
     "COMPUTE_INHERITED_RULES_INVALIDATOR": "Invalidate outdated legacy management rules",
     "COMPUTE_INHERITED_RULES_INVALIDATOR.OK": "Successful process of invalidate outdated legacy management rules",
-    "LFC.UNITS_RULES_COMPUTE.REF_INCONSISTENCY.KO": "Failed to check the consistency of the business rule whose cancellation is requested in relation to its category: the request to cancel a business rule is not consistent with its category ",
+    "LFC.UNITS_RULES_COMPUTE.REF_INCONSISTENCY.KO": "Failed to check the consistency of the business rule whose cancellation is requested in relation to its category: the request to cancel a business rule is not consistent with its category",
     "FINALIZE_OG_LFC_TRACEABILITY.FINALIZE_OG_LFC_TRACEABILITY.OK": "Successful completion of securing object group lifecycle logs",
     "FILINGSCHEME.WARNING": "Warning during the filing plan entry process",
     "ACCESSION_REGISTRATION": "Supply to the Register of Funds",
@@ -1753,7 +1734,7 @@
     "STP_PREPARATION.STARTED.OK": "Success of the start of the process of launching the preparation of the preservation treatment",
     "STP_OP_SECURISATION": "Securing the operation logs",
     "STP_MIGRATION_UNITS_PREPARE.WARNING": "Warning during the process of preparing the migration of archival units",
-    "STP_DELETE_RULES.STARTED ": " Beginning of the process of deleting the management rules repository ",
+    "STP_DELETE_RULES.STARTED": "Beginning of the process of deleting the management rules repository",
     "VERIFY_TIMESTAMP.COMPARE_TOKEN_TIMESTAMP.STARTED": "Start of timestamp buffer comparison",
     "PROCESS_AUDIT.STARTED": "Start of the audit",
     "COMMIT_RULES.KO": "Failed to persist data in database",
@@ -2139,7 +2120,7 @@
     "STP_UNIT_DETACHMENT.KO": "Failed to detach archival units",
     "MIGRATION_UNITS_LIST.STARTED": "Start of distribution of archival units",
     "STORAGE_AVAILABILITY_CHECK.OK": "Successful verification of the availability of all storage offers",
-    "PRESERVATION_INDEXATION_METADATA.OK ": " Successful indexing of object group metadata ",
+    "PRESERVATION_INDEXATION_METADATA.OK": "Successful indexing of object group metadata",
     "DATA_MIGRATION.KO": "Data migration process failed",
     "LFC.UNIT_METADATA_STORAGE.KO": "Failed to write archival unit metadata to storage offerings",
     "RECLASSIFICATION_FINALIZATION.FATAL": "Technical error when finalizing the modification of the archival unit tree",
@@ -2263,7 +2244,7 @@
     "PROCESS_SIP_UNITARY_TEST.FATAL": "Technical error during the SIP blank entry process",
     "STP_ELIMINATION_ACTION_ACCESSION_REGISTER_PREPARATION.STARTED": "Beginning of the preparation process of the Register of Funds following the final elimination of archival units",
     "STORAGE_AVAILABILITY_CHECK.WARNING": "Warning when checking the availability of at least one storage offer: Impossibility of knowing the available space",
-    "ELIMINATION_ACTION_DETACH_OBJECT_GROUP.STARTED.OK": "Successful start of detachment of groups of technical objects from which some parent archival units are eliminated ",
+    "ELIMINATION_ACTION_DETACH_OBJECT_GROUP.STARTED.OK": "Successful start of detachment of groups of technical objects from which some parent archival units are eliminated",
     "LFC.OBJ_STORAGE.OBJ_STORAGE_SUB_TASK.STARTED": "Beginning of writing the object to the storage offers",
     "STP_ELIMINATION_ACTION_ACCESSION_REGISTER_UPDATE.STARTED.OK": "Successful start of the process of updating the Register of Funds following the final elimination of archival units",
     "IMPORT_AGENCIES.OK": "Success of the agent services repository import process",
@@ -2350,7 +2331,7 @@
     "OG_METADATA_INDEXATION.FATAL": "Technical error while indexing the metadata of objects and groups of objects",
     "STP_MIGRATION_FINALIZE.FATAL": "Technical error during the process of finalizing the migration",
     "CHECK_DATAOBJECTPACKAGE.KO": "Failed to check objects and groups of objects",
-    "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC.OK ": " Success of the process of deleting the Register of Symbolic Funds ",
+    "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC.OK": "Success of the process of deleting the Register of Symbolic Funds",
     "LFC.OG_OBJECTS_FORMAT_CHECK.FILE_FORMAT.STARTED": "Beginning of the format check",
     "STP_ELIMINATION_ACTION_PREPARATION": "Preparation process for the final disposal of archival units",
     "BUILD_UNIT_LFC_TRACEABILITY.STARTED": "Beginning of securing the lifecycle logs of archival units",
@@ -2415,7 +2396,7 @@
     "CHECK_DATAOBJECTPACKAGE.CHECK_CONSISTENCY": "Checking the consistency between objects, groups of objects and archival units",
     "CHECK_DATAOBJECTPACKAGE.OK": "Successful verification of objects and groups of objects",
     "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC.KO": "The process of deleting the Register of Symbolic Funds failed",
-    "CHECK_DATAOBJECTPACKAGE.INVALID_DATAOBJECTVERSION.KO": "At least one object declares an incorrect usage. The usage must be written in the form [usage] or [usage] _ [version]. \"Usage\" must be among the DataObjectVersion enumeration defined by SEDA: \"version\" must be a positive integer ",
+    "CHECK_DATAOBJECTPACKAGE.INVALID_DATAOBJECTVERSION.KO": "At least one object declares an incorrect usage. The usage must be written in the form [usage] or [usage] _ [version]. \"Usage\" must be among the DataObjectVersion enumeration defined by SEDA: \"version\" must be a positive integer",
     "STP_DELETE_MASTERDATA_ONTOLOGY": "Process of deleting the ontologies repository",
     "STP_BACKUP_CONTEXT": "Application context backup process",
     "MIGRATION_UNITS_LIST.KO": "Failed to distribute archival units",
@@ -2478,7 +2459,7 @@
     "BACKUP_ARCHIVEUNITPROFILE.FATAL": "Technical error while backing up archive unit profiles",
     "STP_ELIMINATION_ACTION_FINALIZATION.STARTED.OK": "Success of the start of the process of finalizing the final disposal of archival units",
     "UPDATE_RULES_ARCHIVE_UNITS.WARNING": "Warning when updating archival units",
-    "STP_MERKLE_TREE.STARTED ": " Beginning of the process of checking the MERKLE tree ",
+    "STP_MERKLE_TREE.STARTED": "Beginning of the process of checking the MERKLE tree",
     "PREPARE_UNIT_LFC_TRACEABILITY.KO": "Failed to prepare archival unit lifecycle logs and metadata",
     "LFC.OBJ_STORAGE.FATAL": "Technical error when writing objects to storage offers",
     "PRESERVATION_BINARY_HASH.STARTED.OK": "Success of the start of the calculation of a footprint in SHA-512",
@@ -2523,7 +2504,7 @@
     "PRESERVATION_BINARY_HASH.OK": "Successful calculation of a footprint in SHA-512",
     "STP_CHECK_AND_COMPUTE.KO": "Process for preparing list of archival units to update and modification permissions failed",
     "LFC.PRESERVATION_BINARY_HASH.PRESERVATION_BINARY_HASH.WARNING": "Warning when calculating a fingerprint in SHA-512",
-    "EVIDENCE_AUDIT_LIST_SECURED_FILES_TO_DOWNLOAD.OK ": " Successful preparation of signature list in secure files ",
+    "EVIDENCE_AUDIT_LIST_SECURED_FILES_TO_DOWNLOAD.OK": "Successful preparation of signature list in secure files",
     "STP_AUDIT.STARTED.OK": "Beginning of the audit execution process",
     "ELIMINATION_ACTION_ACCESSION_REGISTER_UPDATE": "Update of the Register of Funds following the final elimination of archival units",
     "SANITY_CHECK_SIP.KO": "SIP sanitary check failed: file detected as infected",
@@ -2690,7 +2671,7 @@
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_TIMESTAMP.OK": "Successful process of creating timestamp buffer for all object group lifecycle logs",
     "STP_UPDATE_PROFILE_JSON.WARNING": "Warning during the archiving profile update process",
     "LOGBOOK_UNIT_LFC_TRACEABILITY.FATAL": "Technical error securing the lifecycle logs of archival units",
-    "UNITS_RULES_COMPUTE.REF_INCONSISTENCY.KO": "Failed to apply business rules and calculate due dates: inconsistent inheritance exclusion ",
+    "UNITS_RULES_COMPUTE.REF_INCONSISTENCY.KO": "Failed to apply business rules and calculate due dates: inconsistent inheritance exclusion",
     "CHECK_UNIT_SCHEMA.RULE_DATE_THRESHOLD.KO": "Failed to calculate due dates: the date cannot be managed",
     "CHECK_CONCURRENT_WORKFLOW_LOCK.FATAL": "Technical error while checking concurrent processes",
     "ELIMINATION_ACTION_ACCESSION_REGISTER_UPDATE.OK": "Successful update of the Register of Funds following the final elimination of archival units",
@@ -2936,7 +2917,7 @@
     "BACKUP_ONTOLOGY.FATAL": "Technical error during the process of saving ontologies",
     "AUDIT_CHECK_OBJECT.WARNING": "Warning when auditing object verification",
     "CHECK.STARTED.OK": "Successful start of checking secure logs",
-    "STP_DELETE_MASTERDATA_ACCESS_CONTRACT.FATAL ": " Technical error during the process of deleting access contracts ",
+    "STP_DELETE_MASTERDATA_ACCESS_CONTRACT.FATAL": "Technical error during the process of deleting access contracts",
     "LFC.CHECK_UNIT_SCHEMA.EMPTY_REQUIRED_FIELD.OK": "Success of the additional check on the validity of the fields of the archival unit",
     "STP_UPDATE_OBJECT_GROUP.OK": "Success of the object group update process",
     "STP_CHECK_AND_COMPUTE.STARTED": "Beginning of the process of preparing the list of archival units to be updated and modification authorizations",
@@ -3100,7 +3081,7 @@
     "PREPARE_UNIT_LFC_TRACEABILITY": "Preparation of the list of life cycle logs and archival unit metadata",
     "OP_PROFILE_STORAGE.OK": "Successful saving of the archive profile",
     "STP_CHECK_AND_COMPUTE.STARTED.OK": "Successful start of the process of preparing the list of archival units to be updated and modification authorizations",
-    "LFC.OG_CREATE_SECURED_FILE.KO ": " Failed to create secure files for object group ",
+    "LFC.OG_CREATE_SECURED_FILE.KO": "Failed to create secure files for object group",
     "STP_STORE_MANIFEST": "Process of creating the DIP and moving it to the storage offer",
     "LIST_ARCHIVE_UNITS": "Establishment of the list of archival units to update",
     "CHECK_DISTRIBUTION_THRESHOLD.KO": "Failed to check the thresholds for processing archival units",
@@ -3250,7 +3231,7 @@
     "TRANSFER_REPLY_DELETE_OBJECT_GROUP": "Permanently delete groups of technical objects whose parent archival units are purged",
     "TRANSFER_REPLY_DELETE_OBJECT_GROUP.STARTED": "Started purging technical object groups whose parent archival units are purged",
     "TRANSFER_REPLY_DELETE_OBJECT_GROUP.STARTED.OK": "Successfully started purge of technical object groups whose parent archival units are purged",
-    "TRANSFER_REPLY_DELETE_OBJECT_GROUP.OK ": "Successfully purge technical object groups whose parent archival units are purged",
+    "TRANSFER_REPLY_DELETE_OBJECT_GROUP.OK": "Successfully purge technical object groups whose parent archival units are purged",
     "TRANSFER_REPLY_DELETE_OBJECT_GROUP.KO": "Failed to purge technical object groups whose parent archival units are purged",
     "TRANSFER_REPLY_DELETE_OBJECT_GROUP.FATAL": "Technical error while purging groups of technical objects whose parent archival units are purged",
     "TRANSFER_REPLY_DELETE_OBJECT_GROUP.WARNING": "Warning when purging technical object groups whose parent archival units are purged",
@@ -3462,7 +3443,7 @@
       "EXPORT_SIP_TRANSFER_REQUEST": "Export the transfer SIP",
       "TRANSFER_REQUEST": "Transfer a DIP",
       "ARCHIVAL_AGREEMENT": "Archival agreement",
-      "ORIGINATING_AGENCY_IDENTIFIER": "Producing service identifier ",
+      "ORIGINATING_AGENCY_IDENTIFIER": "Producing service identifier",
       "ARCHIVAL_AGENCY": "Archive service identifier",
       "TRANSFERRING_AGENCY": "Identifier of the service responsible for the transfer",
       "RELATED_TRANSFER_REFERENCE": "Related transfer reference",
@@ -3474,7 +3455,7 @@
       "REQUESTER_ID": "Requester identifier",
       "COMMENT": "Comment(s)",
       "AUTHORISATION_REQUEST_REPLY": "Identifier of the response to an authorization request",
-      "SUBMISSION_AGENCY_ID": "Submission agency identifier ",
+      "SUBMISSION_AGENCY_ID": "Submission agency identifier",
       "REQUIRED": "Required field",
       "DIP_EXPORT": "Export a DIP",
       "TRANSFER_REQUEST_TITLE": "Request an archive transfer",
@@ -3494,7 +3475,7 @@
       "ALL": "All",
       "NONE": "None",
       "SELECTION": "Selection",
-      "OBJECT_GROUPS": "groups of objects :",
+      "OBJECT_GROUPS": "Groups of objects :",
       "DIP_REQUEST_MESSAGE": "Your DIP request has been taken into account",
       "TRANSFER_REQUEST_MESSAGE": "Your archive transfer request has been taken into account",
       "TRANSFER_REQUEST_WARNING_MESSAGE": "Warning: You have not included any digital originals in your transfer request.",
@@ -3521,26 +3502,13 @@
       "FIELDS": {
         "DESCRIPTION": "Description",
         "END_DATE": "End date",
-        "GUID": "Ingest GUID",
         "NAME": "Name",
-        "OTHER_FIELD": "Another criteria",
-        "SELECT_OTHER_FIELD": "Select another criteria",
         "SP": "Originating agency",
-        "SP_CODE": "Originating agency code",
-        "SP_COMM": "Originating agency Comm",
-        "SP_COMM_DT": "Originating agency Comm DT",
-        "SP_LABEL": "Originating agency name",
         "START_DATE": "Start date",
-        "TITLE": "Title",
-        "TYPE": "Type",
-        "UAID": "Archive unit GUID"
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
-      "ACTIONS": {
-        "SHOW_MORE_DETAILS": "Show all metadata",
-        "SHOW_ONLY_INFORMATION_DETAILS": "Hide management metadata"
-      },
       "FIELDS": {
         "ALGORITHM": "Footprint - ",
         "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH",
@@ -3650,9 +3618,7 @@
       "ADD": "Add criteria",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
-      "COMMUNICABILITY": "Communicability",
       "DISSEMINATION": "Dissemination",
-      "DUC": "Current useful life",
       "GEL": "Freezing",
       "REUSE": "Reuse"
     },
@@ -3660,27 +3626,12 @@
       "ACCESS_RULE": "Access",
       "APPRAISAL_RULE": "Appraisal",
       "CLASSIFICATION": "Classification",
-      "DIFFUSION": "Diffusion",
       "DISSEMINATION_RULE": "Dissemination",
       "GEL": "Gel",
       "REUSE_RULE": "Reuse",
       "STORAGE_RULE": "Storage"
     },
     "FACETS": {
-      "ACCESS_RULE": {
-        "ARCHIVE_UNITS_COUNT": "Archive unit count",
-        "CALCULATED": "With computed rule",
-        "DISTINCT_RULES": "Distinct rules",
-        "EXPIRED": "Expired",
-        "EXPIRED_RULES": "Expiration date",
-        "FINAL_ACTIONS": "Final action",
-        "FROM_DATE": "From",
-        "NOT_EXPIRED": "Not expired",
-        "RULES_COUNT": "Rule count",
-        "SHOW_RULES_LIST": "SHOW LIST",
-        "WAITING_TO_RECALCULATE": "With not indexed rule",
-        "WITHOUT_RULES": "That without defined rules"
-      },
       "APPRAISAL_RULE": {
         "ARCHIVE_UNITS_COUNT": "Archive unit count",
         "CALCULATED": "With computed rule",
@@ -3698,7 +3649,7 @@
         "WAITING_TO_RECALCULATE": "With not indexed rule",
         "WITHOUT_RULES": "That without defined rules"
       },
-      "DISSEMINATION_RULE": {
+      "ACCESS_RULE": {
         "ARCHIVE_UNITS_COUNT": "Archive unit count",
         "CALCULATED": "With computed rule",
         "DISTINCT_RULES": "Distinct rules",
@@ -3712,7 +3663,38 @@
         "WAITING_TO_RECALCULATE": "With not indexed rule",
         "WITHOUT_RULES": "That without defined rules"
       },
+      "STORAGE_RULE": {
+        "RULES_COUNT": "Rules count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final actions",
+        "WITHOUT_RULES": "Without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive units count",
+        "COPY": "Copy",
+        "TRANSFER": "Transfer",
+        "RESTRICT_ACCESS": "Restricted access",
+        "NOT_EXPIRED": "Not expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From date",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "Not indexed",
+        "CALCULATED": "Indexed"
+      },
       "REUSE_RULE": {
+        "ARCHIVE_UNITS_COUNT": "Archive unit count",
+        "CALCULATED": "With computed rule",
+        "DISTINCT_RULES": "Distinct rules",
+        "EXPIRED": "Expired",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final action",
+        "FROM_DATE": "From",
+        "NOT_EXPIRED": "Not expired",
+        "RULES_COUNT": "Rule count",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "With not indexed rule",
+        "WITHOUT_RULES": "That without defined rules"
+      },
+      "DISSEMINATION_RULE": {
         "ARCHIVE_UNITS_COUNT": "Archive unit count",
         "CALCULATED": "With computed rule",
         "DISTINCT_RULES": "Distinct rules",
@@ -3764,19 +3746,16 @@
         "RULE_END_DATE_ACCESS_RULE": "Access rule end date",
         "RULE_END_DATE_BEGIN": "Access: Min end date",
         "RULE_END_DATE_END": "Access: Max end date",
-        "RULE_IDENTIFIER_ACCESS_RULE": "Access rule identifier ",
+        "RULE_IDENTIFIER_ACCESS_RULE": "Access rule identifier",
         "RULE_ORIGIN_ACCESS_RULE": "Access rule",
         "RULE_START_DATE_ACCESS_RULE": "Access rule start date",
         "RULE_TITLE_ACCESS_RULE": "Access rule title"
       },
       "ACCESS_TITLE": "Access",
       "APPRAISAL_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "DUA Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "DUA Rule title",
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
         "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
@@ -3804,7 +3783,7 @@
         "RULE_END_DATE_BEGIN": "Dissemination: Min end date",
         "RULE_END_DATE_DISSEMINATION_RULE": "Dissemination rule end date",
         "RULE_END_DATE_END": "Dissemination: Max end date",
-        "RULE_IDENTIFIER_DISSEMINATION_RULE": "Dissemination rule identifier ",
+        "RULE_IDENTIFIER_DISSEMINATION_RULE": "Dissemination rule identifier",
         "RULE_ORIGIN_DISSEMINATION_RULE": "Dissemination rule",
         "RULE_START_DATE_DISSEMINATION_RULE": "Dissemination rule start date",
         "RULE_TITLE_DISSEMINATION_RULE": "Dissemination rule title"
@@ -3815,7 +3794,6 @@
         "Strict": "Exact search"
       },
       "FIELDS": {
-        "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
@@ -3836,8 +3814,8 @@
         "END_DATE_DISSEMINATION_END": " and ",
         "END_DATE_DISSEMINATION_EQUAL": "Max end date",
         "END_DATE_DUA": "Start Date",
-        "END_DATE_DUA_BEGIN": "Between  ",
-        "END_DATE_DUA_END": "and  ",
+        "END_DATE_DUA_BEGIN": "Between ",
+        "END_DATE_DUA_END": "and ",
         "END_DATE_DUA_EQUAL": "Max end date",
         "END_DATE_REUSE": "Rule end date",
         "END_DATE_REUSE_BEGIN": "Between ",
@@ -3854,12 +3832,12 @@
           "RESTRICT_ACCESS_STORAGE_RULE": "Restrict Access",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
           "SELECT_ALL_STORAGE_RULE": "Select all",
-          "TITLE": "Appraisal final action ",
+          "TITLE": "Appraisal final action",
           "TRANSFER_STORAGE_RULE": "Transfer"
         },
         "FINAL_ACTION_TYPE": {
-          "HAS_APPRAISAL_RULE": "Define appraisal final action ",
-          "HAS_STORAGE_RULE": "Define storage final action ",
+          "HAS_APPRAISAL_RULE": "Define appraisal final action",
+          "HAS_STORAGE_RULE": "Define storage final action",
           "INHERITE_APPRAISAL_RULE": "Inherit appraisal final action",
           "INHERITE_STORAGE_RULE": "Inherit storage final action",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
@@ -3896,7 +3874,7 @@
           "HAS_NO_APPRAISAL_RULE": "Does not have a DUA rule defined",
           "HAS_NO_DISSEMINATION_RULE": "Does not define a Dissemination rule defined",
           "HAS_NO_REUSE_RULE": "Does not define a reuse rule defined",
-          "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined ",
+          "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined",
           "INHERITE_AT_LEAST_ONE_ACCESS_RULE": "Inherits at least one Access rule",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
           "INHERITE_AT_LEAST_ONE_DISSEMINATION_RULE": "Inherits at least one Dissemination rule",
@@ -3954,23 +3932,18 @@
         "RULE_END_DATE_BEGIN": "Reuse: Min end date",
         "RULE_END_DATE_END": "Reuse: Max end date",
         "RULE_END_DATE_REUSE_RULE": "Reuse rule end date",
-        "RULE_IDENTIFIER_REUSE_RULE": "Reuse rule identifier ",
+        "RULE_IDENTIFIER_REUSE_RULE": "Reuse rule identifier",
         "RULE_ORIGIN_REUSE_RULE": "Reuse rule",
         "RULE_START_DATE_REUSE_RULE": "Reuse rule start date",
         "RULE_TITLE_REUSE_RULE": "Reuse rule title"
       },
       "REUSE_TITLE": "Reuse",
-      "REUSEDISSEMINATION_TITLE": "Dissemination",
       "STORAGE_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "Storage Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Storage Rule title",
         "CREATE_INTERVAL": "Create interval",
         "DELETE_INTERVAL": "remove interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
-        "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
         "FINAL_ACTION_TYPE_COPY": "Copy",
         "FINAL_ACTION_TYPE_RESTRICT_ACCESS": "Restrict access",
         "FINAL_ACTION_TYPE_TRANSFER": "Transfer",
@@ -3978,17 +3951,9 @@
         "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
         "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
-        "RULE_END_DATE_ACCESS_RULE": "Storage rule end date",
-        "RULE_END_DATE_APPRAISAL_RULE": "Storage End Date",
         "RULE_END_DATE_BEGIN": "Storage: Min end date",
         "RULE_END_DATE_END": "Storage: Max end date",
-        "RULE_IDENTIFIER_ACCESS_RULE": "Storage rule identifier ",
-        "RULE_IDENTIFIER_APPRAISAL_RULE": "Storage Rule identifier",
-        "RULE_ORIGIN_ACCESS_RULE": "Storage rule",
-        "RULE_ORIGIN_APPRAISAL_RULE": "Storage Rule",
-        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
-        "RULE_START_DATE_ACCESS_RULE": "Storage rule start date",
-        "RULE_TITLE_ACCESS_RULE": "Storage rule title"
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule"
       },
       "STORAGE_TITLE": "Storage",
       "TITLE": "Multi-criteria search",
@@ -3999,7 +3964,7 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",
-      "DELETED_WITH_SUCCESS_1": "Your search criteria named  ",
+      "DELETED_WITH_SUCCESS_1": "Your search criteria named ",
       "DELETED_WITH_SUCCESS_2": " is correctly deleted.",
       "NAME": "Name",
       "NEW_SAVE_BUTTON": "CREATE NEW CRITERIA SAVE",
@@ -4010,7 +3975,7 @@
       "NO_RESULTS": "No save results found",
       "OBJECT_TYPE": "Saved Criteria Searches",
       "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_LABEL": "Character limit reached",
-      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "You have reached the maximum number of characters allowed. ",
+      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "You have reached the maximum number of characters allowed.",
       "SAVE_DELETE_CRITERIA_LABEL": "Deletion of",
       "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criteria ?",
       "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criteria:",
@@ -4019,8 +3984,8 @@
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
       "SAVE_REPLACE_CANCEL_BUTTON": "CANCEL",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRM",
-      "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save? ",
-      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name  ",
+      "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save?",
+      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name ",
       "NO_VALUE_FOUND_TO_DISPLAY": "No value to display"
     },
     "SELECTED": "sélectionnés",
@@ -4058,10 +4023,8 @@
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "SP": "Service producteur",
-        "SP_CODE": "Identifiant SP",
         "SP_COMM": "Service Prod Comm",
         "SP_COMM_DT": "Service Prod Comm DT",
-        "SP_LABEL": "Nom SP",
         "START_DATE": "Date de début",
         "TITLE": "Intitulé",
         "TYPE": "Type"
@@ -4107,9 +4070,7 @@
         "UAID": "Archive Technical ID",
         "URI": "URI",
         "USAGE": "Usage",
-        "USAGE_VERSION": "Usage version",
-        "PERSISTENT_IDENTIFIER": "Persistent Identifier",
-        "PERSISTENT_IDENTIFIER_CONTENT": "Identifier"
+        "USAGE_VERSION": "Usage version"
       },
       "TABS": {
         "INFORMATIONS": "Informations",
@@ -4121,6 +4082,7 @@
       "CATEGORY_NAME": {
         "ACCESSRULE": "Communicability",
         "APPRAISALRULE": "DUA",
+        "DUC": "DUC",
         "CLASSIFICATIONRULE": "Classification",
         "DISSEMINATIONRULE": "Dissemination",
         "HOLDRULE": "Freeze",
@@ -4178,9 +4140,7 @@
       "ADD": "Add criteria",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
-      "COMMUNICABILITY": "Communicability",
       "DISSEMINATION": "Dissemination",
-      "DUC": "Current useful life",
       "GEL": "Freezing",
       "REUSE": "Reuse"
     },
@@ -4188,7 +4148,6 @@
       "ACCESS_RULE": "Access",
       "APPRAISAL_RULE": "Appraisal",
       "CLASSIFICATION": "Classification",
-      "DIFFUSION": "Diffusion",
       "DISSEMINATION_RULE": "Dissemination",
       "GEL": "Gel",
       "REUSE_RULE": "Reuse",
@@ -4336,19 +4295,16 @@
         "RULE_END_DATE_ACCESS_RULE": "Access rule end date",
         "RULE_END_DATE_BEGIN": "Access: Min end date",
         "RULE_END_DATE_END": "Access: Max end date",
-        "RULE_IDENTIFIER_ACCESS_RULE": "Access rule identifier ",
+        "RULE_IDENTIFIER_ACCESS_RULE": "Access rule identifier",
         "RULE_ORIGIN_ACCESS_RULE": "Access rule",
         "RULE_START_DATE_ACCESS_RULE": "Access rule start date",
         "RULE_TITLE_ACCESS_RULE": "Access rule title"
       },
       "ACCESS_TITLE": "Access",
       "APPRAISAL_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "DUA Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "DUA Rule title",
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
         "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
@@ -4376,7 +4332,7 @@
         "RULE_END_DATE_BEGIN": "Dissemination: Min end date",
         "RULE_END_DATE_DISSEMINATION_RULE": "Dissemination rule end date",
         "RULE_END_DATE_END": "Dissemination: Max end date",
-        "RULE_IDENTIFIER_DISSEMINATION_RULE": "Dissemination rule identifier ",
+        "RULE_IDENTIFIER_DISSEMINATION_RULE": "Dissemination rule identifier",
         "RULE_ORIGIN_DISSEMINATION_RULE": "Dissemination rule",
         "RULE_START_DATE_DISSEMINATION_RULE": "Dissemination rule start date",
         "RULE_TITLE_DISSEMINATION_RULE": "Dissemination rule title"
@@ -4403,8 +4359,8 @@
         "END_DATE_DISSEMINATION_END": " and ",
         "END_DATE_DISSEMINATION_EQUAL": "Max end date",
         "END_DATE_DUA": "Start Date",
-        "END_DATE_DUA_BEGIN": "Between  ",
-        "END_DATE_DUA_END": "and  ",
+        "END_DATE_DUA_BEGIN": "Between ",
+        "END_DATE_DUA_END": "and ",
         "END_DATE_DUA_EQUAL": "Max end date",
         "END_DATE_REUSE": "Rule end date",
         "END_DATE_REUSE_BEGIN": "Between ",
@@ -4421,12 +4377,12 @@
           "RESTRICT_ACCESS_STORAGE_RULE": "Restrict Access",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
           "SELECT_ALL_STORAGE_RULE": "Select all",
-          "TITLE": "Appraisal final action ",
+          "TITLE": "Appraisal final action",
           "TRANSFER_STORAGE_RULE": "Transfer"
         },
         "FINAL_ACTION_TYPE": {
-          "HAS_APPRAISAL_RULE": "Define appraisal final action ",
-          "HAS_STORAGE_RULE": "Define storage final action ",
+          "HAS_APPRAISAL_RULE": "Define appraisal final action",
+          "HAS_STORAGE_RULE": "Define storage final action",
           "INHERITE_APPRAISAL_RULE": "Inherit appraisal final action",
           "INHERITE_STORAGE_RULE": "Inherit storage final action",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
@@ -4462,7 +4418,7 @@
           "HAS_NO_APPRAISAL_RULE": "Does not have a DUA rule defined",
           "HAS_NO_DISSEMINATION_RULE": "Does not define a Dissemination rule defined",
           "HAS_NO_REUSE_RULE": "Does not define a reuse rule defined",
-          "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined ",
+          "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined",
           "INHERITE_AT_LEAST_ONE_ACCESS_RULE": "Inherits at least one Access rule",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
           "INHERITE_AT_LEAST_ONE_DISSEMINATION_RULE": "Inherits at least one Dissemination rule",
@@ -4491,7 +4447,6 @@
         "START_DATE_DUA": "End Date",
         "START_DATE_SEARCH": "Start date",
         "TITLE": "Title",
-        "Title.Strict": "Title (strict)",
         "TITLE_ACCESS": "Title",
         "TITLE_DUA": "Title",
         "TITLE_OR_DESCRIPTION": "Title or Description",
@@ -4520,23 +4475,18 @@
         "RULE_END_DATE_BEGIN": "Reuse: Min end date",
         "RULE_END_DATE_END": "Reuse: Max end date",
         "RULE_END_DATE_REUSE_RULE": "Reuse rule end date",
-        "RULE_IDENTIFIER_REUSE_RULE": "Reuse rule identifier ",
+        "RULE_IDENTIFIER_REUSE_RULE": "Reuse rule identifier",
         "RULE_ORIGIN_REUSE_RULE": "Reuse rule",
         "RULE_START_DATE_REUSE_RULE": "Reuse rule start date",
         "RULE_TITLE_REUSE_RULE": "Reuse rule title"
       },
       "REUSE_TITLE": "Reuse",
-      "REUSEDISSEMINATION_TITLE": "Dissemination",
       "STORAGE_RULE": {
-        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "Storage Start Date",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Storage Rule title",
         "CREATE_INTERVAL": "Create interval",
         "DELETE_INTERVAL": "remove interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
-        "FINAL_ACTION": "Final Action",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
-        "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
         "FINAL_ACTION_TYPE_COPY": "Copy",
         "FINAL_ACTION_TYPE_RESTRICT_ACCESS": "Restrict access",
         "FINAL_ACTION_TYPE_TRANSFER": "Transfer",
@@ -4544,17 +4494,9 @@
         "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
         "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
-        "RULE_END_DATE_ACCESS_RULE": "Storage rule end date",
-        "RULE_END_DATE_APPRAISAL_RULE": "Storage End Date",
         "RULE_END_DATE_BEGIN": "Storage: Min end date",
         "RULE_END_DATE_END": "Storage: Max end date",
-        "RULE_IDENTIFIER_ACCESS_RULE": "Storage rule identifier ",
-        "RULE_IDENTIFIER_APPRAISAL_RULE": "Storage Rule identifier",
-        "RULE_ORIGIN_ACCESS_RULE": "Storage rule",
-        "RULE_ORIGIN_APPRAISAL_RULE": "Storage Rule",
-        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
-        "RULE_START_DATE_ACCESS_RULE": "Storage rule start date",
-        "RULE_TITLE_ACCESS_RULE": "Storage rule title"
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule"
       },
       "STORAGE_TITLE": "Storage",
       "TITLE": "Multi-criteria search",
@@ -4565,8 +4507,8 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",
-      "DELETED_WITH_SUCCESS_1": "Your search criteria named  ",
-      "DELETED_WITH_SUCCESS_2": " is correctly deleted.",
+      "DELETED_WITH_SUCCESS_1": "Your search criteria named",
+      "DELETED_WITH_SUCCESS_2": "is correctly deleted.",
       "NAME": "Name",
       "NEW_SAVE_BUTTON": "CREATE NEW CRITERIA SAVE",
       "NEW_SAVE_IN_POPUP": "Save your search criteria",
@@ -4576,7 +4518,7 @@
       "NO_RESULTS": "No save results found",
       "OBJECT_TYPE": "Saved Criteria Searches",
       "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_LABEL": "Character limit reached",
-      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "You have reached the maximum number of characters allowed. ",
+      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "You have reached the maximum number of characters allowed.",
       "SAVE_DELETE_CRITERIA_LABEL": "Deletion of",
       "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criteria ?",
       "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criteria:",
@@ -4585,8 +4527,8 @@
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
       "SAVE_REPLACE_CANCEL_BUTTON": "CANCEL",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRM",
-      "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save? ",
-      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name  ",
+      "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save?",
+      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name",
       "NO_VALUE_FOUND_TO_DISPLAY": "No value to display"
     },
     "SELECTED": "selected",

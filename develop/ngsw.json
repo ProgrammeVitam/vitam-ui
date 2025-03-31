@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1743412405036,
+  "timestamp": 1743415936650,
   "index": "/vitam-ui/develop/index.html",
   "assetGroups": [
     {
@@ -72,8 +72,8 @@
     "/vitam-ui/develop/assets/country/en.svg": "2b5148a18b90f933e47bf895c26d61a52d21d9d8",
     "/vitam-ui/develop/assets/country/fr.svg": "e3deb99b897e85df223b6d5d63628ea6d9c762c1",
     "/vitam-ui/develop/assets/footer-logo.svg": "8d54e762125574e92769c3dfe308afc2307cce3b",
-    "/vitam-ui/develop/assets/i18n/en.json": "49f4192bba823f55163dda2b1ce9b5334d0d8ab6",
-    "/vitam-ui/develop/assets/i18n/fr.json": "1741a4d759bbeba342242fb11850f4d9755e6cfb",
+    "/vitam-ui/develop/assets/i18n/en.json": "fb79a7abe0151d1356bb98aa242c1c858fb3c3cf",
+    "/vitam-ui/develop/assets/i18n/fr.json": "d6290ac6ffdab875ad62aa01569e196c2774e1b7",
     "/vitam-ui/develop/assets/logo.png": "918f4351c803e4440d869b689744c3f77a263461",
     "/vitam-ui/develop/assets/logo.svg": "163806bb7a3e5505d7c2432965564eb8f851dc13",
     "/vitam-ui/develop/assets/logo_FOOTER.png": "5b8fd9e0bdc417b8ecf5d06739a1ef89b1741d1e",
@@ -82,8 +82,8 @@
     "/vitam-ui/develop/assets/logo_USER.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
     "/vitam-ui/develop/assets/my-account.svg": "6fd87f211c8f87de0e73b0e01c138eaf90239869",
     "/vitam-ui/develop/assets/shared-i18n/README.md": "8827078e00e335c7e108ee0a1e9976d6d24fb89f",
-    "/vitam-ui/develop/assets/shared-i18n/en.json": "2e44bcec715954f3176e5a45e63eae7a17f31105",
-    "/vitam-ui/develop/assets/shared-i18n/fr.json": "da8c3229e0c0409fb0dff6d5fdf8a7e031af2444",
+    "/vitam-ui/develop/assets/shared-i18n/en.json": "5b560555d689fd22758d0ed20ed0b51a6ff708fd",
+    "/vitam-ui/develop/assets/shared-i18n/fr.json": "ff92a69534f10c2219bf8a31091b7d52ecd335e2",
     "/vitam-ui/develop/assets/user_icon.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
     "/vitam-ui/develop/assets/vitam-logo.png": "0bcb4aaad694b796cf574e4f7aca90b740bcb9f2",
     "/vitam-ui/develop/main-EZTAVCT2.js": "b19a2b47f66a7824151704712c854a1e7b1550f5",
