@@ -4,7 +4,6 @@
       [transactionId]="transaction?.id"
       (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
       [searchHasMatches]="searchHasResults"
-      [hasDynamicAttachment]="hasDynamicAttachment"
       [searchRequestTotalResults]="totalResults"
     >
     </app-filing-holding-scheme>
@@ -61,7 +60,7 @@
             type="button"
             class="btn primary"
             [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)"
-            (click)="submit()"
+            (click)="submit(true)"
           >
             {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}
           </button>
