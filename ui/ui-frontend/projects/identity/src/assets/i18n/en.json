@@ -12,7 +12,6 @@
       "GERMAN": "German"
     },
     "APPLY_UPDATE": "Apply changes",
-    "NAME_ALREADY_EXISTS": "Name already exists",
     "ACTIVE": "activated",
     "NO_RESULT": "No Result",
     "MORE_RESULT": "Show more results...",
@@ -53,7 +52,7 @@
     "EDITABLE_PARAMS": {
       "KEY": "Key",
       "VALUE": "Value",
-      "CUSTOM_PARAMS": "Customs settings"
+      "CUSTOM_SETTINGS": "Custom settings"
     },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(Already used)",
@@ -129,7 +128,6 @@
       "PASSWORDS_DURATION": "Duration of passwords revocation",
       "PASSWORD_DURATION_1": "Duration of password revocation",
       "PASSWORD_DURATION_2": "(since the last change)",
-      "VALIDATIONS_TOOLTIP": "In order to be able to activate the two-step validation you must first enter the mobile number",
       "VALIDATIONS": "Two-step validation",
       "DOMAINS": "Domains",
       "ALERT_ON_INACTIVE_USERS": "Alert on inactive users",
@@ -180,7 +178,6 @@
       "STATUS_INACTIVE": "Inactive",
       "PATTERNS": "Patterns",
       "METADATA": "Metadata CAS",
-      "SPMETADATA": "SPMETADATA",
       "RETURN": "Return to the IDP list",
       "ACTIVE_SWITCH": "Active IDP",
       "IDP_NAME": "IDP name",

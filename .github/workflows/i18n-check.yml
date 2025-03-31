@@ -23,4 +23,3 @@ jobs:
       - name: Run i18n comparison script
         working-directory: tools
         run: node check-i18n.js
-        continue-on-error: true # We don't want the workflow to fail if the i18n comparison script fails

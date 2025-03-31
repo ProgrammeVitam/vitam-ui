@@ -125,9 +125,7 @@
     "EDITABLE_LEVEL_DISABLED": "Niveau éditable désactivé"
   },
   "SAMPLE_DIALOG": {
-    "OPEN": "Ouvrir la popup d'exemple",
-    "STEP_0": "Première étape",
-    "STEP_1": "Deuxième étape"
+    "OPEN": "Ouvrir la popup d'exemple"
   },
   "COLORS": {
     "PRIMARY": "Couleur primaire",
