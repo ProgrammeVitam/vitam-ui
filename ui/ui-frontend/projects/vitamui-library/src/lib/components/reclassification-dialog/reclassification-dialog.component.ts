@@ -61,7 +61,7 @@ import {
   ReclassificationCriteriaDto,
   ReclassificationQueryActionType,
 } from '../../../app/modules/services/reclassification.interface';
-import { Subscription } from 'rxjs';
+import { mergeMap, of, Subscription } from 'rxjs';
 import { StartupService } from '../../../app/modules/startup.service';
 import { ReclassificationValidatorService } from './reclassification-validator.service';
 import { DialogHeaderComponent } from '../dialog/dialog-header/dialog-header.component';
@@ -129,8 +129,10 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
   archiveUnitAllunitup: string[];
   accessContract: string;
   transactionId: string = null;
+  reclassificationCriteria: SearchCriteriaDto;
 
   archiveUnitFetchedParents: Array<{ title: string; id: string }> = [];
+  fetchedParents: number = 0;
   subscriptionAuTitle: Subscription;
   pendingGetChilds = true;
   waitingForLoadExactTotalTrackHits = false;
@@ -146,6 +148,7 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
   selectedTargetUnits = new FormControl({ included: [], excluded: [] });
 
   RECLASSIFICATION_THRESHOLD = 10_000;
+  MAXIMUM_PARENTS = 5;
 
   actions: Option[] = [
     { key: 'REPLACE', label: this.translateService.instant('RECLASSIFICATION.REPLACE_STEP.TITLE') },
@@ -193,6 +196,7 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     this.archiveUnitAllunitup = this.data.archiveUnitAllunitup;
     this.accessContract = this.data.accessContract;
     this.transactionId = this.data.transactionId;
+    this.reclassificationCriteria = this.data.reclassificationCriteria;
 
     this.form = this.formBuilder.group({
       actionToFilter: [null, Validators.required],
@@ -227,13 +231,6 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (this.archiveUnitAllunitup.length > 0) {
-      this.getArchiveUnitParents(this.archiveUnitAllunitup);
-    } else {
-      this.hasParents = false;
-      this.isDisabledButton = false;
-    }
-
     this.actionToFilterOptions = {
       options: this.actions,
     };
@@ -245,8 +242,10 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       this.actionChosen = value;
     });
 
-    this.calculateChilds();
-    this.loadProjectUnits();
+    this.calculateChildrenAndParents();
+    if (this.appName === 'COLLECT') {
+      this.loadProjectUnits();
+    }
 
     this.badgeMessageMoreThan =
       this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN') +
@@ -263,57 +262,73 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     return Object.keys(ReclassificationToggle);
   }
 
-  calculateChilds() {
+  calculateChildrenAndParents() {
     this.pendingGetChilds = true;
+    this.reclassificationCriteria.includedFields = ['#unitups'];
+    this.reclassificationService
+      .searchArchiveUnitsByCriteria(this.reclassificationCriteria, this.transactionId)
+      .pipe(
+        mergeMap((pagedResult: PagedResult) => {
+          const unitUpsPerIds = pagedResult.results.map((unit) => unit['#unitups']);
+          const unitUpsIds = [...new Set(unitUpsPerIds.flat())];
 
-    const criteriaSearchList = [
-      {
-        criteria: '#allunitups',
-        values: this.archiveUnitGuidsSelected,
-        operator: CriteriaOperator.IN,
-        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING,
-      },
-    ];
-    const searchCriteria: any = {
-      criteriaList: criteriaSearchList,
-      pageNumber: 0,
-      size: 1,
-    };
-    this.reclassificationService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).subscribe(
-      (pagedResults: PagedResult) => {
-        this.totalChilds = pagedResults.totalResults;
-        this.badgeMessageIncluding = this.translateService.instant('RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS', {
-          nbDocuments: this.totalChilds,
-        });
-        this.pendingGetChilds = false;
-      },
-      (error: HttpErrorResponse) => {
-        this.pendingGetFixedCount = false;
+          this.totalChilds = unitUpsIds.length;
+          this.badgeMessageIncluding = this.translateService.instant('RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS', {
+            nbDocuments: this.totalChilds,
+          });
+          this.pendingGetChilds = false;
 
-        this.pendingGetChilds = false;
-        this.waitingForLoadExactTotalTrackHits = false;
-        this.logger.error('error message', error.message);
-      },
-    );
+          if (unitUpsIds.length >= 1) {
+            const criteriaSearchList = [
+              {
+                criteria: '#id',
+                values: unitUpsIds,
+                operator: CriteriaOperator.EQ,
+                category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+                dataType: CriteriaDataType.STRING,
+              },
+            ];
+
+            const searchCriteria = {
+              criteriaList: criteriaSearchList,
+              pageNumber: 0,
+              size: unitUpsIds.length,
+              includedFields: ['Title', 'Title_', '#id'],
+            };
+            return this.reclassificationService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId);
+          } else {
+            this.fetchedParents = unitUpsIds.length;
+            if (this.fetchedParents === 0) {
+              this.hasParents = false;
+              this.isDisabledButton = false;
+            }
+            return of({ results: [], pageNumbers: 0, totalResults: unitUpsIds.length });
+          }
+        }),
+      )
+      .subscribe(
+        (pagedResult: PagedResult) => {
+          pagedResult.results.map((ua) => {
+            const title = this.reclassificationService.fetchTitle(ua.Title, ua.Title_);
+            this.archiveUnitFetchedParents.push({ title, id: ua['#id'] });
+            this.addAllUnitUpsDynamically();
+          });
+        },
+        (error: HttpErrorResponse) => {
+          this.pendingGetFixedCount = false;
+          this.pendingGetChilds = false;
+          this.waitingForLoadExactTotalTrackHits = false;
+          this.logger.error('error message', error.message);
+        },
+      );
   }
 
   loadExactCount() {
-    if (this.data.reclassificationCriteria.criteriaList && this.data.reclassificationCriteria.criteriaList.length > 0) {
+    if (this.reclassificationCriteria.criteriaList && this.reclassificationCriteria.criteriaList.length > 0) {
       this.waitingForLoadExactTotalTrackHits = true;
       this.pendingGetFixedCount = true;
 
-      const criteriaSearchList: any[] = [
-        {
-          criteria: '#allunitups',
-          values: this.archiveUnitGuidsSelected,
-          operator: CriteriaOperator.IN,
-          category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-          dataType: CriteriaDataType.STRING,
-        },
-      ];
-
-      this.reclassificationService.getTotalTrackHitsByCriteria(criteriaSearchList).subscribe(
+      this.reclassificationService.getTotalTrackHitsByCriteria(this.reclassificationCriteria.criteriaList).subscribe(
         (exactCountResults: number) => {
           if (exactCountResults !== -1) {
             this.totalChilds = exactCountResults;
@@ -332,34 +347,6 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
         },
       );
     }
-  }
-
-  getArchiveUnitParents(allunitupsIds: string[]) {
-    const allunitups = allunitupsIds.map((unitUp) => ({ id: unitUp, value: unitUp }));
-    const criteriaSearchList = [
-      {
-        criteria: '#id',
-        values: allunitups,
-        operator: CriteriaOperator.EQ,
-        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING,
-      },
-    ];
-
-    const searchCriteria = {
-      criteriaList: criteriaSearchList,
-      pageNumber: 0,
-      size: allunitupsIds.length,
-    };
-    this.reclassificationService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).subscribe((pagedResult: PagedResult) => {
-      if (pagedResult.results) {
-        pagedResult.results.map((ua) => {
-          const title = this.reclassificationService.fetchTitle(ua.Title, ua.Title_);
-          this.archiveUnitFetchedParents.push({ title, id: ua['#id'] });
-          this.addAllUnitUpsDynamically();
-        });
-      }
-    });
   }
 
   loadProjectUnits() {

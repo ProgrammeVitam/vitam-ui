@@ -45,7 +45,7 @@
                 | i18nPlural: currentParentFolderMap
                 | translate: { nbParents: archiveUnitFetchedParents.length }
             }}
-          } @else if (archiveUnitFetchedParents.length > 5) {
+          } @else if (fetchedParents > MAXIMUM_PARENTS) {
             {{ 'RECLASSIFICATION.FIRST_STEP.MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS' | translate }}
           } @else if (!hasParents) {
             <div class="light">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>

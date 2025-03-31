@@ -181,7 +181,7 @@ describe('ReclassificationDialogComponent', () => {
     spyOn(reclassificationServiceMock, 'searchArchiveUnitsByCriteria').and.callThrough();
 
     // When
-    component.calculateChilds();
+    component.calculateChildrenAndParents();
 
     // Then
     expect(component.pendingGetChilds).toBeFalsy();

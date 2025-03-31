@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.commons.api.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
@@ -35,6 +36,7 @@ import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
@@ -42,10 +44,10 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidCreateOperationVitamUIException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
@@ -202,6 +204,7 @@ public final class MetadataSearchCriteriaUtils {
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
             selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
+            addProjection(searchQuery, selectMultiQuery);
             if (orderBy.isPresent()) {
                 if (DirectionDto.DESC.equals(direction.get())) {
                     selectMultiQuery.addOrderByDescFilter(orderBy.get());
@@ -225,6 +228,25 @@ public final class MetadataSearchCriteriaUtils {
             throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
         }
         return selectMultiQuery;
+    }
+
+    private static void addProjection(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
+        throws InvalidParseOperationException {
+        if (
+            CollectionUtils.isNotEmpty(searchQuery.getIncludedFields()) ||
+            CollectionUtils.isNotEmpty(searchQuery.getExcludedFields())
+        ) {
+            ObjectNode projectionNode = JsonHandler.createObjectNode();
+            ObjectNode objectNode = JsonHandler.createObjectNode();
+            for (String projection : searchQuery.getIncludedFields()) {
+                objectNode.put(projection, 1);
+            }
+            for (String projection : searchQuery.getExcludedFields()) {
+                objectNode.put(projection, 0);
+            }
+            projectionNode.set("$fields", objectNode);
+            selectMultiQuery.setProjection(projectionNode);
+        }
     }
 
     public static SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList)
