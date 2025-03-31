@@ -137,7 +137,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   direction = Direction.ASCENDANT;
   DEFAULT_RESULT_THRESHOLD = 10000;
   searchHasResults = false;
-  hasDynamicAttachment = false;
   pageNumbers = 0;
   canLoadMore = false;
 
@@ -289,6 +288,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }),
         tap((transaction) => {
           this.transaction = transaction;
+          this.existsArchiveUnitWithoutAttachment();
         }),
       )
       .subscribe((transaction) => {
@@ -296,7 +296,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         if (!!transaction) {
           this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
           this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
-          this.existsArchiveUnitWithDynamicAttachment();
         } else {
           this.isNotOpen$.next(true);
           this.isNotReady$.next(true);
@@ -420,7 +419,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
   }
 
-  submit() {
+  submit(refreshArchiveUnitsWithoutAttachment?: boolean) {
     this.submited = true;
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
@@ -435,6 +434,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
       this.searchArchiveUnits(this.rulesFacetsCanBeComputed);
       this.showingFacets = this.rulesFacetsCanBeComputed;
+      if (refreshArchiveUnitsWithoutAttachment) this.existsArchiveUnitWithoutAttachment();
     }
   }
 
@@ -1027,10 +1027,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     return unit['#id'];
   }
 
-  existsArchiveUnitWithDynamicAttachment(): void {
+  existsArchiveUnitWithoutAttachment(): void {
     const criteriaList = [
       {
-        criteria: '#management.UpdateOperation.SystemId',
+        criteria: '#unitups',
         values: [
           {
             id: 'true',
@@ -1038,23 +1038,22 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           },
         ],
         category: 'FIELDS',
-        operator: 'EXISTS',
+        operator: 'MISSING',
         dataType: 'STRING',
       },
     ];
     const searchCriteria = {
       criteriaList: criteriaList,
       pageNumber: 0,
-      size: 10,
+      size: 100,
       trackTotalHits: false,
       computeFacets: false,
     };
     this.archiveUnitCollectService
       .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)
       .subscribe((response: PagedResult) => {
-        const isStaticProject =
-          response.results != null && response.results.length === 1 && response.results[0].Title === 'STATIC_ATTACHEMENT';
-        this.hasDynamicAttachment = !isEmpty(response.results) && !isStaticProject;
+        const hasAUWithoutAttachment = response.results != null && !isEmpty(response.results);
+        this.archiveExchangeDataService.emitHasAUWithoutAttachment(hasAUWithoutAttachment);
       });
   }
 }

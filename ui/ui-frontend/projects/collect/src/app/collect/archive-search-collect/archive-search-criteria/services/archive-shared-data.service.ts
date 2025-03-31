@@ -60,6 +60,7 @@ export class ArchiveSharedDataService {
   private toggleReverseSubject = new BehaviorSubject<boolean>(true);
   private archiveUnitTpPreviewSubject = new BehaviorSubject<Unit>(null);
   private toggleArchiveUnitSubject = new BehaviorSubject<boolean>(true);
+  public hasAUWithoutAttachment = new BehaviorSubject<boolean>(false);
   private lastSearchCriterias = new BehaviorSubject<SearchCriteriaDto>(null);
   private storedSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory>(null);
   private allSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory[]>([]);
@@ -86,6 +87,7 @@ export class ArchiveSharedDataService {
   private actionSubject = new BehaviorSubject<string>('');
 
   private ruleCategory = new BehaviorSubject<string>('');
+  public hasAUWithoutAttachment$ = this.hasAUWithoutAttachment.asObservable();
 
   currentNode = this.sourceNode.asObservable();
   facetsObservable = this.facetsSubject.asObservable();
@@ -108,6 +110,10 @@ export class ArchiveSharedDataService {
   disseminationFromMainSearchCriteriaObservable = this.searchDisseminationCriteriaActionFromMainSubject.asObservable();
 
   constructor() {}
+
+  emitHasAUWithoutAttachment(value: boolean) {
+    this.hasAUWithoutAttachment.next(value);
+  }
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);
