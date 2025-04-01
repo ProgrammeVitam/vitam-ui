@@ -4773,6 +4773,7 @@
   },
   "ERRORS": {
     "required": "Ce champ est obligatoire.",
+    "requiredNotBlank": "Ce champ est obligatoire.",
     "minlength": "La longueur minimale est de {{ requiredLength }} caractères.",
     "maxlength": "La longueur maximale est de {{ requiredLength }} caractères.",
     "email": "Adresse e-mail invalide.",
