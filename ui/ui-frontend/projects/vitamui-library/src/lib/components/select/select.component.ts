@@ -276,7 +276,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   writeValue(preselectedOptionKeys: string | string[]) {
     this.preselectedOptionKeys = preselectedOptionKeys
       ? Array.isArray(preselectedOptionKeys)
-        ? preselectedOptionKeys
+        ? preselectedOptionKeys.sort()
         : [preselectedOptionKeys]
       : null;
     // When the component is reset this method is called with selectedOptionKeys = null
