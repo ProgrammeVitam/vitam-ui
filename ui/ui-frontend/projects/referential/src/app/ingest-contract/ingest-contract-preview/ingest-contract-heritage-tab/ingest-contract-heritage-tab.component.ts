@@ -59,8 +59,8 @@ export class IngestContractHeritageTabComponent implements OnInit {
   @Input()
   readOnly: boolean;
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
+  previousValue = (): any => {
+    return { computeInheritedRulesAtIngest: this._ingestContract.computeInheritedRulesAtIngest };
   };
 
   @Input()

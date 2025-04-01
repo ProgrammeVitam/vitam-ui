@@ -216,5 +216,20 @@ describe('SelectComponent', () => {
       await selectAllElement.click();
       expect(testHostComponent.control.value).toEqual([]);
     });
+
+    it('should have right selection after click on selectAll, then click on an option and click again on the same option', async () => {
+      const labelElement = hostFixture.debugElement.query(By.css('mat-label')).nativeElement;
+      await labelElement.click();
+
+      const selectAllElement = (await selectHarness.getOptions())[0];
+      await selectAllElement.click();
+
+      const selectOptions = await selectHarness.getOptions();
+      await selectOptions[0].click();
+      await selectOptions[0].click();
+
+      const allValues = options.options.map((option) => option.key);
+      expect(testHostComponent.control.value).toEqual(allValues);
+    });
   });
 });
