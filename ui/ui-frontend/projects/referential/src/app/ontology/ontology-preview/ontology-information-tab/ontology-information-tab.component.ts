@@ -38,10 +38,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { Ontology, diff, setTypeDetailAndStringSize } from 'vitamui-library';
-import { RULE_TYPES } from '../../../rule/rules.constants';
+import { diff, Ontology, Option, setTypeDetailAndStringSize } from 'vitamui-library';
 import { OntologyService } from '../../ontology.service';
-import { collections, types, sizes } from '../../ontology-form-options';
+import { collections, sizes, types } from '../../ontology-form-options';
 
 @Component({
   selector: 'app-ontology-information-tab',
@@ -56,8 +55,8 @@ export class OntologyInformationTabComponent implements OnInit {
   submitted = false;
   sizeFieldVisible = false;
   types = types;
-  collections = collections;
   sizes = sizes;
+  collections: Option[] = [];
 
   @Input()
   set inputOntology(ontology: Ontology) {
@@ -73,6 +72,10 @@ export class OntologyInformationTabComponent implements OnInit {
       this._inputOntology.collections = [];
     }
 
+    this.collections = this.isInternal
+      ? // When ontology is internal we cannot modify it, so we can let the values as they are
+        this._inputOntology.collections.map((collection) => ({ key: collection, label: collection }))
+      : collections;
     this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this._inputOntology.type);
 
     this.resetForm(this.inputOntology);
@@ -80,7 +83,7 @@ export class OntologyInformationTabComponent implements OnInit {
   }
 
   get inputOntology(): Ontology {
-    return this._inputOntology;
+    return { ...this._inputOntology, collections: this._inputOntology.collections.sort() };
   }
 
   private _inputOntology: Ontology;
@@ -162,6 +165,4 @@ export class OntologyInformationTabComponent implements OnInit {
   resetForm(ontology: Ontology) {
     this.form.reset(ontology, { emitEvent: false });
   }
-
-  protected readonly RULE_TYPES = RULE_TYPES;
 }

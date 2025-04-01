@@ -188,6 +188,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.resizeContainerHeightInSearchView();
     if (!this.selectedOptions.length)
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys?.includes(option.key));
+    if (this.control) this.control.setValue(this.control.value); // We force-update the control value after updating the options to make sure the mat-select updates the displayed value
     this.resizeContainerHeightInSelectedItemsView();
     this.addEventListeners();
   }
@@ -282,10 +283,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];
-      setTimeout(() => this.matSelect?._onBlur()); // Required to prevent the label to keep floating when resetting the value
     } else {
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys.includes(option.key));
     }
+    setTimeout(() => this.matSelect?._onBlur()); // Required to prevent the label to keep floating when resetting the value or to make the label float if a value is selected
     this.updateCheckboxes();
     this.updateSelectAll();
 
