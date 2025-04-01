@@ -16,22 +16,16 @@ dbSecurity.contexts.updateOne(
   },
 );
 
-db.profiles.updateMany(
-  {
-    "name": { $regex: /^Archiviste/i },
-    "applicationName": "COLLECT_APP",
-  },
-  {
-    $addToSet: {
-      roles: {
-        $each: [
-          {
-            name: "ROLE_COLLECT_RECLASSIFICATION"
-          },
-        ],
-      },
+
+
+dbIam.profiles.updateMany(
+    { "applicationName": "COLLECT_APP",
+     "name": { $in: ["Archiviste - Administrateur", "Archiviste - gestion et collecte"] }
     },
-  },
+    { $addToSet: { "roles": { $each: [
+                    { "name": "ROLE_COLLECT_RECLASSIFICATION" }
+                ]}}}
 );
+
 
 print("END 008_update_collect_context_to_add_reclassification_role.js");
