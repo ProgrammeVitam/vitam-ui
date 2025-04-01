@@ -10,18 +10,20 @@
   <i class="vitamui-icon icon {{ expanded ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
 </button>
 
-<mat-checkbox
-  id="enable{{ node?.id }}"
-  [(ngModel)]="node.checked"
-  [(indeterminate)]="node.disabledChild"
-  [disabled]="node.disabled"
-  (ngModelChange)="onCheckboxClick()"
-  (click)="onCheckboxClick()"
-  [vitamuiTooltip]="node?.title"
-  [vitamuiTooltipShowDelay]="300"
->
-  <label class="node-label" (click)="onLabelClick($event)">
-    <i class="mr-1 vitamui-icon {{ icon }}"></i>
-    {{ node?.title }}
-  </label>
-</mat-checkbox>
+<div (click)="onLabelClick($event)">
+  <mat-checkbox
+    id="enable{{ node?.id }}"
+    [(ngModel)]="node.checked"
+    [(indeterminate)]="node.disabledChild"
+    [disabled]="node.disabled"
+    (ngModelChange)="onCheckboxClick()"
+    (click)="onCheckboxClick()"
+    [vitamuiTooltip]="node?.title"
+    [vitamuiTooltipShowDelay]="300"
+  >
+    <label class="node-label">
+      <i class="mr-1 vitamui-icon {{ icon }}"></i>
+      {{ node?.title }}
+    </label>
+  </mat-checkbox>
+</div>
