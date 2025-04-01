@@ -89,7 +89,7 @@ export class IngestContractFormatTabComponent implements OnInit {
   previousValue = (): any => {
     return {
       everyFormatType: this._ingestContract.everyFormatType,
-      formatType: this._ingestContract.formatType.sort() ?? null,
+      formatType: this._ingestContract.formatType ? this._ingestContract.formatType.sort() : null,
       formatUnidentifiedAuthorized: this._ingestContract.formatUnidentifiedAuthorized,
     };
   };
