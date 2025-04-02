@@ -67,7 +67,6 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   @Input() transactionId: string;
   @Input() searchHasMatches = false;
-  @Input() hasDynamicAttachment = false;
   @Input() searchRequestTotalResults: number;
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
@@ -129,34 +128,36 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   private subscribeOnFacetsChanges(): void {
     this.subscriptions.add(
-      this.archiveSharedDataService.getFacets().subscribe((facets) => {
-        this.requestResultFacets = facets;
-        if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
-          return;
-        }
-        // Re-init attachment units to render children by criteria
-        this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
+      this.archiveSharedDataService.hasAUWithoutAttachment$.subscribe((hasAUWithoutAttachment) => {
+        this.archiveSharedDataService.getFacets().subscribe((facets) => {
+          this.requestResultFacets = facets;
+          if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
+            return;
+          }
+          // Re-init attachment units to render children by criteria
+          this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
 
-        const withKeyValueNodes = this.nestedDataSourceLeaves.data.filter((node) => node.unitType === UnitType.WITH_KEY_VALUE);
-        if (!isEmpty(withKeyValueNodes)) {
-          this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
-            this.nestedDataSourceLeaves.data,
-            withKeyValueNodes,
-          );
-          FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
-            this.nestedDataSourceLeaves.data,
-            withKeyValueNodes,
-            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.KEY_VALUE_NODE'),
-          );
-        }
+          const withKeyValueNodes = this.nestedDataSourceLeaves.data.filter((node) => node.unitType === UnitType.WITH_KEY_VALUE);
+          if (!isEmpty(withKeyValueNodes)) {
+            this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
+              this.nestedDataSourceLeaves.data,
+              withKeyValueNodes,
+            );
+            FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
+              this.nestedDataSourceLeaves.data,
+              withKeyValueNodes,
+              this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.KEY_VALUE_NODE'),
+            );
+          }
 
-        if (this.searchRequestTotalResults > 0 && (isEmpty(this.attachmentNodes) || this.hasDynamicAttachment)) {
-          FilingHoldingSchemeHandler.addOrphansNodeFromTree(
-            this.nestedDataSourceLeaves.data,
-            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
-            this.searchRequestTotalResults,
-          );
-        }
+          if (this.searchRequestTotalResults > 0 && hasAUWithoutAttachment) {
+            FilingHoldingSchemeHandler.addOrphansNodeFromTree(
+              this.nestedDataSourceLeaves.data,
+              this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
+              this.searchRequestTotalResults,
+            );
+          }
+        });
       }),
     );
   }
