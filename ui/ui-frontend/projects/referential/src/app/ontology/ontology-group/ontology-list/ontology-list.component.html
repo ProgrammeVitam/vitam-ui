@@ -63,7 +63,7 @@
           <!-- COL 5: HIDDEN DELETE BUTTON -->
           <td class="delete-button">
             <div>
-              @if (ontology.origin === 'EXTERNAL') {
+              @if (canDelete(ontology)) {
                 <button class="btn btn-circle primary" (click)="$event.stopPropagation(); deleteOntologyDialog(ontology)">
                   <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
                 </button>

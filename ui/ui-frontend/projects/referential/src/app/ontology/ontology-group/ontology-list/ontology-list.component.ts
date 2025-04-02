@@ -47,6 +47,7 @@ import {
   Ontology,
   PageRequest,
   VitamUICommonModule,
+  TenantSelectionService,
 } from 'vitamui-library';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -89,6 +90,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
     public ontologyService: OntologyService,
     private translateService: TranslateService,
     private matDialog: MatDialog,
+    private tenantSelectionService: TenantSelectionService,
   ) {
     super(ontologyService);
     this.orderBy = this.shortName;
@@ -174,5 +176,9 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   selectLine(ontology: Ontology) {
     this.ontologyService.selectedId$.next(ontology.id);
     this.ontologyClick.emit(ontology);
+  }
+
+  canDelete(ontology: Ontology) {
+    return ontology.origin === 'EXTERNAL' && ontology.tenant === this.tenantSelectionService.getSelectedTenant().identifier;
   }
 }
