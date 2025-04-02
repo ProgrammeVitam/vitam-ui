@@ -198,8 +198,8 @@ function generateHostCertAndStorePassphrase {
                                     ${CA_INTERMEDIATE_PASSWORD} \
                                     ${SERVER} \
                                     "server" \
-                                    "${COMPONENT}.service.${CONSUL_DOMAIN}" \
-                                    "${COMPONENT}.service.${DC_NAME}.${CONSUL_DOMAIN}" \
+                                    "vitamui-${COMPONENT}.service.${CONSUL_DOMAIN}" \
+                                    "vitamui-${COMPONENT}.service.${DC_NAME}.${CONSUL_DOMAIN}" \
                                     "${REVERSE_SAN}"
             # Store the key to the vault
             setComponentPassphrase certs "server_${COMPONENT}_key" \
