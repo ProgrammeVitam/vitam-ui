@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Documentation de montée de version Vitam-UI
-===========================================
+Documentation de montée de versions majeures Vitam-UI
+=====================================================
 
 .. toctree::
    :maxdepth: 2
@@ -18,3 +18,14 @@ Documentation de montée de version Vitam-UI
    upgrade_v7_1.md
    upgrade_v8_0.md
    migration_container.md
+
+Documentation de montée de versions mineures / bugfixes Vitam-UI
+================================================================
+
+.. toctree::
+   :maxdepth: 2
+   :numbered:
+   :caption: Contents:
+
+   update_v7_1.md
+   update_v8_0.md

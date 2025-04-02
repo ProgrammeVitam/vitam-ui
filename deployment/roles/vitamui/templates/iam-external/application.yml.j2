@@ -61,7 +61,7 @@ iam-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: true
+      hostname-verification: {{ vitamui_defaults.services.ssl_hostname_verification | default(true) | bool }}
 {% endif %}
   iam-internal-client:
     server-host: {{ vitamui.iam_internal.host }}
@@ -75,7 +75,7 @@ iam-external:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: true
+      hostname-verification: {{ vitamui_defaults.services.ssl_hostname_verification | default(true) | bool }}
 {% endif %}
 
 customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml

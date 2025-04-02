@@ -165,7 +165,7 @@ ansible-playbook -i environments/<inventaire-version-precedente> ansible-vitamui
 
 ## Application de la montée de version
 
-### Lancement du master playbook vitam
+### Lancement du master playbook vitamui
 
 > Cette opération doit être effectuée avec les sources de déploiement de la V7.1.
 
