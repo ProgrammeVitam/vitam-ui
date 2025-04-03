@@ -1,0 +1,52 @@
+print("START v8.1.0-04_update_collect_app.js");
+
+dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
+dbIam.profiles.updateMany({
+    applicationName: "COLLECT_APP"
+}, {
+    $addToSet: {
+        roles: {
+            $each: [
+                { name: "ROLE_GET_AGENCIES" },
+                { name: "ROLE_GET_ARCHIVE_PROFILES_UNIT" }
+            ]
+        }
+    }
+});
+
+dbIam.profiles.updateMany({
+    "applicationName": "COLLECT_APP",
+    "name": {
+        $in: [
+            "Archiviste - Administrateur",
+            "Archiviste - gestion et collecte"
+        ]
+    }
+}, {
+    $addToSet: {
+        "roles": {
+            $each: [
+                { "name": "ROLE_COLLECT_RECLASSIFICATION" },
+                { "name": "ROLE_COLLECT_DELETE_ARCHIVE_UNIT" }
+            ]
+        }
+    }
+});
+
+dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
+dbSecurity.contexts.updateOne({
+    "_id": "ui_collect_context"
+}, {
+    $addToSet: {
+        "roleNames": {
+            $each: [
+                "ROLE_GET_AGENCIES",
+                "ROLE_GET_ARCHIVE_PROFILES_UNIT",
+                "ROLE_COLLECT_RECLASSIFICATION",
+                "ROLE_COLLECT_DELETE_ARCHIVE_UNIT"
+            ]
+        }
+    }
+});
+
+print("END v8.1.0-04_update_collect_app.js");
