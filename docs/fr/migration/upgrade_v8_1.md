@@ -70,17 +70,27 @@ Ainsi, vous pouvez en profiter pour revoir l'architecture associée à votre dé
   ./pki/scripts/generate_certs.sh environments/<inventaire> true
   ```
 
-* Mutualiser les certificats avec Vitam
+  > Le paramètre true permet d'écraser les certificats existants.
+
+* Mutualisation des PKIs entre Vitam & VitamUI
+
+  Afin de permettre à VitamUI de communiquer avec Vitam, il va falloir procéder à un échanges de certificats et des autorités de certifications.
+
+  Pour ce faire, il existe un script permettant de faciliter cet échange qui prend les paramètres suivants:
 
   ```sh
-  ./scripts/mutualize_certs_for_vitamui.sh -v <path_to_vitam_certs_dir> -u <path_to_vitamui_certs_dir>
+  ./scripts/mutualize_certs_for_vitamui.sh -v ../../vitam.git/deployment/environments/certs -u ./environments/certs
   ```
 
-* Regénérer les stores
+  > Attention ! Après cette étape, il sera nécessaire de regénérer les stores de la zone Vitam, suite à l'ajout des certificats de VitamUI, et de reconfigurer Vitam en utilisant le `--tags update_vitam_certificates`.
+
+* Regénérer les stores de VitamUI
 
   ```sh
   ./generate_stores.sh true
   ```
+
+  > Le paramètre true permet d'écraser les stores existants.
 
 ---
 

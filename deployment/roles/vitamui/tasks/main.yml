@@ -8,10 +8,8 @@
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  tags:
-    - update_package_vitamui
-  notify:
-    - restart service
+  tags: update_vitamui_package
+  notify: restart service
   when: force_vitamui_version is not defined and install_mode != "container"
 
 # Force a specific version to install (even downgrade)
@@ -20,33 +18,32 @@
   - name: "Install {{ vitamui_struct.package_name | default(package_name) }} package"
     apt:
       name: "{{ vitamui_struct.package_name | default(package_name) }}={{ force_vitamui_version }}"
-      force: yes
+      force: true
       state: present
     register: result
     retries: "{{ packages_install_retries_number }}"
     until: result is succeeded
     delay: "{{ packages_install_retries_delay }}"
-    tags: update_package_vitamui
+    tags: update_vitamui_package
     notify: restart service
     when: ansible_os_family == "Debian"
 
   - name: "Install {{ vitamui_struct.package_name | default(package_name) }} package"
     yum:
       name: "{{ vitamui_struct.package_name | default(package_name) }}-{{ force_vitamui_version }}"
-      allow_downgrade : yes
+      allow_downgrade : true
       state: present
     register: result
     retries: "{{ packages_install_retries_number }}"
     until: result is succeeded
     delay: "{{ packages_install_retries_delay }}"
-    tags: update_package_vitamui
+    tags: update_vitamui_package
     notify: restart service
     when: ansible_os_family == "RedHat"
 
   when: force_vitamui_version is defined and install_mode != "container"
 
 #### Configuration ####
-
 - name: Prepare api-gateway trusted certificates
   include_tasks: "prepare_api_gateway_conf.yml"
   when: vitamui_struct.vitamui_component == 'api-gateway'
@@ -70,8 +67,7 @@
     - log
     - script
     - tmp
-  notify:
-    - restart service
+  notify: restart service
 
 - name: Ensure that the sysconfig sub-directory exists
   file:
@@ -80,23 +76,20 @@
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  notify:
-    - restart service
+  notify: restart service
   when: install_mode != "container"
 
-- name: Deploy common configuration files in sysconfig subdir
+- name: Deploy java_opts configuration in sysconfig subdir
   template:
-    src: "{{ item }}.j2"
-    dest: "{{ vitamui_folder_conf }}/sysconfig/{{ item }}"
+    src: java_opts.j2
+    dest: "{{ vitamui_folder_conf }}/sysconfig/java_opts"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-  with_items:
-    - "java_opts"
   tags:
-    - update_jvmoptions_vitamui
-  notify:
-    - restart service
+    - update_vitamui_jvmopts
+    - update_vitamui_configuration
+  notify: restart service
   when: install_mode != "container"
 
 - name: get passwd for vitamui
@@ -111,23 +104,19 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  tags:
-    - update_vitam_configuration
-  notify:
-    - restart service
+  tags: update_vitamui_configuration
+  notify: restart service
   when: install_mode == "container"
 
-- name: Deploy common configuration files
+- name: Deploy logback.xml configuration files
   template:
-    src: "{{ item }}.j2"
-    dest: "{{ vitamui_folder_conf }}/{{ item }}"
+    src: logback.xml.j2
+    dest: "{{ vitamui_folder_conf }}/logback.xml"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-  with_items:
-    - "logback.xml"
-  tags:
-    - update_vitam_configuration
+  tags: update_vitamui_configuration
+  notify: restart service
 
 - name: Deploy specific configuration files
   template:
@@ -140,9 +129,9 @@
     - "{{ role_path }}/templates/{{ vitamui_struct.vitamui_component }}/*"
   #no_log: "{{ hide_passwords_during_deploy }}"
   tags:
-    - update_vitam_configuration
-  notify:
-    - restart service
+    - update_vitamui_configuration
+    - update_vitamui_certificates # Mandatory to update configuration file containing keystore password
+  notify: restart service
 
 - name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (server)"
   copy:
@@ -154,13 +143,11 @@
   when:
     - vitamui_struct.secure | default(secure) | lower == 'true'
     - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == ''
-  tags:
-    - update_vitamui_certificates
-  notify:
-    - restart service
+  tags: update_vitamui_certificates
+  notify: restart service
 
 # Copy the trustore for all vitamui components in order to communicate between them.
-- name: "Copy server truststore"
+- name: Copy server truststore
   copy:
     src: "{{ inventory_dir }}/keystores/server/truststore_server.jks"
     dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
@@ -171,13 +158,11 @@
     - vitamui_struct.secure | default(secure) | lower == 'true'
     - vitamui_certificate_type | default('none') | lower == 'server'
     - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/truststore_server.jks || echo nofile') == ''
-  tags:
-    - update_vitamui_certificates
-  notify:
-    - restart service
+  tags: update_vitamui_certificates
+  notify: restart service
 
 # Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
-- name: "Copy external truststore"
+- name: Copy external truststore
   copy:
     src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks"
     dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
@@ -188,21 +173,69 @@
     - vitamui_struct.secure | default(secure) | lower == 'true'
     - vitamui_certificate_type | default('none') | lower == 'external'
     - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks || echo nofile') == ''
-  tags:
-    - update_vitamui_certificates
-  notify:
-    - restart service
+  tags: update_vitamui_certificates
+  notify: restart service
 
 - name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}"
   include_tasks: "{{ vitamui_struct.vitamui_component }}.yml"
   when: lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component }}.yml || echo nofile') == ''
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
 
 - meta: flush_handlers
-  tags:
-    - always
+  tags: always
 
-- name: "Ensure {{ vitamui_struct.service_name | default(service_name) }} service is started"
-  service:
-    name: "{{ vitamui_struct.service_name | default(service_name) }}"
-    state: started
-    enabled: "{{ vitamui_struct.at_boot | default(at_boot) }}"
+- name: test service & debug if necessary
+  block:
+
+    - name: "Ensure {{ vitamui_struct.service_name | default(service_name) }} service is started"
+      service:
+        name: "{{ vitamui_struct.service_name | default(service_name) }}"
+        state: started
+        enabled: "{{ vitamui_struct.at_boot | default(at_boot) }}"
+
+    - name: Check whether service is listening on service port (tcp check)
+      wait_for:
+        host: "{{ ip_service }}"
+        port: "{{ vitamui_struct.port_service }}"
+        timeout: "{{ vitamui_struct.services.start_timeout | default(start_timeout) }}"
+        state: started
+
+    - name: Check whether service is listening on admin port (tcp check)
+      wait_for:
+        host: "{{ ip_service }}"
+        port: "{{ vitamui_struct.port_admin }}"
+        timeout: "{{ vitamui_struct.services.start_timeout | default(start_timeout) }}"
+        state: started
+
+    - name: "Check if {{ vitamui_struct.service_name | default(service_name) }} service is listening on admin port (http check)"
+      uri:
+        url: "http://{{ ip_admin }}:{{ vitamui_struct.port_admin }}/actuator/health"
+      register: result
+      until:
+        - result.status is defined
+        - result.status == 200
+      retries: "{{ vitamui_defaults.services.status_retries_number }}"
+      delay: "{{ vitamui_defaults.services.status_retries_delay }}"
+
+    - name: "Check {{ vitamui_struct.service_name | default(service_name) }} service health in local consul agent"
+      uri:
+        url: "http://{{ (inventory_hostname in groups['hosts_vitamui_consul_server']) | ternary(hostvars[inventory_hostname]['ip_admin'], '127.0.0.1') }}:8500/v1/agent/health/service/name/{{ vitamui_struct.service_name | default(service_name) }}"
+      register: result
+      until:
+        - result.status is defined
+        - result.status == 200
+      retries: "{{ vitamui_defaults.services.status_retries_number }}"
+      delay: "{{ vitamui_defaults.services.status_retries_delay }}"
+
+  tags: always
+
+  rescue:
+
+    - name: getting error logs
+      shell: "journalctl --reverse --lines 100 -xu {{ vitamui_struct.service_name | default(service_name) }}"
+      register: journalctl_logs
+    - name: printing error logs
+      fail:
+        msg: "{{ journalctl_logs.stdout_lines }}"

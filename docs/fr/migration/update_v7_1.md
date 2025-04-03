@@ -1,13 +1,11 @@
-# Procédure de Montée de version VitamUI V8.0
-
-> Attention: Veuillez appliquer les procédures spécifiques à chacune des versions précédentes en fonction de la version de départ selon la suite suivante: V6 -> V7.0 -> V7.1.
+# Mise à jour mineure / bugfix V7.1.x
 
 ## Adaptation des sources de déploiement ansible
 
 ### Mise à jour des certificats
 
-> Cette opération doit être effectuée en cas de mise à jour mineure depuis une version v7.1.2- (v7.1.2 ou inférieure) vers une version v8.0.1+ (v8.0.1 ou supérieure).
-> Cette opération doit être effectuée avec les sources de déploiement de la V8.0.1+.
+> Cette opération doit être effectuée en cas de mise à jour mineure depuis une version v7.1.2- (v7.1.2 ou inférieure) vers une version v7.1.3+ (v7.1.3 ou supérieure).
+> Cette opération doit être effectuée avec les sources de déploiement de la V7.1.3+.
 
 Il est fortement recommandé de re-générer la PKI pour corriger le nom de domaine des certificats (Common Name / Subject Alternative Name) des services VitamUI afin qu'ils soient conformes au domaine consul associé.
 
@@ -51,8 +49,6 @@ Si vous utilisez la PKI d'exemple de VitamUI, vous pouvez procéder à la re-gé
 
 ### Mise à jour des dépôts (YUM/APT)
 
-> Cette opération doit être effectuée AVANT la montée de version
-
 Afin de pouvoir déployer la nouvelle version, vous devez mettre à jour la variable ``vitam_repositories`` sous ``environments/group_vars/all/repositories.yml`` afin de renseigner les dépôts à la version cible.
 
 Puis exécutez le playbook suivant :
@@ -71,11 +67,6 @@ ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/reini
 
 ### Arrêt complet de VitamUI
 
-> Cette opération doit être effectuée AVANT la montée de version vers la V8.0.
-> Cette opération doit être effectuée avec les sources de déploiement de l'ancienne version.
-
-VitamUI doit être arrêté :
-
 ```sh
 ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/stop_vitamui.yml --ask-vault-pass
 ```
@@ -85,8 +76,6 @@ ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/stop_
 ## Application de la montée de version
 
 ### Lancement du master playbook vitamui
-
-> Cette opération doit être effectuée avec les sources de déploiement de la V8.0.
 
 ```sh
 ansible-playbook -i environments/<inventaire> ansible-vitamui/vitamui.yml --ask-vault-pass
