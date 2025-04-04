@@ -93,7 +93,7 @@ vitamui:
 
   # Applications
   api_gateway:
-    host: "api-gateway.service.{{ consul_domain }}"
+    host: "vitamui-api-gateway.service.{{ consul_domain }}"
     vitamui_component: api-gateway
     port_service: 8090
     port_admin: 7090
@@ -131,7 +131,7 @@ vitamui:
     write_timeout: 30
 
   cas_server:
-    host: "cas-server.service.{{ consul_domain }}"
+    host: "vitamui-cas-server.service.{{ consul_domain }}"
     vitamui_component: cas-server
     port_service: 8001
     port_admin: 7001
