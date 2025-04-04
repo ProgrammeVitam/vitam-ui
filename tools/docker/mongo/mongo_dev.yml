@@ -2,7 +2,7 @@ version: "3.5"
 name: vitamui-mongo-dev
 services:
   mongo-dev:
-    image: mongo:8.0.5
+    image: mongo:8.0.6
     container_name: vitamui-mongo
     hostname: vitamui-mongo
     #    environment:
