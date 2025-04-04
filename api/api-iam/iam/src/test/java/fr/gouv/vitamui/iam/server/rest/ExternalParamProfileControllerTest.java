@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.iam.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersService;
@@ -28,7 +29,7 @@ public class ExternalParamProfileControllerTest extends ApiIamControllerTest<Ext
 
     @Test
     public void testCreateExternalParamProfile() {
-        LOGGER.debug("testPatchProfile");
+        LOGGER.debug("testCreateExternalParamProfile");
         super.testCreateEntity();
     }
 
@@ -64,7 +65,7 @@ public class ExternalParamProfileControllerTest extends ApiIamControllerTest<Ext
 
     @Override
     protected String[] getServices() {
-        return new String[] {};
+        return new String[] { ServicesData.ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE };
     }
 
     @Override
