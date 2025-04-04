@@ -40,7 +40,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { AuthService, BASE_URL, Ontology } from 'vitamui-library';
+import { AuthService, BASE_URL, Ontology, TenantSelectionService } from 'vitamui-library';
 import { OntologyListComponent } from './ontology-list.component';
 import { OntologyService } from '../../ontology.service';
 
@@ -62,6 +62,12 @@ describe('OntologyListComponent', () => {
     updated: EMPTY,
   };
 
+  const tenantSelectionServiceMock = {
+    getSelectedTenant: () => ({
+      identifier: 1,
+    }),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [],
@@ -76,6 +82,7 @@ describe('OntologyListComponent', () => {
         { provide: MatDialog, useValue: {} },
         { provide: OntologyService, useValue: ontologyServiceMock },
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
+        { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
