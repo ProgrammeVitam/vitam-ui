@@ -56,7 +56,6 @@ import { ArchiveSharedDataService } from '../../services/archive-shared-data.ser
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() transactionId: string;
   @Input() searchHasMatches = false;
-  @Input() hasDynamicAttachment = false;
   @Input() searchRequestTotalResults: number;
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
@@ -124,20 +123,22 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges, OnDestro
 
   private subscribeOnFacetsChanges(): void {
     this.subscriptions.add(
-      this.archiveSharedDataService.getFacets().subscribe((facets) => {
-        this.requestResultFacets = facets;
-        if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
-          return;
-        }
-        // Re-init attachment units to render children by criteria
-        this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
-        if (this.searchRequestTotalResults > 0 && (isEmpty(this.attachmentNodes) || this.hasDynamicAttachment)) {
-          FilingHoldingSchemeHandler.addOrphansNodeFromTree(
-            this.nestedDataSourceLeaves.data,
-            this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
-            this.searchRequestTotalResults,
-          );
-        }
+      this.archiveSharedDataService.hasAUWithoutAttachment$.subscribe((hasAUWithoutAttachment) => {
+        this.archiveSharedDataService.getFacets().subscribe((facets) => {
+          this.requestResultFacets = facets;
+          if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
+            return;
+          }
+          // Re-init attachment units to render children by criteria
+          this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
+          if (this.searchRequestTotalResults > 0 && (isEmpty(this.attachmentNodes) || hasAUWithoutAttachment)) {
+            FilingHoldingSchemeHandler.addOrphansNodeFromTree(
+              this.nestedDataSourceLeaves.data,
+              this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
+              this.searchRequestTotalResults,
+            );
+          }
+        });
       }),
     );
   }
