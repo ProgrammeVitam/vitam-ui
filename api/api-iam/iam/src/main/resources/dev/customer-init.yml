@@ -375,9 +375,9 @@ customer-init:
       roles:
         - ROLE_GET_ONTOLOGIES
         - ROLE_IMPORT_ONTOLOGY
-        - ROLE_DELETE_SCHEMAS
         - ROLE_IMPORT_SCHEMAS
-
+        - ROLE_GET_SCHEMAS
+        - ROLE_DELETE_SCHEMAS
 
   #- name: profileName
   #  description: desc
