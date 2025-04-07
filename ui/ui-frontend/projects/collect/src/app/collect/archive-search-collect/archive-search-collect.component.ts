@@ -535,7 +535,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
   }
 
-  submit() {
+  submit(refreshArchiveUnitsWithoutAttachment?: boolean) {
     this.listOfUAIdToInclude = [];
     this.listOfUAIdToExclude = [];
 
@@ -554,6 +554,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
       this.searchArchiveUnits(this.rulesFacetsCanBeComputed);
       this.showingFacets = this.rulesFacetsCanBeComputed;
+      if (refreshArchiveUnitsWithoutAttachment) this.existsArchiveUnitWithoutAttachment();
     }
   }
 
