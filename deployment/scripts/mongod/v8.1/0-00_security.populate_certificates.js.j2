@@ -1,11 +1,11 @@
-db = db.getSiblingDB('{{ mongodb.security.db }}')
+dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
 
-print("START security.populate_certificates.js");
+print("START v8.1.0-00_security.populate_certificates.js");
 
-db.certificates.deleteMany({});
+dbSecurity.certificates.deleteMany({});
 
 {% macro insertCertificate(pemFile, contextId, host) -%}
-db.certificates.insertOne({
+dbSecurity.certificates.insertOne({
     "_id": "{{ host+'_' if (host is defined and host != '') else '' }}{{ pemFile | basename | replace('.pem','_cert') }}",
     "contextId": "{{ contextId }}",
     "subjectDN": "subjectDN",
@@ -36,4 +36,4 @@ db.certificates.insertOne({
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-pastis.pem', 'ui_pastis_context', 'hosts_ui_pastis') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-collect.pem', 'ui_collect_context', 'hosts_ui_collect') }}
 
-print("END security.populate_certificates.js");
+print("END v8.1.0-00_security.populate_certificates.js");
