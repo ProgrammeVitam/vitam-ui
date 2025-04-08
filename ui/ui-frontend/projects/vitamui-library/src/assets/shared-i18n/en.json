@@ -4246,7 +4246,6 @@
     "PROJECT_UNIT_PREVIEW": {
       "ACTIONS": {
         "EDIT_PROJECT": "Edit project",
-        "SHOW_MORE_DETAILS": "Show all metadata",
         "SHOW_ONLY_INFORMATION_DETAILS": "Hide metadata",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
       },
