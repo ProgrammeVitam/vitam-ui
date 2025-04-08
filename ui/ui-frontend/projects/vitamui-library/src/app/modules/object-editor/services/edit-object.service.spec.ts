@@ -1184,6 +1184,63 @@ describe('EditObjectService', () => {
     });
 
     describe('Cardinality zero', () => {
+      it('should not render parent group when all its children have zero cardinality', waitForAsync(
+        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+          const path = 'Addressee';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'ZERO';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => {
+                const data = {
+                  Title: 'Hello',
+                  Description: 'test',
+                  Addressee: [
+                    {
+                      BirthDate: '01/01/2000',
+                    },
+                  ],
+                };
+
+                const template: DisplayRule[] = [
+                  { Path: 'Title', ui: { Path: 'Title', component: 'textfield' } },
+                  { Path: 'Description', ui: { Path: 'Description', component: 'textfield' } },
+                  { Path: null, ui: { Path: 'Actors', component: 'group' } },
+                  { Path: 'Addressee', ui: { Path: 'Actors.Addressee', component: 'group' } },
+                ];
+
+                const projectedData = templateService.toProjected(data, template);
+
+                const subschema = schema.filter((element) => element.Path === 'Addressee');
+                const templatedSchema = service.createTemplateSchema(template, subschema);
+
+                return service.editObject('', projectedData, template, templatedSchema);
+              }),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children.filter((editObject) => editObject.key === 'Actors')[0].cardinality).toEqual('ZERO');
+              },
+            });
+        }),
+      ));
+
       it('should primitive have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
         inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
           const path = 'Description';
@@ -1223,6 +1280,57 @@ describe('EditObjectService', () => {
                   jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality })]),
                 );
                 editObject.children.filter((eo) => eo.path === path).forEach((eo) => expect(eo.control.value).toBeNull());
+              },
+            });
+        }),
+      ));
+      it('should primitive have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
+        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService) => {
+          const path = 'Addressee';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'ZERO';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => {
+                const data = {
+                  Title: 'Hello',
+                  Description: 'test',
+                  Addressee: [
+                    {
+                      BirthDate: '01/01/2000',
+                    },
+                  ],
+                };
+
+                const template: DisplayRule[] = [
+                  { Path: 'Title', ui: { Path: 'Title', component: 'textfield' } },
+                  { Path: 'Description', ui: { Path: 'Description', component: 'textfield' } },
+                  { Path: null, ui: { Path: 'Actors', component: 'group' } },
+                  { Path: 'Addressee', ui: { Path: 'Actors.Addressee', component: 'group' } },
+                ];
+
+                return service.editObject('', data, template, schema);
+              }),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children.filter((eo) => eo.path === path)[0].cardinality).toEqual('ZERO');
               },
             });
         }),
