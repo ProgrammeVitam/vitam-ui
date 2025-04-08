@@ -35,7 +35,11 @@
     >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.REPLAY_STEP' | translate }}
     </button>
-    <button mat-menu-item (click)="cancelOperation(operation)" [disabled]="operation?.globalState === 'COMPLETED'">
+    <button
+      mat-menu-item
+      (click)="cancelOperation(operation)"
+      [disabled]="operation?.globalState === 'COMPLETED' || !(operation?.globalState === 'PAUSE' || operation?.stepStatus === 'FATAL')"
+    >
       {{ 'LOGBOOK_OPERATION_INFORMATIONS.CANCEL_OPERATION' | translate }}
     </button>
   </vitamui-common-menu-button>
