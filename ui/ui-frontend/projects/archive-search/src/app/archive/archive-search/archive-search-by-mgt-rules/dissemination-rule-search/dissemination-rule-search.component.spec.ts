@@ -69,6 +69,7 @@ const archiveSharedDataServiceSpy = {
   receiveDisseminationFromMainSearchCriteriaSubject: () => of({}),
   addSimpleSearchCriteriaSubject: () => of({}),
   sendRemoveFromChildSearchCriteriaAction: () => of({}),
+  searchCriteria$: of([]),
 };
 
 describe('DisseminationRuleSearchComponent', () => {

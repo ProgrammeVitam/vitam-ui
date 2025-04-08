@@ -87,18 +87,18 @@ export class ArchiveSearchHelperService {
         WAITING_RECALCULATE,
         { id: WAITING_RECALCULATE, value: 'true' },
         labelElt,
-        keyTranslated,
+        true,
         operator,
         SearchCriteriaTypeEnum.FIELDS,
-        valueTranslated,
+        true,
         dataType,
         emit,
       );
       if (category === SearchCriteriaTypeEnum.ACCESS_RULE) {
-        this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
+        this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-        this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
+        this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       if (category === SearchCriteriaTypeEnum.STORAGE_RULE) {
         this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
@@ -291,9 +291,7 @@ export class ArchiveSearchHelperService {
       searchCriterias.forEach((searchCriteria, key) => {
         if (key === keyElt) {
           let values = searchCriteria.values;
-          if (valueElt) {
-            values = values.filter((item) => item.value.id !== valueElt.id);
-          }
+          values = values.filter((item) => item.value.value !== valueElt.value);
           if (values.length === 0) {
             searchCriteriaKeys.forEach((element, index) => {
               if (element === keyElt) {

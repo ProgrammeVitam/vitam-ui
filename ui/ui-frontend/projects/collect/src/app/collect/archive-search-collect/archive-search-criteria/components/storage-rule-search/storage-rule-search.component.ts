@@ -39,39 +39,43 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription, merge } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
   ManagementRuleValidators,
-  SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
+  CriteriaSearchCriteria,
+  SearchCriteriaValue,
+  STORAGE_RULE,
+  FINAL_ACTION_TYPE_COPY,
+  FINAL_ACTION_TYPE_TRANSFER,
+  FINAL_ACTION_TYPE_RESTRICT_ACCESS,
+  ORIGIN_WAITING_RECALCULATE,
+  ORIGIN_HAS_NO_ONE,
+  ORIGIN_HAS_AT_LEAST_ONE,
+  FINAL_ACTION_HAS_FINAL_ACTION,
+  FINAL_ACTION,
+  FINAL_ACTION_TYPE,
+  RULE_ORIGIN,
+  RULE_TITLE,
+  RULE_END_DATE,
+  RULE_IDENTIFIER,
+  ID_DUC,
+  TITLE_DUC,
+  END_DATE_DUC,
+  INTERVAL_DATE_DUC,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
-const RULE_TYPE_SUFFIX = '_STORAGE_RULE';
+const RULE_TYPE = STORAGE_RULE;
+const RULE_TYPE_SUFFIX = '_' + STORAGE_RULE;
 
-const FINAL_ACTION_TYPE_COPY = 'FINAL_ACTION_TYPE_COPY';
-const FINAL_ACTION_TYPE_TRANSFER = 'FINAL_ACTION_TYPE_TRANSFER';
-const FINAL_ACTION_TYPE_RESTRICT_ACCESS = 'FINAL_ACTION_TYPE_RESTRICT_ACCESS';
-
-const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
-const ORIGIN_HAS_NO_ONE = 'ORIGIN_HAS_NO_ONE';
-const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-
-const FINAL_ACTION_HAS_FINAL_ACTION = 'FINAL_ACTION_HAS_FINAL_ACTION';
-
-const FINAL_ACTION = 'FINAL_ACTION';
-const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
-const RULE_ORIGIN = 'RULE_ORIGIN';
-
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
-const RULE_TITLE = 'RULE_TITLE';
-const RULE_END_DATE = 'RULE_END_DATE';
+const keysList = [RULE_ORIGIN + RULE_TYPE_SUFFIX, FINAL_ACTION + RULE_TYPE_SUFFIX, FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX];
 
 @Component({
   selector: 'app-storage-rule-search',
@@ -85,7 +89,6 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
 
   storageRuleCriteriaForm: FormGroup;
 
-  storageCriteriaList: SearchCriteriaEltDto[] = [];
   storageAdditionalCriteria: Map<any, boolean> = new Map();
   subscriptionStorageFromMainSearchCriteria: Subscription;
 
@@ -105,23 +108,6 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     storageRuleFinalActionInheriteFinalAction: boolean;
     restrictAccessFinalActionType: boolean;
   };
-  emptyStorageCriteriaForm = {
-    storageRuleIdentifier: '',
-    storageRuleTitle: '',
-    storageRuleStartDate: '',
-    storageRuleEndDate: '',
-    storageRuleOriginInheriteAtLeastOne: true,
-    storageRuleOriginHasAtLeastOne: true,
-    storageRuleOriginHasNoOne: false,
-    storageRuleOriginWaitingRecalculate: false,
-    copyFinalActionType: false,
-    transferFinalActionType: false,
-    storageRuleFinalActionHasFinalAction: false,
-    storageRuleFinalActionInheriteFinalAction: false,
-    restrictAccessFinalActionType: false,
-  };
-
-  showUnitPreviewBlock = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -155,7 +141,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       ) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value },
+          { id: TITLE_DUC, value },
           value,
           true,
           CriteriaOperator.EQ,
@@ -216,17 +202,46 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       restrictAccessFinalActionType: false,
     };
 
-    this.addCriteria(
-      RULE_ORIGIN + RULE_TYPE_SUFFIX,
-      { value: ORIGIN_HAS_AT_LEAST_ONE, id: ORIGIN_HAS_AT_LEAST_ONE },
-      ORIGIN_HAS_AT_LEAST_ONE,
-      true,
-      CriteriaOperator.EXISTS,
-      true,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.STORAGE_RULE,
-    );
-    this.storageAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+    this.archiveExchangeDataService.searchCriteria$
+      .pipe(
+        filter((searchCriteria) => !!searchCriteria),
+        take(1),
+      )
+      .subscribe((searchCriteria) => {
+        const filteredCriterias: Map<string, CriteriaSearchCriteria> = new Map(
+          [...searchCriteria.entries()].filter(([key, _]) => keysList.includes(key)),
+        );
+
+        if (filteredCriterias && filteredCriterias.size > 0) {
+          filteredCriterias.forEach((value, key) => {
+            value.values.forEach((searchCriteria: SearchCriteriaValue) => {
+              this.addCriteria(
+                key,
+                { value: searchCriteria.value.value, id: searchCriteria.value.id },
+                searchCriteria.value.value,
+                true,
+                value.operator,
+                true,
+                CriteriaDataType.STRING,
+                SearchCriteriaTypeEnum.STORAGE_RULE,
+              );
+              this.storageAdditionalCriteria.set(searchCriteria.value.value, true);
+            });
+          });
+        } else {
+          this.addCriteria(
+            RULE_ORIGIN + RULE_TYPE_SUFFIX,
+            { value: ORIGIN_HAS_AT_LEAST_ONE, id: RULE_TYPE },
+            ORIGIN_HAS_AT_LEAST_ONE,
+            true,
+            CriteriaOperator.EXISTS,
+            true,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.STORAGE_RULE,
+          );
+          this.storageAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+        }
+      });
   }
 
   checkBoxChange(field: string, event: any) {
@@ -237,7 +252,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_NO_ONE, value: ORIGIN_HAS_NO_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_NO_ONE },
             ORIGIN_HAS_NO_ONE,
             true,
             CriteriaOperator.MISSING,
@@ -247,7 +262,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_NO_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_NO_ONE,
           });
         }
@@ -277,7 +292,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_AT_LEAST_ONE, value: ORIGIN_HAS_AT_LEAST_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_AT_LEAST_ONE },
             ORIGIN_HAS_AT_LEAST_ONE,
             true,
             CriteriaOperator.EXISTS,
@@ -287,7 +302,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_AT_LEAST_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_AT_LEAST_ONE,
           });
         }
@@ -297,7 +312,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_TYPE_COPY, value: FINAL_ACTION_TYPE_COPY },
+            { id: RULE_TYPE, value: FINAL_ACTION_TYPE_COPY },
             FINAL_ACTION_TYPE_COPY,
             true,
             CriteriaOperator.EQ,
@@ -307,7 +322,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_TYPE_COPY,
+            id: RULE_TYPE,
             value: FINAL_ACTION_TYPE_COPY,
           });
         }
@@ -317,7 +332,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_TYPE_TRANSFER, value: FINAL_ACTION_TYPE_TRANSFER },
+            { id: RULE_TYPE, value: FINAL_ACTION_TYPE_TRANSFER },
             FINAL_ACTION_TYPE_TRANSFER,
             true,
             CriteriaOperator.EQ,
@@ -327,7 +342,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_TYPE_TRANSFER,
+            id: RULE_TYPE,
             value: FINAL_ACTION_TYPE_TRANSFER,
           });
         }
@@ -337,7 +352,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_TYPE_RESTRICT_ACCESS, value: FINAL_ACTION_TYPE_RESTRICT_ACCESS },
+            { id: RULE_TYPE, value: FINAL_ACTION_TYPE_RESTRICT_ACCESS },
             FINAL_ACTION_TYPE_RESTRICT_ACCESS,
             true,
             CriteriaOperator.EQ,
@@ -347,7 +362,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION_TYPE + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_TYPE_RESTRICT_ACCESS,
+            id: RULE_TYPE,
             value: FINAL_ACTION_TYPE_RESTRICT_ACCESS,
           });
         }
@@ -357,7 +372,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             FINAL_ACTION + RULE_TYPE_SUFFIX,
-            { id: FINAL_ACTION_HAS_FINAL_ACTION, value: FINAL_ACTION_HAS_FINAL_ACTION },
+            { id: RULE_TYPE, value: FINAL_ACTION_HAS_FINAL_ACTION },
             FINAL_ACTION_HAS_FINAL_ACTION,
             true,
             CriteriaOperator.EQ,
@@ -367,7 +382,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(FINAL_ACTION + RULE_TYPE_SUFFIX, {
-            id: FINAL_ACTION_HAS_FINAL_ACTION,
+            id: RULE_TYPE,
             value: FINAL_ACTION_HAS_FINAL_ACTION,
           });
         }
@@ -384,7 +399,8 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.storageRuleCriteriaForm.value.storageRuleStartDate + '-',
+          id: END_DATE_DUC,
+          value: this.storageRuleCriteriaForm.value.storageRuleStartDate.toISOString(),
           beginInterval: '',
           endInterval: this.storageRuleCriteriaForm.value.storageRuleStartDate,
         },
@@ -399,32 +415,16 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addCriteriaRulePostCheck() {
-    if (this.storageRuleCriteriaForm.value.storageRuleIdentifier) {
-      this.addCriteria(
-        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-        {
-          id: this.storageRuleCriteriaForm.value.storageRuleIdentifier.trim(),
-          value: this.storageRuleCriteriaForm.value.storageRuleIdentifier.trim(),
-        },
-
-        this.storageRuleCriteriaForm.value.storageRuleIdentifier.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.STORAGE_RULE,
-      );
-      this.storageRuleCriteriaForm.controls.storageRuleIdentifier.setValue(null);
-    }
-  }
-
   addIntervalDtDucCriteria() {
     if (this.storageRuleCriteriaForm.value.storageRuleStartDate && this.storageRuleCriteriaForm.value.storageRuleEndDate) {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.storageRuleCriteriaForm.value.storageRuleStartDate + '-' + this.storageRuleCriteriaForm.value.storageRuleEndDate,
+          id: INTERVAL_DATE_DUC,
+          value:
+            this.storageRuleCriteriaForm.value.storageRuleStartDate.toISOString() +
+            '|' +
+            this.storageRuleCriteriaForm.value.storageRuleEndDate.toISOString(),
           beginInterval: this.storageRuleCriteriaForm.value.storageRuleStartDate,
           endInterval: this.storageRuleCriteriaForm.value.storageRuleEndDate,
         },
@@ -445,7 +445,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       if (formData.storageRuleIdentifier) {
         this.addCriteria(
           RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: formData.storageRuleIdentifier.trim(), value: formData.storageRuleIdentifier.trim() },
+          { id: ID_DUC, value: formData.storageRuleIdentifier.trim() },
 
           formData.storageRuleIdentifier.trim(),
           true,
@@ -459,7 +459,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       } else if (formData.storageRuleTitle) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: formData.storageRuleTitle.trim(), value: formData.storageRuleTitle.trim() },
+          { id: TITLE_DUC, value: formData.storageRuleTitle.trim() },
           formData.storageRuleTitle.trim(),
           true,
           CriteriaOperator.EQ,
@@ -525,8 +525,5 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
   }
   get storageRuleEndDate() {
     return this.storageRuleCriteriaForm.controls.storageRuleEndDate;
-  }
-  get storageRuleEliminationIdentifier() {
-    return this.storageRuleCriteriaForm.controls.storageRuleEliminationIdentifier;
   }
 }

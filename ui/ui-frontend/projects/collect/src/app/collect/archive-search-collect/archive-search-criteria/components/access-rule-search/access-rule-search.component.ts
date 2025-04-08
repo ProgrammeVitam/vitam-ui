@@ -39,31 +39,35 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription, merge } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
   ManagementRuleValidators,
-  SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
+  CriteriaSearchCriteria,
+  SearchCriteriaValue,
+  ACCESS_RULE,
+  ORIGIN_WAITING_RECALCULATE,
+  ORIGIN_HAS_NO_ONE,
+  ORIGIN_HAS_AT_LEAST_ONE,
+  ID_ACCESS,
+  TITLE_ACCESS,
+  END_DATE_ACCESS,
+  INTERVAL_DATE_ACCESS,
+  RULE_ORIGIN,
+  RULE_TITLE,
+  RULE_END_DATE,
+  RULE_IDENTIFIER,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
-const RULE_TYPE_SUFFIX = '_ACCESS_RULE';
-
-const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
-const ORIGIN_HAS_NO_ONE = 'ORIGIN_HAS_NO_ONE';
-const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-
-const RULE_ORIGIN = 'RULE_ORIGIN';
-
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
-const RULE_TITLE = 'RULE_TITLE';
-const RULE_END_DATE = 'RULE_END_DATE';
+const RULE_TYPE = ACCESS_RULE;
+const RULE_TYPE_SUFFIX = '_' + ACCESS_RULE;
 
 @Component({
   selector: 'app-access-rule-search',
@@ -77,7 +81,6 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
 
   accessRuleCriteriaForm: FormGroup;
 
-  accessCriteriaList: SearchCriteriaEltDto[] = [];
   accessAdditionalCriteria: Map<any, boolean> = new Map();
   subscriptionAccessFromMainSearchCriteria: Subscription;
 
@@ -92,18 +95,6 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
     accessRuleOriginHasNoOne: boolean;
     accessRuleOriginWaitingRecalculate: boolean;
   };
-  emptyAccessCriteriaForm = {
-    accessRuleIdentifier: '',
-    accessRuleTitle: '',
-    accessRuleStartDate: '',
-    accessRuleEndDate: '',
-    accessRuleOriginInheriteAtLeastOne: true,
-    accessRuleOriginHasAtLeastOne: true,
-    accessRuleOriginHasNoOne: false,
-    accessRuleOriginWaitingRecalculate: false,
-  };
-
-  showUnitPreviewBlock = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -128,7 +119,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.resetAccessRuleCriteriaForm();
-      }).unsubscribe;
+      });
 
     this.accessRuleCriteriaForm.get('accessRuleTitle').valueChanges.subscribe((value) => {
       if (
@@ -137,7 +128,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       ) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value },
+          { id: TITLE_ACCESS, value },
           value,
           true,
           CriteriaOperator.EQ,
@@ -147,7 +138,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
         );
         this.resetAccessRuleCriteriaForm();
       }
-    }).unsubscribe;
+    });
 
     this.subscriptionAccessFromMainSearchCriteria = this.archiveExchangeDataService.accessFromMainSearchCriteriaObservable.subscribe(
       (criteria) => {
@@ -172,7 +163,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_NO_ONE, value: ORIGIN_HAS_NO_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_NO_ONE },
             ORIGIN_HAS_NO_ONE,
             true,
             CriteriaOperator.MISSING,
@@ -182,7 +173,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_NO_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_NO_ONE,
           });
         }
@@ -212,7 +203,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_AT_LEAST_ONE, value: ORIGIN_HAS_AT_LEAST_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_AT_LEAST_ONE },
             ORIGIN_HAS_AT_LEAST_ONE,
             true,
             CriteriaOperator.EXISTS,
@@ -222,7 +213,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_AT_LEAST_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_AT_LEAST_ONE,
           });
         }
@@ -238,7 +229,8 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.accessRuleCriteriaForm.value.accessRuleStartDate + '-',
+          id: END_DATE_ACCESS,
+          value: this.accessRuleCriteriaForm.value.accessRuleStartDate.toISOString(),
           beginInterval: '',
           endInterval: this.accessRuleCriteriaForm.value.accessRuleStartDate,
         },
@@ -253,32 +245,16 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addCriteriaRulePostCheck() {
-    if (this.accessRuleCriteriaForm.value.accessRuleIdentifier) {
-      this.addCriteria(
-        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-        {
-          id: this.accessRuleCriteriaForm.value.accessRuleIdentifier.trim(),
-          value: this.accessRuleCriteriaForm.value.accessRuleIdentifier.trim(),
-        },
-
-        this.accessRuleCriteriaForm.value.accessRuleIdentifier.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.ACCESS_RULE,
-      );
-      this.accessRuleCriteriaForm.controls.accessRuleIdentifier.setValue(null);
-    }
-  }
-
   addIntervalDtAccessRuleCriteria() {
     if (this.accessRuleCriteriaForm.value.accessRuleStartDate && this.accessRuleCriteriaForm.value.accessRuleEndDate) {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.accessRuleCriteriaForm.value.accessRuleStartDate + '-' + this.accessRuleCriteriaForm.value.accessRuleEndDate,
+          id: INTERVAL_DATE_ACCESS,
+          value:
+            this.accessRuleCriteriaForm.value.accessRuleStartDate.toISOString() +
+            '|' +
+            this.accessRuleCriteriaForm.value.accessRuleEndDate.toISOString(),
           beginInterval: this.accessRuleCriteriaForm.value.accessRuleStartDate,
           endInterval: this.accessRuleCriteriaForm.value.accessRuleEndDate,
         },
@@ -299,7 +275,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       if (formData.accessRuleIdentifier) {
         this.addCriteria(
           RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: formData.accessRuleIdentifier.trim(), value: formData.accessRuleIdentifier.trim() },
+          { id: ID_ACCESS, value: formData.accessRuleIdentifier.trim() },
 
           formData.accessRuleIdentifier.trim(),
           true,
@@ -313,7 +289,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       } else if (formData.accessRuleTitle) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: formData.accessRuleTitle.trim(), value: formData.accessRuleTitle.trim() },
+          { id: TITLE_ACCESS, value: formData.accessRuleTitle.trim() },
           formData.accessRuleTitle.trim(),
           true,
           CriteriaOperator.EQ,
@@ -358,17 +334,46 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       accessRuleOriginWaitingRecalculate: this.hasWaitingToRecalculateCriteria,
     };
 
-    this.addCriteria(
-      RULE_ORIGIN + RULE_TYPE_SUFFIX,
-      { value: ORIGIN_HAS_AT_LEAST_ONE, id: ORIGIN_HAS_AT_LEAST_ONE },
-      ORIGIN_HAS_AT_LEAST_ONE,
-      true,
-      CriteriaOperator.EXISTS,
-      true,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.ACCESS_RULE,
-    );
-    this.accessAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+    this.archiveExchangeDataService.searchCriteria$
+      .pipe(
+        filter((searchCriteria) => !!searchCriteria),
+        take(1),
+      )
+      .subscribe((searchCriteria) => {
+        const filteredCriteria: Map<string, CriteriaSearchCriteria> = new Map(
+          [...searchCriteria.entries()].filter(([key, _]) => key === RULE_ORIGIN + RULE_TYPE_SUFFIX),
+        );
+
+        if (filteredCriteria && filteredCriteria.size > 0) {
+          filteredCriteria.forEach((value, key) => {
+            value.values.forEach((searchCriteria: SearchCriteriaValue) => {
+              this.addCriteria(
+                key,
+                { value: searchCriteria.value.value, id: searchCriteria.value.id },
+                searchCriteria.value.value,
+                true,
+                value.operator,
+                true,
+                CriteriaDataType.STRING,
+                SearchCriteriaTypeEnum.ACCESS_RULE,
+              );
+              this.accessAdditionalCriteria.set(searchCriteria.value.value, true);
+            });
+          });
+        } else {
+          this.addCriteria(
+            RULE_ORIGIN + RULE_TYPE_SUFFIX,
+            { value: ORIGIN_HAS_AT_LEAST_ONE, id: RULE_TYPE },
+            ORIGIN_HAS_AT_LEAST_ONE,
+            true,
+            CriteriaOperator.EXISTS,
+            true,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.ACCESS_RULE,
+          );
+          this.accessAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+        }
+      });
   }
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {

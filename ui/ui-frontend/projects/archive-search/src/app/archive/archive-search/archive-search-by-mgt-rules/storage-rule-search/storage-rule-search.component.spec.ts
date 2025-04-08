@@ -69,6 +69,7 @@ const archiveSharedDataServiceSpy = {
   receiveStorageFromMainSearchCriteriaSubject: () => of({}),
   addSimpleSearchCriteriaSubject: () => of({}),
   sendRemoveFromChildSearchCriteriaAction: () => of({}),
+  searchCriteria$: of([]),
 };
 
 describe('StorageRuleSearchComponent', () => {

@@ -39,31 +39,35 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription, merge } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
   ManagementRuleValidators,
-  SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
+  CriteriaSearchCriteria,
+  SearchCriteriaValue,
+  REUSE_RULE,
+  ORIGIN_WAITING_RECALCULATE,
+  ORIGIN_HAS_NO_ONE,
+  ORIGIN_HAS_AT_LEAST_ONE,
+  RULE_ORIGIN,
+  RULE_TITLE,
+  RULE_END_DATE,
+  RULE_IDENTIFIER,
+  ID_REUSE,
+  TITLE_REUSE,
+  END_DATE_REUSE,
+  INTERVAL_DATE_REUSE,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
-const RULE_TYPE_SUFFIX = '_REUSE_RULE';
-
-const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
-const ORIGIN_HAS_NO_ONE = 'ORIGIN_HAS_NO_ONE';
-const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-
-const RULE_ORIGIN = 'RULE_ORIGIN';
-
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
-const RULE_TITLE = 'RULE_TITLE';
-const RULE_END_DATE = 'RULE_END_DATE';
+const RULE_TYPE = REUSE_RULE;
+const RULE_TYPE_SUFFIX = '_' + REUSE_RULE;
 
 @Component({
   selector: 'app-reuse-rule-search',
@@ -77,7 +81,6 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
 
   reuseRuleCriteriaForm: FormGroup;
 
-  reuseCriteriaList: SearchCriteriaEltDto[] = [];
   reuseAdditionalCriteria: Map<any, boolean> = new Map();
   subscriptionReuseFromMainSearchCriteria: Subscription;
 
@@ -92,18 +95,6 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
     reuseRuleOriginHasNoOne: boolean;
     reuseRuleOriginWaitingRecalculate: boolean;
   };
-  emptyReuseCriteriaForm = {
-    reuseRuleIdentifier: '',
-    reuseRuleTitle: '',
-    reuseRuleStartDate: '',
-    reuseRuleEndDate: '',
-    reuseRuleOriginInheriteAtLeastOne: true,
-    reuseRuleOriginHasAtLeastOne: true,
-    reuseRuleOriginHasNoOne: false,
-    reuseRuleOriginWaitingRecalculate: false,
-  };
-
-  showUnitPreviewBlock = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -137,7 +128,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       ) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value },
+          { id: TITLE_REUSE, value },
           value,
           true,
           CriteriaOperator.EQ,
@@ -172,7 +163,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_NO_ONE, value: ORIGIN_HAS_NO_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_NO_ONE },
             ORIGIN_HAS_NO_ONE,
             true,
             CriteriaOperator.MISSING,
@@ -182,7 +173,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_NO_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_NO_ONE,
           });
         }
@@ -212,7 +203,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
         if (action) {
           this.addCriteria(
             RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { id: ORIGIN_HAS_AT_LEAST_ONE, value: ORIGIN_HAS_AT_LEAST_ONE },
+            { id: RULE_TYPE, value: ORIGIN_HAS_AT_LEAST_ONE },
             ORIGIN_HAS_AT_LEAST_ONE,
             true,
             CriteriaOperator.EXISTS,
@@ -222,7 +213,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
           );
         } else {
           this.emitRemoveCriteriaEvent(RULE_ORIGIN + RULE_TYPE_SUFFIX, {
-            id: ORIGIN_HAS_AT_LEAST_ONE,
+            id: RULE_TYPE,
             value: ORIGIN_HAS_AT_LEAST_ONE,
           });
         }
@@ -238,7 +229,8 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.reuseRuleCriteriaForm.value.reuseRuleStartDate + '-',
+          id: END_DATE_REUSE,
+          value: this.reuseRuleCriteriaForm.value.reuseRuleStartDate.toISOString(),
           beginInterval: '',
           endInterval: this.reuseRuleCriteriaForm.value.reuseRuleStartDate,
         },
@@ -253,32 +245,16 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addCriteriaRulePostCheck() {
-    if (this.reuseRuleCriteriaForm.value.reuseRuleIdentifier) {
-      this.addCriteria(
-        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-        {
-          id: this.reuseRuleCriteriaForm.value.reuseRuleIdentifier.trim(),
-          value: this.reuseRuleCriteriaForm.value.reuseRuleIdentifier.trim(),
-        },
-
-        this.reuseRuleCriteriaForm.value.reuseRuleIdentifier.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-        SearchCriteriaTypeEnum.REUSE_RULE,
-      );
-      this.reuseRuleCriteriaForm.controls.reuseRuleIdentifier.setValue(null);
-    }
-  }
-
   addIntervalDtReuseRuleCriteria() {
     if (this.reuseRuleCriteriaForm.value.reuseRuleStartDate && this.reuseRuleCriteriaForm.value.reuseRuleEndDate) {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
         {
-          id: this.reuseRuleCriteriaForm.value.reuseRuleStartDate + '-' + this.reuseRuleCriteriaForm.value.reuseRuleEndDate,
+          id: INTERVAL_DATE_REUSE,
+          value:
+            this.reuseRuleCriteriaForm.value.reuseRuleStartDate.toISOString() +
+            '|' +
+            this.reuseRuleCriteriaForm.value.reuseRuleEndDate.toISOString(),
           beginInterval: this.reuseRuleCriteriaForm.value.reuseRuleStartDate,
           endInterval: this.reuseRuleCriteriaForm.value.reuseRuleEndDate,
         },
@@ -299,7 +275,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       if (formData.reuseRuleIdentifier) {
         this.addCriteria(
           RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: formData.reuseRuleIdentifier.trim(), value: formData.reuseRuleIdentifier.trim() },
+          { id: ID_REUSE, value: formData.reuseRuleIdentifier.trim() },
 
           formData.reuseRuleIdentifier.trim(),
           true,
@@ -313,7 +289,7 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       } else if (formData.reuseRuleTitle) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: formData.reuseRuleTitle.trim(), value: formData.reuseRuleTitle.trim() },
+          { id: TITLE_REUSE, value: formData.reuseRuleTitle.trim() },
           formData.reuseRuleTitle.trim(),
           true,
           CriteriaOperator.EQ,
@@ -358,17 +334,46 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       reuseRuleOriginWaitingRecalculate: this.hasWaitingToRecalculateCriteria,
     };
 
-    this.addCriteria(
-      RULE_ORIGIN + RULE_TYPE_SUFFIX,
-      { value: ORIGIN_HAS_AT_LEAST_ONE, id: ORIGIN_HAS_AT_LEAST_ONE },
-      ORIGIN_HAS_AT_LEAST_ONE,
-      true,
-      CriteriaOperator.EXISTS,
-      true,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.REUSE_RULE,
-    );
-    this.reuseAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+    this.archiveExchangeDataService.searchCriteria$
+      .pipe(
+        filter((searchCriteria) => !!searchCriteria),
+        take(1),
+      )
+      .subscribe((searchCriteria) => {
+        const filteredCriterias: Map<string, CriteriaSearchCriteria> = new Map(
+          [...searchCriteria.entries()].filter(([key, _]) => key === RULE_ORIGIN + RULE_TYPE_SUFFIX),
+        );
+
+        if (filteredCriterias && filteredCriterias.size > 0) {
+          filteredCriterias.forEach((value, key) => {
+            value.values.forEach((searchCriteria: SearchCriteriaValue) => {
+              this.addCriteria(
+                key,
+                { value: searchCriteria.value.value, id: searchCriteria.value.id },
+                searchCriteria.value.value,
+                true,
+                value.operator,
+                true,
+                CriteriaDataType.STRING,
+                SearchCriteriaTypeEnum.REUSE_RULE,
+              );
+              this.reuseAdditionalCriteria.set(searchCriteria.value.value, true);
+            });
+          });
+        } else {
+          this.addCriteria(
+            RULE_ORIGIN + RULE_TYPE_SUFFIX,
+            { value: ORIGIN_HAS_AT_LEAST_ONE, id: RULE_TYPE },
+            ORIGIN_HAS_AT_LEAST_ONE,
+            true,
+            CriteriaOperator.EXISTS,
+            true,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.REUSE_RULE,
+          );
+          this.reuseAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
+        }
+      });
   }
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {

@@ -3625,11 +3625,13 @@
     "COMPUTE_RULES_FACETS": "Show management rules facets",
     "CRITERIA_CATEGORY": {
       "ADD": "Add criteria",
+      "ACCESS_RULE": "Access",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
       "DISSEMINATION": "Dissemination",
       "GEL": "Freezing",
-      "REUSE": "Reuse"
+      "REUSE": "Reuse",
+      "STORAGE_RULE": "Storage"
     },
     "CRITERIA_CATEGORY_SHORT_NAME": {
       "ACCESS_RULE": "Access",
@@ -3765,6 +3767,8 @@
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
+        "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
+        "RULE_TITLE_APPRAISAL_RULE": "Rule title DUA",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
         "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
@@ -3797,6 +3801,7 @@
         "RULE_START_DATE_DISSEMINATION_RULE": "Dissemination rule start date",
         "RULE_TITLE_DISSEMINATION_RULE": "Dissemination rule title"
       },
+      "DISSEMINATION_TITLE": "Dissemination",
       "DUA_TITLE": "Administrative useful life",
       "SEARCH_TYPES": {
         "": "Approximate search",
@@ -3915,6 +3920,8 @@
         "TITLE": "Title",
         "TITLE_ACCESS": "Title",
         "TITLE_DUA": "Title",
+        "TITLE_REUSE": "Title",
+        "TITLE_DISSEMINATION": "Title",
         "TITLE_OR_DESCRIPTION": "Title or Description",
         "UAID": "Archive unit GUID",
         "UNIT_TYPE": {
@@ -3950,6 +3957,8 @@
       "STORAGE_RULE": {
         "CREATE_INTERVAL": "Create interval",
         "DELETE_INTERVAL": "remove interval",
+        "FINAL_ACTION_STORAGE_RULE": "Sort final DUC",
+        "FINAL_ACTION_TYPE_STORAGE_RULE": "Sort final",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
@@ -3962,7 +3971,10 @@
         "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
         "RULE_END_DATE_BEGIN": "Storage: Min end date",
         "RULE_END_DATE_END": "Storage: Max end date",
-        "RULE_ORIGIN_STORAGE_RULE": "Storage rule"
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
+        "RULE_END_DATE_STORAGE_RULE": "Date de fin DUC",
+        "RULE_IDENTIFIER_STORAGE_RULE": "Identifiant règle DUC",
+        "RULE_TITLE_STORAGE_RULE": "Intitulé règle DUC"
       },
       "STORAGE_TITLE": "Storage",
       "TITLE": "Multi-criteria search",
@@ -4146,12 +4158,14 @@
     },
     "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "CRITERIA_CATEGORY": {
+      "ACCESS_RULE": "Access",
       "ADD": "Add criteria",
       "APPRAISAL_RULE": "Administrative useful life",
       "CLASSIFICATION": "Classification",
       "DISSEMINATION": "Dissemination",
       "GEL": "Freezing",
-      "REUSE": "Reuse"
+      "REUSE": "Reuse",
+      "STORAGE_RULE": "Storage"
     },
     "CRITERIA_CATEGORY_SHORT_NAME": {
       "ACCESS_RULE": "Access",
@@ -4312,6 +4326,8 @@
       "APPRAISAL_RULE": {
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
+        "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
+        "RULE_TITLE_APPRAISAL_RULE": "DUA Rule title",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
@@ -4345,6 +4361,7 @@
         "RULE_START_DATE_DISSEMINATION_RULE": "Dissemination rule start date",
         "RULE_TITLE_DISSEMINATION_RULE": "Dissemination rule title"
       },
+      "DISSEMINATION_TITLE": "Dissemination",
       "DUA_TITLE": "Administrative useful life",
       "FIELDS": {
         "ORPHANS_NODE": "Position",
@@ -4457,6 +4474,8 @@
         "TITLE": "Title",
         "TITLE_ACCESS": "Title",
         "TITLE_DUA": "Title",
+        "TITLE_REUSE": "Intitulé",
+        "TITLE_DISSEMINATION": "Intitulé",
         "TITLE_OR_DESCRIPTION": "Title or Description",
         "UAID": "Archive unit GUID",
         "UNIT_TYPE": {
@@ -4492,6 +4511,7 @@
       "STORAGE_RULE": {
         "CREATE_INTERVAL": "Create interval",
         "DELETE_INTERVAL": "remove interval",
+        "FINAL_ACTION_STORAGE_RULE": "Sort final DUC",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
@@ -4504,7 +4524,11 @@
         "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
         "RULE_END_DATE_BEGIN": "Storage: Min end date",
         "RULE_END_DATE_END": "Storage: Max end date",
-        "RULE_ORIGIN_STORAGE_RULE": "Storage rule"
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
+        "RULE_END_DATE_STORAGE_RULE": "Date de fin DUC",
+        "FINAL_ACTION_TYPE_STORAGE_RULE": "Sort final",
+        "RULE_IDENTIFIER_STORAGE_RULE": "Identifiant règle DUC",
+        "RULE_TITLE_STORAGE_RULE": "Intitulé règle DUC"
       },
       "STORAGE_TITLE": "Storage",
       "TITLE": "Multi-criteria search",

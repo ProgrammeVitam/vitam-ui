@@ -276,6 +276,8 @@ describe('ArchiveSearchComponent', () => {
                 {
                   id: 'opi',
                   value: '1234',
+                  beginInterval: '',
+                  endInterval: '',
                 },
               ],
               operator: 'EQ',

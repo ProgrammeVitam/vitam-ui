@@ -3625,11 +3625,13 @@
     "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "CRITERIA_CATEGORY": {
       "ADD": "Ajouter des critères",
+      "ACCESS_RULE": "Communicabilité",
       "APPRAISAL_RULE": "Durée d’utilité administrative",
       "CLASSIFICATION": "Classification",
       "DISSEMINATION": "Diffusion",
       "GEL": "Gel / Dégel",
-      "REUSE": "Réutilisation"
+      "REUSE": "Réutilisation",
+      "STORAGE_RULE": "Durée d’utilité courante"
     },
     "CRITERIA_CATEGORY_SHORT_NAME": {
       "ACCESS_RULE": "Communicabilité",
@@ -3764,6 +3766,8 @@
       "APPRAISAL_RULE": {
         "CREATE_INTERVAL": "Créer un intervale",
         "DELETE_INTERVAL": "Supprimer l'intervale",
+        "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
+        "RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
@@ -3797,6 +3801,7 @@
         "RULE_START_DATE_DISSEMINATION_RULE": "Date de début règle de diffusion",
         "RULE_TITLE_DISSEMINATION_RULE": "Intitulé règle de diffusion"
       },
+      "DISSEMINATION_TITLE": "Diffusion",
       "DUA_TITLE": "Durée d'utilité administrative",
       "SEARCH_TYPES": {
         "": "Recherche approchante",
@@ -3915,6 +3920,8 @@
         "TITLE": "Intitulé",
         "TITLE_ACCESS": "Intitulé",
         "TITLE_DUA": "Intitulé",
+        "TITLE_REUSE": "Intitulé",
+        "TITLE_DISSEMINATION": "Intitulé",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
         "UAID": "Identifiant(s) technique(s) d'unité(s) archivistique(s)",
         "UNIT_TYPE": {
@@ -3950,6 +3957,8 @@
       "STORAGE_RULE": {
         "CREATE_INTERVAL": "Créer un intervale",
         "DELETE_INTERVAL": "Supprimer l'intervale",
+        "FINAL_ACTION_STORAGE_RULE": "Sort final DUC",
+        "FINAL_ACTION_TYPE_STORAGE_RULE": "Sort final",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
@@ -3962,7 +3971,10 @@
         "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
         "RULE_END_DATE_BEGIN": "DUC: Date de fin min",
         "RULE_END_DATE_END": "DUC: Date de fin max",
-        "RULE_ORIGIN_STORAGE_RULE": "Règle DUC"
+        "RULE_ORIGIN_STORAGE_RULE": "Règle DUC",
+        "RULE_END_DATE_STORAGE_RULE": "Date de fin DUC",
+        "RULE_IDENTIFIER_STORAGE_RULE": "Identifiant règle DUC",
+        "RULE_TITLE_STORAGE_RULE": "Intitulé règle DUC"
       },
       "STORAGE_TITLE": "Durée d'utilité courante",
       "TITLE": "Recherche multi-critères",
@@ -4146,12 +4158,14 @@
     },
     "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "CRITERIA_CATEGORY": {
+      "ACCESS_RULE": "Communicabilité",
       "ADD": "Ajouter des critères",
       "APPRAISAL_RULE": "Durée d’utilité administrative",
       "CLASSIFICATION": "Classification",
       "DISSEMINATION": "Diffusion",
       "GEL": "Gel / Dégel",
-      "REUSE": "Réutilisation"
+      "REUSE": "Réutilisation",
+      "STORAGE_RULE": "Durée d’utilité courante"
     },
     "CRITERIA_CATEGORY_SHORT_NAME": {
       "ACCESS_RULE": "Communicabilité",
@@ -4312,6 +4326,8 @@
       "APPRAISAL_RULE": {
         "CREATE_INTERVAL": "Créer un intervale",
         "DELETE_INTERVAL": "Supprimer l'intervale",
+        "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
+        "RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
@@ -4345,6 +4361,7 @@
         "RULE_START_DATE_DISSEMINATION_RULE": "Date de début règle de diffusion",
         "RULE_TITLE_DISSEMINATION_RULE": "Intitulé règle de diffusion"
       },
+      "DISSEMINATION_TITLE": "Diffusion",
       "DUA_TITLE": "Durée d'utilité administrative",
       "FIELDS": {
         "ORPHANS_NODE": "Position",
@@ -4457,6 +4474,8 @@
         "TITLE": "Intitulé",
         "TITLE_ACCESS": "Intitulé",
         "TITLE_DUA": "Intitulé",
+        "TITLE_REUSE": "Intitulé",
+        "TITLE_DISSEMINATION": "Intitulé",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
         "UAID": "Identifiant(s) technique(s) d'unité(s) archivistique(s)",
         "UNIT_TYPE": {
@@ -4492,6 +4511,7 @@
       "STORAGE_RULE": {
         "CREATE_INTERVAL": "Créer un intervale",
         "DELETE_INTERVAL": "Supprimer l'intervale",
+        "FINAL_ACTION_STORAGE_RULE": "Sort final DUC",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
@@ -4504,7 +4524,11 @@
         "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
         "RULE_END_DATE_BEGIN": "DUC: Date de fin min",
         "RULE_END_DATE_END": "DUC: Date de fin max",
-        "RULE_ORIGIN_STORAGE_RULE": "Règle DUC"
+        "RULE_ORIGIN_STORAGE_RULE": "Règle DUC",
+        "RULE_END_DATE_STORAGE_RULE": "Date de fin DUC",
+        "FINAL_ACTION_TYPE_STORAGE_RULE": "Sort final",
+        "RULE_TITLE_STORAGE_RULE": "Intitulé règle DUC",
+        "RULE_IDENTIFIER_STORAGE_RULE": "Identifiant règle DUC"
       },
       "STORAGE_TITLE": "Durée d'utilité courante",
       "TITLE": "Recherche multi-critères",
