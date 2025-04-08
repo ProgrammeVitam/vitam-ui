@@ -540,28 +540,27 @@
     <div class="text large bold">
       <span *ngIf="itemSelected > 1">
         {{
-          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE'
-            | translate: { elementsSize: itemSelected }
+          'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE' | translate: { elementsSize: itemSelected }
         }}</span
       >
     </div>
     <div class="text large bold">
-      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2' | translate }}
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2' | translate }}
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">
-      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
     </button>
     <button matDialogClose class="btn cancel link" cdkFocusInitial>
-      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL' | translate }}
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL' | translate }}
     </button>
   </mat-dialog-actions>
 </ng-template>
 
 <ng-template #actionsWithThresholdReachedAlerteMessageDialog>
   <vitamui-dialog-header
-    [title]="'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate"
+    [title]="'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate"
   ></vitamui-dialog-header>
   <mat-dialog-content>
     <div class="row red-text">
@@ -569,7 +568,7 @@
         <i class="material-icons icon-style">cancel</i>
       </div>
       <div class="col-11">
-        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+        {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
       </div>
     </div>
     <div class="row">
@@ -578,11 +577,11 @@
       </div>
       <div class="col-11">
         <div class="text small bold">
-          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+          {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
         </div>
 
         <div class="text small">
-          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2' | translate }}
+          {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2' | translate }}
         </div>
       </div>
     </div>

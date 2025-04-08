@@ -146,14 +146,14 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
             FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
               this.nestedDataSourceLeaves.data,
               withKeyValueNodes,
-              this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.KEY_VALUE_NODE'),
+              this.translateService.instant('COLLECT.FILING_SCHEMA.KEY_VALUE_NODE'),
             );
           }
 
           if (this.searchRequestTotalResults > 0 && hasAUWithoutAttachment) {
             FilingHoldingSchemeHandler.addOrphansNodeFromTree(
               this.nestedDataSourceLeaves.data,
-              this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
+              this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE'),
               this.searchRequestTotalResults,
             );
           }
