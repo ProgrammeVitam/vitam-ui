@@ -24,6 +24,50 @@ dbIam.applications.updateOne({
     },
 });
 
+// CREATING NEW PROFILES FOR ONTOLOGY_APP on existing tenants
+
+// Get sequence for profiles
+var maxIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+// For each tenants (except cas and system tenant)
+dbIam.tenants.find({
+    "identifier": {
+        $nin: [
+            {{ vitamui_platform_informations.cas_tenant | default(-1) }},
+            {{ vitamui_platform_informations.proof_tenant | default(1) }}
+        ]
+    }
+}).forEach(function (tenant) {
+    dbIam.profiles.insertOne({
+        "_id": "PROFIL_" + tenant.identifier + "-ONTOLOGY_APP-ADMIN",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Profil pour la consultation des ontologies et gestion des schémas",
+        "description": "Consultation des ontologies et gestion des schémas",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "ONTOLOGY_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": true,
+        "customerId": tenant.customerId,
+        "roles": [
+            { "name": "ROLE_GET_ONTOLOGIES" },
+            { "name": "ROLE_IMPORT_ONTOLOGY" },
+            { "name": "ROLE_IMPORT_SCHEMAS" },
+            { "name": "ROLE_GET_SCHEMAS" },
+            { "name": "ROLE_DELETE_SCHEMAS" }
+        ]
+    });
+});
+
+// Update sequence
+dbIam.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(maxIdProfile)
+    }
+});
+
 dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
 dbSecurity.contexts.updateOne({
     "_id": "ui_referential_context"

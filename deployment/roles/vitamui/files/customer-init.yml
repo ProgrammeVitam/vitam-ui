@@ -373,9 +373,9 @@ customer-init:
       roles:
         - ROLE_GET_ONTOLOGIES
         - ROLE_IMPORT_ONTOLOGY
-        - ROLE_DELETE_SCHEMAS
         - ROLE_IMPORT_SCHEMAS
-
+        - ROLE_GET_SCHEMAS
+        - ROLE_DELETE_SCHEMAS
 
   # Other Default profiles for admin group
   admin-profiles:
