@@ -335,7 +335,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   private getTranslationKey(archiveUnitType: ArchiveUnitType): string {
-    const translationPrefix = 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE';
+    const translationPrefix = 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE';
 
     return `${translationPrefix}.${archiveUnitType}`;
   }

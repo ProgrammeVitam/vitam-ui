@@ -135,7 +135,7 @@ describe('FilingHoldingSchemeComponent', () => {
         { provide: StartupService, useValue: StartupServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'COLLECT_APP' }) },
         },
         { provide: environment, useValue: environment },
       ],
