@@ -4296,7 +4296,9 @@
       "SHOW_TREE_PARENT": "Afficher seulement les résultats",
       "TREE_LEAVES_TITLE": "Position(s) de rattachement",
       "TREE_TITLE": "Arbres et plans",
-      "LOAD_MORE": "Charger plus"
+      "LOAD_MORE": "Charger plus",
+      "ORPHANS_NODE": "Sans rattachement",
+      "KEY_VALUE_NODE": "Avec ordre de rattachement"
     },
     "HIDE_SEARCH_CRITERIA": "Masquer les critères de recherche",
     "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
