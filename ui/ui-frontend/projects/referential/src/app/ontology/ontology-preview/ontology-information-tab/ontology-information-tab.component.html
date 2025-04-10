@@ -8,6 +8,7 @@
       formControlName="shortName"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate"
       [disabled]="isInternal"
+      [required]="true"
     >
     </vitamui-common-input>
 
@@ -40,6 +41,8 @@
       [disabled]="isInternal"
       [multiple]="true"
       [enableSearch]="false"
+      [enableDisplaySelected]="false"
+      [enableSelectAll]="false"
     ></vitamui-select>
 
     <vitamui-common-textarea
