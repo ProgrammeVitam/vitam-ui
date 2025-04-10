@@ -187,7 +187,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
         if (formData.status) {
