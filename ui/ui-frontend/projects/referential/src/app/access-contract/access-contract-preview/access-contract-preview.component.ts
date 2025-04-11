@@ -58,12 +58,12 @@ export class AccessContractPreviewComponent implements AfterViewInit {
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
-  // tab indexes: info = 0; usage = 1; write = 2; node = 3; history = 4;
-  private tabUpdated: boolean[] = [false, false, false, false, false];
-  private tabValid: boolean[] = [false, false, true, true, true];
-  private tabLinks: Array<any> = [];
-
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  updatableTabs: {
+    id: string;
+    component?: AccessContractInformationTabComponent | AccessContractWriteAccessTabComponent;
+  }[] = [];
+
   @ViewChild('infoTab', { static: false }) infoTab: AccessContractInformationTabComponent;
   @ViewChild('authorizationsTab', { static: false }) authorizationsTab: AccessContractAuthorizationsTabComponent;
   @ViewChild('writeTab', { static: false }) writeTab: AccessContractWriteAccessTabComponent;
@@ -75,23 +75,27 @@ export class AccessContractPreviewComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
-    this.tabLinks[1] = this.authorizationsTab;
-    this.tabLinks[2] = this.writeTab;
+    this.updatableTabs = [
+      { id: 'infoTab', component: this.infoTab },
+      { id: 'authorizationsTab' },
+      { id: 'writeTab', component: this.writeTab },
+      { id: 'positionTab' },
+      { id: 'historyTab' },
+    ];
   }
 
-  @HostListener('window:beforeunload', ['$event']) beforeunloadHandler(event: any) {
-    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
+  @HostListener('window:beforeunload', ['$event'])
+  async beforeunloadHandler(event: any) {
+    const activeTab = this.getActiveTab();
+    if (activeTab?.component?.unChanged === false) {
       event.preventDefault();
-      this.checkBeforeExit();
+      await this.checkBeforeExit();
       return '';
     }
   }
 
   public async emitClose() {
-    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
-      await this.checkBeforeExit();
-    }
+    await this.checkBeforeExit();
 
     this.previewClose.emit();
   }
@@ -105,17 +109,14 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     );
   }
 
-  public updatedChange(updated: boolean, index: number) {
-    this.tabUpdated[index] = updated;
-  }
-
-  public formTabValidityChange(updated: boolean, index: number) {
-    this.tabValid[index] = updated;
-  }
-
   private async checkBeforeExit() {
+    const activeTabComponent = this.getActiveTab().component;
+    // If we didn't define the tab component we don't need to check it.
+    if (!activeTabComponent || activeTabComponent.form.invalid || activeTabComponent.unChanged) {
+      return;
+    }
     if (await this.confirmAction()) {
-      const submitAccessContractUpdate: Observable<AccessContract> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
+      const submitAccessContractUpdate: Observable<AccessContract> = activeTabComponent.prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
         this.accessContractService.get(this.accessContract.identifier).subscribe((response) => {
@@ -123,14 +124,12 @@ export class AccessContractPreviewComponent implements AfterViewInit {
         });
       });
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.accessContract);
+      activeTabComponent.resetForm(this.accessContract);
     }
   }
 
   private async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
-      await this.checkBeforeExit();
-    }
+    await this.checkBeforeExit();
 
     const args = [tab, tabHeader, idx];
     return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
@@ -144,5 +143,10 @@ export class AccessContractPreviewComponent implements AfterViewInit {
 
   updatedAccessContract(accessContract: AccessContract) {
     this.accessContract = accessContract;
+  }
+
+  private getActiveTab() {
+    const activeIndex = this.tabs.selectedIndex;
+    return this.updatableTabs[activeIndex];
   }
 }

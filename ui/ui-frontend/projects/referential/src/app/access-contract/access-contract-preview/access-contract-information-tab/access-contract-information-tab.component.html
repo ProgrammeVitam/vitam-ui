@@ -76,7 +76,7 @@
       />
     </mat-form-field>
 
-    <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unChanged() || submited">
+    <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unChanged || submitted">
       {{ 'COMMON.SAVE' | translate }}
     </button>
   </div>
