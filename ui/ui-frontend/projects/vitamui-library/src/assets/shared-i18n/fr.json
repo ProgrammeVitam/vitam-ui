@@ -3963,6 +3963,8 @@
         "START_DATE_DUA": "Date de début",
         "START_DATE_SEARCH": "Date de début",
         "TITLE": "Intitulé",
+        "Title.Strict": "Intitulé exact",
+        "Title.*": "Intitulé ({{suffix}})",
         "TITLE_ACCESS": "Intitulé",
         "TITLE_DUA": "Intitulé",
         "TITLE_REUSE": "Intitulé",

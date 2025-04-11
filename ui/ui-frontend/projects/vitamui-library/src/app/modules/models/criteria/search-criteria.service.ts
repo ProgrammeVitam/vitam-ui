@@ -48,9 +48,7 @@ import {
   END_DATE_DUC,
   END_DATE_FIELDS,
   END_DATE_REUSE,
-  FINAL_ACTION_PREFIX,
-  FINAL_ACTION_TYPES,
-  FINAL_ACTION_TYPE_PREFIX,
+  getSearchCriteriaConfig,
   HOLD_RULE,
   ID_ACCESS,
   ID_DISSEMINATION,
@@ -63,13 +61,10 @@ import {
   INTERVAL_DATE_DUC,
   INTERVAL_DATE_FIELDS,
   INTERVAL_DATE_REUSE,
-  MAP_KEY_ELT,
   NODES,
   ORIGIN_HAS_AT_LEAST_ONE,
   ORIGIN_HAS_NO_ONE,
   REUSE_RULE,
-  RULE_ORIGIN_PREFIX,
-  searchCriteriaConfigs,
   STORAGE_RULE,
   TITLE_ACCESS,
   TITLE_DISSEMINATION,
@@ -77,8 +72,6 @@ import {
   TITLE_DUC,
   TITLE_REUSE,
   translatedKeys,
-  RULE_ORIGINS,
-  FINAL_ACTIONS,
 } from './search-criteria-configs';
 import { Injectable } from '@angular/core';
 import { SearchWithTypeSelectorValue } from '../../../../lib/components/search-with-type-selector/search-with-type-selector.component';
@@ -151,7 +144,6 @@ export class SearchCriteriaService {
         const categoryForKey = this.getCategory(key);
         const operator = this.getOperator(fragment, key);
 
-        const keyElt = this.getKeyElt(fragment, key);
         const beginDate = this.getBeginDate(fragment, key);
         const endDate = this.getEndDate(fragment, key);
         const dataType = this.getDataType(key);
@@ -167,7 +159,7 @@ export class SearchCriteriaService {
 
         const completeCriteriaConfig: SearchCriteriaAddAction = {
           ...defaultCriteriaConfig,
-          ...(searchCriteriaConfigs[key] || { keyElt: keyElt }),
+          ...getSearchCriteriaConfig(fragment, key),
         } as SearchCriteriaAddAction;
 
         return {
@@ -244,23 +236,6 @@ export class SearchCriteriaService {
     }
 
     return operator;
-  }
-
-  private getKeyElt(fragment: string, key: string) {
-    let keyElt = '';
-    if (MAP_KEY_ELT.has(key)) {
-      keyElt = MAP_KEY_ELT.get(key);
-    } else if (RULE_ORIGINS.includes(fragment)) {
-      keyElt = RULE_ORIGIN_PREFIX + key;
-    } else if (FINAL_ACTIONS.includes(fragment)) {
-      keyElt = FINAL_ACTION_PREFIX + key;
-    } else if (FINAL_ACTION_TYPES.includes(fragment)) {
-      keyElt = FINAL_ACTION_TYPE_PREFIX + key;
-    } else {
-      keyElt = key;
-    }
-
-    return keyElt;
   }
 
   private getBeginDate(fragment: string, key: string) {

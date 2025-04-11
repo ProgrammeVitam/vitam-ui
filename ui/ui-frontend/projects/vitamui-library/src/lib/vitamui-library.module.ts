@@ -59,6 +59,7 @@ import { ReclassificationDialogComponent } from './components/reclassification-d
 import { AlertDialogComponent } from './components/dialog/alert-dialog/alert-dialog.component';
 import { DialogContentWithStateComponent } from './components/dialog/dialog-content-with-state/dialog-content-with-state.component';
 import { ErrorDialogComponent } from './components/dialog/error-dialog/error-dialog.component';
+import { TranslateWithOptionalTypeSuffixPipe } from '../app/modules/pipes/translate-with-optional-type-suffix.pipe';
 
 const components = [
   AlertDialogComponent,
@@ -75,6 +76,7 @@ const components = [
   SearchWithTypeSelectorComponent,
   SelectComponent,
   SelectWithTreeComponent,
+  TranslateWithOptionalTypeSuffixPipe,
   VitamUIInputModule,
   VitamUIRadioGroupModule,
   VitamUIRadioModule,
