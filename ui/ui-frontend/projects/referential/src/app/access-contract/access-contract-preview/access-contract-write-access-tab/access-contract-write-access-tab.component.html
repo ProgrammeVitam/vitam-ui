@@ -46,7 +46,7 @@
     ></vitamui-select>
   </div>
 
-  <button type="submit" class="btn primary mt-4" [disabled]="form.errors || unChanged() || submited">
+  <button type="submit" class="btn primary mt-4" [disabled]="form.invalid || unChanged || submitted">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>
