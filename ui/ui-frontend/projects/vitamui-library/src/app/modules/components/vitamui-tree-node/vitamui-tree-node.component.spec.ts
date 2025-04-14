@@ -103,7 +103,7 @@ describe('VitamuiTreeNodeComponent', () => {
   it('should emit labelClick event when label is clicked', () => {
     // When click on the checkbox
     const nativeElement = fixture.nativeElement;
-    const label = nativeElement.querySelector('div');
+    const label = nativeElement.querySelector('label');
     label.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
@@ -120,7 +120,7 @@ describe('VitamuiTreeNodeComponent', () => {
 
     // When click on the checkbox
     const nativeElement = fixture.nativeElement;
-    const label = nativeElement.querySelector('div');
+    const label = nativeElement.querySelector('label');
     label.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
