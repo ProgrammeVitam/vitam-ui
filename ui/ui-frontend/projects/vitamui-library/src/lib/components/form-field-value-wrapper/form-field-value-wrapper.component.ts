@@ -60,7 +60,14 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   #componentRef: Element;
 
   get canConfirm(): boolean {
-    return this.editMode && this.innerControl && !this.innerControl.pending && this.innerControl.valid && this.innerControl.dirty;
+    return (
+      this.editMode &&
+      this.innerControl &&
+      !this.innerControl.pending &&
+      this.innerControl.valid &&
+      this.innerControl.dirty &&
+      this.ref.canConfirmInWrapper()
+    );
   }
 
   @ContentChild(AbstractFormInputDirective) ref!: AbstractFormInputDirective;
