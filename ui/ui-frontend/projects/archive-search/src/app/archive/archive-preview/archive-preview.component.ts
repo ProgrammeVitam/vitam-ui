@@ -96,6 +96,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
     if (this.descriptionTab.isModified()) {
       await this.checkBeforeExit();
     }
+    this.updateStarted = false;
     this.previewClose.emit();
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
