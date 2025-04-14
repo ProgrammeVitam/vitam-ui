@@ -5,7 +5,7 @@
     <button (click)="onSave()" [disabled]="!isModified()" class="btn" [ngClass]="isModified() ? 'save' : 'primary'">
       {{ 'COMMON.SAVE' | translate }}
     </button>
-    <button (click)="onCancel()" class="btn primary cancel">
+    <button (click)="onCancel(true)" class="btn primary cancel">
       {{ 'COMMON.UNDO' | translate }}
     </button>
   </vitamui-common-editor-banner>
