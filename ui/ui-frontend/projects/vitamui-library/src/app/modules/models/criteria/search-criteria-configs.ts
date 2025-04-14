@@ -37,7 +37,34 @@
 import { SearchCriteriaAddAction } from './search-criteria.interface';
 import { CriteriaDataType, CriteriaOperator } from './criteria.enums';
 
-export const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> } = {
+export function getSearchCriteriaConfig(fragment: string, key: string) {
+  function getKeyElt(fragment: string, key: string) {
+    if (MAP_KEY_ELT.has(key)) {
+      return MAP_KEY_ELT.get(key);
+    } else if (RULE_ORIGINS.includes(fragment)) {
+      return RULE_ORIGIN_PREFIX + key;
+    } else if (FINAL_ACTIONS.includes(fragment)) {
+      return FINAL_ACTION_PREFIX + key;
+    } else if (FINAL_ACTION_TYPES.includes(fragment)) {
+      return FINAL_ACTION_TYPE_PREFIX + key;
+    } else {
+      return key;
+    }
+  }
+
+  const keyElt = getKeyElt(fragment, key);
+  const searchCriteriaConfig =
+    searchCriteriaConfigs[key] ||
+    (key.toLowerCase().startsWith('title.')
+      ? {
+          keyElt: `Title.${key.split('.').slice(1)}`,
+          keyTranslated: true,
+        }
+      : {});
+  return { keyElt: keyElt, ...searchCriteriaConfig };
+}
+
+const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> } = {
   titleOrDescription: {
     keyElt: 'TITLE_OR_DESCRIPTION',
     keyTranslated: true,
@@ -48,10 +75,6 @@ export const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAc
   },
   title: {
     keyElt: 'TITLE',
-    keyTranslated: true,
-  },
-  'title.Strict': {
-    keyElt: 'Title.Strict',
     keyTranslated: true,
   },
   description: {

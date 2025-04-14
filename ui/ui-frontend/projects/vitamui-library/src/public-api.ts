@@ -201,6 +201,7 @@ export * from './app/modules/pipes/filesize.pipe';
 export * from './app/modules/pipes/pipes.module';
 export * from './app/modules/pipes/plural.pipe';
 export * from './app/modules/pipes/safe-style.pipe';
+export * from './app/modules/pipes/translate-with-optional-type-suffix.pipe';
 export * from './app/modules/pipes/truncate.pipe';
 export * from './app/modules/pipes/yes-no.pipe';
 export * from './lib/components/reclassification-dialog/reclassification-dialog.component';
