@@ -47,7 +47,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../shared/pipes/pipes.module';
-import { AuditCreateModule } from './audit-create/audit-create.module';
 import { AuditPreviewModule } from './audit-preview/audit-preview.module';
 import { AuditRoutingModule } from './audit-routing.module';
 import { AuditComponent } from './audit.component';
@@ -68,7 +67,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     VitamUICommonModule,
     AuditRoutingModule,
     AuditPreviewModule,
-    AuditCreateModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
