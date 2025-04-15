@@ -58,8 +58,8 @@ export class IngestContractHeritageTabComponent implements OnInit {
   @Input()
   readOnly: boolean;
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
+  previousValue = (): any => {
+    return { computeInheritedRulesAtIngest: this._ingestContract.computeInheritedRulesAtIngest };
   };
 
   @Input()
@@ -109,7 +109,7 @@ export class IngestContractHeritageTabComponent implements OnInit {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
