@@ -200,6 +200,46 @@ public final class UserServiceTest {
     }
 
     @Test
+    public void testUpdateUserSuccessWhenEmailMultipleCase() {
+        final String emailInputToTest = "TESt@vitamui.com";
+        final String userEmailInDb = emailInputToTest.toLowerCase();
+        final User user = IamServerUtilsTest.buildUser(USER_ID, userEmailInDb, "profileGroupId");
+
+        final UserDto userToUpdate = new UserDto();
+        VitamUIUtils.copyProperties(user, userToUpdate);
+        userToUpdate.setAddress(VitamUIUtils.copyProperties(user.getAddress(), new AddressDto()));
+        userToUpdate.setAnalytics(VitamUIUtils.copyProperties(user.getAnalytics(), new AnalyticsDto()));
+        final GroupDto groupDto = buildGroupDto();
+        groupDto.setId(user.getGroupId());
+        groupDto.setCustomerId(user.getCustomerId());
+        groupDto.setLevel(user.getLevel());
+
+        when(userRepository.save(any())).thenReturn(user);
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(emailInputToTest, CUSTOMER_ID)).thenReturn(user);
+        when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+
+        when(securityService.getLevel()).thenReturn("DSI");
+        when(securityService.isLevelAllowed(any())).thenReturn(true);
+        when(groupService.getOne(any(), any(), any())).thenReturn(groupDto);
+
+        final Customer customer = new Customer();
+        customer.setEnabled(true);
+        customer.setId(user.getCustomerId());
+        customer.setOtp(OtpEnum.OPTIONAL);
+        final CustomerDto customerDto = new CustomerDto();
+        VitamUIUtils.copyProperties(customer, customerDto);
+
+        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
+        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
+        when(securityService.getCustomerId()).thenReturn(customerDto.getId());
+
+        final UserDto userUpdated = userService.update(userToUpdate);
+        assertNotNull("User shouldn't be null", userUpdated);
+        assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
+    }
+
+    @Test
     public void testUpdateUser() {
         final String emailToTest = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");

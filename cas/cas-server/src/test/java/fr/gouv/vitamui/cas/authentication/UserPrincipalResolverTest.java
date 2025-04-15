@@ -69,6 +69,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     private static final String IDENTIFIER = "identifier";
 
     private static final String USERNAME = "user@test.com";
+    private static final String USERNAME_EMAIL_WITH_OTHER_CASE = "USER@test.com";
     private static final String CUSTOMER_ID = "customerId";
     private static final String ADMIN = "admin@test.com";
     private static final String ADMIN_CUSTOMER_ID = "customer_admin";
@@ -155,9 +156,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setCustomerId(CUSTOMER_ID);
         provider.setProtocoleType(CERTIFICATE_PROTOCOL_TYPE);
         provider.setPatterns(List.of(".*@test.com"));
-        when(identityProviderHelper.findAllByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(
-            List.of(provider)
-        );
+        when(
+            identityProviderHelper.findAllProvidersByUserIdentifier(providersService.getProviders(), USERNAME)
+        ).thenReturn(List.of(provider));
 
         when(
             casRestClient.getUser(
@@ -186,6 +187,55 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         assertEquals(USERNAME_ID, principal.getId());
         final Map<String, List<Object>> attributes = principal.getAttributes();
         assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
+        assertEquals(List.of(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
+        assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
+        assertNull(attributes.get(SUPER_USER_CUSTOMER_ID_ATTRIBUTE));
+    }
+
+    @Test
+    public void testResolveX509CaseInsensitive() {
+        val provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        provider.setCustomerId(CUSTOMER_ID);
+        provider.setProtocoleType(CERTIFICATE_PROTOCOL_TYPE);
+        provider.setPatterns(List.of(".*@TesT.com"));
+
+        when(providersService.getProviders()).thenReturn(List.of(provider));
+
+        when(
+            identityProviderHelper.findAllProvidersByUserIdentifier(
+                providersService.getProviders(),
+                USERNAME_EMAIL_WITH_OTHER_CASE
+            )
+        ).thenReturn(List.of(provider));
+
+        when(
+            casRestClient.getUser(
+                any(HttpContext.class),
+                eq(USERNAME_EMAIL_WITH_OTHER_CASE),
+                eq(CUSTOMER_ID),
+                eq(PROVIDER_ID),
+                eq(Optional.of(IDENTIFIER)),
+                eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER))
+            )
+        ).thenReturn(userProfile(UserStatusEnum.ENABLED));
+        val cert = mock(X509Certificate.class);
+        val subjectDn = mock(java.security.Principal.class);
+        when(subjectDn.getName()).thenReturn(USERNAME_EMAIL_WITH_OTHER_CASE);
+        when(cert.getSubjectDN()).thenReturn(subjectDn);
+        val issuerDn = mock(java.security.Principal.class);
+        when(issuerDn.getName()).thenReturn(IDENTIFIER);
+        when(cert.getIssuerDN()).thenReturn(issuerDn);
+
+        val principal = resolver.resolve(
+            new X509CertificateCredential(new X509Certificate[] { cert }),
+            Optional.of(principalFactory.createPrincipal(USERNAME)),
+            Optional.empty()
+        );
+
+        assertEquals(USERNAME_ID, principal.getId());
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        assertEquals(USERNAME_EMAIL_WITH_OTHER_CASE, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
         assertEquals(List.of(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
         assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
         assertNull(attributes.get(SUPER_USER_CUSTOMER_ID_ATTRIBUTE));

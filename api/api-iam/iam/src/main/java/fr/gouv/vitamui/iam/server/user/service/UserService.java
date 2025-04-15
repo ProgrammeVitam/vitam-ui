@@ -301,6 +301,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         dto.setLevel(groupDto.getLevel());
         dto.setIdentifier(getNextSequenceId(SequencesConstants.USER_IDENTIFIER));
         dto.setPasswordExpirationDate(getPasswordExpirationDate(dto.getCustomerId()));
+        dto.setEmail(dto.getEmail().toLowerCase());
     }
 
     public Resource exportUsers(final Optional<String> criteria) {
@@ -475,6 +476,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         dto.setLevel(groupDto.getLevel());
         dto.setIdentifier(user.getIdentifier());
         dto.setPasswordExpirationDate(user.getPasswordExpirationDate());
+        dto.setEmail(dto.getEmail().toLowerCase());
     }
 
     /**
@@ -1341,6 +1343,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     /**
      * If the user is not an admin, he can see only users with a sub LEVEL and himself
      * Example : Users { id: 10, level: ROOT} can see only users with a LEVEL : ROOT..* and himself
+     *
      * @param query query
      */
     private void addLevelRestriction(final QueryDto query) {
