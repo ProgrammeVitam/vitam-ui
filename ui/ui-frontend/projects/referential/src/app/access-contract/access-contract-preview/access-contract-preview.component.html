@@ -10,25 +10,17 @@
       <app-access-contract-information-tab
         #infoTab
         [accessContract]="accessContract"
-        (isFormValid)="formTabValidityChange($event, 0)"
-        (updated)="updatedChange($event, 0)"
         (updatedAccessContract)="updatedAccessContract($event)"
       ></app-access-contract-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.USAGE.TITLE' | translate" #matTabUsage>
-      <app-access-contract-authorizations-tab
-        #authorizationsTab
-        [accessContract]="accessContract"
-        (isFormValid)="formTabValidityChange($event, 1)"
-        (updated)="updatedChange($event, 1)"
-      >
+      <app-access-contract-authorizations-tab #authorizationsTab [accessContract]="accessContract">
       </app-access-contract-authorizations-tab>
     </mat-tab>
 
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.TITLE' | translate">
-      <app-access-contract-write-access-tab #writeTab [accessContract]="accessContract" (updated)="updatedChange($event, 2)">
-      </app-access-contract-write-access-tab>
+      <app-access-contract-write-access-tab #writeTab [accessContract]="accessContract"> </app-access-contract-write-access-tab>
     </mat-tab>
 
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.POSITIONS.TITLE' | translate">
