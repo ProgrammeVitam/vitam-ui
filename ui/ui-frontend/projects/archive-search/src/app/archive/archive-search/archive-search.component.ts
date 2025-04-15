@@ -160,7 +160,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   pageNumbers = 0;
   totalResults = 0;
   selectedItemCount = 0;
-  private selectedHoldingUnitItemCount = 0;
+  selectedHoldingUnitItemCount = 0;
   itemNotSelected = 0;
   numberOfHoldingUnitTypeOnComputedRules = 0;
   additionalSearchCriteriaCategoryIndex = 0;
@@ -921,8 +921,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         if (this.selectedItemCount === this.totalResults) {
           this.isIndeterminate = false;
         }
-        this.listOfUAIdToInclude.push({ value: id, id });
-        this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
+        if (this.isAllChecked) {
+          this.listOfUAIdToExclude = this.listOfUAIdToExclude.filter((element) => element.id !== id);
+        } else {
+          this.listOfUAIdToInclude.push({ value: id, id });
+          this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
+        }
       } else {
         this.listOfUAIdToInclude = this.listOfUAIdToInclude.filter((element) => element.id !== id);
         if (this.selectedItemCount > 0) {

@@ -205,6 +205,57 @@ describe('ArchiveSearchCollectComponent', () => {
       expect(component.isAllChecked).toBeFalsy();
       expect(component.itemNotSelected).toBe(0);
     });
+
+    describe('checkChildrenBoxChange', () => {
+      it('should include the unselected child when parent is checked, into the list listOfUAIdToExclude', () => {
+        component.isAllChecked = true;
+        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
+        component.checkChildrenBoxChange('1234', event);
+        expect(component.listOfUAIdToExclude.length).toBe(1);
+        expect(component.listOfUAIdToExclude[0]).toEqual({ value: '1234', id: '1234' });
+        expect(component.listOfUAIdToInclude.length).toBe(0);
+        expect(component.isIndeterminate).toBeTrue();
+        expect(component.itemSelected).toBe(0);
+        expect(component.itemNotSelected).toBe(0);
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
+
+      it('should exclude the selected child when parent is checked, from the list listOfUAIdToExclude', () => {
+        component.isAllChecked = true;
+        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
+        component.checkChildrenBoxChange('1234', event);
+        expect(component.listOfUAIdToExclude.length).toBe(0);
+        expect(component.listOfUAIdToInclude.length).toBe(0);
+        expect(component.isIndeterminate).toBeFalsy();
+        expect(component.itemSelected).toBe(1);
+        expect(component.itemNotSelected).toBe(0);
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
+
+      it('should include the selected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
+        component.isAllChecked = false;
+        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
+        component.checkChildrenBoxChange('1234', event);
+        expect(component.listOfUAIdToInclude.length).toBe(1);
+        expect(component.listOfUAIdToInclude[0]).toEqual({ value: '1234', id: '1234' });
+        expect(component.listOfUAIdToExclude.length).toBe(0);
+        expect(component.isIndeterminate).toBeFalsy();
+        expect(component.itemSelected).toBe(1);
+        expect(component.itemNotSelected).toBe(0);
+      });
+
+      it('should not include the unselected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
+        component.isAllChecked = false;
+        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
+        component.checkChildrenBoxChange('1234', event);
+        expect(component.listOfUAIdToInclude.length).toBe(0);
+        expect(component.listOfUAIdToExclude.length).toBe(0);
+        expect(component.isIndeterminate).toBeFalsy();
+        expect(component.itemSelected).toBe(0);
+        expect(component.itemNotSelected).toBe(0);
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
+    });
   });
 
   describe('queryParams', () => {
