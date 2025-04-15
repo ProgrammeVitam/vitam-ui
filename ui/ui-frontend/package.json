@@ -81,7 +81,8 @@
     "test:pastis": "ng test pastis --code-coverage",
     "test:portal": "ng test portal --code-coverage",
     "test:referential": "ng test referential --code-coverage",
-    "test:vitamui-library": "ng test vitamui-library"
+    "test:vitamui-library": "ng test vitamui-library",
+    "wait-on:vitamui-library": "wait-on dist/vitamui-library/package.json"
   },
   "private": true,
   "dependencies": {
@@ -168,7 +169,8 @@
     "lint-staged": "15.4.3",
     "ng-packagr": "^19.2.0",
     "prettier": "3.5.3",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "wait-on": "8.0.3"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown",
