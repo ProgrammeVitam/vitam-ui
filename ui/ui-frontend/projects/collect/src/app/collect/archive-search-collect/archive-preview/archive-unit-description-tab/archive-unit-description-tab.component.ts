@@ -94,25 +94,25 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     return this.editMode && !this.editObject?.control?.pristine;
   }
 
-  async onCancel() {
-    if (!this.isModified()) {
-      this.backToDisplayMode();
-    } else {
-      await this.dialog
-        .open(this.cancelDialog)
-        .afterClosed()
-        .pipe(
-          map((result) => {
-            if (result) return this.archiveUnitEditor.getJsonPatch();
-            throw new Error(result);
-          }),
-          tap(() => this.spinnerOverlayService.open()),
-          switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(this.transactionId, jsonPatchDto)),
-        )
-        .toPromise()
-        .then(() => this.handleUpdateSuccess())
-        .catch(() => this.backToDisplayMode());
+  async onCancel(cancelButtonClicked = false) {
+    if (cancelButtonClicked && !this.isModified()) this.backToDisplayMode();
+    if (!this.isModified() || this.dialog.openDialogs.length > 0) {
+      return; // form not modified or dialog already open
     }
+    await this.dialog
+      .open(this.cancelDialog)
+      .afterClosed()
+      .pipe(
+        map((result) => {
+          if (result) return this.archiveUnitEditor.getJsonPatch();
+          throw new Error(result);
+        }),
+        tap(() => this.spinnerOverlayService.open()),
+        switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(this.transactionId, jsonPatchDto)),
+      )
+      .toPromise()
+      .then(() => this.handleUpdateSuccess())
+      .catch(() => this.backToDisplayMode());
   }
 
   onSave(): void {
