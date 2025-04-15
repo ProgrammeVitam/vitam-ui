@@ -61,6 +61,19 @@ security:
     hostname-verification: {{ vitamui_defaults.services.ssl_hostname_verification | default(true) | bool }}
 {% endif %}
 
+list-enable-external-identifiers:
+  tenants:
+{% if vitam_vars.functional_administration.vitam_tenants_usage_external is iterable %}
+{% for tenant in vitam_vars.functional_administration.vitam_tenants_usage_external %}
+{% if tenant.identifiers is defined %}
+    {{ tenant.name }}:
+{% for external in tenant.identifiers %}
+      - {{ external }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
 login:
 {% if vitamui.cas_server.base_url is defined %}
   url: {{ vitamui.cas_server.base_url }}
