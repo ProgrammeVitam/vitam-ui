@@ -138,4 +138,8 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
     this.control.markAsDirty();
     this.onChange(this.control.value);
   }
+
+  canConfirmInWrapper(): boolean {
+    return !!this.control.value?.value;
+  }
 }

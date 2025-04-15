@@ -86,6 +86,11 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
     return this.control;
   }
 
+  // Used in FormFieldValueWrapperComponent to know if the "green check" should be enabled. For example, for SearchWithTypeSelectorComponent, we don't want the "green check" to be enabled if we only selected the search type and haven't typed a value
+  canConfirmInWrapper(): boolean {
+    return !!this.control.value;
+  }
+
   /**
    * Callback method, called after setControl has been called.
    * It is useful to run some configuration code after changing the control (when wrapped by FormFieldValueWrapperComponent).
