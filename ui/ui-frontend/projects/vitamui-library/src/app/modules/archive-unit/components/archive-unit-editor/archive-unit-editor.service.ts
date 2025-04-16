@@ -190,7 +190,7 @@ export class ArchiveUnitEditorService {
       jsonPatch.push({ op: 'replace', path: key, value: consistentUpdatedValue[key] });
     });
 
-    return jsonPatch;
+    return this.transformJsonPatch(jsonPatch);
   }
 
   public toJsonPatchDto(): JsonPatchDto {
@@ -227,5 +227,31 @@ export class ArchiveUnitEditorService {
     if (archiveUnitProfileId) return this.schemaService.getArchiveUnitProfileSchema(archiveUnitProfileId);
 
     return this.schemaService.getSchema(this.collection.value);
+  }
+
+  private transformJsonPatch(jsonPatch: JsonPatch): JsonPatch {
+    const transformedPatch: JsonPatch = [];
+    const otherMetadataFields = this.template.value
+      .filter((element) => element.ui.Path.startsWith('OtherMetadata'))
+      .map((item) => item.Path);
+
+    jsonPatch.forEach((cmd) => {
+      // Check if the path is in the list of fields to be exploded
+      if (otherMetadataFields.includes(cmd.path) && typeof cmd.value === 'object' && !Array.isArray(cmd.value)) {
+        // Decompose the object into multiple patch operations
+        Object.entries(cmd.value).forEach(([key, val]) => {
+          transformedPatch.push({
+            op: cmd.op,
+            path: `${cmd.path}.${key}`, // Concatenate the parent path and the key
+            value: val,
+          });
+        });
+      } else {
+        // Keep the operation unchanged if it doesn't match criteria
+        transformedPatch.push(cmd);
+      }
+    });
+
+    return transformedPatch;
   }
 }
