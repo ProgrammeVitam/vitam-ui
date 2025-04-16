@@ -272,7 +272,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   }
 
   writeValue(preselectedOptionKeys: string[]) {
-    this.preselectedOptionKeys = preselectedOptionKeys;
+    this.preselectedOptionKeys = preselectedOptionKeys?.sort();
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];

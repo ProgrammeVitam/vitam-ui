@@ -10,8 +10,8 @@
       <app-ingest-contract-information-tab
         [ingestContract]="ingestContract"
         [tenantIdentifier]="tenantIdentifier"
-        (updated)="updatedChange($event, 0)"
-        (isFormValid)="formTabValidityChange($event, 0)"
+        (updated)="tabUpdated($event, 'infoTab')"
+        (isFormValid)="tabValidityChanged($event, 'infoTab')"
         [readOnly]="readOnly"
         (updatedIngestContract)="updatedIngestContract($event)"
         #infoTab
@@ -24,8 +24,8 @@
         [ingestContract]="ingestContract"
         [tenantIdentifier]="tenantIdentifier"
         [isTabActive]="matTabFormat.isActive"
-        (updated)="updatedChange($event, 1)"
-        (isFormValid)="formTabValidityChange($event, 1)"
+        (updated)="tabUpdated($event, 'formatsTab')"
+        (isFormValid)="tabValidityChanged($event, 'formatsTab')"
         [readOnly]="readOnly"
         #formatsTab
       >
@@ -37,8 +37,8 @@
         [readOnly]="readOnly"
         [ingestContract]="ingestContract"
         [isTabActive]="matTabObject.isActive"
-        (updated)="updatedChange($event, 2)"
-        (isFormValid)="formTabValidityChange($event, 2)"
+        (updated)="tabUpdated($event, 'objectsTab')"
+        (isFormValid)="tabValidityChanged($event, 'objectsTab')"
         #objectsTab
       >
       </app-ingest-contract-object-tab>
@@ -48,7 +48,7 @@
       <app-ingest-contract-heritage-tab
         [readOnly]="readOnly"
         [ingestContract]="ingestContract"
-        (updated)="updatedChange($event, 3)"
+        (updated)="tabUpdated($event, 'heritageTab')"
         #heritageTab
       >
       </app-ingest-contract-heritage-tab>
@@ -63,7 +63,7 @@
       <app-ingest-contract-signature-tab
         [readOnly]="readOnly"
         [ingestContract]="ingestContract"
-        (updated)="updatedChange($event, 4)"
+        (updated)="tabUpdated($event, 'signatureTab')"
         #signatureTab
       >
       </app-ingest-contract-signature-tab>
