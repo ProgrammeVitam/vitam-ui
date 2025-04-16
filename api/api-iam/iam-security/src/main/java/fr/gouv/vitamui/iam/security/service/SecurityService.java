@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collections;
@@ -59,12 +60,11 @@ import java.util.stream.Collectors;
 public class SecurityService {
 
     public AuthenticationToken getAuthentication() {
-        final AuthenticationToken authenticationToken = (AuthenticationToken) SecurityContextHolder.getContext()
-            .getAuthentication();
-        if (authenticationToken == null) {
-            throw new UnAuthorizedException("Unable to get the security context. You probably are not authenticated.");
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AuthenticationToken authenticationToken) {
+            return authenticationToken;
         }
-        return authenticationToken;
+        throw new UnAuthorizedException("Unable to get the security context. You probably are not authenticated.");
     }
 
     /**

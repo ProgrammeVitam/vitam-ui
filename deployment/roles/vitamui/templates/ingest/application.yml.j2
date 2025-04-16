@@ -65,6 +65,10 @@ ingest:
 {% if vitamui.iam.secure | default(secure) | bool == true %}
     secure: {{ vitamui.iam.secure | default(secure) | lower }}
     ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
