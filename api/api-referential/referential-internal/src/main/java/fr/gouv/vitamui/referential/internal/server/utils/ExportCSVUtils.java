@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ExportCSVUtils {
 
@@ -35,7 +37,7 @@ public class ExportCSVUtils {
                 .withLineEnd(ICSVWriter.DEFAULT_LINE_END)
                 .build();
 
-            lines.forEach(csvWriter::writeNext);
+            lines.forEach(line -> csvWriter.writeNext(escapeCSVFields(line)));
 
             // close writers
             csvWriter.close();
@@ -45,5 +47,13 @@ public class ExportCSVUtils {
         } catch (IOException e) {
             throw new BadRequestException("Unable to generate csv file ", e);
         }
+    }
+
+    private static final Pattern CSV_FIELD_ESCAPE_REGEX = Pattern.compile("^[-+=@\t\r].*");
+
+    static String[] escapeCSVFields(String[] fields) {
+        return Arrays.stream(fields)
+            .map(field -> field != null && CSV_FIELD_ESCAPE_REGEX.matcher(field).matches() ? "\t" + field : field)
+            .toArray(String[]::new);
     }
 }
