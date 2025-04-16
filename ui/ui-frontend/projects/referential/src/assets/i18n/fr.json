@@ -288,7 +288,7 @@
     "STATUS": "Statut"
   },
   "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
-    "MESSAGE": "La demande de changement de statut a bien été prise en compte",
+    "MESSAGE": "La demande de changement de statut a bien été prise en compte. Son exécution peut prendre quelques minutes.",
     "POP_UP_SECOND_TITLE": "Confirmez-vous vouloir réaliser une demande de changement de statut :",
     "POP_UP_NEXT_MESSAGE": "Modifier l'opération",
     "POP_UP_REPLAY_MESSAGE": "Rejouer l'opération",
