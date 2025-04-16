@@ -210,8 +210,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         ).thenReturn(List.of(provider));
 
         when(
-            casRestClient.getUser(
-                any(HttpContext.class),
+            casExternalRestClient.getUser(
+                any(ExternalHttpContext.class),
                 eq(USERNAME_EMAIL_WITH_OTHER_CASE),
                 eq(CUSTOMER_ID),
                 eq(PROVIDER_ID),
