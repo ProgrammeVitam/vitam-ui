@@ -288,7 +288,7 @@
     "STATUS": "Status"
   },
   "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
-    "MESSAGE": "The request for a change of status has been taken into account",
+    "MESSAGE": "The request for a change of status has been taken into account. This operation may take several minutes to complete.",
     "POP_UP_SECOND_TITLE": "Do you confirm that you want to apply for a change of status :",
     "POP_UP_NEXT_MESSAGE": "Update the Operation",
     "POP_UP_REPLAY_MESSAGE": "Replay the Operation",
