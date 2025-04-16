@@ -43,7 +43,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Helper to work with identity providers.
@@ -62,14 +61,22 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
-    public List<IdentityProviderDto> findAllByUserIdentifier(
+    public List<IdentityProviderDto> findAllProvidersByUserIdentifier(
         final List<IdentityProviderDto> providers,
         final String identifier
     ) {
         return providers
             .stream()
-            .filter(provider -> provider.getPatterns().stream().anyMatch(identifier::matches))
-            .collect(Collectors.toList());
+            .filter(
+                provider ->
+                    provider
+                        .getPatterns()
+                        .stream()
+                        .anyMatch(
+                            pattern -> Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(identifier).matches()
+                        )
+            )
+            .toList();
     }
 
     public Optional<IdentityProviderDto> findByUserIdentifierAndCustomerId(
@@ -87,7 +94,10 @@ public class IdentityProviderHelper {
                     provider
                         .getPatterns()
                         .stream()
-                        .anyMatch(pattern -> Pattern.compile(pattern).matcher(userIdentifier).matches())
+                        .anyMatch(
+                            pattern ->
+                                Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(userIdentifier).matches()
+                        )
             )
             .findFirst();
     }
