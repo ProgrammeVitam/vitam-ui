@@ -231,6 +231,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-external-client</artifactId>
             <scope>test</scope>
