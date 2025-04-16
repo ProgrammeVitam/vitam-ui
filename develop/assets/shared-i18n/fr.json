@@ -4515,6 +4515,7 @@
         "ORIGIN_WAITING_RECALCULATE": "Oui",
         "OTHER_FIELDS": "Autre(s) critère(s)",
         "SP": "Service(s) producteur(s)",
+        "SP_CODE": "Service(s) producteur(s)",
         "SP_PLACEHOLDER": "Sélectionnez un ou plusieurs service(s) producteur(s)",
         "AUP": "Profil(s) d'unité archivistique",
         "ArchiveUnitProfile": "PUA",

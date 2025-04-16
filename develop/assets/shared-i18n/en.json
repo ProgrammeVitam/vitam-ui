@@ -4515,6 +4515,7 @@
         "ORIGIN_WAITING_RECALCULATE": "Yes",
         "OTHER_FIELDS": "Other criteria",
         "SP": "Originating agencies",
+        "SP_CODE": "Originating agencies",
         "SP_PLACEHOLDER": "Choose one or more originating agencies",
         "AUP": "Archival unit profile(s)",
         "ArchiveUnitProfile": "AUP",
