@@ -413,7 +413,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
     const reclassificationCriteria = {
       criteriaList: this.listOfUACriteriaSearch,
-      pageNumber: this.currentPage,
+      pageNumber: 0,
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
       tenantIdentifier: this.tenantIdentifier,
