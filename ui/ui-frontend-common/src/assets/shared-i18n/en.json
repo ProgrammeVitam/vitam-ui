@@ -3988,7 +3988,6 @@
     "PROJECT_UNIT_PREVIEW": {
       "ACTIONS": {
         "EDIT_PROJECT": "Edir project",
-        "SHOW_ONLY_INFORMATION_DETAILS": "Hide metadata",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
       },
       "FIELDS": {
