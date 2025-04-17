@@ -4642,7 +4642,6 @@
     "PROJECT_UNIT_PREVIEW": {
       "ACTIONS": {
         "EDIT_PROJECT": "Modifier le projet de versement",
-        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Accéder aux archives"
       },
       "ATTACHMENT": {
