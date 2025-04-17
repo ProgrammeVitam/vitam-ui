@@ -83,6 +83,8 @@ import {
   UnitType,
   VitamuiRoles,
   ReclassificationDialogComponent,
+  ORIGIN_WAITING_RECALCULATE,
+  WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -469,19 +471,25 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   removeCriteriaByCategory(category: string) {
     if (this.searchCriterias && this.searchCriterias.size > 0) {
+      const builder = this.queryParamsService.builder();
       if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
         this.searchCriterias.forEach((criteriaValues, key) => {
           if (key === ELIMINATION_TECHNICAL_ID) {
             criteriaValues.values.forEach((value) => {
               this.removeCriteria(key, value.value, true);
+              builder.removeQueryParam(value.value.id, value.value.value);
+              builder.navigate();
             });
           }
         });
       }
       this.searchCriterias.forEach((val, key) => {
-        if (SearchCriteriaTypeEnum[val.category] === category || key === 'WAITING_RECALCULATE') {
+        if (SearchCriteriaTypeEnum[val.category] === category || key === WAITING_RECALCULATE) {
           val.values.forEach((value) => {
             this.removeCriteria(key, value.value, true);
+            const keyToRemove = key === WAITING_RECALCULATE ? ORIGIN_WAITING_RECALCULATE : value.value.id;
+            builder.removeQueryParam(keyToRemove, value.value.value);
+            builder.navigate();
           });
         }
       });
@@ -489,7 +497,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   containsWaitingToRecalculateInheritenceRuleCriteria() {
-    return this.searchCriterias && this.searchCriterias.has('WAITING_RECALCULATE');
+    return this.searchCriterias && this.searchCriterias.has(WAITING_RECALCULATE);
   }
 
   submit() {
