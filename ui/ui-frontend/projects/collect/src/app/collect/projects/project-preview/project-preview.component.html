@@ -8,9 +8,6 @@
     (onclose)="emitClose()"
   >
     <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-      <button mat-menu-item *ngIf="isPanelextended" (click)="showNormalPanel()">
-        {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_ONLY_INFORMATION_DETAILS' | translate }}
-      </button>
       <button mat-menu-item (click)="showEditProject()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.EDIT_PROJECT' | translate }}
       </button>
