@@ -58,6 +58,7 @@ import java.util.stream.Collectors;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ALL_UNIT_UPS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_FILING_UNIT;
@@ -82,6 +83,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ID;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULES_COMPUTED;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.UPDATE_OPERATION_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.WAITING_RECALCULATE;
 
 public final class MetadataSearchCriteriaUtils {
@@ -150,7 +152,17 @@ public final class MetadataSearchCriteriaUtils {
         Optional<String> orderBy = Optional.empty();
         Optional<DirectionDto> direction = Optional.empty();
         try {
-            selectMultiQuery.setQuery(exists(ID));
+            BooleanQuery query = and();
+            query.add(exists(ID));
+            if (
+                searchQuery
+                    .getCriteriaList()
+                    .stream()
+                    .noneMatch(ctr -> ctr.getCriteria().startsWith(UPDATE_OPERATION_FIELD))
+            ) {
+                query.add(not().add(exists(UPDATE_OPERATION_FIELD)));
+            }
+            selectMultiQuery.setQuery(query);
 
             if (searchQuery.getSortingCriteria() != null) {
                 direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
@@ -257,6 +269,14 @@ public final class MetadataSearchCriteriaUtils {
         fillQueryFromMgtRulesCriteriaList(query, mgtRulesCriteriaList);
         if (query.isReady()) {
             select.setQuery(query);
+        }
+
+        boolean searchWithEmptyUpdateOperationField = criteriaList
+            .stream()
+            .noneMatch(ctr -> ctr.getCriteria().startsWith(UPDATE_OPERATION_FIELD));
+
+        if (searchWithEmptyUpdateOperationField) {
+            query.add(not().add(exists(UPDATE_OPERATION_FIELD)));
         }
 
         LOGGER.debug(FINAL_QUERY, select.getFinalSelect().toPrettyString());
