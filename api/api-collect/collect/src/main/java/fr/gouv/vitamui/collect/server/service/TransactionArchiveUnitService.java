@@ -40,7 +40,6 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.facet.RangeFacetValue;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
-import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
@@ -120,8 +119,6 @@ import java.util.stream.Stream;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.not;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
@@ -151,7 +148,6 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULES_COMPUT
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_END_DATE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.UPDATE_OPERATION_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.COMPUTED_FIELDS;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.FINAL_ACTION_FIELD;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.FINAL_QUERY;
@@ -194,16 +190,6 @@ public class TransactionArchiveUnitService {
         SelectMultiQuery searchQuerySelectMultiQuery = isEmpty(searchQuery.getCriteriaList())
             ? getBasicQuery(searchQuery)
             : createDslQueryWithFacets(searchQuery);
-        boolean searchWithEmptyUpdateOperationField = searchQuery
-            .getCriteriaList()
-            .stream()
-            .noneMatch(ctr -> ctr.getCriteria().startsWith(UPDATE_OPERATION_FIELD));
-        if (searchWithEmptyUpdateOperationField) {
-            /* Ensure that we do not return unit having an UpdateOperation value in the results */
-            Query originalQuery = searchQuerySelectMultiQuery.getQueries().get(0);
-            Query modifiedQuery = and().add(not().add(exists(UPDATE_OPERATION_FIELD))).add(originalQuery);
-            searchQuerySelectMultiQuery.setQuery(modifiedQuery);
-        }
         /* Perform query */
         JsonNode searchQueryToDSL = searchQuerySelectMultiQuery.getFinalSelect();
         final RequestResponse<JsonNode> result = collectService.searchUnitsByTransactionId(
@@ -1259,6 +1245,7 @@ public class TransactionArchiveUnitService {
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
             selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
+
             if (orderBy.isPresent()) {
                 if (DirectionDto.DESC.equals(direction.get())) {
                     selectMultiQuery.addOrderByDescFilter(orderBy.get());
