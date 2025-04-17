@@ -38,7 +38,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -57,6 +57,7 @@ import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';
 import { Pair } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-filing-holding-scheme',
@@ -127,38 +128,46 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   }
 
   private subscribeOnFacetsChanges(): void {
+    const numberOfAUs$ = this.archiveSharedDataService.numberOfAUsWithoutAttachment$;
+    const facets$ = this.archiveSharedDataService.getFacets();
+
     this.subscriptions.add(
-      this.archiveSharedDataService.hasAUWithoutAttachment$.subscribe((hasAUWithoutAttachment) => {
-        this.archiveSharedDataService.getFacets().subscribe((facets) => {
-          this.requestResultFacets = facets;
-          if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
-            return;
-          }
-          // Re-init attachment units to render children by criteria
-          this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
+      combineLatest([numberOfAUs$, facets$])
+        .pipe(
+          tap(([numberOfAUsWithoutAttachment, facets]) => {
+            this.requestResultFacets = facets;
+            if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
+              return;
+            }
 
-          const withKeyValueNodes = this.nestedDataSourceLeaves.data.filter((node) => node.unitType === UnitType.WITH_KEY_VALUE);
-          if (!isEmpty(withKeyValueNodes)) {
-            this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
-              this.nestedDataSourceLeaves.data,
-              withKeyValueNodes,
-            );
-            FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
-              this.nestedDataSourceLeaves.data,
-              withKeyValueNodes,
-              this.translateService.instant('COLLECT.FILING_SCHEMA.KEY_VALUE_NODE'),
-            );
-          }
+            // Re-init attachment units to render children by criteria
+            this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
 
-          if (this.searchRequestTotalResults > 0 && hasAUWithoutAttachment) {
-            FilingHoldingSchemeHandler.addOrphansNodeFromTree(
-              this.nestedDataSourceLeaves.data,
-              this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE'),
-              this.searchRequestTotalResults,
-            );
-          }
-        });
-      }),
+            FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceLeaves.data, facets);
+
+            const withKeyValueNodes = this.nestedDataSourceLeaves.data.filter((node) => node.unitType === UnitType.WITH_KEY_VALUE);
+            if (!isEmpty(withKeyValueNodes)) {
+              this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
+                this.nestedDataSourceLeaves.data,
+                withKeyValueNodes,
+              );
+              FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
+                this.nestedDataSourceLeaves.data,
+                withKeyValueNodes,
+                this.translateService.instant('COLLECT.FILING_SCHEMA.KEY_VALUE_NODE'),
+                withKeyValueNodes.length,
+              );
+            }
+            if (numberOfAUsWithoutAttachment > 0) {
+              FilingHoldingSchemeHandler.addOrphansNodeFromTree(
+                this.nestedDataSourceLeaves.data,
+                this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE'),
+                numberOfAUsWithoutAttachment,
+              );
+            }
+          }),
+        )
+        .subscribe(),
     );
   }
 
