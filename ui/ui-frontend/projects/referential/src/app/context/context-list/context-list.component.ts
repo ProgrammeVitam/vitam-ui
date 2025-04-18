@@ -36,21 +36,18 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, merge } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
   AdminUserProfile,
-  ApplicationId,
-  AuthService,
+  collapseAnimation,
   Context,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
-  Role,
-  User,
-  collapseAnimation,
   rotateAnimation,
+  User,
 } from 'vitamui-library';
 import { ContextService } from '../context.service';
 
@@ -80,7 +77,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<ContextListComponent>;
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
-  overridePendingChange: true;
   loaded = false;
 
   filterMap: { [key: string]: any[] } = {
@@ -89,7 +85,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
   private groups: Array<{ id: string; group: any }> = [];
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
@@ -109,15 +104,9 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
   constructor(
     public contextService: ContextService,
-    private authService: AuthService,
     private route: ActivatedRoute,
   ) {
     super(contextService);
-    this.genericUserRole = {
-      appId: ApplicationId.USERS_APP,
-      tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS],
-    };
   }
 
   ngOnInit() {

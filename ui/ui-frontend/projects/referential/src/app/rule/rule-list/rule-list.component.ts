@@ -86,7 +86,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<RuleListComponent>;
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
-  overridePendingChange: true;
   loaded = false;
   orderBy = 'RuleId';
   direction = Direction.ASCENDANT;

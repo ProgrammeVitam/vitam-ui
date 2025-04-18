@@ -37,20 +37,51 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { zip } from 'rxjs';
-import { Agency, ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage, AgencyService } from 'vitamui-library';
+import {
+  Agency,
+  AgencyService,
+  ApplicationId,
+  GlobalEventService,
+  Role,
+  SecurityService,
+  SidenavPage,
+  TableFilterModule,
+  VitamUICommonModule,
+} from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
+import { AgencyCreateModule } from './agency-create';
+import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
+import { CommonModule } from '@angular/common';
+import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuItem } from '@angular/material/menu';
 
 @Component({
   selector: 'app-agency',
   templateUrl: './agency.component.html',
   styleUrls: ['./agency.component.scss'],
-  standalone: false,
+  imports: [
+    AgencyCreateModule,
+    AgencyListComponent,
+    AgencyPreviewComponent,
+    CommonModule,
+    ImportDialogModule,
+    MatMenuItem,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    TableFilterModule,
+    TranslatePipe,
+    VitamUICommonModule,
+  ],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;

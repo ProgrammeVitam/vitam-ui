@@ -72,6 +72,6 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [AgencyComponent, CommonModule, RouterModule.forChild(routes)],
 })
 export class AgencyRoutingModule {}

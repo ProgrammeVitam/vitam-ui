@@ -3,7 +3,7 @@
     <vitamui-common-input
       [disabled]="(checkUpdateRole | async) === false"
       formControlName="name"
-      placeholder="{{ 'AGENCY.TAB.NAME' | translate }}"
+      [placeholder]="'AGENCY.TAB.NAME' | translate"
     >
       <ng-container *ngIf="form.get('name')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">
@@ -15,7 +15,7 @@
     <vitamui-common-input
       [disabled]="(checkUpdateRole | async) === false"
       formControlName="description"
-      placeholder="{{ 'AGENCY.TAB.DESCRIPTION' | translate }}"
+      [placeholder]="'AGENCY.TAB.DESCRIPTION' | translate"
     >
       <ng-container *ngIf="form.get('description')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">

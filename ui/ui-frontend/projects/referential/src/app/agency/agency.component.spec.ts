@@ -40,7 +40,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SecurityService, AgencyService } from 'vitamui-library';
+import { AgencyService, BASE_URL, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -48,11 +48,14 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { AgencyListComponent } from './agency-list/agency-list.component';
+import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
 
 @Component({
   selector: 'app-agency-preview',
   template: '',
-  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
@@ -63,7 +66,6 @@ class AgencyPreviewStub {
 @Component({
   selector: 'app-agency-list',
   template: '',
-  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
@@ -77,8 +79,12 @@ describe('AgencyComponent', () => {
   let fixture: ComponentFixture<AgencyComponent>;
 
   beforeEach(async () => {
+    TestBed.overrideComponent(AgencyComponent, {
+      remove: { imports: [AgencyListComponent, AgencyPreviewComponent] },
+      add: { imports: [AgencyListStub, AgencyPreviewStub] },
+    });
+
     await TestBed.configureTestingModule({
-      declarations: [AgencyComponent, AgencyListStub, AgencyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -95,8 +101,18 @@ describe('AgencyComponent', () => {
         { provide: SecurityService, useValue: securityServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'AGENCIES_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            queryParams: of({}),
+            paramMap: of(),
+            data: of({ appId: 'AGENCIES_APP' }),
+            snapshot: { data: {} },
+          },
         },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

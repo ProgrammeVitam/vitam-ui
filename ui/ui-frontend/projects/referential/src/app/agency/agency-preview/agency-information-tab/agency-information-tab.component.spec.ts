@@ -54,7 +54,6 @@ describe('AgencyInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AgencyInformationTabComponent],
       imports: [TranslateModule.forRoot()],
       providers: [
         FormBuilder,
