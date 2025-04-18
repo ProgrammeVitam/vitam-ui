@@ -58,8 +58,11 @@ export class AgencyInformationTabComponent {
   private _agency: Agency;
 
   form: FormGroup;
-  previousValue = (): Agency => {
-    return this._agency;
+  previousValue = (): any => {
+    return (Object.keys(this.form.controls) as (keyof Agency)[]).reduce((acc: any, key) => {
+      acc[key] = this._agency[key];
+      return acc;
+    }, {} as Partial<Agency>);
   };
 
   @Input()
@@ -82,7 +85,6 @@ export class AgencyInformationTabComponent {
       this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
       this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
@@ -93,7 +95,6 @@ export class AgencyInformationTabComponent {
     private securityService: SecurityService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
       name: [null, Validators.required],
       description: [null],
     });
