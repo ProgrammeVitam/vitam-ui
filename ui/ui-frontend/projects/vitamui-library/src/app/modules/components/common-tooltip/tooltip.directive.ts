@@ -130,6 +130,7 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
 
   @HostListener('mouseleave')
   @HostListener('blur')
+  @HostListener('click') // If the tooltip host is destroyed (removed from DOM) on click (e.g.: an option in a select input), we'll never have mouseleave/blur event, so we also hide the tooltip on click
   hide() {
     clearTimeout(this.#showTimeoutId);
     this.#hideTimeoutId = setTimeout(() => this.closeToolTip(), this.vitamuiTooltipShowDelay);
