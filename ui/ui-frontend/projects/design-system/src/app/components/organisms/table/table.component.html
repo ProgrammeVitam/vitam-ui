@@ -24,8 +24,20 @@
   </span>
 </ng-template>
 
-<h2>Tableau</h2>
-<h3>table</h3>
+<h2>{{ 'ARRAY.NEW_TABLES' | translate }}</h2>
+<h3>{{ 'ARRAY.HEADER' | translate }}</h3>
+<div class="sup-header text large bold">
+  <span>{{ 'ARRAY.EXPORT_RESULTS' | translate }}</span>
+  <div class="button-container">
+    <button class="btn link">{{ 'ARRAY.EXPORT_RESULTS' | translate }}</button>
+    <button class="btn btn-circle large tertiary"><i class="vitamui-icon vitamui-icon-import-csv"></i></button>
+    <vitamui-common-menu-button outline="none" menuButtonSize="medium" class="ml-2" overlayPos="end" icon="vitamui-icon-more-horiz">
+      <button mat-menu-item>Activer</button>
+      <button mat-menu-item>Désactiver</button>
+    </vitamui-common-menu-button>
+  </div>
+</div>
+<h3>{{ 'ARRAY.TABLE' | translate }}</h3>
 <table>
   <thead>
     <tr>
@@ -57,7 +69,7 @@
   </tbody>
 </table>
 
-<h3>mat-table</h3>
+<h3>{{ 'ARRAY.MAT_TABLE' | translate }}</h3>
 <table mat-table [dataSource]="tableDataSource">
   <ng-container matColumnDef="zipName">
     <th mat-header-cell *matHeaderCellDef>
@@ -99,7 +111,7 @@
 </table>
 
 <div>
-  <h2>{{ 'ARRAY.BASIC_TITLE' | translate }}</h2>
+  <h2>{{ 'ARRAY.OLD_TABLES' | translate }}</h2>
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-2">

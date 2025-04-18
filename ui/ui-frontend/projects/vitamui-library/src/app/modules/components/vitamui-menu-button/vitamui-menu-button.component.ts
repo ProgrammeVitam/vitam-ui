@@ -60,6 +60,6 @@ export class VitamuiMenuButtonComponent {
   @Input() label: string;
 
   @Input() disabled = false;
-  @Input() outlineSecondary = false;
+  @Input() outline: 'primary' | 'secondary' | 'none' = 'none';
   @Input() menuButtonSize: 'large' | 'medium' | 'small' = 'large';
 }
