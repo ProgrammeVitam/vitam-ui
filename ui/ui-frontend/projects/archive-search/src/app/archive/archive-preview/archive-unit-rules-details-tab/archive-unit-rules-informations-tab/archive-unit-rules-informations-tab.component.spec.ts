@@ -34,31 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
+  BASE_URL,
   InheritedPropertyDto,
   InjectorModule,
   LoggerModule,
   ManagementRule,
+  provideI18n,
   RuleCategoryVitamUiDto,
   Unit,
   UnitRuleDto,
   UnitType,
-  VitamuiMissingTranslationHandler,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
-
-export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
-}
 
 describe('ArchiveUnitRulesInformationsTabComponent', () => {
   let component: ArchiveUnitRulesInformationsTabComponent;
@@ -121,23 +116,19 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitRulesInformationsTabComponent, CollapseStubDirective, CollapseTriggerForStubDirective],
       imports: [
+        BrowserAnimationsModule,
         InjectorModule,
+        LoggerModule.forRoot(),
         MatSnackBarModule,
         NoopAnimationsModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
         VitamUICommonTestModule,
-        TranslateModule.forRoot({
-          missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-          defaultLanguage: 'fr',
-          loader: {
-            provide: TranslateLoader,
-            useFactory: httpLoaderFactory,
-            deps: [HttpBackend],
-          },
-        }),
       ],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        provideI18n(),
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 

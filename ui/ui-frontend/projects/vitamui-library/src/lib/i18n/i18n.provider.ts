@@ -34,53 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DatePipe, registerLocaleData } from '@angular/common';
-import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { QuicklinkModule } from 'ngx-quicklink';
-import { AuthenticationModule, BytesPipe, provideI18n, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
-import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
-import { IngestModule } from './ingest/ingest.module';
+import { EnvironmentProviders } from '@angular/core';
+import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
+import { VitamuiMissingTranslationHandler } from '../../app/modules';
+import { HttpBackend } from '@angular/common/http';
+import { ConfigService } from '../../app/modules/config.service';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
-registerLocaleData(localeFr, 'fr');
+function httpLoaderFactory(httpBackend: HttpBackend, configService: ConfigService): TranslateLoader {
+  const version = configService.config && configService.config['VERSION_RELEASE'];
+  return new MultiTranslateHttpLoader(httpBackend, [
+    { prefix: './assets/shared-i18n/', suffix: `.json?v=${version}` },
+    { prefix: './assets/i18n/', suffix: `.json?v=${version}` },
+  ]);
+}
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    AuthenticationModule.forRoot(),
-    CoreModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    VitamUICommonModule.forRoot(),
-    AppRoutingModule,
-    IngestModule,
-    HoldingFillingSchemeModule,
-    QuicklinkModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-  ],
-  providers: [
-    provideI18n(),
-    Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    {
-      provide: WINDOW_LOCATION,
-      useValue: window.location,
+export function provideI18n(): EnvironmentProviders {
+  return provideTranslateService({
+    missingTranslationHandler: {
+      provide: MissingTranslationHandler,
+      useClass: VitamuiMissingTranslationHandler,
     },
-    DatePipe,
-    BytesPipe,
-  ],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
+    defaultLanguage: 'fr',
+    loader: {
+      provide: TranslateLoader,
+      useFactory: httpLoaderFactory,
+      deps: [HttpBackend, ConfigService],
+    },
+  });
+}

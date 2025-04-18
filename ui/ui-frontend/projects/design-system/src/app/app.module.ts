@@ -35,29 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { registerLocaleData } from '@angular/common';
-import { HttpBackend } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { isDevMode, LOCALE_ID, NgModule } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { of } from 'rxjs';
-import {
-  AppConfiguration,
-  ApplicationApiService,
-  AuthService,
-  BASE_URL,
-  BaseUserInfoApiService,
-  ENVIRONMENT,
-  LoggerModule,
-  ThemeService,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-  VitamuiMissingTranslationHandler,
-} from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -66,12 +50,21 @@ import { DesignSystemModule } from './components/design-system/design-system.mod
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ReactiveFormsModule } from '@angular/forms';
+import {
+  AppConfiguration,
+  ApplicationApiService,
+  AuthService,
+  BASE_URL,
+  BaseUserInfoApiService,
+  ENVIRONMENT,
+  LoggerModule,
+  provideI18n,
+  ThemeService,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 
 registerLocaleData(localeFr, 'fr');
-
-export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
-}
 
 @NgModule({
   declarations: [AppComponent],
@@ -96,15 +89,7 @@ export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpL
     VitamUILibraryModule,
   ],
   providers: [
-    provideTranslateService({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpBackend],
-      },
-    }),
+    provideI18n(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },

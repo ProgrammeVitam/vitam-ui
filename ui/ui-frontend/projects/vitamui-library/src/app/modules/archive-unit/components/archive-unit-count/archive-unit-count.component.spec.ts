@@ -41,16 +41,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { Observable, of, throwError } from 'rxjs';
 import { LoggerModule } from '../../../logger';
 import { VitamuiMissingTranslationHandler } from '../../../missing-translation-handler';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { ArchiveUnitCountComponent } from './archive-unit-count.component';
-
-export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
-}
 
 class FakeTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {

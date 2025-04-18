@@ -35,27 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HttpBackend } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule, inject, provideAppInitializer } from '@angular/core';
+import { inject, LOCALE_ID, NgModule, provideAppInitializer } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { ToastrModule } from 'ngx-toastr';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import {
   AuthenticationModule,
   BASE_URL,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
+  provideI18n,
   StartupService,
   ThemeService,
   VitamUICommonModule,
-  VitamuiMissingTranslationHandler,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { environment } from '../environments/environment';
@@ -66,10 +63,6 @@ import { NoAuthenticationModule } from './standalone/no-authentication.module';
 import { StandaloneStartupService } from './standalone/standalone-startup.service';
 import { StandaloneThemeService } from './standalone/standalone-theme.service';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
-
-export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
-}
 
 export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
   return () => appConfig.initConfiguration();
@@ -136,15 +129,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), // FIXME: remove this pastis-specific loader in favor of vitam global loader
   ],
   providers: [
-    provideTranslateService({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpBackend],
-      },
-    }),
+    provideI18n(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: WINDOW_LOCATION, useValue: window.location },

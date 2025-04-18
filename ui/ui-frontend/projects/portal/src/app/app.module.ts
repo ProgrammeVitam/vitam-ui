@@ -43,31 +43,25 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ApplicationSvgLoader } from './application-svg-loader';
+import { PortalModule } from './portal/portal.module';
 import {
   AuthenticationModule,
   BASE_URL,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
+  provideI18n,
   VitamUICommonModule,
-  VitamuiMissingTranslationHandler,
   WINDOW_LOCATION,
 } from 'vitamui-library';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ApplicationSvgLoader } from './application-svg-loader';
-import { PortalModule } from './portal/portal.module';
 
 registerLocaleData(localeFr, 'fr');
-
-export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
-}
 
 export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState: TransferState) {
   return new ApplicationSvgLoader(transferState, new HttpClient(handler), {
@@ -105,15 +99,7 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
     }),
   ],
   providers: [
-    provideTranslateService({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpBackend],
-      },
-    }),
+    provideI18n(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: BASE_URL, useValue: '/portal-api' },
