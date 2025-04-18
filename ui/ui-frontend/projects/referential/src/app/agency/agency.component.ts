@@ -38,7 +38,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { FileTypes } from 'projects/vitamui-library/src/public-api';
+import { FileTypes, QueryParamsService } from 'projects/vitamui-library/src/public-api';
 import { zip } from 'rxjs';
 import {
   Agency,
@@ -63,6 +63,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuItem } from '@angular/material/menu';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-agency',
@@ -101,6 +102,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     private agencyService: AgencyService,
     private translateService: TranslateService,
     private router: Router,
+    private queryParamsService: QueryParamsService,
   ) {
     super(route, globalEventService);
   }
@@ -109,6 +111,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
+    this.queryParamsService
+      .getQueryParams()
+      .pipe(map((queryParam) => queryParam.s || ''))
+      .subscribe((s) => (this.search = s));
 
     zip(
       this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_CREATE_AGENCIES),
@@ -162,6 +168,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
   public onSearchSubmit(search: string): void {
     this.search = search || '';
+    this.queryParamsService.setQueryParams({ s: this.search || undefined });
   }
 
   public showAgency(item: Agency): void {

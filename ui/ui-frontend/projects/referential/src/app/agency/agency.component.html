@@ -15,7 +15,11 @@
         <h5>{{ 'AGENCY.HOME.TITLE' | translate }}</h5>
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'AGENCY.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-common-banner
+        [searchbarPlaceholder]="'AGENCY.HOME.TITLE_PLACEHOLDER' | translate"
+        [searchValue]="search"
+        (search)="onSearchSubmit($event)"
+      >
         <button class="btn primary mr-3" (click)="openCreateAgencyDialog()" [disabled]="!hasCreateRole">
           <span>{{ 'AGENCY.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
