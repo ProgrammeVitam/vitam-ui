@@ -48,6 +48,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,24 +96,28 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        // @formatter:off
         http
             .authorizeRequests()
-            .antMatchers(getAuthList())
-            .permitAll()
-            .anyRequest()
-            .authenticated()
+                .antMatchers(getAuthList())
+                .permitAll()
             .and()
-            .cors()
-            .configurationSource(request -> getCorsConfiguration())
+            .authorizeRequests()
+                .anyRequest()
+                .authenticated()
             .and()
-            .exceptionHandling()
-            .authenticationEntryPoint(getUnauthorizedHandler())
+                .cors()
+                .configurationSource(this::getCorsConfiguration)
             .and()
-            .csrf()
-            .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(getUnauthorizedHandler())
+            .and()
+                .csrf()
+                .disable()
             .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // @formatter:on
     }
 
     private CorsConfiguration getCorsConfiguration() {
@@ -176,5 +181,9 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
             tokenExtractors.add(TokenExtractor.bearerExtractor());
         }
         return tokenExtractors;
+    }
+
+    private CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+        return getCorsConfiguration();
     }
 }
