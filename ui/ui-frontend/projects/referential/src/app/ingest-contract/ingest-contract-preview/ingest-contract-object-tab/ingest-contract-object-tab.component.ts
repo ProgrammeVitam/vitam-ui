@@ -65,8 +65,12 @@ export class IngestContractObjectTabComponent {
     { key: 'PhysicalMaster', label: 'Original papier', info: '' },
   ];
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
+  previousValue = (): any => {
+    return {
+      masterMandatory: this._ingestContract.masterMandatory,
+      everyDataObjectVersion: this._ingestContract.everyDataObjectVersion,
+      dataObjectVersion: this._ingestContract.dataObjectVersion,
+    };
   };
 
   @Input()
@@ -131,7 +135,7 @@ export class IngestContractObjectTabComponent {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
