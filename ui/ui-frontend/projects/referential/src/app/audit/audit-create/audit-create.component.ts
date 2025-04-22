@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, Subject } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
@@ -50,21 +50,46 @@ import {
   ExternalParametersService,
   FilingPlanMode,
   Option,
+  SelectComponent,
   StartupService,
-  VitamuiSelectOptions,
+  VitamUICommonModule,
   VitamuiHttpHeaders,
+  VitamUILibraryModule,
+  VitamuiSelectOptions,
   VitamUISnackBarService,
 } from 'vitamui-library';
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CdkStepper } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-audit-create',
   templateUrl: './audit-create.component.html',
   styleUrls: ['./audit-create.component.scss'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    SelectComponent,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    TranslateModule,
+    MatDialogModule,
+  ],
 })
 export class AuditCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;
@@ -81,13 +106,16 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public producerServicesOptions: Option[] = [];
   public producerServicesMultiSelectOptions: VitamuiSelectOptions;
   public isDisabledButton = false;
-  public refiningScreen = false;
+  public refiningStep = false;
   public idsArray = ['originatingAgencyIds', 'ingestOperationIds', 'attachmentPositionIds'];
   public FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
 
   public auditPerimetersOptions: Option[];
 
   private destroyer$ = new Subject<void>();
+
+  @ViewChild('stepper')
+  private stepper: CdkStepper;
 
   constructor(
     public dialogRef: MatDialogRef<AuditCreateComponent>,
@@ -191,9 +219,9 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return Object.keys(AuditAction);
   }
 
-  backToPreviousStep() {
-    if (this.refiningScreen) {
-      this.refiningScreen = false;
+  onPreviousStep() {
+    if (this.refiningStep) {
+      this.refiningStep = false;
       this.startDateControl.setValue(null);
       this.endDateControl.setValue(null);
       this.form.get('startDate').clearValidators();
@@ -223,24 +251,15 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return this.showProducerToggle() && this.allProducerServices.value === false;
   }
 
-  public canShowRefiningScreen() {
-    return (
-      this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_PERIOD' ||
-      (['AUDIT_PERIMETER_ORIGINATING_AGENCY', 'AUDIT_PERIMETER_ATTACHMENT_POSITION'].includes(this.form.get('auditPerimeter')?.value) &&
-        this.refiningScreen)
-    );
-  }
-
   public secondStepTitleKey(): string {
     if (this.chooseOriginatingAgency()) return 'AUDIT.CREATE_DIALOG.CHOOSE_ORIGINATING_AGENCY';
     if (this.enterIngestOperationsIdentifiers()) return 'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS';
     if (this.chooseAttachmentPosition()) return 'AUDIT.CREATE_DIALOG.CHOOSE_ATTACHMENT_POSITION';
-    if (this.canShowRefiningScreen())
-      return this.refiningScreen ? 'AUDIT.CREATE_DIALOG.CHOOSE_AU_CREATION_PERIOD' : 'AUDIT.CREATE_DIALOG.CHOOSE_INGEST_OPERATIONS_PERIOD';
+    if (this.chooseIngestOperationPeriod()) return 'AUDIT.CREATE_DIALOG.CHOOSE_INGEST_OPERATIONS_PERIOD';
   }
 
   public chooseAttachmentPosition(): boolean {
-    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ATTACHMENT_POSITION' && !this.refiningScreen;
+    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ATTACHMENT_POSITION';
   }
 
   public enterIngestOperationsIdentifiers(): boolean {
@@ -248,11 +267,15 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   public chooseOriginatingAgency(): boolean {
-    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ORIGINATING_AGENCY' && !this.refiningScreen;
+    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ORIGINATING_AGENCY';
+  }
+
+  public chooseIngestOperationPeriod(): boolean {
+    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_PERIOD';
   }
 
   public canShowPeriodErrorMessage(): boolean {
-    return this.startDateControl.value && this.endDateControl.value && this.form.get('endDate').valid && this.isDateIntevalInvalid();
+    return this.startDateControl.value && this.endDateControl.value && this.form.get('endDate').valid && this.isDateIntervalInvalid();
   }
 
   public isStartDateRequired() {
@@ -394,12 +417,13 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   public initPeriodScreen() {
-    this.refiningScreen = true;
+    this.refiningStep = true;
+    setTimeout(() => this.stepper.next()); // Go to next step after it's been created (thanks to refiningStep=true)
     this.form.get('startDate').setValidators([Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
     this.form.get('endDate').setValidators([CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
   }
 
-  public isDateIntevalInvalid(): boolean {
+  public isDateIntervalInvalid(): boolean {
     if (this.form.get('startDate').value === null) return true;
     let startDate = new Date(this.form.get('startDate').value);
     if (this.form.get('endDate').value === null) return false;
@@ -414,7 +438,9 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return !this.form.get('auditPerimeter').invalid && !this.form.get('auditPerimeter').pending;
   }
 
-  isStepTwoValid(): boolean {
+  canSubmit(): boolean {
+    if (this.stepper.selectedIndex === 0) return this.isStepOneValid();
+
     const isOriginatingAgencyValid =
       this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY &&
       this.accessContractId != null &&
@@ -437,15 +463,15 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       !this.form.get('startDate').invalid &&
       !this.form.get('startDate').pending;
 
-    if (this.refiningScreen) {
-      return (isOriginatingAgencyValid || isAttachmentPositionValid) && !this.isDateIntevalInvalid();
+    if (this.refiningStep) {
+      return (isOriginatingAgencyValid || isAttachmentPositionValid) && !this.isDateIntervalInvalid();
     }
 
     return (
       isAttachmentPositionValid ||
       isIngestOperationValid ||
       isOriginatingAgencyValid ||
-      (isIngestPeriodValid && !this.isDateIntevalInvalid())
+      (isIngestPeriodValid && !this.isDateIntervalInvalid())
     );
   }
 
