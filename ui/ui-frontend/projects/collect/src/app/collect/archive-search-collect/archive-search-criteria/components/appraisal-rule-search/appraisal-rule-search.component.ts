@@ -49,6 +49,7 @@ import {
   diff,
   CriteriaSearchCriteria,
   SearchCriteriaValue,
+  QueryParamsService,
   APPRAISAL_RULE,
   FINAL_ACTION_TYPE_ELIMINATION,
   FINAL_ACTION_TYPE_KEEP,
@@ -116,6 +117,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataService,
     private ruleValidator: RuleValidator,
+    private queryParamsService: QueryParamsService,
   ) {
     this.appraisalRuleCriteriaForm = this.formBuilder.group({
       appraisalRuleIdentifier: [null, [ManagementRuleValidators.ruleIdPattern], this.ruleValidator.uniqueRuleId()],
@@ -442,36 +444,17 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       )
       .subscribe((searchCriteria) => {
         const filteredCriterias: Map<string, CriteriaSearchCriteria> = new Map(
-          [...searchCriteria.entries()].filter(([key, _]) => keysList.includes(key)),
+          [...searchCriteria.entries()].filter(([key]) => keysList.includes(key)),
         );
 
         if (filteredCriterias && filteredCriterias.size > 0) {
-          filteredCriterias.forEach((value, key) => {
+          filteredCriterias.forEach((value) => {
             value.values.forEach((searchCriteria: SearchCriteriaValue) => {
-              this.addCriteria(
-                key,
-                { value: searchCriteria.value.value, id: searchCriteria.value.id },
-                searchCriteria.value.value,
-                true,
-                value.operator,
-                true,
-                CriteriaDataType.STRING,
-                SearchCriteriaTypeEnum.APPRAISAL_RULE,
-              );
               this.appraisalAdditionalCriteria.set(searchCriteria.value.value, true);
             });
           });
         } else {
-          this.addCriteria(
-            RULE_ORIGIN + RULE_TYPE_SUFFIX,
-            { value: ORIGIN_HAS_AT_LEAST_ONE, id: RULE_TYPE },
-            ORIGIN_HAS_AT_LEAST_ONE,
-            true,
-            CriteriaOperator.EXISTS,
-            true,
-            CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.APPRAISAL_RULE,
-          );
+          this.queryParamsService.builder().addQueryParam(RULE_TYPE, ORIGIN_HAS_AT_LEAST_ONE).navigate({ replaceUrl: true });
           this.appraisalAdditionalCriteria.set(ORIGIN_HAS_AT_LEAST_ONE, true);
         }
       });
