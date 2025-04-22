@@ -35,19 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { Subject, merge } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  ApplicationId,
-  AuthService,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  Role,
-  SecurityProfile,
-} from 'vitamui-library';
+import { AdminUserProfile, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, SecurityProfile } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -73,19 +63,14 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
   @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<SecurityProfileListComponent>;
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
-  overridePendingChange: true;
   loaded = false;
-  statusFilter: string[] = [];
   filterMap: { [key: string]: any[] } = {
     status: ['ENABLED', 'BLOCKED'],
     level: null,
     group: null,
   };
-  groupFilterOptions: Array<{ value: string; label: string }> = [];
-  levelFilterOptions: Array<{ value: string; label: string }> = [];
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
@@ -102,16 +87,8 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
 
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(
-    public securityProfileService: SecurityProfileService,
-    private authService: AuthService,
-  ) {
+  constructor(public securityProfileService: SecurityProfileService) {
     super(securityProfileService);
-    this.genericUserRole = {
-      appId: ApplicationId.USERS_APP,
-      tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS],
-    };
   }
 
   ngOnInit() {

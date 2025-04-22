@@ -57,7 +57,6 @@ describe('AgencyListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AgencyListComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         LoggerModule.forRoot(),

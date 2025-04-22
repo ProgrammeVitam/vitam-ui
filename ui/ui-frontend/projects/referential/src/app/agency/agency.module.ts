@@ -34,32 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
-import { AgencyCreateModule } from './agency-create';
-import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyPreviewModule } from './agency-preview/agency-preview.module';
 import { AgencyRoutingModule } from './agency-routing.module';
-import { AgencyComponent } from './agency.component';
 
 @NgModule({
-  declarations: [AgencyComponent, AgencyListComponent],
-  imports: [
-    CommonModule,
-    VitamUICommonModule,
-    AgencyRoutingModule,
-    AgencyCreateModule,
-    AgencyPreviewModule,
-    MatSnackBarModule,
-    MatSidenavModule,
-    TableFilterModule,
-    MatProgressSpinnerModule,
-    ImportDialogModule,
-  ],
+  imports: [AgencyRoutingModule],
 })
 export class AgencyModule {}

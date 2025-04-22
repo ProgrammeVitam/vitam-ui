@@ -37,20 +37,52 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { FileTypes } from 'projects/vitamui-library/src/public-api';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { FileTypes, QueryParamsService } from 'projects/vitamui-library/src/public-api';
 import { zip } from 'rxjs';
-import { Agency, ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage, AgencyService } from 'vitamui-library';
+import {
+  Agency,
+  AgencyService,
+  ApplicationId,
+  GlobalEventService,
+  Role,
+  SecurityService,
+  SidenavPage,
+  TableFilterModule,
+  VitamUICommonModule,
+} from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
+import { AgencyCreateModule } from './agency-create';
+import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
+import { CommonModule } from '@angular/common';
+import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuItem } from '@angular/material/menu';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-agency',
   templateUrl: './agency.component.html',
   styleUrls: ['./agency.component.scss'],
-  standalone: false,
+  imports: [
+    AgencyCreateModule,
+    AgencyListComponent,
+    AgencyPreviewComponent,
+    CommonModule,
+    ImportDialogModule,
+    MatMenuItem,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    TableFilterModule,
+    TranslatePipe,
+    VitamUICommonModule,
+  ],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
@@ -70,6 +102,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     private agencyService: AgencyService,
     private translateService: TranslateService,
     private router: Router,
+    private queryParamsService: QueryParamsService,
   ) {
     super(route, globalEventService);
   }
@@ -78,6 +111,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
+    this.queryParamsService
+      .getQueryParams()
+      .pipe(map((queryParam) => queryParam.s || ''))
+      .subscribe((s) => (this.search = s));
 
     zip(
       this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_CREATE_AGENCIES),
@@ -131,6 +168,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
   public onSearchSubmit(search: string): void {
     this.search = search || '';
+    this.queryParamsService.setQueryParams({ s: this.search || undefined });
   }
 
   public showAgency(item: Agency): void {

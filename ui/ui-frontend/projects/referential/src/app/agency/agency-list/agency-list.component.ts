@@ -42,16 +42,23 @@ import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 
 import {
   AdminUserProfile,
   Agency,
+  AgencyService,
   ApplicationId,
-  AuthService,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
   Role,
   SecurityService,
-  AgencyService,
+  TableFilterModule,
+  VitamUICommonModule,
 } from 'vitamui-library';
+import { AgencyCreateModule } from '../agency-create';
+import { CommonModule } from '@angular/common';
+import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -59,7 +66,16 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-agency-list',
   templateUrl: './agency-list.component.html',
   styleUrls: ['./agency-list.component.scss'],
-  standalone: false,
+  imports: [
+    AgencyCreateModule,
+    CommonModule,
+    ImportDialogModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    TableFilterModule,
+    VitamUICommonModule,
+  ],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -80,11 +96,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   hasDeleteRole = false;
   orderBy = 'Identifier';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }> = {
-    appId: ApplicationId.USERS_APP,
-    tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-    roles: [Role.ROLE_GENERIC_USERS],
-  };
 
   readonly orderChange = new Subject<void>();
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
@@ -104,7 +115,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   constructor(
     public agencyService: AgencyService,
     private route: ActivatedRoute,
-    private authService: AuthService,
     private matDialog: MatDialog,
     private securityService: SecurityService,
   ) {

@@ -35,17 +35,44 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { Agency, ConfirmActionComponent, AgencyService } from 'vitamui-library';
+import { Agency, ConfirmActionComponent, AgencyService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatOptionModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-agency-preview',
   templateUrl: './agency-preview.component.html',
   styleUrls: ['./agency-preview.component.scss'],
-  standalone: false,
+  imports: [
+    AgencyInformationTabComponent,
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatOptionModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslatePipe,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
 export class AgencyPreviewComponent implements AfterViewInit {
   @Input() agency: Agency;
