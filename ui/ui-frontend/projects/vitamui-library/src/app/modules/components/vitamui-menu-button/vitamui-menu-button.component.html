@@ -1,15 +1,17 @@
 <button
   #trigger="matMenuTrigger"
   [matMenuTriggerFor]="moreMenu"
+  class="btn"
   [ngClass]="{
-    'outline-secondary': outlineSecondary,
+    'outline-secondary secondary': outline === 'secondary',
+    'outline-primary primary': outline === 'primary',
+    secondary: outline === 'none',
     'btn-circle': icon && !label,
     hidden: trigger.menuOpen,
   }"
   [disabled]="disabled"
   aria-label="more menu"
   [class]="menuButtonSize"
-  class="btn secondary"
 >
   <i *ngIf="icon" class="vitamui-icon {{ icon }}" [class.mr-3]="label"></i>
   {{ label }}
@@ -19,7 +21,7 @@
   #moreMenu="matMenu"
   xPosition="{{ overlayPos === 'start' ? 'after' : 'before' }}"
   [overlapTrigger]="true"
-  class="more-action-menu {{ overlayPos }}"
+  class="more-action-menu {{ overlayPos }} {{ outline }}"
 >
   <div class="d-flex" [class.justify-content-end]="overlayPos === 'end'">
     <button mat-menu-item disableRipple class="menu-cancel-button">

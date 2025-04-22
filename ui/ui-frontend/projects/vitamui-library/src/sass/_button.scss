@@ -320,6 +320,13 @@
   );
 }
 
+.btn.tertiary {
+  @include btn($background-color: transparent, $border-color: var(--vitamui-white), $button-color: var(--vitamui-grey-600));
+  &:disabled {
+    @include disabled(transparent, var(--vitamui-grey-300), var(--vitamui-white));
+  }
+}
+
 .mat-drawer,
 .mat-mdc-dialog-container {
   .btn.contrast,

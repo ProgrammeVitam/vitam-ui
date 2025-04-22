@@ -2,6 +2,14 @@
 
 ::ng-deep {
   .more-action-menu.mat-mdc-menu-panel {
+    &.primary {
+      --item-color: var(--vitamui-primary);
+    }
+    &.secondary,
+    &.none {
+      --item-color: var(--vitamui-secondary);
+    }
+
     max-width: max-content;
     background: none;
     @include elevation.shadow-0;
@@ -24,26 +32,26 @@
     }
 
     .mat-mdc-menu-item {
-      border-left: 1px solid var(--vitamui-secondary);
-      border-right: 1px solid var(--vitamui-secondary);
+      border-left: 1px solid var(--item-color);
+      border-right: 1px solid var(--item-color);
       border-top: 1px solid var(--vitamui-grey-300);
       border-bottom: none;
       background-color: white;
       --mat-menu-item-label-text-size: 16px;
 
       &:nth-of-type(1) {
-        border-top: 1px solid var(--vitamui-secondary);
+        border-top: 1px solid var(--item-color);
         border-radius: 5px 0 0 0;
       }
 
       &:last-of-type {
-        border-bottom: 1px solid var(--vitamui-secondary);
+        border-bottom: 1px solid var(--item-color);
         border-radius: 0 0 5px 5px;
       }
     }
 
     .mat-mdc-menu-item.menu-cancel-button {
-      border: 1px solid var(--vitamui-secondary);
+      border: 1px solid var(--item-color);
       border-bottom: none;
       border-radius: 5px 5px 0 0 !important;
       width: 50px;
@@ -54,7 +62,7 @@
 
       i {
         font-size: 14px;
-        color: var(--vitamui-secondary);
+        color: var(--item-color);
       }
     }
 

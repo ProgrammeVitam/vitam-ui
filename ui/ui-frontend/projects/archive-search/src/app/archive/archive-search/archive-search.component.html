@@ -67,7 +67,7 @@
   <div class="row" *ngIf="pendingComputeFacets">
     <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
   </div>
-  <div class="card-criteria" *ngIf="!pendingComputeFacets && submited && rulesFacetsComputed && showingFacets">
+  <div class="card-criteria" *ngIf="!pendingComputeFacets && submitted && rulesFacetsComputed && showingFacets">
     <i
       id="show-hide-facet-button"
       (click)="showHideFacets(false)"
@@ -93,7 +93,7 @@
     <a class="hide-ink text uppercase" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{
       'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate
     }}</a
-    ><a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
+    ><a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submitted" (click)="showHideFacets(true)">{{
       'ARCHIVE_SEARCH.COMPUTE_RULES_FACETS' | translate
     }}</a>
   </div>
@@ -270,230 +270,198 @@
   </div>
 </div>
 
-<div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">
-  <div class="vitamui-table">
-    <div class="vitamui-table-head">
-      <vitamui-common-archive-unit-count
-        [search]="search$"
-        [archiveUnitCount]="totalResults"
-        (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
-        [(selectedArchiveUnitCount)]="selectedItemCount"
-        [threshold]="10000"
-        [(pending)]="pending"
-        [allChecked]="isAllChecked"
-        class="col-8"
-      ></vitamui-common-archive-unit-count>
-      <div class="col-3 area-download" [ngClass]="totalResults > 0 && selectedItemCount > 0 ? 'enabled-div' : 'disabled-div'">
-        <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
-      </div>
-      <div class="col-1">
-        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
-            {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
-          </button>
-          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="selectedItemCount === 0 || !hasTransferRequestRole">
-            {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
-          </button>
-          <button
-            mat-menu-item
-            (click)="launchUpdateManagementRuleModal()"
-            [vitamuiTooltip]="
-              !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc ? hasAccessContractManagementPermissionsMessage : ''
-            "
-            [vitamuiTooltipShowDelay]="300"
-            [disabled]="
-              !hasUpdateManagementRuleRole ||
-              selectedItemCount === 0 ||
-              !accessContractAllowUpdating ||
-              accessContractUpdatingRestrictedDesc
-            "
-          >
-            {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
-          </button>
-          <button
-            mat-menu-item
-            (click)="launchPUAUpdateModal()"
-            [disabled]="
-              !hasUpdateManagementRuleRole ||
-              selectedItemCount === 0 ||
-              !accessContractAllowUpdating ||
-              accessContractUpdatingRestrictedDesc
-            "
-          >
-            {{ 'ARCHIVE_SEARCH.PUA.UPDATE' | translate }}
-          </button>
-          <button
-            mat-menu-item
-            (click)="launchEliminationAnalysisModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
-          >
-            {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
-          </button>
-          <button
-            mat-menu-item
-            (click)="launchEliminationModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
-          >
-            {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
-          </button>
-          <button
-            mat-menu-item
-            (click)="launchDeleteUnitTreeModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
-          >
-            {{ 'ARCHIVE_SEARCH.ELIMINATION.TREE_ELIMINATION' | translate }}
-          </button>
-          <button
-            mat-menu-item
-            (click)="launchComputedInheritedRulesModal()"
-            [disabled]="!hasComputedInheritedRulesRole || selectedItemCount === 0 || accessContractUpdatingRestrictedDesc"
-          >
-            {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
-          </button>
-
-          <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
-            {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
-          </button>
-        </vitamui-common-menu-button>
-      </div>
-    </div>
-
-    <div class="vitamui-table-head">
-      <div class="col-1 d-flex align-items-center">
-        <label class="vitamui-checkbox wide" (change)="checkParentBoxChange($event)">
-          <input id="all" type="checkbox" [checked]="isAllChecked" [indeterminate]="isIndeterminate" />
-        </label>
-      </div>
-
-      <div class="col-1 d-flex align-items-center">
-        <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}</span>
-
-        <vitamui-common-order-by-button
-          orderByKey="#unitType"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
-      </div>
-
-      <div class="col-4 d-flex align-items-center">
-        <span
-          >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{
-            'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate
-          }}</span
-        >
-
-        <vitamui-common-order-by-button
-          orderByKey="Title"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
-      </div>
-
-      <div class="col-2 d-flex align-items-center">
-        <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.START_DATE' | translate }} </span>
-        <vitamui-common-order-by-button
-          orderByKey="StartDate"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
-      </div>
-
-      <div class="col-2 d-flex align-items-center">
-        <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.END_DATE' | translate }} </span>
-        <vitamui-common-order-by-button
-          orderByKey="EndDate"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
-      </div>
-
-      <div class="col-2 d-flex align-items-center">
-        <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.SP' | translate }}</span>
-        <vitamui-common-order-by-button
-          orderByKey="#originating_agencies"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
-      </div>
-    </div>
-
-    <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let archiveUnit of archiveUnits; trackBy: trackBy">
-        <div
-          [class.vitamui-row-selected]="(selectedArchive$ | async)?.['#id'] === archiveUnit['#id']"
-          class="vitamui-row d-flex align-items-center clickable"
-          (click)="archiveUnitClick.emit(archiveUnit)"
-        >
-          <div class="col-1 d-flex align-items-stretch">
-            <label class="vitamui-checkbox wide" (click)="$event.stopPropagation()">
-              <input
-                id="{{ archiveUnit['#id'] }}"
-                (change)="checkChildrenBoxChange(archiveUnit, $event)"
-                type="checkbox"
-                [checked]="isAllChecked"
-              />
-            </label>
-          </div>
-          <div class="col-1 d-flex align-items-center" (click)="archiveUnitClick.emit(archiveUnit)">
-            <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
-              <ng-container *ngSwitchCase="UnitType.INGEST">
-                <span class="table-filter-icon">
-                  <ng-container *ngIf="!archiveUnit['#object']">
-                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                  </ng-container>
-                  <ng-container *ngIf="!!archiveUnit['#object']">
-                    <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
-                  </ng-container>
-                </span>
-              </ng-container>
-              <ng-container *ngSwitchCase="UnitType.HOLDING_UNIT">
-                <i class="vitamui-icon vitamui-icon-ic24-arborescence vitamui-row-icon status-badge"></i>
-              </ng-container>
-              <ng-container *ngSwitchCase="UnitType.FILING_UNIT">
-                <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge"></i>
-              </ng-container>
-            </span>
-          </div>
-          <div class="col-4 d-flex flex-column align-items-start" (click)="archiveUnitClick.emit(archiveUnit)">
-            <span class="no-wrap text-ellipsis" [vitamuiTooltip]="archiveUnit | unitI18n: 'Title'" [vitamuiTooltipShowDelay]="300">
-              <b> {{ archiveUnit | unitI18n: 'Title' }}</b>
-            </span>
-            <span class="no-wrap text-ellipsis" [vitamuiTooltip]="archiveUnit | unitI18n: 'Description'" [vitamuiTooltipShowDelay]="300">
-              {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
-            </span>
-          </div>
-          <div class="col-2 d-flex align-items-center">
-            {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
-          </div>
-          <div class="col-2 d-flex align-items-center" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
-          </div>
-          <div class="col-2 d-flex align-items-center" (click)="archiveUnitClick.emit(archiveUnit)">
-            <p
-              class="no-wrap text-ellipsis"
-              [vitamuiTooltip]="archiveUnit['originating_agencyName'] + ' (' + archiveUnit['#originating_agencies'] + ')'"
-              [vitamuiTooltipShowDelay]="300"
-            >
-              {{ archiveUnit['originating_agencyName'] }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="vitamui-table-footer">
-      <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-      <button *ngIf="!pending && canLoadMore" (click)="loadMore()" class="btn">
-        {{ 'ARCHIVE_SEARCH.SHOW_MORE_RESULTS' | translate }}
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submitted">
+  <div class="sup-header text large bold">
+    <vitamui-common-archive-unit-count
+      [search]="search$"
+      [archiveUnitCount]="totalResults"
+      (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
+      [(selectedArchiveUnitCount)]="selectedItemCount"
+      [threshold]="10000"
+      [(pending)]="pending"
+      [allChecked]="isAllChecked"
+      class="col-8"
+    ></vitamui-common-archive-unit-count>
+    <div class="button-container">
+      <button class="btn btn-circle large tertiary" [disabled]="!(totalResults > 0 && selectedItemCount > 0)">
+        <i class="vitamui-icon vitamui-icon-import-csv" (click)="exportArchiveUnitsToCsvFile()"></i>
       </button>
-      <span *ngIf="!pending && !canLoadMore">{{ 'ARCHIVE_SEARCH.NO_MORE_RESULTS' | translate }}</span>
+      <vitamui-common-menu-button menuButtonSize="medium" class="ml-2" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+        <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
+          {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
+        </button>
+        <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="selectedItemCount === 0 || !hasTransferRequestRole">
+          {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="launchUpdateManagementRuleModal()"
+          [vitamuiTooltip]="
+            !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc ? hasAccessContractManagementPermissionsMessage : ''
+          "
+          [vitamuiTooltipShowDelay]="300"
+          [disabled]="
+            !hasUpdateManagementRuleRole || selectedItemCount === 0 || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc
+          "
+        >
+          {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="launchPUAUpdateModal()"
+          [disabled]="
+            !hasUpdateManagementRuleRole || selectedItemCount === 0 || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc
+          "
+        >
+          {{ 'ARCHIVE_SEARCH.PUA.UPDATE' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="launchEliminationAnalysisModal()"
+          [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
+        >
+          {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="launchEliminationModal()"
+          [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
+        >
+          {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="launchDeleteUnitTreeModal()"
+          [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
+        >
+          {{ 'ARCHIVE_SEARCH.ELIMINATION.TREE_ELIMINATION' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="launchComputedInheritedRulesModal()"
+          [disabled]="!hasComputedInheritedRulesRole || selectedItemCount === 0 || accessContractUpdatingRestrictedDesc"
+        >
+          {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
+        </button>
+
+        <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
+          {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
+        </button>
+      </vitamui-common-menu-button>
     </div>
   </div>
+
+  <table mat-table [dataSource]="archiveUnits">
+    <ng-container matColumnDef="checkbox">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngTemplateOutlet="checkbox"></ng-container>
+      </th>
+      <td mat-cell *matCellDef="let archiveUnit">
+        <label class="vitamui-checkbox wide">
+          <input
+            id="{{ archiveUnit?.['#id'] }}"
+            (change)="checkChildrenBoxChange(archiveUnit, $event)"
+            type="checkbox"
+            [checked]="isAllChecked"
+          />
+        </label>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngTemplateOutlet="type"></ng-container>
+      </th>
+      <td mat-cell *matCellDef="let archiveUnit" (click)="archiveUnitClick.emit(archiveUnit)">
+        <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
+          <ng-container *ngSwitchCase="UnitType.INGEST">
+            <span class="table-filter-icon">
+              <ng-container *ngIf="!archiveUnit?.['#object']">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+              </ng-container>
+              <ng-container *ngIf="!!archiveUnit?.['#object']">
+                <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+              </ng-container>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="UnitType.HOLDING_UNIT">
+            <i class="vitamui-icon vitamui-icon-ic24-arborescence vitamui-row-icon status-badge"></i>
+          </ng-container>
+          <ng-container *ngSwitchCase="UnitType.FILING_UNIT">
+            <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge"></i>
+          </ng-container>
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name_description">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngTemplateOutlet="name_description"></ng-container>
+      </th>
+      <td mat-cell *matCellDef="let archiveUnit" (click)="archiveUnitClick.emit(archiveUnit)">
+        <div class="text-ellipsis text normal" [vitamuiTooltip]="archiveUnit | unitI18n: 'Title'" [vitamuiTooltipShowDelay]="300">
+          <b> {{ archiveUnit | unitI18n: 'Title' }}</b>
+        </div>
+        <div
+          class="text-ellipsis text normal light"
+          [vitamuiTooltip]="archiveUnit | unitI18n: 'Description'"
+          [vitamuiTooltipShowDelay]="300"
+        >
+          {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="start_date">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngTemplateOutlet="start_date"></ng-container>
+      </th>
+      <td mat-cell *matCellDef="let archiveUnit" (click)="archiveUnitClick.emit(archiveUnit)">
+        {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="end_date">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngTemplateOutlet="end_date"></ng-container>
+      </th>
+      <td mat-cell *matCellDef="let archiveUnit" (click)="archiveUnitClick.emit(archiveUnit)">
+        {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="originating_agency">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngTemplateOutlet="originating_agency"></ng-container>
+      </th>
+      <td mat-cell *matCellDef="let archiveUnit" (click)="archiveUnitClick.emit(archiveUnit)">
+        <p
+          class="text-ellipsis"
+          [vitamuiTooltip]="archiveUnit?.['originating_agencyName'] + ' (' + archiveUnit?.['#originating_agencies'] + ')'"
+          [vitamuiTooltipShowDelay]="300"
+        >
+          {{ archiveUnit?.['originating_agencyName'] }}
+        </p>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      class="vitamui-table-rows clickable"
+      [class.selected]="(selectedArchive$ | async)?.['#id'] === row['#id']"
+    ></tr>
+    <tfoot>
+      <tr mat-footer-row>
+        <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+        <button *ngIf="!pending && canLoadMore" (click)="loadMore()" class="btn">
+          {{ 'ARCHIVE_SEARCH.SHOW_MORE_RESULTS' | translate }}
+        </button>
+        <span *ngIf="!pending && !canLoadMore">{{ 'ARCHIVE_SEARCH.NO_MORE_RESULTS' | translate }}</span>
+      </tr>
+    </tfoot>
+  </table>
 </div>
 
 <ng-template #confirmSecondActionBigNumberOfResultsActionDialog>
@@ -655,4 +623,65 @@
       {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
     </button>
   </mat-dialog-actions>
+</ng-template>
+
+<ng-template #checkbox>
+  <label class="vitamui-checkbox wide" (change)="checkParentBoxChange($event)">
+    <input id="all" type="checkbox" [checked]="isAllChecked" [indeterminate]="isIndeterminate" />
+  </label>
+</ng-template>
+<ng-template #type>
+  <span
+    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}
+    <vitamui-common-order-by-button
+      orderByKey="#unitType"
+      [(orderBy)]="orderBy"
+      [(direction)]="direction"
+      (orderChange)="emitOrderChange()"
+    ></vitamui-common-order-by-button
+  ></span>
+</ng-template>
+<ng-template #name_description>
+  <span
+    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate }}
+    <vitamui-common-order-by-button
+      orderByKey="Title"
+      [(orderBy)]="orderBy"
+      [(direction)]="direction"
+      (orderChange)="emitOrderChange()"
+    ></vitamui-common-order-by-button
+  ></span>
+</ng-template>
+<ng-template #start_date>
+  <span
+    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.START_DATE' | translate }}
+    <vitamui-common-order-by-button
+      orderByKey="StartDate"
+      [(orderBy)]="orderBy"
+      [(direction)]="direction"
+      (orderChange)="emitOrderChange()"
+    ></vitamui-common-order-by-button
+  ></span>
+</ng-template>
+<ng-template #end_date>
+  <span
+    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.END_DATE' | translate }}
+    <vitamui-common-order-by-button
+      orderByKey="EndDate"
+      [(orderBy)]="orderBy"
+      [(direction)]="direction"
+      (orderChange)="emitOrderChange()"
+    ></vitamui-common-order-by-button
+  ></span>
+</ng-template>
+<ng-template #originating_agency>
+  <span
+    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.SP' | translate }}
+    <vitamui-common-order-by-button
+      orderByKey="#originating_agencies"
+      [(orderBy)]="orderBy"
+      [(direction)]="direction"
+      (orderChange)="emitOrderChange()"
+    ></vitamui-common-order-by-button
+  ></span>
 </ng-template>

@@ -43,15 +43,7 @@ interface ButtonType {
   type: string;
   classes: string;
   variations?: string[];
-  colors: (
-    | 'primary'
-    | 'secondary'
-    | 'outline outline-primary'
-    | 'outline outline-secondary'
-    | 'contrast contrast-primary'
-    | 'contrast contrast-secondary'
-    | string
-  )[];
+  colors: ('primary' | 'secondary' | 'outline outline-primary' | 'outline outline-secondary' | 'tertiary' | string)[];
   sizes: string[];
   icon?: string;
   subTypes?: ButtonType[];
@@ -71,7 +63,7 @@ export class ButtonsComponent {
     {
       type: 'btn-circle',
       classes: 'btn-circle',
-      colors: ['primary', 'secondary', 'outline outline-primary', 'outline outline-secondary'],
+      colors: ['primary', 'secondary', 'outline outline-primary', 'outline outline-secondary', 'tertiary'],
       sizes: ['large', 'medium', 'small'],
       icon: 'arrow-back',
       subTypes: [

@@ -97,6 +97,7 @@ import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-hol
 import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   imports: [
@@ -126,6 +127,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    MatTableModule,
   ],
   declarations: [
     AccessRuleSearchComponent,

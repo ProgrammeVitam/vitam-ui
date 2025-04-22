@@ -300,6 +300,27 @@ $row-padding: 0.8rem;
   border-radius: 5px;
   border: 1px solid var(--vitamui-grey-400);
   background-color: white;
+
+  .button-container {
+    display: flex;
+    align-items: center;
+
+    > button {
+      position: relative;
+      padding: 0 10px;
+    }
+
+    > button:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 60%;
+      width: 1px;
+      background-color: var(--vitamui-grey-400);
+    }
+  }
 }
 
 .vitamui-table {

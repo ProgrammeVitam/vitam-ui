@@ -149,7 +149,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   showDuaEndDate = false;
   pending = false;
   pendingComputeFacets = false;
-  submited = false;
+  submitted = false;
   pendingGetFixedCount = false;
   submitedGetFixedCount = false;
   included = false;
@@ -191,6 +191,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   hasTransferAcknowledgmentRole = false;
 
   selectedArchive$: Observable<Unit>;
+
+  displayedColumns = ['checkbox', 'type', 'name_description', 'start_date', 'end_date', 'originating_agency'];
 
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
@@ -448,7 +450,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   removeCriteria(keyElt: string, valueElt: CriteriaValue, emit: boolean) {
     this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys, this.searchCriterias, this.nbQueryCriteria);
     if (this.searchCriterias && this.searchCriterias.size === 0) {
-      this.submited = false;
+      this.submitted = false;
       this.showCriteriaPanel = true;
       this.archiveUnits = [];
       this.archiveSharedDataService.emitNodeTarget(null);
@@ -774,7 +776,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     if (!this.canLoadMore) {
       return;
     }
-    this.submited = true;
+    this.submitted = true;
     this.currentPage = this.currentPage + 1;
     if (!this.hasSearchCriteria()) {
       return;
@@ -938,7 +940,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   private initializeSelectionParams() {
     this.pending = true;
-    this.submited = true;
+    this.submitted = true;
     this.showCriteriaPanel = false;
     this.currentPage = 0;
     this.archiveUnits = [];

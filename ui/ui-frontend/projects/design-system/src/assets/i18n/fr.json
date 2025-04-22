@@ -64,7 +64,7 @@
     }
   },
   "ARRAY": {
-    "BASIC_TITLE": "Tableau simple",
+    "OLD_TABLES": "Tableaux (anciens)",
     "BASIC_WITH_DOUBLE_LINES_TITLE": "Tableau simple avec double lignes",
     "FILTER_TITLE": "Tableau avec filtres",
     "SUBTABLE_TITLE": "Tableau avec des sous tableaux",
@@ -80,7 +80,12 @@
         "DISABLED": "Désactivé"
       }
     },
-    "ADD_OWNER": "Ajouter un propriétaire"
+    "ADD_OWNER": "Ajouter un propriétaire",
+    "EXPORT_RESULTS": "Exporter les résultats",
+    "HEADER": "En tête",
+    "NEW_TABLES": "Tableaux (nouveaux)",
+    "TABLE": "table",
+    "MAT_TABLE": "mat-table"
   },
   "BUTTON": {
     "PRIMARY": "Primaire par défaut",

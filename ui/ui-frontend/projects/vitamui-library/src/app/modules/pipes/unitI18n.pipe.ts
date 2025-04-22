@@ -56,11 +56,11 @@ export class UnitI18nPipe implements PipeTransform {
 }
 
 export function getUnitI18nAttribute(unit: Unit, attribute: 'Title' | 'Description') {
-  if (unit[attribute]) {
+  if (unit?.[attribute]) {
     return unit[attribute];
   }
   const i18nAttribute = `${attribute}_`;
-  const unitElement = unit[i18nAttribute];
+  const unitElement = unit?.[i18nAttribute];
   if (unitElement) {
     const keys = Object.keys(unitElement);
     for (const lang of ['fr', 'en']) {
