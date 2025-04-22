@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1744991181521,
+  "timestamp": 1745312151189,
   "index": "/vitam-ui/develop/index.html",
   "assetGroups": [
     {
@@ -11,9 +11,9 @@
         "ignoreVary": true
       },
       "urls": [
-        "/vitam-ui/develop/main-TCRHKKCN.js",
+        "/vitam-ui/develop/main-NGPRANYX.js",
         "/vitam-ui/develop/polyfills-QWIB3X6O.js",
-        "/vitam-ui/develop/styles-XIXG5IYV.css"
+        "/vitam-ui/develop/styles-FOSS4CT7.css"
       ],
       "patterns": []
     },
@@ -72,8 +72,8 @@
     "/vitam-ui/develop/assets/country/en.svg": "2b5148a18b90f933e47bf895c26d61a52d21d9d8",
     "/vitam-ui/develop/assets/country/fr.svg": "e3deb99b897e85df223b6d5d63628ea6d9c762c1",
     "/vitam-ui/develop/assets/footer-logo.svg": "8d54e762125574e92769c3dfe308afc2307cce3b",
-    "/vitam-ui/develop/assets/i18n/en.json": "fb79a7abe0151d1356bb98aa242c1c858fb3c3cf",
-    "/vitam-ui/develop/assets/i18n/fr.json": "d6290ac6ffdab875ad62aa01569e196c2774e1b7",
+    "/vitam-ui/develop/assets/i18n/en.json": "233d35927fcc1bb27391e67d14012c2e5b1bb2f2",
+    "/vitam-ui/develop/assets/i18n/fr.json": "4beaf948e2da2929695c665f03acb3b5f1f22a7e",
     "/vitam-ui/develop/assets/logo.png": "918f4351c803e4440d869b689744c3f77a263461",
     "/vitam-ui/develop/assets/logo.svg": "163806bb7a3e5505d7c2432965564eb8f851dc13",
     "/vitam-ui/develop/assets/logo_FOOTER.png": "5b8fd9e0bdc417b8ecf5d06739a1ef89b1741d1e",
@@ -86,9 +86,9 @@
     "/vitam-ui/develop/assets/shared-i18n/fr.json": "f9fecddc19b0a211b8c9851ad2e0305cd1a0c652",
     "/vitam-ui/develop/assets/user_icon.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
     "/vitam-ui/develop/assets/vitam-logo.png": "0bcb4aaad694b796cf574e4f7aca90b740bcb9f2",
-    "/vitam-ui/develop/main-TCRHKKCN.js": "f95db80d1d0742e5c1c0d61a53d4b434f3b634ff",
+    "/vitam-ui/develop/main-NGPRANYX.js": "d50abb0b9f078fa2e21e2b898b15ff481cfd50dd",
     "/vitam-ui/develop/polyfills-QWIB3X6O.js": "20e213ba4c052ea028307ccabb759a0c9079c5bb",
-    "/vitam-ui/develop/styles-XIXG5IYV.css": "b844eacc91f62f13b177514330257ec88d9de15c"
+    "/vitam-ui/develop/styles-FOSS4CT7.css": "c1dec341cf734e42cb79f79f3b2b01552dffacf1"
   },
   "navigationUrls": [
     {

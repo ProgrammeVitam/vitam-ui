@@ -64,7 +64,7 @@
     }
   },
   "ARRAY": {
-    "BASIC_TITLE": "Basic array",
+    "OLD_TABLES": "Tables (old)",
     "BASIC_WITH_DOUBLE_LINES_TITLE": "Basic array with double lines",
     "FILTER_TITLE": "Array with filters",
     "SUBTABLE_TITLE": "Array with subtable",
@@ -80,7 +80,12 @@
         "DISABLED": "Disabled"
       }
     },
-    "ADD_OWNER": "Add an owner"
+    "ADD_OWNER": "Add an owner",
+    "EXPORT_RESULTS": "Export results",
+    "HEADER": "Header",
+    "NEW_TABLES": "Tables (new)",
+    "TABLE": "table",
+    "MAT_TABLE": "mat-table"
   },
   "BUTTON": {
     "PRIMARY": "Primary default",
