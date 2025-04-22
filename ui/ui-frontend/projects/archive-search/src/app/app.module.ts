@@ -35,24 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HttpBackend } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { AuthenticationModule, BytesPipe, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthenticationModule, BytesPipe, provideI18n, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-
-export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpBackend, ['./assets/shared-i18n/', './assets/i18n/']);
-}
 
 registerLocaleData(localeFr, 'fr');
 
@@ -74,15 +67,7 @@ registerLocaleData(localeFr, 'fr');
     }),
   ],
   providers: [
-    provideTranslateService({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-      defaultLanguage: 'fr',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpBackend],
-      },
-    }),
+    provideI18n(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     {

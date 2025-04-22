@@ -69,6 +69,8 @@ export * from './lib/components/select-with-tree/select-with-tree.component';
 export * from './lib/components/search-with-type-selector/search-with-type-selector.component';
 export * from './lib/components/form-field-value-wrapper/form-field-value-wrapper.component';
 
+export * from './lib/i18n/i18n.provider';
+
 /* MODELS */
 export * from './lib/models/access-contract.interface';
 export * from './lib/models/agency';
