@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -67,7 +67,7 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   styleUrls: ['./delete-unit-rules.component.css'],
   standalone: false,
 })
-export class DeleteUnitRulesComponent implements OnDestroy {
+export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
@@ -85,6 +85,7 @@ export class DeleteUnitRulesComponent implements OnDestroy {
   itemsWithSameRule: string;
   itemsToNotUpdate: string;
   rule: Rule;
+  ruleCategoryKey: String;
 
   ruleDetailsForm: FormGroup;
   previousRuleDetails: {
@@ -139,6 +140,10 @@ export class DeleteUnitRulesComponent implements OnDestroy {
       .subscribe(() => {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
       });
+  }
+
+  ngOnInit() {
+    this.ruleCategoryKey = this.archiveService.getRuleCategoryValue(this.ruleCategory);
   }
 
   patchForm(data: any): boolean {

@@ -159,7 +159,13 @@
       "UPDATED": "Updated",
       "TARGET_START_DATE": "Target startDate",
       "UA_TO_UPDATE": "UA selected will be taken into account during the update",
-      "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored",
+      "UA_TO_IGNORE": {
+        "ACCESS_RULE": "of the UAs selected do not carry this access rule and will be ignored",
+        "APPRAISAL_RULE": "of the UAs selected do not carry this administrative useful life rule and will be ignored",
+        "DISSEMINATION_RULE": "of the UAs selected do not carry this dissemination rule and will be ignored",
+        "REUSE_RULE": "of the UAs selected do not carry this reuse rule and will be ignored",
+        "STORAGE_RULE": "of the UAs selected do not carry this current useful life rule and will be ignored"
+      },
       "UA_INHERITANCE_TO_IGNORE": "This category is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored",
       "UA_WITH_NO_PREVENT_RULES": "This rule is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored.",
       "SAME_TARGET_RULE": "Identical target rule: {{ value }}",
