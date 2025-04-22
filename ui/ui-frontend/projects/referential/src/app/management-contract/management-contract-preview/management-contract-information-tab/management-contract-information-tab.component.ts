@@ -85,7 +85,13 @@ export class ManagementContractInformationTabComponent {
   }
 
   previousValue = (): any => {
-    return { ...this._inputManagementContract, status: this._inputManagementContract.status === 'ACTIVE' };
+    return {
+      id: this._inputManagementContract.id,
+      identifier: this._inputManagementContract.identifier,
+      name: this._inputManagementContract.name,
+      description: this._inputManagementContract.description,
+      status: this._inputManagementContract.status === 'ACTIVE',
+    };
   };
 
   unchanged(): boolean {
