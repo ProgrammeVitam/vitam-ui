@@ -143,6 +143,7 @@ export const REUSE_RULE = 'REUSE_RULE';
 export const STORAGE_RULE = 'STORAGE_RULE';
 export const HOLD_RULE = 'HOLD_RULE';
 export const NODES = 'NODES';
+export const WAITING_RECALCULATE = 'WAITING_RECALCULATE';
 
 export const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
 export const RULE_TITLE = 'RULE_TITLE';
