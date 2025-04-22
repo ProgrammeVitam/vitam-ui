@@ -64,7 +64,7 @@ import { merge } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Option } from '../utils/option.interface';
 import { VitamuiAutocompleteMultiselectOptions } from '../utils/vitamui-autocomplete-multiselect-options.interface';
-import { SearchBarComponent } from '../../search-bar/search-bar.component';
+import { SearchBarComponent } from '../../search-bar';
 
 export const VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -252,7 +252,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   }
 
   writeValue(preselectedOptionKeys: string[]) {
-    this.preselectedOptionKeys = preselectedOptionKeys;
+    this.preselectedOptionKeys = preselectedOptionKeys?.sort();
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];

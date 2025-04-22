@@ -69,11 +69,17 @@ export class IngestContractInformationTabComponent implements OnInit {
   managementContracts: any[];
   archiveProfiles: any[];
 
-  // tslint:disable-next-line:variable-name
   private _ingestContract: IngestContract;
 
-  previousValue = (): IngestContract => {
-    return this._ingestContract;
+  previousValue = (): any => {
+    return {
+      identifier: this._ingestContract.identifier,
+      status: this._ingestContract.status,
+      name: this._ingestContract.name,
+      description: this._ingestContract.description,
+      archiveProfiles: this._ingestContract.archiveProfiles,
+      managementContractId: this._ingestContract.managementContractId,
+    };
   };
 
   @Input()
@@ -124,7 +130,7 @@ export class IngestContractInformationTabComponent implements OnInit {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
+      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.ruleFilter.valueChanges.subscribe((val) => {
@@ -148,7 +154,10 @@ export class IngestContractInformationTabComponent implements OnInit {
   }
 
   unchanged(): boolean {
-    const currentFormValue = { ...this.form.getRawValue(), managementContractId: this.form.get('managementContractId').value || '' };
+    const currentFormValue = {
+      ...this.form.getRawValue(),
+      managementContractId: this.form.get('managementContractId').value || '',
+    };
     const unchanged = JSON.stringify(diff(currentFormValue, this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
@@ -171,7 +180,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
         if (formData.status) {

@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
 import { IngestContract } from 'ui-frontend-common';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
@@ -60,17 +60,19 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   isPopup: boolean;
 
-  tabUpdated: boolean[] = [false, false, false, false, false, false];
-  tabValid: boolean[] = [false, false, false, true, true, true];
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  updatableTabs: {
+    id: string;
+    component?:
+      | IngestContractInformationTabComponent
+      | IngestContractFormatTabComponent
+      | IngestContractObjectTabComponent
+      | IngestContractHeritageTabComponent
+      | IngestContractSignatureTabComponent;
+    updated: boolean;
+    valid: boolean;
+  }[] = [];
 
-  tabLinks: Array<
-    | IngestContractInformationTabComponent
-    | IngestContractFormatTabComponent
-    | IngestContractObjectTabComponent
-    | IngestContractHeritageTabComponent
-    | IngestContractSignatureTabComponent
-  > = [];
   @ViewChild('infoTab', { static: false }) infoTab: IngestContractInformationTabComponent;
   @ViewChild('formatsTab', { static: false }) formatsTab: IngestContractFormatTabComponent;
   @ViewChild('objectsTab', { static: false }) objectsTab: IngestContractObjectTabComponent;
@@ -79,7 +81,8 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   @HostListener('window:beforeunload', ['$event'])
   async beforeunloadHandler(event: any) {
-    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
+    const activeTab = this.getActiveTab();
+    if (activeTab.updated === true) {
       event.preventDefault();
       await this.checkBeforeExit();
       return '';
@@ -99,24 +102,37 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
-    this.tabLinks[1] = this.formatsTab;
-    this.tabLinks[2] = this.objectsTab;
-    this.tabLinks[3] = this.heritageTab;
-    this.tabLinks[4] = this.signatureTab;
+    this.updatableTabs = [
+      { id: 'infoTab', component: this.infoTab, updated: false, valid: false },
+      { id: 'formatsTab', component: this.formatsTab, updated: false, valid: false },
+      { id: 'objectsTab', component: this.objectsTab, updated: false, valid: false },
+      { id: 'heritageTab', component: this.heritageTab, updated: false, valid: true },
+      { id: 'attachmentTab', updated: false, valid: true },
+      { id: 'signatureTab', component: this.signatureTab, updated: false, valid: true },
+      { id: 'historyTab', updated: false, valid: true },
+    ];
   }
 
-  updatedChange(updated: boolean, index: number) {
-    this.tabUpdated[index] = updated;
+  tabUpdated(updated: boolean, index: string) {
+    if (this.updatableTabs.length === 0) return;
+    const updatableTab = this.updatableTabs.find((tab) => tab.id === index);
+    updatableTab.updated = updated;
   }
 
-  formTabValidityChange(isFormTabValid: boolean, index: number) {
-    this.tabValid[index] = isFormTabValid;
+  tabValidityChanged(isFormTabValid: boolean, index: string) {
+    if (this.updatableTabs.length === 0) return;
+    const updatableTab = this.updatableTabs.find((tab) => tab.id === index);
+    updatableTab.valid = isFormTabValid;
   }
 
   async checkBeforeExit() {
+    const activeTabComponent = this.getActiveTab().component;
+    // if we didn't define the tab component we don't need to check it
+    if (!activeTabComponent) {
+      return;
+    }
     if (await this.confirmAction()) {
-      const submitAccessContractUpdate: Observable<IngestContract> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
+      const submitAccessContractUpdate: Observable<IngestContract> = activeTabComponent.prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
         this.ingestContractService.get(this.ingestContract.identifier).subscribe((response) => {
@@ -124,12 +140,13 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
         });
       });
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.ingestContract);
+      activeTabComponent.resetForm(this.ingestContract);
     }
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
+    const activeTab = this.getActiveTab();
+    if (activeTab.valid && activeTab.updated) {
       await this.checkBeforeExit();
     }
     const args = [tab, tabHeader, idx];
@@ -150,7 +167,8 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
   }
 
   async emitClose() {
-    if (this.tabValid[this.tabs.selectedIndex] && this.tabUpdated[this.tabs.selectedIndex]) {
+    const activeTab = this.getActiveTab();
+    if (activeTab.valid && activeTab.updated) {
       await this.checkBeforeExit();
     }
     this.previewClose.emit();
@@ -158,5 +176,10 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   updatedIngestContract(ingestContract: IngestContract) {
     this.ingestContract = ingestContract;
+  }
+
+  private getActiveTab() {
+    const activeIndex = this.tabs.selectedIndex;
+    return this.updatableTabs[activeIndex];
   }
 }
