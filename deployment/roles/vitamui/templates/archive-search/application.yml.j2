@@ -14,6 +14,8 @@ spring:
     mongodb:
       uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
 
+cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
+
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}

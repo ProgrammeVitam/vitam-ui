@@ -32,8 +32,10 @@ package fr.gouv.vitamui.iam.security.config;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.filter.RequestHeadersAuthenticationFilter;
+import fr.gouv.vitamui.iam.security.filter.TenantHeaderFilter;
 import fr.gouv.vitamui.iam.security.filter.TokenExtractor;
 import fr.gouv.vitamui.iam.security.filter.X509CertificateExtractor;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
@@ -62,31 +64,37 @@ import static org.springframework.http.HttpMethod.PUT;
 
 /**
  * The security configuration.
- *
  */
 @Getter
 @Setter
 public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String GATEWAY_ENABLED = "gateway.enabled";
+    private static final String CAS_TENANT_IDENTIFIER = "cas.tenant.identifier";
 
     private static final String CLIENT_CERTIFICATE_HEADER_NAME = "server.ssl.client-certificate-header-name";
 
     protected AuthenticationProvider apiAuthenticationProvider;
     protected RestExceptionHandler restExceptionHandler;
+    protected SecurityService securityService;
     protected Environment env;
     private final boolean isGatewayEnabled;
+    private final Integer casTenantIdentifier;
 
     public ApiWebSecurityConfig(
         final AuthenticationProvider apiAuthenticationProvider,
         final RestExceptionHandler restExceptionHandler,
+        final SecurityService securityService,
         final Environment env
     ) {
         super();
         this.apiAuthenticationProvider = apiAuthenticationProvider;
         this.restExceptionHandler = restExceptionHandler;
+        this.securityService = securityService;
         this.env = env;
+
         this.isGatewayEnabled = env.getProperty(GATEWAY_ENABLED, Boolean.class, false);
+        this.casTenantIdentifier = env.getProperty(CAS_TENANT_IDENTIFIER, Integer.class, -1);
     }
 
     @Override
@@ -115,6 +123,7 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
                 .csrf()
                 .disable()
             .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
+            .addFilterAt(getTenantHeaderFilter(), BasicAuthenticationFilter.class)
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // @formatter:on
@@ -158,6 +167,10 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
             getX509CertificateExtractors(),
             getTokenExtractors()
         );
+    }
+
+    protected TenantHeaderFilter getTenantHeaderFilter() {
+        return new TenantHeaderFilter(securityService, casTenantIdentifier);
     }
 
     // This is a temporary patch to allow mTLS authentication behind reverse proxy or full mTLS during migration

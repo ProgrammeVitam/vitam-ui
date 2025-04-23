@@ -6,6 +6,7 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.rest.AbstractRestControllerMockMvcTest;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 
@@ -15,6 +16,9 @@ public abstract class ControllerTest extends AbstractRestControllerMockMvcTest {
 
     @MockBean
     private ApiAuthenticationProvider apiAuthenticationProvider;
+
+    @MockBean
+    protected SecurityService securityService;
 
     @Override
     protected Authentication buildUserAuthenticated() {

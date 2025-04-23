@@ -5,7 +5,6 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
@@ -29,9 +28,6 @@ public class ProfileControllerTest extends ApiIamControllerTest<ProfileDto> {
 
     @MockBean
     private ProfileService profileService;
-
-    @MockBean
-    private SecurityService securityService;
 
     @Test
     public void testGetAllProfiles() {

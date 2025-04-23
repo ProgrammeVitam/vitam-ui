@@ -5,7 +5,6 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.utils.ApiIamServerUtils;
@@ -33,9 +32,6 @@ public class ProfileExternalControllerTest extends ApiIamControllerTest<ProfileD
 
     @MockBean
     private ProfileService profileExternalService;
-
-    @MockBean
-    private SecurityService securityService;
 
     private ProfileController mockedController = MvcUriComponentsBuilder.on(ProfileController.class);
 
