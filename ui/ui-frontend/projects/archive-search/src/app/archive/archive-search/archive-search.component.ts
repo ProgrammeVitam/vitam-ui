@@ -56,8 +56,8 @@ import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
 import {
   AccessContract,
-  AlertDialogComponent,
   AccessContractService,
+  AlertDialogComponent,
   ArchiveSearchResultFacets,
   CriteriaDataType,
   CriteriaOperator,
@@ -69,6 +69,7 @@ import {
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
+  ReclassificationDialogComponent,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -82,7 +83,6 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
-  ReclassificationDialogComponent,
   ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
@@ -1144,30 +1144,46 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   async launchEliminationModal() {
-    if (this.selectedHoldingUnitItemCount > 0) {
-      const dialogConfig = new MatDialogConfig();
+    const listAUHoldingUnit = this.prepareListOfUACriteriaSearch();
+    listAUHoldingUnit.push({
+      criteria: 'ALL_ARCHIVE_UNIT_TYPES',
+      values: [{ value: 'ARCHIVE_UNIT_HOLDING_UNIT', id: 'ARCHIVE_UNIT_HOLDING_UNIT' }],
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+      dataType: CriteriaDataType.STRING,
+    });
 
-      dialogConfig.data = {
-        title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
-        icon: 'cancel',
-        message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
-        cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
-      };
+    this.archiveService
+      .getTotalTrackHitsByCriteria(listAUHoldingUnit)
+      .pipe(
+        tap((value: number) => {
+          if (value !== 0) {
+            const dialogConfig = new MatDialogConfig();
 
-      this.dialog.open(AlertDialogComponent, dialogConfig);
-    } else {
-      this.launchBulkOperationWorkflow(
-        () =>
-          this.archiveUnitEliminationService.launchEliminationModal(
-            this.listOfUACriteriaSearch,
-            this.tenantIdentifier,
-            this.currentPage,
-            this.confirmSecondActionBigNumberOfResultsActionDialog,
-            true,
-          ),
-        this.DEFAULT_ELIMINATION_THRESHOLD,
-      );
-    }
+            dialogConfig.data = {
+              title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+              icon: 'cancel',
+              message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+            };
+
+            this.dialog.open(AlertDialogComponent, dialogConfig);
+          } else {
+            this.launchBulkOperationWorkflow(
+              () =>
+                this.archiveUnitEliminationService.launchEliminationModal(
+                  this.listOfUACriteriaSearch,
+                  this.tenantIdentifier,
+                  this.currentPage,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog,
+                  true,
+                ),
+              this.DEFAULT_ELIMINATION_THRESHOLD,
+            );
+          }
+        }),
+      )
+      .subscribe();
   }
 
   async launchDeleteUnitTreeModal() {
