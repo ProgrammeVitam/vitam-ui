@@ -602,7 +602,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.archiveSharedDataService.emitTotalResults(this.totalResults);
         } else if (pagedResult.results) {
           this.hasResults = true;
-          pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
+          this.archiveUnits = [...this.archiveUnits, ...pagedResult.results];
         }
         this.pageNumbers = pagedResult.pageNumbers;
         this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
