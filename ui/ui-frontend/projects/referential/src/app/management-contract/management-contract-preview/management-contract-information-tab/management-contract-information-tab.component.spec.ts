@@ -126,7 +126,7 @@ describe('ManagementContractInformationTabComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not call patch of ManagementContractService when thre is no diff', () => {
+  it('should not call patch of ManagementContractService when there is no diff', () => {
     // Given
     const managementContractForm = {
       name: 'Contrat de gestion avec stockage',
@@ -156,10 +156,13 @@ describe('ManagementContractInformationTabComponent', () => {
 
     // Then
     expect(managementContratForm).not.toBeNull();
+    expect(managementContratForm.id).toEqual('contractId');
+    expect(managementContratForm.identifier).toEqual('MCDefaultStorageAll');
     expect(managementContratForm.status).toEqual(true);
     expect(managementContratForm.name).toEqual('Contrat de gestion avec stockage');
-    expect(managementContratForm.version).toEqual(2);
-    expect(managementContratForm.storage.objectGroupStrategy).toEqual('default');
+    expect(managementContratForm.description).toEqual(
+      'Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
+    );
   });
 
   it('should call get and patch of ManagementContractService', () => {
