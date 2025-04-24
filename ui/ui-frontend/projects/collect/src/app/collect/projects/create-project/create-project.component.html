@@ -11,7 +11,12 @@
       : 'COLLECT.MODAL.RULES_TITLE'
     ) | translate,
     (selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_FILES' : 'COLLECT.MODAL.UPLOAD_CONF_FILES') | translate,
-    (selectedWorkflow === Workflow.FLOW ? 'COLLECT.MODAL.PROJECT_CREATED' : 'UNKNOWN STEP!!') | translate,
+    (selectedWorkflow === Workflow.FLOW
+      ? hasError
+        ? 'COLLECT.MODAL.PROJECT_CREATION_ERROR'
+        : 'COLLECT.MODAL.PROJECT_CREATED'
+      : 'UNKNOWN STEP!!'
+    ) | translate,
   ]"
 ></vitamui-dialog-header>
 
@@ -482,7 +487,9 @@
     <!-- workflow 2-3 step 6/6   : Projet de versement cree -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
       <mat-dialog-content>
-        <div class="main-content"></div>
+        <div class="main-content">
+          {{ errorMessage ? errorMessage : '' }}
+        </div>
       </mat-dialog-content>
       <mat-dialog-actions>
         <button (click)="close()" [disabled]="isLoading" class="btn primary" type="button">

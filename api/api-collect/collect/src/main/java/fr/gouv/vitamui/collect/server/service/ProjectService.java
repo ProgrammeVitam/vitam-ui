@@ -36,6 +36,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
+import fr.gouv.vitam.collect.external.external.exception.CollectExternalClientInvalidRequestException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -51,6 +52,7 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -99,6 +101,9 @@ public class ProjectService {
                     ProjectDto.class
                 )
             );
+        } catch (CollectExternalClientInvalidRequestException e) {
+            LOGGER.debug(UNABLE_TO_CREATE_PROJECT, e);
+            throw new InvalidFormatException(e.getMessage(), e);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_CREATE_PROJECT, e);
             throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
