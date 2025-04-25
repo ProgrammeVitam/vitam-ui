@@ -61,7 +61,7 @@
 
   <div *ngIf="showText && itemsToNotUpdate !== '0'" class="row message-text-ko">
     <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">{{ itemsToNotUpdate }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE' | translate }}</div>
+    <div class="col-11">{{ itemsToNotUpdate }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</div>
   </div>
 </ng-template>
 

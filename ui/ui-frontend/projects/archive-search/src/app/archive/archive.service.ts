@@ -70,6 +70,7 @@ import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface'
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar/vitamui-snack-bar.component';
+import { RuleTypeEnum } from './models/rule-type-enum';
 
 @Injectable({
   providedIn: 'root',
@@ -86,6 +87,18 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   }
 
   headers = new HttpHeaders();
+
+  rulesMap: Map<String, String> = new Map([
+    [RuleTypeEnum.ACCESSRULE, 'ACCESS_RULE'],
+    [RuleTypeEnum.STORAGERULE, 'STORAGE_RULE'],
+    [RuleTypeEnum.APPRAISALRULE, 'APPRAISAL_RULE'],
+    [RuleTypeEnum.REUSERULE, 'REUSE_RULE'],
+    [RuleTypeEnum.DISSEMINATIONRULE, 'DISSEMINATION_RULE'],
+  ]);
+
+  getRuleCategoryValue(ruleCategory: string) {
+    return this.rulesMap.get(ruleCategory);
+  }
 
   public static fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;

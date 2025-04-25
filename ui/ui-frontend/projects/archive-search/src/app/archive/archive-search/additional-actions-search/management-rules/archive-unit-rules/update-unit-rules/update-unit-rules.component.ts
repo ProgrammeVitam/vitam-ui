@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -85,7 +85,7 @@ const LocalValidators = {
   styleUrls: ['./update-unit-rules.component.css'],
   standalone: false,
 })
-export class UpdateUnitRulesComponent implements OnDestroy {
+export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
 
   @Output() delete = new EventEmitter<any>();
@@ -115,6 +115,7 @@ export class UpdateUnitRulesComponent implements OnDestroy {
   };
   oldRule: Rule;
   newRule: Rule;
+  ruleCategoryKey: String;
   criteriaSearchDSLQuery: SearchCriteriaDto;
   selectedStartDate: any;
   isDateValidated = true;
@@ -201,6 +202,10 @@ export class UpdateUnitRulesComponent implements OnDestroy {
       .subscribe(() => {
         this.ruleDetailsForm.patchValue(this.previousRuleDetails);
       });
+  }
+
+  ngOnInit() {
+    this.ruleCategoryKey = this.archiveService.getRuleCategoryValue(this.ruleCategory);
   }
 
   ngOnDestroy() {
