@@ -47,7 +47,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -71,7 +70,7 @@ public class IngestInternalControllerTest {
     @MockBean
     private InternalApiAuthenticationProvider internalApiAuthenticationProvider;
 
-    @Mock
+    @MockBean
     private InternalSecurityService internalSecurityService;
 
     @MockBean
