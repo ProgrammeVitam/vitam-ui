@@ -89,9 +89,9 @@
       }
     },
     "POP_UP_CREATION_NOTICE": {
-      "AUTORISER_PRESENCE_METADONNEES": "Allow in the manifest the presence of metadata not declared in the PUA?",
-      "ENREGISTRER_ACTIF_INACTIF": "Would you like to save it in active or inactive state?",
-      "INTITULE": "Title",
+      "ALLOW_METADATA": "Allow in the manifest the presence of metadata not declared in the PUA?",
+      "SAVE_AS_ACTIVE_OR_INACTIVE": "Would you like to save it in active or inactive state?",
+      "NAME": "Title",
       "IDENTIFIER": "Identifier",
       "DESCRIPTION": "Description",
       "CHOICE": {

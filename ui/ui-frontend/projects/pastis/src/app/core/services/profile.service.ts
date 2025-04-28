@@ -239,8 +239,8 @@ export class ProfileService implements OnDestroy {
 
   updateProfilePa(profile: Profile): Observable<Profile | null> {
     return this.paService.updateProfilePa(profile).pipe(
-      mergeMap(() => of(profile)), // Retourne le profil si succès
-      catchError(() => of(null)), // Retourne null en cas d'erreur
+      mergeMap(() => of(profile)),
+      catchError(() => of(null)),
     );
   }
 

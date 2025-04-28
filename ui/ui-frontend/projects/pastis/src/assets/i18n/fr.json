@@ -89,9 +89,9 @@
       }
     },
     "POP_UP_CREATION_NOTICE": {
-      "AUTORISER_PRESENCE_METADONNEES": "Autoriser dans le manifeste la présence de métadonnées non déclarées dans le PUA ?",
-      "ENREGISTRER_ACTIF_INACTIF": "Souhaitez-vous l'enregistrer en état actif ou inactif ?",
-      "INTITULE": "Intitulé",
+      "ALLOW_METADATA": "Autoriser dans le manifeste la présence de métadonnées non déclarées dans le PUA ?",
+      "SAVE_AS_ACTIVE_OR_INACTIVE": "Souhaitez-vous l'enregistrer en état actif ou inactif ?",
+      "NAME": "Intitulé",
       "IDENTIFIER": "Identifiant",
       "DESCRIPTION": "Description",
       "CHOICE": {
