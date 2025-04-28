@@ -23,6 +23,7 @@ server-identity:
   identityRole: ingest-internal
   identityServerId: 1
 
+cas.tenant.identifier: -1
 server:
   host:
   port: 7088
