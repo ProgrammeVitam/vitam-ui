@@ -90,20 +90,14 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
       writingAuthorizedDesc: [false],
       downloadChoose: ['ALL'],
       everyDataObjectVersion: [true],
-      dataObjectVersion: [[], Validators.required],
+      dataObjectVersion: [[]],
     });
   }
 
   ngOnInit() {
     this.form.get('downloadChoose').valueChanges.subscribe((val) => {
       this.form.get('everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
-
-      if (val === 'SELECTION') {
-        this.form.controls.dataObjectVersion.setValidators(Validators.required);
-      } else {
-        this.form.controls.dataObjectVersion.setValidators([]);
-        this.form.controls.dataObjectVersion.setValue([]);
-      }
+      this.form.controls.dataObjectVersion.setValidators(val === 'SELECTION' ? Validators.required : []);
       this.form.controls.dataObjectVersion.updateValueAndValidity();
     });
 
@@ -148,6 +142,7 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     const accessContractValue = {
       ...this.form.getRawValue(),
       writingRestrictedDesc: !this.form.getRawValue().writingAuthorizedDesc,
+      dataObjectVersion: this.form.getRawValue().downloadChoose === 'SELECTION' ? this.form.getRawValue().dataObjectVersion : [],
     };
     delete accessContractValue.writingAuthorizedDesc;
     delete accessContractValue.downloadChoose;
