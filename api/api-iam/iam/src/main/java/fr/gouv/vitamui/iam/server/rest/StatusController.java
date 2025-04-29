@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.iam.server.rest;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.server.common.rest.BaseStatusController;
 import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -53,11 +52,7 @@ import java.util.Map;
  *
  */
 @Controller
-@Api(
-    tags = CommonConstants.STATUS_API_DOCUMENTATION_TAGS,
-    value = CommonConstants.STATUS_API_DOCUMENTATION_VALUE,
-    description = CommonConstants.STATUS_API_DOCUMENTATION_DESCRIPTION
-)
+@Tag(name = "Status", description = "Status check and autotest")
 public class StatusController extends BaseStatusController {
 
     @Autowired

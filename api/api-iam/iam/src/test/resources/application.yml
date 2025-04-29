@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: iam
+    version: '@project.version@'
   api:
     name: API IAM - Gestion des accès aux identités
     description: Ces APIS sont utilisés pour configurer les clients, tenants, idp, groupes, profiles, et utilisateurs.

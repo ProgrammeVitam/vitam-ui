@@ -72,18 +72,6 @@ public class UserRestClient extends BasePaginatingAndSortingRestClient<UserDto, 
         super(restTemplate, baseUrl);
     }
 
-    public UserDto patchMe(final HttpContext context, final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch me partialDto={}");
-        final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.PATH_ME);
-        final MultiValueMap<String, String> headers = buildHeaders(context);
-
-        final URI uri = buildUriBuilder(uriBuilder);
-        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
-        final ResponseEntity<UserDto> response = restTemplate.exchange(uri, HttpMethod.PATCH, request, getDtoClass());
-        checkResponse(response);
-        return response.getBody();
-    }
-
     public AuthUserDto getMe(final HttpContext context) {
         LOGGER.debug("GetMe");
 

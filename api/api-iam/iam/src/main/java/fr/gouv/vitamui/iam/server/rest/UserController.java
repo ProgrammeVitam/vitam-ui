@@ -54,7 +54,8 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -91,7 +92,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Getter
 @Setter
-@Api(tags = "users", value = "Users Management", description = "Users Management")
+@Tag(name = "Users", description = "Users Management")
 public class UserController implements CrudController<UserDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -100,12 +101,14 @@ public class UserController implements CrudController<UserDto> {
     private final ConnectionHistoryService connectionHistoryService;
     private final SecurityService securityService;
 
+    @Operation(operationId = "exportUsers", summary = "Export users to xlsx file")
     @GetMapping(CommonConstants.PATH_EXPORT)
     public Resource exportUsers(@RequestParam(required = false) final Optional<String> criteria) {
         LOGGER.debug("Export all users to xlsx file");
         return userService.exportUsers(criteria);
     }
 
+    @Operation(operationId = "getAllPaginated", summary = "Get all users, paginated")
     @Secured(ServicesData.ROLE_GET_USERS)
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<UserDto> getAllPaginated(
@@ -132,6 +135,7 @@ public class UserController implements CrudController<UserDto> {
 
     @Override
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "getOne", summary = "Get a user by its id")
     @Secured(ServicesData.ROLE_GET_USERS)
     public UserDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -141,6 +145,7 @@ public class UserController implements CrudController<UserDto> {
         return userService.getOne(id);
     }
 
+    @Operation(operationId = "getMe", summary = "Get the current user")
     @GetMapping(CommonConstants.PATH_ME)
     public AuthUserDto getMe() {
         LOGGER.debug("getMe");
@@ -148,6 +153,7 @@ public class UserController implements CrudController<UserDto> {
     }
 
     @Override
+    @Operation(operationId = "checkExist", summary = "Check the existence of a user by criteria")
     @Secured({ ServicesData.ROLE_GET_USERS, ServicesData.ROLE_CHECK_USERS })
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
@@ -159,6 +165,7 @@ public class UserController implements CrudController<UserDto> {
 
     @Override
     @PostMapping
+    @Operation(operationId = "create", summary = "Create a user")
     @Secured(ServicesData.ROLE_CREATE_USERS)
     public UserDto create(final @Valid @RequestBody UserDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -173,6 +180,7 @@ public class UserController implements CrudController<UserDto> {
 
     @Override
     @PutMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "update", summary = "Update a user")
     @Secured(ServicesData.ROLE_UPDATE_USERS)
     public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -190,6 +198,7 @@ public class UserController implements CrudController<UserDto> {
 
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "patch", summary = "Patch a user")
     @Secured(ServicesData.ROLE_UPDATE_USERS)
     public UserDto patch(final @PathVariable("id") String id, final @RequestBody Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -209,14 +218,7 @@ public class UserController implements CrudController<UserDto> {
         return userService.patch(partialDto);
     }
 
-    @PatchMapping(CommonConstants.PATH_ME)
-    @Secured(ServicesData.ROLE_ADMIN_UPDATE_ME_USERS)
-    public UserDto patchMe(@RequestBody final Map<String, Object> partialDto) throws PreconditionFailedException {
-        SanityChecker.sanitizeCriteria(partialDto);
-        LOGGER.debug("Patch me with {}", partialDto);
-        return userService.patchMe(partialDto);
-    }
-
+    @Operation(operationId = "findHistoryById", summary = "Get user history by its id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
@@ -232,6 +234,7 @@ public class UserController implements CrudController<UserDto> {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
+    @Operation(operationId = "getLevels", summary = "Get levels by criteria")
     @Secured(ServicesData.ROLE_GET_USERS)
     public List<String> getLevels(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -244,6 +247,7 @@ public class UserController implements CrudController<UserDto> {
      * @param partialDto analytics to create or refresh
      * @return current user with updated analytics
      */
+    @Operation(operationId = "patchAnalytics", summary = "Create/refresh current user analytics")
     @PostMapping(CommonConstants.PATH_ANALYTICS)
     public UserDto patchAnalytics(@RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {

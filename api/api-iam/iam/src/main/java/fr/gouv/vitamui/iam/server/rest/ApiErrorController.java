@@ -37,9 +37,9 @@
 package fr.gouv.vitamui.iam.server.rest;
 
 import fr.gouv.vitamui.commons.rest.BaseApiErrorController;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@ApiIgnore
+@Hidden
 public class ApiErrorController extends BaseApiErrorController {}

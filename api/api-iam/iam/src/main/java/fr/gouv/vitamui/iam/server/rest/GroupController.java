@@ -55,7 +55,8 @@ import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -90,7 +91,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_GROUPS_URL)
 @Getter
 @Setter
-@Api(tags = "groups", value = "Profiles Groups Management", description = "Profiles Groups Management")
+@Tag(name = "Groups", description = "Profiles Groups Management")
 public class GroupController implements CrudController<GroupDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupController.class);
@@ -107,6 +108,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping
+    @Operation(operationId = "getAll", summary = "Get all groups")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public List<GroupDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -117,6 +119,7 @@ public class GroupController implements CrudController<GroupDto> {
 
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
+    @Operation(operationId = "checkExist", summary = "Check group existence")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
@@ -126,6 +129,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "getOne", summary = "Get group by id")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public GroupDto getOne(
         final @PathVariable("id") String id,
@@ -141,7 +145,8 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @Secured(ServicesData.ROLE_GET_GROUPS)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
+    @Operation(operationId = "getAllPaginated", summary = "Get all groups, paginated")
     public PaginatedValuesDto<GroupDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
@@ -167,6 +172,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @PostMapping
+    @Operation(operationId = "create", summary = "Create a group")
     @Secured(ServicesData.ROLE_CREATE_GROUPS)
     @Override
     public GroupDto create(final @Valid @RequestBody GroupDto dto)
@@ -184,6 +190,7 @@ public class GroupController implements CrudController<GroupDto> {
 
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "patch", summary = "Patch a group")
     @Secured(ServicesData.ROLE_UPDATE_GROUPS)
     public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -208,6 +215,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
+    @Operation(operationId = "findHistoryById", summary = "Get group history by id")
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
@@ -222,6 +230,7 @@ public class GroupController implements CrudController<GroupDto> {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
+    @Operation(operationId = "getLevels", summary = "Get levels by criteria")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public List<String> getLevels(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -230,6 +239,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping(CommonConstants.PATH_EXPORT)
+    @Operation(operationId = "exportProfileGroups", summary = "Export all profile groups to xlsx file")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public Resource exportProfileGroups() {
         LOGGER.debug("Export all profile groups to xlsx file");

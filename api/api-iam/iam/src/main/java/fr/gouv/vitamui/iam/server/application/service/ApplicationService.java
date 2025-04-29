@@ -136,11 +136,11 @@ public class ApplicationService extends AbstractResourceClientService<Applicatio
         return apps;
     }
 
-    public Map<String, Object> getApplications(final boolean filterApp) {
+    public Map<String, List<ApplicationDto>> getApplications(final boolean filterApp) {
         QueryDto query = new QueryDto(QueryOperator.AND);
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
-        Collection<ApplicationDto> applications = getAll(Optional.of(query.toJson()), Optional.empty());
-        Map<String, Object> portalConfig = new HashMap<>();
+        List<ApplicationDto> applications = getAll(Optional.of(query.toJson()), Optional.empty());
+        Map<String, List<ApplicationDto>> portalConfig = new HashMap<>();
         portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
         return portalConfig;
     }
