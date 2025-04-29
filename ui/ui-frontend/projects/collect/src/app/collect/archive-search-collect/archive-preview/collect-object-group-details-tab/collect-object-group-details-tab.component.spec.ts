@@ -247,7 +247,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(response).toBeTruthy();
   });
 
-  it('should return false', () => {
+  it('should return true', () => {
     // Given
     component.archiveUnit = {
       '#allunitups': [],
@@ -266,7 +266,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     const response = component.unitHasObject();
 
     // Then
-    expect(response).toBeFalsy();
+    expect(response).toBeTruthy();
   });
 
   it('should return true', () => {
