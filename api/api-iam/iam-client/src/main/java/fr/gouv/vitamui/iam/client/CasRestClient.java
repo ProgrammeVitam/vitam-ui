@@ -197,22 +197,6 @@ public class CasRestClient extends BaseRestClient<HttpContext> {
         }
     }
 
-    public UserDto getUserById(final HttpContext context, final String id) {
-        LOGGER.debug("getUserById: {}", id);
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH);
-        uriBuilder.queryParam("id", id);
-
-        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<UserDto> response = restTemplate.exchange(
-            uriBuilder.toUriString(),
-            HttpMethod.GET,
-            request,
-            UserDto.class
-        );
-        checkResponse(response);
-        return response.getBody();
-    }
-
     public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(
         final HttpContext context,
         final String superUserEmail,

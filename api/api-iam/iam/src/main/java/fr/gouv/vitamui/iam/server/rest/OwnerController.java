@@ -50,7 +50,8 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +85,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_OWNERS_URL)
 @Getter
 @Setter
-@Api(tags = "owners", value = "Owners Management", description = "Owners Management")
+@Tag(name = "Owners", description = "Owners Management")
 public class OwnerController implements CrudController<OwnerDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OwnerController.class);
@@ -96,6 +97,7 @@ public class OwnerController implements CrudController<OwnerDto> {
     }
 
     @Override
+    @Operation(operationId = "checkExist", summary = "Check the existence of an owner by criteria")
     @Secured(ServicesData.ROLE_GET_OWNERS)
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @RequestParam String criteria) {
@@ -107,6 +109,7 @@ public class OwnerController implements CrudController<OwnerDto> {
 
     @Override
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "getOne", summary = "Get an owner by its id")
     @Secured(ServicesData.ROLE_GET_OWNERS)
     public OwnerDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -118,6 +121,7 @@ public class OwnerController implements CrudController<OwnerDto> {
 
     @Override
     @PostMapping
+    @Operation(operationId = "create", summary = "Create an owner")
     @Secured(ServicesData.ROLE_CREATE_OWNERS)
     public OwnerDto create(@Valid final @RequestBody OwnerDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -128,6 +132,7 @@ public class OwnerController implements CrudController<OwnerDto> {
 
     @Override
     @PutMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "update", summary = "Update an owner")
     @Secured(ServicesData.ROLE_UPDATE_OWNERS)
     public OwnerDto update(final @PathVariable("id") String id, final @Valid @RequestBody OwnerDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -144,6 +149,7 @@ public class OwnerController implements CrudController<OwnerDto> {
 
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "patch", summary = "Patch an owner")
     @Secured(ServicesData.ROLE_UPDATE_OWNERS)
     public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -159,6 +165,7 @@ public class OwnerController implements CrudController<OwnerDto> {
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
+    @Operation(operationId = "findHistoryById", summary = "Get owner history by its id")
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);

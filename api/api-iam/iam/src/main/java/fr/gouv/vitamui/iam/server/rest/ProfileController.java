@@ -55,7 +55,8 @@ import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -90,7 +91,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_PROFILES_URL)
 @Getter
 @Setter
-@Api(tags = "profiles", value = "Profiles Management", description = "Profiles Management")
+@Tag(name = "Profiles", description = "Profiles Management")
 public class ProfileController implements CrudController<ProfileDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
@@ -109,6 +110,7 @@ public class ProfileController implements CrudController<ProfileDto> {
     }
 
     @GetMapping
+    @Operation(operationId = "getAll", summary = "Get all profiles")
     @Secured(ServicesData.ROLE_GET_PROFILES)
     public Collection<ProfileDto> getAll(
         final Optional<String> criteria,
@@ -122,6 +124,7 @@ public class ProfileController implements CrudController<ProfileDto> {
 
     @Override
     @Secured(ServicesData.ROLE_GET_PROFILES)
+    @Operation(operationId = "checkExist", summary = "Check the existence of a profile by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -131,6 +134,7 @@ public class ProfileController implements CrudController<ProfileDto> {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "getOne", summary = "Get a profile by its id")
     @Secured(ServicesData.ROLE_GET_PROFILES)
     public ProfileDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -141,9 +145,10 @@ public class ProfileController implements CrudController<ProfileDto> {
         return profileService.getOne(id, Optional.empty(), embedded);
     }
 
-    @PostMapping
-    @Secured(ServicesData.ROLE_CREATE_PROFILES)
     @Override
+    @PostMapping
+    @Operation(operationId = "create", summary = "Create a profile")
+    @Secured(ServicesData.ROLE_CREATE_PROFILES)
     public ProfileDto create(final @Valid @RequestBody ProfileDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
@@ -158,8 +163,9 @@ public class ProfileController implements CrudController<ProfileDto> {
         throw new UnsupportedOperationException("update not implemented");
     }
 
+    @Operation(operationId = "getAllPaginated", summary = "Get all profiles, paginated result")
     @Secured(ServicesData.ROLE_GET_PROFILES)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(path = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<ProfileDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
@@ -186,6 +192,7 @@ public class ProfileController implements CrudController<ProfileDto> {
     }
 
     @Override
+    @Operation(operationId = "patch", summary = "Patch a profile")
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PROFILES)
     public ProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
@@ -215,6 +222,7 @@ public class ProfileController implements CrudController<ProfileDto> {
         return profileService.patch(partialDto);
     }
 
+    @Operation(operationId = "findHistoryById", summary = "Get profile history by its id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
@@ -229,6 +237,7 @@ public class ProfileController implements CrudController<ProfileDto> {
      * @param criteria Criteria as json string
      * @return List of matching levels
      */
+    @Operation(operationId = "getLevels", summary = "Get levels by criteria")
     @GetMapping(CommonConstants.PATH_LEVELS)
     @Secured(ServicesData.ROLE_GET_PROFILES)
     public List<String> getLevels(final Optional<String> criteria) {

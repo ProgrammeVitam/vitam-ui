@@ -52,8 +52,8 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.server.domain.dto.ProviderPatchType;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +73,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -98,7 +97,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_PROVIDERS_URL)
 @Getter
 @Setter
-@Api(tags = "identityproviders", value = "Identity Providers Management")
+@Tag(name = "IdentityProviders", description = "Identity Providers Management")
 public class IdentityProviderController implements CrudController<IdentityProviderDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IdentityProviderController.class);
@@ -112,6 +111,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @GetMapping
+    @Operation(operationId = "getAll", summary = "Get all identity providers")
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public List<IdentityProviderDto> getAll(
         final Optional<String> criteria,
@@ -124,6 +124,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "getOne", summary = "Get an identity provider by its id")
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public IdentityProviderDto getOne(
         final @PathVariable("id") String id,
@@ -139,6 +140,10 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/idpMetadata")
+    @Operation(
+        operationId = "getIdpMetadataProviderByProviderId",
+        summary = "Get an identity provider's idp metadata by its id"
+    )
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(final @PathVariable("id") String id)
         throws PreconditionFailedException, IOException {
@@ -159,6 +164,10 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/spMetadata")
+    @Operation(
+        operationId = "getSpMetadataProviderByProviderId",
+        summary = "Get an identity provider's sp metadata by its id"
+    )
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public ResponseEntity<Resource> getSpMetadataProviderByProviderId(final @PathVariable("id") String id)
         throws PreconditionFailedException, IOException {
@@ -179,7 +188,6 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @Override
-    @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final String criteria) {
         throw new UnsupportedOperationException("checkExist not implemented");
     }
@@ -188,12 +196,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
      * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @PostMapping
-    @ApiIgnore
-    @ApiOperation(
-        value = "Create entity request to upload the file",
-        produces = "application/json",
-        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
+    @Operation(operationId = "create", summary = "Create an identity provider")
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(ServicesData.ROLE_CREATE_PROVIDERS)
     public IdentityProviderDto create(
@@ -227,7 +230,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
      * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @Override
-    @ApiOperation(value = "Update partially provider")
+    @Operation(operationId = "patch", summary = "Patch an identity provider")
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
     public IdentityProviderDto patch(
@@ -245,7 +248,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @PatchMapping(value = "/{id}/keystore")
-    @ApiOperation(value = "Update keystore provider")
+    @Operation(operationId = "patchProviderKeystore", summary = "Patch a keystore provider")
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore
     // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
@@ -270,9 +273,8 @@ public class IdentityProviderController implements CrudController<IdentityProvid
      * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @PatchMapping(value = "/{id}/idpMetadata")
-    @ApiOperation(value = "Update idpMetadata provider")
+    @Operation(operationId = "patchProviderIdpMetadata", summary = "Update idpMetadata provider")
     @ResponseStatus(HttpStatus.OK)
-    @ApiIgnore
     // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
     public IdentityProviderDto patchProviderIdpMetadata(
         final @RequestPart("idpMetadata") MultipartFile idpMetadata,

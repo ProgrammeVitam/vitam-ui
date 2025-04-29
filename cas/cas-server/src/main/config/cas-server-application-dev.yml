@@ -272,3 +272,5 @@ cas.http-web-request.cors.allow-origins:
   - "https://localhost:4210"
   - "https://localhost:4251"
   - "https://localhost"
+  - "https://dev.vitamui.com:8083" # For swagger (IAM)
+  - "https://localhost:8083"

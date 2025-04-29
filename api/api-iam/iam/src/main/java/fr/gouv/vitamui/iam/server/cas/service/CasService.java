@@ -648,16 +648,6 @@ public class CasService {
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
     }
 
-    public UserDto getUserProfileById(final String id) {
-        final UserDto user = userService.getOne(id, Optional.empty());
-        if (user == null) {
-            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + id);
-        }
-        checkStatus(user.getStatus(), user.getEmail());
-
-        return user;
-    }
-
     public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {
         final List<Subrogation> subrogations = subrogationRepository.findBySuperUserAndSuperUserCustomerId(
             superUser,
