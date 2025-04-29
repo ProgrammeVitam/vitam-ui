@@ -405,7 +405,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   launchReclassification() {
-    this.archiveUnitGuidSelected = this.isAllChecked
+    this.archiveUnitGuidSelected = this.isAllSelected()
       ? this.archiveUnits.map((unit) => unit['#id'])
       : this.listOfUAIdToInclude.map((unit) => unit.id);
     let unitUps = this.archiveUnits
@@ -1332,5 +1332,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         const hasAUWithoutAttachment = response.results != null && !isEmpty(response.results);
         this.archiveExchangeDataService.emitHasAUWithoutAttachment(hasAUWithoutAttachment);
       });
+  }
+
+  private isAllSelected(): boolean {
+    return this.totalResults === this.itemSelected;
   }
 }
