@@ -1330,7 +1330,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)
       .subscribe((response: PagedResult) => {
         const hasAUWithoutAttachment = response.results != null && !isEmpty(response.results);
-        this.archiveExchangeDataService.emitHasAUWithoutAttachment(hasAUWithoutAttachment);
+        if (hasAUWithoutAttachment) {
+          this.archiveExchangeDataService.emitNumberOfAUsWithoutAttachment(response.totalResults);
+        }
       });
   }
 

@@ -179,15 +179,23 @@ export class FilingHoldingSchemeHandler {
     parentNodes: FilingHoldingSchemeNode[],
     childrenNodes: FilingHoldingSchemeNode[],
     nodeTitle: string,
-  ) {
-    const nodeWithKeyValue: FilingHoldingSchemeNode = {
-      checked: false,
-      children: childrenNodes,
-      id: KEY_VALUE_NODE_ID,
-      title: nodeTitle,
-      vitamId: KEY_VALUE_NODE_ID,
-    };
-    parentNodes.unshift(nodeWithKeyValue);
+    count: number,
+  ): void {
+    const existingNode = parentNodes.find((node) => node.vitamId === 'KEY_VALUE_NODE');
+
+    if (!existingNode) {
+      const nodeWithKeyValue: FilingHoldingSchemeNode = {
+        checked: false,
+        children: childrenNodes,
+        id: KEY_VALUE_NODE_ID,
+        title: nodeTitle,
+        vitamId: KEY_VALUE_NODE_ID,
+        count: count,
+      };
+      parentNodes.unshift(nodeWithKeyValue);
+    } else {
+      existingNode.count = count;
+    }
   }
 
   public static removeWithKeyValueNodeFromTree(
