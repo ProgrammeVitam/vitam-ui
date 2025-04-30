@@ -178,7 +178,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   projectName: string;
   breadcrumbData: BreadCrumbData[];
 
-  archiveUnitGuidSelected: string[];
   archiveUnitAllunitup: string[];
 
   selectedArchive$: Observable<Unit>;
@@ -405,11 +404,13 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   launchReclassification() {
-    this.archiveUnitGuidSelected = this.isAllSelected()
-      ? this.archiveUnits.map((unit) => unit['#id'])
+    const archiveUnitGuidSelected = this.isAllChecked
+      ? this.archiveUnits
+          .map((unit) => unit['#id'])
+          .filter((unit) => !this.listOfUAIdToExclude.some((unitToExclude) => unit === unitToExclude.id))
       : this.listOfUAIdToInclude.map((unit) => unit.id);
     let unitUps = this.archiveUnits
-      .filter((archiveUnit) => this.archiveUnitGuidSelected.includes(archiveUnit['#id']))
+      .filter((archiveUnit) => archiveUnitGuidSelected.includes(archiveUnit['#id']))
       .map((archiveUnit) => archiveUnit['#unitups']);
     this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(unitUps);
     this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
@@ -427,7 +428,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         appName: 'COLLECT',
         reclassificationCriteria,
         itemSelected: this.itemSelected,
-        archiveUnitGuidSelected: this.archiveUnitGuidSelected,
+        archiveUnitGuidSelected: archiveUnitGuidSelected,
         archiveUnitAllunitup: this.archiveUnitAllunitup,
         transactionId: this.transaction.id,
         tenantIdentifier: this.tenantIdentifier,
@@ -1332,9 +1333,5 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.archiveExchangeDataService.emitNumberOfAUsWithoutAttachment(response.totalResults);
         }
       });
-  }
-
-  private isAllSelected(): boolean {
-    return this.totalResults === this.itemSelected;
   }
 }
