@@ -118,12 +118,12 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityService externalSecurityService() {
+    public SecurityService securityService() {
         return new SecurityService();
     }
 
     @Bean
-    public AuthentificationService externalAuthentificationService(
+    public AuthentificationService authentificationService(
         final ContextRestClient contextRestClient,
         final UserRestClient userRestClient
     ) {
@@ -131,7 +131,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamRestClientFactory iamExternalRestClientFactory(
+    public IamRestClientFactory iamRestClientFactory(
         final ApiIngestApplicationProperties apiIngestApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
@@ -139,13 +139,13 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public UserRestClient userInternalRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
+    public UserRestClient userRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getUserRestClient();
     }
 
     @Bean
-    public CustomerRestClient customerExternalRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getCustomerExternalRestClient();
+    public CustomerRestClient customerRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getCustomerRestClient();
     }
 
     @Bean
@@ -157,11 +157,11 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     public ExternalParametersRestClient externalParametersExternalRestClient(
         final IamRestClientFactory iamRestClientFactory
     ) {
-        return iamRestClientFactory.getExternalParametersExternalRestClient();
+        return iamRestClientFactory.getExternalParametersRestClient();
     }
 
     @Bean
-    public IngestService ingestInternalService(
+    public IngestService ingestService(
         final SecurityService securityService,
         final LogbookService logbookService,
         final ObjectMapper objectMapper,

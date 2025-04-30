@@ -72,7 +72,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class ProbativeValueInternalServiceTest {
+public class ProbativeValueServiceTest {
 
     @InjectMocks
     private ProbativeValueService probativeValueService;
@@ -207,8 +207,7 @@ public class ProbativeValueInternalServiceTest {
         throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream =
-            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = ProbativeValueServiceTest.class.getClassLoader().getResourceAsStream(filename);
         return inputStream;
     }
 
@@ -216,8 +215,7 @@ public class ProbativeValueInternalServiceTest {
         throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream =
-            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = ProbativeValueServiceTest.class.getClassLoader().getResourceAsStream(filename);
         return objectMapper.readValue(ByteStreams.toByteArray(inputStream), VitamUISearchResponseDto.class);
     }
 
@@ -225,8 +223,7 @@ public class ProbativeValueInternalServiceTest {
         throws JsonParseException, JsonMappingException, IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream =
-            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = ProbativeValueServiceTest.class.getClassLoader().getResourceAsStream(filename);
         return RequestResponseOK.getFromJsonNode(
             objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
         );

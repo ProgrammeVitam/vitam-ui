@@ -43,7 +43,7 @@ public class ExternalParamProfileServiceTest {
 
     private ExternalParamProfileService externalParamProfileService;
 
-    private final ProfileService profileInternalService = mock(ProfileService.class);
+    private final ProfileService profileService = mock(ProfileService.class);
 
     private final ExternalParametersService externalParametersService = mock(ExternalParametersService.class);
 
@@ -67,7 +67,7 @@ public class ExternalParamProfileServiceTest {
     public void setup() throws Exception {
         externalParamProfileService = new ExternalParamProfileService(
             externalParametersService,
-            profileInternalService,
+            profileService,
             securityService,
             iamLogbookService,
             externalParamProfileRepository,
@@ -134,7 +134,7 @@ public class ExternalParamProfileServiceTest {
         when(externalParametersService.getExternalParametersRepository()).thenReturn(externalParametersRepository);
         when(externalParametersRepository.generateSuperId()).thenReturn("id");
         when(externalParametersService.create(any())).thenReturn(externalParametersDto);
-        when(profileInternalService.create(any())).thenReturn(profileDto);
+        when(profileService.create(any())).thenReturn(profileDto);
 
         // Then
         final ExternalParamProfileDto expectedValue = new ExternalParamProfileDto();

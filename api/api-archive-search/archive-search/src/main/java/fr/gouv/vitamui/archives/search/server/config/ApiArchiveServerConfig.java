@@ -86,13 +86,10 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public SecurityRestClientFactory securityRestClientFactory(
-        final ApiArchiveApplicationProperties apiArchiveExternalApplicationProperties,
+        final ApiArchiveApplicationProperties apiArchiveApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new SecurityRestClientFactory(
-            apiArchiveExternalApplicationProperties.getSecurityClient(),
-            restTemplateBuilder
-        );
+        return new SecurityRestClientFactory(apiArchiveApplicationProperties.getSecurityClient(), restTemplateBuilder);
     }
 
     @Bean
@@ -120,20 +117,20 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public IamRestClientFactory iamRestClientFactory(
-        final ApiArchiveApplicationProperties apiArchiveExternalApplicationProperties,
+        final ApiArchiveApplicationProperties apiArchiveApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamRestClientFactory(apiArchiveExternalApplicationProperties.getIamClient(), restTemplateBuilder);
+        return new IamRestClientFactory(apiArchiveApplicationProperties.getIamClient(), restTemplateBuilder);
     }
 
     @Bean
     public UserRestClient userRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
+        return iamRestClientFactory.getUserRestClient();
     }
 
     @Bean
     public ExternalParametersRestClient externalParametersRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getExternalParametersExternalRestClient();
+        return iamRestClientFactory.getExternalParametersRestClient();
     }
 
     @Bean

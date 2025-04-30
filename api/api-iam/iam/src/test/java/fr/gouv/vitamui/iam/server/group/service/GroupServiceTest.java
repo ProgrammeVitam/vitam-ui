@@ -14,7 +14,7 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.server.group.dao.GroupRepository;
@@ -59,7 +59,7 @@ public class GroupServiceTest {
 
     private final GroupRepository groupRepository = mock(GroupRepository.class);
 
-    private final ProfileService profileInternalService = mock(ProfileService.class);
+    private final ProfileService profileService = mock(ProfileService.class);
 
     private final SecurityService securityService = mock(SecurityService.class);
 
@@ -85,7 +85,7 @@ public class GroupServiceTest {
             sequenceGeneratorService,
             groupRepository,
             customerRepository,
-            profileInternalService,
+            profileService,
             userRepository,
             securityService,
             tenantRepository,
@@ -140,11 +140,11 @@ public class GroupServiceTest {
 
     private void wireInternalSecurityServerCalls() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
-        user.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        user.setLevel(ApiIamConstants.ADMIN_LEVEL);
 
         Mockito.when(securityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(securityService.getUser()).thenReturn(user);
-        Mockito.when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        Mockito.when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
     }
 
     @Test
@@ -208,7 +208,7 @@ public class GroupServiceTest {
         partialDto.put("name", "name");
         partialDto.put("description", "description");
         partialDto.put("profileIds", Arrays.asList("id1", "id2"));
-        when(profileInternalService.getOne(any(), any(), any())).thenThrow(NotFoundException.class);
+        when(profileService.getOne(any(), any(), any())).thenThrow(NotFoundException.class);
         groupService.beforePatch(partialDto);
     }
 
@@ -221,7 +221,7 @@ public class GroupServiceTest {
         partialDto.put("description", "description");
         partialDto.put("profileIds", Arrays.asList("id1", "id2"));
 
-        when(profileInternalService.getMany(any(), any())).thenReturn(
+        when(profileService.getMany(any(), any())).thenReturn(
             Arrays.asList(buildProfileDto("id1", "app1"), buildProfileDto("id2", "app2"))
         );
         when(groupRepository.findById(any())).thenReturn(Optional.of(buildGroup()));
@@ -253,7 +253,7 @@ public class GroupServiceTest {
 
         final Group group = IamServerUtilsTest.buildGroup();
 
-        when(profileInternalService.getMany(any(), any())).thenReturn(Arrays.asList(profile1, profile2));
+        when(profileService.getMany(any(), any())).thenReturn(Arrays.asList(profile1, profile2));
         when(groupRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(group));
         Mockito.when(securityService.userIsRootLevel()).thenReturn(true);
         when(tenantRepository.findByIdentifier(1)).thenReturn(tenant1);
@@ -295,7 +295,7 @@ public class GroupServiceTest {
         wireInternalSecurityServerCalls();
 
         List<CriteriaDefinition> criteriaList = new ArrayList<>();
-        criteriaList.add(Criteria.where("level").is(ApiIamExternalConstants.ADMIN_LEVEL));
+        criteriaList.add(Criteria.where("level").is(ApiIamConstants.ADMIN_LEVEL));
 
         groupService.addDataAccessRestrictions(criteriaList);
         assertThat(criteriaList.size()).isEqualTo(1);

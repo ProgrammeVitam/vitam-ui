@@ -87,7 +87,7 @@ import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.Address;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
@@ -924,14 +924,14 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
     private void checkPhoneNumber(final String phoneNumber) {
         Assert.isTrue(
-            Pattern.matches(ApiIamExternalConstants.PHONE_NUMBER_VALID_REGEXP, phoneNumber),
+            Pattern.matches(ApiIamConstants.PHONE_NUMBER_VALID_REGEXP, phoneNumber),
             "Phone Number : " + phoneNumber + " format is not allowed"
         );
     }
 
     private void checkLevel(final String level, final String message) {
         Assert.isTrue(
-            Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level),
+            Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level),
             "level : " + level + " format is not allowed"
         );
         Assert.isTrue(securityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");
@@ -1015,7 +1015,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             throw new NotFoundException("No customer found for: " + customerId);
         }
         final String email =
-            ApiIamExternalConstants.ADMIN_CLIENT_PREFIX_EMAIL +
+            ApiIamConstants.ADMIN_CLIENT_PREFIX_EMAIL +
             CommonConstants.EMAIL_SEPARATOR +
             customer.get().getDefaultEmailDomain().replace(".*", "");
 

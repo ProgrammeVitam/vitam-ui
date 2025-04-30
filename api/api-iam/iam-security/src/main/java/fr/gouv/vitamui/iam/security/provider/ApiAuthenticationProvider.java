@@ -67,11 +67,11 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
 
     /**
      * ApiAuthenticationProvider
-     * @param externalAuthenticationService
+     * @param authentificationService
      */
     @Autowired
-    public ApiAuthenticationProvider(final AuthentificationService externalAuthenticationService) {
-        extAuthService = externalAuthenticationService;
+    public ApiAuthenticationProvider(final AuthentificationService authentificationService) {
+        extAuthService = authentificationService;
     }
 
     /**

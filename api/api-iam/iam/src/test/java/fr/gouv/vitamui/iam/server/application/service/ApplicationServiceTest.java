@@ -12,7 +12,7 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.server.application.dao.ApplicationRepository;
 import fr.gouv.vitamui.iam.server.application.domain.Application;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -139,7 +139,7 @@ public class ApplicationServiceTest {
 
     private void wireInternalSecurityServerCalls(boolean withApplications) {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
-        user.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        user.setLevel(ApiIamConstants.ADMIN_LEVEL);
         if (withApplications) user.setTenantsByApp(getTenantInformationByApp());
         else {
             user.setTenantsByApp(new ArrayList<>());
@@ -147,7 +147,7 @@ public class ApplicationServiceTest {
 
         Mockito.when(securityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(securityService.getUser()).thenReturn(user);
-        Mockito.when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        Mockito.when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
     }
 
     private List<TenantInformationDto> getTenantInformationByApp() {

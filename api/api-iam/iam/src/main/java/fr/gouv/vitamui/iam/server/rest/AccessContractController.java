@@ -51,8 +51,8 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ import static fr.gouv.vitamui.commons.api.converter.AccessContractConverter.conv
  */
 @RestController
 @RequestMapping(CommonConstants.API_VERSION_1)
-@Api(tags = "accesscontracts", value = "Access contracts", description = "Access contracts Management")
+@Tag(name = "AccessContracts", description = "Access Contracts Management")
 public class AccessContractController {
 
     static final Logger LOGGER = LoggerFactory.getLogger(AccessContractController.class);
@@ -94,8 +94,8 @@ public class AccessContractController {
         this.objectMapper = objectMapper;
     }
 
-    @ApiOperation(value = "Get all access contracts")
     @GetMapping("/accesscontracts")
+    @Operation(operationId = "accessContracts_getAll", summary = "Get all access contracts")
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     public List<AccessContractDto> getAll() {
         final RequestResponse<AccessContractModel> requestResponse;
@@ -117,8 +117,8 @@ public class AccessContractController {
         }
     }
 
-    @ApiOperation(value = "Get access contract by ID")
     @GetMapping(path = "/accesscontracts/{identifier:.+}")
+    @Operation(operationId = "accessContracts_getAccessContractById", summary = "Get access contract by ID")
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     public AccessContractDto getAccessContractById(final @PathVariable("identifier") String identifier)
         throws UnsupportedEncodingException {

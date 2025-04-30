@@ -71,7 +71,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
- * Class for test InternalTenantService with a real repository
+ * Class for test TenantService with a real repository
  */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

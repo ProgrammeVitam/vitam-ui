@@ -93,12 +93,12 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityService externalSecurityService() {
+    public SecurityService securityService() {
         return new SecurityService();
     }
 
     @Bean
-    public AuthentificationService externalAuthentificationService(
+    public AuthentificationService authenticationService(
         final ContextRestClient contextRestClient,
         final UserRestClient userRestClient
     ) {
@@ -106,7 +106,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamRestClientFactory iamExternalRestClientFactory(
+    public IamRestClientFactory iamRestClientFactory(
         final ApiCollectApplicationProperties apiCollectApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
@@ -114,12 +114,12 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public UserRestClient userInternalRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
+    public UserRestClient userRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getUserRestClient();
     }
 
     @Bean
-    public ProjectService collectInternalService(
+    public ProjectService projectService(
         final CollectService collectService,
         ObjectMapper objectMapper,
         ExternalParametersService externalParametersService
@@ -128,12 +128,12 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public TransactionService transactionInternalService(final CollectService collectService) {
+    public TransactionService transactionService(final CollectService collectService) {
         return new TransactionService(collectService);
     }
 
     @Bean
-    public TransactionArchiveUnitService projectArchiveUnitInternalService(
+    public TransactionArchiveUnitService transactionArchiveUnitService(
         final CollectService collectService,
         AgencyCommonService agencyCommonService,
         final RuleCommonService ruleCommonService,
@@ -143,7 +143,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ProjectObjectGroupService projectObjectGroupInternalService(
+    public ProjectObjectGroupService projectObjectGroupService(
         final CollectService collectService,
         ObjectMapper objectMapper
     ) {
@@ -156,7 +156,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SearchCriteriaHistoryService searchCriteriaHistoryInternalService(
+    public SearchCriteriaHistoryService searchCriteriaHistoryService(
         final SequenceGeneratorService sequenceGeneratorService,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
@@ -171,9 +171,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalParametersRestClient externalParametersInternalRestClient(
-        final IamRestClientFactory iamRestClientFactory
-    ) {
-        return iamRestClientFactory.getExternalParametersExternalRestClient();
+    public ExternalParametersRestClient externalParametersRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getExternalParametersRestClient();
     }
 }

@@ -93,10 +93,10 @@ public class ArchiveSearchServiceTest {
     @MockBean(name = "persistentIdentifierService")
     private PersistentIdentifierService persistentIdentifierService;
 
-    @MockBean(name = "archiveSearchAgenciesInternalService")
+    @MockBean(name = "archiveSearchAgenciesService")
     private ArchiveSearchAgenciesService archiveSearchAgenciesService;
 
-    @MockBean(name = "archiveSearchRulesInternalService")
+    @MockBean(name = "archiveSearchRulesService")
     private ArchiveSearchRulesService archiveSearchRulesService;
 
     @MockBean(name = "externalParametersService")
@@ -111,7 +111,7 @@ public class ArchiveSearchServiceTest {
     @InjectMocks
     private ArchiveSearchService archiveSearchService;
 
-    @MockBean(name = "archiveSearchInternalService")
+    @MockBean(name = "archiveSearchService")
     private ArchiveSearchFacetsService archiveSearchFacetsService;
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";

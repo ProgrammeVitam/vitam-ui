@@ -62,7 +62,7 @@ public class ArchiveSearchEliminationServiceTest {
     @MockBean(name = "objectMapper")
     private ObjectMapper objectMapper;
 
-    @MockBean(name = "archiveSearchInternalService")
+    @MockBean(name = "archiveSearchService")
     private ArchiveSearchService archiveSearchService;
 
     @MockBean(name = "externalParametersService")

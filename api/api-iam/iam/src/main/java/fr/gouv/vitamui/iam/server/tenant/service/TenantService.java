@@ -68,7 +68,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.server.common.utils.EntityFactory;
@@ -126,9 +126,9 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
     private final CustomerRepository customerRepository;
     private final OwnerRepository ownerRepository;
     private final ProfileRepository profileRepository;
-    private final GroupService internalGroupService;
-    private final UserService internalUserService;
-    private final OwnerService internalOwnerService;
+    private final GroupService groupService;
+    private final UserService userService;
+    private final OwnerService ownerService;
     private final SecurityService securityService;
     private final IamLogbookService iamLogbookService;
     private final TenantConverter tenantConverter;
@@ -146,9 +146,9 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         final CustomerRepository customerRepository,
         final OwnerRepository ownerRepository,
         final ProfileRepository profileRepository,
-        final GroupService internalGroupService,
-        final UserService internalUserService,
-        final OwnerService internalOwnerService,
+        final GroupService groupService,
+        final UserService userService,
+        final OwnerService ownerService,
         final SecurityService securityService,
         final IamLogbookService iamLogbookService,
         final TenantConverter tenantConverter,
@@ -164,9 +164,9 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         this.customerRepository = customerRepository;
         this.ownerRepository = ownerRepository;
         this.profileRepository = profileRepository;
-        this.internalGroupService = internalGroupService;
-        this.internalUserService = internalUserService;
-        this.internalOwnerService = internalOwnerService;
+        this.groupService = groupService;
+        this.userService = userService;
+        this.ownerService = ownerService;
         this.securityService = securityService;
         this.iamLogbookService = iamLogbookService;
         this.tenantConverter = tenantConverter;
@@ -188,14 +188,14 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
 
         profiles.add(
             EntityFactory.buildProfile(
-                ApiIamExternalConstants.HIERARCHY_PROFILE_NAME + " " + tenantIdentifier,
+                ApiIamConstants.HIERARCHY_PROFILE_NAME + " " + tenantIdentifier,
                 getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER),
-                ApiIamExternalConstants.HIERARCHY_PROFILE_DESCRIPTION,
+                ApiIamConstants.HIERARCHY_PROFILE_DESCRIPTION,
                 true,
-                ApiIamExternalConstants.ADMIN_LEVEL,
+                ApiIamConstants.ADMIN_LEVEL,
                 tenantIdentifier,
                 CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME,
-                ApiIamExternalConstants.getHierarchyRoles(),
+                ApiIamConstants.getHierarchyRoles(),
                 customerId
             )
         );
@@ -407,8 +407,8 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
                     tenant.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "ownerId":
-                    final OwnerDto oldOwner = internalOwnerService.getOne(tenant.getOwnerId(), Optional.empty());
-                    final OwnerDto newOwner = internalOwnerService.getOne(
+                    final OwnerDto oldOwner = ownerService.getOne(tenant.getOwnerId(), Optional.empty());
+                    final OwnerDto newOwner = ownerService.getOne(
                         CastUtils.toString(entry.getValue()),
                         Optional.empty()
                     );
@@ -567,8 +567,8 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
     private void addAdminProfilesToAdminGroup(final String customerId, final List<Profile> profiles) {
         final String[] apps = { CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME };
 
-        final UserDto adminUserDto = internalUserService.getDefaultAdminUser(customerId);
-        final GroupDto adminGroupDto = internalGroupService.getOne(
+        final UserDto adminUserDto = userService.getDefaultAdminUser(customerId);
+        final GroupDto adminGroupDto = groupService.getOne(
             adminUserDto.getGroupId(),
             Optional.empty(),
             Optional.empty()
@@ -587,7 +587,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
                 );
             adminGroupDto.getProfileIds().add(profile.getId());
         }
-        internalGroupService.updateProfilesById(adminGroupDto.getId(), adminGroupDto.getProfileIds());
+        groupService.updateProfilesById(adminGroupDto.getId(), adminGroupDto.getProfileIds());
     }
 
     public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {

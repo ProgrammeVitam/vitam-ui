@@ -17,7 +17,7 @@ import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -64,7 +64,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
- * Class for test InternalProfileService with a real repository
+ * Class for test ProfileService with a real repository
  */
 
 @SpringBootTest
@@ -173,7 +173,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
                 "customerId",
                 10,
                 CommonConstants.USERS_APPLICATIONS_NAME,
-                ApiIamExternalConstants.ADMIN_LEVEL
+                ApiIamConstants.ADMIN_LEVEL
             )
         );
         repository.save(
@@ -215,7 +215,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
 
         criteria = new QueryDto();
         criteria.addCriterion("name", "nameadmin", CriterionOperator.EQUALS);
-        criteria.addCriterion("level", ApiIamExternalConstants.ADMIN_LEVEL, CriterionOperator.EQUALS);
+        criteria.addCriterion("level", ApiIamConstants.ADMIN_LEVEL, CriterionOperator.EQUALS);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
@@ -259,12 +259,12 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
                 "customerId",
                 10,
                 CommonConstants.USERS_APPLICATIONS_NAME,
-                ApiIamExternalConstants.ADMIN_LEVEL
+                ApiIamConstants.ADMIN_LEVEL
             )
         );
 
         when(securityService.getUser()).thenReturn(dummyData.authUserDto());
-        when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
 
         QueryDto criteria = new QueryDto();
         criteria.addCriterion("name", "nametest", CriterionOperator.EQUALS);
@@ -436,7 +436,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
             Arrays.asList(new Role(ServicesData.ROLE_CREATE_USERS), new Role(ServicesData.ROLE_GET_USERS))
         );
 
-        when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("customerId", profile.getCustomerId());
         partialDto.put("id", profile.getId());
@@ -563,7 +563,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
             u.setGroupId("groupTest");
             u.setId("id");
             u.setCustomerId("customerIdTest");
-            u.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+            u.setLevel(ApiIamConstants.ADMIN_LEVEL);
             return u;
         }
 

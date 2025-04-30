@@ -63,7 +63,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class UnitInternalServiceTest {
+public class UnitServiceTest {
 
     @Mock
     private UnitCommonService unitCommonService;

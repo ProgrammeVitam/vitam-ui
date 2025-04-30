@@ -120,7 +120,7 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public UserRestClient userExternalRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
+        return iamRestClientFactory.getUserRestClient();
     }
 
     @Bean

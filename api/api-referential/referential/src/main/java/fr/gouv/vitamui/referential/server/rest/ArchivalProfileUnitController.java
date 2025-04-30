@@ -83,9 +83,9 @@ import java.util.Optional;
 @RequestMapping(RestApi.ARCHIVAL_PROFILE_URL)
 @Getter
 @Setter
-public class ArchivalProfileUnitExternalController {
+public class ArchivalProfileUnitController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ArchivalProfileUnitExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchivalProfileUnitController.class);
 
     @Autowired
     private ArchivalProfileUnitService archivalProfileUnitService;

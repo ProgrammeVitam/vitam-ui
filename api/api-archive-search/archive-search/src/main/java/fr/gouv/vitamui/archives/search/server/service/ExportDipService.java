@@ -56,7 +56,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * Archive-Search export Dip Internal service.
+ * Archive-Search export Dip service.
  */
 @Service
 public class ExportDipService {

@@ -14,7 +14,7 @@ import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -126,10 +126,10 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     @Test
     public void testCheckExistByCustomerIdAndName() {
         final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com", CUSTOMER_ID);
-        mainUserDto.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        mainUserDto.setLevel(ApiIamConstants.ADMIN_LEVEL);
         Mockito.when(securityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(securityService.getUser()).thenReturn(mainUserDto);
-        Mockito.when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        Mockito.when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
 
         repository.save(IamServerUtilsTest.buildGroup(ID, "identifier", "nameknow", CUSTOMER_ID));
 
@@ -173,13 +173,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
         repository.save(IamServerUtilsTest.buildGroup(ID, "id1", "name", CUSTOMER_ID, LEVEL));
         repository.save(IamServerUtilsTest.buildGroup("idLevel", "id2", "nameLevel", CUSTOMER_ID, LEVEL));
         repository.save(
-            IamServerUtilsTest.buildGroup(
-                "idAdmin",
-                "id3",
-                "nameAdmin",
-                CUSTOMER_ID,
-                ApiIamExternalConstants.ADMIN_LEVEL
-            )
+            IamServerUtilsTest.buildGroup("idAdmin", "id3", "nameAdmin", CUSTOMER_ID, ApiIamConstants.ADMIN_LEVEL)
         );
         repository.save(IamServerUtilsTest.buildGroup("idSubLvl", "id4", "nameSubLvl", CUSTOMER_ID, LEVEL + ".SUB"));
 
@@ -205,7 +199,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
 
         criteria = new QueryDto();
         criteria.addCriterion("id", "idAdmin", CriterionOperator.EQUALS);
-        criteria.addCriterion("level", ApiIamExternalConstants.ADMIN_LEVEL, CriterionOperator.EQUALS);
+        criteria.addCriterion("level", ApiIamConstants.ADMIN_LEVEL, CriterionOperator.EQUALS);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
@@ -223,23 +217,17 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     @Test
     public void testCheckExistAdminUser() {
         final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com", CUSTOMER_ID);
-        mainUserDto.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        mainUserDto.setLevel(ApiIamConstants.ADMIN_LEVEL);
         mainUserDto.setCustomerId(CUSTOMER_ID);
 
         repository.save(IamServerUtilsTest.buildGroup(ID, "id1", "name", CUSTOMER_ID, LEVEL));
         repository.save(
-            IamServerUtilsTest.buildGroup(
-                "idAdmin",
-                "id2",
-                "nameAdmin",
-                CUSTOMER_ID,
-                ApiIamExternalConstants.ADMIN_LEVEL
-            )
+            IamServerUtilsTest.buildGroup("idAdmin", "id2", "nameAdmin", CUSTOMER_ID, ApiIamConstants.ADMIN_LEVEL)
         );
 
         Mockito.when(securityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(securityService.getUser()).thenReturn(mainUserDto);
-        Mockito.when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        Mockito.when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
 
         QueryDto criteria = new QueryDto();
         criteria.addCriterion("id", ID, CriterionOperator.EQUALS);

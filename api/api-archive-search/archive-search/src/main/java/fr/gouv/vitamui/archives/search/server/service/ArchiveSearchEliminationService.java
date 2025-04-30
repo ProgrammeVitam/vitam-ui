@@ -63,7 +63,7 @@ import java.util.Optional;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ONLY_DATE_FORMAT;
 
 /**
- * Archive-Search destroy and destroy analysis rules Internal service.
+ * Archive-Search destroy and destroy analysis rules service.
  */
 @Service
 public class ArchiveSearchEliminationService {

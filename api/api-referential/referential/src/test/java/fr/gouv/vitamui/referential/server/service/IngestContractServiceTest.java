@@ -92,7 +92,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class IngestContractInternalServiceTest {
+public class IngestContractServiceTest {
 
     @Mock
     private IngestContractCommonService ingestContractCommonService;

@@ -235,7 +235,7 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ApplicationRestClient applicationRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getApplicationExternalRestClient();
+        return iamRestClientFactory.getApplicationRestClient();
     }
 
     @Bean
@@ -250,12 +250,12 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ExternalParametersRestClient externalParametersRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getExternalParametersExternalRestClient();
+        return iamRestClientFactory.getExternalParametersRestClient();
     }
 
     @Bean
     public UserRestClient userRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
+        return iamRestClientFactory.getUserRestClient();
     }
 
     @Bean
