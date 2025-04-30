@@ -36,40 +36,17 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 import { SecurityApiService } from '../api/security-api.service';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { Account } from '../models/account/account.interface';
-import { AccountApiService } from './account-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  constructor(
-    private accountApi: AccountApiService,
-    private securityApi: SecurityApiService,
-    private snackBarService: VitamUISnackBarService,
-  ) {}
+  constructor(private securityApi: SecurityApiService) {}
 
   public getMyAccount(): Observable<Account> {
     return this.securityApi.getAuthenticated();
-  }
-
-  public patchMe(accountPartial: { [key: string]: any }): Observable<Account> {
-    return this.accountApi.patchMe(accountPartial).pipe(
-      tap(
-        () => {
-          this.snackBarService.open({
-            message: 'SNACKBAR.UPDATED_ACCOUNT',
-            icon: 'vitamui-icon-user',
-          });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message });
-        },
-      ),
-    );
   }
 }
