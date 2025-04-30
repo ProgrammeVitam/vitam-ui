@@ -184,7 +184,7 @@ public class ListCustomersAction extends AbstractAction {
 
     @NotNull
     private Event processNoUserFoundMatchingInputEmail(MutableAttributeMap<Object> flowScope, String username) {
-        List<IdentityProviderDto> identityProviders = identityProviderHelper.findAllByUserIdentifier(
+        List<IdentityProviderDto> identityProviders = identityProviderHelper.findAllProvidersByUserIdentifier(
             providersService.getProviders(),
             username
         );
