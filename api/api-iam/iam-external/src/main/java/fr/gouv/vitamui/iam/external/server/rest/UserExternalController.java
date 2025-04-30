@@ -193,9 +193,8 @@ public class UserExternalController implements CrudController<UserDto> {
     }
 
     @PatchMapping(CommonConstants.PATH_ME)
-    @Secured(ServicesData.ROLE_UPDATE_ME_USERS)
-    public UserDto patchMe(@RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    @Secured(ServicesData.ROLE_ADMIN_UPDATE_ME_USERS)
+    public UserDto patchMe(@RequestBody final Map<String, Object> partialDto) throws PreconditionFailedException {
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch me with {}", partialDto);
         return userExternalService.patchMe(partialDto);
