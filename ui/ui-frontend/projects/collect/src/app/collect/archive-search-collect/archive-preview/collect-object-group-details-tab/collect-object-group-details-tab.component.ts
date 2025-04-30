@@ -68,6 +68,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
   hasDownloadDocumentRole = false;
+  private allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
 
   constructor(
     private archiveCollectService: ArchiveCollectService,
@@ -88,7 +89,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   }
 
   unitHasObject(): boolean {
-    return this.archiveUnit.DescriptionLevel === DescriptionLevel.ITEM && !!this.archiveUnit['#object'];
+    return this.allowedDescriptionLevel.includes(this.archiveUnit.DescriptionLevel) && !!this.archiveUnit['#object'];
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
