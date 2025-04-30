@@ -241,7 +241,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         },
       })
       .afterClosed()
-      .pipe(filter(({ success }) => success))
+      .pipe(filter((result) => result?.success))
       .subscribe((result) => {
         if (result.action === 'local') {
           this.subscriptions.add(this.downloadProfile().subscribe());
@@ -270,7 +270,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         },
       })
       .afterClosed()
-      .pipe(filter(({ success }) => success))
+      .pipe(filter((result) => result?.success))
       .subscribe(({ profileVersion, data: createNoticeDialogParams }) => {
         if (this.profileService.isMode(ProfileType.PUA)) {
           const profileDescription = this.editProfile
@@ -290,7 +290,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           } else {
             this.subscriptions.add(
               this.fileService.notice.subscribe((value: ProfileDescription) => {
-                this.profile = Object.assign(profile, value);
+                this.profile = { ...value, ...profile };
                 this.profileDescription = value;
               }),
             );
@@ -319,10 +319,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
       })
       .afterClosed()
       .pipe(
-        filter(
-          ({ success }: { success: boolean; data: ProfileDescription; profileType: ProfileType; profileVersion: ProfileVersion }) =>
-            success,
-        ),
+        filter((result) => result?.success),
         switchMap((targetNoticeEvent) => {
           const profileDescription = targetNoticeEvent.data;
           const data: FileNode[] = this.data;
