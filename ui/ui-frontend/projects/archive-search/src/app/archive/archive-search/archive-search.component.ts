@@ -103,7 +103,6 @@ import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-up
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
-const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 
 @Component({
   selector: 'app-archive-search',
@@ -745,9 +744,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.addCriteria(
             c,
             value,
-            c === ALL_ARCHIVE_UNIT_TYPES
-              ? this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + value.id)
-              : value.value,
+            value.value,
             criteria.keyTranslated,
             criteria.operator,
             SearchCriteriaTypeEnum.FIELDS,

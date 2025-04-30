@@ -1154,9 +1154,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.nbQueryCriteria,
             c,
             value,
-            c === ALL_ARCHIVE_UNIT_TYPES
-              ? this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + value.id)
-              : value.value,
+            value.value,
             criteria.keyTranslated,
             criteria.operator,
             SearchCriteriaTypeEnum.FIELDS,
