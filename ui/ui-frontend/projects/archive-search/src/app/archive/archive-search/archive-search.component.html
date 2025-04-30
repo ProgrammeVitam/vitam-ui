@@ -271,18 +271,20 @@
 </div>
 
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submitted">
-  <div class="sup-header text large bold">
-    <vitamui-common-archive-unit-count
-      [search]="search$"
-      [archiveUnitCount]="totalResults"
-      (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
-      [(selectedArchiveUnitCount)]="selectedItemCount"
-      [threshold]="10000"
-      [(pending)]="pending"
-      [allChecked]="isAllChecked"
-      class="col-8"
-    ></vitamui-common-archive-unit-count>
-    <div class="button-container">
+  <vitamui-sup-header>
+    <ng-container title>
+      <vitamui-common-archive-unit-count
+        [search]="search$"
+        [archiveUnitCount]="totalResults"
+        (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
+        [(selectedArchiveUnitCount)]="selectedItemCount"
+        [threshold]="10000"
+        [(pending)]="pending"
+        [allChecked]="isAllChecked"
+        class="col-8"
+      ></vitamui-common-archive-unit-count>
+    </ng-container>
+    <ng-container buttons>
       <button class="btn btn-circle large tertiary" [disabled]="!(totalResults > 0 && selectedItemCount > 0)">
         <i class="vitamui-icon vitamui-icon-import-csv" (click)="exportArchiveUnitsToCsvFile()"></i>
       </button>
@@ -348,8 +350,8 @@
           {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
         </button>
       </vitamui-common-menu-button>
-    </div>
-  </div>
+    </ng-container>
+  </vitamui-sup-header>
 
   <table mat-table [dataSource]="archiveUnits">
     <ng-container matColumnDef="checkbox">

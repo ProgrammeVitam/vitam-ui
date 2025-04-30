@@ -26,17 +26,17 @@
 
 <h2>{{ 'ARRAY.NEW_TABLES' | translate }}</h2>
 <h3>{{ 'ARRAY.HEADER' | translate }}</h3>
-<div class="sup-header text large bold">
-  <span>{{ 'ARRAY.EXPORT_RESULTS' | translate }}</span>
-  <div class="button-container">
-    <button class="btn link">{{ 'ARRAY.EXPORT_RESULTS' | translate }}</button>
+<vitamui-sup-header>
+  <ng-container title>{{ 'ARRAY.EXPORT_RESULTS' | translate }}</ng-container>
+  <ng-container buttons>
+    <button class="btn link pr-2">{{ 'ARRAY.EXPORT_RESULTS' | translate }}</button>
     <button class="btn btn-circle large tertiary"><i class="vitamui-icon vitamui-icon-import-csv"></i></button>
-    <vitamui-common-menu-button outline="none" menuButtonSize="medium" class="ml-2" overlayPos="end" icon="vitamui-icon-more-horiz">
+    <vitamui-common-menu-button class="pl-2" outline="none" menuButtonSize="medium" overlayPos="end" icon="vitamui-icon-more-horiz">
       <button mat-menu-item>Activer</button>
       <button mat-menu-item>Désactiver</button>
     </vitamui-common-menu-button>
-  </div>
-</div>
+  </ng-container>
+</vitamui-sup-header>
 <h3>{{ 'ARRAY.TABLE' | translate }}</h3>
 <table>
   <thead>

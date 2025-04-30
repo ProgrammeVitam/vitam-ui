@@ -51,6 +51,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AccessContract, AccessContractService, Unit, unitToVitamuiIcon } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
+import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-archive-preview',
@@ -82,6 +83,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
     private route: ActivatedRoute,
     private translateService: TranslateService,
     private accessContractService: AccessContractService,
+    private archiveSharedDataService: ArchiveSharedDataService,
   ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
@@ -101,6 +103,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.selectedIndex = 0;
+    this.archiveSharedDataService.emitSelectedUnit(null);
   }
 
   async checkBeforeExit() {
