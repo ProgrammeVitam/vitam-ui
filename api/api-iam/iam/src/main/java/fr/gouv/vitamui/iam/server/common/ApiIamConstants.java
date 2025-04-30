@@ -42,9 +42,9 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import java.util.List;
 
 /**
- * Constants for API IAM External.
+ * Constants for API IAM.
  */
-public final class ApiIamExternalConstants {
+public final class ApiIamConstants {
 
     public static final String ADMIN_CLIENT_ROOT = "ADMIN_CLIENT_ROOT";
 
@@ -116,7 +116,7 @@ public final class ApiIamExternalConstants {
 
     public static final String PHONE_NUMBER_VALID_REGEXP = "^[+]{1}[0-9]{11,12}$";
 
-    private ApiIamExternalConstants() {
+    private ApiIamConstants() {
         // do nothing
     }
 

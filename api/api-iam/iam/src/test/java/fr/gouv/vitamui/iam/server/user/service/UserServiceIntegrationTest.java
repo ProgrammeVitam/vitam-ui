@@ -19,7 +19,7 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.Address;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
@@ -139,7 +139,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
     @BeforeEach
     public void setUp() throws NoSuchFieldException, SecurityException, Exception {
         groupService = mock(GroupService.class);
-        ProfileService internalProfileService = mock(ProfileService.class);
+        ProfileService profileService = mock(ProfileService.class);
         httpContext = mock(HttpContext.class);
         customerRepository = mock(CustomerRepository.class);
         ProfileRepository profilRepository = mock(ProfileRepository.class);
@@ -152,7 +152,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
             sequenceGeneratorService,
             userRepository,
             groupService,
-            internalProfileService,
+            profileService,
             mock(UserEmailService.class),
             tenantRepository,
             securityService,
@@ -502,7 +502,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
                 "user-admin@vitamui.com",
                 GROUP_ID,
                 CUSTOMER_ID,
-                ApiIamExternalConstants.ADMIN_LEVEL
+                ApiIamConstants.ADMIN_LEVEL
             )
         );
         userRepository.save(
@@ -540,7 +540,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
 
         criteria = new QueryDto();
         criteria.addCriterion("email", "user-admin@vitamui.com", CriterionOperator.EQUALS);
-        criteria.addCriterion("level", ApiIamExternalConstants.ADMIN_LEVEL, CriterionOperator.EQUALS);
+        criteria.addCriterion("level", ApiIamConstants.ADMIN_LEVEL, CriterionOperator.EQUALS);
         exist = userService.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
@@ -558,7 +558,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
     @Test
     public void testCheckExistAdminUser() {
         final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com", CUSTOMER_ID);
-        mainUserDto.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        mainUserDto.setLevel(ApiIamConstants.ADMIN_LEVEL);
 
         final User userDev = IamServerUtilsTest.buildUser(
             "userDev",
@@ -573,13 +573,13 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
             "user-admin@vitamui.com",
             "otherGroup",
             CUSTOMER_ID,
-            ApiIamExternalConstants.ADMIN_LEVEL
+            ApiIamConstants.ADMIN_LEVEL
         );
         userRepository.save(userAdmin);
 
         Mockito.when(securityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(securityService.getUser()).thenReturn(mainUserDto);
-        Mockito.when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        Mockito.when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
 
         QueryDto criteria = new QueryDto();
         criteria.addCriterion("email", "user-dev@vitamui.com", CriterionOperator.EQUALS);

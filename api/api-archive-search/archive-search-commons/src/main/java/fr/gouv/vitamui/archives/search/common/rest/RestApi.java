@@ -35,7 +35,6 @@ public class RestApi {
     public static final String SEARCH_PATH = "/search";
     public static final String EXPORT_CSV_SEARCH_PATH = "/export-csv-search";
     public static final String FILING_HOLDING_SCHEME_PATH = "/filling-holding-schema";
-    public static final String ACCESS_CONTRACT = "/accesscontracts";
     public static final String DOWNLOAD_ARCHIVE_UNIT = "/downloadobjectfromunit";
     public static final String ARCHIVE_UNIT_INFO = "/archiveunit";
     public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";

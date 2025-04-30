@@ -49,7 +49,7 @@ public class ArchiveSearchExternalParametersServiceTest {
     public static final String SOME_ACCESS_CONTRACT = "SOME_ACCESS_CONTRACT";
     public static final int SOME_TENANT = 1;
 
-    @MockBean(name = "exteralParametersInternalRestClient")
+    @MockBean(name = "externalParametersRestClient")
     private ExternalParametersRestClient externalParametersRestClient;
 
     @MockBean(name = "securityService")

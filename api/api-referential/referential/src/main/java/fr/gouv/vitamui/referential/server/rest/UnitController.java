@@ -67,7 +67,7 @@ import java.util.Optional;
 public class UnitController {
 
     @Autowired
-    private UnitService unitExternalService;
+    private UnitService unitService;
 
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_UNITS)
@@ -75,7 +75,7 @@ public class UnitController {
         throws InvalidParseOperationException, VitamClientException {
         ParameterChecker.checkParameter("The archive unit id is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
-        return unitExternalService.findUnitById(id);
+        return unitService.findUnitById(id);
     }
 
     @PostMapping({ RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID })
@@ -84,7 +84,7 @@ public class UnitController {
         throws VitamClientException {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
         SanityChecker.sanitizeJson(dsl);
-        return unitExternalService.findUnitByDsl(id, dsl);
+        return unitService.findUnitByDsl(id, dsl);
     }
 
     @PostMapping(CommonConstants.PATH_ID + CommonConstants.PATH_OBJECTS)
@@ -94,12 +94,12 @@ public class UnitController {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeJson(dsl);
-        return unitExternalService.findObjectMetadataById(id, dsl);
+        return unitService.findObjectMetadataById(id, dsl);
     }
 
     @Secured(ServicesData.ROLE_GET_FILLING_PLAN_ACCESS)
     @GetMapping(RestApi.FILING_PLAN_PATH)
     public VitamUISearchResponseDto getFilingAndHoldingUnits() throws VitamClientException, JsonProcessingException {
-        return unitExternalService.getFilingAndHoldingUnits();
+        return unitService.getFilingAndHoldingUnits();
     }
 }

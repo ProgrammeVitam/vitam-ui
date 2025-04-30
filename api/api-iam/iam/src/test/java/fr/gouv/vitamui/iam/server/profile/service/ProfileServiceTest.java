@@ -10,7 +10,7 @@ import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.utils.DtoFactory;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.group.dao.GroupRepository;
@@ -214,14 +214,14 @@ public class ProfileServiceTest extends AbstractMongoTests {
     @Test
     public void testAddMoreRestrictionsAdminUser() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
-        user.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        user.setLevel(ApiIamConstants.ADMIN_LEVEL);
 
         when(securityService.userIsRootLevel()).thenCallRealMethod();
         when(securityService.getUser()).thenReturn(user);
-        when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
 
         List<CriteriaDefinition> criteriaList = new ArrayList<>();
-        criteriaList.add(Criteria.where("level").is(ApiIamExternalConstants.ADMIN_LEVEL));
+        criteriaList.add(Criteria.where("level").is(ApiIamConstants.ADMIN_LEVEL));
 
         service.addDataAccessRestrictions(criteriaList);
         assertThat(criteriaList.size()).isEqualTo(1);
@@ -234,35 +234,35 @@ public class ProfileServiceTest extends AbstractMongoTests {
     @Test
     public void levelValidPatternValidator() {
         String level = "TEST.TOTO.TATA";
-        boolean levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        boolean levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isTrue();
 
         level = "TITI.12.TATA";
-        levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isTrue();
 
         level = "TITI.12.taTA";
-        levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isFalse();
 
         level = "TaTI..12.taTA";
-        levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isFalse();
 
         level = "TaTI12.taTA..";
-        levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isFalse();
 
         level = ".";
-        levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isFalse();
 
         level = "..";
-        levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isFalse();
 
         level = "";
-        levelValid = Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level);
+        levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isTrue();
     }
 

@@ -48,7 +48,7 @@ import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.Application;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.server.common.utils.EntityFactory;
 import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
@@ -121,22 +121,22 @@ public class InitCustomerService {
     private UserRepository userRepository;
 
     @Autowired
-    private OwnerService internalOwnerService;
+    private OwnerService ownerService;
 
     @Autowired
-    private TenantService internalTenantService;
+    private TenantService tenantService;
 
     @Autowired
-    private UserService internalUserService;
+    private UserService userService;
 
     @Autowired
     private UserInfoService userInfoService;
 
     @Autowired
-    private ProfileService internalProfileService;
+    private ProfileService profileService;
 
     @Autowired
-    private GroupService internalGroupService;
+    private GroupService groupService;
 
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
@@ -263,7 +263,7 @@ public class InitCustomerService {
     }
 
     private UserDto saveUser(final UserDto dto) {
-        return internalUserService.create(dto);
+        return userService.create(dto);
     }
 
     private UserInfoDto saveUserInfo(String language) {
@@ -300,7 +300,7 @@ public class InitCustomerService {
         final String customerId,
         final ExternalParametersDto fullAccessContractDto
     ) {
-        internalTenantService.checkIfTenantIdIsAvailable(tenantId);
+        tenantService.checkIfTenantIdIsAvailable(tenantId);
         final Tenant tenant = new Tenant();
         tenant.setCustomerId(customerId);
         tenant.setName(tenantName);
@@ -432,12 +432,12 @@ public class InitCustomerService {
         final Profile userProfile = EntityFactory.buildProfile(
             ServicesData.SERVICE_USERS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-            ApiIamExternalConstants.USERS_PROFILE_DESCRIPTION,
+            ApiIamConstants.USERS_PROFILE_DESCRIPTION,
             true,
-            ApiIamExternalConstants.ADMIN_LEVEL,
+            ApiIamConstants.ADMIN_LEVEL,
             proofTenant.getIdentifier(),
             CommonConstants.USERS_APPLICATIONS_NAME,
-            ApiIamExternalConstants.getUsersRoles(),
+            ApiIamConstants.getUsersRoles(),
             customerDto.getId()
         );
         profiles.add(saveProfile(userProfile));
@@ -445,12 +445,12 @@ public class InitCustomerService {
         final Profile groupProfile = EntityFactory.buildProfile(
             ServicesData.SERVICE_GROUPS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-            ApiIamExternalConstants.GROUPS_PROFILE_DESCRIPTION,
+            ApiIamConstants.GROUPS_PROFILE_DESCRIPTION,
             true,
-            ApiIamExternalConstants.ADMIN_LEVEL,
+            ApiIamConstants.ADMIN_LEVEL,
             proofTenant.getIdentifier(),
             CommonConstants.PROFILES_GROUPS_APPLICATIONS_NAME,
-            ApiIamExternalConstants.getGroupsRoles(),
+            ApiIamConstants.getGroupsRoles(),
             customerDto.getId()
         );
         profiles.add(saveProfile(groupProfile));
@@ -458,12 +458,12 @@ public class InitCustomerService {
         final Profile profileUserProfileDto = EntityFactory.buildProfile(
             ServicesData.SERVICE_PROFILES_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-            ApiIamExternalConstants.PROFILE_DESCRIPTION,
+            ApiIamConstants.PROFILE_DESCRIPTION,
             true,
-            ApiIamExternalConstants.ADMIN_LEVEL,
+            ApiIamConstants.ADMIN_LEVEL,
             proofTenant.getIdentifier(),
             CommonConstants.PROFILES_APPLICATIONS_NAME,
-            ApiIamExternalConstants.getProfilesRoles(),
+            ApiIamConstants.getProfilesRoles(),
             customerDto.getId()
         );
         profiles.add(saveProfile(profileUserProfileDto));
@@ -471,12 +471,12 @@ public class InitCustomerService {
         final Profile accountProfile = EntityFactory.buildProfile(
             ServicesData.SERVICE_ACCOUNTS_PROFILES_NAMES + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-            ApiIamExternalConstants.ACCOUNT_PROFILE_DESCRIPTION,
+            ApiIamConstants.ACCOUNT_PROFILE_DESCRIPTION,
             true,
-            ApiIamExternalConstants.ADMIN_LEVEL,
+            ApiIamConstants.ADMIN_LEVEL,
             proofTenant.getIdentifier(),
             CommonConstants.ACCOUNTS_APPLICATIONS_NAME,
-            ApiIamExternalConstants.getAccountRoles(),
+            ApiIamConstants.getAccountRoles(),
             customerDto.getId()
         );
         profiles.add(saveProfile(accountProfile));
@@ -500,7 +500,7 @@ public class InitCustomerService {
                 });
         }
 
-        final List<Profile> tenantProfiles = internalTenantService.getDefaultProfiles(
+        final List<Profile> tenantProfiles = tenantService.getDefaultProfiles(
             proofTenant.getCustomerId(),
             proofTenant.getIdentifier()
         );
@@ -529,9 +529,9 @@ public class InitCustomerService {
         final Group group = EntityFactory.buildGroup(
             getAdminClientRootName(customerDto),
             generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
-            ApiIamExternalConstants.ADMIN_CLIENT_ROOT,
+            ApiIamConstants.ADMIN_CLIENT_ROOT,
             true,
-            ApiIamExternalConstants.ADMIN_LEVEL,
+            ApiIamConstants.ADMIN_LEVEL,
             filteredProfiles,
             customerDto.getId()
         );
@@ -543,14 +543,14 @@ public class InitCustomerService {
         userDto.setOtp(false);
         userDto.setType(UserTypeEnum.GENERIC);
         userDto.setSubrogeable(true);
-        userDto.setLastname(ApiIamExternalConstants.ADMIN_CLIENT_LASTNAME);
-        userDto.setFirstname(ApiIamExternalConstants.ADMIN_CLIENT_FIRSTNAME);
+        userDto.setLastname(ApiIamConstants.ADMIN_CLIENT_LASTNAME);
+        userDto.setFirstname(ApiIamConstants.ADMIN_CLIENT_FIRSTNAME);
         userDto.setUserInfoId(saveUserInfo(getLanguage(customerDto)).getId());
         userDto.setGroupId(group.getId());
-        userDto.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        userDto.setLevel(ApiIamConstants.ADMIN_LEVEL);
         userDto.setCustomerId(customerDto.getId());
         userDto.setEmail(
-            ApiIamExternalConstants.ADMIN_CLIENT_PREFIX_EMAIL +
+            ApiIamConstants.ADMIN_CLIENT_PREFIX_EMAIL +
             CommonConstants.EMAIL_SEPARATOR +
             customerDto.getDefaultEmailDomain().replace(".*", "")
         );
@@ -562,7 +562,7 @@ public class InitCustomerService {
     }
 
     public String getAdminClientRootName(final CustomerDto customerDto) {
-        return ApiIamExternalConstants.ADMIN_CLIENT_ROOT + " " + customerDto.getCode();
+        return ApiIamConstants.ADMIN_CLIENT_ROOT + " " + customerDto.getCode();
     }
 
     protected String generateIdentifier(final String sequenceName) {

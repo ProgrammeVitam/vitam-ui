@@ -27,24 +27,12 @@
 
 package fr.gouv.vitamui.collect.server.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.collect.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.collect.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
-import fr.gouv.vitamui.collect.server.service.ProjectObjectGroupService;
-import fr.gouv.vitamui.collect.server.service.ProjectService;
-import fr.gouv.vitamui.collect.server.service.SearchCriteriaHistoryService;
-import fr.gouv.vitamui.collect.server.service.TransactionArchiveUnitService;
-import fr.gouv.vitamui.collect.server.service.TransactionService;
-import fr.gouv.vitamui.collect.server.service.converters.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
-import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
-import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
@@ -93,12 +81,12 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityService externalSecurityService() {
+    public SecurityService securityService() {
         return new SecurityService();
     }
 
     @Bean
-    public AuthentificationService externalAuthentificationService(
+    public AuthentificationService authenticationService(
         final ContextRestClient contextRestClient,
         final UserRestClient userRestClient
     ) {
@@ -106,7 +94,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamRestClientFactory iamExternalRestClientFactory(
+    public IamRestClientFactory iamRestClientFactory(
         final ApiCollectApplicationProperties apiCollectApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
@@ -114,40 +102,8 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public UserRestClient userInternalRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
-    }
-
-    @Bean
-    public ProjectService collectInternalService(
-        final CollectService collectService,
-        ObjectMapper objectMapper,
-        ExternalParametersService externalParametersService
-    ) {
-        return new ProjectService(collectService, objectMapper, externalParametersService);
-    }
-
-    @Bean
-    public TransactionService transactionInternalService(final CollectService collectService) {
-        return new TransactionService(collectService);
-    }
-
-    @Bean
-    public TransactionArchiveUnitService projectArchiveUnitInternalService(
-        final CollectService collectService,
-        AgencyCommonService agencyCommonService,
-        final RuleCommonService ruleCommonService,
-        ObjectMapper objectMapper
-    ) {
-        return new TransactionArchiveUnitService(collectService, agencyCommonService, ruleCommonService, objectMapper);
-    }
-
-    @Bean
-    public ProjectObjectGroupService projectObjectGroupInternalService(
-        final CollectService collectService,
-        ObjectMapper objectMapper
-    ) {
-        return new ProjectObjectGroupService(collectService, objectMapper);
+    public UserRestClient userRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getUserRestClient();
     }
 
     @Bean
@@ -156,24 +112,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SearchCriteriaHistoryService searchCriteriaHistoryInternalService(
-        final SequenceGeneratorService sequenceGeneratorService,
-        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
-        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final SecurityService securityService
-    ) {
-        return new SearchCriteriaHistoryService(
-            sequenceGeneratorService,
-            searchCriteriaHistoryRepository,
-            searchCriteriaHistoryConverter,
-            securityService
-        );
-    }
-
-    @Bean
-    public ExternalParametersRestClient externalParametersInternalRestClient(
-        final IamRestClientFactory iamRestClientFactory
-    ) {
-        return iamRestClientFactory.getExternalParametersExternalRestClient();
+    public ExternalParametersRestClient externalParametersRestClient(final IamRestClientFactory iamRestClientFactory) {
+        return iamRestClientFactory.getExternalParametersRestClient();
     }
 }

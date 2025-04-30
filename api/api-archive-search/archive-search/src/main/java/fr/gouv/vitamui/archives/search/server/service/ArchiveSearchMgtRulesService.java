@@ -71,7 +71,7 @@ import java.util.Optional;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
 /**
- * Archive-Search Management rules Internal service.
+ * Archive-Search Management rules service.
  */
 @Service
 public class ArchiveSearchMgtRulesService {

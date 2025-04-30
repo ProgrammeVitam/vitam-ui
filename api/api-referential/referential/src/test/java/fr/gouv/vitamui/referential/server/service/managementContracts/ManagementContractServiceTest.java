@@ -57,7 +57,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class ManagementContractInternalServiceTest {
+public class ManagementContractServiceTest {
 
     @Mock
     private LogbookService logbookService;
