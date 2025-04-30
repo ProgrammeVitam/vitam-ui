@@ -15,7 +15,7 @@ spring:
     multipart:
       max-file-size: -1
       max-request-size: -1
-
+cas.tenant.identifier: -1
 server:
   host:
   port: 8087

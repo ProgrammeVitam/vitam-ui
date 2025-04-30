@@ -46,7 +46,6 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,9 +79,6 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
 
     @MockBean
     private ExternalParametersService externalParametersService;
-
-    @MockBean
-    private SecurityService securityService;
 
     private TransactionArchiveUnitController transactionArchiveUnitController;
 

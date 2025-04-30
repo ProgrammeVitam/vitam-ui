@@ -5,7 +5,6 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
 import org.junit.Test;
@@ -32,9 +31,6 @@ public class GroupExternalControllerTest extends ApiIamControllerTest<GroupDto> 
 
     @MockBean
     private GroupService service;
-
-    @MockBean
-    private SecurityService securityService;
 
     private GroupController mockedController = MvcUriComponentsBuilder.on(GroupController.class);
 

@@ -51,7 +51,7 @@ ingest:
         key-password: changeme
         type: JKS
       hostname-verification: false
-
+cas.tenant.identifier: -1
 # Jaeger
 opentracing:
   jaeger:

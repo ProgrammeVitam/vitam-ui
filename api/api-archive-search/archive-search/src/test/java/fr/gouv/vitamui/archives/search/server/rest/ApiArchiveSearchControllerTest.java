@@ -40,6 +40,7 @@ import fr.gouv.vitamui.archives.search.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
@@ -50,4 +51,7 @@ public abstract class ApiArchiveSearchControllerTest<T extends IdDto> extends Ap
 
     @MockBean
     private ApiAuthenticationProvider apiAuthenticationProvider;
+
+    @MockBean
+    private SecurityService securityService;
 }

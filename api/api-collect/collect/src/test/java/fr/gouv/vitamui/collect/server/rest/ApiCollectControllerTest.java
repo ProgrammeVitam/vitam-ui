@@ -33,6 +33,7 @@ import fr.gouv.vitamui.collect.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
@@ -43,4 +44,7 @@ public abstract class ApiCollectControllerTest<T extends IdDto> extends ApiContr
 
     @MockBean
     private ApiAuthenticationProvider apiAuthenticationProvider;
+
+    @MockBean
+    protected SecurityService securityService;
 }

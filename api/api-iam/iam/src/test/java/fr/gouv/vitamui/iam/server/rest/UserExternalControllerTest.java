@@ -6,7 +6,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
@@ -35,9 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserExternalControllerTest.class);
-
-    @MockBean
-    private SecurityService securityService;
 
     @MockBean
     private UserService userService;
