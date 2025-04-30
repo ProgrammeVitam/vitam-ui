@@ -34,18 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Account } from '../../models/account/account.interface';
-import { AccountService } from '../account.service';
 
 @Component({
   selector: 'vitamui-common-account-information-tab',
   templateUrl: './account-information-tab.component.html',
   styleUrls: ['./account-information-tab.component.scss'],
 })
-export class AccountInformationTabComponent implements OnInit {
+export class AccountInformationTabComponent {
   public form: FormGroup;
 
   public language: string;
@@ -64,10 +63,7 @@ export class AccountInformationTabComponent implements OnInit {
   // tslint:disable-next-line:variable-name
   private _account: Account;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private accountService: AccountService,
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       id: [null],
       firstname: [{ value: null, disabled: true }, Validators.required],
@@ -80,12 +76,6 @@ export class AccountInformationTabComponent implements OnInit {
       address: [{ value: null, disabled: true }, Validators.required],
       type: [{ value: null, disabled: true }],
       profileGroup: [{ value: null, disabled: true }],
-    });
-  }
-
-  ngOnInit() {
-    this.form.valueChanges.subscribe((values: Account) => {
-      this.accountService.patchMe(values).subscribe();
     });
   }
 
