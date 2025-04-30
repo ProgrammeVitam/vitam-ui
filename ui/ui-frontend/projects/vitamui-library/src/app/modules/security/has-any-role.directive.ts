@@ -67,7 +67,7 @@ export class HasAnyRoleDirective implements OnDestroy {
       this.roleSubscription.unsubscribe();
     }
 
-    this.roleSubscription = this.securityService.hasAnyRole(data.appId, data.tenantIdentifier, ...data.roles).subscribe((allowed) => {
+    this.roleSubscription = this.securityService.hasAnyRole$(data.appId, data.tenantIdentifier, ...data.roles).subscribe((allowed) => {
       if (allowed && !this.viewEmbedded) {
         this.viewEmbedded = true;
         this.viewContainer.createEmbeddedView(this.templateRef);

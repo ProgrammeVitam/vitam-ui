@@ -61,7 +61,7 @@ export const EditAgencyGuard: CanActivateFn = (route, _state): Observable<boolea
   }
 
   // Vérification des permissions
-  return securityService.hasRole(ApplicationId.AGENCIES_APP, tenantIdentifier, Role.ROLE_UPDATE_AGENCIES).pipe(
+  return securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_UPDATE_AGENCIES, tenantIdentifier).pipe(
     map((hasPermission) => {
       if (!hasPermission) router.navigateByUrl(ROUTES.AGENCY_DETAILS(tenantIdentifier, agencyIdentifier)).then();
       return hasPermission;

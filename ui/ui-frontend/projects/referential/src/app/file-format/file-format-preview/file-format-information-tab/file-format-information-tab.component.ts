@@ -157,7 +157,7 @@ export class FileFormatInformationTabComponent {
         filter((params: any) => params.tenantIdentifier),
         tap((params: { tenantIdentifier: string }) => this.tenantId.next(params.tenantIdentifier)),
         switchMap((params: { tenantIdentifier: string }) =>
-          this.securityService.hasRole(ApplicationId.FILE_FORMATS_APP, +params.tenantIdentifier, Role.ROLE_UPDATE_FILE_FORMATS),
+          this.securityService.hasRole$(ApplicationId.FILE_FORMATS_APP, Role.ROLE_UPDATE_FILE_FORMATS, +params.tenantIdentifier),
         ),
       )
       .subscribe((canUpdateFileFormat) => this.canUpdateFileFormat.next(canUpdateFileFormat));

@@ -95,15 +95,15 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {
-        this.hasCreateRole = this.securityService.hasRole(
+        this.hasCreateRole = this.securityService.hasRole$(
           ApplicationId.FILE_FORMATS_APP,
-          parseInt(params.tenantIdentifier),
           Role.ROLE_CREATE_FILE_FORMATS,
-        );
-        this.hasImportRole = this.securityService.hasRole(
-          ApplicationId.FILE_FORMATS_APP,
           parseInt(params.tenantIdentifier),
+        );
+        this.hasImportRole = this.securityService.hasRole$(
+          ApplicationId.FILE_FORMATS_APP,
           Role.ROLE_IMPORT_FILE_FORMATS,
+          parseInt(params.tenantIdentifier),
         );
       }
     });

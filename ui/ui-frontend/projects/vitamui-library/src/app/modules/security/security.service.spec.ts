@@ -35,13 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable no-magic-numbers */
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
+import { TenantSelectionService } from '../tenant-selection.service';
 import { AuthService } from '../auth.service';
 import { SecurityService } from './security.service';
 
 describe('SecurityService', () => {
+  let securityService: SecurityService;
+
   beforeEach(() => {
     const authStubService = {
       user$: of({
@@ -62,77 +65,88 @@ describe('SecurityService', () => {
       }),
     };
     TestBed.configureTestingModule({
-      providers: [SecurityService, { provide: AuthService, useValue: authStubService }],
+      providers: [
+        SecurityService,
+        {
+          provide: TenantSelectionService,
+          useValue: {
+            getSelectedTenant: () => ({ identifier: 1 }),
+          },
+        },
+        { provide: AuthService, useValue: authStubService },
+      ],
+    });
+
+    securityService = TestBed.inject(SecurityService);
+  });
+
+  it('should be created', () => {
+    expect(securityService).toBeTruthy();
+  });
+
+  it("shouldn't have any role", () => {
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_GET_2').subscribe((allowed) => {
+      expect(allowed).toBeFalsy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_TEST').subscribe((allowed) => {
+      expect(allowed).toBeFalsy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_TEST', 'ROLE_GET_2', 'DELETE').subscribe((allowed) => {
+      expect(allowed).toBeFalsy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 2, 'ROLE_FAKE', 'ROLE_DELETE').subscribe((allowed) => {
+      expect(allowed).toBeFalsy();
     });
   });
 
-  it('should be created', inject([SecurityService], (service: SecurityService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should have at least one role', () => {
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_GET').subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_DELETE').subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_DELETE', 'ROLE_TEST').subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_TEST', 'ROLE_GET').subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 1, 'ROLE_DELETE', 'ROLE_GET').subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
+    });
+    securityService.hasAnyRole$('FAKE_APP', 2, 'ROLE_DELETE', 'ROLE_GET').subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
+    });
+  });
 
-  it("shouldn't have any role", inject([SecurityService, AuthService], (securityService: SecurityService) => {
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_GET_2').subscribe((allowed) => {
-      expect(allowed).toBeFalsy();
+  it('should have role', () => {
+    securityService.hasRole$('FAKE_APP', 'ROLE_GET', 1).subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
     });
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_TEST').subscribe((allowed) => {
-      expect(allowed).toBeFalsy();
+    securityService.hasRole$('FAKE_APP', 'ROLE_DELETE', 1).subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
     });
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_TEST', 'ROLE_GET_2', 'DELETE').subscribe((allowed) => {
-      expect(allowed).toBeFalsy();
+    securityService.hasRole$('FAKE_APP', 'ROLE_GET', 2).subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
     });
-    securityService.hasAnyRole('FAKE_APP', 2, 'ROLE_FAKE', 'ROLE_DELETE').subscribe((allowed) => {
-      expect(allowed).toBeFalsy();
+    securityService.hasRole$('FAKE_APP', 'ROLE_TEST', 2).subscribe((allowed) => {
+      expect(allowed).toBeTruthy();
     });
-  }));
+  });
 
-  it('should have at least one role', inject([SecurityService], (securityService: SecurityService) => {
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_GET').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_DELETE').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_DELETE', 'ROLE_TEST').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_TEST', 'ROLE_GET').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasAnyRole('FAKE_APP', 1, 'ROLE_DELETE', 'ROLE_GET').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasAnyRole('FAKE_APP', 2, 'ROLE_DELETE', 'ROLE_GET').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-  }));
-
-  it('should have role', inject([SecurityService], (securityService: SecurityService) => {
-    securityService.hasRole('FAKE_APP', 1, 'ROLE_GET').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasRole('FAKE_APP', 1, 'ROLE_DELETE').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasRole('FAKE_APP', 2, 'ROLE_GET').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-    securityService.hasRole('FAKE_APP', 2, 'ROLE_TEST').subscribe((allowed) => {
-      expect(allowed).toBeTruthy();
-    });
-  }));
-
-  it("shouldn't have role", inject([SecurityService], (securityService: SecurityService) => {
-    securityService.hasRole('FAKE_APP', 1, 'ROLE_GET_2').subscribe((allowed) => {
+  it("shouldn't have role", () => {
+    securityService.hasRole$('FAKE_APP', 'ROLE_GET_2', 1).subscribe((allowed) => {
       expect(allowed).toBeFalsy();
     });
-    securityService.hasRole('FAKE_APP', 1, 'ROLE').subscribe((allowed) => {
+    securityService.hasRole$('FAKE_APP', 'ROLE', 1).subscribe((allowed) => {
       expect(allowed).toBeFalsy();
     });
-    securityService.hasRole('FAKE_APP', 1, 'ROLE_TEST').subscribe((allowed) => {
+    securityService.hasRole$('FAKE_APP', 'ROLE_TEST', 1).subscribe((allowed) => {
       expect(allowed).toBeFalsy();
     });
-    securityService.hasRole('FAKE_APP', 2, 'ROLE_DELETE').subscribe((allowed) => {
+    securityService.hasRole$('FAKE_APP', 'ROLE_DELETE', 2).subscribe((allowed) => {
       expect(allowed).toBeFalsy();
     });
-  }));
+  });
 });

@@ -366,16 +366,24 @@ customer-init:
         - ROLE_UPDATE_MANAGEMENT_CONTRACT
         - ROLE_DELETE_MANAGEMENT_CONTRACT
 
-    - name: Profil pour la consultation des ontologies et gestion des schémas
-      description: Consultation des ontologies et gestion des schémas
+    - name: Ontology - gestion
+      description: Profil pour la consultation et la gestion des ontologies et schémas dans Vitam
       app-name: ONTOLOGY_APP
       level:
       roles:
         - ROLE_GET_ONTOLOGIES
-        - ROLE_IMPORT_ONTOLOGY
+        - ROLE_IMPORT_ONTOLOGIES
         - ROLE_IMPORT_SCHEMAS
         - ROLE_GET_SCHEMAS
         - ROLE_DELETE_SCHEMAS
+
+    - name: Ontologie - lecture seule
+      description: Profil pour la consultation des ontologies et schémas dans Vitam, en lecture seule
+      app-name: ONTOLOGY_APP
+      level:
+      roles:
+        - ROLE_GET_ONTOLOGIES
+        - ROLE_GET_SCHEMAS
 
   # Other Default profiles for admin group
   admin-profiles:

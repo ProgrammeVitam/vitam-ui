@@ -42,7 +42,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { Ontology, VitamUILibraryModule } from 'vitamui-library';
+import { Ontology, SecurityService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OntologyService } from '../../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab.component';
@@ -87,7 +87,16 @@ describe('OntologyInformationTabComponent', () => {
         VitamUILibraryModule,
       ],
       declarations: [OntologyInformationTabComponent],
-      providers: [FormBuilder, { provide: OntologyService, useValue: ontologyServiceMock }],
+      providers: [
+        FormBuilder,
+        { provide: OntologyService, useValue: ontologyServiceMock },
+        {
+          provide: SecurityService,
+          useValue: {
+            hasRole: () => true,
+          },
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

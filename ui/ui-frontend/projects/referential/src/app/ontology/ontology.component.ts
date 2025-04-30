@@ -39,14 +39,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
-import { ApplicationId, GlobalEventService, SidenavPage, SecurityService, Role } from 'vitamui-library';
-import { Ontology } from 'vitamui-library';
-import { FileTypes } from 'vitamui-library';
+import { ApplicationId, FileTypes, GlobalEventService, Ontology, Role, SecurityService, SidenavPage } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { OntologyCreateComponent } from './ontology-create/ontology-create.component';
 import { OntologyListComponent } from './ontology-group/ontology-list/ontology-list.component';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-ontology',
@@ -59,9 +56,9 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   search = '';
   filters: string;
   tenantId: number;
-  canImportOntology$: Observable<boolean>;
-  canImportSchema$: Observable<boolean>;
-  canCreateVocabulary$: Observable<boolean>;
+  canImportOntology: boolean;
+  canImportSchema: boolean;
+  canCreateVocabulary: boolean;
 
   constructor(
     public dialog: MatDialog,
@@ -90,9 +87,9 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   }
 
   private initializePermissions(): void {
-    this.canImportSchema$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_SCHEMAS);
-    this.canImportOntology$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_ONTOLOGY);
-    this.canCreateVocabulary$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_CREATE_ONTOLOGIES);
+    this.canImportSchema = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_SCHEMAS, this.tenantId);
+    this.canImportOntology = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_ONTOLOGIES, this.tenantId);
+    this.canCreateVocabulary = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_CREATE_ONTOLOGIES, this.tenantId);
   }
 
   openCreateOntologyDialog() {

@@ -39,12 +39,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FileFormatComponent } from './file-format.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-file-format-preview',
@@ -82,7 +83,15 @@ describe('FileFormatComponent', () => {
         TranslateModule.forRoot(),
         MatDialogModule,
       ],
-      providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
+      providers: [
+        {
+          provide: SecurityService,
+          useValue: {
+            hasRole$: () => of(true),
+          },
+        },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

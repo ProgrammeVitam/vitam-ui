@@ -102,7 +102,7 @@ describe('ArchiveComponent', () => {
     getAccessContractById: () => of(accessContract),
   };
   const securityServiceMock = {
-    hasRole: () => of(true),
+    hasRole$: () => of(true),
   };
 
   beforeEach(async () => {

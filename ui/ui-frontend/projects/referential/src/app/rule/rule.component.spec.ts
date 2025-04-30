@@ -113,7 +113,7 @@ describe('RuleComponent', () => {
     };
 
     const securityServiceMock = {
-      hasRole: () => of(true),
+      hasRole$: () => of(true),
     };
 
     await TestBed.configureTestingModule({

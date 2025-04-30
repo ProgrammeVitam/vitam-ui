@@ -112,7 +112,7 @@ export class RuleInformationTabComponent implements OnInit {
     this.hasUpdateRuleRole$ = this.route.params.pipe(
       mergeMap((params) => {
         this.tenantIdentifier = +params.tenantIdentifier;
-        return this.securityService.hasRole(RULES_APP, this.tenantIdentifier, VitamuiRoles.ROLE_UPDATE_RULES);
+        return this.securityService.hasRole$(RULES_APP, VitamuiRoles.ROLE_UPDATE_RULES, this.tenantIdentifier);
       }),
     );
   }

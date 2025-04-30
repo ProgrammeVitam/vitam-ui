@@ -339,7 +339,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
 
   hasCollectRole(role: string, tenantIdentifier: number): Observable<boolean> {
     const applicationIdentifier = 'COLLECT_APP';
-    return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
+    return this.securityService.hasRole$(applicationIdentifier, role, tenantIdentifier);
   }
 
   launchDeletionModal(
