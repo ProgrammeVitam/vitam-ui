@@ -94,6 +94,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   projectForm: FormGroup;
 
   hasError = false;
+  errorMessage: string;
   ontologies: Option[];
   filesToUpload: File[] = [];
   zipFileStatus$: Observable<ZipFileStatus>;
@@ -342,6 +343,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
           });
         },
         error: (_error) => {
+          this.hasError = true;
+          this.errorMessage = _error.error.message;
           this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
             duration: 10000,
           });
