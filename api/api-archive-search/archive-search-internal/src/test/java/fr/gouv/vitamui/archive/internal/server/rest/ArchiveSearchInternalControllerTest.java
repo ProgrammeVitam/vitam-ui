@@ -37,7 +37,6 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -60,7 +59,7 @@ public class ArchiveSearchInternalControllerTest {
     @MockBean
     private InternalApiAuthenticationProvider internalApiAuthenticationProvider;
 
-    @Mock
+    @MockBean
     private InternalSecurityService internalSecurityService;
 
     @MockBean

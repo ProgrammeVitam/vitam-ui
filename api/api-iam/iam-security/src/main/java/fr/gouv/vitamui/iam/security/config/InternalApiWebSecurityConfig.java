@@ -38,31 +38,51 @@ package fr.gouv.vitamui.iam.security.config;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.filter.InternalRequestHeadersAuthenticationFilter;
+import fr.gouv.vitamui.iam.security.filter.TenantHeaderFilter;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
  * The security configuration.
- *
- *
  */
 @Getter
 @Setter
 public class InternalApiWebSecurityConfig extends AbstractApiWebSecurityConfig {
 
+    private static final String CAS_TENANT_IDENTIFIER = "cas.tenant.identifier";
+
+    private final InternalSecurityService internalSecurityService;
+    private final Integer casTenantIdentifier;
+
     public InternalApiWebSecurityConfig(
         final AuthenticationProvider apiAuthenticationProvider,
         final RestExceptionHandler restExceptionHandler,
+        final InternalSecurityService internalSecurityService,
         final Environment env
     ) {
         super(apiAuthenticationProvider, restExceptionHandler, env);
+        this.internalSecurityService = internalSecurityService;
+        this.casTenantIdentifier = env.getProperty(CAS_TENANT_IDENTIFIER, Integer.class, -1);
     }
 
     @Override
     protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter() throws Exception {
         return new InternalRequestHeadersAuthenticationFilter(authenticationManager());
+    }
+
+    @Override
+    protected void configureFilters(HttpSecurity http) throws Exception {
+        http.addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class);
+        http.addFilterAt(getTenantHeaderFilter(), BasicAuthenticationFilter.class);
+    }
+
+    protected TenantHeaderFilter getTenantHeaderFilter() {
+        return new TenantHeaderFilter(internalSecurityService, casTenantIdentifier);
     }
 }

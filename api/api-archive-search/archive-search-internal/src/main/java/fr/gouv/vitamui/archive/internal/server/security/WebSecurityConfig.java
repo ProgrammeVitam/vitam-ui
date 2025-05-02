@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archive.internal.server.security;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.config.InternalApiWebSecurityConfig;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -40,8 +41,9 @@ public class WebSecurityConfig extends InternalApiWebSecurityConfig {
     public WebSecurityConfig(
         final AuthenticationProvider apiAuthenticationProvider,
         final RestExceptionHandler restExceptionHandler,
+        final InternalSecurityService internalSecurityService,
         final Environment env
     ) {
-        super(apiAuthenticationProvider, restExceptionHandler, env);
+        super(apiAuthenticationProvider, restExceptionHandler, internalSecurityService, env);
     }
 }

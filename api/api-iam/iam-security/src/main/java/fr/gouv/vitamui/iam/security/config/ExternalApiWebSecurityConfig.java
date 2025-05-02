@@ -46,8 +46,6 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 
 /**
  * The security configuration.
- *
- *
  */
 @Getter
 @Setter

@@ -20,6 +20,8 @@ logging:
   level:
     fr.gouv.vitamui.collect.internal.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
+cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
+
 server:
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | lower == "true" %}
