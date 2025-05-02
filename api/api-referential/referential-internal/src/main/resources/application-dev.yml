@@ -37,7 +37,7 @@ clients:
   iam-internal:
     server-host: localhost
     server-port: 7083
-
+cas.tenant.identifier: -1
 swagger:
   file-path: file:../../../tools/swagger/docs/api-internal/referential-internal/swagger.json
 

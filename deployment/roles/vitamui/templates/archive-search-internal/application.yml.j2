@@ -48,7 +48,7 @@ management:
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
-
+cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 clients:
   iam-internal:
     server-host: {{ vitamui.iam_internal.host }}

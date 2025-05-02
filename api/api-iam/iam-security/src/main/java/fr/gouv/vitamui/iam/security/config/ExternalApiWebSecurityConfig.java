@@ -51,8 +51,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_USER_TOKEN_HEADER;
 
 /**
  * The security configuration.
- *
- *
  */
 @Getter
 @Setter
