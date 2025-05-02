@@ -4259,6 +4259,23 @@
         "WAITING_TO_RECALCULATE": "With not indexed rule",
         "WITHOUT_RULES": "That without defined rules"
       },
+      "STORAGE_RULE": {
+        "RULES_COUNT": "Rules count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final actions",
+        "WITHOUT_RULES": "Without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive units count",
+        "COPY": "Copy",
+        "TRANSFER": "Transfer",
+        "RESTRICT_ACCESS": "Restricted access",
+        "NOT_EXPIRED": "Not expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From date",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "Not indexed",
+        "CALCULATED": "Indexed"
+      },
       "CLOSE": "Close",
       "DISSEMINATION_RULE": {
         "ARCHIVE_UNITS_COUNT": "Archive unit count",
