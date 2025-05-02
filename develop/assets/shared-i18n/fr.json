@@ -4259,6 +4259,23 @@
         "WAITING_TO_RECALCULATE": "Non indexées",
         "WITHOUT_RULES": "Dont sans règle définie"
       },
+      "STORAGE_RULE": {
+        "RULES_COUNT": "Nombre de règles",
+        "EXPIRED_RULES": "Date d'échéance",
+        "FINAL_ACTIONS": "Sort final",
+        "WITHOUT_RULES": "Dont sans règle définie",
+        "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
+        "COPY": "Copie",
+        "TRANSFER": "Transfert",
+        "RESTRICT_ACCESS": "Accès réservé",
+        "NOT_EXPIRED": "Non-Échue",
+        "EXPIRED": "Échue",
+        "DISTINCT_RULES": "Règles distinctes",
+        "FROM_DATE": "À partir du",
+        "SHOW_RULES_LIST": "AFFICHER LISTE",
+        "WAITING_TO_RECALCULATE": "Non indexées",
+        "CALCULATED": "Indexées"
+      },
       "CLOSE": "Fermés",
       "DISSEMINATION_RULE": {
         "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
