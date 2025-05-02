@@ -19,6 +19,8 @@ logging:
   level:
     fr.gouv.vitamui.iam.internal.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
+cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
+
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}

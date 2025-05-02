@@ -5,6 +5,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.security.IamApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.internal.server.security.WebSecurityConfig;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 
@@ -19,4 +20,7 @@ public abstract class ApiIamControllerTest<T extends IdDto> extends ApiCrudContr
 
     @MockBean
     private CustomerRepository repository;
+
+    @MockBean
+    private InternalSecurityService securityService;
 }

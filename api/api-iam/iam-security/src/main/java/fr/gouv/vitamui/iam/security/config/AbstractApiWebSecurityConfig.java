@@ -56,7 +56,6 @@ import static org.springframework.http.HttpMethod.PUT;
 
 /**
  * The security configuration.
- *
  */
 @Getter
 @Setter
@@ -101,9 +100,13 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
             .and()
             .csrf()
             .disable()
-            .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        configureFilters(http);
+    }
+
+    protected void configureFilters(HttpSecurity http) throws Exception {
+        http.addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class);
     }
 
     private CorsConfiguration getCorsConfiguration() {
