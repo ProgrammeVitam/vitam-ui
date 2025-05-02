@@ -48,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import java.security.cert.X509Certificate;
@@ -91,6 +92,11 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
             if (httpContext != null && certificate != null) {
                 try {
                     final ContextDto context = extAuthService.getContextFromHttpContext(httpContext, certificate);
+                    if (authentication != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        /* Temporarily set the authentication in the security context to be able to perform requests
+                           (needed by the call to usersApi.getMe() */
+                        SecurityContextHolder.getContext().setAuthentication(token);
+                    }
                     final AuthUserDto userDto = getAuthenticateUser(httpContext);
                     final Integer tenantIdentifier = httpContext.getTenantIdentifier();
                     final List<String> intersectionRoles = extAuthService.getRoles(context, userDto, tenantIdentifier);

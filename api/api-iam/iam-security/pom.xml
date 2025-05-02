@@ -35,11 +35,11 @@
 		</dependency>
 		<dependency>
 			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>iam-client</artifactId>
+			<artifactId>iam-client-openapi</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>security-client</artifactId>
+			<artifactId>security-client-openapi</artifactId>
 		</dependency>
 
 		<!-- VITAM -->
@@ -70,6 +70,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
     		<scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 		<!-- Documentation -->

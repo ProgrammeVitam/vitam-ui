@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
 import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.iam.client.ApplicationRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ApplicationsApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.ImportSchemaDto;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
@@ -79,7 +79,7 @@ public class SchemaService extends AbstractService {
     private static final String IMPORT_UNIT_SCHEMA = "IMPORT_UNIT_SCHEMA";
     private final ImportSchemaCommonService importSchemaCommonService;
     private final ImportSchemaConverter converter;
-    private final ApplicationRestClient applicationRestClient;
+    private final ApplicationsApi applicationsApi;
     private final AdminExternalClient adminExternalClient;
     private final SecurityService securityService;
 
@@ -89,14 +89,14 @@ public class SchemaService extends AbstractService {
         final SecurityService securityService,
         ImportSchemaCommonService importSchemaCommonService,
         ImportSchemaConverter converter,
-        ApplicationRestClient applicationRestClient
+        ApplicationsApi applicationsApi
     ) {
         super(securityService);
         this.securityService = securityService;
         this.adminExternalClient = adminExternalClient;
         this.importSchemaCommonService = importSchemaCommonService;
         this.converter = converter;
-        this.applicationRestClient = applicationRestClient;
+        this.applicationsApi = applicationsApi;
     }
 
     public Optional<SchemaDto> getSchema(final Collection collection) {
@@ -165,9 +165,7 @@ public class SchemaService extends AbstractService {
             throw new IllegalArgumentException("Filename cannot be null");
         }
 
-        Boolean isIdentifierMandatory = applicationRestClient
-            .isApplicationExternalIdentifierEnabled(securityService.getHttpContext(), IMPORT_UNIT_SCHEMA)
-            .getBody();
+        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(IMPORT_UNIT_SCHEMA);
 
         if (isIdentifierMandatory == null) {
             throw new InternalServerException("The result of the API call should not be null");

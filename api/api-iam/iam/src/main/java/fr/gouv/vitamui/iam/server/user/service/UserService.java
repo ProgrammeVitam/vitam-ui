@@ -640,12 +640,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         return dto;
     }
 
-    public UserDto patchMe(final Map<String, Object> partialDto) {
-        final AuthUserDto user = securityService.getUser();
-        partialDto.put("id", user.getId());
-        return patch(partialDto);
-    }
-
     @Override
     protected User beforePatch(final Map<String, Object> partialDto) {
         final String id = CastUtils.toString(partialDto.get("id"));

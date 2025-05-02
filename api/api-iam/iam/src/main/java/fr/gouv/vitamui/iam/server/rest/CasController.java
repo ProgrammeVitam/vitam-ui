@@ -120,7 +120,7 @@ public class CasController {
     }
 
     @PostMapping(value = RestApi.CAS_LOGIN_PATH)
-    @Operation(operationId = "login", summary = "Performs the login of a user")
+    @Operation(operationId = "cas_login", summary = "Performs the login of a user")
     @Secured(ServicesData.ROLE_CAS_LOGIN)
     public ResponseEntity<UserDto> login(final @Valid @RequestBody LoginRequestDto dto) {
         final String username = dto.getLoginEmail();
@@ -188,7 +188,7 @@ public class CasController {
     }
 
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
-    @Operation(operationId = "changePassword", summary = "Change password of a user")
+    @Operation(operationId = "cas_changePassword", summary = "Change password of a user")
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
     public String changePassword(
@@ -214,7 +214,7 @@ public class CasController {
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
-    @Operation(operationId = "getUsersByEmail", summary = "Get all users having a given email address")
+    @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
     @Secured(ServicesData.ROLE_CAS_USERS)
     public List<UserDto> getUsersByEmail(
         @RequestParam final String email,
@@ -229,7 +229,7 @@ public class CasController {
         value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
         params = { "loginEmail", "loginCustomerId", "idp" }
     )
-    @Operation(operationId = "getUser", summary = "Get a user by their loginEmail, loginCustomerId and idp")
+    @Operation(operationId = "cas_getUser", summary = "Get a user by their loginEmail, loginCustomerId and idp")
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUser(
         @RequestParam final String loginEmail,
@@ -286,7 +286,10 @@ public class CasController {
     }
 
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
-    @Operation(operationId = "logout", summary = "Logout a user, remove the token and delete the subrogation if needed")
+    @Operation(
+        operationId = "cas_logout",
+        summary = "Logout a user, remove the token and delete the subrogation if needed"
+    )
     @Secured(ServicesData.ROLE_CAS_LOGOUT)
     @ResponseStatus(HttpStatus.OK)
     public void logout(
@@ -314,7 +317,7 @@ public class CasController {
     }
 
     @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)
-    @Operation(operationId = "getCustomersByIds", summary = "Get all customers by ids")
+    @Operation(operationId = "cas_getCustomersByIds", summary = "Get all customers by ids")
     @Secured(ServicesData.ROLE_CAS_CUSTOMER_IDS)
     public Collection<CustomerDto> getCustomersByIds(final @RequestParam List<String> customerIds) {
         LOGGER.debug("get all customers by ids={}", customerIds);

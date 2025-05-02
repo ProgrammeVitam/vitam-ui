@@ -103,7 +103,7 @@ public class TenantController implements CrudController<TenantDto> {
 
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    @Operation(operationId = "checkExist", summary = "Check if a tenant exists")
+    @Operation(operationId = "tenants_checkExist", summary = "Check if a tenant exists")
     @Secured({ ServicesData.ROLE_GET_ALL_TENANTS })
     public ResponseEntity<Void> checkExist(final @RequestParam String criteria) {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
@@ -113,7 +113,7 @@ public class TenantController implements CrudController<TenantDto> {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "getOne", summary = "Get a tenant by its identifier")
+    @Operation(operationId = "tenants_getOne", summary = "Get a tenant by its identifier")
     @Secured({ ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS })
     @Override
     public TenantDto getOne(final @PathVariable("id") String id)
@@ -124,7 +124,7 @@ public class TenantController implements CrudController<TenantDto> {
     }
 
     @PostMapping
-    @Operation(operationId = "create", summary = "Create a tenant")
+    @Operation(operationId = "tenants_create", summary = "Create a tenant")
     @Secured(ServicesData.ROLE_CREATE_TENANTS)
     @Override
     public TenantDto create(final @Valid @RequestBody TenantDto dto)
@@ -135,7 +135,7 @@ public class TenantController implements CrudController<TenantDto> {
     }
 
     @PutMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "update", summary = "Update a tenant")
+    @Operation(operationId = "tenants_update", summary = "Update a tenant")
     @Secured(ServicesData.ROLE_UPDATE_TENANTS)
     @Override
     public TenantDto update(final @PathVariable("id") String id, final @Valid @RequestBody TenantDto dto)
@@ -154,7 +154,7 @@ public class TenantController implements CrudController<TenantDto> {
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    @Operation(operationId = "patch", summary = "Patch a tenant")
+    @Operation(operationId = "tenants_patch", summary = "Patch a tenant")
     @Secured(ServicesData.ROLE_UPDATE_TENANTS)
     public TenantDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -169,7 +169,7 @@ public class TenantController implements CrudController<TenantDto> {
         return tenantService.patch(partialDto);
     }
 
-    @Operation(operationId = "getAll", summary = "Get all tenants")
+    @Operation(operationId = "tenants_getAll", summary = "Get all tenants")
     @Secured(ServicesData.ROLE_GET_TENANTS)
     @GetMapping
     @Override
@@ -179,7 +179,7 @@ public class TenantController implements CrudController<TenantDto> {
         return tenantService.getAll(criteria);
     }
 
-    @Operation(operationId = "findHistoryById", summary = "Get history by tenant's id")
+    @Operation(operationId = "tenants_findHistoryById", summary = "Get history by tenant's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException {
@@ -189,7 +189,7 @@ public class TenantController implements CrudController<TenantDto> {
         return tenantService.findHistoryById(id);
     }
 
-    @Operation(operationId = "getAvailableTenants", summary = "Get available tenants")
+    @Operation(operationId = "tenants_getAvailableTenants", summary = "Get available tenants")
     @GetMapping(CommonConstants.PATH_AVAILABLE_TENANTS)
     @Secured({ ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS })
     public List<Integer> getAvailableTenants() {

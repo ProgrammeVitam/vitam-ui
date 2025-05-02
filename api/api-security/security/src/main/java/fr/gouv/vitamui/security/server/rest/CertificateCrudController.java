@@ -46,7 +46,8 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.security.common.dto.CertificateDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
 import fr.gouv.vitamui.security.server.certificate.service.CertificateCrudService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -79,7 +80,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_CERTIFICATES_URL)
 @Getter
 @Setter
-@Api(tags = "certificates", value = "Certificates Management", description = "Certificates Management")
+@Tag(name = "Certificates", description = "Certificates Management")
 public class CertificateCrudController implements CrudController<CertificateDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CertificateCrudController.class);
@@ -91,6 +92,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
 
     @Override
     @GetMapping
+    @Operation(operationId = "certificates_getAll", summary = "Get all certificates")
     public List<CertificateDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("Get ALL criteria {}", criteria);
         return certificateCrudService.getAll(criteria);
@@ -98,6 +100,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
 
     @Override
     @RequestMapping(path = CommonConstants.PATH_ID, method = RequestMethod.HEAD)
+    @Operation(operationId = "certificates_checkExist", summary = "Check the existence of a certificate")
     public ResponseEntity<Void> checkExist(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         LOGGER.debug("Check exists {}", id);
@@ -106,6 +109,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     }
 
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "certificates_getOne", summary = "Get a certificate by its id")
     public CertificateDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get {} criteria={}", id, criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -115,6 +119,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
 
     @Override
     @PostMapping
+    @Operation(operationId = "certificates_create", summary = "Create a certificate")
     public CertificateDto create(final @Valid @RequestBody CertificateDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
@@ -124,6 +129,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
 
     @Override
     @PutMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "certificates_update", summary = "Update a certificate")
     public CertificateDto update(final @PathVariable("id") String id, final @Valid @RequestBody CertificateDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier and the certificate are mandatory parameters: ", id, dto);
@@ -139,6 +145,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
 
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "certificates_delete", summary = "Remove a certificate")
     public void delete(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);

@@ -212,6 +212,11 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-client-openapi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>iam-security</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -219,6 +224,11 @@
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>security-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>security-client-openapi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

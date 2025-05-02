@@ -106,8 +106,8 @@ import fr.gouv.vitamui.iam.server.user.service.UserEmailService;
 import fr.gouv.vitamui.iam.server.user.service.UserExportService;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
-import fr.gouv.vitamui.security.client.ContextRestClient;
-import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -179,16 +179,16 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityRestClientFactory securityRestClientFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final RestTemplateBuilder restTemplateBuilder,
         final RestClientConfiguration securityClientProperties
     ) {
-        return new SecurityRestClientFactory(securityClientProperties, restTemplateBuilder);
+        return new SecurityApiClientsFactory(securityClientProperties, restTemplateBuilder);
     }
 
     @Bean
-    public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-        return securityRestClientFactory.getContextRestClient();
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
+        return securityApiClientsFactory.getContextsApi();
     }
 
     @Bean

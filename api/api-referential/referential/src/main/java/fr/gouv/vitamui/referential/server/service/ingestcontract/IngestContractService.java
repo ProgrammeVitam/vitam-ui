@@ -67,7 +67,7 @@ import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import fr.gouv.vitamui.iam.client.ApplicationRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ApplicationsApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
@@ -119,7 +119,7 @@ public class IngestContractService extends AbstractService {
 
     private final LogbookService logbookService;
 
-    private final ApplicationRestClient applicationRestClient;
+    private final ApplicationsApi applicationsApi;
     private final SecurityService securityService;
 
     @Autowired
@@ -128,7 +128,7 @@ public class IngestContractService extends AbstractService {
         ObjectMapper objectMapper,
         IngestContractConverter converter,
         LogbookService logbookService,
-        ApplicationRestClient applicationRestClient,
+        ApplicationsApi applicationsApi,
         SecurityService securityService
     ) {
         super(securityService);
@@ -136,7 +136,7 @@ public class IngestContractService extends AbstractService {
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
-        this.applicationRestClient = applicationRestClient;
+        this.applicationsApi = applicationsApi;
         this.securityService = securityService;
     }
 
@@ -417,9 +417,7 @@ public class IngestContractService extends AbstractService {
     }
 
     public ResponseEntity<Void> importIngestContracts(VitamContext vitamContext, MultipartFile file) {
-        Boolean isIdentifierMandatory = applicationRestClient
-            .isApplicationExternalIdentifierEnabled(securityService.getHttpContext(), INGEST_CONTRACT)
-            .getBody();
+        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(INGEST_CONTRACT);
 
         if (isIdentifierMandatory == null) {
             throw new InternalServerException("The result of the API call should not be null");

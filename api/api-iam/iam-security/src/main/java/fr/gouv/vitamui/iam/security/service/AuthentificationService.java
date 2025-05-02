@@ -43,9 +43,9 @@ import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.client.UserRestClient;
-import fr.gouv.vitamui.security.client.ContextRestClient;
+import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -68,14 +68,14 @@ public class AuthentificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthentificationService.class);
 
-    private final UserRestClient userRestClient;
+    private final UsersApi usersApi;
 
-    private final ContextRestClient contextRestClient;
+    private final ContextsApi contextsApi;
 
     @Autowired
-    public AuthentificationService(final ContextRestClient contextRestClient, final UserRestClient userRestClient) {
-        this.contextRestClient = contextRestClient;
-        this.userRestClient = userRestClient;
+    public AuthentificationService(final ContextsApi contextsApi, final UsersApi usersApi) {
+        this.contextsApi = contextsApi;
+        this.usersApi = usersApi;
     }
 
     /**
@@ -128,7 +128,7 @@ public class AuthentificationService {
             throw new BadCredentialsException("User token is empty");
         }
 
-        final AuthUserDto userDto = userRestClient.getMe(httpContext);
+        final AuthUserDto userDto = usersApi.getMe();
         if (userDto == null) {
             throw new NotFoundException("User not found for token: " + userToken);
         }
@@ -151,7 +151,7 @@ public class AuthentificationService {
         }
 
         try {
-            final ContextDto context = contextRestClient.findByCertificate(httpContext, certificateBase64);
+            final ContextDto context = contextsApi.findByCertificate(certificateBase64);
             LOGGER.debug("authenticateInternal context={}", context);
 
             final List<Integer> contextTenants = context.getTenants();

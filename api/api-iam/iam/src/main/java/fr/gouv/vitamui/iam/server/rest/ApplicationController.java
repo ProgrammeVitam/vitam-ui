@@ -94,7 +94,7 @@ public class ApplicationController {
      * @return all Applications matching user privileges
      */
     @GetMapping
-    @Operation(operationId = "getAll", summary = "Return all applications matching user privileges")
+    @Operation(operationId = "applications_getAll", summary = "Return all applications matching user privileges")
     public List<ApplicationDto> getAll(
         @Parameter(description = "Criteria to filter the applications") final Optional<String> criteria,
         @RequestParam final Optional<String> embedded
@@ -106,7 +106,10 @@ public class ApplicationController {
     }
 
     @GetMapping("/filtered")
-    @Operation(operationId = "getApplicationsFromUi", summary = "Return config about applications and categories")
+    @Operation(
+        operationId = "applications_getApplicationsFromUi",
+        summary = "Return config about applications and categories"
+    )
     public Map<String, List<ApplicationDto>> getApplicationsFromUi(
         @RequestParam(defaultValue = "true") final boolean filterApp
     ) {

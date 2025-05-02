@@ -58,7 +58,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.iam.client.ApplicationRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ApplicationsApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
@@ -71,8 +71,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.FileCopyUtils;
@@ -104,7 +102,7 @@ public class IngestContractServiceTest {
     private LogbookService logbookService;
 
     @Mock
-    private ApplicationRestClient applicationRestClient;
+    private ApplicationsApi applicationsApi;
 
     @Mock
     private SecurityService securityService;
@@ -122,7 +120,7 @@ public class IngestContractServiceTest {
             objectMapper,
             converter,
             logbookService,
-            applicationRestClient,
+            applicationsApi,
             securityService
         );
     }
@@ -449,9 +447,7 @@ public class IngestContractServiceTest {
 
         when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
 
-        when(
-            applicationRestClient.isApplicationExternalIdentifierEnabled(any(HttpContext.class), eq("INGEST_CONTRACT"))
-        ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("INGEST_CONTRACT"))).thenReturn(false);
 
         when(ingestContractCommonService.createIngestContracts(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
@@ -478,9 +474,7 @@ public class IngestContractServiceTest {
 
         when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
 
-        when(
-            applicationRestClient.isApplicationExternalIdentifierEnabled(any(HttpContext.class), eq("INGEST_CONTRACT"))
-        ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("INGEST_CONTRACT"))).thenReturn(false);
 
         when(ingestContractCommonService.createIngestContracts(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)

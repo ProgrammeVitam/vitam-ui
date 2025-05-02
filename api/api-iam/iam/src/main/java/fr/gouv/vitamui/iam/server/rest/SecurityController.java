@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SecurityController {
 
     @GetMapping
-    @Operation(operationId = "getAuthenticated", summary = "Get authenticated user")
+    @Operation(operationId = "security_getAuthenticated", summary = "Get authenticated user")
     public AuthUserDto getAuthenticated() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {

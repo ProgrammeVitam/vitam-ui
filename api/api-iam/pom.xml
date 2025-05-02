@@ -18,6 +18,7 @@
         <module>iam-security</module>
         <module>iam</module>
         <module>iam-client</module>
+        <module>iam-client-openapi</module>
     </modules>
 
 </project>

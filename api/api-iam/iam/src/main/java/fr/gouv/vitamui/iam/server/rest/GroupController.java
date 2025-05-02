@@ -108,7 +108,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping
-    @Operation(operationId = "getAll", summary = "Get all groups")
+    @Operation(operationId = "groups_getAll", summary = "Get all groups")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public List<GroupDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -119,7 +119,7 @@ public class GroupController implements CrudController<GroupDto> {
 
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    @Operation(operationId = "checkExist", summary = "Check group existence")
+    @Operation(operationId = "groups_checkExist", summary = "Check group existence")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
@@ -129,7 +129,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "getOne", summary = "Get group by id")
+    @Operation(operationId = "groups_getOne", summary = "Get group by id")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public GroupDto getOne(
         final @PathVariable("id") String id,
@@ -146,7 +146,7 @@ public class GroupController implements CrudController<GroupDto> {
 
     @Secured(ServicesData.ROLE_GET_GROUPS)
     @GetMapping(value = "/paginated", params = { "page", "size" })
-    @Operation(operationId = "getAllPaginated", summary = "Get all groups, paginated")
+    @Operation(operationId = "groups_getAllPaginated", summary = "Get all groups, paginated")
     public PaginatedValuesDto<GroupDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
@@ -172,7 +172,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @PostMapping
-    @Operation(operationId = "create", summary = "Create a group")
+    @Operation(operationId = "groups_create", summary = "Create a group")
     @Secured(ServicesData.ROLE_CREATE_GROUPS)
     @Override
     public GroupDto create(final @Valid @RequestBody GroupDto dto)
@@ -190,7 +190,7 @@ public class GroupController implements CrudController<GroupDto> {
 
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "patch", summary = "Patch a group")
+    @Operation(operationId = "groups_patch", summary = "Patch a group")
     @Secured(ServicesData.ROLE_UPDATE_GROUPS)
     public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -215,7 +215,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    @Operation(operationId = "findHistoryById", summary = "Get group history by id")
+    @Operation(operationId = "groups_findHistoryById", summary = "Get group history by id")
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
@@ -230,7 +230,7 @@ public class GroupController implements CrudController<GroupDto> {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
-    @Operation(operationId = "getLevels", summary = "Get levels by criteria")
+    @Operation(operationId = "groups_getLevels", summary = "Get levels by criteria")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public List<String> getLevels(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -239,7 +239,7 @@ public class GroupController implements CrudController<GroupDto> {
     }
 
     @GetMapping(CommonConstants.PATH_EXPORT)
-    @Operation(operationId = "exportProfileGroups", summary = "Export all profile groups to xlsx file")
+    @Operation(operationId = "groups_exportProfileGroups", summary = "Export all profile groups to xlsx file")
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public Resource exportProfileGroups() {
         LOGGER.debug("Export all profile groups to xlsx file");

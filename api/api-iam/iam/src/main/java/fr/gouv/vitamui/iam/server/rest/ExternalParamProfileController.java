@@ -54,6 +54,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.externalparamprofile.service.ExternalParamProfileService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -95,7 +96,10 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
     }
 
     @Secured(ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
-    @Operation(operationId = "getAllPaginated", summary = "Get external parameters profile, paginated result")
+    @Operation(
+        operationId = "externalParamProfile_getAllPaginated",
+        summary = "Get external parameters profile, paginated result"
+    )
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(
         @RequestParam final Integer page,
@@ -129,7 +133,10 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
 
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    @Operation(operationId = "checkExist", summary = "Check existence of external parameter profile")
+    @Operation(
+        operationId = "externalParamProfile_checkExist",
+        summary = "Check existence of external parameter profile"
+    )
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     public ResponseEntity<Void> checkExist(String criteria) {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
@@ -140,7 +147,7 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(operationId = "create", summary = "Create external parameter profile")
+    @Operation(operationId = "externalParamProfile_create", summary = "Create external parameter profile")
     @Secured(ServicesData.ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     public ExternalParamProfileDto create(@RequestBody final ExternalParamProfileDto entityDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -149,8 +156,8 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
         return externalParamProfileService.create(entityDto);
     }
 
+    @Hidden
     @PutMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "update", summary = "Update external parameter profile")
     @Secured(ServicesData.ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     @Override
     public ExternalParamProfileDto update(String id, ExternalParamProfileDto dto) {
@@ -158,7 +165,7 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "getOne", summary = "Get external parameter profile by id")
+    @Operation(operationId = "externalParamProfile_getOne", summary = "Get external parameter profile by id")
     @Secured(ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     @Override
     public ExternalParamProfileDto getOne(@PathVariable String id)
@@ -168,7 +175,10 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
         return externalParamProfileService.getOne(id);
     }
 
-    @Operation(operationId = "findHistoryById", summary = "Get history by external parameter profile profile's id")
+    @Operation(
+        operationId = "externalParamProfile_findHistoryById",
+        summary = "Get history by external parameter profile profile's id"
+    )
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     @Secured(ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
@@ -179,7 +189,7 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
         return externalParamProfileService.findHistoryById(id);
     }
 
-    @Operation(operationId = "patchMe", summary = "Patch external parameter profile")
+    @Operation(operationId = "externalParamProfile_patchMe", summary = "Patch external parameter profile")
     @PatchMapping(value = CommonConstants.PATH_ME)
     @Secured(ServicesData.ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     public ExternalParamProfileDto patchMe(@RequestBody final Map<String, Object> partialDto)

@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>security-client</artifactId>
+            <artifactId>security-client-openapi</artifactId>
         </dependency>
 
         <dependency>
@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-client</artifactId>
+            <artifactId>iam-client-openapi</artifactId>
         </dependency>
 
         <!-- SPRING BOOT -->

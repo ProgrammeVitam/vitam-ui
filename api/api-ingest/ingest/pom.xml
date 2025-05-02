@@ -36,11 +36,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>security-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-client</artifactId>
+            <artifactId>iam-client-openapi</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>

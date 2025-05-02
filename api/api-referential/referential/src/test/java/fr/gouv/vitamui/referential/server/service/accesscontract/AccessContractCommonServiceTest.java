@@ -63,7 +63,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
-import fr.gouv.vitamui.iam.client.ApplicationRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ApplicationsApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractCommonService;
 import org.apache.commons.io.IOUtils;
@@ -74,8 +74,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
@@ -111,7 +109,7 @@ public class AccessContractCommonServiceTest {
     private LogbookService logbookService;
 
     @Mock
-    private ApplicationRestClient applicationRestClient;
+    private ApplicationsApi applicationsApi;
 
     @Mock
     private SecurityService securityService;
@@ -127,7 +125,7 @@ public class AccessContractCommonServiceTest {
             vitamUIAccessContractCommonService,
             objectMapper,
             logbookService,
-            applicationRestClient,
+            applicationsApi,
             securityService
         );
     }
@@ -476,9 +474,7 @@ public class AccessContractCommonServiceTest {
 
         when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
 
-        when(
-            applicationRestClient.isApplicationExternalIdentifierEnabled(any(HttpContext.class), eq("ACCESS_CONTRACT"))
-        ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("ACCESS_CONTRACT"))).thenReturn(false);
 
         when(
             accessContractCommonService.createAccessContracts(any(VitamContext.class), any(InputStream.class))
@@ -504,9 +500,7 @@ public class AccessContractCommonServiceTest {
 
         when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
 
-        when(
-            applicationRestClient.isApplicationExternalIdentifierEnabled(any(HttpContext.class), eq("ACCESS_CONTRACT"))
-        ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));
+        when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("ACCESS_CONTRACT"))).thenReturn(false);
 
         when(
             accessContractCommonService.createAccessContracts(any(VitamContext.class), any(InputStream.class))

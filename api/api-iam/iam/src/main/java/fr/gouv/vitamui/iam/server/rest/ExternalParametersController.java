@@ -83,7 +83,10 @@ public class ExternalParametersController {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ME)
-    @Operation(operationId = "getMyExternalParameters", summary = "Get external parameters of the authenticated user")
+    @Operation(
+        operationId = "externalParameters_getMyExternalParameters",
+        summary = "Get external parameters of the authenticated user"
+    )
     @Secured(ServicesData.ROLE_GET_EXTERNAL_PARAMS)
     public Map<String, String> getMyExternalParameters() {
         LOGGER.debug("GetMyExternalParameters");

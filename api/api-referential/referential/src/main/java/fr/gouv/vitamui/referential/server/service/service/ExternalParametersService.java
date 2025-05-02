@@ -28,7 +28,7 @@
 package fr.gouv.vitamui.referential.server.service.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -50,15 +50,15 @@ public class ExternalParametersService {
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersRestClient externalParametersRestClient;
+    private final ExternalParametersApi externalParametersApi;
     private final SecurityService securityService;
 
     @Autowired
     public ExternalParametersService(
-        final ExternalParametersRestClient externalParametersRestClient,
+        final ExternalParametersApi externalParametersApi,
         final SecurityService securityService
     ) {
-        this.externalParametersRestClient = externalParametersRestClient;
+        this.externalParametersApi = externalParametersApi;
         this.securityService = securityService;
     }
 
@@ -69,9 +69,7 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        final Map<String, String> myExternalParameter = externalParametersRestClient.getMyExternalParameters(
-            securityService.getHttpContext()
-        );
+        final Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
@@ -106,9 +104,7 @@ public class ExternalParametersService {
      */
     public Optional<Long> retrieveProfilThreshold() {
         Optional<Long> thresholdOpt = Optional.empty();
-        Map<String, String> myExternalParameter = externalParametersRestClient.getMyExternalParameters(
-            securityService.getHttpContext()
-        );
+        Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
         if (CollectionUtils.isNotEmpty(myExternalParameter.entrySet())) {
             Map.Entry<String, String> parameterThreshold = myExternalParameter
                 .entrySet()

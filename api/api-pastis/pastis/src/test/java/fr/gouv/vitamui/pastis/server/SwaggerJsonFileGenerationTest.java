@@ -42,13 +42,13 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
-import fr.gouv.vitamui.iam.client.IamRestClientFactory;
-import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
+import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.AuthentificationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.security.client.ContextRestClient;
-import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -68,7 +68,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
     @MockBean
-    public ContextRestClient contextCrudRestClient;
+    public ContextsApi contextsApi;
 
     @MockBean
     public ApiAuthenticationProvider apiAuthenticationProvider;
@@ -80,10 +80,10 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     public AuthentificationService authentificationService;
 
     @MockBean
-    public IamRestClientFactory iamRestClientFactory;
+    public IamApiClientsFactory iamApiClientsFactory;
 
     @MockBean
-    public UserRestClient userRestClient;
+    public UsersApi usersApi;
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;
@@ -98,5 +98,5 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     private AuthenticationProvider authenticationProvider;
 
     @MockBean
-    private SecurityRestClientFactory securityRestClientFactory;
+    private SecurityApiClientsFactory securityApiClientsFactory;
 }

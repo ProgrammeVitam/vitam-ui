@@ -111,7 +111,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @GetMapping
-    @Operation(operationId = "getAll", summary = "Get all identity providers")
+    @Operation(operationId = "identityProviders_getAll", summary = "Get all identity providers")
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public List<IdentityProviderDto> getAll(
         final Optional<String> criteria,
@@ -124,7 +124,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "getOne", summary = "Get an identity provider by its id")
+    @Operation(operationId = "identityProviders_getOne", summary = "Get an identity provider by its id")
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public IdentityProviderDto getOne(
         final @PathVariable("id") String id,
@@ -141,7 +141,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
 
     @GetMapping(CommonConstants.PATH_ID + "/idpMetadata")
     @Operation(
-        operationId = "getIdpMetadataProviderByProviderId",
+        operationId = "identityProviders_getIdpMetadataProviderByProviderId",
         summary = "Get an identity provider's idp metadata by its id"
     )
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
@@ -165,7 +165,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
 
     @GetMapping(CommonConstants.PATH_ID + "/spMetadata")
     @Operation(
-        operationId = "getSpMetadataProviderByProviderId",
+        operationId = "identityProviders_getSpMetadataProviderByProviderId",
         summary = "Get an identity provider's sp metadata by its id"
     )
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
@@ -196,7 +196,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
      * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @PostMapping
-    @Operation(operationId = "create", summary = "Create an identity provider")
+    @Operation(operationId = "identityProviders_create", summary = "Create an identity provider")
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(ServicesData.ROLE_CREATE_PROVIDERS)
     public IdentityProviderDto create(
@@ -230,7 +230,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
      * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @Override
-    @Operation(operationId = "patch", summary = "Patch an identity provider")
+    @Operation(operationId = "identityProviders_patch", summary = "Patch an identity provider")
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
     public IdentityProviderDto patch(
@@ -248,7 +248,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     }
 
     @PatchMapping(value = "/{id}/keystore")
-    @Operation(operationId = "patchProviderKeystore", summary = "Patch a keystore provider")
+    @Operation(operationId = "identityProviders_patchProviderKeystore", summary = "Patch a keystore provider")
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore
     // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
@@ -273,7 +273,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
      * In this method, exceptionally, we disable content sanitization because we are dealing with SAML-type providers whose XML configuration file might contain HTML content.
      */
     @PatchMapping(value = "/{id}/idpMetadata")
-    @Operation(operationId = "patchProviderIdpMetadata", summary = "Update idpMetadata provider")
+    @Operation(operationId = "identityProviders_patchProviderIdpMetadata", summary = "Update idpMetadata provider")
     @ResponseStatus(HttpStatus.OK)
     // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
     public IdentityProviderDto patchProviderIdpMetadata(

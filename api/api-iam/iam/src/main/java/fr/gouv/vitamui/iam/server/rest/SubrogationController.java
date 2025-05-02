@@ -67,7 +67,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -99,14 +98,14 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @GetMapping
-    @Operation(operationId = "getAll", summary = "Get all subrogations")
+    @Operation(operationId = "subrogations_getAll", summary = "Get all subrogations")
     @Secured(ServicesData.ROLE_GET_SUBROGATIONS)
     public List<SubrogationDto> getAll(@RequestParam final Optional<String> criteria) {
         return subrogationService.getAll(criteria);
     }
 
     @Override
-    @Operation(operationId = "checkExist", summary = "Check the existence of a subrogation by id")
+    @Operation(operationId = "subrogations_checkExist", summary = "Check the existence of a subrogation by id")
     @RequestMapping(path = CommonConstants.PATH_ID, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @PathVariable("id") String id) {
         throw new NotImplementedException("checkExist not supported");
@@ -114,7 +113,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @GetMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "getOne", summary = "Get subrogation by id")
+    @Operation(operationId = "subrogations_getOne", summary = "Get subrogation by id")
     @Secured(ServicesData.ROLE_GET_SUBROGATIONS)
     public SubrogationDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -126,7 +125,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @PostMapping
-    @Operation(operationId = "create", summary = "Create a subrogation")
+    @Operation(operationId = "subrogations_create", summary = "Create a subrogation")
     @Secured(ServicesData.ROLE_CREATE_SUBROGATIONS)
     public SubrogationDto create(@Valid @RequestBody final SubrogationDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -135,7 +134,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
         return subrogationService.create(dto);
     }
 
-    @Operation(operationId = "getGenericUsers", summary = "Get all generic users with criteria")
+    @Operation(operationId = "subrogations_getGenericUsers", summary = "Get all generic users with criteria")
     @Secured(ServicesData.ROLE_GET_USERS_SUBROGATIONS)
     @GetMapping(path = "/users/generic", params = { "page", "size" })
     public PaginatedValuesDto<UserDto> getGenericUsers(
@@ -161,7 +160,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     }
 
     @GetMapping(path = "/groups" + CommonConstants.PATH_ID)
-    @Operation(operationId = "getGroupById", summary = "Get group by id")
+    @Operation(operationId = "subrogations_getGroupById", summary = "Get group by id")
     @Secured(ServicesData.ROLE_GET_GROUPS_SUBROGATIONS)
     public GroupDto getGroupById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -172,13 +171,11 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     }
 
     @Override
-    @Operation(operationId = "update", summary = "Update a subrogation")
-    @PutMapping(CommonConstants.PATH_ID)
-    public SubrogationDto update(final @PathVariable("id") String id, final @Valid @RequestBody SubrogationDto dto) {
+    public SubrogationDto update(String id, SubrogationDto dto) throws InvalidParseOperationException {
         throw new NotImplementedException("Update not supported");
     }
 
-    @Operation(operationId = "accept", summary = "Accept a subrogation")
+    @Operation(operationId = "subrogations_accept", summary = "Accept a subrogation")
     @PatchMapping("/surrogate/accept/{id}")
     public SubrogationDto accept(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -188,7 +185,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
         return subrogationService.accept(id);
     }
 
-    @Operation(operationId = "decline", summary = "Decline a subrogation")
+    @Operation(operationId = "subrogations_decline", summary = "Decline a subrogation")
     @DeleteMapping("/surrogate/decline/{id}")
     public void decline(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -199,7 +196,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     }
 
     @Operation(
-        operationId = "getMySubrogationAsSurrogate",
+        operationId = "subrogations_getMySubrogationAsSurrogate",
         summary = "Get authenticated user's subrogation as surrogate"
     )
     @GetMapping("/me/surrogate")
@@ -208,7 +205,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     }
 
     @Operation(
-        operationId = "getMySubrogationAsSuperuser",
+        operationId = "subrogations_getMySubrogationAsSuperuser",
         summary = "Get authenticated user's subrogation as superuser"
     )
     @GetMapping("/me/superuser")
@@ -218,7 +215,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
-    @Operation(operationId = "delete", summary = "Delete a subrogation by id")
+    @Operation(operationId = "subrogations_delete", summary = "Delete a subrogation by id")
     @Secured(ServicesData.ROLE_DELETE_SUBROGATIONS)
     public void delete(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {

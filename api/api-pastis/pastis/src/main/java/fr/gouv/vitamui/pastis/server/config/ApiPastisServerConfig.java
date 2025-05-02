@@ -45,16 +45,16 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
-import fr.gouv.vitamui.iam.client.IamRestClientFactory;
-import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
+import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.AuthentificationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
-import fr.gouv.vitamui.security.client.ContextRestClient;
-import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -77,19 +77,16 @@ import java.util.Arrays;
 public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
     @Bean
-    public SecurityRestClientFactory securityRestClientFactory(
-        final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
+    public SecurityApiClientsFactory securityApiClientsFactory(
+        final ApiPastisApplicationProperties apiPastisApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new SecurityRestClientFactory(
-            apiArchiveExternalApplicationProperties.getSecurityClient(),
-            restTemplateBuilder
-        );
+        return new SecurityApiClientsFactory(apiPastisApplicationProperties.getSecurityClient(), restTemplateBuilder);
     }
 
     @Bean
-    public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-        return securityRestClientFactory.getContextRestClient();
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
+        return securityApiClientsFactory.getContextsApi();
     }
 
     @Bean
@@ -104,23 +101,23 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public AuthentificationService externalAuthentificationService(
-        final ContextRestClient contextRestClient,
-        final UserRestClient userRestClient
+        final ContextsApi contextsApi,
+        final UsersApi usersApi
     ) {
-        return new AuthentificationService(contextRestClient, userRestClient);
+        return new AuthentificationService(contextsApi, usersApi);
     }
 
     @Bean
-    public IamRestClientFactory iamExternalRestClientFactory(
+    public IamApiClientsFactory iamApiClientsFactory(
         final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamRestClientFactory(apiArchiveExternalApplicationProperties.getIamClient(), restTemplateBuilder);
+        return new IamApiClientsFactory(apiArchiveExternalApplicationProperties.getIamClient(), restTemplateBuilder);
     }
 
     @Bean
-    public UserRestClient userExternalRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserRestClient();
+    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
+        return iamApiClientsFactory.getUsersApi();
     }
 
     @Bean

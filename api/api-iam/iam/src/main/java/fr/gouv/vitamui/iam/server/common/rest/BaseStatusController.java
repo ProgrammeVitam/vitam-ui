@@ -55,14 +55,14 @@ import java.util.Map;
 public abstract class BaseStatusController {
 
     @GetMapping(RestApi.STATUS_URL)
-    @Operation(operationId = "status", summary = "Basic health check endpoint")
+    @Operation(operationId = "status_status", summary = "Basic health check endpoint")
     @ResponseBody
     public String status() {
         return "OK";
     }
 
     @GetMapping(RestApi.AUTOTEST_URL)
-    @Operation(operationId = "autotest", summary = "Health check endpoint for different repositories")
+    @Operation(operationId = "status_autotest", summary = "Health check endpoint for different repositories")
     @ResponseBody
     public String autotest() {
         boolean first = true;

@@ -114,7 +114,7 @@ public class LogbookController {
         this.tenantService = tenantService;
     }
 
-    @Operation(operationId = "findOperations", summary = "Get log book operation by json select")
+    @Operation(operationId = "logbooks_findOperations", summary = "Get log book operation by json select")
     @Secured({ ServicesData.ROLE_LOGBOOKS })
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsCommonResponseDto findOperations(
@@ -142,7 +142,7 @@ public class LogbookController {
         );
     }
 
-    @Operation(operationId = "findOperationByUnitId", summary = "Get operation by id")
+    @Operation(operationId = "logbooks_findOperationByUnitId", summary = "Get operation by id")
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     @Secured({ ServicesData.ROLE_LOGBOOKS })
     @ResponseStatus(HttpStatus.OK)
@@ -161,7 +161,7 @@ public class LogbookController {
         );
     }
 
-    @Operation(operationId = "findUnitLifeCyclesByUnitId", summary = "Get unit lifecycle by id")
+    @Operation(operationId = "logbooks_findUnitLifeCyclesByUnitId", summary = "Get unit lifecycle by id")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(
@@ -179,7 +179,7 @@ public class LogbookController {
         );
     }
 
-    @Operation(operationId = "findObjectGroupLifeCyclesByUnitId", summary = "Get object lifecycle by id")
+    @Operation(operationId = "logbooks_findObjectGroupLifeCyclesByUnitId", summary = "Get object lifecycle by id")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(
@@ -200,7 +200,7 @@ public class LogbookController {
         );
     }
 
-    @Operation(operationId = "downloadManifest", summary = "Download the manifest for a given operation")
+    @Operation(operationId = "logbooks_downloadManifest", summary = "Download the manifest for a given operation")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH)
     @ResponseStatus(HttpStatus.OK)
@@ -218,7 +218,7 @@ public class LogbookController {
         }
     }
 
-    @Operation(operationId = "downloadAtr", summary = "Download the ATR file for a given operation")
+    @Operation(operationId = "logbooks_downloadAtr", summary = "Download the ATR file for a given operation")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @ResponseStatus(HttpStatus.OK)
@@ -236,7 +236,7 @@ public class LogbookController {
         }
     }
 
-    @Operation(operationId = "downloadReport", summary = "Download the report file for a given operation")
+    @Operation(operationId = "logbooks_downloadReport", summary = "Download the report file for a given operation")
     @GetMapping(
         value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH,
         produces = MediaType.APPLICATION_OCTET_STREAM_VALUE

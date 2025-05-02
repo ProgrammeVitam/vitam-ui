@@ -29,8 +29,7 @@
 
 package fr.gouv.vitamui.archives.search.server.service;
 
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,16 +48,11 @@ public class ArchiveSearchThresholdService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchThresholdService.class);
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
 
-    private final ExternalParametersRestClient externalParametersRestClient;
-    private final SecurityService securityService;
+    private final ExternalParametersApi externalParametersApi;
 
     @Autowired
-    public ArchiveSearchThresholdService(
-        final ExternalParametersRestClient externalParametersRestClient,
-        SecurityService securityService
-    ) {
-        this.externalParametersRestClient = externalParametersRestClient;
-        this.securityService = securityService;
+    public ArchiveSearchThresholdService(final ExternalParametersApi externalParametersApi) {
+        this.externalParametersApi = externalParametersApi;
     }
 
     /**
@@ -68,9 +62,7 @@ public class ArchiveSearchThresholdService {
      */
     public Optional<Long> retrieveProfilThresholds() {
         Optional<Long> thresholdOpt = Optional.empty();
-        Map<String, String> myExternalParameter = externalParametersRestClient.getMyExternalParameters(
-            this.securityService.getHttpContext()
-        );
+        Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
         if (myExternalParameter != null && !CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             Map.Entry<String, String> parameterThreshold = myExternalParameter
                 .entrySet()

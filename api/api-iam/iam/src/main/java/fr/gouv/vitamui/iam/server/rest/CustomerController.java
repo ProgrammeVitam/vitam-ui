@@ -124,7 +124,7 @@ public class CustomerController implements CrudController<CustomerDto> {
 
     @Override
     @GetMapping
-    @Operation(operationId = "getAll", summary = "Get all customer objects")
+    @Operation(operationId = "customers_getAll", summary = "Get all customer objects")
     @Secured(ServicesData.ROLE_GET_CUSTOMERS)
     public Collection<CustomerDto> getAll(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -133,7 +133,7 @@ public class CustomerController implements CrudController<CustomerDto> {
     }
 
     @Override
-    @Operation(operationId = "checkExist", summary = "Check that a customer exists")
+    @Operation(operationId = "customers_checkExist", summary = "Check that a customer exists")
     @Secured(ServicesData.ROLE_GET_CUSTOMERS)
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
@@ -144,7 +144,7 @@ public class CustomerController implements CrudController<CustomerDto> {
     }
 
     @Override
-    @Operation(operationId = "getOne", summary = "Get a customer by its id")
+    @Operation(operationId = "customers_getOne", summary = "Get a customer by its id")
     @Secured({ ServicesData.ROLE_GET_CUSTOMERS })
     @GetMapping(CommonConstants.PATH_ID)
     public CustomerDto getOne(final @PathVariable("id") String id)
@@ -160,7 +160,7 @@ public class CustomerController implements CrudController<CustomerDto> {
      * Everyone has a right to get his customer informations.
      * @return
      */
-    @Operation(operationId = "getMyCustomer", summary = "Get the customer for the authenticated user")
+    @Operation(operationId = "customers_getMyCustomer", summary = "Get the customer for the authenticated user")
     @GetMapping(path = CommonConstants.PATH_ME)
     public CustomerDto getMyCustomer() {
         return customerService.getMyCustomer();
@@ -168,7 +168,7 @@ public class CustomerController implements CrudController<CustomerDto> {
 
     @Secured(ServicesData.ROLE_GET_CUSTOMERS)
     @GetMapping(value = "/paginated", params = { "page", "size" })
-    @Operation(operationId = "getAllPaginated", summary = "Get all customers using pagination")
+    @Operation(operationId = "customers_getAllPaginated", summary = "Get all customers using pagination")
     public PaginatedValuesDto<CustomerDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
@@ -191,7 +191,7 @@ public class CustomerController implements CrudController<CustomerDto> {
         return customerService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
-    @Operation(operationId = "create", summary = "Create a customer")
+    @Operation(operationId = "customers_create", summary = "Create a customer")
     @Secured(ServicesData.ROLE_CREATE_CUSTOMERS)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -203,7 +203,7 @@ public class CustomerController implements CrudController<CustomerDto> {
     }
 
     @Override
-    @Operation(operationId = "update", summary = "Update a customer")
+    @Operation(operationId = "customers_update", summary = "Update a customer")
     @Secured(ServicesData.ROLE_UPDATE_CUSTOMERS)
     @PutMapping(CommonConstants.PATH_ID)
     public CustomerDto update(final @PathVariable("id") String id, final @Valid @RequestBody CustomerDto dto)
@@ -219,7 +219,7 @@ public class CustomerController implements CrudController<CustomerDto> {
         return customerService.update(dto);
     }
 
-    @Operation(operationId = "patch", summary = "Patch a customer entity")
+    @Operation(operationId = "customers_patch", summary = "Patch a customer entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_CUSTOMERS)
     public CustomerDto patch(
@@ -237,7 +237,7 @@ public class CustomerController implements CrudController<CustomerDto> {
         return customerService.patch(customerData);
     }
 
-    @Operation(operationId = "findHistoryById", summary = "Find history for a customer by its id")
+    @Operation(operationId = "customers_findHistoryById", summary = "Find history for a customer by its id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException {
@@ -256,7 +256,7 @@ public class CustomerController implements CrudController<CustomerDto> {
         throw new NotImplementedException("Method is not implemented");
     }
 
-    @Operation(operationId = "getLogo", summary = "Get customer logo")
+    @Operation(operationId = "customers_getLogo", summary = "Get customer logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> getLogo(
@@ -278,7 +278,7 @@ public class CustomerController implements CrudController<CustomerDto> {
      *
      * @return boolean
      */
-    @Operation(operationId = "getGdprSettingStatus", summary = "Get Gdpr Setting Status")
+    @Operation(operationId = "customers_getGdprSettingStatus", summary = "Get Gdpr Setting Status")
     @GetMapping(CommonConstants.GDPR_STATUS)
     @ResponseStatus(HttpStatus.OK)
     public boolean getGdprSettingStatus() {
