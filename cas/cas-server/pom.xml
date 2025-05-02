@@ -4,7 +4,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>cas</artifactId>
-        <version>8.1.0-SNAPSHOT</version>
+        <version>8.1.0-SNAPSHOT-java-21</version>
     </parent>
     <artifactId>cas-server</artifactId>
     <packaging>war</packaging>
@@ -28,7 +28,7 @@
         <jquery-ui.version>1.13.2</jquery-ui.version>
         <junit-vintage-engine.version>5.7.2</junit-vintage-engine.version>
         <micrometer.version>1.9.3</micrometer.version>
-        <mockito.version>3.12.1</mockito.version>
+        <mockito.version>5.2.0</mockito.version>
         <mongo.version>4.7.1</mongo.version>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
         <rpm.skip>false</rpm.skip>
