@@ -3853,6 +3853,7 @@
         "Strict": "Recherche exacte"
       },
       "FIELDS": {
+        "true": "Oui",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Plan",
@@ -4431,6 +4432,7 @@
       "DISSEMINATION_TITLE": "Diffusion",
       "DUA_TITLE": "Durée d'utilité administrative",
       "FIELDS": {
+        "true": "Oui",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Plan",
