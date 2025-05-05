@@ -83,6 +83,9 @@
         <!--Snakeyaml version override to 2.x to fix CVE-2022-1471-->
         <snakeyaml.version>2.4</snakeyaml.version>
 
+        <!-- override it to fix mockito java 21 issue -->
+
+        <byte-buddy.version>1.15.5</byte-buddy.version>
         <!--Plugins version -->
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
