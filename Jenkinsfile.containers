@@ -16,7 +16,7 @@ pipeline {
         SERVICE_DOCKER_PUSH_URL=credentials("SERVICE_DOCKER_PUSH_URL")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
         GITHUB_ACCOUNT_TOKEN = credentials("vitam-prg-token")
-        JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+        JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
     }
 
     stages {
