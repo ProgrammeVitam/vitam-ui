@@ -74,7 +74,7 @@
         placeholder="{{ 'RULES.APRAISAL_RULES.RULE_NAME' | translate }}"
       >
         <vitamui-common-input-error
-          *ngIf="ruleDetailsForm?.get('oldRuleame')?.touched && ruleDetailsForm?.get('newRuleName')?.hasError('required')"
+          *ngIf="ruleDetailsForm?.get('newRuleName')?.touched && ruleDetailsForm?.get('newRuleName')?.hasError('required')"
           >{{ 'COMMON.REQUIRED' | translate }}
         </vitamui-common-input-error>
       </vitamui-common-input>
@@ -163,12 +163,7 @@
     </vitamui-common-input-error>
 
     <div class="d-flex mt-4 padding-btm-style">
-      <button
-        type="submit"
-        class="btn primary mr-4"
-        [disabled]="ruleDetailsForm.untouched || (ruleDetailsForm.dirty && ruleDetailsForm.errors?.mustUpdateRuleOrStartDate)"
-        (click)="submit()"
-      >
+      <button type="submit" class="btn primary mr-4" [disabled]="ruleDetailsForm.errors?.mustUpdateRuleOrStartDate" (click)="submit()">
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
