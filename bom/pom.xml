@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>bom</artifactId>
-    <version>8.1.0-SNAPSHOT-java-21</version>
+    <version>8.1.0-JDK21SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>VITAMUI BOM</name>
     <description>${project.artifactId}</description>
