@@ -158,6 +158,10 @@ pipeline {
                     environment(name: 'GOAL', value: 'publish')
                 }
             }
+            tools {
+                jdk 'java21'
+                maven 'maven-3.9'
+            }
             steps {
                 dir('ui/ui-frontend') {
                     nvm('v18.20.3') {
