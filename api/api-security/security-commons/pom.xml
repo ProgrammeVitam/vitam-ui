@@ -9,7 +9,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>api-security</artifactId>
-        <version>8.1.0-JDK21-SNAPSHOT</version>
+        <version>8.1.21-SNAPSHOT</version>
     </parent>
 
     <dependencies>
