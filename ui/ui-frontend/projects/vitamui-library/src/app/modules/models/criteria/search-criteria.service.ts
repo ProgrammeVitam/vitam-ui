@@ -86,14 +86,19 @@ const SEPARATOR = '|';
 })
 export class SearchCriteriaService {
   private splittableValues = ['guid', 'guidopi'];
-  private schema: Promise<Schema>;
+  private schemaPromise: Promise<Schema>;
+  private schema: Schema;
 
   constructor(schemaService: SchemaService) {
-    this.schema = firstValueFrom(schemaService.getSchema(Collection.ARCHIVE_UNIT));
+    this.schemaPromise = firstValueFrom(schemaService.getSchema(Collection.ARCHIVE_UNIT));
   }
 
   async ready(): Promise<void> {
-    await this.schema;
+    await this.schemaPromise.then((schema) => (this.schema = schema));
+  }
+
+  getSchema(): Schema {
+    return this.schema;
   }
 
   async toSearchCriteria(

@@ -3990,7 +3990,11 @@
           "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
           "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive without objects"
         },
-        "WAITING_RECALCULATE": "Waiting to compute"
+        "WAITING_RECALCULATE": "Waiting to compute",
+        "START_DATE": "Start date ≥",
+        "END_DATE": "End date ≤",
+        "TITLE": "Title",
+        "DESCRIPTION": "Description"
       },
       "NODES": {
         "NODE": "Position"
