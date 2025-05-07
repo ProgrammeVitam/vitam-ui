@@ -2975,6 +2975,7 @@
     "STP_OG_LFC_TRACEABILITY_FINALIZATION.STARTED": "Beginning of finalization of securing the lifecycle logs of objects groups",
     "STP_OG_LFC_TRACEABILITY_FINALIZATION": "Process of finalization of securing the lifecycle logs of objects groups",
     "STP_BACKUP_ONTOLOGY": "Process of backing up the referential of ontologies",
+    "IMPORT_AGENCIES.CHECK_CONCURRENT_AGENCIES_IMPORT": "Verification process of concurrent processes of agent services referential import",
     "MIGRATION_FINALIZE.FATAL": "Technical error when finalizing the migration",
     "RECLASSIFICATION_PREPARATION_LOAD_REQUEST.FATAL": "Technical error when loading archival units when modifying the tree structure of archival units",
     "UNIT_ATTACHMENT.OK": "Success of the attachment of archival units",
