@@ -73,6 +73,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
 
   private accessContract: AccessContract;
   private subscription = new Subscription();
+  private allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
 
   constructor(
     private archiveService: ArchiveService,
@@ -113,7 +114,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   unitHasObject(): boolean {
-    return this.archiveUnit.DescriptionLevel === DescriptionLevel.ITEM && !!this.archiveUnit['#object'];
+    return this.allowedDescriptionLevel.includes(this.archiveUnit.DescriptionLevel) && !!this.archiveUnit['#object'];
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
