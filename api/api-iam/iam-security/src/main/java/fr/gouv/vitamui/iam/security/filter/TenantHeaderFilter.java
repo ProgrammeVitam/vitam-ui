@@ -42,6 +42,7 @@ package fr.gouv.vitamui.iam.security.filter;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -101,6 +102,10 @@ public class TenantHeaderFilter extends OncePerRequestFilter {
             } catch (NumberFormatException e) {
                 LOGGER.warn("Invalid tenant ID format: {}", tenantIdHeader);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid tenant ID format");
+                return;
+            } catch (UnAuthorizedException e1) {
+                LOGGER.error("User not authenticated ");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized user");
                 return;
             }
         }
