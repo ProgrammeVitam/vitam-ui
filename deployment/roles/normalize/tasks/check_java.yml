@@ -2,26 +2,26 @@
 
 - block:
 
-  - name: Uninstall previous OpenJDK versions
-    package:
-      name:
-        - openjdk-8-jdk-headless
-        - openjdk-11-jdk-headless
-        - openjdk-17-jre-headless
-      state: absent
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
+    - name: Uninstall previous OpenJDK versions
+      package:
+        name:
+          - openjdk-8-jdk-headless
+          - openjdk-11-jdk-headless
+          - openjdk-17-jre-headless
+        state: absent
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
 
-  - name: Install OpenJDK on Debian
-    apt:
-      name: jdk-21
-      state: latest
-    register: result
-    retries: "{{ packages_install_retries_number }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay }}"
+    - name: Install OpenJDK on Debian
+      apt:
+        name: openjdk-21-jre-headless
+        state: latest
+      register: result
+      retries: "{{ packages_install_retries_number }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay }}"
 
   when:
     - ansible_os_family == "Debian"
@@ -29,27 +29,27 @@
 
 - block:
 
-  - name: force java-1.8.0-openjdk is absent
-    package:
-      name:
-        - java-1.8.0-openjdk
-        - java-1.8.0-openjdk-headless
-        - java-11-openjdk-headless
-        - java-17-openjdk-headless
-      state: absent
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
+    - name: force java-1.8.0-openjdk is absent
+      package:
+        name:
+          - java-1.8.0-openjdk
+          - java-1.8.0-openjdk-headless
+          - java-11-openjdk-headless
+          - java-17-openjdk-headless
+        state: absent
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
 
-  - name: Install OpenJDK on RedHat
-    package:
-      name: java-21-openjdk-headless
-      state: latest
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
+    - name: Install OpenJDK on RedHat
+      package:
+        name: java-21-openjdk-headless
+        state: latest
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
 
   when:
     - ansible_os_family == "RedHat"
