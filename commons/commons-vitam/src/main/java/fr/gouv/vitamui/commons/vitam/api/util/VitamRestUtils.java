@@ -86,6 +86,7 @@ public class VitamRestUtils {
      *
      * The content, Content-Type header and Content-Disposition
      * header will be copied from the vitam response to the http response.
+     *
      * @param vitamObjectStreamResponse
      * @param response
      * @throws IOException
@@ -134,6 +135,7 @@ public class VitamRestUtils {
 
     /**
      * Method allowing to retrieve content type from Vitam response.
+     *
      * @param vitamObjectStreamResponse Vitam response to analyze.
      * @return The content type if the information is set.
      */
@@ -158,6 +160,7 @@ public class VitamRestUtils {
 
     /**
      * Method allowing to retrieve content disposition from Vitam response.
+     *
      * @param vitamObjectStreamResponse Vitam response to analyze.
      * @return The content disposition if the information is set.
      */
@@ -189,9 +192,9 @@ public class VitamRestUtils {
      *
      * If no acceptedStatus parameter is given, the default accepted status is 200.
      *
-     * @throws
      * @param response Response of which the status is checked
      * @param acceptedStatus Statuses accepted
+     * @throws
      */
     public static void checkResponse(final Response response, final Integer... acceptedStatus) {
         Assert.notNull(response, "The server response cannot be null");
@@ -262,7 +265,7 @@ public class VitamRestUtils {
         return new InternalServerException("Vitam error:" + message);
     }
 
-    private static boolean hasDescriptionContainingTotalTrackHitsError(String description) {
+    public static boolean hasDescriptionContainingTotalTrackHitsError(String description) {
         return (
             description != null &&
             (description.contains("INVALID_JSON_FIELD: $track_total_hits") ||
