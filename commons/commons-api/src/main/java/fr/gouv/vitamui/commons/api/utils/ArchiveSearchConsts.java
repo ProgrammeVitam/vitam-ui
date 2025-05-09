@@ -132,6 +132,8 @@ public class ArchiveSearchConsts {
     public static final String WAITING_RECALCULATE = "WAITING_RECALCULATE";
     public static final String RULES_COMPUTED = "RULES_COMPUTED";
 
+    public static final String UPDATE_OPERATION_FIELD = "#management.UpdateOperation";
+
     public static final String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
 
     public static final String ACCESS_RULE_START_DATE_FIELD = "#management.AccessRule.Rules.StartDate";
