@@ -57,6 +57,7 @@ import {
   ExternalParametersService,
   FilingHoldingSchemeNode,
   GlobalEventService,
+  ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
@@ -76,7 +77,6 @@ import {
   TransactionStatus,
   Unit,
   UnitType,
-  ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
@@ -949,11 +949,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       pageNumber: 0,
       size: 1,
       sortingCriteria,
-      trackTotalHits: false,
+      trackTotalHits: this.totalResults >= 10000,
       computeFacets: true,
     };
-
-    this.loadExactCount();
 
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
       (pagedResult: PagedResult) => {
@@ -975,7 +973,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   async prepareToLaunchVitamAction() {
-    this.loadExactCount();
     this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
   }
 
@@ -1039,29 +1036,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
   }
 
-  loadExactCount() {
-    if (this.hasSearchCriteria()) {
-      this.pendingGetFixedCount = true;
-      this.submitedGetFixedCount = true;
-      this.archiveUnitCollectService.getTotalTrackHitsByCriteria(this.criteriaSearchList, this?.transaction?.id || null).subscribe(
-        (exactCountResults: number) => {
-          if (exactCountResults !== -1) {
-            this.totalResults = exactCountResults;
-            if (this.isAllChecked) {
-              this.itemSelected = this.totalResults - this.itemNotSelected;
-            }
-            this.waitingToGetFixedCount = false;
-          }
-          this.pendingGetFixedCount = false;
-        },
-        (error: HttpErrorResponse) => {
-          this.pendingGetFixedCount = false;
-          this.logger.error('Error message :', error.message);
-        },
-      );
-    }
-  }
-
   loadMore() {
     if (this.pending) {
       return;
@@ -1098,8 +1072,26 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     }
   }
 
-  launchFacetsComputing() {
-    if (!this.pendingComputeFacets && this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+  async launchFacetsComputing() {
+    if (this.pendingComputeFacets || !this.hasSearchCriteria()) {
+      return;
+    }
+
+    if (this.waitingToGetFixedCount) {
+      if (this.hasSearchCriteria()) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        const exactCountResults: number = await this.archiveUnitCollectService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.transaction?.id || null)
+          .toPromise();
+        if (exactCountResults !== -1) {
+          this.totalResults = exactCountResults;
+          this.waitingToGetFixedCount = false;
+          this.launchComputingManagementRulesFacets();
+        }
+        this.pendingGetFixedCount = false;
+      }
+    } else {
       this.launchComputingManagementRulesFacets();
     }
   }

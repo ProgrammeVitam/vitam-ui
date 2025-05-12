@@ -34,11 +34,14 @@ import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.external.client.CollectExternalClient;
+import fr.gouv.vitam.collect.external.external.exception.CollectExternalClientException;
 import fr.gouv.vitam.common.CharsetUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.DeletionRequestBody;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -75,13 +78,20 @@ public class CollectService {
         final VitamContext vitamContext
     ) throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionId);
-        final RequestResponse<JsonNode> result = collectExternalClient.getUnitsByTransaction(
-            vitamContext,
-            transactionId,
-            searchQuery
-        );
-        VitamRestUtils.checkResponse(result);
-        return result;
+
+        try {
+            RequestResponse<JsonNode> result = collectExternalClient.getUnitsByTransaction(
+                vitamContext,
+                transactionId,
+                searchQuery
+            );
+            VitamRestUtils.checkResponse(result);
+            return result;
+        } catch (CollectExternalClientException e) {
+            if (VitamRestUtils.hasDescriptionContainingTotalTrackHitsError(e.getMessage())) {
+                throw new UnexpectedSettingsException("Vitam forbidden settings error: \"");
+            } else throw new BadRequestException("Vitam Bad request error: " + e.getMessage());
+        }
     }
 
     public RequestResponse<JsonNode> searchUnitsByTransaction(
