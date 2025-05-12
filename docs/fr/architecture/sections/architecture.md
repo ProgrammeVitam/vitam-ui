@@ -1246,7 +1246,7 @@ La liste de profils crées par défaut pour chaque tenant :
         Description: Pastis-Gestion des profils documentaires
         Application: PASTIS_APP
         Rôles:
-            - ROL_GET_PASTIS
+            - ROLE_GET_PASTIS
             - ROLE_GET_ARCHIVE_PROFILES_UNIT
             - ROLE_UPDATE_ARCHIVE_PROFILES_UNIT
             - ROLE_CREATE_ARCHIVE_PROFILES_UNIT
