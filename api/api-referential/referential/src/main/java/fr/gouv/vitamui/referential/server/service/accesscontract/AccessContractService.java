@@ -313,10 +313,7 @@ public class AccessContractService extends AbstractService {
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             // Manual setting instead of updateRequest.addActions( UpdateActionHelper.set(fieldsUpdated));
 
-            if (
-                Boolean.TRUE.equals(partialDto.get("everyDataObjectVersion")) ||
-                partialDto.get("dataObjectVersion") == null
-            ) {
+            if (Boolean.TRUE.equals(partialDto.get("everyDataObjectVersion"))) {
                 partialDto.put("dataObjectVersion", new HashSet<>());
             }
 
