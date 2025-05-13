@@ -3867,6 +3867,7 @@
         "Strict": "Exact search"
       },
       "FIELDS": {
+        "true": "Yes",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
@@ -4449,6 +4450,7 @@
       "DISSEMINATION_TITLE": "Dissemination",
       "DUA_TITLE": "Administrative useful life",
       "FIELDS": {
+        "true": "Yes",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
