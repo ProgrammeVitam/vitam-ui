@@ -124,12 +124,14 @@ import java.util.Random;
 @Service
 public class PastisService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PastisService.class);
-
     public static final String DEFAULT_SEDA_VERSION = "2.3";
+    private static final Logger LOGGER = LoggerFactory.getLogger(PastisService.class);
     private final MetaModelService metaModelService;
-    private ObjectMapper objectMapper;
     private final ResourceLoader resourceLoader;
+    private final PuaPastisValidator puaPastisValidator;
+    private final JsonFromPUA jsonFromPUA;
+    private final PuaFromJSON puaFromJSON;
+    private final ObjectMapper objectMapper;
 
     @Value("${rng.base.file}")
     private String rngFile;
@@ -143,14 +145,7 @@ public class PastisService {
     @Value("${rng.base.directory}")
     private String rngLocation;
 
-    private final PuaPastisValidator puaPastisValidator;
-
-    private final JsonFromPUA jsonFromPUA;
-
     private VitamProfileCommonService vitamProfileCommonService;
-
-    private final PuaFromJSON puaFromJSON;
-
     private List<PastisProfile> pastisProfiles = new ArrayList<>();
     private List<Notice> notices = new ArrayList<>();
 
@@ -437,13 +432,14 @@ public class PastisService {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
                 puaPastisValidator.validatePUA(profileJson, standalone);
-                final ProfileVersion profileVersion = Optional.ofNullable(profileResponse.getNotice())
-                    .map(Notice::getSedaVersion)
-                    .orElse(ProfileVersion.fromVersionString(DEFAULT_SEDA_VERSION));
+                Notice uploadedNotice = NoticeUtils.getNoticeFromPUA(profileJson);
+                profileResponse.setNotice(uploadedNotice);
+                final ProfileVersion profileVersion = Optional.ofNullable(uploadedNotice.getSedaVersion()).orElse(
+                    ProfileVersion.fromVersionString(DEFAULT_SEDA_VERSION)
+                );
                 profileResponse.setSedaVersion(profileVersion);
                 SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(sedaTree, profileJson));
-                profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", file.getOriginalFilename());
             }
         } catch (SAXException | IOException e) {
