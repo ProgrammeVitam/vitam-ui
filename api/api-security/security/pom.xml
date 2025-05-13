@@ -124,12 +124,12 @@
         <!--TEST -->
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>security-client</artifactId>
+            <artifactId>security-client-legacy</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>security-client-openapi</artifactId>
+            <artifactId>security-client</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

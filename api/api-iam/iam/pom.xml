@@ -49,7 +49,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>security-client-openapi</artifactId>
+            <artifactId>security-client</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>

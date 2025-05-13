@@ -48,11 +48,11 @@
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>security-client</artifactId>
+                    <artifactId>security-client-legacy</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>security-client-openapi</artifactId>
+                    <artifactId>security-client</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
@@ -96,11 +96,11 @@
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>iam-client</artifactId>
+                    <artifactId>iam-client-legacy</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>iam-client-openapi</artifactId>
+                    <artifactId>iam-client</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui.commons</groupId>
