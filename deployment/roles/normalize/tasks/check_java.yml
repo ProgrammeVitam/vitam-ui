@@ -16,7 +16,7 @@
 
     - name: Install OpenJDK on Debian
       apt:
-        name: openjdk-21-jre-headless
+        name: jdk-21
         state: latest
       register: result
       retries: "{{ packages_install_retries_number }}"
