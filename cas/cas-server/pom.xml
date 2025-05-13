@@ -13,11 +13,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
-        <java.release>17</java.release>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
+        <java.version>21</java.version>
+        <java.release>21</java.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
 
         <cas.version>6.6.12</cas.version>
 
@@ -33,7 +33,7 @@
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
         <rpm.skip>false</rpm.skip>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
-        <spring.boot.version>2.7.3</spring.boot.version>
+        <spring.boot.version>2.7.18</spring.boot.version>
         <spring.cloud.consul.version>3.1.1</spring.cloud.consul.version>
         <spring.test.version>5.3.22</spring.test.version>
         <spring.version>5.3.22</spring.version>
