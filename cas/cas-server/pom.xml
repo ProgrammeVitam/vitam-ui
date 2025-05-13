@@ -793,7 +793,7 @@
                                         <!-- If you want to changes default dependencies (only
                                         systemd),
                                         define them as a comma separated list of packages -->
-                                        <argument>DEPENDENCIES=systemd,java-17-openjdk</argument>
+                                        <argument>DEPENDENCIES=systemd,java-21-openjdk</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
