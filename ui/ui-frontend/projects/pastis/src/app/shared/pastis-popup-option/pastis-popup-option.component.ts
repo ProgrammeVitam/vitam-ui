@@ -162,7 +162,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
                 const profileDescription = this.noticeService.puaNotice(retour);
                 this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
                   this.changeExpand();
-                  this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.MODIFICATION_SUCCESS'));
+                  this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
                   this.profileService.refreshListProfiles();
                 });
               } else if (result.mode === ProfileType.PA) {
@@ -170,7 +170,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
                 // STEP 1 : Create Notice
                 this.profileService.createProfilePa(profile).subscribe(() => {
                   this.changeExpand();
-                  this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.MODIFICATION_SUCCESS'));
+                  this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
                   this.profileService.refreshListProfiles();
                 });
               }
