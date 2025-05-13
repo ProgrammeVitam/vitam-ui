@@ -162,6 +162,11 @@
       "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPÉRATIONS"
     }
   },
+  "RULES": {
+    "ALERTE_MESSAGES": {
+      "BACK_TO_SELECTION": "Revenir à la sélection"
+    }
+  },
   "ACQUISITION_INFORMATION": {
     "PAYMENT": "Versement",
     "PROTOCOL": "Protocole",

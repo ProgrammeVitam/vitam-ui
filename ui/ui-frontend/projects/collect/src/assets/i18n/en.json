@@ -162,6 +162,11 @@
       "TO_OPERATION_APP": "VIEW THE OPERATIONS LOG"
     }
   },
+  "RULES": {
+    "ALERTE_MESSAGES": {
+      "BACK_TO_SELECTION": "Return to selection"
+    }
+  },
   "ACQUISITION_INFORMATION": {
     "PAYMENT": "Payment",
     "PROTOCOL": "Protocol",

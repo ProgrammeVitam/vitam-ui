@@ -892,6 +892,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.selectedHoldingUnitItemCount = 0;
     if (!checked) {
       this.isIndeterminate = false;
+    } else {
+      this.itemNotSelected = 0;
     }
     this.listOfUAIdToInclude = [];
     this.listOfUAIdToExclude = [];
@@ -918,7 +920,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.selectedHoldingUnitItemCount--;
       }
     } else {
-      this.itemNotSelected = 0;
       if (action) {
         if (UnitType.HOLDING_UNIT === unitType) {
           this.selectedHoldingUnitItemCount++;
@@ -930,14 +931,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         }
         if (this.isAllChecked) {
           this.listOfUAIdToExclude = this.listOfUAIdToExclude.filter((element) => element.id !== id);
+          this.itemNotSelected--;
         } else {
           this.listOfUAIdToInclude.push({ value: id, id });
           this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
+          this.itemNotSelected = 0;
         }
       } else {
         this.listOfUAIdToInclude = this.listOfUAIdToInclude.filter((element) => element.id !== id);
         if (this.selectedItemCount > 0) {
           this.selectedItemCount--;
+          this.itemNotSelected++;
         }
       }
     }
@@ -988,52 +992,57 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   launchReclassification() {
-    if (this.selectedItemCount > this.RECLASSIFICATION_THRESHOLD) {
-      const dialogToOpen = this.reclassificationAlerteMessageDialog;
-      const dialogRef = this.dialog.open(dialogToOpen);
-      this.subscriptions.add(
-        dialogRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => {}),
-      );
-    } else {
-      const archiveUnitGuidSelected = this.isAllChecked
-        ? this.archiveUnits
-            .map((unit) => unit['#id'])
-            .filter((unit) => !this.listOfUAIdToExclude.some((unitToExclude) => unit === unitToExclude.id))
-        : this.listOfUAIdToInclude.map((unit) => unit.id);
-      let obj = this.archiveUnits
-        .filter((archiveUnit) => archiveUnitGuidSelected.includes(archiveUnit['#id']))
-        .map((archiveUnit) => archiveUnit['#unitups']);
-      this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(obj);
-      this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
-      const reclassificationCriteria = {
-        criteriaList: this.listOfUACriteriaSearch,
-        pageNumber: 0,
-        size: this.selectedItemCount,
-        language: this.translateService.currentLang,
-      };
-
-      const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
-        disableClose: false,
-        data: {
-          appName: 'ARCHIVE',
-          itemSelected: this.selectedItemCount,
-          reclassificationCriteria,
-          tenantIdentifier: this.tenantIdentifier,
-          archiveUnitGuidSelected: archiveUnitGuidSelected,
-          archiveUnitAllunitup: this.archiveUnitAllunitup,
-        },
-      });
-      this.subscriptions.add(
-        dialogRef.afterClosed().subscribe((result) => {
-          if (result) {
-            return;
-          }
-        }),
-      );
-    }
+    this.search$.subscribe((totalHits) => {
+      if (
+        (this.isAllChecked && totalHits - this.itemNotSelected > this.RECLASSIFICATION_THRESHOLD) ||
+        this.selectedItemCount > this.RECLASSIFICATION_THRESHOLD
+      ) {
+        const dialogToOpen = this.reclassificationAlerteMessageDialog;
+        const dialogRef = this.dialog.open(dialogToOpen);
+        this.subscriptions.add(
+          dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {}),
+        );
+      } else {
+        const archiveUnitGuidSelected = this.isAllChecked
+          ? this.archiveUnits
+              .map((unit) => unit['#id'])
+              .filter((unit) => !this.listOfUAIdToExclude.some((unitToExclude) => unit === unitToExclude.id))
+          : this.listOfUAIdToInclude.map((unit) => unit.id);
+        let obj = this.archiveUnits
+          .filter((archiveUnit) => archiveUnitGuidSelected.includes(archiveUnit['#id']))
+          .map((archiveUnit) => archiveUnit['#unitups']);
+        this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(obj);
+        this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
+        const selectedItems = this.isAllChecked ? totalHits - this.itemNotSelected : this.selectedItemCount;
+        const reclassificationCriteria = {
+          criteriaList: this.listOfUACriteriaSearch,
+          pageNumber: 0,
+          size: selectedItems,
+          language: this.translateService.currentLang,
+        };
+        const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
+          disableClose: false,
+          data: {
+            appName: 'ARCHIVE',
+            itemSelected: selectedItems,
+            reclassificationCriteria,
+            tenantIdentifier: this.tenantIdentifier,
+            archiveUnitGuidSelected: archiveUnitGuidSelected,
+            archiveUnitAllunitup: this.archiveUnitAllunitup,
+          },
+        });
+        this.subscriptions.add(
+          dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+              return;
+            }
+          }),
+        );
+      }
+    });
   }
 
   public initArchiveUnitAllunitup(values: string[][]) {
