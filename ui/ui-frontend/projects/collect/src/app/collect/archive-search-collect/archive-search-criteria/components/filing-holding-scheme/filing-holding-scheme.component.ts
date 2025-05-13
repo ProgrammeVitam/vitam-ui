@@ -162,7 +162,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
               FilingHoldingSchemeHandler.addOrphansNodeFromTree(
                 this.nestedDataSourceLeaves.data,
                 this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE'),
-                numberOfAUsWithoutAttachment,
+                this.searchRequestTotalResults,
               );
             }
           }),
