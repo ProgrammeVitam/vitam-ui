@@ -219,9 +219,6 @@ pipeline {
             // Cleanup M2 repo
             sh 'rm -fr ${M2_REPO}/repository/fr/gouv/vitamui/'
 
-            // Cleanup M2 repo
-            sh 'rm -fr ${M2_REPO}/repository/*'
-
             // Cleanup workspace
             cleanWs()
         }
