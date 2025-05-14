@@ -126,7 +126,7 @@ pipeline {
                 }
                 stage('Backend') {
                     tools {
-                        jdk 'java17' // java11 || java17 || java21
+                        jdk 'java21' // java11 || java17 || java21
                         maven 'maven-3.9' // maven-3.8 || maven-3.9
                     }
                     steps {

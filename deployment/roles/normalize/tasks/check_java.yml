@@ -7,6 +7,7 @@
       name:
         - openjdk-8-jdk-headless
         - openjdk-11-jdk-headless
+        - openjdk-17-jre-headless
       state: absent
     register: result
     retries: "{{ packages_install_retries_number | default(2) }}"
@@ -15,7 +16,7 @@
 
   - name: Install OpenJDK on Debian
     apt:
-      name: openjdk-17-jre-headless
+      name: openjdk-21-jre-headless
       state: latest
     register: result
     retries: "{{ packages_install_retries_number }}"
@@ -34,6 +35,7 @@
         - java-1.8.0-openjdk
         - java-1.8.0-openjdk-headless
         - java-11-openjdk-headless
+        - java-17-openjdk-headless
       state: absent
     register: result
     retries: "{{ packages_install_retries_number | default(2) }}"
@@ -42,7 +44,7 @@
 
   - name: Install OpenJDK on RedHat
     package:
-      name: java-17-openjdk-headless
+      name: java-21-openjdk-headless
       state: latest
     register: result
     retries: "{{ packages_install_retries_number | default(2) }}"
