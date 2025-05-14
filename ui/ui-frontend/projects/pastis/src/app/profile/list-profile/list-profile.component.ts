@@ -239,6 +239,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   editProfile(element: ProfileDescription) {
+    this.profileService.controlSchema.next(element?.controlSchema);
     this.router.navigate([this.pastisConfig.pastisEditPage, element.id], {
       state: element,
       relativeTo: this.route,

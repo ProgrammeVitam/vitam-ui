@@ -67,6 +67,7 @@ export class ProfileService implements OnDestroy {
   public profileName: string;
   public profileId: string;
   protected pageRequest: PageRequest;
+  public controlSchema = new BehaviorSubject<string>(null);
   public retrievedProfiles = new BehaviorSubject<ProfileDescription[]>(null);
   protected data: ProfileDescription[];
   protected hasMore: boolean;
@@ -286,7 +287,8 @@ export class ProfileService implements OnDestroy {
   }
 
   createArchivalUnitProfile(archivalUnitProfile: ArchivalProfileUnit) {
-    return this.puaService.create(archivalUnitProfile);
+    const profile = this.updateControlSchema(archivalUnitProfile);
+    return this.puaService.create(profile);
   }
 
   updateProfilePa(profile: Profile) {
@@ -294,7 +296,11 @@ export class ProfileService implements OnDestroy {
   }
 
   updateProfilePua(archivalUnitProfile: ArchivalProfileUnit) {
-    return this.puaService.updateProfilePua(archivalUnitProfile);
+    const profile: ArchivalProfileUnit = {
+      ...archivalUnitProfile,
+      controlSchema: this.controlSchema.getValue(),
+    };
+    return this.puaService.updateProfilePua(profile);
   }
 
   updateProfileFilePa(profile: Profile, file: File) {
@@ -305,5 +311,30 @@ export class ProfileService implements OnDestroy {
 
   downloadProfilePaVitam(id: string) {
     return this.paService.download(id);
+  }
+
+  private updateControlSchema(archivalUnitProfile: ArchivalProfileUnit): ArchivalProfileUnit {
+    try {
+      const parsedControlSchema = JSON.parse(archivalUnitProfile.controlSchema);
+      const additionalProperties = JSON.parse(this.controlSchema.getValue())?.additionalProperties;
+
+      if (parsedControlSchema) {
+        parsedControlSchema.additionalProperties = additionalProperties;
+
+        if (parsedControlSchema.patternProperties?.['#management']) {
+          parsedControlSchema.patternProperties['#management'].additionalProperties = additionalProperties;
+        } else {
+          console.warn("patternProperties['#management'] is undefined");
+        }
+      }
+
+      return {
+        ...archivalUnitProfile,
+        controlSchema: JSON.stringify(parsedControlSchema),
+      };
+    } catch (error) {
+      console.error('Error in updateControlSchema:', error);
+      return archivalUnitProfile;
+    }
   }
 }
