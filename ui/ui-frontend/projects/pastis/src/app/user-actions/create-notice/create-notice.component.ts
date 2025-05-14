@@ -57,6 +57,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   profilActif: string;
   profilInactif: string;
   validate: boolean;
+  controlSchema: any;
 
   isStandalone: boolean = environment.standalone;
 
@@ -116,12 +117,13 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       { value: 'ACTIVE', viewValue: this.profilActif },
     ];
     this.information = "texte d'information";
+    this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       intitule: [null, Validators.required],
       selectedStatus: [null],
       description: [null],
-      autoriserPresenceMetadonnees: false,
+      additionalProperties: [this.controlSchema?.additionalProperties],
     });
 
     this.subscriptions.add(
@@ -221,6 +223,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.fileService.noticeEditable.next(this.notice);
       this.fileService.setNotice(true);
     }
+    this.updateControlSchema();
     this.dialogRef.close({
       success: true,
       action: 'none',
@@ -228,5 +231,30 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       profileType: this.profileType,
       profileVersion: this.profileVersion,
     });
+  }
+
+  private updateControlSchema(): void {
+    const additionalProps = this.form.controls.additionalProperties.value;
+
+    const updatedPatternProperties = {
+      ...this.controlSchema?.patternProperties,
+      '#management': {
+        ...this.controlSchema?.patternProperties?.['#management'],
+        additionalProperties: additionalProps,
+      },
+    };
+
+    this.controlSchema = this.controlSchema
+      ? {
+          ...this.controlSchema,
+          additionalProperties: additionalProps,
+          patternProperties: updatedPatternProperties,
+        }
+      : {
+          ...this.controlSchema,
+          additionalProperties: additionalProps,
+        };
+
+    this.profileService.controlSchema.next(JSON.stringify(this.controlSchema));
   }
 }
