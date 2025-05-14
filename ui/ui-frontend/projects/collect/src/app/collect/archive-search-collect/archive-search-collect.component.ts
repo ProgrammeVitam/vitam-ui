@@ -105,6 +105,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   readonly UnitType = UnitType;
 
   DEFAULT_DELETION_THRESHOLD = 10_000;
+  RECLASSIFICATION_THRESHOLD = 10_000;
 
   accessContract: string;
 
@@ -190,6 +191,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchCollectComponent>;
+  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
+  reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
 
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
@@ -404,43 +407,60 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   launchReclassification() {
-    const archiveUnitGuidSelected = this.isAllChecked
-      ? this.archiveUnits
-          .map((unit) => unit['#id'])
-          .filter((unit) => !this.listOfUAIdToExclude.some((unitToExclude) => unit === unitToExclude.id))
-      : this.listOfUAIdToInclude.map((unit) => unit.id);
-    let unitUps = this.archiveUnits
-      .filter((archiveUnit) => archiveUnitGuidSelected.includes(archiveUnit['#id']))
-      .map((archiveUnit) => archiveUnit['#unitups']);
-    this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(unitUps);
-    this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
-    const reclassificationCriteria = {
-      criteriaList: this.listOfUACriteriaSearch,
-      pageNumber: 0,
-      size: PAGE_SIZE,
-      language: this.translateService.currentLang,
-      tenantIdentifier: this.tenantIdentifier,
-    };
-    const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: false,
-      data: {
-        appName: 'COLLECT',
-        reclassificationCriteria,
-        itemSelected: this.itemSelected,
-        archiveUnitGuidSelected: archiveUnitGuidSelected,
-        archiveUnitAllunitup: this.archiveUnitAllunitup,
-        transactionId: this.transaction.id,
-        tenantIdentifier: this.tenantIdentifier,
-      },
+    this.search$.subscribe((totalHits) => {
+      if (
+        (this.isAllChecked && totalHits - this.itemNotSelected > this.RECLASSIFICATION_THRESHOLD) ||
+        this.itemSelected > this.RECLASSIFICATION_THRESHOLD
+      ) {
+        const dialogToOpen = this.reclassificationAlerteMessageDialog;
+        const dialogRef = this.dialog.open(dialogToOpen);
+        this.subscriptions.add(
+          dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {}),
+        );
+      } else {
+        const archiveUnitGuidSelected = this.isAllChecked
+          ? this.archiveUnits
+              .map((unit) => unit['#id'])
+              .filter((unit) => !this.listOfUAIdToExclude.some((unitToExclude) => unit === unitToExclude.id))
+          : this.listOfUAIdToInclude.map((unit) => unit.id);
+        let unitUps = this.archiveUnits
+          .filter((archiveUnit) => archiveUnitGuidSelected.includes(archiveUnit['#id']))
+          .map((archiveUnit) => archiveUnit['#unitups']);
+        this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(unitUps);
+        this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
+        const selectedItems = this.isAllChecked ? totalHits - this.itemNotSelected : this.itemSelected;
+        const reclassificationCriteria = {
+          criteriaList: this.listOfUACriteriaSearch,
+          pageNumber: 0,
+          size: selectedItems,
+          language: this.translateService.currentLang,
+          tenantIdentifier: this.tenantIdentifier,
+        };
+        const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
+          panelClass: 'vitamui-modal',
+          disableClose: false,
+          data: {
+            appName: 'COLLECT',
+            reclassificationCriteria,
+            itemSelected: selectedItems,
+            archiveUnitGuidSelected: archiveUnitGuidSelected,
+            archiveUnitAllunitup: this.archiveUnitAllunitup,
+            transactionId: this.transaction.id,
+            tenantIdentifier: this.tenantIdentifier,
+          },
+        });
+        this.subscriptions.add(
+          dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+              return;
+            }
+          }),
+        );
+      }
     });
-    this.subscriptions.add(
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          return;
-        }
-      }),
-    );
   }
 
   public initArchiveUnitAllunitup(values: string[][]) {
@@ -655,6 +675,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.itemSelected = checked ? this.totalResults : 0;
     if (!checked) {
       this.isIndeterminate = false;
+    } else {
+      this.itemNotSelected = 0;
     }
     this.listOfUAIdToInclude = [];
     this.listOfUAIdToExclude = [];
@@ -675,7 +697,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.itemNotSelected++;
       }
     } else {
-      this.itemNotSelected = 0;
       if (action) {
         this.listOfUACriteriaSearch = [];
         this.itemSelected++;
@@ -684,14 +705,17 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
         if (this.isAllChecked) {
           this.listOfUAIdToExclude = this.listOfUAIdToExclude.filter((element) => element.id !== id);
+          this.itemNotSelected--;
         } else {
           this.listOfUAIdToInclude.push({ value: id, id });
           this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
+          this.itemNotSelected = 0;
         }
       } else {
         this.listOfUAIdToInclude = this.listOfUAIdToInclude.filter((element) => element.id !== id);
         if (this.itemSelected > 0) {
           this.itemSelected--;
+          this.itemNotSelected++;
         }
       }
     }

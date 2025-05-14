@@ -222,6 +222,7 @@ describe('ArchiveSearchCollectComponent', () => {
 
       it('should exclude the selected child when parent is checked, from the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
+        component.itemNotSelected = 1;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
         component.checkChildrenBoxChange('1234', event);
         expect(component.listOfUAIdToExclude.length).toBe(0);
