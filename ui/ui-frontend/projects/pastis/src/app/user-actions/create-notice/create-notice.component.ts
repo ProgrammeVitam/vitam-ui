@@ -67,6 +67,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   profileType: ProfileType;
   profileVersion: ProfileVersion;
   modePUA = false;
+  controlSchema: any;
 
   subscriptions = new Subscription();
   externalIdentifierEnabled: boolean;
@@ -109,12 +110,14 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       { key: 'ACTIVE', label: this.translateService.instant('PROFILE.POP_UP_CREATION_NOTICE.CHOICE.PROFIL_ACTIF') },
       { key: 'INACTIVE', label: this.translateService.instant('PROFILE.POP_UP_CREATION_NOTICE.CHOICE.PROFIL_INACTIF') },
     ];
+
+    this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
     this.form = this.formBuilder.group({
       identifier: [{ value: this.notice.identifier, disabled: this.editNotice }, Validators.required],
       name: [this.notice.name, Validators.required],
       status: [this.notice.status],
       description: [this.notice.description],
-      allowMetadata: [false],
+      additionalProperties: [this.controlSchema?.additionalProperties],
     });
 
     this.applicationService
@@ -190,6 +193,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.fileService.noticeEditable.next(this.form.getRawValue());
       this.fileService.setNotice(true);
     }
+    this.updateControlSchema();
     this.dialogRef.close({
       success: true,
       action: 'none',
@@ -197,5 +201,30 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       profileType: this.profileType,
       profileVersion: this.profileVersion,
     });
+  }
+
+  private updateControlSchema(): void {
+    const additionalProps = this.form.controls.additionalProperties.value;
+
+    const updatedPatternProperties = {
+      ...this.controlSchema?.patternProperties,
+      '#management': {
+        ...this.controlSchema?.patternProperties?.['#management'],
+        additionalProperties: additionalProps,
+      },
+    };
+
+    this.controlSchema = this.controlSchema
+      ? {
+          ...this.controlSchema,
+          additionalProperties: additionalProps,
+          patternProperties: updatedPatternProperties,
+        }
+      : {
+          ...this.controlSchema,
+          additionalProperties: additionalProps,
+        };
+
+    this.profileService.controlSchema.next(JSON.stringify(this.controlSchema));
   }
 }
