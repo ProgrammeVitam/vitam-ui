@@ -119,7 +119,7 @@
         "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE": "Action on one archive unit",
         "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT_ONE": "Action on one archive unit",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE": "Are you sure to launch this action on the selected archive unit ?",
-        "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirm you this action ?",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Do you confirm your action ?",
         "CONFIRM": "Confirm",
         "CANCEL": "Cancel",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, the operation reach the plateform allowed threshold.",
