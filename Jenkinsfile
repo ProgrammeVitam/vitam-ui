@@ -13,6 +13,7 @@ pipeline {
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL = credentials("service-repository-url")
+        JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
     }
 
     options {
