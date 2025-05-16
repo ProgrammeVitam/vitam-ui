@@ -61,7 +61,7 @@ pipeline {
                         env.MVN_GOAL = 'deploy'
                     }
 
-                    env.MVN_COMMAND = "mvn --settings ${pwd()}/.ci/settings.xml --show-version --batch-mode --errors -DdeployAtEnd=true"
+                    env.MVN_COMMAND = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml --show-version --batch-mode --errors -DdeployAtEnd=true"
                     if (env.DO_CHECKS_AND_TESTS == 'false') {
                         // If checks and tests are disabled:
                         // - "-T1C" builds modules in parallel

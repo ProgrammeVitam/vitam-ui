@@ -1,4 +1,4 @@
-print("START v8.1.0-03_update_ontology_app.js");
+print("START v8.1.0-test-03_update_ontology_app.js");
 
 dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
 dbIam.profiles.updateMany({
@@ -83,4 +83,4 @@ dbSecurity.contexts.updateOne({
     }
 });
 
-print("END v8.1.0-03_update_ontology_app.js");
+print("END v8.1.0-test-03_update_ontology_app.js");

@@ -22,4 +22,8 @@ install_mode: legacy
 #   username:
 #   password:
 # Add vitamui_container_version for specific container version deployment (default: latest)
+<<<<<<< HEAD
 vitamui_container_version: '8.1.1'
+=======
+vitamui_container_version: '8.1.0-test'
+>>>>>>> 59625409a (test esapi exception)

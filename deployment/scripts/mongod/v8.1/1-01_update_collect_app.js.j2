@@ -1,4 +1,8 @@
+<<<<<<< HEAD:deployment/scripts/mongod/v8.1/1-01_update_collect_app.js.j2
 print("START v8.1.1-01_update_collect_app.js");
+=======
+print("START v8.1.0-test-04_update_collect_app.js");
+>>>>>>> 59625409a (test esapi exception):deployment/scripts/mongod/v8.1/0-04_update_collect_app.js.j2
 
 dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
 
@@ -56,4 +60,8 @@ dbSecurity.contexts.updateOne({
     }
 });
 
+<<<<<<< HEAD:deployment/scripts/mongod/v8.1/1-01_update_collect_app.js.j2
 print("END v8.1.1-01_update_collect_app.js");
+=======
+print("END v8.1.0-test-04_update_collect_app.js");
+>>>>>>> 59625409a (test esapi exception):deployment/scripts/mongod/v8.1/0-04_update_collect_app.js.j2

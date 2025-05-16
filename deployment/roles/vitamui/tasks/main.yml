@@ -62,6 +62,14 @@
     - tmp
   notify: restart service
 
+#### Configuration ####
+- name: Prepare api-gateway trusted certificates
+  include_tasks: "prepare_api_gateway_conf.yml"
+  when: vitamui_struct.vitamui_component == 'api-gateway'
+  tags:
+  - update_vitam_configuration
+  - update_vitamui_certificates
+
 - name: Ensure that the sysconfig sub-directory exists
   file:
     path: "{{ vitamui_folder_conf }}/sysconfig"

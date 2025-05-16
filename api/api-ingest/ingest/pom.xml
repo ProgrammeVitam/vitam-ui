@@ -5,7 +5,11 @@
     <parent>
         <artifactId>api-ingest</artifactId>
         <groupId>fr.gouv.vitamui</groupId>
+<<<<<<< HEAD
         <version>8.1.1</version>
+=======
+        <version>8.1.0-test</version>
+>>>>>>> 59625409a (test esapi exception)
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -195,6 +199,7 @@
                     <to>
                         <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/ingest</image>
                         <tags>${project.version}</tags>
+<tags>latest</tags>
                     </to>
                 </configuration>
             </plugin>

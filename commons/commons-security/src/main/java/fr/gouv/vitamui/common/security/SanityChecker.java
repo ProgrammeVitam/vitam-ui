@@ -288,7 +288,11 @@ public class SanityChecker {
                 checkSanityTags(param, getLimitParamSize());
                 checkHtmlPattern(param);
             } catch (InvalidParseOperationException | PreconditionFailedException exception) {
-                throw new ParseOperationException("Error with the parameter ");
+                exception.printStackTrace();
+                exception.printStackTrace();
+                exception.printStackTrace();
+                exception.printStackTrace();
+                throw new ParseOperationException("Error with the parameter '" + param + "'"  );
             }
         } else {
             throw new PreconditionFailedException("the parameter " + param + " is not valid");

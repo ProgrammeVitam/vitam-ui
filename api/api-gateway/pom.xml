@@ -6,7 +6,11 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>api-parent</artifactId>
+<<<<<<< HEAD
         <version>8.1.1</version>
+=======
+        <version>8.1.0-test</version>
+>>>>>>> 59625409a (test esapi exception)
     </parent>
 
     <artifactId>api-gateway</artifactId>
@@ -65,6 +69,7 @@
                         <to>
                             <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/api-gateway</image>
                             <tags>${project.version}</tags>
+<tags>latest</tags>
                         </to>
                     </configuration>
 			</plugin>

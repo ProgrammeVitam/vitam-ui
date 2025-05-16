@@ -1,4 +1,4 @@
-print("START v8.1.0-01_update_iam_context.js");
+print("START v8.1.0-test-01_update_iam_context.js");
 
 dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
 
@@ -17,4 +17,4 @@ dbSecurity.contexts.deleteOne({ _id: "iam_internal_context" });
 // Remove old IAM internal certificates
 dbSecurity.certificates.deleteMany({ "contextId": "iam_internal_context" });
 
-print("END v8.1.0-01_update_iam_context.js");
+print("END v8.1.0-test-01_update_iam_context.js");

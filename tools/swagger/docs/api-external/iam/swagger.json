@@ -4001,7 +4001,7 @@
       "properties": {
         "ip": {
           "type": "string",
-          "example": "192.168.1.0",
+          "example": "192.168.1.0-test",
           "description": "Addresse IP de l'utilisateur"
         },
         "password": {

@@ -3,29 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>api-parent</artifactId>
+    <artifactId>ui-parent</artifactId>
     <packaging>pom</packaging>
-    <name>VITAMUI API</name>
+    <name>VITAMUI UI</name>
 
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>parent</artifactId>
-<<<<<<< HEAD
-        <version>8.1.1</version>
-=======
         <version>8.1.0-test</version>
->>>>>>> 59625409a (test esapi exception)
     </parent>
 
     <modules>
-        <module>api-security</module>
-        <module>api-iam</module>
-        <module>api-referential</module>
-        <module>api-ingest</module>
-        <module>api-archive-search</module>
-        <module>api-pastis</module>
-        <module>api-collect</module>
-        <module>api-gateway</module>
+        <module>ui-frontend</module>
     </modules>
 
 </project>
