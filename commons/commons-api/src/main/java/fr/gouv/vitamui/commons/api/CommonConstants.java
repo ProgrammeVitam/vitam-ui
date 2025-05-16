@@ -325,12 +325,6 @@ public class CommonConstants {
 
     public static final String LOGBOOK_DOWNLOAD_REPORT_PATH = LOGBOOK_DOWNLOAD_PATH + "/{downloadType}";
 
-    public static final String STATUS_API_DOCUMENTATION_TAGS = "status";
-
-    public static final String STATUS_API_DOCUMENTATION_VALUE = "Status";
-
-    public static final String STATUS_API_DOCUMENTATION_DESCRIPTION = "Status check and autotest";
-
     public static final Integer INPUT_STREAM_BUFFER_SIZE = 4096;
 
     public static final String GPDR_DEFAULT_VALUE = "-";

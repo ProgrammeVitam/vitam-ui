@@ -17,6 +17,7 @@
         <module>iam-commons</module>
         <module>iam-security</module>
         <module>iam</module>
+        <module>iam-client-legacy</module>
         <module>iam-client</module>
     </modules>
 

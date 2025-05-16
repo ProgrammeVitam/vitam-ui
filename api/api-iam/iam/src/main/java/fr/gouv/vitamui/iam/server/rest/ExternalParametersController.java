@@ -43,7 +43,8 @@ import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -65,7 +66,7 @@ import java.util.stream.Collectors;
 @RequestMapping(RestApi.V1_EXTERNAL_PARAMETERS_URL)
 @Getter
 @Setter
-@Api(tags = "externalParameters", value = "External Parameters Management")
+@Tag(name = "ExternalParameters", description = "External Parameters Management")
 public class ExternalParametersController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParametersController.class);
@@ -82,6 +83,10 @@ public class ExternalParametersController {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ME)
+    @Operation(
+        operationId = "externalParameters_getMyExternalParameters",
+        summary = "Get external parameters of the authenticated user"
+    )
     @Secured(ServicesData.ROLE_GET_EXTERNAL_PARAMS)
     public Map<String, String> getMyExternalParameters() {
         LOGGER.debug("GetMyExternalParameters");

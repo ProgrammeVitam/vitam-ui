@@ -53,7 +53,8 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.subrogation.service.SubrogationService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -66,7 +67,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -84,7 +84,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_SUBROGATIONS_URL)
 @Getter
 @Setter
-@Api(tags = "subrogations", value = "Subrogation Management", description = "Subrogation Management")
+@Tag(name = "Subrogations", description = "Subrogation Management")
 public class SubrogationController implements CrudController<SubrogationDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SubrogationController.class);
@@ -98,12 +98,14 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @GetMapping
+    @Operation(operationId = "subrogations_getAll", summary = "Get all subrogations")
     @Secured(ServicesData.ROLE_GET_SUBROGATIONS)
     public List<SubrogationDto> getAll(@RequestParam final Optional<String> criteria) {
         return subrogationService.getAll(criteria);
     }
 
     @Override
+    @Operation(operationId = "subrogations_checkExist", summary = "Check the existence of a subrogation by id")
     @RequestMapping(path = CommonConstants.PATH_ID, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @PathVariable("id") String id) {
         throw new NotImplementedException("checkExist not supported");
@@ -111,6 +113,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "subrogations_getOne", summary = "Get subrogation by id")
     @Secured(ServicesData.ROLE_GET_SUBROGATIONS)
     public SubrogationDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -122,6 +125,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @PostMapping
+    @Operation(operationId = "subrogations_create", summary = "Create a subrogation")
     @Secured(ServicesData.ROLE_CREATE_SUBROGATIONS)
     public SubrogationDto create(@Valid @RequestBody final SubrogationDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -130,6 +134,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
         return subrogationService.create(dto);
     }
 
+    @Operation(operationId = "subrogations_getGenericUsers", summary = "Get all generic users with criteria")
     @Secured(ServicesData.ROLE_GET_USERS_SUBROGATIONS)
     @GetMapping(path = "/users/generic", params = { "page", "size" })
     public PaginatedValuesDto<UserDto> getGenericUsers(
@@ -155,6 +160,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     }
 
     @GetMapping(path = "/groups" + CommonConstants.PATH_ID)
+    @Operation(operationId = "subrogations_getGroupById", summary = "Get group by id")
     @Secured(ServicesData.ROLE_GET_GROUPS_SUBROGATIONS)
     public GroupDto getGroupById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -165,11 +171,11 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     }
 
     @Override
-    @PutMapping(CommonConstants.PATH_ID)
-    public SubrogationDto update(final @PathVariable("id") String id, final @Valid @RequestBody SubrogationDto dto) {
+    public SubrogationDto update(String id, SubrogationDto dto) throws InvalidParseOperationException {
         throw new NotImplementedException("Update not supported");
     }
 
+    @Operation(operationId = "subrogations_accept", summary = "Accept a subrogation")
     @PatchMapping("/surrogate/accept/{id}")
     public SubrogationDto accept(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -179,6 +185,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
         return subrogationService.accept(id);
     }
 
+    @Operation(operationId = "subrogations_decline", summary = "Decline a subrogation")
     @DeleteMapping("/surrogate/decline/{id}")
     public void decline(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -188,11 +195,19 @@ public class SubrogationController implements CrudController<SubrogationDto> {
         subrogationService.decline(id);
     }
 
+    @Operation(
+        operationId = "subrogations_getMySubrogationAsSurrogate",
+        summary = "Get authenticated user's subrogation as surrogate"
+    )
     @GetMapping("/me/surrogate")
     public SubrogationDto getMySubrogationAsSurrogate() {
         return subrogationService.getMySubrogationAsSurrogate();
     }
 
+    @Operation(
+        operationId = "subrogations_getMySubrogationAsSuperuser",
+        summary = "Get authenticated user's subrogation as superuser"
+    )
     @GetMapping("/me/superuser")
     public SubrogationDto getMySubrogationAsSuperuser() {
         return subrogationService.getMySubrogationAsSuperuser();
@@ -200,6 +215,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "subrogations_delete", summary = "Delete a subrogation by id")
     @Secured(ServicesData.ROLE_DELETE_SUBROGATIONS)
     public void delete(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {

@@ -65,7 +65,7 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -369,7 +369,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
 
     public void checkLevel(final String level, final String message) {
         Assert.isTrue(
-            Pattern.matches(ApiIamExternalConstants.LEVEL_VALID_REGEXP, level),
+            Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level),
             "level : " + level + " format is not allowed"
         );
         Assert.isTrue(securityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");

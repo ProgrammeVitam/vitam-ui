@@ -50,14 +50,14 @@ import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
-import fr.gouv.vitamui.iam.client.IamRestClientFactory;
-import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
+import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.AuthentificationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.security.client.ContextRestClient;
-import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -85,19 +85,16 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityRestClientFactory securityRestClientFactory(
-        final ApiArchiveApplicationProperties apiArchiveExternalApplicationProperties,
+    public SecurityApiClientsFactory securityApiClientsFactory(
+        final ApiArchiveApplicationProperties apiArchiveApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new SecurityRestClientFactory(
-            apiArchiveExternalApplicationProperties.getSecurityClient(),
-            restTemplateBuilder
-        );
+        return new SecurityApiClientsFactory(apiArchiveApplicationProperties.getSecurityClient(), restTemplateBuilder);
     }
 
     @Bean
-    public ContextRestClient contextRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-        return securityRestClientFactory.getContextRestClient();
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
+        return securityApiClientsFactory.getContextsApi();
     }
 
     @Bean
@@ -111,29 +108,26 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public AuthentificationService authentificationService(
-        final ContextRestClient contextRestClient,
-        final UserRestClient userRestClient
-    ) {
-        return new AuthentificationService(contextRestClient, userRestClient);
+    public AuthentificationService authentificationService(final ContextsApi contextsApi, final UsersApi usersApi) {
+        return new AuthentificationService(contextsApi, usersApi);
     }
 
     @Bean
-    public IamRestClientFactory iamRestClientFactory(
-        final ApiArchiveApplicationProperties apiArchiveExternalApplicationProperties,
+    public IamApiClientsFactory iamApiClientsFactory(
+        final ApiArchiveApplicationProperties apiArchiveApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamRestClientFactory(apiArchiveExternalApplicationProperties.getIamClient(), restTemplateBuilder);
+        return new IamApiClientsFactory(apiArchiveApplicationProperties.getIamClient(), restTemplateBuilder);
     }
 
     @Bean
-    public UserRestClient userRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
+    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
+        return iamApiClientsFactory.getUsersApi();
     }
 
     @Bean
-    public ExternalParametersRestClient externalParametersRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getExternalParametersExternalRestClient();
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
+        return iamApiClientsFactory.getExternalParametersApi();
     }
 
     @Bean

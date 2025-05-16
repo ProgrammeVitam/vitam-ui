@@ -69,11 +69,11 @@ public class AccessionRegisterController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterController.class);
 
-    private final AccessionRegisterService accessionRegisterDetailExternalService;
+    private final AccessionRegisterService accessionRegisterService;
 
     @Autowired
-    public AccessionRegisterController(AccessionRegisterService accessionRegisterDetailExternalService) {
-        this.accessionRegisterDetailExternalService = accessionRegisterDetailExternalService;
+    public AccessionRegisterController(AccessionRegisterService accessionRegisterService) {
+        this.accessionRegisterService = accessionRegisterService;
     }
 
     @GetMapping("/summary")
@@ -83,7 +83,7 @@ public class AccessionRegisterController {
     ) {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all accessionRegister criteria={}", criteria);
-        return accessionRegisterDetailExternalService.getAll();
+        return accessionRegisterService.getAll();
     }
 
     @GetMapping(value = RestApi.DETAILS, params = { "page", "size" })
@@ -105,7 +105,7 @@ public class AccessionRegisterController {
             orderBy,
             direction
         );
-        return accessionRegisterDetailExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+        return accessionRegisterService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @PostMapping(RestApi.DETAILS_EXPORT_CSV)
@@ -115,6 +115,6 @@ public class AccessionRegisterController {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);
-        return accessionRegisterDetailExternalService.exportCsvArchiveUnitsByCriteria(query);
+        return accessionRegisterService.exportCsvArchiveUnitsByCriteria(query);
     }
 }

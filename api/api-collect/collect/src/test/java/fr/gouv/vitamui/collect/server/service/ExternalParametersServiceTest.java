@@ -35,7 +35,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +56,7 @@ public class ExternalParametersServiceTest {
     public static final int SOME_TENANT = 1;
 
     @MockBean
-    private ExternalParametersRestClient externalParametersRestClient;
+    private ExternalParametersApi externalParametersApi;
 
     @MockBean
     private SecurityService securityService;
@@ -70,7 +70,7 @@ public class ExternalParametersServiceTest {
     @BeforeEach
     public void setUp() {
         externalParametersService = new ExternalParametersService(
-            externalParametersRestClient,
+            externalParametersApi,
             securityService,
             accessContractCommonService
         );
@@ -79,9 +79,7 @@ public class ExternalParametersServiceTest {
     @Test
     void shouldThrowIllegalArgumentExceptionWhenNoAccessContract() {
         Map<String, String> myExternalParameter = Map.of("ANY_PARAM", "ANY_VALUE");
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             externalParametersService.retrieveAccessContract();
@@ -93,9 +91,7 @@ public class ExternalParametersServiceTest {
     @Test
     void shouldThrowAnotherIllegalArgumentExceptionWhenNoAccessContract() {
         Map<String, String> myExternalParameter = Map.of();
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             externalParametersService.retrieveAccessContract();
@@ -110,9 +106,7 @@ public class ExternalParametersServiceTest {
             ExternalParametersService.PARAM_ACCESS_CONTRACT_NAME,
             SOME_ACCESS_CONTRACT
         );
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
 
         final RequestResponseOK<AccessContractModel> response = new RequestResponseOK<>();
         response.setHttpCode(200);
@@ -141,9 +135,7 @@ public class ExternalParametersServiceTest {
             SOME_ACCESS_CONTRACT
         );
 
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
         Mockito.when(securityService.getTenantIdentifier()).thenReturn(SOME_TENANT);
         VitamContext someContext = new VitamContext(SOME_TENANT).setAccessContract(SOME_ACCESS_CONTRACT);
         VitamContext context = externalParametersService.buildVitamContextFromExternalParam();

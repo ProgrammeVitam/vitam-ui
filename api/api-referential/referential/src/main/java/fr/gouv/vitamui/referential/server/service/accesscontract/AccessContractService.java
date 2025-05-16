@@ -74,7 +74,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonServ
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import fr.gouv.vitamui.iam.client.ApplicationRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ApplicationsApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractCommonService;
@@ -123,7 +123,7 @@ public class AccessContractService extends AbstractService {
 
     private final LogbookService logbookService;
 
-    private final ApplicationRestClient applicationRestClient;
+    private final ApplicationsApi applicationsApi;
 
     private final SecurityService securityService;
 
@@ -133,7 +133,7 @@ public class AccessContractService extends AbstractService {
         VitamUIAccessContractCommonService vitamUIAccessContractCommonService,
         ObjectMapper objectMapper,
         LogbookService logbookService,
-        ApplicationRestClient applicationRestClient,
+        ApplicationsApi applicationsApi,
         SecurityService securityService
     ) {
         super(securityService);
@@ -141,7 +141,7 @@ public class AccessContractService extends AbstractService {
         this.vitamUIAccessContractCommonService = vitamUIAccessContractCommonService;
         this.objectMapper = objectMapper;
         this.logbookService = logbookService;
-        this.applicationRestClient = applicationRestClient;
+        this.applicationsApi = applicationsApi;
         this.securityService = securityService;
     }
 
@@ -366,9 +366,7 @@ public class AccessContractService extends AbstractService {
     }
 
     public ResponseEntity<Void> importAccessContracts(VitamContext context, MultipartFile file) {
-        Boolean isIdentifierMandatory = applicationRestClient
-            .isApplicationExternalIdentifierEnabled(securityService.getHttpContext(), ACCESS_CONTRACT)
-            .getBody();
+        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(ACCESS_CONTRACT);
 
         if (isIdentifierMandatory == null) {
             throw new InternalServerException("The result of the API call should not be null");

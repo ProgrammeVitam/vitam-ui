@@ -49,6 +49,8 @@ import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -75,6 +77,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_USERS_INFO_URL)
 @Getter
 @Setter
+@Tag(name = "UserInfo", description = "User Information Management")
 public class UserInfoController implements CrudController<UserInfoDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoController.class);
@@ -88,6 +91,7 @@ public class UserInfoController implements CrudController<UserInfoDto> {
 
     @Override
     @PostMapping
+    @Operation(operationId = "userInfo_create", summary = "Create user info")
     @Secured(ServicesData.ROLE_CREATE_USER_INFOS)
     public UserInfoDto create(final @Valid @RequestBody UserInfoDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -118,6 +122,7 @@ public class UserInfoController implements CrudController<UserInfoDto> {
 
     @Override
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "userInfo_getOne", summary = "Get user info by id")
     @Secured(ServicesData.ROLE_GET_USER_INFOS)
     public UserInfoDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -133,12 +138,14 @@ public class UserInfoController implements CrudController<UserInfoDto> {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ME)
+    @Operation(operationId = "userInfo_getMe", summary = "Get user info for current user")
     public UserInfoDto getMe() {
         LOGGER.debug("getMe {}");
         return userInfoService.getMe();
     }
 
     @PatchMapping(CommonConstants.PATH_ME)
+    @Operation(operationId = "userInfo_patchMe", summary = "Patch user info for current user")
     public UserInfoDto patchMe(@RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(partialDto);
@@ -148,6 +155,7 @@ public class UserInfoController implements CrudController<UserInfoDto> {
 
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "userInfo_patch", summary = "Patch user info by id")
     @Secured(ServicesData.ROLE_UPDATE_USER_INFOS)
     public UserInfoDto patch(final @PathVariable("id") String id, final @RequestBody Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -162,6 +170,7 @@ public class UserInfoController implements CrudController<UserInfoDto> {
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
+    @Operation(operationId = "userInfo_findHistoryById", summary = "Get user info history by id")
     public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);

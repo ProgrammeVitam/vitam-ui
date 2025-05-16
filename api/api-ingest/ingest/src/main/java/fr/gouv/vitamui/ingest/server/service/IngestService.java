@@ -64,9 +64,9 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.iam.client.CustomerRestClient;
-import fr.gouv.vitamui.iam.client.UserRestClient;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
+import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
@@ -110,9 +110,9 @@ public class IngestService {
 
     private final ObjectMapper objectMapper;
 
-    private final CustomerRestClient customerRestClient;
+    private final CustomersApi customersApi;
 
-    private final UserRestClient userRestClient;
+    private final UsersApi usersApi;
 
     private final IngestGeneratorODTFile ingestGeneratorODTFile;
 
@@ -126,8 +126,8 @@ public class IngestService {
         final LogbookService logbookService,
         final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient,
-        final CustomerRestClient customerRestClient,
-        final UserRestClient userRestClient,
+        final CustomersApi customersApi,
+        final UsersApi usersApi,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
         final IngestExternalParametersService ingestExternalParametersService,
         final IngestAccessContractService ingestAccessContractService
@@ -136,8 +136,8 @@ public class IngestService {
         this.ingestExternalClient = ingestExternalClient;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
-        this.customerRestClient = customerRestClient;
-        this.userRestClient = userRestClient;
+        this.customersApi = customersApi;
+        this.usersApi = usersApi;
         this.ingestGeneratorODTFile = ingestGeneratorODTFile;
         this.ingestExternalParametersService = ingestExternalParametersService;
         this.ingestAccessContractService = ingestAccessContractService;
@@ -278,13 +278,13 @@ public class IngestService {
         try {
             LOGGER.info("Generate ODT Report : get Manifest and ATR of the operation ID : {} ", id);
             VitamContext vitamContext = ingestExternalParametersService.buildVitamContextFromExternalParam();
-            AuthUserDto me = userRestClient.getMe(securityService.getHttpContext());
+            AuthUserDto me = usersApi.getMe();
             if (me == null || StringUtils.isEmpty(me.getCustomerId())) {
                 throw new IngestFileGenerationException(
                     "Could not retrieve current user or his customer id to generate the document"
                 );
             }
-            CustomerDto myCustomer = customerRestClient.getOne(securityService.getHttpContext(), me.getCustomerId());
+            CustomerDto myCustomer = customersApi.getOne(me.getCustomerId());
             Resource customerLogo = null;
             Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
             Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(
@@ -299,9 +299,7 @@ public class IngestService {
             }
 
             if (myCustomer.isHasCustomGraphicIdentity()) {
-                customerLogo = customerRestClient
-                    .getLogo(securityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER)
-                    .getBody();
+                customerLogo = customersApi.getLogo(myCustomer.getId(), AttachmentType.HEADER.value());
             }
             List<ArchiveUnitDto> archiveUnitDtoList = ingestGeneratorODTFile.getValuesForDynamicTable(atr, manifest);
 

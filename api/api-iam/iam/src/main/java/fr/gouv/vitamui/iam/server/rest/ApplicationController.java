@@ -44,8 +44,10 @@ import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -72,7 +74,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_APPLICATIONS_URL)
 @Getter
 @Setter
-@Api(tags = "applications", value = "Applications Management", description = "Applications Management")
+@Tag(name = "Applications", description = "Applications Management")
 public class ApplicationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
@@ -92,7 +94,11 @@ public class ApplicationController {
      * @return all Applications matching user privileges
      */
     @GetMapping
-    public List<ApplicationDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
+    @Operation(operationId = "applications_getAll", summary = "Return all applications matching user privileges")
+    public List<ApplicationDto> getAll(
+        @Parameter(description = "Criteria to filter the applications") final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded
+    ) {
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
@@ -100,25 +106,35 @@ public class ApplicationController {
     }
 
     @GetMapping("/filtered")
-    @ApiOperation(value = "Return config about applications and categories")
-    public Map<String, Object> getApplicationsFromUi(@RequestParam(defaultValue = "true") final boolean filterApp) {
+    @Operation(
+        operationId = "applications_getApplicationsFromUi",
+        summary = "Return config about applications and categories"
+    )
+    public Map<String, List<ApplicationDto>> getApplicationsFromUi(
+        @RequestParam(defaultValue = "true") final boolean filterApp
+    ) {
         LOGGER.debug("getApplications");
         return applicationService.getApplications(filterApp);
     }
 
     @GetMapping(path = "/{identifier:.+}/externalid")
-    @ApiOperation(value = "Check if an application can have an external identifier")
+    @Operation(
+        operationId = "isApplicationExternalIdentifierEnabled",
+        summary = "Check if an application can have an external identifier"
+    )
     public boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("isApplicationExternalIdentifierEnabled");
         return applicationService.isApplicationExternalIdentifierEnabled(identifier);
     }
 
+    @Hidden
     @PutMapping(CommonConstants.PATH_ID)
     public ApplicationDto update(final @PathVariable("id") String id, final @Valid @RequestBody ApplicationDto dto) {
         throw new UnsupportedOperationException("update not implemented");
     }
 
+    @Hidden
     @PatchMapping(CommonConstants.PATH_ID)
     public ApplicationDto patch(
         final @PathVariable("id") String id,

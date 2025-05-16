@@ -72,14 +72,6 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
     }
 
     @Test
-    public void patchMe_thenOk() throws Exception {
-        LOGGER.debug("testPatchMe");
-        ResultActions result = super.performPatch(CommonConstants.PATH_ME, asJsonString(ImmutableMap.of("id", "id")));
-        result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.patchMe(null)));
-        Mockito.verify(userService, Mockito.times(1)).patchMe(ArgumentMatchers.any());
-    }
-
-    @Test
     public void patchAnalytics_thenOk() throws Exception {
         Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
         ResultActions result =

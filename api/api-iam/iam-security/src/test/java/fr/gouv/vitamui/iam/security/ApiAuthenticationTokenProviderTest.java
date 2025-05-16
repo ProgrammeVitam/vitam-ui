@@ -5,16 +5,15 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.openapiclient.UsersApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.AuthentificationService;
-import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +29,6 @@ import java.util.List;
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -66,9 +64,9 @@ public final class ApiAuthenticationTokenProviderTest {
 
     @Before
     public void setUp() throws Exception {
-        final ContextRestClient contextRestClient = mock(ContextRestClient.class);
-        final UserRestClient userRestClient = mock(UserRestClient.class);
-        final AuthentificationService securityService = new AuthentificationService(contextRestClient, userRestClient);
+        final ContextsApi contextsApi = mock(ContextsApi.class);
+        final UsersApi usersApi = mock(UsersApi.class);
+        final AuthentificationService securityService = new AuthentificationService(contextsApi, usersApi);
         provider = new ApiAuthenticationProvider(securityService);
         profiles = new ArrayList<>();
         context = new ContextDto();
@@ -82,13 +80,8 @@ public final class ApiAuthenticationTokenProviderTest {
         userProfile.setId(USER_ID);
         userProfile.setIdentifier("identifier");
         userProfile.setCustomerIdentifier("customerIdentifier");
-        when(
-            contextRestClient.findByCertificate(
-                any(HttpContext.class),
-                eq(Base64.getEncoder().encodeToString(CERTIFICATE))
-            )
-        ).thenReturn(context);
-        when(userRestClient.getMe(ArgumentMatchers.any())).thenReturn(userProfile);
+        when(contextsApi.findByCertificate(eq(Base64.getEncoder().encodeToString(CERTIFICATE)))).thenReturn(context);
+        when(usersApi.getMe()).thenReturn(userProfile);
     }
 
     @Test(expected = BadCredentialsException.class)

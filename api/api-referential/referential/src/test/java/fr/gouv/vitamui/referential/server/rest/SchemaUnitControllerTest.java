@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class SchemaUnitControllerTest {
 
     @InjectMocks
-    private SchemaUnitController schemaExternalController;
+    private SchemaUnitController schemaUnitController;
 
     @Mock
     private SchemaService schemaService;
@@ -75,7 +75,7 @@ public class SchemaUnitControllerTest {
         );
 
         // When
-        ResponseEntity<Void> actualResponse = schemaExternalController.importUnitSchemas(validFile);
+        ResponseEntity<Void> actualResponse = schemaUnitController.importUnitSchemas(validFile);
 
         // Then
         assertNotNull(actualResponse, "The response should not be null.");
@@ -88,7 +88,7 @@ public class SchemaUnitControllerTest {
         // When & Then
         assertThrows(
             IllegalArgumentException.class,
-            () -> schemaExternalController.importUnitSchemas(null),
+            () -> schemaUnitController.importUnitSchemas(null),
             "Importing schemas with a null file should throw IllegalArgumentException."
         );
     }
@@ -112,7 +112,7 @@ public class SchemaUnitControllerTest {
         // When & Then
         assertThrows(
             IllegalArgumentException.class,
-            () -> schemaExternalController.importUnitSchemas(invalidFile),
+            () -> schemaUnitController.importUnitSchemas(invalidFile),
             "Importing schemas with an empty file should throw IllegalArgumentException."
         );
     }
@@ -139,7 +139,7 @@ public class SchemaUnitControllerTest {
         // When & Then
         RuntimeException exception = assertThrows(
             RuntimeException.class,
-            () -> schemaExternalController.importUnitSchemas(validFile),
+            () -> schemaUnitController.importUnitSchemas(validFile),
             "An exception should be thrown when the external service fails."
         );
 

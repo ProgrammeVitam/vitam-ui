@@ -40,7 +40,7 @@
 package fr.gouv.vitamui.ingest.server.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,15 +57,15 @@ public class IngestExternalParametersService {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersRestClient externalParametersRestClient;
+    private final ExternalParametersApi externalParametersApi;
     private final SecurityService securityService;
 
     @Autowired
     public IngestExternalParametersService(
-        final ExternalParametersRestClient externalParametersRestClient,
+        final ExternalParametersApi externalParametersApi,
         final SecurityService securityService
     ) {
-        this.externalParametersRestClient = externalParametersRestClient;
+        this.externalParametersApi = externalParametersApi;
         this.securityService = securityService;
     }
 
@@ -76,9 +76,7 @@ public class IngestExternalParametersService {
      * throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        Map<String, String> myExternalParameter = externalParametersRestClient.getMyExternalParameters(
-            securityService.getHttpContext()
-        );
+        Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }

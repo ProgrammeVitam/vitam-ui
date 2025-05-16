@@ -88,7 +88,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.clea
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
 /**
- * Archive-Search export Internal service.
+ * Archive-Search export service.
  */
 @Service
 public class ArchiveSearchUnitExportCsvService {

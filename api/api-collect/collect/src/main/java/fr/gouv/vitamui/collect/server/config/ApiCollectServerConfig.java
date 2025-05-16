@@ -27,35 +27,23 @@
 
 package fr.gouv.vitamui.collect.server.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.collect.server.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.collect.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
-import fr.gouv.vitamui.collect.server.service.ProjectObjectGroupService;
-import fr.gouv.vitamui.collect.server.service.ProjectService;
-import fr.gouv.vitamui.collect.server.service.SearchCriteriaHistoryService;
-import fr.gouv.vitamui.collect.server.service.TransactionArchiveUnitService;
-import fr.gouv.vitamui.collect.server.service.TransactionService;
-import fr.gouv.vitamui.collect.server.service.converters.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
-import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
-import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
-import fr.gouv.vitamui.iam.client.IamRestClientFactory;
-import fr.gouv.vitamui.iam.client.UserRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
+import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.AuthentificationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.security.client.ContextRestClient;
-import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,16 +63,16 @@ import org.springframework.context.annotation.Import;
 public class ApiCollectServerConfig extends AbstractContextConfiguration {
 
     @Bean
-    public SecurityRestClientFactory securityRestClientFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final ApiCollectApplicationProperties apiCollectApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new SecurityRestClientFactory(apiCollectApplicationProperties.getSecurityClient(), restTemplateBuilder);
+        return new SecurityApiClientsFactory(apiCollectApplicationProperties.getSecurityClient(), restTemplateBuilder);
     }
 
     @Bean
-    public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-        return securityRestClientFactory.getContextRestClient();
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
+        return securityApiClientsFactory.getContextsApi();
     }
 
     @Bean
@@ -93,61 +81,26 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityService externalSecurityService() {
+    public SecurityService securityService() {
         return new SecurityService();
     }
 
     @Bean
-    public AuthentificationService externalAuthentificationService(
-        final ContextRestClient contextRestClient,
-        final UserRestClient userRestClient
-    ) {
-        return new AuthentificationService(contextRestClient, userRestClient);
+    public AuthentificationService authentificationService(final ContextsApi contextsApi, final UsersApi usersApi) {
+        return new AuthentificationService(contextsApi, usersApi);
     }
 
     @Bean
-    public IamRestClientFactory iamExternalRestClientFactory(
+    public IamApiClientsFactory iamApiClientsFactory(
         final ApiCollectApplicationProperties apiCollectApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamRestClientFactory(apiCollectApplicationProperties.getIamClient(), restTemplateBuilder);
+        return new IamApiClientsFactory(apiCollectApplicationProperties.getIamClient(), restTemplateBuilder);
     }
 
     @Bean
-    public UserRestClient userInternalRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getUserExternalRestClient();
-    }
-
-    @Bean
-    public ProjectService collectInternalService(
-        final CollectService collectService,
-        ObjectMapper objectMapper,
-        ExternalParametersService externalParametersService
-    ) {
-        return new ProjectService(collectService, objectMapper, externalParametersService);
-    }
-
-    @Bean
-    public TransactionService transactionInternalService(final CollectService collectService) {
-        return new TransactionService(collectService);
-    }
-
-    @Bean
-    public TransactionArchiveUnitService projectArchiveUnitInternalService(
-        final CollectService collectService,
-        AgencyCommonService agencyCommonService,
-        final RuleCommonService ruleCommonService,
-        ObjectMapper objectMapper
-    ) {
-        return new TransactionArchiveUnitService(collectService, agencyCommonService, ruleCommonService, objectMapper);
-    }
-
-    @Bean
-    public ProjectObjectGroupService projectObjectGroupInternalService(
-        final CollectService collectService,
-        ObjectMapper objectMapper
-    ) {
-        return new ProjectObjectGroupService(collectService, objectMapper);
+    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
+        return iamApiClientsFactory.getUsersApi();
     }
 
     @Bean
@@ -156,24 +109,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SearchCriteriaHistoryService searchCriteriaHistoryInternalService(
-        final SequenceGeneratorService sequenceGeneratorService,
-        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
-        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final SecurityService securityService
-    ) {
-        return new SearchCriteriaHistoryService(
-            sequenceGeneratorService,
-            searchCriteriaHistoryRepository,
-            searchCriteriaHistoryConverter,
-            securityService
-        );
-    }
-
-    @Bean
-    public ExternalParametersRestClient externalParametersInternalRestClient(
-        final IamRestClientFactory iamRestClientFactory
-    ) {
-        return iamRestClientFactory.getExternalParametersExternalRestClient();
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
+        return iamApiClientsFactory.getExternalParametersApi();
     }
 }

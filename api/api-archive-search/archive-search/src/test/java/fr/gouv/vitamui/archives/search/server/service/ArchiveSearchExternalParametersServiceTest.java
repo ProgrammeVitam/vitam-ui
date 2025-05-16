@@ -30,7 +30,7 @@
 package fr.gouv.vitamui.archives.search.server.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +49,8 @@ public class ArchiveSearchExternalParametersServiceTest {
     public static final String SOME_ACCESS_CONTRACT = "SOME_ACCESS_CONTRACT";
     public static final int SOME_TENANT = 1;
 
-    @MockBean(name = "exteralParametersInternalRestClient")
-    private ExternalParametersRestClient externalParametersRestClient;
+    @MockBean(name = "externalParametersApi")
+    private ExternalParametersApi externalParametersApi;
 
     @MockBean(name = "securityService")
     private SecurityService securityService;
@@ -61,7 +61,7 @@ public class ArchiveSearchExternalParametersServiceTest {
     @BeforeEach
     public void setUp() {
         archiveSearchExternalParametersService = new ArchiveSearchExternalParametersService(
-            externalParametersRestClient,
+            externalParametersApi,
             securityService
         );
     }
@@ -69,9 +69,7 @@ public class ArchiveSearchExternalParametersServiceTest {
     @Test
     void shouldThrowIllegalArgumentExceptionWhenNoAccessContract() {
         Map<String, String> myExternalParameter = Map.of("ANY_VALUE", "ANY_PARAM");
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             archiveSearchExternalParametersService.retrieveAccessContractFromExternalParam();
@@ -83,9 +81,7 @@ public class ArchiveSearchExternalParametersServiceTest {
     @Test
     void shouldThrowAnotherIllegalArgumentExceptionWhenNoAccessContract() {
         Map<String, String> myExternalParameter = Map.of();
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             archiveSearchExternalParametersService.retrieveAccessContractFromExternalParam();
@@ -100,9 +96,7 @@ public class ArchiveSearchExternalParametersServiceTest {
             ArchiveSearchExternalParametersService.PARAM_ACCESS_CONTRACT_NAME,
             SOME_ACCESS_CONTRACT
         );
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
 
         String accessContractFound = archiveSearchExternalParametersService.retrieveAccessContractFromExternalParam();
         Assertions.assertEquals(SOME_ACCESS_CONTRACT, accessContractFound);
@@ -114,9 +108,7 @@ public class ArchiveSearchExternalParametersServiceTest {
             ArchiveSearchExternalParametersService.PARAM_ACCESS_CONTRACT_NAME,
             SOME_ACCESS_CONTRACT
         );
-        Mockito.when(externalParametersRestClient.getMyExternalParameters(securityService.getHttpContext())).thenReturn(
-            myExternalParameter
-        );
+        Mockito.when(externalParametersApi.getMyExternalParameters()).thenReturn(myExternalParameter);
         Mockito.when(securityService.getTenantIdentifier()).thenReturn(SOME_TENANT);
         VitamContext someContext = new VitamContext(SOME_TENANT).setAccessContract(SOME_ACCESS_CONTRACT);
         VitamContext context = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();

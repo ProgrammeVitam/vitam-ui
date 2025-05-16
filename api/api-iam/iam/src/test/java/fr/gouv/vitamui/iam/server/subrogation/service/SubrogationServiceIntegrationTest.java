@@ -45,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
- * Class for test InternalProfileService with a real repository
+ * Class for test ProfileService with a real repository
  */
 
 @SpringBootTest

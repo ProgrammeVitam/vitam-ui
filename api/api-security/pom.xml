@@ -13,6 +13,7 @@
     </parent>
 
     <modules>
+        <module>security-client-legacy</module>
         <module>security-client</module>
         <module>security-commons</module>
         <module>security</module>

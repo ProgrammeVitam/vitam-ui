@@ -107,7 +107,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.crea
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
 /**
- * Archive-Search facets Internal service .
+ * Archive-Search facets service .
  */
 @Service
 public class ArchiveSearchFacetsService {

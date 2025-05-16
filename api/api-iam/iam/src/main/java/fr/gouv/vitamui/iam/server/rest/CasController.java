@@ -53,7 +53,8 @@ import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -87,11 +88,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
-@Api(
-    tags = "cas",
-    value = "User authentication management for CAS",
-    description = "User authentication management for CAS"
-)
+@Tag(name = "Cas", description = "User authentication management for CAS")
 public class CasController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CasController.class);
@@ -123,6 +120,7 @@ public class CasController {
     }
 
     @PostMapping(value = RestApi.CAS_LOGIN_PATH)
+    @Operation(operationId = "cas_login", summary = "Performs the login of a user")
     @Secured(ServicesData.ROLE_CAS_LOGIN)
     public ResponseEntity<UserDto> login(final @Valid @RequestBody LoginRequestDto dto) {
         final String username = dto.getLoginEmail();
@@ -190,6 +188,7 @@ public class CasController {
     }
 
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
+    @Operation(operationId = "cas_changePassword", summary = "Change password of a user")
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
     public String changePassword(
@@ -215,6 +214,7 @@ public class CasController {
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
+    @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
     @Secured(ServicesData.ROLE_CAS_USERS)
     public List<UserDto> getUsersByEmail(
         @RequestParam final String email,
@@ -229,6 +229,7 @@ public class CasController {
         value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
         params = { "loginEmail", "loginCustomerId", "idp" }
     )
+    @Operation(operationId = "cas_getUser", summary = "Get a user by their loginEmail, loginCustomerId and idp")
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUser(
         @RequestParam final String loginEmail,
@@ -250,45 +251,45 @@ public class CasController {
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier.orElse(null), embedded.orElse(null));
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH, params = "id")
-    @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUserById(@RequestParam final String id) {
-        LOGGER.debug("getUserById: {}", id);
-        ParameterChecker.checkParameter("The identifier is mandatory : ", id);
-        SanityChecker.checkSecureParameter(id);
-        return casService.getUserProfileById(id);
-    }
-
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = { "superUserEmail", "superUserCustomerId" })
+    @Operation(
+        operationId = "getSubrogationsBySuperUserIdOrEmailAndCustomerId",
+        summary = "Get available subrogations for a super user by super user id or by super user email and customerId"
+    )
     @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
-    public List<SubrogationDto> getSubrogationsBySuperUserEmailAndCustomerId(
-        @RequestParam final String superUserEmail,
-        @RequestParam final String superUserCustomerId
+    public List<SubrogationDto> getSubrogationsBySuperUserIdOrEmailAndCustomerId(
+        @RequestParam(required = false) final String superUserId,
+        @RequestParam(required = false) final String superUserEmail,
+        @RequestParam(required = false) final String superUserCustomerId
     ) {
-        LOGGER.debug("getMySubrogationAsSuperuser: {} / {}", superUserEmail, superUserCustomerId);
-        ParameterChecker.checkParameter("The superUserEmail is mandatory : ", superUserEmail);
-        ParameterChecker.checkParameter("The superUserCustomerId is mandatory : ", superUserCustomerId);
+        LOGGER.debug(
+            "getSubrogationsBySuperUserIdOrEmailAndCustomerId: id: {} | email: {} / customerId: {}",
+            superUserId,
+            superUserEmail,
+            superUserCustomerId
+        );
+        String email = superUserEmail, customerId = superUserCustomerId;
+        if (superUserId != null && !superUserId.isEmpty() && superUserId.trim().isEmpty()) {
+            SanityChecker.checkSecureParameter(superUserId);
+            final UserDto user = userService.getOne(superUserId, Optional.empty());
+            if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
+                email = user.getEmail();
+                customerId = user.getCustomerId();
+                LOGGER.debug("-> email: {}, customerId: {}", email, customerId);
+            } else {
+                return new ArrayList<>();
+            }
+        }
+        ParameterChecker.checkParameter("The superUserEmail is mandatory : ", email);
+        ParameterChecker.checkParameter("The superUserCustomerId is mandatory : ", customerId);
         return casService.getSubrogationsBySuperUser(superUserEmail, superUserCustomerId);
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserId")
-    @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
-    public List<SubrogationDto> getSubrogationsBySuperUserId(@RequestParam final String superUserId) {
-        LOGGER.debug("getSubrogationsBySuperUserId: {}", superUserId);
-        ParameterChecker.checkParameter("The superUserId is mandatory : ", superUserId);
-        SanityChecker.checkSecureParameter(superUserId);
-        final UserDto user = userService.getOne(superUserId, Optional.empty());
-        if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
-            final String email = user.getEmail();
-            final String customerId = user.getCustomerId();
-            LOGGER.debug("-> email: {}, customerId: {}", email, customerId);
-            return casService.getSubrogationsBySuperUser(email, customerId);
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
+    @Operation(
+        operationId = "cas_logout",
+        summary = "Logout a user, remove the token and delete the subrogation if needed"
+    )
     @Secured(ServicesData.ROLE_CAS_LOGOUT)
     @ResponseStatus(HttpStatus.OK)
     public void logout(
@@ -316,6 +317,7 @@ public class CasController {
     }
 
     @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)
+    @Operation(operationId = "cas_getCustomersByIds", summary = "Get all customers by ids")
     @Secured(ServicesData.ROLE_CAS_CUSTOMER_IDS)
     public Collection<CustomerDto> getCustomersByIds(final @RequestParam List<String> customerIds) {
         LOGGER.debug("get all customers by ids={}", customerIds);

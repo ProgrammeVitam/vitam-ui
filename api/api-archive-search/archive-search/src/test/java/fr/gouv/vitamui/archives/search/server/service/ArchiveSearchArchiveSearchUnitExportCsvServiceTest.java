@@ -98,10 +98,10 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     @MockBean(name = "agencyCommonService")
     private AgencyCommonService agencyCommonService;
 
-    @MockBean(name = "archiveSearchAgenciesInternalService")
+    @MockBean(name = "archiveSearchAgenciesService")
     private ArchiveSearchAgenciesService archiveSearchAgenciesService;
 
-    @MockBean(name = "archiveSearchInternalService")
+    @MockBean(name = "archiveSearchService")
     private ArchiveSearchService archiveSearchService;
 
     @MockBean(name = "externalParametersService")

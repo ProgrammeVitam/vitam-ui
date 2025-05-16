@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.security.server.rest;
 
 import fr.gouv.vitamui.commons.rest.BaseApiErrorController;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@ApiIgnore
+@Hidden
 public class ApiErrorController extends BaseApiErrorController {}

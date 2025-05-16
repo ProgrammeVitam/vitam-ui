@@ -1,0 +1,4335 @@
+openapi: 3.0.1
+info:
+    title: iam
+    contact:
+        name: Programme Vitam
+        email: contact@programmevitam.fr
+    version: 9.0.0-SNAPSHOT
+servers:
+    - url: https://dev.vitamui.com:8083
+      description: Generated server url
+security:
+    - bearer: []
+      x-tenant-id: []
+tags:
+    - name: Owners
+      description: Owners Management
+    - name: IdentityProviders
+      description: Identity Providers Management
+    - name: Tenants
+      description: Tenants Management
+    - name: Logbooks
+      description: Logbooks Management
+    - name: ExternalParamProfile
+      description: Access Contract External Parameters Profile
+    - name: Applications
+      description: Applications Management
+    - name: Groups
+      description: Profiles Groups Management
+    - name: Subrogations
+      description: Subrogation Management
+    - name: Customers
+      description: Customers Management
+    - name: Users
+      description: Users Management
+    - name: Cas
+      description: User authentication management for CAS
+    - name: Status
+      description: Status check and autotest
+    - name: Profiles
+      description: Profiles Management
+    - name: ExternalParameters
+      description: External Parameters Management
+    - name: UserInfo
+      description: User Information Management
+    - name: Security
+      description: Security Management
+paths:
+    /iam/v1/users/{id}:
+        get:
+            tags:
+                - Users
+            summary: Get a user by its id
+            operationId: users_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserDto"
+                            example: null
+        patch:
+            tags:
+                - Users
+            summary: Patch a user
+            operationId: users_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserDto"
+                            example: null
+    /iam/v1/tenants/{id}:
+        get:
+            tags:
+                - Tenants
+            summary: Get a tenant by its identifier
+            operationId: tenants_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/TenantDto"
+                            example: null
+        put:
+            tags:
+                - Tenants
+            summary: Update a tenant
+            operationId: tenants_update
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/TenantDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/TenantDto"
+                            example: null
+        patch:
+            tags:
+                - Tenants
+            summary: Patch a tenant
+            operationId: tenants_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/TenantDto"
+                            example: null
+    /iam/v1/subrogations/{id}:
+        get:
+            tags:
+                - Subrogations
+            summary: Get subrogation by id
+            operationId: subrogations_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+        put:
+            tags:
+                - Subrogations
+            summary: Update a subrogation
+            operationId: subrogations_update
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SubrogationDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+        delete:
+            tags:
+                - Subrogations
+            summary: Delete a subrogation by id
+            operationId: subrogations_delete
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+        head:
+            tags:
+                - Subrogations
+            summary: Check the existence of a subrogation by id
+            operationId: subrogations_checkExist
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/owners/{id}:
+        get:
+            tags:
+                - Owners
+            summary: Get an owner by its id
+            operationId: owners_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/OwnerDto"
+                            example: null
+        put:
+            tags:
+                - Owners
+            summary: Update an owner
+            operationId: owners_update
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/OwnerDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/OwnerDto"
+                            example: null
+        patch:
+            tags:
+                - Owners
+            summary: Patch an owner
+            operationId: owners_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/OwnerDto"
+                            example: null
+    /iam/v1/externalparamprofile/{id}:
+        get:
+            tags:
+                - ExternalParamProfile
+            summary: Get external parameter profile by id
+            operationId: externalParamProfile_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ExternalParamProfileDto"
+                            example: null
+    /iam/v1/customers/{id}:
+        get:
+            tags:
+                - Customers
+            summary: Get a customer by its id
+            operationId: customers_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CustomerDto"
+                            example: null
+        put:
+            tags:
+                - Customers
+            summary: Update a customer
+            operationId: customers_update
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CustomerDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CustomerDto"
+                            example: null
+        patch:
+            tags:
+                - Customers
+            summary: Patch a customer entity
+            operationId: customers_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CustomerPatchFormData"
+                        example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CustomerDto"
+                            example: null
+    /v1/logbooks/operations:
+        post:
+            tags:
+                - Logbooks
+            summary: Get log book operation by json select
+            operationId: logbooks_findOperations
+            parameters:
+                - name: X-Tenant-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: vitamTenantIdentifier
+                  in: query
+                  required: false
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/JsonNode"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/users:
+        get:
+            tags:
+                - Users
+            summary: "Get all users, paginated"
+            operationId: users_getAllPaginated
+            parameters:
+                - name: page
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: size
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: orderBy
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: direction
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                      enum:
+                          - ASC
+                          - DESC
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PaginatedValuesDtoUserDto"
+                            example: null
+        post:
+            tags:
+                - Users
+            summary: Create a user
+            operationId: users_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/UserDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserDto"
+                            example: null
+    /iam/v1/users/analytics:
+        post:
+            tags:
+                - Users
+            summary: Create/refresh current user analytics
+            operationId: users_patchAnalytics
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserDto"
+                            example: null
+    /iam/v1/userinfos:
+        post:
+            tags:
+                - UserInfo
+            summary: Create user info
+            operationId: userInfo_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/UserInfoDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserInfoDto"
+                            example: null
+    /iam/v1/tenants:
+        get:
+            tags:
+                - Tenants
+            summary: Get all tenants
+            operationId: tenants_getAll
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/TenantDto"
+                            example: null
+        post:
+            tags:
+                - Tenants
+            summary: Create a tenant
+            operationId: tenants_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/TenantDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/TenantDto"
+                            example: null
+    /iam/v1/subrogations:
+        get:
+            tags:
+                - Subrogations
+            summary: Get all subrogations
+            operationId: subrogations_getAll
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+        post:
+            tags:
+                - Subrogations
+            summary: Create a subrogation
+            operationId: subrogations_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SubrogationDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+    /iam/v1/providers:
+        get:
+            tags:
+                - IdentityProviders
+            summary: Get all identity providers
+            operationId: identityProviders_getAll
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/IdentityProviderDto"
+                            example: null
+        post:
+            tags:
+                - IdentityProviders
+            summary: Create an identity provider
+            operationId: identityProviders_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            required:
+                                - provider
+                            type: object
+                            properties:
+                                provider:
+                                    type: string
+                                    example: null
+                                keystore:
+                                    type: string
+                                    format: binary
+                                    example: null
+                                idpMetadata:
+                                    type: string
+                                    format: binary
+                                    example: null
+                            example: null
+                        example: null
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/IdentityProviderDto"
+                            example: null
+    /iam/v1/profiles:
+        get:
+            tags:
+                - Profiles
+            summary: Get all profiles
+            operationId: profiles_getAll
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/ProfileDto"
+                            example: null
+        post:
+            tags:
+                - Profiles
+            summary: Create a profile
+            operationId: profiles_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ProfileDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ProfileDto"
+                            example: null
+    /iam/v1/owners:
+        post:
+            tags:
+                - Owners
+            summary: Create an owner
+            operationId: owners_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/OwnerDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/OwnerDto"
+                            example: null
+    /iam/v1/groups:
+        get:
+            tags:
+                - Groups
+            summary: Get all groups
+            operationId: groups_getAll
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/GroupDto"
+                            example: null
+        post:
+            tags:
+                - Groups
+            summary: Create a group
+            operationId: groups_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/GroupDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/GroupDto"
+                            example: null
+    /iam/v1/externalparamprofile:
+        get:
+            tags:
+                - ExternalParamProfile
+            summary: "Get external parameters profile, paginated result"
+            operationId: externalParamProfile_getAllPaginated
+            parameters:
+                - name: page
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: size
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: orderBy
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: direction
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                      enum:
+                          - ASC
+                          - DESC
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PaginatedValuesDtoExternalParamProfileDto"
+                            example: null
+        post:
+            tags:
+                - ExternalParamProfile
+            summary: Create external parameter profile
+            operationId: externalParamProfile_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ExternalParamProfileDto"
+                        example: null
+                required: true
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ExternalParamProfileDto"
+                            example: null
+    /iam/v1/customers:
+        get:
+            tags:
+                - Customers
+            summary: Get all customer objects
+            operationId: customers_getAll
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/CustomerDto"
+                            example: null
+        post:
+            tags:
+                - Customers
+            summary: Create a customer
+            operationId: customers_create
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: "#/components/schemas/CustomerCreationFormData"
+                        example: null
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CustomerDto"
+                            example: null
+    /iam/v1/cas/password/change:
+        post:
+            tags:
+                - Cas
+            summary: Change password of a user
+            operationId: cas_changePassword
+            parameters:
+                - name: username
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: password
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: customerId
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                example: null
+                            example: null
+    /iam/v1/cas/login:
+        post:
+            tags:
+                - Cas
+            summary: Performs the login of a user
+            operationId: cas_login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/LoginRequestDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserDto"
+                            example: null
+    /iam/v1/userinfos/{id}:
+        get:
+            tags:
+                - UserInfo
+            summary: Get user info by id
+            operationId: userInfo_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserInfoDto"
+                            example: null
+        patch:
+            tags:
+                - UserInfo
+            summary: Patch user info by id
+            operationId: userInfo_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserInfoDto"
+                            example: null
+    /iam/v1/userinfos/me:
+        get:
+            tags:
+                - UserInfo
+            summary: Get user info for current user
+            operationId: userInfo_getMe
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserInfoDto"
+                            example: null
+        patch:
+            tags:
+                - UserInfo
+            summary: Patch user info for current user
+            operationId: userInfo_patchMe
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserInfoDto"
+                            example: null
+    /iam/v1/subrogations/surrogate/accept/{id}:
+        patch:
+            tags:
+                - Subrogations
+            summary: Accept a subrogation
+            operationId: subrogations_accept
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+    /iam/v1/providers/{id}:
+        get:
+            tags:
+                - IdentityProviders
+            summary: Get an identity provider by its id
+            operationId: identityProviders_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/IdentityProviderDto"
+                            example: null
+        patch:
+            tags:
+                - IdentityProviders
+            summary: Patch an identity provider
+            operationId: identityProviders_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/IdentityProviderDto"
+                            example: null
+    /iam/v1/providers/{id}/keystore:
+        patch:
+            tags:
+                - IdentityProviders
+            summary: Patch a keystore provider
+            operationId: identityProviders_patchProviderKeystore
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            required:
+                                - keystore
+                                - provider
+                            type: object
+                            properties:
+                                keystore:
+                                    type: string
+                                    format: binary
+                                    example: null
+                                provider:
+                                    type: string
+                                    example: null
+                            example: null
+                        example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/IdentityProviderDto"
+                            example: null
+    /iam/v1/providers/{id}/idpMetadata:
+        get:
+            tags:
+                - IdentityProviders
+            summary: Get an identity provider's idp metadata by its id
+            operationId: identityProviders_getIdpMetadataProviderByProviderId
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                format: binary
+                                example: null
+                            example: null
+        patch:
+            tags:
+                - IdentityProviders
+            summary: Update idpMetadata provider
+            operationId: identityProviders_patchProviderIdpMetadata
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            required:
+                                - idpMetadata
+                                - provider
+                            type: object
+                            properties:
+                                idpMetadata:
+                                    type: string
+                                    format: binary
+                                    example: null
+                                provider:
+                                    type: string
+                                    example: null
+                            example: null
+                        example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/IdentityProviderDto"
+                            example: null
+    /iam/v1/profiles/{id}:
+        get:
+            tags:
+                - Profiles
+            summary: Get a profile by its id
+            operationId: profiles_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ProfileDto"
+                            example: null
+        patch:
+            tags:
+                - Profiles
+            summary: Patch a profile
+            operationId: profiles_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ProfileDto"
+                            example: null
+    /iam/v1/groups/{id}:
+        get:
+            tags:
+                - Groups
+            summary: Get group by id
+            operationId: groups_getOne
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/GroupDto"
+                            example: null
+        patch:
+            tags:
+                - Groups
+            summary: Patch a group
+            operationId: groups_patch
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/GroupDto"
+                            example: null
+    /iam/v1/externalparamprofile/me:
+        patch:
+            tags:
+                - ExternalParamProfile
+            summary: Patch external parameter profile
+            operationId: externalParamProfile_patchMe
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            additionalProperties:
+                                type: object
+                                example: null
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ExternalParamProfileDto"
+                            example: null
+    /iam/v1/users/check:
+        head:
+            tags:
+                - Users
+            summary: Check the existence of a user by criteria
+            operationId: users_checkExist
+            parameters:
+                - name: criteria
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/tenants/check:
+        head:
+            tags:
+                - Tenants
+            summary: Check if a tenant exists
+            operationId: tenants_checkExist
+            parameters:
+                - name: criteria
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/profiles/check:
+        head:
+            tags:
+                - Profiles
+            summary: Check the existence of a profile by criteria
+            operationId: profiles_checkExist
+            parameters:
+                - name: criteria
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/owners/check:
+        head:
+            tags:
+                - Owners
+            summary: Check the existence of an owner by criteria
+            operationId: owners_checkExist
+            parameters:
+                - name: criteria
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/groups/check:
+        head:
+            tags:
+                - Groups
+            summary: Check group existence
+            operationId: groups_checkExist
+            parameters:
+                - name: criteria
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/externalparamprofile/check:
+        head:
+            tags:
+                - ExternalParamProfile
+            summary: Check existence of external parameter profile
+            operationId: externalParamProfile_checkExist
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: string
+                            example: null
+                        example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/customers/check:
+        head:
+            tags:
+                - Customers
+            summary: Check that a customer exists
+            operationId: customers_checkExist
+            parameters:
+                - name: criteria
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /v1/logbooks/unitlifecycles/{id}:
+        get:
+            tags:
+                - Logbooks
+            summary: Get unit lifecycle by id
+            operationId: logbooks_findUnitLifeCyclesByUnitId
+            parameters:
+                - name: X-Tenant-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: X-Access-Contract-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookLifeCycleResponseDto"
+                            example: null
+    /v1/logbooks/operations/{id}:
+        get:
+            tags:
+                - Logbooks
+            summary: Get operation by id
+            operationId: logbooks_findOperationByUnitId
+            parameters:
+                - name: X-Tenant-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: X-Access-Contract-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /v1/logbooks/operations/{id}/download/{downloadType}:
+        get:
+            tags:
+                - Logbooks
+            summary: Download the report file for a given operation
+            operationId: logbooks_downloadReport
+            parameters:
+                - name: X-Tenant-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: X-Access-Contract-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: downloadType
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /v1/logbooks/operations/{id}/download/manifest:
+        get:
+            tags:
+                - Logbooks
+            summary: Download the manifest for a given operation
+            operationId: logbooks_downloadManifest
+            parameters:
+                - name: X-Tenant-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /v1/logbooks/operations/{id}/download/atr:
+        get:
+            tags:
+                - Logbooks
+            summary: Download the ATR file for a given operation
+            operationId: logbooks_downloadAtr
+            parameters:
+                - name: X-Tenant-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /v1/logbooks/objectslifecycles/{id}:
+        get:
+            tags:
+                - Logbooks
+            summary: Get object lifecycle by id
+            operationId: logbooks_findObjectGroupLifeCyclesByUnitId
+            parameters:
+                - name: X-Tenant-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: X-Access-Contract-Id
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookLifeCycleResponseDto"
+                            example: null
+    /status:
+        get:
+            tags:
+                - Status
+            summary: Basic health check endpoint
+            operationId: status_status
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                example: null
+                            example: null
+    /iam/v1/users/{id}/history:
+        get:
+            tags:
+                - Users
+            summary: Get user history by its id
+            operationId: users_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/users/me:
+        get:
+            tags:
+                - Users
+            summary: Get the current user
+            operationId: users_getMe
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/AuthUserDto"
+                            example: null
+    /iam/v1/users/levels:
+        get:
+            tags:
+                - Users
+            summary: Get levels by criteria
+            operationId: users_getLevels
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    type: string
+                                    example: null
+                            example: null
+    /iam/v1/users/export:
+        get:
+            tags:
+                - Users
+            summary: Export users to xlsx file
+            operationId: users_exportUsers
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                format: binary
+                                example: null
+                            example: null
+    /iam/v1/userinfos/{id}/history:
+        get:
+            tags:
+                - UserInfo
+            summary: Get user info history by id
+            operationId: userInfo_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/tenants/{id}/history:
+        get:
+            tags:
+                - Tenants
+            summary: Get history by tenant's id
+            operationId: tenants_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/tenants/available:
+        get:
+            tags:
+                - Tenants
+            summary: Get available tenants
+            operationId: tenants_getAvailableTenants
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    type: integer
+                                    format: int32
+                                    example: null
+                            example: null
+    /iam/v1/subrogations/users/generic:
+        get:
+            tags:
+                - Subrogations
+            summary: Get all generic users with criteria
+            operationId: subrogations_getGenericUsers
+            parameters:
+                - name: page
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: size
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: orderBy
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: direction
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                      enum:
+                          - ASC
+                          - DESC
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PaginatedValuesDtoUserDto"
+                            example: null
+    /iam/v1/subrogations/me/surrogate:
+        get:
+            tags:
+                - Subrogations
+            summary: Get authenticated user's subrogation as surrogate
+            operationId: subrogations_getMySubrogationAsSurrogate
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+    /iam/v1/subrogations/me/superuser:
+        get:
+            tags:
+                - Subrogations
+            summary: Get authenticated user's subrogation as superuser
+            operationId: subrogations_getMySubrogationAsSuperuser
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+    /iam/v1/subrogations/groups/{id}:
+        get:
+            tags:
+                - Subrogations
+            summary: Get group by id
+            operationId: subrogations_getGroupById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/GroupDto"
+                            example: null
+    /iam/v1/security:
+        get:
+            tags:
+                - Security
+            summary: Get authenticated user
+            operationId: security_getAuthenticated
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/AuthUserDto"
+                            example: null
+    /iam/v1/providers/{id}/spMetadata:
+        get:
+            tags:
+                - IdentityProviders
+            summary: Get an identity provider's sp metadata by its id
+            operationId: identityProviders_getSpMetadataProviderByProviderId
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                format: binary
+                                example: null
+                            example: null
+    /iam/v1/profiles/{id}/history:
+        get:
+            tags:
+                - Profiles
+            summary: Get profile history by its id
+            operationId: profiles_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/profiles/paginated:
+        get:
+            tags:
+                - Profiles
+            summary: "Get all profiles, paginated result"
+            operationId: profiles_getAllPaginated
+            parameters:
+                - name: page
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: size
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: orderBy
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: direction
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                      enum:
+                          - ASC
+                          - DESC
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PaginatedValuesDtoProfileDto"
+                            example: null
+    /iam/v1/profiles/levels:
+        get:
+            tags:
+                - Profiles
+            summary: Get levels by criteria
+            operationId: profiles_getLevels
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    type: string
+                                    example: null
+                            example: null
+    /iam/v1/owners/{id}/history:
+        get:
+            tags:
+                - Owners
+            summary: Get owner history by its id
+            operationId: owners_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/groups/{id}/history:
+        get:
+            tags:
+                - Groups
+            summary: Get group history by id
+            operationId: groups_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/groups/paginated:
+        get:
+            tags:
+                - Groups
+            summary: "Get all groups, paginated"
+            operationId: groups_getAllPaginated
+            parameters:
+                - name: page
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: size
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: orderBy
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: direction
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                      enum:
+                          - ASC
+                          - DESC
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PaginatedValuesDtoGroupDto"
+                            example: null
+    /iam/v1/groups/levels:
+        get:
+            tags:
+                - Groups
+            summary: Get levels by criteria
+            operationId: groups_getLevels
+            parameters:
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    type: string
+                                    example: null
+                            example: null
+    /iam/v1/groups/export:
+        get:
+            tags:
+                - Groups
+            summary: Export all profile groups to xlsx file
+            operationId: groups_exportProfileGroups
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                format: binary
+                                example: null
+                            example: null
+    /iam/v1/externalparamprofile/{id}/history:
+        get:
+            tags:
+                - ExternalParamProfile
+            summary: Get history by external parameter profile profile's id
+            operationId: externalParamProfile_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/externalparameters/me:
+        get:
+            tags:
+                - ExternalParameters
+            summary: Get external parameters of the authenticated user
+            operationId: externalParameters_getMyExternalParameters
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: object
+                                additionalProperties:
+                                    type: string
+                                    example: null
+                                example: null
+                            example: null
+    /iam/v1/customers/{id}/logo:
+        get:
+            tags:
+                - Customers
+            summary: Get customer logo
+            operationId: customers_getLogo
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: type
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                      enum:
+                          - HEADER
+                          - FOOTER
+                          - PORTAL
+                          - USER
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                format: binary
+                                example: null
+                            example: null
+    /iam/v1/customers/{id}/history:
+        get:
+            tags:
+                - Customers
+            summary: Find history for a customer by its id
+            operationId: customers_findHistoryById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/LogbookOperationsCommonResponseDto"
+                            example: null
+    /iam/v1/customers/paginated:
+        get:
+            tags:
+                - Customers
+            summary: Get all customers using pagination
+            operationId: customers_getAllPaginated
+            parameters:
+                - name: page
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: size
+                  in: query
+                  required: true
+                  schema:
+                      type: integer
+                      format: int32
+                      example: null
+                - name: criteria
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: orderBy
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: direction
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                      enum:
+                          - ASC
+                          - DESC
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PaginatedValuesDtoCustomerDto"
+                            example: null
+    /iam/v1/customers/me:
+        get:
+            tags:
+                - Customers
+            summary: Get the customer for the authenticated user
+            operationId: customers_getMyCustomer
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CustomerDto"
+                            example: null
+    /iam/v1/customers/gdpr-status:
+        get:
+            tags:
+                - Customers
+            summary: Get Gdpr Setting Status
+            operationId: customers_getGdprSettingStatus
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: boolean
+                                example: null
+                            example: null
+    /iam/v1/cas/users:
+        get:
+            tags:
+                - Cas
+            summary: Get all users having a given email address
+            operationId: cas_getUsersByEmail
+            parameters:
+                - name: email
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/UserDto"
+                            example: null
+    /iam/v1/cas/users/provisioning:
+        get:
+            tags:
+                - Cas
+            summary: "Get a user by their loginEmail, loginCustomerId and idp"
+            operationId: cas_getUser
+            parameters:
+                - name: loginEmail
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: loginCustomerId
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: idp
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: userIdentifier
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/UserDto"
+                            example: null
+    /iam/v1/cas/subrogations:
+        get:
+            tags:
+                - Cas
+            summary: Get available subrogations for a super user by super user id or by
+                super user email and customerId
+            operationId: getSubrogationsBySuperUserIdOrEmailAndCustomerId
+            parameters:
+                - name: superUserId
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: superUserEmail
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: superUserCustomerId
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/SubrogationDto"
+                            example: null
+    /iam/v1/cas/logout:
+        get:
+            tags:
+                - Cas
+            summary: "Logout a user, remove the token and delete the subrogation if needed"
+            operationId: cas_logout
+            parameters:
+                - name: authToken
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: superUser
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: superUserCustomerId
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+    /iam/v1/cas/customers:
+        get:
+            tags:
+                - Cas
+            summary: Get all customers by ids
+            operationId: cas_getCustomersByIds
+            parameters:
+                - name: customerIds
+                  in: query
+                  required: true
+                  schema:
+                      type: array
+                      example: null
+                      items:
+                          type: string
+                          example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/CustomerDto"
+                            example: null
+    /iam/v1/applications:
+        get:
+            tags:
+                - Applications
+            summary: Return all applications matching user privileges
+            operationId: applications_getAll
+            parameters:
+                - name: criteria
+                  in: query
+                  description: Criteria to filter the applications
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+                - name: embedded
+                  in: query
+                  required: false
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/ApplicationDto"
+                            example: null
+    /iam/v1/applications/{identifier}/externalid:
+        get:
+            tags:
+                - Applications
+            summary: Check if an application can have an external identifier
+            operationId: isApplicationExternalIdentifierEnabled
+            parameters:
+                - name: identifier
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: boolean
+                                example: null
+                            example: null
+    /iam/v1/applications/filtered:
+        get:
+            tags:
+                - Applications
+            summary: Return config about applications and categories
+            operationId: applications_getApplicationsFromUi
+            parameters:
+                - name: filterApp
+                  in: query
+                  required: false
+                  schema:
+                      type: boolean
+                      example: null
+                      default: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: object
+                                additionalProperties:
+                                    type: array
+                                    example: null
+                                    items:
+                                        $ref: "#/components/schemas/ApplicationDto"
+                                example: null
+                            example: null
+    /autotest:
+        get:
+            tags:
+                - Status
+            summary: Health check endpoint for different repositories
+            operationId: status_autotest
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: string
+                                example: null
+                            example: null
+    /iam/v1/subrogations/surrogate/decline/{id}:
+        delete:
+            tags:
+                - Subrogations
+            summary: Decline a subrogation
+            operationId: subrogations_decline
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+components:
+    schemas:
+        AddressDto:
+            type: object
+            properties:
+                street:
+                    type: string
+                    example: null
+                zipCode:
+                    type: string
+                    example: null
+                city:
+                    type: string
+                    example: null
+                country:
+                    type: string
+                    example: null
+            example: null
+        AlertAnalyticsDto:
+            type: object
+            properties:
+                applicationId:
+                    type: string
+                    example: null
+                creationDate:
+                    type: string
+                    example: null
+                id:
+                    type: string
+                    example: null
+                status:
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+                type:
+                    type: string
+                    example: null
+                key:
+                    type: string
+                    example: null
+                action:
+                    type: string
+                    example: null
+            example: null
+        AnalyticsDto:
+            type: object
+            properties:
+                applications:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/ApplicationAnalyticsDto"
+                lastTenantIdentifier:
+                    type: integer
+                    format: int32
+                    example: null
+                alerts:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/AlertAnalyticsDto"
+            example: null
+        ApplicationAnalyticsDto:
+            type: object
+            properties:
+                applicationId:
+                    type: string
+                    example: null
+                accessCounter:
+                    type: integer
+                    format: int32
+                    example: null
+                lastAccess:
+                    type: string
+                    format: date-time
+                    example: null
+            example: null
+        UserDto:
+            required:
+                - customerId
+                - email
+                - firstname
+                - groupId
+                - lastname
+                - status
+                - type
+                - userInfoId
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                lastname:
+                    maxLength: 50
+                    minLength: 2
+                    type: string
+                    example: null
+                firstname:
+                    maxLength: 50
+                    minLength: 2
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+                groupId:
+                    type: string
+                    example: null
+                email:
+                    maxLength: 100
+                    minLength: 4
+                    type: string
+                    example: null
+                otp:
+                    type: boolean
+                    example: null
+                subrogeable:
+                    type: boolean
+                    example: null
+                phone:
+                    type: string
+                    example: null
+                mobile:
+                    type: string
+                    example: null
+                lastConnection:
+                    type: string
+                    format: date-time
+                    example: null
+                nbFailedAttempts:
+                    type: integer
+                    format: int32
+                    example: null
+                status:
+                    type: string
+                    example: null
+                    enum:
+                        - ENABLED
+                        - DISABLED
+                        - BLOCKED
+                        - REMOVED
+                        - ANONYM
+                type:
+                    type: string
+                    example: null
+                    enum:
+                        - GENERIC
+                        - NOMINATIVE
+                readonly:
+                    type: boolean
+                    example: null
+                level:
+                    type: string
+                    example: null
+                passwordExpirationDate:
+                    type: string
+                    format: date-time
+                    example: null
+                address:
+                    $ref: "#/components/schemas/AddressDto"
+                internalCode:
+                    type: string
+                    example: null
+                analytics:
+                    $ref: "#/components/schemas/AnalyticsDto"
+                siteCode:
+                    type: string
+                    example: null
+                disablingDate:
+                    type: string
+                    format: date-time
+                    example: null
+                removingDate:
+                    type: string
+                    format: date-time
+                    example: null
+                centerCodes:
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
+                autoProvisioningEnabled:
+                    type: boolean
+                    example: null
+                userInfoId:
+                    type: string
+                    example: null
+            example: null
+        TenantDto:
+            required:
+                - customerId
+                - enabled
+                - name
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                enabled:
+                    type: boolean
+                    example: null
+                proof:
+                    type: boolean
+                    example: null
+                name:
+                    maxLength: 100
+                    minLength: 0
+                    type: string
+                    example: null
+                identifier:
+                    type: integer
+                    format: int32
+                    example: null
+                ownerId:
+                    type: string
+                    example: null
+                readonly:
+                    type: boolean
+                    example: null
+                ingestContractHoldingIdentifier:
+                    type: string
+                    example: null
+                itemIngestContractIdentifier:
+                    type: string
+                    example: null
+                accessContractHoldingIdentifier:
+                    type: string
+                    example: null
+                accessContractLogbookIdentifier:
+                    type: string
+                    example: null
+            example: null
+        SubrogationDto:
+            required:
+                - status
+                - superUser
+                - surrogate
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                status:
+                    type: string
+                    example: null
+                    enum:
+                        - CREATED
+                        - ACCEPTED
+                date:
+                    type: string
+                    format: date-time
+                    example: null
+                surrogate:
+                    maxLength: 100
+                    minLength: 4
+                    type: string
+                    example: null
+                superUser:
+                    maxLength: 100
+                    minLength: 4
+                    type: string
+                    example: null
+                surrogateCustomerId:
+                    type: string
+                    example: null
+                surrogateCustomerCode:
+                    type: string
+                    example: null
+                surrogateCustomerName:
+                    type: string
+                    example: null
+                superUserCustomerId:
+                    type: string
+                    example: null
+            example: null
+        OwnerDto:
+            required:
+                - code
+                - companyName
+                - customerId
+                - name
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                name:
+                    maxLength: 100
+                    minLength: 0
+                    type: string
+                    example: null
+                code:
+                    maxLength: 20
+                    minLength: 6
+                    type: string
+                    example: null
+                companyName:
+                    maxLength: 250
+                    minLength: 0
+                    type: string
+                    example: null
+                address:
+                    $ref: "#/components/schemas/AddressDto"
+                internalCode:
+                    type: string
+                    example: null
+                readonly:
+                    type: boolean
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+            example: null
+        ExternalParamProfileDto:
+            required:
+                - accessContract
+                - description
+                - name
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                name:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                description:
+                    maxLength: 250
+                    minLength: 2
+                    type: string
+                    example: null
+                accessContract:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                profileIdentifier:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                idProfile:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                externalParamIdentifier:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                idExternalParam:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                enabled:
+                    type: boolean
+                    example: null
+                usePlatformThreshold:
+                    type: boolean
+                    example: null
+                bulkOperationsThreshold:
+                    type: integer
+                    format: int64
+                    example: null
+                parameters:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/ParameterDto"
+                dateTime:
+                    type: string
+                    format: date-time
+                    example: null
+            example: null
+        ParameterDto:
+            type: object
+            properties:
+                key:
+                    type: string
+                    example: null
+                value:
+                    type: string
+                    example: null
+            example: null
+        CustomerDto:
+            required:
+                - address
+                - code
+                - companyName
+                - defaultEmailDomain
+                - emailDomains
+                - language
+                - name
+                - otp
+                - passwordRevocationDelay
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                code:
+                    maxLength: 15
+                    minLength: 0
+                    type: string
+                    example: null
+                name:
+                    maxLength: 100
+                    minLength: 0
+                    type: string
+                    example: null
+                companyName:
+                    maxLength: 250
+                    minLength: 0
+                    type: string
+                    example: null
+                enabled:
+                    type: boolean
+                    example: null
+                language:
+                    type: string
+                    example: null
+                    enum:
+                        - FRENCH
+                        - ENGLISH
+                        - GERMANY
+                passwordRevocationDelay:
+                    type: integer
+                    format: int32
+                    example: null
+                otp:
+                    type: string
+                    example: null
+                    enum:
+                        - OPTIONAL
+                        - DISABLED
+                        - MANDATORY
+                emailDomains:
+                    maxItems: 2147483647
+                    minItems: 1
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
+                defaultEmailDomain:
+                    type: string
+                    example: null
+                address:
+                    $ref: "#/components/schemas/AddressDto"
+                internalCode:
+                    type: string
+                    example: null
+                subrogeable:
+                    type: boolean
+                    example: null
+                readonly:
+                    type: boolean
+                    example: null
+                owners:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/OwnerDto"
+                identifier:
+                    type: string
+                    example: null
+                hasCustomGraphicIdentity:
+                    type: boolean
+                    example: null
+                themeColors:
+                    type: object
+                    additionalProperties:
+                        type: string
+                        example: null
+                    example: null
+                portalTitles:
+                    type: object
+                    additionalProperties:
+                        type: string
+                        example: null
+                    example: null
+                portalMessages:
+                    type: object
+                    additionalProperties:
+                        type: string
+                        example: null
+                    example: null
+                gdprAlert:
+                    type: boolean
+                    example: null
+                gdprAlertDelay:
+                    type: integer
+                    format: int32
+                    example: null
+            example: null
+        JsonNode:
+            type: object
+            example: null
+        FacetBucketDto:
+            type: object
+            properties:
+                value:
+                    type: string
+                    example: null
+                count:
+                    type: integer
+                    format: int64
+                    example: null
+            example: null
+        FacetResultsDto:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: null
+                buckets:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/FacetBucketDto"
+                singleValueFacet:
+                    $ref: "#/components/schemas/SingleValueFacet"
+            example: null
+        HitsDto:
+            type: object
+            properties:
+                limit:
+                    type: integer
+                    format: int32
+                    example: null
+                offset:
+                    type: integer
+                    format: int32
+                    example: null
+                total:
+                    type: integer
+                    format: int32
+                    example: null
+                size:
+                    type: integer
+                    format: int32
+                    example: null
+            example: null
+        LogbookEventDto:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                evId:
+                    type: string
+                    example: null
+                evIdReq:
+                    type: string
+                    example: null
+                evParentId:
+                    type: string
+                    example: null
+                evType:
+                    type: string
+                    example: null
+                evTypeProc:
+                    type: string
+                    example: null
+                evDateTime:
+                    type: string
+                    example: null
+                outcome:
+                    type: string
+                    example: null
+                outDetail:
+                    type: string
+                    example: null
+                outMessg:
+                    type: string
+                    example: null
+                evDetData:
+                    type: string
+                    example: null
+                obId:
+                    type: string
+                    example: null
+                obIdReq:
+                    type: string
+                    example: null
+                evIdAppSession:
+                    type: string
+                    example: null
+                agId:
+                    type: string
+                    example: null
+                agIdApp:
+                    type: string
+                    example: null
+                agIdExt:
+                    type: string
+                    example: null
+                rightsStatementIdentifier:
+                    type: string
+                    example: null
+            example: null
+        LogbookOperationDto:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                evId:
+                    type: string
+                    example: null
+                evIdReq:
+                    type: string
+                    example: null
+                evParentId:
+                    type: string
+                    example: null
+                evType:
+                    type: string
+                    example: null
+                evTypeProc:
+                    type: string
+                    example: null
+                evDateTime:
+                    type: string
+                    example: null
+                outcome:
+                    type: string
+                    example: null
+                outDetail:
+                    type: string
+                    example: null
+                outMessg:
+                    type: string
+                    example: null
+                evDetData:
+                    type: string
+                    example: null
+                obId:
+                    type: string
+                    example: null
+                obIdReq:
+                    type: string
+                    example: null
+                evIdAppSession:
+                    type: string
+                    example: null
+                agId:
+                    type: string
+                    example: null
+                agIdApp:
+                    type: string
+                    example: null
+                agIdExt:
+                    type: string
+                    example: null
+                rightsStatementIdentifier:
+                    type: string
+                    example: null
+                events:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/LogbookEventDto"
+                obIdIn:
+                    type: string
+                    example: null
+            example: null
+        LogbookOperationsCommonResponseDto:
+            type: object
+            properties:
+                $hits:
+                    $ref: "#/components/schemas/HitsDto"
+                $results:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/LogbookOperationDto"
+                $facetResults:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/FacetResultsDto"
+            example: null
+        SingleValueFacet:
+            type: object
+            properties:
+                value:
+                    type: number
+                    format: double
+                    example: null
+            example: null
+        UserInfoDto:
+            required:
+                - language
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                language:
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+            example: null
+        IdentityProviderDto:
+            required:
+                - customerId
+                - enabled
+                - internal
+                - name
+                - patterns
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+                name:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                technicalName:
+                    type: string
+                    example: null
+                internal:
+                    type: boolean
+                    example: null
+                enabled:
+                    type: boolean
+                    example: null
+                patterns:
+                    maxItems: 2147483647
+                    minItems: 1
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
+                readonly:
+                    type: boolean
+                    example: null
+                mailAttribute:
+                    type: string
+                    example: null
+                identifierAttribute:
+                    type: string
+                    example: null
+                autoProvisioningEnabled:
+                    type: boolean
+                    example: null
+                propagateLogout:
+                    type: boolean
+                    example: null
+                keystoreBase64:
+                    type: string
+                    example: null
+                keystorePassword:
+                    type: string
+                    example: null
+                privateKeyPassword:
+                    type: string
+                    example: null
+                idpMetadata:
+                    type: string
+                    example: null
+                spMetadata:
+                    type: string
+                    example: null
+                maximumAuthenticationLifetime:
+                    type: integer
+                    format: int32
+                    example: null
+                authnRequestBinding:
+                    type: string
+                    example: null
+                    enum:
+                        - POST
+                        - GET
+                wantsAssertionsSigned:
+                    type: boolean
+                    example: null
+                authnRequestSigned:
+                    type: boolean
+                    example: null
+                clientId:
+                    type: string
+                    example: null
+                clientSecret:
+                    type: string
+                    example: null
+                discoveryUrl:
+                    type: string
+                    example: null
+                scope:
+                    type: string
+                    example: null
+                preferredJwsAlgorithm:
+                    type: string
+                    example: null
+                customParams:
+                    type: object
+                    additionalProperties:
+                        type: string
+                        example: null
+                    example: null
+                useState:
+                    type: boolean
+                    example: null
+                useNonce:
+                    type: boolean
+                    example: null
+                usePkce:
+                    type: boolean
+                    example: null
+                protocoleType:
+                    type: string
+                    example: null
+            example: null
+        ProfileDto:
+            required:
+                - applicationName
+                - customerId
+                - description
+                - name
+                - roles
+                - tenantIdentifier
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+                name:
+                    maxLength: 100
+                    minLength: 0
+                    type: string
+                    example: null
+                description:
+                    maxLength: 250
+                    minLength: 0
+                    type: string
+                    example: null
+                enabled:
+                    type: boolean
+                    example: null
+                applicationName:
+                    type: string
+                    example: null
+                roles:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/Role"
+                tenantIdentifier:
+                    type: integer
+                    format: int32
+                    example: null
+                level:
+                    maxLength: 250
+                    minLength: 0
+                    type: string
+                    example: null
+                readonly:
+                    type: boolean
+                    example: null
+                externalParamId:
+                    type: string
+                    example: null
+                externalParamIdentifier:
+                    type: string
+                    example: null
+                tenantName:
+                    type: string
+                    example: null
+                usersCount:
+                    type: integer
+                    format: int64
+                    example: null
+                groupsCount:
+                    type: integer
+                    format: int64
+                    example: null
+            example: null
+        Role:
+            required:
+                - name
+            type: object
+            properties:
+                name:
+                    maxLength: 100
+                    minLength: 0
+                    type: string
+                    example: null
+            example: null
+        GroupDto:
+            required:
+                - customerId
+                - description
+                - name
+                - profileIds
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+                name:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                description:
+                    maxLength: 100
+                    minLength: 4
+                    type: string
+                    example: null
+                profileIds:
+                    maxItems: 2147483647
+                    minItems: 1
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
+                enabled:
+                    type: boolean
+                    example: null
+                readonly:
+                    type: boolean
+                    example: null
+                level:
+                    maxLength: 250
+                    minLength: 0
+                    type: string
+                    example: null
+                profiles:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/ProfileDto"
+                usersCount:
+                    type: integer
+                    format: int64
+                    example: null
+                units:
+                    uniqueItems: true
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
+            example: null
+        CustomerCreationFormData:
+            required:
+                - customerDto
+                - tenantId
+                - tenantName
+            type: object
+            properties:
+                customerDto:
+                    $ref: "#/components/schemas/CustomerDto"
+                tenantName:
+                    type: string
+                    example: null
+                tenantId:
+                    type: integer
+                    format: int32
+                    example: null
+            example: null
+        LoginRequestDto:
+            required:
+                - loginCustomerId
+                - loginEmail
+                - password
+            type: object
+            properties:
+                loginEmail:
+                    type: string
+                    example: null
+                loginCustomerId:
+                    type: string
+                    example: null
+                password:
+                    type: string
+                    example: null
+                surrogateEmail:
+                    type: string
+                    example: null
+                surrogateCustomerId:
+                    type: string
+                    example: null
+                ip:
+                    type: string
+                    example: null
+            example: null
+        CustomerPatchFormData:
+            required:
+                - partialCustomerDto
+            type: object
+            properties:
+                partialCustomerDto:
+                    type: object
+                    additionalProperties:
+                        type: object
+                        example: null
+                    example: null
+            example: null
+        LogbookLifeCycleResponseDto:
+            type: object
+            properties:
+                $hits:
+                    $ref: "#/components/schemas/HitsDto"
+                $results:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/LogbookLifecycleDto"
+                $facetResults:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/FacetResultsDto"
+            example: null
+        LogbookLifecycleDto:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: null
+                evId:
+                    type: string
+                    example: null
+                evIdReq:
+                    type: string
+                    example: null
+                evParentId:
+                    type: string
+                    example: null
+                evType:
+                    type: string
+                    example: null
+                evTypeProc:
+                    type: string
+                    example: null
+                evDateTime:
+                    type: string
+                    example: null
+                outcome:
+                    type: string
+                    example: null
+                outDetail:
+                    type: string
+                    example: null
+                outMessg:
+                    type: string
+                    example: null
+                evDetData:
+                    type: string
+                    example: null
+                obId:
+                    type: string
+                    example: null
+                obIdReq:
+                    type: string
+                    example: null
+                evIdAppSession:
+                    type: string
+                    example: null
+                agId:
+                    type: string
+                    example: null
+                agIdApp:
+                    type: string
+                    example: null
+                agIdExt:
+                    type: string
+                    example: null
+                rightsStatementIdentifier:
+                    type: string
+                    example: null
+                _tenant:
+                    type: integer
+                    format: int32
+                    example: null
+                _v:
+                    type: integer
+                    format: int32
+                    example: null
+                events:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/LogbookEventDto"
+            example: null
+        PaginatedValuesDtoUserDto:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                    example: null
+                pageSize:
+                    type: integer
+                    format: int32
+                    example: null
+                totalElements:
+                    type: integer
+                    format: int32
+                    example: null
+                hasMore:
+                    type: boolean
+                    example: null
+                optionalValues:
+                    type: object
+                    additionalProperties:
+                        type: object
+                        example: null
+                    example: null
+                values:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/UserDto"
+            example: null
+        AuthUserDto:
+            required:
+                - customerId
+                - email
+                - firstname
+                - groupId
+                - lastname
+                - status
+                - type
+                - userInfoId
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                lastname:
+                    maxLength: 50
+                    minLength: 2
+                    type: string
+                    example: null
+                firstname:
+                    maxLength: 50
+                    minLength: 2
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+                groupId:
+                    type: string
+                    example: null
+                email:
+                    maxLength: 100
+                    minLength: 4
+                    type: string
+                    example: null
+                otp:
+                    type: boolean
+                    example: null
+                subrogeable:
+                    type: boolean
+                    example: null
+                phone:
+                    type: string
+                    example: null
+                mobile:
+                    type: string
+                    example: null
+                lastConnection:
+                    type: string
+                    format: date-time
+                    example: null
+                nbFailedAttempts:
+                    type: integer
+                    format: int32
+                    example: null
+                status:
+                    type: string
+                    example: null
+                    enum:
+                        - ENABLED
+                        - DISABLED
+                        - BLOCKED
+                        - REMOVED
+                        - ANONYM
+                type:
+                    type: string
+                    example: null
+                    enum:
+                        - GENERIC
+                        - NOMINATIVE
+                readonly:
+                    type: boolean
+                    example: null
+                level:
+                    type: string
+                    example: null
+                passwordExpirationDate:
+                    type: string
+                    format: date-time
+                    example: null
+                address:
+                    $ref: "#/components/schemas/AddressDto"
+                internalCode:
+                    type: string
+                    example: null
+                analytics:
+                    $ref: "#/components/schemas/AnalyticsDto"
+                siteCode:
+                    type: string
+                    example: null
+                disablingDate:
+                    type: string
+                    format: date-time
+                    example: null
+                removingDate:
+                    type: string
+                    format: date-time
+                    example: null
+                centerCodes:
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
+                autoProvisioningEnabled:
+                    type: boolean
+                    example: null
+                userInfoId:
+                    type: string
+                    example: null
+                superUser:
+                    type: string
+                    example: null
+                superUserCustomerId:
+                    type: string
+                    example: null
+                superUserIdentifier:
+                    type: string
+                    example: null
+                username:
+                    type: string
+                    example: null
+                authToken:
+                    type: string
+                    example: null
+                authorities:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/GrantedAuthority"
+                proofTenantIdentifier:
+                    type: integer
+                    format: int32
+                    example: null
+                profileGroup:
+                    $ref: "#/components/schemas/GroupDto"
+                tenantsByApp:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/TenantInformationDto"
+                customerIdentifier:
+                    type: string
+                    example: null
+                basicCustomer:
+                    $ref: "#/components/schemas/BasicCustomerDto"
+                password:
+                    type: string
+                    example: null
+                enabled:
+                    type: boolean
+                    example: null
+                credentialsNonExpired:
+                    type: boolean
+                    example: null
+                accountNonExpired:
+                    type: boolean
+                    example: null
+                accountNonLocked:
+                    type: boolean
+                    example: null
+            example: null
+        BasicCustomerDto:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                identifier:
+                    type: string
+                    example: null
+                name:
+                    type: string
+                    example: null
+                code:
+                    type: string
+                    example: null
+                companyName:
+                    type: string
+                    example: null
+                graphicIdentity:
+                    $ref: "#/components/schemas/GraphicIdentityDto"
+                portalTitles:
+                    type: object
+                    additionalProperties:
+                        type: string
+                        example: null
+                    example: null
+                portalMessages:
+                    type: object
+                    additionalProperties:
+                        type: string
+                        example: null
+                    example: null
+            example: null
+        GrantedAuthority:
+            type: object
+            properties:
+                authority:
+                    type: string
+                    example: null
+            example: null
+        GraphicIdentityDto:
+            type: object
+            properties:
+                hasCustomGraphicIdentity:
+                    type: boolean
+                    example: null
+                headerDataBase64:
+                    type: string
+                    example: null
+                footerDataBase64:
+                    type: string
+                    example: null
+                portalDataBase64:
+                    type: string
+                    example: null
+                themeColors:
+                    type: object
+                    additionalProperties:
+                        type: string
+                        example: null
+                    example: null
+            example: null
+        TenantInformationDto:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: null
+                tenants:
+                    uniqueItems: true
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/TenantDto"
+            example: null
+        PaginatedValuesDtoProfileDto:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                    example: null
+                pageSize:
+                    type: integer
+                    format: int32
+                    example: null
+                totalElements:
+                    type: integer
+                    format: int32
+                    example: null
+                hasMore:
+                    type: boolean
+                    example: null
+                optionalValues:
+                    type: object
+                    additionalProperties:
+                        type: object
+                        example: null
+                    example: null
+                values:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/ProfileDto"
+            example: null
+        PaginatedValuesDtoGroupDto:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                    example: null
+                pageSize:
+                    type: integer
+                    format: int32
+                    example: null
+                totalElements:
+                    type: integer
+                    format: int32
+                    example: null
+                hasMore:
+                    type: boolean
+                    example: null
+                optionalValues:
+                    type: object
+                    additionalProperties:
+                        type: object
+                        example: null
+                    example: null
+                values:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/GroupDto"
+            example: null
+        PaginatedValuesDtoExternalParamProfileDto:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                    example: null
+                pageSize:
+                    type: integer
+                    format: int32
+                    example: null
+                totalElements:
+                    type: integer
+                    format: int32
+                    example: null
+                hasMore:
+                    type: boolean
+                    example: null
+                optionalValues:
+                    type: object
+                    additionalProperties:
+                        type: object
+                        example: null
+                    example: null
+                values:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/ExternalParamProfileDto"
+            example: null
+        PaginatedValuesDtoCustomerDto:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                    example: null
+                pageSize:
+                    type: integer
+                    format: int32
+                    example: null
+                totalElements:
+                    type: integer
+                    format: int32
+                    example: null
+                hasMore:
+                    type: boolean
+                    example: null
+                optionalValues:
+                    type: object
+                    additionalProperties:
+                        type: object
+                        example: null
+                    example: null
+                values:
+                    type: array
+                    example: null
+                    items:
+                        $ref: "#/components/schemas/CustomerDto"
+            example: null
+        ApplicationDto:
+            required:
+                - category
+                - hasCustomerList
+                - hasHighlight
+                - hasTenantList
+                - icon
+                - identifier
+                - name
+                - position
+                - serviceId
+                - tooltip
+                - url
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                identifier:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                    example: null
+                url:
+                    maxLength: 100
+                    minLength: 0
+                    type: string
+                    example: null
+                serviceId:
+                    maxLength: 100
+                    minLength: 0
+                    type: string
+                    example: null
+                icon:
+                    maxLength: 50
+                    minLength: 0
+                    type: string
+                    example: null
+                name:
+                    maxLength: 50
+                    minLength: 0
+                    type: string
+                    example: null
+                category:
+                    maxLength: 25
+                    minLength: 0
+                    type: string
+                    example: null
+                position:
+                    type: integer
+                    format: int32
+                    example: null
+                hasCustomerList:
+                    type: boolean
+                    example: null
+                hasTenantList:
+                    type: boolean
+                    example: null
+                hasHighlight:
+                    type: boolean
+                    example: null
+                tooltip:
+                    maxLength: 200
+                    minLength: 0
+                    type: string
+                    example: null
+                target:
+                    maxLength: 25
+                    minLength: 0
+                    type: string
+                    example: null
+            example: null
+    securitySchemes:
+        bearer:
+            type: http
+            description: Bearer token
+            scheme: bearer
+        x-tenant-id:
+            type: apiKey
+            description: Tenant ID
+            name: X-Tenant-Id
+            in: header

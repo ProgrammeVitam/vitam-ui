@@ -106,8 +106,8 @@ import fr.gouv.vitamui.iam.server.user.service.UserEmailService;
 import fr.gouv.vitamui.iam.server.user.service.UserExportService;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
-import fr.gouv.vitamui.security.client.ContextRestClient;
-import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import fr.gouv.vitamui.security.openapiclient.ContextsApi;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -179,25 +179,25 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityRestClientFactory securityRestClientFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final RestTemplateBuilder restTemplateBuilder,
         final RestClientConfiguration securityClientProperties
     ) {
-        return new SecurityRestClientFactory(securityClientProperties, restTemplateBuilder);
+        return new SecurityApiClientsFactory(securityClientProperties, restTemplateBuilder);
     }
 
     @Bean
-    public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-        return securityRestClientFactory.getContextRestClient();
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
+        return securityApiClientsFactory.getContextsApi();
     }
 
     @Bean
     public IamAuthentificationService iamAuthentificationService(
-        final UserService internalUserService,
+        final UserService userService,
         final TokenRepository tokenRepository,
         final SubrogationRepository subrogationRepository
     ) {
-        return new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository);
+        return new IamAuthentificationService(userService, tokenRepository, subrogationRepository);
     }
 
     @Bean
@@ -247,7 +247,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public CustomerService customerCrudService(
         final SequenceGeneratorService sequenceGeneratorService,
         final CustomerRepository customerRepository,
-        final OwnerService internalOwnerService,
+        final OwnerService ownerService,
         final UserService userService,
         final SecurityService securityService,
         final AddressService addressService,
@@ -259,7 +259,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         return new CustomerService(
             sequenceGeneratorService,
             customerRepository,
-            internalOwnerService,
+            ownerService,
             userService,
             securityService,
             addressService,
@@ -321,17 +321,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final TenantRepository tenantRepository,
         final CustomerRepository customerRepository,
         final OwnerRepository ownerRepository,
-        final GroupRepository groupRepository,
         final ProfileRepository profileRepository,
-        final UserRepository userRepository,
-        final GroupService internalGroupService,
-        final UserService internalUserService,
-        final OwnerService internalOwnerService,
-        final ProfileService internalProfileService,
+        final GroupService groupService,
+        final UserService userService,
+        final OwnerService ownerService,
         final SecurityService securityService,
         final IamLogbookService iamLogbookService,
         final TenantConverter tenantConverter,
-        final AccessContractCommonService accessContractCommonService,
         final InitVitamTenantService initVitamTenantService,
         final LogbookService logbookService,
         final CustomerInitConfig customerInitConfig,
@@ -345,9 +341,9 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             customerRepository,
             ownerRepository,
             profileRepository,
-            internalGroupService,
-            internalUserService,
-            internalOwnerService,
+            groupService,
+            userService,
+            ownerService,
             securityService,
             iamLogbookService,
             tenantConverter,
@@ -374,9 +370,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final TenantRepository tenantRepository,
         final SecurityService securityService,
         final CustomerRepository customerRepository,
-        final ProfileRepository profilRepository,
         final GroupService groupService,
-        final GroupRepository groupRepository,
         final IamLogbookService iamLogbookService,
         final UserConverter userConverter,
         final MongoTransactionManager mongoTransactionManager,
@@ -434,7 +428,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final SequenceGeneratorService sequenceGeneratorService,
         final GroupRepository groupRepository,
         final CustomerRepository customerRepository,
-        final ProfileService internalProfileService,
+        final ProfileService profileService,
         final UserRepository userRepository,
         final SecurityService securityService,
         final TenantRepository tenantRepository,
@@ -447,7 +441,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             sequenceGeneratorService,
             groupRepository,
             customerRepository,
-            internalProfileService,
+            profileService,
             userRepository,
             securityService,
             tenantRepository,

@@ -83,7 +83,7 @@ public class HttpContext implements Serializable {
     // @formatter:off
     private static final List<String> CALLS_WITHOUT_TENANT_ID = Arrays.asList(
         "/actuator/health", "/actuator/prometheus", "/error/", "/favicon.ico",
-        "/swagger-resources", "/swagger-ui.html", "/v2/api-docs", "/webjars"
+        "/swagger-resources", "/swagger-ui.html", "/swagger-ui/index.html", "/v3/api-docs", "/webjars"
     );
 
     // @formatter:on

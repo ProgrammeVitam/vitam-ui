@@ -34,7 +34,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -54,7 +54,7 @@ public class ExternalParametersService {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersRestClient externalParametersRestClient;
+    private final ExternalParametersApi externalParametersApi;
     private final SecurityService securityService;
     private final AccessContractCommonService accessContractCommonService;
 
@@ -64,9 +64,7 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     private @Nonnull String retrieveAccessContractFromExternalParam() {
-        Map<String, String> myExternalParameter = externalParametersRestClient.getMyExternalParameters(
-            securityService.getHttpContext()
-        );
+        Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }

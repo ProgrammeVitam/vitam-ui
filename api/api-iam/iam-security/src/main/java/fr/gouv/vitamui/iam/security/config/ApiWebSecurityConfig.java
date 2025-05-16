@@ -147,11 +147,10 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
             "/favicon.ico",
             "/actuator/**",
             "*/users/me",
-            "/swagger-resources/**",
-            "/swagger.json",
-            "/**/swagger-resources/**",
             "/swagger-ui.html",
-            "/v2/api-docs",
+            "/swagger-ui/**",
+            "/v3/api-docs.yaml",
+            "/v3/api-docs/**",
             "/webjars/**",
         };
     }

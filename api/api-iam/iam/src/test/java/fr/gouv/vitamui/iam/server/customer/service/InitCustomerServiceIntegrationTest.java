@@ -18,7 +18,7 @@ import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
@@ -297,7 +297,7 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(group.getLevel()).isEqualTo(LEVEL_1);
         assertThat(group.getProfileIds()).contains(profile1.getId());
 
-        final Group adminGroup = groupByName.get(ApiIamExternalConstants.ADMIN_CLIENT_ROOT + " " + CUSTOMER_CODE);
+        final Group adminGroup = groupByName.get(ApiIamConstants.ADMIN_CLIENT_ROOT + " " + CUSTOMER_CODE);
         assertThat(adminGroup).isNotNull();
         final List<Profile> adminProfiles = profileRepository.findAllByIdIn(adminGroup.getProfileIds());
         final Map<String, Profile> profileByName = adminProfiles

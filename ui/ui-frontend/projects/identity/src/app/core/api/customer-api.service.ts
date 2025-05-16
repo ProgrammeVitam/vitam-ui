@@ -57,7 +57,8 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
   }
 
   getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Customer>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
+    const params = embedded ? pageRequest.httpParams.set('embedded', embedded) : pageRequest.httpParams;
+    return this.http.get<PaginatedResponse<Customer>>(this.apiUrl + '/paginated', { params, headers });
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<Customer> {

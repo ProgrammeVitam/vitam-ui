@@ -55,8 +55,8 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,10 +82,10 @@ import java.util.Objects;
 /**
  * UI logbook controller.
  */
-@Api(tags = "logbooks")
 @RequestMapping(CommonConstants.API_VERSION_1)
 @RestController
 @ResponseBody
+@Tag(name = "Logbooks", description = "Logbooks Management")
 public class LogbookController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogbookController.class);
@@ -114,7 +114,7 @@ public class LogbookController {
         this.tenantService = tenantService;
     }
 
-    @ApiOperation(value = "Get log book operation by json select")
+    @Operation(operationId = "logbooks_findOperations", summary = "Get log book operation by json select")
     @Secured({ ServicesData.ROLE_LOGBOOKS })
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsCommonResponseDto findOperations(
@@ -142,7 +142,7 @@ public class LogbookController {
         );
     }
 
-    @ApiOperation(value = "Get operation by id")
+    @Operation(operationId = "logbooks_findOperationByUnitId", summary = "Get operation by id")
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     @Secured({ ServicesData.ROLE_LOGBOOKS })
     @ResponseStatus(HttpStatus.OK)
@@ -161,7 +161,7 @@ public class LogbookController {
         );
     }
 
-    @ApiOperation(value = "Get unit lifecycle by id")
+    @Operation(operationId = "logbooks_findUnitLifeCyclesByUnitId", summary = "Get unit lifecycle by id")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(
@@ -179,7 +179,7 @@ public class LogbookController {
         );
     }
 
-    @ApiOperation(value = "Get object lifecycle by id")
+    @Operation(operationId = "logbooks_findObjectGroupLifeCyclesByUnitId", summary = "Get object lifecycle by id")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(
@@ -200,7 +200,7 @@ public class LogbookController {
         );
     }
 
-    @ApiOperation(value = "Download the manifest for a given operation")
+    @Operation(operationId = "logbooks_downloadManifest", summary = "Download the manifest for a given operation")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH)
     @ResponseStatus(HttpStatus.OK)
@@ -218,7 +218,7 @@ public class LogbookController {
         }
     }
 
-    @ApiOperation(value = "Download the ATR for a given operation")
+    @Operation(operationId = "logbooks_downloadAtr", summary = "Download the ATR file for a given operation")
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @ResponseStatus(HttpStatus.OK)
@@ -236,7 +236,7 @@ public class LogbookController {
         }
     }
 
-    @ApiOperation(value = "Download the report file for a given operation")
+    @Operation(operationId = "logbooks_downloadReport", summary = "Download the report file for a given operation")
     @GetMapping(
         value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH,
         produces = MediaType.APPLICATION_OCTET_STREAM_VALUE

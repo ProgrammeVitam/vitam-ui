@@ -46,7 +46,8 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
 import fr.gouv.vitamui.security.server.context.service.ContextService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -82,7 +83,7 @@ import static fr.gouv.vitamui.security.common.rest.RestApi.ADD_TENANT_TO_CONTEXT
 @RequestMapping(RestApi.V1_CONTEXTS_URL)
 @Getter
 @Setter
-@Api(tags = "contexts", value = "Contexts Management", description = "Contexts Management")
+@Tag(name = "Contexts", description = "Contexts Management")
 public class ContextController implements CrudController<ContextDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextController.class);
@@ -94,6 +95,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @Override
     @GetMapping
+    @Operation(operationId = "contexts_getAll", summary = "Get all contexts")
     public List<ContextDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("Get ALL");
         SanityChecker.sanitizeCriteria(criteria);
@@ -102,6 +104,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @Override
     @RequestMapping(path = CommonConstants.PATH_ID, method = RequestMethod.HEAD)
+    @Operation(operationId = "contexts_checkExist", summary = "Check the existence of a context, by its id")
     public ResponseEntity<Void> checkExist(final @PathVariable("id") String id) {
         LOGGER.debug("Check exists {}", id);
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
@@ -110,6 +113,7 @@ public class ContextController implements CrudController<ContextDto> {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "contexts_getOne", summary = "Get a context by its id")
     public ContextDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
@@ -121,6 +125,7 @@ public class ContextController implements CrudController<ContextDto> {
     }
 
     @PostMapping(value = RestApi.FINDBYCERTIFICATE_PATH)
+    @Operation(operationId = "contexts_findByCertificate", summary = "Find a context by certificate")
     public ContextDto findByCertificate(final @Valid @RequestBody String data) {
         LOGGER.debug("Request data {} ", data);
         ParameterChecker.checkParameter("The request data is a mandatory parameter: ", data);
@@ -129,6 +134,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @Override
     @PostMapping
+    @Operation(operationId = "contexts_create", summary = "Create a context")
     public ContextDto create(final @Valid @RequestBody ContextDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The context is a mandatory parameter: ", dto);
@@ -139,6 +145,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @Override
     @PutMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "contexts_update", summary = "Update a context")
     public ContextDto update(final @PathVariable("id") String id, final @Valid @RequestBody ContextDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier and the context are mandatory parameters: ", id, dto);
@@ -153,6 +160,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @PutMapping(ADD_TENANT_TO_CONTEXT_PATH)
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(operationId = "contexts_addTenant", summary = "Add a tenant to a context")
     public ContextDto addTenant(
         final @PathVariable("id") String id,
         final @PathVariable("tenantIdentifier") Integer tenantIdentifier
@@ -169,6 +177,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
+    @Operation(operationId = "contexts_delete", summary = "Remove a context")
     public void delete(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);

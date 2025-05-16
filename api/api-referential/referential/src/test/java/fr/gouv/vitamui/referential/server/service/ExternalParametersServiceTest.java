@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.referential.server.service;
 
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.server.service.service.ExternalParametersService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,15 +17,14 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class ExternalParametersServiceTest {
 
-    @MockBean(name = "externalParametersRestClient")
-    private ExternalParametersRestClient externalParametersRestClient;
+    @MockBean(name = "externalParametersApi")
+    private ExternalParametersApi externalParametersApi;
 
     @MockBean(name = "securityService")
     private SecurityService securityService;
@@ -38,13 +37,13 @@ class ExternalParametersServiceTest {
     @BeforeEach
     public void setUp() {
         doReturn(new HttpContext(0, "", "", "")).when(securityService).getHttpContext();
-        externalParametersService = new ExternalParametersService(externalParametersRestClient, securityService);
+        externalParametersService = new ExternalParametersService(externalParametersApi, securityService);
     }
 
     @Test
     void getProfileThresholdValue() {
         Map<String, String> parameters = Map.of(PARAM_BULK_OPERATIONS_THRESHOLD_NAME, "1000");
-        when(externalParametersRestClient.getMyExternalParameters(any(HttpContext.class))).thenReturn(parameters);
+        when(externalParametersApi.getMyExternalParameters()).thenReturn(parameters);
         assertAll(
             "Grouped Assertions of a valid threshold",
             () -> assertTrue(externalParametersService.retrieveProfilThreshold().isPresent()),
@@ -56,14 +55,14 @@ class ExternalParametersServiceTest {
     void getProfileThresholdEmptyValue() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(PARAM_BULK_OPERATIONS_THRESHOLD_NAME, null);
-        when(externalParametersRestClient.getMyExternalParameters(any(HttpContext.class))).thenReturn(parameters);
+        when(externalParametersApi.getMyExternalParameters()).thenReturn(parameters);
         assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
     }
 
     @Test
     void getEmptyProfileThreshold() {
         Map<String, String> parameters = Map.of();
-        when(externalParametersRestClient.getMyExternalParameters(any(HttpContext.class))).thenReturn(parameters);
+        when(externalParametersApi.getMyExternalParameters()).thenReturn(parameters);
 
         assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
     }

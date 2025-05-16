@@ -69,7 +69,7 @@ public class PastisConfiguration {
     }
 
     @Bean
-    public SecurityService externalSecurityService() {
+    public SecurityService securityService() {
         return new SecurityService();
     }
 
@@ -94,7 +94,7 @@ public class PastisConfiguration {
             puaFromJSON(),
             new MetaModelService(new ExternalSchemaServiceStandaloneImpl(objectMapper)),
             null,
-            externalSecurityService()
+            securityService()
         );
     }
 

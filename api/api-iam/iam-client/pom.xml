@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>iam-client</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI IAM API Client</name>
+    <name>VITAMUI IAM API Client OpenAPI</name>
 
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
@@ -12,98 +12,92 @@
         <version>9.0.0-SNAPSHOT</version>
     </parent>
 
+    <build>
+        <plugins>
+            <!-- OpenAPI Generator Plugin -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-client</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- TODO: Swagger file should be generated during build -->
+                            <inputSpec>${project.basedir}/src/main/resources/swagger.yaml</inputSpec>
+                            <generatorName>java</generatorName>
+                            <output>${project.build.directory}/generated-sources/openapi</output>
+                            <apiPackage>fr.gouv.vitamui.iam.openapiclient</apiPackage>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModels>false</generateModels>
+                            <generateApiTests>false</generateApiTests>
+                            <modelPackage>fr.gouv.vitamui.iam.openapiclient.domain</modelPackage>
+                            <invokerPackage>fr.gouv.vitamui.iam.openapiclient.invoker</invokerPackage>
+                            <library>resttemplate</library> <!-- ou autre: okhttp-gson, webclient, retrofit2 -->
+                            <removeOperationIdPrefix>true</removeOperationIdPrefix>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <useJakartaEe>false</useJakartaEe> <!-- change when migrating to Spring boot 3+ -->
+                                <useAbstractionForFiles>true</useAbstractionForFiles>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Pour inclure les sources générées dans le build -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/openapi/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
-        <!-- VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
-            <artifactId>commons-rest</artifactId>
+            <artifactId>commons-api</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
-            <artifactId>commons-security</artifactId>
-        </dependency>
-
-        <!-- SPRING -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-
-        <!-- LOG -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <artifactId>commons-vitam</artifactId>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-
-        <!-- UTIL -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-        </dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>org.owasp.antisamy</groupId>
-            <artifactId>antisamy</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- TEST -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui.commons</groupId>
-            <artifactId>commons-test</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
         </dependency>
     </dependencies>
+
 </project>

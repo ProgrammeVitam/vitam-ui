@@ -22,7 +22,7 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
-import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -438,14 +438,14 @@ public final class UserServiceTest {
     @Test
     public void testAddMoreRestrictionsAdminUser() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
-        user.setLevel(ApiIamExternalConstants.ADMIN_LEVEL);
+        user.setLevel(ApiIamConstants.ADMIN_LEVEL);
 
         Mockito.when(securityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(securityService.getUser()).thenReturn(user);
-        Mockito.when(securityService.getLevel()).thenReturn(ApiIamExternalConstants.ADMIN_LEVEL);
+        Mockito.when(securityService.getLevel()).thenReturn(ApiIamConstants.ADMIN_LEVEL);
 
         List<CriteriaDefinition> criteriaList = new ArrayList<>();
-        criteriaList.add(Criteria.where("level").is(ApiIamExternalConstants.ADMIN_LEVEL));
+        criteriaList.add(Criteria.where("level").is(ApiIamConstants.ADMIN_LEVEL));
 
         userService.addDataAccessRestrictions(criteriaList);
         assertThat(criteriaList.size()).isEqualTo(1);

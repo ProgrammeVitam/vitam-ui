@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.server.common.rest;
 
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,12 +55,14 @@ import java.util.Map;
 public abstract class BaseStatusController {
 
     @GetMapping(RestApi.STATUS_URL)
+    @Operation(operationId = "status_status", summary = "Basic health check endpoint")
     @ResponseBody
     public String status() {
         return "OK";
     }
 
     @GetMapping(RestApi.AUTOTEST_URL)
+    @Operation(operationId = "status_autotest", summary = "Health check endpoint for different repositories")
     @ResponseBody
     public String autotest() {
         boolean first = true;
