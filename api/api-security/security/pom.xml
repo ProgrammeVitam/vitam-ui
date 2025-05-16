@@ -155,6 +155,7 @@
                     <to>
                         <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/security</image>
                         <tags>${project.version}</tags>
+<tags>latest</tags>
                     </to>
                 </configuration>
             </plugin>

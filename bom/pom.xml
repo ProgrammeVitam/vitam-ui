@@ -78,7 +78,7 @@
         <swagger.version>3.0.0</swagger.version>
         <testcontainers.version>1.19.8</testcontainers.version>
         <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
-        <vitam.version>8.1.0-SNAPSHOT</vitam.version>
+        <vitam.version>8.1.0</vitam.version>
         <xdocreport.version>2.0.3</xdocreport.version>
         <xerces.version>2.12.2</xerces.version>
         <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>

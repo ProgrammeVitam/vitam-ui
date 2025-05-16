@@ -195,6 +195,7 @@
                     <to>
                         <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/ingest</image>
                         <tags>${project.version}</tags>
+<tags>latest</tags>
                     </to>
                 </configuration>
             </plugin>

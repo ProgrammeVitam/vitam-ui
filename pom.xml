@@ -27,13 +27,14 @@
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <modules>
-        <module>bom</module>
+        <module>bom</module> 
         <module>commons</module>
-        <module>api</module>
+        <module>api</module> 
         <module>cas</module>
         <module>deployment</module>
         <module>packaging</module>
         <module>cots</module>
+        <module>ui</module>
     </modules>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
