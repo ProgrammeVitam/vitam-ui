@@ -114,7 +114,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       { value: 'ACTIVE', viewValue: this.profilActif },
     ];
     this.information = "texte d'information";
-    this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
+    if (this.typeProfile === ProfileType.PUA) this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       intitule: [null, Validators.required],
