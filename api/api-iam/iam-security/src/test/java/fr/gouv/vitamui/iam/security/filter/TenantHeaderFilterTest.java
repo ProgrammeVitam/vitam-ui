@@ -137,7 +137,7 @@ public class TenantHeaderFilterTest {
                     "CUSTOMER_ID",
                     tenantIdentifier,
                     "APP_NAME",
-                    List.of(new Role("ROLE_1"), new Role("ROLE_2"), new Role("_ALL_TENANTS"))
+                    List.of(new Role("ROLE_1"), new Role("ROLE_2"), new Role("_OTHER_TENANTS"))
                 )
             )
         );
