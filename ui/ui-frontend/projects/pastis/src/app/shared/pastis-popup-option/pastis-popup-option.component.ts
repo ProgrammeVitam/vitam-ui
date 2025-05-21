@@ -146,8 +146,8 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
       createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
       createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
       createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
-      createNoticeData.profileType = result.profileType;
-      createNoticeData.profileVersion = result.profileVersion;
+      createNoticeData.profileType = result?.profileType;
+      createNoticeData.profileVersion = result?.profileVersion;
       const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
         width: '800px',
         panelClass: 'pastis-popup-modal-box',

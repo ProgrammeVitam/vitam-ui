@@ -66,9 +66,9 @@ export class NoticeService {
   puaNotice(retour: any, sedaVersion: ProfileVersion): ArchivalProfileUnit {
     const profileDescription = new ArchivalProfileUnitModel();
     profileDescription.identifier = retour.identifier;
-    profileDescription.name = retour.intitule;
+    profileDescription.name = retour.name;
     profileDescription.description = retour.description;
-    profileDescription.status = retour.selectedStatus;
+    profileDescription.status = retour.status;
     profileDescription.controlSchema = '{}';
     profileDescription.sedaVersion = sedaVersion;
     return profileDescription;
@@ -77,9 +77,9 @@ export class NoticeService {
   paNotice(retour: any, sedaVersion: ProfileVersion, create: boolean): Profile {
     const profile = new ProfileModel();
     profile.identifier = retour.identifier;
-    profile.name = retour.intitule;
+    profile.name = retour.name;
     profile.description = retour.description;
-    profile.status = retour.selectedStatus;
+    profile.status = retour.status;
     profile.format = create ? 'RNG' : retour.format;
     profile.sedaVersion = sedaVersion;
     return profile;
@@ -88,9 +88,9 @@ export class NoticeService {
   profileFromNotice(retour: any, sedaVersion: ProfileVersion, edit: boolean, pua: boolean): ProfileDescription {
     const profile = new ProfileDescriptionModel();
     profile.identifier = retour.identifier;
-    profile.name = retour.intitule;
+    profile.name = retour.name;
     profile.description = retour.description;
-    profile.status = retour.selectedStatus;
+    profile.status = retour.status;
     if (!edit && !pua) {
       profile.format = 'RNG';
     }
