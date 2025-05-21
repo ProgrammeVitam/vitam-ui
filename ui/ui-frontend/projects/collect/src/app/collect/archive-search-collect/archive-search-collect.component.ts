@@ -193,6 +193,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchCollectComponent>;
   @ViewChild('reclassificationAlerteMessageDialog', { static: true })
   reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
+  @ViewChild('deletionAlerteMessageDialog', { static: true })
+  deletionAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
 
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
@@ -1047,17 +1049,33 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   async launchDeletionModal() {
-    this.launchBulkOperationWorkflow(
-      () =>
-        this.archiveUnitCollectService.launchDeletionModal(
-          this.transaction.id,
-          this.listOfUACriteriaSearch,
-          Number(this.tenantIdentifier),
-          this.currentPage,
-          this.confirmSecondActionBigNumberOfResultsActionDialog,
-        ),
-      this.DEFAULT_DELETION_THRESHOLD,
-    );
+    this.search$.subscribe((totalHits) => {
+      if (
+        (this.isAllChecked && totalHits - this.itemNotSelected > this.DEFAULT_DELETION_THRESHOLD) ||
+        this.itemSelected > this.DEFAULT_DELETION_THRESHOLD
+      ) {
+        const dialogToOpen = this.deletionAlerteMessageDialog;
+        const dialogRef = this.dialog.open(dialogToOpen);
+        this.subscriptions.add(
+          dialogRef
+            .afterClosed()
+            .pipe(filter((result) => !!result))
+            .subscribe(() => {}),
+        );
+      } else {
+        this.launchBulkOperationWorkflow(
+          () =>
+            this.archiveUnitCollectService.launchDeletionModal(
+              this.transaction.id,
+              this.listOfUACriteriaSearch,
+              Number(this.tenantIdentifier),
+              this.currentPage,
+              this.confirmSecondActionBigNumberOfResultsActionDialog,
+            ),
+          this.DEFAULT_DELETION_THRESHOLD,
+        );
+      }
+    });
   }
 
   loadMore() {
