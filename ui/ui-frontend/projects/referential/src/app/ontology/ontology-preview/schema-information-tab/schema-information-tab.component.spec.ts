@@ -34,44 +34,49 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
+
+import { SchemaElement, VitamUILibraryModule, Collection, SchemaService } from 'vitamui-library';
+import { SchemaInformationTabComponent } from './schema-information-tab.component';
+import { of } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
-import { Ontology, SecurityService, VitamUILibraryModule } from 'vitamui-library';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { OntologyService } from '../../ontology.service';
-import { OntologyInformationTabComponent } from './ontology-information-tab.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('OntologyInformationTabComponent', () => {
-  let component: OntologyInformationTabComponent;
-  let fixture: ComponentFixture<OntologyInformationTabComponent>;
+describe('SchemaInformationTabComponent', () => {
+  let component: SchemaInformationTabComponent;
+  let fixture: ComponentFixture<SchemaInformationTabComponent>;
 
-  const ontologyServiceMock = {
+  const schemaServiceMock = {
     patch: (_data: any) => of(null),
   };
 
-  const ontologyValue: Ontology = {
+  const schemaValue: SchemaElement = {
     id: 'id',
-    tenant: 0,
-    version: 1,
-    creationDate: '01-01-2020',
-    lastUpdate: '01-01-2020',
-    sedaField: 'MyText',
-    apiField: 'MyText',
-    origin: 'origin',
-    shortName: 'Name',
-    identifier: 'SP-000001',
-    type: 'EXTERNAL',
-    collections: [''],
-    description: 'Mon Ontologie',
-    typeDetail: 'string',
-    stringSize: 'MEDIUM',
+    Tenant: 0,
+    CreationDate: '01-01-2020',
+    LastUpdate: '01-01-2020',
+    SedaField: 'MyText',
+    ApiField: 'MyText',
+    Origin: 'EXTERNAL',
+    ShortName: 'Name',
+    FieldName: 'SP-000001',
+    Type: 'TEXT',
+    Collection: Collection.ARCHIVE_UNIT,
+    Description: 'Mon Ontologie',
+    DataType: 'STRING',
+    StringSize: 'MEDIUM',
+    Path: 'document_title',
+    ApiPath: 'metadata.document_title',
+    Category: 'DESCRIPTION',
+    CustomSearchTypes: ['fulltext', 'exact'],
+    SedaVersions: ['2.1', '2.2', '2.3'],
+    Cardinality: 'ONE',
   };
 
   beforeEach(async () => {
@@ -86,28 +91,36 @@ describe('OntologyInformationTabComponent', () => {
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
-      providers: [
-        FormBuilder,
-        { provide: OntologyService, useValue: ontologyServiceMock },
-        {
-          provide: SecurityService,
-          useValue: {
-            hasRole: () => true,
-          },
-        },
-      ],
+      providers: [FormBuilder, { provide: SchemaService, useValue: schemaServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(OntologyInformationTabComponent);
+    fixture = TestBed.createComponent(SchemaInformationTabComponent);
     component = fixture.componentInstance;
-    component.inputOntology = ontologyValue;
+    component.inputSchema = schemaValue;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should patch the form with inputSchema values', () => {
+    expect(component.form.get('Path')?.value).toEqual('document_title');
+    expect(component.form.get('ApiPath')?.value).toEqual('metadata.document_title');
+    expect(component.form.get('ShortName')?.value).toEqual('Name');
+    expect(component.form.get('Origin')?.value).toEqual('EXTERNAL');
+  });
+
+  it('should set isExternal to true when Origin is EXTERNAL', () => {
+    expect(component.isExternal).toBeTrue();
+  });
+
+  it('should show stringSize when Type is TEXT', () => {
+    expect(component.stringSizeVisible).toBeTrue();
+  });
+
+  it('should show custom search types when Type is not OBJECT and CustomSearchTypes is not empty', () => {
+    expect(component.showCustomSearchTypes).toBeTrue();
   });
 });

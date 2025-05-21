@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import {
   CommonTooltipModule,
@@ -80,6 +80,8 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     this._searchText = searchText;
     this.filter();
   }
+
+  @Output() schemaClick = new EventEmitter<SchemaElement>();
 
   @ViewChildren(MatRow, { read: ElementRef }) rows: QueryList<ElementRef>;
   pending = false;
@@ -237,5 +239,11 @@ export class SchemaListComponent implements OnInit, OnDestroy {
 
   hidePreviewDelete() {
     this.rows.forEach((row) => (row.nativeElement as HTMLElement).classList.remove('selected'));
+  }
+
+  selectLine(schema: SchemaElement) {
+    if (schema?.id === 'VIRTUAL_ROOT_NODES') return;
+    this.schemaService.selectedPath$.next(schema?.Path);
+    this.schemaClick.emit(schema);
   }
 }

@@ -104,7 +104,6 @@ describe('OntologyCreateComponent', () => {
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
-      declarations: [OntologyCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

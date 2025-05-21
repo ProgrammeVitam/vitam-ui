@@ -75,6 +75,8 @@
       class="vitamui-table-rows vitamui-row align-items-center clickable"
       [class.d-none]="!element.display"
       [class]="'path-' + element.item.Path"
+      [class.selected]="(schemaService.selectedPath$ | async) === element.item?.Path"
+      (click)="selectLine(element.item)"
     ></tr>
   </table>
   @if (!dataSource.data || pending) {

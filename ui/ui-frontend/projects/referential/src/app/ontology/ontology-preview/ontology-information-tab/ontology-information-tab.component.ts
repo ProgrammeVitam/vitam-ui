@@ -35,18 +35,30 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { ApplicationId, diff, Ontology, Option, Role, SecurityService, setTypeDetailAndStringSize } from 'vitamui-library';
+import {
+  ApplicationId,
+  diff,
+  Ontology,
+  Option,
+  Role,
+  SecurityService,
+  setTypeDetailAndStringSize,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { OntologyService } from '../../ontology.service';
 import { collections, sizes, types } from '../../ontology-form-options';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-information-tab',
   templateUrl: './ontology-information-tab.component.html',
   styleUrls: ['./ontology-information-tab.component.scss'],
-  standalone: false,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class OntologyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

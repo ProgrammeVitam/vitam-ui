@@ -35,19 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, setTypeDetailAndStringSize } from 'vitamui-library';
+import { ConfirmDialogService, setTypeDetailAndStringSize, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
-import { types, collections, sizes } from '../ontology-form-options';
+import { collections, sizes, types } from '../ontology-form-options';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-create',
   templateUrl: './ontology-create.component.html',
   styleUrls: ['./ontology-create.component.scss'],
-  standalone: false,
+  imports: [CommonModule, MatDialogModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

@@ -43,33 +43,30 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-
-import { OntologyCreateModule } from './ontology-create/ontology-create.module';
-import { OntologyPreviewModule } from './ontology-preview/ontology-preview.module';
 import { OntologyRoutingModule } from './ontology-routing.module';
 import { OntologyComponent } from './ontology.component';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { OntologyGroupComponent } from './ontology-group/ontology-group.component';
+import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
-    OntologyRoutingModule,
-    OntologyCreateModule,
-    OntologyPreviewModule,
     ImportDialogModule,
-    MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
-    MatSidenavModule,
+    MatMenuModule,
     MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    OntologyGroupComponent,
+    OntologyPreviewComponent,
+    OntologyRoutingModule,
+    RouterModule,
     TableFilterModule,
     TranslateModule,
-    OntologyGroupComponent,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [OntologyComponent],
 })

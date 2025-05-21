@@ -1,6 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-ontology-preview *ngIf="openedItem" (previewClose)="closePanel()" [inputOntology]="openedItem"></app-ontology-preview>
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true" (vitamuiClickOutside)="onClose()">
+    <app-ontology-preview *ngIf="openedItem" (previewClose)="closePanel()" [selectedElement]="openedItem"></app-ontology-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="vitamui-content">
-      <app-ontology-group (ontologyClick)="showOntology($event)" [searchText]="search"></app-ontology-group>
+      <app-ontology-group (selectElement)="showOntology($event)" [searchText]="search"></app-ontology-group>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
