@@ -205,7 +205,7 @@
 
     - name: Check whether service is listening on admin port (tcp check)
       wait_for:
-        host: "{{ ip_service }}"
+        host: "{{ ip_admin }}"
         port: "{{ vitamui_struct.port_admin }}"
         timeout: "{{ vitamui_struct.services.start_timeout | default(start_timeout) }}"
         state: started
