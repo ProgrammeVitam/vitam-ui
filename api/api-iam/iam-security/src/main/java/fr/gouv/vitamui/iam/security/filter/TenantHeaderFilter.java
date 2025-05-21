@@ -60,7 +60,7 @@ import java.util.Objects;
 @Slf4j
 public class TenantHeaderFilter extends OncePerRequestFilter {
 
-    public static final String ROLE_CROSS_TENANTS_SUFFIX = "_ALL_TENANTS";
+    public static final String ROLE_CROSS_TENANTS_SUFFIX = "_OTHER_TENANTS";
     private final InternalSecurityService securityService;
     private final Integer casTenant;
 
