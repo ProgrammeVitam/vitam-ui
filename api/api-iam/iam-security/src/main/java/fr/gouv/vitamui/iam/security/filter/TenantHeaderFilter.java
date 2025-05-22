@@ -62,7 +62,7 @@ public class TenantHeaderFilter extends OncePerRequestFilter {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TenantHeaderFilter.class);
 
-    public static final String ROLE_CROSS_TENANTS_SUFFIX = "_ALL_TENANTS";
+    public static final String ROLE_CROSS_TENANTS_SUFFIX = "_OTHER_TENANTS";
     private final InternalSecurityService securityService;
     private final Integer casTenant;
 
