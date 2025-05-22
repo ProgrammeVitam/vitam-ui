@@ -93,7 +93,7 @@ public class ManagementContractController {
         return managementContractService.getAll();
     }
 
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
     public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
         @RequestParam final Integer page,

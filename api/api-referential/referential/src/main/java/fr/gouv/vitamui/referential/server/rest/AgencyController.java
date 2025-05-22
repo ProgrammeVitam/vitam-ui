@@ -105,7 +105,7 @@ public class AgencyController {
     }
 
     @Secured(ServicesData.ROLE_GET_AGENCIES)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(path = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<AgencyDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

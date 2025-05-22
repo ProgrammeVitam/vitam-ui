@@ -40,7 +40,6 @@ import { map } from 'rxjs/operators';
 
 import { LogbookApiService } from './api/logbook-api.service';
 import { ApiEvent, IEvent } from './models';
-import { PageRequest, PaginatedResponse } from './vitamui-table';
 
 const HTTP_STATUS_OK = 200;
 
@@ -60,12 +59,6 @@ export abstract class BaseHttpClient<T extends { id: string }> {
 
   protected getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<T[]> {
     return this.http.get<T[]>(this.apiUrl, { params, headers });
-  }
-
-  protected getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<T>> {
-    const params = embedded ? pageRequest.httpParams.set('embedded', embedded) : pageRequest.httpParams;
-
-    return this.http.get<PaginatedResponse<T>>(this.apiUrl, { params, headers });
   }
 
   protected getOne(id: string, headers?: HttpHeaders): Observable<T> {

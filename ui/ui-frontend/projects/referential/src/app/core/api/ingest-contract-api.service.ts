@@ -38,14 +38,14 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, IngestContract, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL, IngestContract, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class IngestContractApiService extends BaseHttpClient<IngestContract> {
+export class IngestContractApiService extends PaginatedHttpClient<IngestContract> {
   constructor(
     http: HttpClient,
     @Inject(BASE_URL) private baseUrl: string,
@@ -55,10 +55,6 @@ export class IngestContractApiService extends BaseHttpClient<IngestContract> {
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<IngestContract>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<IngestContract> {

@@ -37,13 +37,13 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL, PaginatedHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { AttachmentType } from '../../customer/attachment.enum';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomerApiService extends BaseHttpClient<Customer> {
+export class CustomerApiService extends PaginatedHttpClient<Customer> {
   constructor(
     http: HttpClient,
     @Inject(BASE_URL) baseUrl: string,

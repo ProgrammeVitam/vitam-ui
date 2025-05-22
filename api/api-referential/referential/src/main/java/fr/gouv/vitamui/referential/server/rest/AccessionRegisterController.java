@@ -86,7 +86,7 @@ public class AccessionRegisterController {
         return accessionRegisterService.getAll();
     }
 
-    @GetMapping(value = RestApi.DETAILS, params = { "page", "size" })
+    @GetMapping(value = RestApi.DETAILS + "/paginated", params = { "page", "size" })
     @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAccessionRegisterDetails(
         @RequestParam final Integer page,

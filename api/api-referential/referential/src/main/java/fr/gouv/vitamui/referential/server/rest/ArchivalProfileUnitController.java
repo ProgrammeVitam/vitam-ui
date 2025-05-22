@@ -99,7 +99,7 @@ public class ArchivalProfileUnitController {
     }
 
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

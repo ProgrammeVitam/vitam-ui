@@ -37,26 +37,21 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 import { Profile } from '../models';
 import { CriteriaSearchQuery } from '../models/criteria/criteria.interface';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
+import { PaginatedHttpClient } from '../paginated-http-client';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProfileApiService extends BaseHttpClient<Profile> {
+export class ProfileApiService extends PaginatedHttpClient<Profile> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/profiles');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Profile>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<Profile> {

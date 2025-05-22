@@ -108,7 +108,7 @@ public class RuleController {
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(path = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<RuleDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

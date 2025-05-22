@@ -38,17 +38,16 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL, PaginatedHttpClient, SKIP_ERROR_NOTIFICATION } from 'vitamui-library';
 import { Profile } from '../../models/profile';
 import { PastisConfiguration } from '../classes/pastis-configuration';
-import { SKIP_ERROR_NOTIFICATION } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
+export class ArchiveProfileApiService extends PaginatedHttpClient<Profile> {
   // @ts-ignore
   constructor(
     http: HttpClient,
@@ -61,10 +60,6 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Profile>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<Profile> {

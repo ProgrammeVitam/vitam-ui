@@ -97,7 +97,7 @@ public class SecurityProfileController {
     }
 
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

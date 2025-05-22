@@ -84,7 +84,7 @@ public class ProjectController {
     private final ExternalParametersService externalParametersService;
 
     @Secured(ServicesData.ROLE_GET_PROJECTS)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<CollectProjectDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
@@ -114,7 +114,7 @@ public class ProjectController {
     }
 
     @ApiOperation(value = "Get transactions by project paginated")
-    @GetMapping(params = { "page", "size" }, value = "/{id}" + TRANSACTIONS)
+    @GetMapping(value = "/{id}" + TRANSACTIONS + "/paginated", params = { "page", "size" })
     @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
     public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
         @RequestParam final Integer page,

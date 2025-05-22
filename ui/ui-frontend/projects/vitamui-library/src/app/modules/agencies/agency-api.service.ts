@@ -38,27 +38,22 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
-import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 import { Agency } from '../../../lib/models/agency';
+import { PaginatedHttpClient } from '../paginated-http-client';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class AgencyApiService extends BaseHttpClient<Agency> {
+export class AgencyApiService extends PaginatedHttpClient<Agency> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/agency');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Agency>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<Agency> {

@@ -110,7 +110,7 @@ public class UserController implements CrudController<UserDto> {
 
     @Operation(operationId = "users_getAllPaginated", summary = "Get all users, paginated")
     @Secured(ServicesData.ROLE_GET_USERS)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<UserDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

@@ -34,21 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SubrogationUser } from 'vitamui-library';
+import { BASE_URL, PaginatedHttpClient, SubrogationUser } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserGenericApiService extends BaseHttpClient<SubrogationUser> {
+export class UserGenericApiService extends PaginatedHttpClient<SubrogationUser> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/subrogations/users/generic');
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<SubrogationUser>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 }

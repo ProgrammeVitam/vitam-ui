@@ -100,7 +100,7 @@ public class AccessContractController {
     }
 
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(path = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<AccessContractDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

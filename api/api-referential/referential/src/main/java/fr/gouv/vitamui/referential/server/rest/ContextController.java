@@ -94,7 +94,7 @@ public class ContextController {
     }
 
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<ContextDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
