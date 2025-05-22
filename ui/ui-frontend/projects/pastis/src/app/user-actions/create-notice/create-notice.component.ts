@@ -111,7 +111,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       { key: 'INACTIVE', label: this.translateService.instant('PROFILE.POP_UP_CREATION_NOTICE.CHOICE.PROFIL_INACTIF') },
     ];
 
-    this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
+    if (this.profileType === ProfileType.PUA) this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
     this.form = this.formBuilder.group({
       identifier: [{ value: this.notice.identifier, disabled: this.editNotice }, Validators.required],
       name: [this.notice.name, Validators.required],
