@@ -5076,5 +5076,16 @@
       "TITLE": "Ajouter à un dossier",
       "ADD_TO_FOLDER": "Ajouter au dossier"
     }
+  },
+  "DELETION": {
+    "EXECUTION_ACTION": "Suppression des unités archivistiques",
+    "ALERTE_MESSAGES": {
+      "DELETION_TITLE": "Suppression des unités archivistiques",
+      "BACK_TO_SELECTION": "Revenir à la sélection",
+      "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+      "ACTION_ALERTE_ONE_UNIT_1": "La sélection dépasse le seuil des 10 000 unités archivistiques",
+      "ACTION_ALERTE_ONE_UNIT_2": "Veuillez revoir votre sélection"
+    },
+    "EXECUTE_DELETION_MESSAGE": "La demande de suppression a bien été lancée"
   }
 }
