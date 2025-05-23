@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-list-input/vitamui-list-input.component.scss"],
+  "sourcesContent": [":host {\n  width: 100%;\n  display: block;\n}\n\n.list-input-control {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n\n  .list-input-wrapper {\n    width: 100%;\n    margin-right: 2rem;\n\n    > input {\n      max-width: 100%;\n    }\n\n    mat-spinner {\n      position: absolute;\n      right: 12px;\n      top: 12px;\n    }\n  }\n}\n\n.vitamui-chip-list {\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n:host.list-input-mini {\n  .list-input-control {\n    button,\n    input {\n      height: 34px;\n      border-radius: 17px;\n    }\n\n    > span {\n      font-size: 18px;\n    }\n\n    mat-spinner {\n      right: 8px;\n      top: 8px;\n    }\n  }\n\n  .vitamui-chip-list {\n    padding-left: 27px;\n  }\n}\n\n.required-marker {\n  color: var(--vitamui-red);\n}\n"],
+  "mappings": "AAAA,MACE,MAAA,KACA,QAAA,MAGF,CAAA,mBACE,QAAA,KACA,YAAA,OACA,gBAAA,cAEA,CALF,mBAKE,CAAA,mBACE,MAAA,KACA,aAAA,KAEA,CATJ,mBASI,CAJF,kBAIE,CAAA,MACE,UAAA,KAGF,CAbJ,mBAaI,CARF,mBAQE,YACE,SAAA,SACA,MAAA,KACA,IAAA,KAKN,CAAA,kBACE,WAAA,MACA,cAAA,MAKE,KAAA,CAAA,gBAAA,CA5BJ,mBA4BI,OAAA,KAAA,CAAA,gBAAA,CA5BJ,mBA4BI,MAEE,OAAA,KAnCN,cAoCM,KAGF,KAAA,CANA,gBAMA,CAlCJ,kBAkCI,CAAA,KACE,UAAA,KAGF,KAAA,CAVA,gBAUA,CAtCJ,mBAsCI,YACE,MAAA,IACA,IAAA,IAIJ,KAAA,CAhBE,gBAgBF,CAvBF,kBAwBI,aAAA,KAIJ,CAAA,gBACE,MAAA,IAAA",
+  "names": []
+}

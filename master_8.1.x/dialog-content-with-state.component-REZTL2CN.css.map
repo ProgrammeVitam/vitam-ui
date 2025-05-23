@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/lib/components/dialog/dialog-content-with-state/dialog-content-with-state.component.scss"],
+  "sourcesContent": [".icon-container {\n  flex: 0 0 50px;\n  height: 50px;\n  color: var(--vitamui-white);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-radius: 50%;\n\n  :host.valid & {\n    background-color: var(--vitamui-green);\n  }\n  :host.invalid & {\n    background-color: var(--vitamui-red);\n  }\n}\n"],
+  "mappings": "AAAA,CAAA,eACE,KAAA,EAAA,EAAA,KACA,OAAA,KACA,MAAA,IAAA,iBACA,QAAA,KACA,gBAAA,OACA,YAAA,OANF,cAOE,IAEA,KAAA,CAAA,MAAA,CATF,eAUI,iBAAA,IAAA,iBAEF,KAAA,CAAA,QAAA,CAZF,eAaI,iBAAA,IAAA",
+  "names": []
+}

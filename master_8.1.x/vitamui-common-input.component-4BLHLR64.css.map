@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-input/vitamui-common-input.component.scss"],
+  "sourcesContent": ["@use '../../../../sass/mixins/elevation' as elevation;\n\n:host {\n  display: inline-block;\n\n  &.ng-invalid:not(.ng-untouched) .vitamui-input {\n    border: 1px solid var(--vitamui-red);\n  }\n\n  &.ng-pending .vitamui-input mat-spinner {\n    display: block;\n  }\n}\n"],
+  "mappings": "AAEA,MACE,QAAA,aAEA,KAAA,CAAA,UAAA,KAAA,CAAA,cAAA,CAAA,cACE,OAAA,IAAA,MAAA,IAAA,eAGF,KAAA,CAAA,WAAA,CAJA,cAIA,YACE,QAAA",
+  "names": []
+}
