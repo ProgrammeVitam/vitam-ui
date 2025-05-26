@@ -7,9 +7,11 @@
             <div
               class="vitamui-search-criteria-content"
               matTooltip="{{
-                criteriaValue.keyTranslated
-                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                  : criteriaVal.key
+                isKeyInSchema
+                  ? keyTranslationFromSchema
+                  : criteriaValue.keyTranslated
+                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                    : criteriaVal.key
               }}:{{
                 criteriaVal.dataType === 'DATE'
                   ? (criteriaValue.value.value | dateTime: 'dd/MM/yyyy')
@@ -28,9 +30,12 @@
             >
               <ng-container *ngIf="isFirst">
                 {{
-                  (criteriaValue.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                    : criteriaVal.key) + ' : '
+                  (isKeyInSchema
+                    ? keyTranslationFromSchema
+                    : criteriaValue.keyTranslated
+                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
+                        | translate)
+                      : criteriaVal.key) + ' : '
                 }}
               </ng-container>
               {{ criteriaValue.value.value | dateTime: 'dd/MM/yyyy' }}
@@ -75,9 +80,11 @@
             <div
               class="vitamui-search-criteria-content"
               matTooltip="{{
-                criteriaValue.keyTranslated
-                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                  : criteriaVal.key
+                isKeyInSchema
+                  ? keyTranslationFromSchema
+                  : criteriaValue.keyTranslated
+                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                    : criteriaVal.key
               }}"
               matTooltipClass="vitamui-tooltip"
               [matTooltipShowDelay]="300"
@@ -233,9 +240,12 @@
               <div
                 class="vitamui-search-criteria-content"
                 matTooltip="{{
-                  criteriaValue.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                    : criteriaVal.key
+                  isKeyInSchema
+                    ? keyTranslationFromSchema
+                    : criteriaValue.keyTranslated
+                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
+                        | translate)
+                      : criteriaVal.key
                 }}:{{
                   criteriaValue.valueTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
@@ -255,10 +265,12 @@
                 <ng-container *ngIf="isFirst">
                   <i *ngIf="criteriaKey === 'NODE'" class="vitamui-icon vitamui-icon-radio-checked vitamui-row-icon"></i>
                   {{
-                    (criteriaValue.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
-                        | translate)
-                      : criteriaVal.key) + ' : '
+                    (isKeyInSchema
+                      ? keyTranslationFromSchema
+                      : criteriaValue.keyTranslated
+                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
+                          | translate)
+                        : criteriaVal.key) + ' : '
                   }}
                 </ng-container>
 

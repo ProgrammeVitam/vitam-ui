@@ -31,7 +31,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SchemaApiService } from '../api/schema-api.service';
 import { Collection, Schema } from '../models';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ItemNode } from '../components/autocomplete';
 import { SchemaElement } from '../models/schema/schema-element.model';
 
@@ -39,6 +39,8 @@ import { SchemaElement } from '../models/schema/schema-element.model';
   providedIn: 'root',
 })
 export class SchemaService {
+  shema: Schema;
+
   constructor(private api: SchemaApiService) {}
 
   public getSchemas(collections: Collection[]): Observable<Schema[]> {
@@ -71,6 +73,9 @@ export class SchemaService {
     };
 
     return this.getSchema(Collection.ARCHIVE_UNIT).pipe(
+      tap((schema) => {
+        this.shema = schema;
+      }),
       map((schema) => {
         const rootNode = schema
           .filter((e) => (e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL') && e.FieldName !== '_sp' && e.FieldName !== '_sps')
