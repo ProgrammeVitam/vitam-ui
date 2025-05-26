@@ -42,28 +42,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize, Observable, throwError } from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
-import {
-  FilingPlanMode,
-  FlowType,
-  IOntology,
-  Logger,
-  MetadataUnitUp,
-  MiscValidators,
-  oneIncludedNodeRequired,
-  OntologyService,
-  Option,
-  Project,
-  ProjectStatus,
-  Transaction,
-  TransactionStatus,
-  Workflow,
-  ZipFile,
-  ZipFileStatus,
-} from 'vitamui-library';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { HttpEventType } from '@angular/common/http';
+import {
+  fetchTitle,
+  FilingPlanMode,
+  FilingPlanService,
+  FlowType,
+  ItemNode,
+  Logger,
+  MetadataUnitUp,
+  MiscValidators,
+  oneIncludedNodeRequired,
+  Option,
+  Project,
+  ProjectStatus,
+  SchemaElement,
+  SchemaService,
+  Transaction,
+  TransactionStatus,
+  Unit,
+  Workflow,
+  ZipFile,
+  ZipFileStatus,
+} from 'vitamui-library';
 
 @Component({
   selector: 'app-create-project',
@@ -95,9 +99,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   hasError = false;
   errorMessage: string;
-  ontologies: Option[];
+  schemaOptions: ItemNode<SchemaElement>[];
   filesToUpload: File[] = [];
   zipFileStatus$: Observable<ZipFileStatus>;
+  units: Unit[];
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -135,8 +140,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
     public dialog: MatDialog,
-    private ontologyService: OntologyService,
-  ) {}
+    private schemaService: SchemaService,
+    filingPlanService: FilingPlanService,
+  ) {
+    filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
+  }
 
   get linkParentIdControl() {
     return this.projectForm.controls.linkParentIdControl as FormControl;
@@ -144,15 +152,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.initForm();
-    this.ontologyService.getInternalOntologyFieldsList().subscribe((data: IOntology[]) => {
-      this.ontologies = data
-        .sort((a: any, b: any) => {
-          const shortNameA = a.Identifier;
-          const shortNameB = b.Identifier;
-          return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
-        })
-        .map((ontology: IOntology) => ({ key: ontology, label: ontology.Identifier }));
-    });
+    this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => (this.schemaOptions = schema));
   }
 
   ngAfterViewChecked(): void {
@@ -170,6 +170,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   setFlowType(value: FlowType) {
     this.selectedFlowType = value;
   }
+
+  getSchemaElementDisplayValue = (element: SchemaElement) =>
+    `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
   prepareRulesAndMoveToNextStep() {
     if (this.selectedFlowType === FlowType.RULES && this.rulesParams.length === 0) {
@@ -288,7 +291,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     return this.rulesParams.controls.map((ruleParamControl: FormControl) => {
       const ruleParam = ruleParamControl.value;
       return {
-        metadataKey: ruleParam.ontology.ApiField,
+        metadataKey: ruleParam.ontologyList.ApiField,
         metadataValue: ruleParam.metadataValue,
         unitUp: ruleParam.unitUp.included[0],
       };
@@ -307,13 +310,22 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     for (const ruleParamForm of this.rulesParams.controls) {
       ruleParamForm.value.opened = false;
     }
+
+    const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
+    const metadataValueGroup = this.formBuilder.group({}, { validators: Validators.required });
+
+    ontologyListControl.valueChanges.subscribe((schemaElement) => {
+      metadataValueGroup.addControl(schemaElement?.Path, this.formBuilder.control(undefined));
+    });
+
     // rulesParams interface:
     const newRuleParamForm = this.formBuilder.group({
       opened: [true],
-      ontology: ['', Validators.required],
-      metadataValue: ['', Validators.required],
+      ontologyList: ontologyListControl,
+      metadataValue: metadataValueGroup,
       unitUp: [{ included: [], excluded: [] }, oneIncludedNodeRequired()],
     });
+
     this.rulesParams.push(newRuleParamForm);
   }
 
@@ -408,5 +420,21 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       reader.onerror = (error) => reject(error);
       reader.readAsText(file);
     });
+  }
+
+  getNodeTitle(selectedNodes: { included: string[]; excluded: string[] }): string {
+    const vitamId = selectedNodes?.included[0];
+    if (!vitamId || !this.units) return '';
+
+    const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
+    return foundNode ? ' : ' + fetchTitle(foundNode.Title, foundNode.Title_) : '';
+  }
+
+  getName(item: SchemaElement): string {
+    const path = item.Path.split('.').slice(0, -1);
+    const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
+      children: this.schemaOptions,
+    } as ItemNode<SchemaElement>);
+    return `${item.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
 }

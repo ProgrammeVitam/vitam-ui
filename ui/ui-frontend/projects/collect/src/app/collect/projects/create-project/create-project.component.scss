@@ -217,7 +217,9 @@
 
     .object-details-group {
       label {
-        padding-bottom: 10px;
+        color: var(--vitamui-primary);
+        font-size: 14px;
+        display: block;
       }
 
       &.delete-button {
