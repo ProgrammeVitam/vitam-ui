@@ -1,11 +1,11 @@
 /* groovylint-disable LineLength */
 pipeline {
     agent {
-        label 'java21'
+        label 'build'
     }
 
     environment {
-        MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
+        MVN_BASE = "mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DdeployAtEnd=true "
         M2_REPO = "${HOME}/.m2"
         CI = credentials("app-jenkins")
