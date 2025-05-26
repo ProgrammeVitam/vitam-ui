@@ -2,11 +2,11 @@ def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches
 
 pipeline {
     agent {
-        label 'java11'
+        label 'build'
     }
 
     environment {
-        MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
+        MVN_BASE = "mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
         M2_REPO = "${HOME}/.m2"
         CI = credentials("app-jenkins")
@@ -14,9 +14,7 @@ pipeline {
         SERVICE_GIT_URL = credentials("service-gitlab-url")
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
-        SERVICE_REPOSITORY_URL=credentials("service-repository-url")
-
-        JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+        SERVICE_REPOSITORY_URL = credentials("service-repository-url")
     }
 
     options {
@@ -36,6 +34,11 @@ pipeline {
         booleanParam(name: 'DO_DEPLOY', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Deploy to Nexus')
         booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run build stage Deploy PASTIS standalone')
         booleanParam(name: 'DO_PUBLISH', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Publish to repository.')
+    }
+
+    tools {
+        jdk 'java17'
+        maven 'maven-3.9'
     }
 
     stages {
@@ -71,11 +74,15 @@ pipeline {
 
         stage('Upgrade build context') {
             steps {
-                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems jq'
-                sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
-                sh 'node -v;npm -v'
+                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm'
+                nvm('v18.20.3') { // We're installing correct Node version through NVM then update the path to make it available. Do NOT wrap your code in `nvm('...') {}` as it would override the whole PATH and then break tools (jdk, maven) configurations
+                    script {
+                        nvmPath = sh(script: 'dirname $(which node)', returnStdout: true).trim()
+                        env.PATH = "${nvmPath}:${env.PATH}"
+                    }
+                }
             }
         }
 
@@ -235,7 +242,6 @@ pipeline {
     post {
         // Clean after build
         always {
-
             // Cleanup any remaining docker volumes
             sh 'docker volume prune -f'
 

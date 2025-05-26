@@ -1,11 +1,11 @@
 /* groovylint-disable LineLength */
 pipeline {
     agent {
-        label 'java11'
+        label 'build'
     }
 
     environment {
-        MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
+        MVN_BASE = "mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DdeployAtEnd=true "
         M2_REPO = "${HOME}/.m2"
         CI = credentials("app-jenkins")
@@ -16,11 +16,14 @@ pipeline {
         SERVICE_DOCKER_PUSH_URL=credentials("SERVICE_DOCKER_PUSH_URL")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
         GITHUB_ACCOUNT_TOKEN = credentials("vitam-prg-token")
-        JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
     }
 
     stages {
         stage('Build and create docker images'){
+            tools {
+                jdk 'java17' // java11 || java17 || java21
+                maven 'maven-3.9' // maven-3.8 || maven-3.9
+            }
             steps {
                 withCredentials([
                 [$class: 'UsernamePasswordMultiBinding', credentialsId: 'app-jenkins',usernameVariable: 'CI_USR', passwordVariable: 'CI_PSW'],
