@@ -53,6 +53,8 @@ import {
   OntologyService,
   Option,
   Project,
+  ItemNode,
+  Node,
   ProjectStatus,
   Transaction,
   TransactionStatus,
@@ -95,9 +97,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   hasError = false;
   errorMessage: string;
-  ontologies: Option[];
+  ontologies: ItemNode<IOntology>[];
   filesToUpload: File[] = [];
   zipFileStatus$: Observable<ZipFileStatus>;
+  dataNodes: Node[];
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -146,12 +149,14 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.initForm();
     this.ontologyService.getInternalOntologyFieldsList().subscribe((data: IOntology[]) => {
       this.ontologies = data
-        .sort((a: any, b: any) => {
-          const shortNameA = a.Identifier;
-          const shortNameB = b.Identifier;
-          return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
-        })
-        .map((ontology: IOntology) => ({ key: ontology, label: ontology.Identifier }));
+        .sort((a, b) => a.Identifier.localeCompare(b.Identifier))
+        .map(
+          (o) =>
+            ({
+              item: o,
+              children: [],
+            }) as ItemNode<IOntology>,
+        );
     });
   }
 
@@ -170,6 +175,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   setFlowType(value: FlowType) {
     this.selectedFlowType = value;
   }
+
+  getSchemaElementDisplayValue = (element: IOntology) => `${element?.Identifier}`;
 
   prepareRulesAndMoveToNextStep() {
     if (this.selectedFlowType === FlowType.RULES && this.rulesParams.length === 0) {
@@ -408,5 +415,33 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       reader.onerror = (error) => reject(error);
       reader.readAsText(file);
     });
+  }
+
+  initDataNodes(event: any): void {
+    this.dataNodes = event;
+  }
+
+  getNodeTitle(selectedNodes: { included: string[]; excluded: string[] }): string {
+    const vitamId = selectedNodes?.included[0];
+    if (!vitamId || !this.dataNodes) return '';
+
+    const foundNode = this.findNode(this.dataNodes, vitamId);
+    return ' : ' + foundNode?.label || '';
+  }
+
+  private findNode(nodes: Node[], vitamId: string): Node | null {
+    for (const node of nodes) {
+      if (node.vitamId === vitamId) {
+        return node;
+      }
+
+      if (node.children?.length) {
+        const found = this.findNode(node.children, vitamId);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
   }
 }

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
@@ -63,6 +63,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit {
   @Input() tenantIdentifier: number;
   @Input() mode: FilingPlanMode;
   @Input() componentId: string = uuid();
+  @Output() dataNodes: EventEmitter<Node[]> = new EventEmitter();
 
   selectedNodes: { included: string[]; excluded: string[] } = {
     included: [],
@@ -98,6 +99,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit {
     this.nestedDataSource.data = nodes;
     this.nestedTreeControl.dataNodes = nodes;
     this.initCheckedNodes(this.selectedNodes, nodes);
+    this.dataNodes.emit(nodes);
   }
 
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;

@@ -328,44 +328,48 @@
                       ></i>
                     </div>
                     <div class="d-flex align-items-center shrink object-name">
-                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) }}
+                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) + getNodeTitle(ruleParamForm.value.unitUp) }}
                     </div>
                   </div>
                   <div class="d-flex align-items-center split">
                     <div class="d-flex align-items-center shrink object-type"></div>
-                    <button
-                      class="delete-button"
-                      (click)="deleteRuleParam(index)"
-                      [vitamuiTooltip]="'COLLECT.MODAL.REMOVE_PARAM' | translate"
-                    >
-                      <i class="vitamui-icon vitamui-icon-delete"></i>
-                    </button>
+                    <div class="delete-button">
+                      <button
+                        class="btn btn-circle primary"
+                        (click)="deleteRuleParam(index)"
+                        [vitamuiTooltip]="'COLLECT.MODAL.REMOVE_PARAM' | translate"
+                      >
+                        <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div class="object-details" [hidden]="!ruleParamForm.value.opened">
                   <div class="object-details-group gap-5 align-items-stretch">
                     <div class="row">
                       <div class="col">
-                        <label>{{ 'COLLECT.MODAL.SELECT_METADATA' | translate }}</label>
-                        <vitamui-select
+                        <label>{{ 'COLLECT.MODAL.SELECT_METADATA_LABEL' | translate }}</label>
+                        <vitamui-select-with-tree
+                          *ngIf="ontologies"
                           formControlName="ontology"
-                          [placeholder]="'COLLECT.MODAL.SELECT_THE_METADATA' | translate"
-                          [options]="ontologies"
                           [multiple]="false"
-                          [enableSearch]="false"
-                        ></vitamui-select>
+                          [options]="ontologies"
+                          [getDisplayValue]="getSchemaElementDisplayValue"
+                          [placeholder]="'COLLECT.MODAL.SELECT_METADATA' | translate"
+                          [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
+                        >
+                        </vitamui-select-with-tree>
                       </div>
                       <div class="col">
-                        <label>{{ 'COLLECT.MODAL.SET_VALUE' | translate }}</label>
                         <vitamui-common-input
                           *ngIf="ruleParamForm.value.ontology.Type !== 'DATE'"
                           formControlName="metadataValue"
-                          class="col"
+                          class="col mt-4"
                           placeholder="{{ 'COLLECT.MODAL.VALUE' | translate }}"
                         >
                         </vitamui-common-input>
                         <div
-                          class="vitamui-input"
+                          class="vitamui-input mt-4"
                           *ngIf="ruleParamForm.value.ontology.Type === 'DATE'"
                           (click)="pickerOtherCriteria.open()"
                         >
@@ -387,12 +391,13 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col">
+                      <div class="col filing-plan-section">
                         <label>{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
                         <vitamui-library-filing-plan
                           [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
                           [mode]="FilingPlanMode.SOLO"
                           [tenantIdentifier]="tenantIdentifier"
+                          (dataNodes)="initDataNodes($event)"
                         >
                         </vitamui-library-filing-plan>
                       </div>
