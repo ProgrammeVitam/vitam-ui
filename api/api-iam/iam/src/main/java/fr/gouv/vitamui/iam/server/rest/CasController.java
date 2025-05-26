@@ -251,7 +251,7 @@ public class CasController {
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier.orElse(null), embedded.orElse(null));
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = { "superUserEmail", "superUserCustomerId" })
+    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH)
     @Operation(
         operationId = "getSubrogationsBySuperUserIdOrEmailAndCustomerId",
         summary = "Get available subrogations for a super user by super user id or by super user email and customerId"
@@ -269,7 +269,7 @@ public class CasController {
             superUserCustomerId
         );
         String email = superUserEmail, customerId = superUserCustomerId;
-        if (superUserId != null && !superUserId.isEmpty() && superUserId.trim().isEmpty()) {
+        if (superUserId != null && !superUserId.isEmpty() && !superUserId.trim().isEmpty()) {
             SanityChecker.checkSecureParameter(superUserId);
             final UserDto user = userService.getOne(superUserId, Optional.empty());
             if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
@@ -282,7 +282,7 @@ public class CasController {
         }
         ParameterChecker.checkParameter("The superUserEmail is mandatory : ", email);
         ParameterChecker.checkParameter("The superUserCustomerId is mandatory : ", customerId);
-        return casService.getSubrogationsBySuperUser(superUserEmail, superUserCustomerId);
+        return casService.getSubrogationsBySuperUser(email, customerId);
     }
 
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
