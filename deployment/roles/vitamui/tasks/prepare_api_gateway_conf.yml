@@ -25,8 +25,9 @@
     - update_vitamui_certificates
 
 - name: Check trusted CA files present
-  fail: msg="CA certificates missing from {{ inventory_dir }}/certs/server/ca/ directory"
-  when: trusted_ca_certs | length == 0
+  fail:
+    msg: "CA certificates missing from {{ inventory_dir }}/certs/server/ca/ directory"
+  when: trusted_ca_certs.files | length == 0
 
 - name: Copy trusted CA certs
   copy:
@@ -35,7 +36,7 @@
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
-  with_items: "{{ trusted_ca_certs.files | map(attribute='path') }}"
+  with_items: "{{ trusted_ca_certs.files | map(attribute='path') | list }}"
   notify: restart service
   tags:
     - update_vitam_configuration
