@@ -246,7 +246,7 @@ export class ProfileService implements OnDestroy {
   private updateControlSchema(archivalUnitProfile: ArchivalProfileUnit): ArchivalProfileUnit {
     try {
       const parsedControlSchema = JSON.parse(archivalUnitProfile.controlSchema);
-      const additionalProperties = JSON.parse(this.controlSchema.getValue())?.additionalProperties;
+      const additionalProperties = JSON.parse(this.controlSchema.getValue())?.additionalProperties ?? false;
 
       if (parsedControlSchema) {
         parsedControlSchema.additionalProperties = additionalProperties;
