@@ -37,22 +37,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccessionRegisterDetail, BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { AccessionRegisterDetail, BASE_URL, PaginatedHttpClient } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionRegisterDetail> {
+export class AccessionRegisterDetailApiService extends PaginatedHttpClient<AccessionRegisterDetail> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/accession-register/details');
-  }
-
-  public getAllPaginated(
-    pageRequest: PageRequest,
-    embedded?: string,
-    headers?: HttpHeaders,
-  ): Observable<PaginatedResponse<AccessionRegisterDetail>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   exportAccessionRegisterCsv(criteria: any, headers?: HttpHeaders): Observable<Blob> {

@@ -328,7 +328,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
     private ResultActions testGetPaginatedEntities(final HttpHeaders httpHeaders, final UriComponentsBuilder builder) {
         ResultActions result = null;
         try {
-            result = super.perform(builder, "", HttpMethod.GET, status().isOk(), httpHeaders);
+            result = super.perform(builder.pathSegment("paginated"), "", HttpMethod.GET, status().isOk(), httpHeaders);
         } catch (final Exception e) {
             fail(e.getMessage());
         }

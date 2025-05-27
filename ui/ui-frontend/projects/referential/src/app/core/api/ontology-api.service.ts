@@ -38,25 +38,20 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
-import { Ontology } from 'vitamui-library';
+import { BASE_URL, Ontology, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class OntologyApiService extends BaseHttpClient<Ontology> {
+export class OntologyApiService extends PaginatedHttpClient<Ontology> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/ontology');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Ontology>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<Ontology> {

@@ -38,25 +38,20 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
-import { FileFormat } from 'vitamui-library';
+import { BASE_URL, FileFormat, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class FileFormatApiService extends BaseHttpClient<FileFormat> {
+export class FileFormatApiService extends PaginatedHttpClient<FileFormat> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/fileformat');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<FileFormat>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<FileFormat> {

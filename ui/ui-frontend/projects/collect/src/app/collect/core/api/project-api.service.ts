@@ -40,19 +40,19 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   BASE_URL,
-  BaseHttpClient,
   PageRequest,
   PaginatedResponse,
   Project,
   SearchCriteriaHistory,
   Transaction,
   VitamuiHttpHeaders,
+  PaginatedHttpClient,
 } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectsApiService extends BaseHttpClient<any> {
+export class ProjectsApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
   urlTransaction: string;
 
@@ -67,10 +67,6 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   }
 
   // Manage projects
-
-  public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Project>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
 
   public create(data: Project): Observable<Project> {
     return super.create(data);
@@ -154,7 +150,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     headers?: HttpHeaders,
   ): Observable<PaginatedResponse<Transaction>> {
     const params = pageRequest.httpParams;
-    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, {
+    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions/paginated`, {
       params,
       headers,
     });

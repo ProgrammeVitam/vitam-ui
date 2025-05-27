@@ -37,21 +37,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 import { ExternalParamProfile } from '../models';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
+import { PaginatedHttpClient } from '../paginated-http-client';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ExternalParamProfileApiService extends BaseHttpClient<ExternalParamProfile> {
+export class ExternalParamProfileApiService extends PaginatedHttpClient<ExternalParamProfile> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/externalparamprofile');
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<ExternalParamProfile>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   create(externalParamProfile: ExternalParamProfile, headers?: HttpHeaders): Observable<ExternalParamProfile> {

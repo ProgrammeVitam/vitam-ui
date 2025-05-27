@@ -72,31 +72,31 @@ describe('GroupService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should call /fake-api/groups?page=0&size=20&orderBy=name&direction=ASC', () => {
+  it('should call /fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC', () => {
     groupService.search().subscribe((response) => expect(response).toEqual([]), fail);
-    const req = httpTestingController.expectOne('/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC');
+    const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC');
     expect(req.request.method).toEqual('GET');
     const result: any = { values: [] };
     req.flush(result);
   });
 
-  it('should call /fake-api/groups?page=42&size=15&orderBy=name&direction=DESC', () => {
+  it('should call /fake-api/groups/paginated?page=42&size=15&orderBy=name&direction=DESC', () => {
     groupService.search(new PageRequest(42, 15, 'name', Direction.DESCENDANT)).subscribe((response) => expect(response).toEqual([]), fail);
-    const req = httpTestingController.expectOne('/fake-api/groups?page=42&size=15&orderBy=name&direction=DESC');
+    const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=42&size=15&orderBy=name&direction=DESC');
     expect(req.request.method).toEqual('GET');
     const result: any = { values: [] };
     req.flush(result);
   });
 
-  it('should call /fake-api/groups?page=0&size=15&orderBy=&direction=DESC', () => {
+  it('should call /fake-api/groups/paginated?page=0&size=15&orderBy=&direction=DESC', () => {
     groupService.search(new PageRequest(0, 15, '', Direction.DESCENDANT)).subscribe((response) => expect(response).toEqual([null]), fail);
-    let req = httpTestingController.expectOne('/fake-api/groups?page=0&size=15&orderBy=&direction=DESC');
+    let req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=15&orderBy=&direction=DESC');
     expect(req.request.method).toEqual('GET');
     let result: any = { pageNum: 0, hasMore: true, pageSize: 15, values: [null] };
     req.flush(result);
 
     groupService.loadMore().subscribe((response) => expect(response).toEqual([null, null]), fail);
-    req = httpTestingController.expectOne('/fake-api/groups?page=1&size=15&orderBy=&direction=DESC');
+    req = httpTestingController.expectOne('/fake-api/groups/paginated?page=1&size=15&orderBy=&direction=DESC');
     expect(req.request.method).toEqual('GET');
     result = { pageNum: 1, pageSize: 15, hasMore: false, values: [null] };
     req.flush(result);
@@ -104,13 +104,13 @@ describe('GroupService', () => {
 
   it('should not load more results', () => {
     groupService.search().subscribe((response) => expect(response).toEqual([null]), fail);
-    const req = httpTestingController.expectOne('/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC');
+    const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC');
     expect(req.request.method).toEqual('GET');
     const result: any = { hasMore: false, pageSize: 20, pageNum: 0, values: [null] };
     req.flush(result);
 
     groupService.loadMore().subscribe((response) => expect(response).toEqual([null]), fail);
-    httpTestingController.expectNone('/fake-api/groups?page=1&size=20&orderBy=name&direction=ASC');
+    httpTestingController.expectNone('/fake-api/groups/paginated?page=1&size=20&orderBy=name&direction=ASC');
   });
 
   it('should return false', () => {
@@ -122,7 +122,7 @@ describe('GroupService', () => {
       expect(response).toEqual([null]);
       expect(groupService.canLoadMore).toBeTruthy();
     }, fail);
-    const req = httpTestingController.expectOne('/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC');
+    const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC');
     expect(req.request.method).toEqual('GET');
     const result: any = { hasMore: true, values: [null] };
     req.flush(result);

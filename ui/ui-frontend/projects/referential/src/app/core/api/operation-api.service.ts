@@ -38,12 +38,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL, PaginatedHttpClient, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OperationApiService extends BaseHttpClient<Event> {
+export class OperationApiService extends PaginatedHttpClient<Event> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/operation');
   }

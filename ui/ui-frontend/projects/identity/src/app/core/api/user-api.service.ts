@@ -38,22 +38,18 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BASE_URL, BaseHttpClient, CriteriaSearchQuery, PageRequest, PaginatedResponse, User } from 'vitamui-library';
+import { BASE_URL, CriteriaSearchQuery, PaginatedHttpClient, User } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserApiService extends BaseHttpClient<User> {
+export class UserApiService extends PaginatedHttpClient<User> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/users');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<User>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<User> {

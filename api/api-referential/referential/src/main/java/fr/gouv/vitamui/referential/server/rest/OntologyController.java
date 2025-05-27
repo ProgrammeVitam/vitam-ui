@@ -107,7 +107,7 @@ public class OntologyController {
     }
 
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<OntologyDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

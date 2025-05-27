@@ -38,13 +38,13 @@ import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@an
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL, PageRequest, PaginatedHttpClient, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestType } from '../common/ingest-type.enum';
 
 @Injectable({
   providedIn: 'root',
 })
-export class IngestApiService extends BaseHttpClient<any> {
+export class IngestApiService extends PaginatedHttpClient<any> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/ingest');
   }

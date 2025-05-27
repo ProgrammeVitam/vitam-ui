@@ -68,24 +68,20 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, ManagementContract, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL, ManagementContract, PaginatedHttpClient } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ManagementContractsApiService extends BaseHttpClient<ManagementContract> {
+export class ManagementContractsApiService extends PaginatedHttpClient<ManagementContract> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/management-contract');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<ManagementContract>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<ManagementContract> {

@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL, PaginatedHttpClient } from 'vitamui-library';
 import { OperationResponse } from '../../models/operation-response.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LogbookManagementOperationApiService extends BaseHttpClient<any> {
+export class LogbookManagementOperationApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -66,9 +66,5 @@ export class LogbookManagementOperationApiService extends BaseHttpClient<any> {
 
   updateOperationProcessExecution(id: string, actionId: string): Observable<OperationResponse> {
     return this.http.post<OperationResponse>(`${this.apiUrl}/operations/update/${id}`, actionId);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 }

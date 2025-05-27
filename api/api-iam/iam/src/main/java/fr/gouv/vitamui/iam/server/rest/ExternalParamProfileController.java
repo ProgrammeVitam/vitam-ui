@@ -100,7 +100,7 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
         operationId = "externalParamProfile_getAllPaginated",
         summary = "Get external parameters profile, paginated result"
     )
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(path = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

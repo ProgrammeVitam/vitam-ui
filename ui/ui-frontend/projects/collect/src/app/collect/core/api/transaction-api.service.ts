@@ -41,10 +41,8 @@ import { Observable } from 'rxjs';
 import {
   ApiUnitObject,
   BASE_URL,
-  BaseHttpClient,
   IOntology,
-  PageRequest,
-  PaginatedResponse,
+  PaginatedHttpClient,
   SearchCriteriaDto,
   SearchResponse,
   Transaction,
@@ -54,7 +52,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class TransactionApiService extends BaseHttpClient<Transaction> {
+export class TransactionApiService extends PaginatedHttpClient<Transaction> {
   baseUrl: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -67,10 +65,6 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
   }
 
   // Manage projects
-
-  public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Transaction>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
 
   public getTransactionById(transactionId: string): Observable<Transaction> {
     return this.http.get<Transaction>(this.apiUrl + '/' + transactionId);

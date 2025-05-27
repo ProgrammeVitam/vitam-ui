@@ -42,11 +42,11 @@ import {
   ApiUnitObject,
   ArchiveUnit,
   BASE_URL,
-  BaseHttpClient,
   IOntology,
   JsonPatchDto,
   MultiJsonPatchDto,
   PageRequest,
+  PaginatedHttpClient,
   PaginatedResponse,
   SearchCriteriaDto,
   SearchCriteriaHistory,
@@ -60,7 +60,7 @@ import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveApiService extends BaseHttpClient<any> {
+export class ArchiveApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {

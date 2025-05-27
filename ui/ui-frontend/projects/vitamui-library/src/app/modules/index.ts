@@ -125,7 +125,7 @@ export * from './missing-translation-handler';
 export * from './models/index';
 export * from './module-import-guard';
 export * from './ontology/index';
-export * from './paginated-api.interface';
+export * from './paginated-http-client';
 export * from './pipes/index';
 export * from './rule/index';
 export * from './schema/index';

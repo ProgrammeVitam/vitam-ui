@@ -38,24 +38,20 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SecurityProfile } from 'vitamui-library';
+import { BASE_URL, PaginatedHttpClient, SecurityProfile } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class SecurityProfileApiService extends BaseHttpClient<SecurityProfile> {
+export class SecurityProfileApiService extends PaginatedHttpClient<SecurityProfile> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/security-profile');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<SecurityProfile>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   getOne(id: string, headers?: HttpHeaders): Observable<SecurityProfile> {

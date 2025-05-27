@@ -36,18 +36,17 @@
  */
 
 import { Inject, Injectable } from '@angular/core';
-import { BaseHttpClient } from '../base-http-client';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BASE_URL } from '../injection-tokens';
 import { SearchCriteriaDto, SearchResponse } from '../models';
 import { Observable } from 'rxjs';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
 import { ReclassificationCriteriaDto } from './reclassification.interface';
+import { PaginatedHttpClient } from '../paginated-http-client';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ReclassificationApiService extends BaseHttpClient<any> {
+export class ReclassificationApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -57,10 +56,6 @@ export class ReclassificationApiService extends BaseHttpClient<any> {
 
   getBaseUrl() {
     return this.baseUrl;
-  }
-
-  public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders) {

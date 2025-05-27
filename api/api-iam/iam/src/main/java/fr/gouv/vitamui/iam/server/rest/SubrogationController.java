@@ -136,7 +136,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     @Operation(operationId = "subrogations_getGenericUsers", summary = "Get all generic users with criteria")
     @Secured(ServicesData.ROLE_GET_USERS_SUBROGATIONS)
-    @GetMapping(path = "/users/generic", params = { "page", "size" })
+    @GetMapping(path = "/users/generic/paginated", params = { "page", "size" })
     public PaginatedValuesDto<UserDto> getGenericUsers(
         @RequestParam final Integer page,
         @RequestParam final Integer size,

@@ -34,54 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PageRequest, PaginatedResponse } from './vitamui-table';
+import { BaseHttpClient } from './base-http-client';
+import { PaginatedApi } from './paginated-api.interface';
 
-import { BASE_URL, CriteriaSearchQuery, Group, PaginatedHttpClient } from 'vitamui-library';
+export abstract class PaginatedHttpClient<T extends { id: string }> extends BaseHttpClient<T> implements PaginatedApi<T> {
+  public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<T>> {
+    const params = embedded ? pageRequest.httpParams.set('embedded', embedded) : pageRequest.httpParams;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class GroupApiService extends PaginatedHttpClient<Group> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/groups');
-  }
-
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
-    return super.getAllByParams(params, headers);
-  }
-
-  getOne(id: string, headers?: HttpHeaders): Observable<Group> {
-    return super.getOne(id, headers);
-  }
-
-  getOneWithEmbedded(id: string, embedded: string, headers?: HttpHeaders): Observable<Group> {
-    return super.getOneWithEmbedded(id, embedded, headers);
-  }
-
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
-    return super.checkExistsByParam(params, headers);
-  }
-
-  create(group: Group, headers?: HttpHeaders): Observable<Group> {
-    return super.create(group, headers);
-  }
-
-  patch(groupPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
-    return super.patch(groupPartial, headers);
-  }
-
-  getLevels(query?: CriteriaSearchQuery, headers?: HttpHeaders): Observable<string[]> {
-    let params = new HttpParams();
-    if (query) {
-      params = params.set('criteria', JSON.stringify(query));
-    }
-
-    return this.http.get<string[]>(this.apiUrl + '/levels', { params, headers });
-  }
-
-  export(): Observable<HttpResponse<Blob>> {
-    return this.http.get(`${this.apiUrl}/export`, { observe: 'response', responseType: 'blob' });
+    return this.http.get<PaginatedResponse<T>>(`${this.apiUrl}/paginated`, { params, headers });
   }
 }

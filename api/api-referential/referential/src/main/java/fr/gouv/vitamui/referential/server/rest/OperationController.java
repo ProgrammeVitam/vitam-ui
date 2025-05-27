@@ -108,7 +108,7 @@ public class OperationController {
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(value = "/paginated", params = { "page", "size" })
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
