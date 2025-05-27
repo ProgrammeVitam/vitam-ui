@@ -237,7 +237,7 @@ export const agencyTemplate: DisplayRule[] = [
     Path: 'biogHist',
     ui: {
       Path: 'Description.BiogHist',
-      component: 'textarea',
+      component: 'textfield',
       open: true,
       display: true,
       layout: {
@@ -293,7 +293,7 @@ export const agencyTemplate: DisplayRule[] = [
     Path: 'structureOrGenealogy',
     ui: {
       Path: 'Description.StructureOrGenealogy',
-      component: 'textarea',
+      component: 'textfield',
       open: true,
       display: true,
       layout: {
@@ -307,7 +307,7 @@ export const agencyTemplate: DisplayRule[] = [
     Path: 'generalContext',
     ui: {
       Path: 'Description.GeneralContext',
-      component: 'textarea',
+      component: 'textfield',
       open: true,
       display: true,
       layout: {
@@ -407,7 +407,7 @@ export const agencyTemplate: DisplayRule[] = [
     Path: 'eventDescription',
     ui: {
       Path: 'Control.EventDescription',
-      component: 'textarea',
+      component: 'textfield',
       open: true,
       display: true,
       layout: {
