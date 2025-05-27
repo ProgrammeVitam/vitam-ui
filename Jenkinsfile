@@ -2,7 +2,7 @@ def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches
 
 pipeline {
     agent {
-        label 'java11'
+        label 'java21'
     }
 
     environment {
@@ -126,7 +126,7 @@ pipeline {
                 }
                 stage('Backend') {
                     tools {
-                        jdk 'java17' // java11 || java17 || java21
+                        jdk 'java21' // java11 || java17 || java21
                         maven 'maven-3.9' // maven-3.8 || maven-3.9
                     }
                     steps {
@@ -156,6 +156,10 @@ pipeline {
                     environment(name: 'GOAL', value: 'deploy')
                     environment(name: 'GOAL', value: 'publish')
                 }
+            }
+            tools {
+                jdk 'java21'
+                maven 'maven-3.9'
             }
             steps {
                 dir('ui/ui-frontend') {

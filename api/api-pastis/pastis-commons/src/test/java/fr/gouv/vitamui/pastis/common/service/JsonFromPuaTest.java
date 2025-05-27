@@ -45,11 +45,11 @@ import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.common.util.SedaNodeUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +57,7 @@ import java.io.InputStreamReader;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
 public class JsonFromPuaTest {
 

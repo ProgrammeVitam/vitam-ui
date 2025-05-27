@@ -31,7 +31,7 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == system
 ################################  Install build tools (rpm / maven / java)  ###############################
 
 RUN yum install -y \
-    	java-17-openjdk-devel \
+    	java-21-openjdk-devel \
     	rpm-build \
         rpmdevtools \
         initscripts.x86_64 \
