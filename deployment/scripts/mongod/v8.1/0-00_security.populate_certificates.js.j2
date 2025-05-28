@@ -1,6 +1,6 @@
 dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
 
-print("START v8.1.0-00_security.populate_certificates.js");
+print("START v8.1.0-test-00_security.populate_certificates.js");
 
 dbSecurity.certificates.deleteMany({});
 
@@ -36,4 +36,4 @@ dbSecurity.certificates.insertOne({
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-pastis.pem', 'ui_pastis_context', 'hosts_ui_pastis') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-collect.pem', 'ui_collect_context', 'hosts_ui_collect') }}
 
-print("END v8.1.0-00_security.populate_certificates.js");
+print("END v8.1.0-test-00_security.populate_certificates.js");

@@ -1,4 +1,4 @@
-print("START v8.1.0-04_update_collect_app.js");
+print("START v8.1.0-test-04_update_collect_app.js");
 
 dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
 dbIam.profiles.updateMany({
@@ -49,4 +49,4 @@ dbSecurity.contexts.updateOne({
     }
 });
 
-print("END v8.1.0-04_update_collect_app.js");
+print("END v8.1.0-test-04_update_collect_app.js");

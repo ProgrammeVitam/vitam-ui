@@ -13,7 +13,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>parent</artifactId>
-    <version>8.1.0</version>
+    <version>8.1.0-test</version>
     <packaging>pom</packaging>
     <name>VITAMUI</name>
     <description>${project.artifactId}</description>
