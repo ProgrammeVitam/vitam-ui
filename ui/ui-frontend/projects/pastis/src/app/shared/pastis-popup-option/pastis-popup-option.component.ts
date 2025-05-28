@@ -141,41 +141,43 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     };
     const dialogRef = this.dialog.open(CreateProfileComponent, createNoticeDialogConfig);
     const subscription1 = dialogRef.afterClosed().subscribe((result: CreateProfileFormResult) => {
-      const createNoticeData = {} as PastisDialogDataCreate;
-      createNoticeData.titleDialog = this.popupSaveCreateNoticeTitleDialog;
-      createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
-      createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
-      createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
-      createNoticeData.profileType = result?.profileType;
-      createNoticeData.profileVersion = result?.profileVersion;
-      const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
-        width: '800px',
-        panelClass: 'pastis-popup-modal-box',
-        data: createNoticeData,
-      });
-      const subscription2 = createNoticeDialogRef.afterClosed().subscribe((result) => {
-        let retour;
-        if (result.success) {
-          retour = result.data;
-          if (result.profileType === ProfileType.PUA) {
-            const profileDescription = this.noticeService.puaNotice(retour, result.profileVersion);
-            this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
-              this.changeExpand();
-              this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
-              this.profileService.refreshListProfiles();
-            });
-          } else if (result.profileType === ProfileType.PA) {
-            const profile: Profile = this.noticeService.paNotice(retour, result.profileVersion, true);
-            // STEP 1 : Create Notice
-            this.profileService.createProfilePa(profile).subscribe(() => {
-              this.changeExpand();
-              this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
-              this.profileService.refreshListProfiles();
-            });
+      if (result) {
+        const createNoticeData = {} as PastisDialogDataCreate;
+        createNoticeData.titleDialog = this.popupSaveCreateNoticeTitleDialog;
+        createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
+        createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
+        createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
+        createNoticeData.profileType = result?.profileType;
+        createNoticeData.profileVersion = result?.profileVersion;
+        const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
+          width: '800px',
+          panelClass: 'pastis-popup-modal-box',
+          data: createNoticeData,
+        });
+        const subscription2 = createNoticeDialogRef.afterClosed().subscribe((result) => {
+          let retour;
+          if (result.success) {
+            retour = result.data;
+            if (result.profileType === ProfileType.PUA) {
+              const profileDescription = this.noticeService.puaNotice(retour, result.profileVersion);
+              this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
+                this.changeExpand();
+                this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
+                this.profileService.refreshListProfiles();
+              });
+            } else if (result.profileType === ProfileType.PA) {
+              const profile: Profile = this.noticeService.paNotice(retour, result.profileVersion, true);
+              // STEP 1 : Create Notice
+              this.profileService.createProfilePa(profile).subscribe(() => {
+                this.changeExpand();
+                this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
+                this.profileService.refreshListProfiles();
+              });
+            }
           }
-        }
-      });
-      this.subscriptions.add(subscription2);
+        });
+        this.subscriptions.add(subscription2);
+      }
     });
     this.subscriptions.add(subscription1);
     this.loaderService.stop();
