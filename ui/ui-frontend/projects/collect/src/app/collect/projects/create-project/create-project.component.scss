@@ -207,9 +207,6 @@
       font-size: medium;
       color: var(--vitamui-primary);
       cursor: pointer;
-      button {
-        margin: -5px;
-      }
     }
   }
 
@@ -222,19 +219,12 @@
       label {
         color: var(--vitamui-primary);
         font-size: 14px;
-        font-weight: 600;
         display: block;
-        margin-bottom: 5px;
       }
 
       &.delete-button {
         padding: 15px 0 15px 20px;
       }
-    }
-
-    .filing-plan-section label {
-      display: block;
-      margin-bottom: 5px;
     }
   }
 }

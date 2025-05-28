@@ -45,12 +45,12 @@ import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
 import {
   FilingPlanMode,
   FlowType,
-  IOntology,
+  SchemaElement,
   Logger,
   MetadataUnitUp,
   MiscValidators,
   oneIncludedNodeRequired,
-  OntologyService,
+  SchemaService,
   Option,
   Project,
   ItemNode,
@@ -97,7 +97,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   hasError = false;
   errorMessage: string;
-  ontologies: ItemNode<IOntology>[];
+  schemaOptions: ItemNode<SchemaElement>[];
   filesToUpload: File[] = [];
   zipFileStatus$: Observable<ZipFileStatus>;
   dataNodes: Node[];
@@ -138,7 +138,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
     public dialog: MatDialog,
-    private ontologyService: OntologyService,
+    private schemaService: SchemaService,
   ) {}
 
   get linkParentIdControl() {
@@ -147,17 +147,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.initForm();
-    this.ontologyService.getInternalOntologyFieldsList().subscribe((data: IOntology[]) => {
-      this.ontologies = data
-        .sort((a, b) => a.Identifier.localeCompare(b.Identifier))
-        .map(
-          (o) =>
-            ({
-              item: o,
-              children: [],
-            }) as ItemNode<IOntology>,
-        );
-    });
+    this.schemaService
+      .getDescriptiveSchemaTree()
+      .pipe(tap((schema) => (this.schemaOptions = schema)))
+      .subscribe();
   }
 
   ngAfterViewChecked(): void {
@@ -176,7 +169,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.selectedFlowType = value;
   }
 
-  getSchemaElementDisplayValue = (element: IOntology) => `${element?.Identifier}`;
+  getSchemaElementDisplayValue = (element: SchemaElement) =>
+    `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
   prepareRulesAndMoveToNextStep() {
     if (this.selectedFlowType === FlowType.RULES && this.rulesParams.length === 0) {
@@ -295,7 +289,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     return this.rulesParams.controls.map((ruleParamControl: FormControl) => {
       const ruleParam = ruleParamControl.value;
       return {
-        metadataKey: ruleParam.ontology.ApiField,
+        metadataKey: ruleParam.ontologyList.ApiField,
         metadataValue: ruleParam.metadataValue,
         unitUp: ruleParam.unitUp.included[0],
       };
@@ -314,13 +308,22 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     for (const ruleParamForm of this.rulesParams.controls) {
       ruleParamForm.value.opened = false;
     }
+
+    const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
+    const metadataValueGroup = this.formBuilder.group({}, { validators: Validators.required });
+
+    ontologyListControl.valueChanges.subscribe((schemaElement) => {
+      metadataValueGroup.addControl(schemaElement?.Path, this.formBuilder.control(undefined));
+    });
+
     // rulesParams interface:
     const newRuleParamForm = this.formBuilder.group({
       opened: [true],
-      ontology: ['', Validators.required],
-      metadataValue: ['', Validators.required],
+      ontologyList: ontologyListControl,
+      metadataValue: metadataValueGroup,
       unitUp: [{ included: [], excluded: [] }, oneIncludedNodeRequired()],
     });
+
     this.rulesParams.push(newRuleParamForm);
   }
 
@@ -427,6 +430,14 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
     const foundNode = this.findNode(this.dataNodes, vitamId);
     return ' : ' + foundNode?.label || '';
+  }
+
+  getName(item: SchemaElement): string {
+    const path = item.Path.split('.').slice(0, -1);
+    const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
+      children: this.schemaOptions,
+    } as ItemNode<SchemaElement>);
+    return `${item.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
 
   private findNode(nodes: Node[], vitamId: string): Node | null {
