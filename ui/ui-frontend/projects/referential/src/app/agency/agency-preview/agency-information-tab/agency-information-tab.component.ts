@@ -105,7 +105,7 @@ export class AgencyInformationTabComponent {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
 
-    this.checkUpdateRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_UPDATE_AGENCIES);
+    this.checkUpdateRole = this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_UPDATE_AGENCIES, this.tenantIdentifier);
   }
 
   unchanged(): boolean {

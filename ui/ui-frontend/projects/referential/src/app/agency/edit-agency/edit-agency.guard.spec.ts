@@ -50,7 +50,7 @@ describe('EditAgencyGuard', () => {
   beforeEach(() => {
     // Mocks des services
     mockSecurityService = {
-      hasRole: jasmine.createSpy('hasRole'),
+      hasRole$: jasmine.createSpy('hasRole$'),
     };
     mockTenantSelectionService = {
       getSelectedTenant: jasmine.createSpy('getSelectedTenant').and.returnValue({ identifier: 1 }),
@@ -71,7 +71,7 @@ describe('EditAgencyGuard', () => {
 
   it('should allow access if the user has the required role', (done) => {
     // GIVEN : L'utilisateur a le rôle requis
-    mockSecurityService.hasRole.and.returnValue(of(true));
+    mockSecurityService.hasRole$.and.returnValue(of(true));
 
     // GIVEN: Les paramètres de route et les mocks renvoyant "true" pour le rôle
     const route: any = {
@@ -88,7 +88,7 @@ describe('EditAgencyGuard', () => {
       // THEN: La guard doit retourner "true" sans redirection
       result$.subscribe((canActivate: boolean) => {
         expect(canActivate).toBeTrue();
-        expect(mockSecurityService.hasRole).toHaveBeenCalledWith('AGENCIES_APP', 1, 'ROLE_UPDATE_AGENCIES');
+        expect(mockSecurityService.hasRole$).toHaveBeenCalledWith('AGENCIES_APP', 'ROLE_UPDATE_AGENCIES', 1);
         expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
         done();
       });
@@ -97,7 +97,7 @@ describe('EditAgencyGuard', () => {
 
   it('should redirect if the user does not have the required role', (done) => {
     // GIVEN : L'utilisateur n'a pas le rôle requis
-    mockSecurityService.hasRole.and.returnValue(of(false));
+    mockSecurityService.hasRole$.and.returnValue(of(false));
 
     // Mock des paramètres de route
     const route: any = {

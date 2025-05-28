@@ -37,7 +37,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplicationService, DownloadUtils, GlobalEventService, IngestContract, SecurityService, SidenavPage } from 'vitamui-library';
+import { ApplicationService, DownloadUtils, GlobalEventService, IngestContract, Role, SecurityService, SidenavPage } from 'vitamui-library';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
 import { Observable, Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
@@ -95,7 +95,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     this.hasUpdateIngestRole$ = this.route.params.pipe(
       mergeMap((params) => {
         this.tenantIdentifier = +params.tenantIdentifier;
-        return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_INGEST_CONTRACTS');
+        return this.securityService.hasRole$(this.appName, Role.ROLE_UPDATE_INGEST_CONTRACTS, this.tenantIdentifier);
       }),
     );
 

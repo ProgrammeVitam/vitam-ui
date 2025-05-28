@@ -117,10 +117,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       .subscribe((s) => (this.search = s));
 
     zip(
-      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_CREATE_AGENCIES),
-      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_IMPORT_AGENCIES),
-      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_EXPORT_AGENCIES),
-      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_UPDATE_AGENCIES),
+      this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_CREATE_AGENCIES, this.tenantIdentifier),
+      this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_IMPORT_AGENCIES, this.tenantIdentifier),
+      this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_EXPORT_AGENCIES, this.tenantIdentifier),
+      this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_UPDATE_AGENCIES, this.tenantIdentifier),
     ).subscribe((values: [boolean, boolean, boolean, boolean]) => {
       this.hasCreateRole = values[0];
       this.hasImportRole = values[1];

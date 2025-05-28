@@ -49,7 +49,7 @@ describe('AgencyInformationTabComponent', () => {
   let fixture: ComponentFixture<AgencyInformationTabComponent>;
 
   const securityServiceMock = {
-    hasRole: () => of(true),
+    hasRole$: () => of(true),
   };
 
   beforeEach(async () => {

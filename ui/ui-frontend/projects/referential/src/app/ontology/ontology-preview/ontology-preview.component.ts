@@ -52,8 +52,6 @@ export class OntologyPreviewComponent implements AfterViewInit {
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
 
-  isPopup: boolean;
-
   @Input()
   inputOntology: Ontology;
   // tab indexes: info = 0; history = 2;

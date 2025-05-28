@@ -226,7 +226,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
   hasArchiveSearchRole(role: string, tenantIdentifier: number): Observable<boolean> {
     const applicationIdentifier = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
-    return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
+    return this.securityService.hasRole$(applicationIdentifier, role, tenantIdentifier);
   }
 
   exportDIPService(exportDIPRequestDto: ExportDIPRequestDto): Observable<string> {

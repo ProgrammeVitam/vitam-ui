@@ -51,7 +51,7 @@ describe('RuleInformationTabComponent', () => {
     getAnyTenantIdentifier: () => '/fake-tenantId',
   };
   const securityServiceMock = {
-    hasRole: () => of(true),
+    hasRole$: () => of(true),
   };
 
   const ruleServiceMock = {

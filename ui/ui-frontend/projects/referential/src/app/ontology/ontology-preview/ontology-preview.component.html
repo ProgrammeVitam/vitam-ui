@@ -8,7 +8,7 @@
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'ONTOLOGY.TAB.INFORMATION.TITLE' | translate">
-      <app-ontology-information-tab [inputOntology]="inputOntology" #infoTab [readOnly]="isPopup" (updated)="updatedChange($event, 0)">
+      <app-ontology-information-tab [inputOntology]="inputOntology" #infoTab (updated)="updatedChange($event, 0)">
       </app-ontology-information-tab>
     </mat-tab>
 

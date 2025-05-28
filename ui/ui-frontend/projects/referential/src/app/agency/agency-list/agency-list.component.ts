@@ -129,7 +129,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
       tap((tenantIdentifier) => {
         this.agencyService.setTenantId(tenantIdentifier);
         this.securityService
-          .hasRole(ApplicationId.AGENCIES_APP, tenantIdentifier, Role.ROLE_CREATE_AGENCIES)
+          .hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_CREATE_AGENCIES, tenantIdentifier)
           .subscribe((value: boolean) => (this.hasDeleteRole = value));
       }),
     );

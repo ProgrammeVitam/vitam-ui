@@ -35,39 +35,42 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AuthService } from '../auth.service';
 import { AuthUser } from '../models/user/auth-user.interface';
+import { TenantSelectionService } from '../tenant-selection.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SecurityService {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private tenantSelectionService: TenantSelectionService,
+  ) {}
 
   /**
    * Returns true if the logged user has any of the specified roles and false otherwise.
    */
-  hasAnyRole(appId: string, tenantIdentifier: number, ...roles: string[]): Observable<boolean> {
+  hasAnyRole(appId: string, tenantIdentifier = this.tenantSelectionService.getSelectedTenant().identifier, ...roles: string[]): boolean {
+    const user = this.authService.user;
+    return this.userHasAnyRole(user, appId, tenantIdentifier, roles);
+  }
+
+  /**
+   * @Deprecated: use hasAnyRole() instead
+   * Returns true if the logged user has any of the specified roles and false otherwise.
+   */
+  hasAnyRole$(
+    appId: string,
+    tenantIdentifier = this.tenantSelectionService.getSelectedTenant().identifier,
+    ...roles: string[]
+  ): Observable<boolean> {
     return this.authService.user$.pipe(
-      switchMap((user: AuthUser) => {
-        if (user?.profileGroup?.profiles) {
-          const appProfiles = user.profileGroup.profiles.filter((profile) => profile.applicationName === appId);
-          const tenantProfiles = appProfiles.filter((profile) => profile.tenantIdentifier === tenantIdentifier);
-          const rolesByTenant = tenantProfiles.map((profile) => profile.roles);
-          // Flatten the rolesByTenant (which is an array of arrays) into a simple list of roles
-          const userRoles: Array<{ name: string }> = [].concat.apply([], rolesByTenant);
-
-          const userRolesNames = userRoles.map((role) => role.name);
-
-          const hasRole = roles.some((r) => userRolesNames.includes(r));
-
-          return of(hasRole);
-        }
-
-        return of(false);
+      map((user: AuthUser) => {
+        return this.userHasAnyRole(user, appId, tenantIdentifier, roles);
       }),
     );
   }
@@ -75,7 +78,30 @@ export class SecurityService {
   /**
    * Returns true if the logged user has the specified role and false otherwise.
    */
-  hasRole(appId: string, tenantIdentifier: number, role: string): Observable<boolean> {
+  hasRole(appId: string, role: string, tenantIdentifier?: number): boolean {
     return this.hasAnyRole(appId, tenantIdentifier, role);
+  }
+
+  /**
+   * @Deprecated: use hasRole() instead
+   * Returns true if the logged user has the specified role and false otherwise.
+   */
+  hasRole$(appId: string, role: string, tenantIdentifier?: number): Observable<boolean> {
+    return this.hasAnyRole$(appId, tenantIdentifier, role);
+  }
+
+  private userHasAnyRole(user: AuthUser, appId: string, tenantIdentifier: number, roles: string[]) {
+    if (user?.profileGroup?.profiles) {
+      const appProfiles = user.profileGroup.profiles.filter((profile) => profile.applicationName === appId);
+      const tenantProfiles = appProfiles.filter((profile) => profile.tenantIdentifier === tenantIdentifier);
+      const rolesByTenant = tenantProfiles.map((profile) => profile.roles);
+      // Flatten the rolesByTenant (which is an array of arrays) into a simple list of roles
+      const userRoles: Array<{ name: string }> = [].concat.apply([], rolesByTenant);
+
+      const userRolesNames = userRoles.map((role) => role.name);
+
+      return roles.some((r) => userRolesNames.includes(r));
+    }
+    return false;
   }
 }

@@ -7,7 +7,6 @@
       class="w-100"
       formControlName="shortName"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate"
-      [disabled]="isInternal"
       [required]="true"
     >
     </vitamui-common-input>
@@ -17,7 +16,6 @@
       formControlName="type"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.TYPE' | translate"
       [options]="types"
-      [disabled]="isInternal"
       [multiple]="false"
       [enableSearch]="false"
     ></vitamui-select>
@@ -28,7 +26,6 @@
       formControlName="stringSize"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.FIELD_SIZE' | translate"
       [options]="sizes"
-      [disabled]="isInternal"
       [multiple]="false"
       [enableSearch]="false"
     ></vitamui-select>
@@ -38,7 +35,6 @@
       formControlName="collections"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.COLLECTION' | translate"
       [options]="collections"
-      [disabled]="isInternal"
       [multiple]="true"
       [enableSearch]="false"
       [enableDisplaySelected]="false"
@@ -48,7 +44,6 @@
     <vitamui-common-textarea
       class="w-100"
       formControlName="description"
-      [disabled]="isInternal"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.DESCRIPTION' | translate"
       [rows]="3"
     >

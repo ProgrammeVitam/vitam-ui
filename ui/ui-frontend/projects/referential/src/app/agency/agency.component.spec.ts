@@ -70,10 +70,6 @@ class AgencyPreviewStub {
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 
-const securityServiceMock = {
-  hasRole: () => of(true),
-};
-
 describe('AgencyComponent', () => {
   let component: AgencyComponent;
   let fixture: ComponentFixture<AgencyComponent>;
@@ -98,7 +94,12 @@ describe('AgencyComponent', () => {
       ],
       providers: [
         { provide: AgencyService, useValue: {} },
-        { provide: SecurityService, useValue: securityServiceMock },
+        {
+          provide: SecurityService,
+          useValue: {
+            hasRole$: () => of(true),
+          },
+        },
         {
           provide: ActivatedRoute,
           useValue: {

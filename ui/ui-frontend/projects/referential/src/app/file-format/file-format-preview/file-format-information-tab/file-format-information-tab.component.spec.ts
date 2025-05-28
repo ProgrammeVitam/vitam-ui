@@ -41,7 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { FileFormat, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { FileFormat, SecurityService, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -97,6 +97,12 @@ describe('FileFormatInformationTabComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },
+        },
+        {
+          provide: SecurityService,
+          useValue: {
+            hasRole$: () => of(true),
+          },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: FileFormatService, useValue: fileFormatServiceMock },

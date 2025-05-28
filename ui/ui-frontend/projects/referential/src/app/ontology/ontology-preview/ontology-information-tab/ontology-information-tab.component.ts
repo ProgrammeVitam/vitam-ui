@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { diff, Ontology, Option, setTypeDetailAndStringSize } from 'vitamui-library';
+import { ApplicationId, diff, Ontology, Option, Role, SecurityService, setTypeDetailAndStringSize } from 'vitamui-library';
 import { OntologyService } from '../../ontology.service';
 import { collections, sizes, types } from '../../ontology-form-options';
 
@@ -48,10 +48,10 @@ import { collections, sizes, types } from '../../ontology-form-options';
   styleUrls: ['./ontology-information-tab.component.scss'],
   standalone: false,
 })
-export class OntologyInformationTabComponent implements OnInit {
+export class OntologyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
-  isInternal = true;
+  disabled = true;
   submitted = false;
   sizeFieldVisible = false;
   types = types;
@@ -62,7 +62,12 @@ export class OntologyInformationTabComponent implements OnInit {
   set inputOntology(ontology: Ontology) {
     this._inputOntology = ontology;
 
-    this.isInternal = ontology.origin === 'INTERNAL';
+    const canUpdateVocabulary = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_UPDATE_ONTOLOGIES);
+    this.disabled = !canUpdateVocabulary || ontology.origin === 'INTERNAL';
+
+    Object.entries(this.form.controls)
+      .filter(([key]) => !['identifier', 'creationDate'].includes(key))
+      .forEach(([_key, control]) => (this.disabled ? control.disable() : control.enable()));
 
     if (!ontology.description) {
       this._inputOntology.description = '';
@@ -72,8 +77,8 @@ export class OntologyInformationTabComponent implements OnInit {
       this._inputOntology.collections = [];
     }
 
-    this.collections = this.isInternal
-      ? // When ontology is internal we cannot modify it, so we can let the values as they are
+    this.collections = this.disabled
+      ? // When ontology is disabled we cannot modify it, so we can let the values as they are
         this._inputOntology.collections.map((collection) => ({ key: collection, label: collection }))
       : collections;
     this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this._inputOntology.type);
@@ -88,26 +93,20 @@ export class OntologyInformationTabComponent implements OnInit {
 
   private _inputOntology: Ontology;
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
-
-  previousValue = (): Ontology => {
-    return this._inputOntology;
+  previousValue = (): any => {
+    return (Object.keys(this.form.controls) as (keyof Ontology)[]).reduce((acc: any, key) => {
+      acc[key] = this._inputOntology[key] || null;
+      return acc;
+    }, {} as Partial<Ontology>);
   };
 
   constructor(
     private formBuilder: FormBuilder,
     private ontologyService: OntologyService,
+    private securityService: SecurityService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [{ disabled: true }, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       shortName: [{ value: null, disabled: true }, Validators.required],
       type: [{ value: null, disabled: true }, Validators.required],
       typeDetail: [{ value: null, disabled: true }],
@@ -118,16 +117,9 @@ export class OntologyInformationTabComponent implements OnInit {
     });
 
     this.form.get('type').valueChanges.subscribe((key) => {
-      if (!this.isInternal) this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
+      if (!this.disabled) this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
       setTypeDetailAndStringSize(key, this.form);
     });
-  }
-
-  ngOnInit(): void {
-    if (this._inputOntology.origin === 'EXTERNAL') {
-      this.form.enable({ emitEvent: false });
-    }
-    this.form.controls.identifier.disable({ emitEvent: true });
   }
 
   unchanged(): boolean {

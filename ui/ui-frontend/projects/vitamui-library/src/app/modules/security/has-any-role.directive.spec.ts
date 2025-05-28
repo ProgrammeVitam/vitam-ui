@@ -40,6 +40,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { AuthService } from '../auth.service';
 import { HasAnyRoleDirective } from './has-any-role.directive';
+import { TenantSelectionService } from '../tenant-selection.service';
 
 const TEST_ELEMENT_ID = 'test';
 
@@ -64,7 +65,15 @@ describe('HasAnyRoleDirective', () => {
     };
     TestBed.configureTestingModule({
       declarations: [TestHostComponent, HasAnyRoleDirective],
-      providers: [{ provide: AuthService, useValue: authStubService }],
+      providers: [
+        { provide: AuthService, useValue: authStubService },
+        {
+          provide: TenantSelectionService,
+          useValue: {
+            getSelectedTenant: () => ({ identifier: 1 }),
+          },
+        },
+      ],
     });
   });
 

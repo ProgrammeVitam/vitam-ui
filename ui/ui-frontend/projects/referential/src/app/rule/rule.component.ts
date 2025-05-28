@@ -115,10 +115,10 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   }
 
   ngOnInit() {
-    this.checkCreateRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_CREATE_RULES);
-    this.checkImportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_IMPORT_RULES);
-    this.checkExportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_EXPORT_RULES);
-    this.checkUpdateRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_UPDATE_RULES);
+    this.checkCreateRole = this.securityService.hasRole$(ApplicationId.RULES_APP, Role.ROLE_CREATE_RULES, this.tenantId);
+    this.checkImportRole = this.securityService.hasRole$(ApplicationId.RULES_APP, Role.ROLE_IMPORT_RULES, this.tenantId);
+    this.checkExportRole = this.securityService.hasRole$(ApplicationId.RULES_APP, Role.ROLE_EXPORT_RULES, this.tenantId);
+    this.checkUpdateRole = this.securityService.hasRole$(ApplicationId.RULES_APP, Role.ROLE_UPDATE_RULES, this.tenantId);
   }
 
   showRule(item: Rule) {
