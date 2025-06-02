@@ -42,30 +42,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize, Observable, throwError } from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
-import {
-  FilingPlanMode,
-  FlowType,
-  SchemaElement,
-  Logger,
-  MetadataUnitUp,
-  MiscValidators,
-  oneIncludedNodeRequired,
-  SchemaService,
-  Option,
-  Project,
-  ItemNode,
-  Node,
-  ProjectStatus,
-  Transaction,
-  TransactionStatus,
-  Workflow,
-  ZipFile,
-  ZipFileStatus,
-} from 'vitamui-library';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { HttpEventType } from '@angular/common/http';
+import {
+  fetchTitle,
+  FilingPlanMode,
+  FilingPlanService,
+  FlowType,
+  ItemNode,
+  Logger,
+  MetadataUnitUp,
+  MiscValidators,
+  oneIncludedNodeRequired,
+  Option,
+  Project,
+  ProjectStatus,
+  SchemaElement,
+  SchemaService,
+  Transaction,
+  TransactionStatus,
+  Unit,
+  Workflow,
+  ZipFile,
+  ZipFileStatus,
+} from 'vitamui-library';
 
 @Component({
   selector: 'app-create-project',
@@ -100,7 +102,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   schemaOptions: ItemNode<SchemaElement>[];
   filesToUpload: File[] = [];
   zipFileStatus$: Observable<ZipFileStatus>;
-  dataNodes: Node[];
+  units: Unit[];
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -139,7 +141,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     private translationService: TranslateService,
     public dialog: MatDialog,
     private schemaService: SchemaService,
-  ) {}
+    filingPlanService: FilingPlanService,
+  ) {
+    filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
+  }
 
   get linkParentIdControl() {
     return this.projectForm.controls.linkParentIdControl as FormControl;
@@ -420,16 +425,12 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  initDataNodes(event: any): void {
-    this.dataNodes = event;
-  }
-
   getNodeTitle(selectedNodes: { included: string[]; excluded: string[] }): string {
     const vitamId = selectedNodes?.included[0];
-    if (!vitamId || !this.dataNodes) return '';
+    if (!vitamId || !this.units) return '';
 
-    const foundNode = this.findNode(this.dataNodes, vitamId);
-    return ' : ' + foundNode?.label || '';
+    const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
+    return foundNode ? ' : ' + fetchTitle(foundNode.Title, foundNode.Title_) : '';
   }
 
   getName(item: SchemaElement): string {
@@ -438,21 +439,5 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       children: this.schemaOptions,
     } as ItemNode<SchemaElement>);
     return `${item.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
-  }
-
-  private findNode(nodes: Node[], vitamId: string): Node | null {
-    for (const node of nodes) {
-      if (node.vitamId === vitamId) {
-        return node;
-      }
-
-      if (node.children?.length) {
-        const found = this.findNode(node.children, vitamId);
-        if (found) {
-          return found;
-        }
-      }
-    }
-    return null;
   }
 }

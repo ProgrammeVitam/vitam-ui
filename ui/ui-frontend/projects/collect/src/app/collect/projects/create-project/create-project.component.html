@@ -284,9 +284,10 @@
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
+              *ngIf="units"
+              [dataSource]="units"
               [formControl]="linkParentIdControl"
               [mode]="FilingPlanMode.SOLO"
-              [tenantIdentifier]="tenantIdentifier"
             >
             </vitamui-library-filing-plan>
           </div>
@@ -380,10 +381,10 @@
                       <div class="col">
                         <label class="medium text bold mb-3">{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
                         <vitamui-library-filing-plan
+                          *ngIf="units"
+                          [dataSource]="units"
                           [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
                           [mode]="FilingPlanMode.SOLO"
-                          [tenantIdentifier]="tenantIdentifier"
-                          (dataNodes)="initDataNodes($event)"
                         >
                         </vitamui-library-filing-plan>
                       </div>
