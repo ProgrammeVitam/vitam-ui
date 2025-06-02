@@ -87,7 +87,11 @@
             >
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
-            <button mat-menu-item (click)="sendTransaction()" [disabled]="!hasSendTransactionRole || (isNotReady$ | async)">
+            <button
+              mat-menu-item
+              (click)="sendTransaction()"
+              [disabled]="!hasSendTransactionRole || (isNotReady$ | async) || (isNotOpen$ | async)"
+            >
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
           </vitamui-common-menu-button>
