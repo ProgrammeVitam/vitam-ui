@@ -2,7 +2,7 @@ def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches
 
 pipeline {
     agent {
-        label 'java11'
+        label 'build'
     }
 
     environment {
@@ -61,7 +61,7 @@ pipeline {
                         env.MVN_GOAL = 'deploy'
                     }
 
-                    env.MVN_COMMAND = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml --show-version --batch-mode --errors -DdeployAtEnd=true"
+                    env.MVN_COMMAND = "mvn --settings ${pwd()}/.ci/settings.xml --show-version --batch-mode --errors -DdeployAtEnd=true"
                     if (env.DO_CHECKS_AND_TESTS == 'false') {
                         // If checks and tests are disabled:
                         // - "-T1C" builds modules in parallel
@@ -88,6 +88,12 @@ pipeline {
                 sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm'
+                nvm('v18.20.3') { // We're installing correct Node version through NVM then update the path to make it available. Do NOT wrap your code in `nvm('...') {}` as it would override the whole PATH and then break tools (jdk, maven) configurations
+                    script {
+                        nvmPath = sh(script: 'dirname $(which node)', returnStdout: true).trim()
+                        env.PATH = "${nvmPath}:${env.PATH}"
+                    }
+                }
             }
         }
 
@@ -105,16 +111,14 @@ pipeline {
                     steps {
                         dir('ui/ui-frontend') {
                             script {
-                                nvm('v18.20.3') {
-                                    sh 'npm ci'
-                                    if (env.DO_CHECKS_AND_TESTS == 'true') {
-                                        sh 'npm run lint'
-                                    }
-                                    sh 'npm run build:vitamui-library'
-                                    sh 'npm run build:allModules'
-                                    if (env.DO_CHECKS_AND_TESTS == 'true') {
-                                        sh 'npm run ci:test'
-                                    }
+                                sh 'npm ci'
+                                if (env.DO_CHECKS_AND_TESTS == 'true') {
+                                    sh 'npm run lint'
+                                }
+                                sh 'npm run build:vitamui-library'
+                                sh 'npm run build:allModules'
+                                if (env.DO_CHECKS_AND_TESTS == 'true') {
+                                    sh 'npm run ci:test'
                                 }
                                 if (env.GOAL == 'publish') {
                                     // If the goal is to publish, we also generate .deb/.rpm
@@ -131,9 +135,7 @@ pipeline {
                     }
                     steps {
                         // TODO: generate .deb/.rpm by running Makefile directly in the Jenkinsfile instead of being run by a maven plugin
-                        nvm('v18.20.3') { // We need node for spotless (when env.DO_CHECKS_AND_TESTS == 'true')
-                            sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
-                        }
+                        sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
                     }
                 }
             }
@@ -157,11 +159,13 @@ pipeline {
                     environment(name: 'GOAL', value: 'publish')
                 }
             }
+            tools {
+                jdk 'java17'
+                maven 'maven-3.9'
+            }
             steps {
                 dir('ui/ui-frontend') {
-                    nvm('v18.20.3') {
-                        sh 'npm run build:pastis-standalone'
-                    }
+                    sh 'npm run build:pastis-standalone'
                 }
                 sh '${MVN_COMMAND} deploy -Pstandalone --projects "api/api-pastis/pastis-standalone" -Dspotless.check.skip=true -Dmaven.test.skip -Dlicense.skip=true'
             }
