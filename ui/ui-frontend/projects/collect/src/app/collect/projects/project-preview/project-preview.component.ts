@@ -130,17 +130,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
-    this.projectId$
-      .pipe(
-        scan((acc, newValue) => (this.isModified() ? acc : newValue), this.projectId$.getValue()), // Keep the old value if we have edited data not yet saved; **isModified()** is true.
-        distinctUntilChanged(), // Avoid calling multiple times with the same value.
-        mergeMap((projectId) => this.projectService.getProjectById(projectId)),
-      )
-      .subscribe((project) => {
-        this.project = project;
-        this.showNormalPanel();
-        this.initForm();
-      });
+    this.loadProject();
 
     this.legalStatusList = this.projectService.getLegalStatusList();
     this.acquisitionInformationsList = this.projectService.getAcquisitionInformationsList();
@@ -157,6 +147,20 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
         }
       });
     }
+  }
+
+  loadProject() {
+    this.projectId$
+      .pipe(
+        scan((acc, newValue) => (this.isModified() ? acc : newValue), this.projectId$.getValue()), // Keep the old value if we have edited data not yet saved; **isModified()** is true.
+        distinctUntilChanged(), // Avoid calling multiple times with the same value.
+        mergeMap((projectId) => this.projectService.getProjectById(projectId)),
+      )
+      .subscribe((project) => {
+        this.project = project;
+        this.showNormalPanel();
+        this.initForm();
+      });
   }
 
   searchArchiveUnitsByProject() {
@@ -318,11 +322,20 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
           });
           this.dialogRefToClose?.close(true);
           this.showNormalPanel();
-          this.project = project;
+          if (this.projectId === project.id) {
+            this.project = project;
+          } else {
+            this.projectId$.next(this.projectId);
+          }
           this.projectService.nextUpdatedProject(project);
         },
         () => {
-          this.project = previousProject;
+          this.projectId$.next(this.projectId);
+          if (this.projectId === previousProject.id) {
+            this.project = previousProject;
+          } else {
+            this.projectId$.next(this.projectId);
+          }
           this.showNormalPanel();
         },
       );
@@ -331,6 +344,9 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   onCancel() {
     this.showNormalPanel();
+    if (this.projectId !== this.project.id) {
+      this.projectId$.next(this.projectId);
+    }
     this.dialogRefToClose?.close(true);
   }
 
