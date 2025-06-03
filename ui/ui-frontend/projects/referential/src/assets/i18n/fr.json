@@ -567,7 +567,34 @@
       }
     },
     "VOCABULARIES": "Vocabulaires",
-    "SCHEMA": "Schéma",
+    "SCHEMA": {
+      "TITLE": "Schéma",
+      "TAB": {
+        "INFORMATION": {
+          "PATH": "Chemin",
+          "API_PATH": "Chemin DSL",
+          "SHORT_NAME": "Nom",
+          "FIELD_NAME": "Identifiant",
+          "SEDA_FIELD": "Nom SEDA",
+          "API_FIELD": "Nom DSL",
+          "DESCRIPTION": "Description",
+          "TYPE": "Mode d’indexation",
+          "TYPE_DETAIL": "Détail de l'indexation",
+          "COLLECTION": "Collection",
+          "ORIGIN": "Statut",
+          "CATEGORY": "Catégorie",
+          "CARDINALITY": "Cardinalité",
+          "SEDA_VERSIONS": "Version du SEDA",
+          "STRING_SIZE": "Taille du champ",
+          "CUSTOM_SEARCH_TYPES": "Type de recherche",
+          "CREATION_DATE": "Date de création",
+          "MODIFICATION_DATE": "Date de mise à jour"
+        },
+        "HISTORY": {
+          "TITLE": "Historique"
+        }
+      }
+    },
     "FILTER": {
       "INTERNAL": "Métadonnées internes",
       "EXTERNAL": "Métadonnées externes"

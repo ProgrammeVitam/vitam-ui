@@ -34,26 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, Ontology } from 'vitamui-library';
+import { ConfirmActionComponent, Ontology, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SchemaInformationTabComponent } from './schema-information-tab/schema-information-tab.component';
 
 @Component({
   selector: 'app-ontology-preview',
   templateUrl: './ontology-preview.component.html',
   styleUrls: ['./ontology-preview.component.scss'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatTabsModule,
+    OntologyInformationTabComponent,
+    ReactiveFormsModule,
+    SchemaInformationTabComponent,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
-export class OntologyPreviewComponent implements AfterViewInit {
+export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
 
+  isPopup: boolean;
+  title: string;
+  identifier: string;
+
   @Input()
-  inputOntology: Ontology;
+  selectedElement: Ontology | SchemaElement;
   // tab indexes: info = 0; history = 2;
   tabUpdated: boolean[] = [false, false];
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
@@ -66,10 +82,11 @@ export class OntologyPreviewComponent implements AfterViewInit {
   }
 
   @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+  beforeunloadHandler(event: BeforeUnloadEvent): string | void {
+    if (this.tabUpdated?.[this.tabs?.selectedIndex] && this.isOntology(this.selectedElement)) {
       event.preventDefault();
       this.checkBeforeExit();
+      event.returnValue = '';
       return '';
     }
   }
@@ -77,10 +94,23 @@ export class OntologyPreviewComponent implements AfterViewInit {
   constructor(
     private matDialog: MatDialog,
     private ontologyService: OntologyService,
+    public schemaService: SchemaService,
   ) {}
 
   ngAfterViewInit() {
     this.tabLinks[0] = this.infoTab;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedElement'] && this.selectedElement) {
+      if (this.isOntology(this.selectedElement)) {
+        this.title = this.selectedElement.shortName;
+        this.identifier = this.selectedElement.identifier;
+      } else {
+        this.title = this.selectedElement.ShortName;
+        this.identifier = this.selectedElement.FieldName;
+      }
+    }
   }
 
   updatedChange(updated: boolean, index: number) {
@@ -92,12 +122,12 @@ export class OntologyPreviewComponent implements AfterViewInit {
       const submitOntologyUpdate: Observable<Ontology> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
       submitOntologyUpdate.subscribe(() => {
-        this.ontologyService.get(this.inputOntology.identifier).subscribe((response) => {
-          this.inputOntology = response;
+        this.ontologyService.get((this.selectedElement as Ontology)?.identifier).subscribe((response) => {
+          this.selectedElement = response;
         });
       });
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputOntology);
+      this.tabLinks[this.tabs.selectedIndex].resetForm(this.selectedElement as Ontology);
     }
   }
 
@@ -118,6 +148,12 @@ export class OntologyPreviewComponent implements AfterViewInit {
 
   emitClose() {
     this.previewClose.emit();
+    this.tabUpdated = [false, false];
     this.ontologyService.selectedId$.next(null);
+    this.schemaService.selectedPath$.next(null);
+  }
+
+  isOntology(item: Ontology | SchemaElement): item is Ontology {
+    return item && 'tenant' in item && 'identifier' in item;
   }
 }

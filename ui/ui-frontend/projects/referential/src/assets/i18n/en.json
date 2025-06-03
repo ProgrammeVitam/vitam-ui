@@ -567,7 +567,34 @@
       }
     },
     "VOCABULARIES": "Vocabulary",
-    "SCHEMA": "Schema",
+    "SCHEMA": {
+      "TITLE": "Schema",
+      "TAB": {
+        "INFORMATION": {
+          "PATH": "Path",
+          "API_PATH": "DSL Path",
+          "SHORT_NAME": "Name",
+          "FIELD_NAME": "Identifier",
+          "SEDA_FIELD": "SEDA Name",
+          "API_FIELD": "DSL Name",
+          "DESCRIPTION": "Description",
+          "TYPE": "Indexing Mode",
+          "TYPE_DETAIL": "Indexing Details",
+          "COLLECTION": "Collection",
+          "ORIGIN": "Status",
+          "CATEGORY": "Category",
+          "CARDINALITY": "Cardinality",
+          "SEDA_VERSIONS": "SEDA Version",
+          "STRING_SIZE": "Field Size",
+          "CUSTOM_SEARCH_TYPES": "Search Type",
+          "CREATION_DATE": "Creation Date",
+          "MODIFICATION_DATE": "Last Updated"
+        },
+        "HISTORY": {
+          "TITLE": "History"
+        }
+      }
+    },
     "FILTER": {
       "INTERNAL": "Internal metadata",
       "EXTERNAL": "External metadata"

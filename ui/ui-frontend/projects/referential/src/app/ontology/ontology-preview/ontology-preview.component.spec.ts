@@ -41,6 +41,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { OntologyService } from '../ontology.service';
 import { OntologyPreviewComponent } from './ontology-preview.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { LogbookService, SchemaService } from 'vitamui-library';
+import { ActivatedRoute } from '@angular/router';
+import { EMPTY } from 'rxjs';
 
 describe('OntologyPreviewComponent', () => {
   let component: OntologyPreviewComponent;
@@ -49,10 +52,12 @@ describe('OntologyPreviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [OntologyPreviewComponent],
       providers: [
+        { provide: LogbookService, useValue: {} },
+        { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: MatDialog, useValue: {} },
         { provide: OntologyService, useValue: {} },
+        { provide: SchemaService, useValue: {} },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

@@ -34,16 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
-import { ApplicationId, FileTypes, GlobalEventService, Ontology, Role, SecurityService, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationId,
+  GlobalEventService,
+  SidenavPage,
+  SecurityService,
+  Role,
+  SchemaService,
+  Ontology,
+  SchemaElement,
+  FileTypes,
+} from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { OntologyCreateComponent } from './ontology-create/ontology-create.component';
 import { OntologyListComponent } from './ontology-group/ontology-list/ontology-list.component';
+import { Subscription } from 'rxjs';
+import { OntologyService } from './ontology.service';
 
 @Component({
   selector: 'app-ontology',
@@ -51,7 +63,9 @@ import { OntologyListComponent } from './ontology-group/ontology-list/ontology-l
   styleUrls: ['./ontology.component.scss'],
   standalone: false,
 })
-export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
+export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
+  private previousTab: string | null = null;
+  private subscription: Subscription;
   @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
   search = '';
   filters: string;
@@ -66,6 +80,8 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     globalEventService: GlobalEventService,
     private translateService: TranslateService,
     private securityService: SecurityService,
+    private ontologyService: OntologyService,
+    private schemaService: SchemaService,
   ) {
     super(route, globalEventService);
   }
@@ -74,6 +90,14 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     this.initializeTenantId();
     this.initializePermissions();
     this.subscribeToTenantChanges();
+
+    this.subscription = this.route.queryParams.subscribe((params) => {
+      const currentTab = params['tab'];
+      if (this.previousTab !== null && this.previousTab !== currentTab) {
+        this.closePanel();
+      }
+      this.previousTab = currentTab;
+    });
   }
 
   private initializeTenantId(): void {
@@ -113,7 +137,8 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     this.search = search || '';
   }
 
-  showOntology(item: Ontology) {
+  showOntology(item: Ontology | SchemaElement) {
+    this.dialog.closeAll();
     this.openPanel(item);
   }
 
@@ -156,6 +181,15 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
       'IMPORT_DIALOG.SCHEMA_FORMAT_CSV',
     );
     this.openImportDialog(params);
+  }
+
+  onClose() {
+    this.ontologyService.selectedId$.next(null);
+    this.schemaService.selectedPath$.next(null);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private openImportDialog(params: ImportDialogParam) {

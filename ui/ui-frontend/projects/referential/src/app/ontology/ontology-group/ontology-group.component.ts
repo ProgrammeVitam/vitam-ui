@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Ontology } from 'vitamui-library';
+import { Ontology, SchemaElement } from 'vitamui-library';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
@@ -54,7 +54,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class OntologyGroupComponent {
   @Input() searchText: string;
-  @Output() ontologyClick = new EventEmitter<Ontology>();
+  @Output() selectElement = new EventEmitter<Ontology | SchemaElement>();
 
   tabIndex = 0;
 
