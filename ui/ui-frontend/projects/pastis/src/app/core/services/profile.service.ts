@@ -296,10 +296,7 @@ export class ProfileService implements OnDestroy {
   }
 
   updateProfilePua(archivalUnitProfile: ArchivalProfileUnit) {
-    const profile: ArchivalProfileUnit = {
-      ...archivalUnitProfile,
-      controlSchema: this.controlSchema.getValue(),
-    };
+    const profile: ArchivalProfileUnit = this.updateControlSchema(archivalUnitProfile);
     return this.puaService.updateProfilePua(profile);
   }
 
