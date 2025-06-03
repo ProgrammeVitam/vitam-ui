@@ -79,18 +79,21 @@ export class FilingPlanService {
     return this.getNestedChildren(units, idPrefix);
   }
 
-  public loadTree(idPrefix: string): Observable<Node[]> {
-    this._pending++;
+  public loadFilingPlan(): Observable<Unit[]> {
     return this.accessContractService.currentAccessContractId$.pipe(
       map((accessContractId) => new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId)),
       switchMap((headers) => this.searchUnitApi.getFilingPlan(headers)),
       catchError(() => of({ $hits: null, $results: [] })),
       map((response) => response.$results),
-      tap(() => this._pending--),
       shareReplay(1),
-      map((results) => {
-        return this.getNestedChildren(results, idPrefix);
-      }),
+    );
+  }
+
+  public loadTree(idPrefix: string): Observable<Node[]> {
+    this._pending++;
+    return this.loadFilingPlan().pipe(
+      map((results) => this.getNestedChildren(results, idPrefix)),
+      tap(() => this._pending--),
     );
   }
 
@@ -149,7 +152,7 @@ function byTitle(locale: string): (a: Node, b: Node) => number {
   };
 }
 
-function fetchTitle(title: string, titleInLanguages: any) {
+export function fetchTitle(title: string, titleInLanguages: any) {
   return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
 }
 

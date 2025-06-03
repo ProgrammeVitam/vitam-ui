@@ -284,9 +284,10 @@
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
+              *ngIf="units"
+              [dataSource]="units"
               [formControl]="linkParentIdControl"
               [mode]="FilingPlanMode.SOLO"
-              [tenantIdentifier]="tenantIdentifier"
             >
             </vitamui-library-filing-plan>
           </div>
@@ -328,13 +329,13 @@
                       ></i>
                     </div>
                     <div class="d-flex align-items-center shrink object-name">
-                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) }}
+                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) + getNodeTitle(ruleParamForm.value.unitUp) }}
                     </div>
                   </div>
                   <div class="d-flex align-items-center split">
                     <div class="d-flex align-items-center shrink object-type"></div>
                     <button
-                      class="delete-button"
+                      class="btn btn-circle outline outline-primary small"
                       (click)="deleteRuleParam(index)"
                       [vitamuiTooltip]="'COLLECT.MODAL.REMOVE_PARAM' | translate"
                     >
@@ -343,56 +344,48 @@
                   </div>
                 </div>
                 <div class="object-details" [hidden]="!ruleParamForm.value.opened">
-                  <div class="object-details-group gap-5 align-items-stretch">
-                    <div class="row">
+                  <div class="object-details-group align-items-stretch">
+                    <div class="row mb-3">
                       <div class="col">
-                        <label>{{ 'COLLECT.MODAL.SELECT_METADATA' | translate }}</label>
-                        <vitamui-select
-                          formControlName="ontology"
-                          [placeholder]="'COLLECT.MODAL.SELECT_THE_METADATA' | translate"
-                          [options]="ontologies"
-                          [multiple]="false"
-                          [enableSearch]="false"
-                        ></vitamui-select>
-                      </div>
-                      <div class="col">
-                        <label>{{ 'COLLECT.MODAL.SET_VALUE' | translate }}</label>
-                        <vitamui-common-input
-                          *ngIf="ruleParamForm.value.ontology.Type !== 'DATE'"
-                          formControlName="metadataValue"
-                          class="col"
-                          placeholder="{{ 'COLLECT.MODAL.VALUE' | translate }}"
-                        >
-                        </vitamui-common-input>
-                        <div
-                          class="vitamui-input"
-                          *ngIf="ruleParamForm.value.ontology.Type === 'DATE'"
-                          (click)="pickerOtherCriteria.open()"
-                        >
-                          <span
-                            *ngIf="!ruleParamForm.value.metadataValue; else showOtherCriteria"
-                            (click)="pickerOtherCriteria.open()"
-                            class="search-date-label"
+                        <label class="medium text bold mb-3">{{ 'COLLECT.MODAL.SELECT_METADATA_LABEL' | translate }}</label>
+                        <div class="hgap-3">
+                          <vitamui-select-with-tree
+                            class="w-50"
+                            formControlName="ontologyList"
+                            [options]="schemaOptions"
+                            [getDisplayValue]="getSchemaElementDisplayValue"
+                            [placeholder]="'COLLECT.MODAL.SELECT_METADATA' | translate"
+                            [searchBarPlaceHolder]="'COLLECT.MODAL.SELECT_METADATA_SEARCH_BAR_PLACE_HOLDER' | translate"
                           >
-                            {{ ruleParamForm.value.metadataValue }}
-                          </span>
-                          <ng-template #showOtherCriteria>
-                            <span (click)="pickerOtherCriteria.open()">
-                              {{ ruleParamForm.value.metadataValue | dateTime: 'dd/MM/yyyy' }}
-                            </span>
-                          </ng-template>
-                          <input class="hidden" size="0" [matDatepicker]="pickerOtherCriteria" formControlName="metadataValue" />
-                          <mat-datepicker #pickerOtherCriteria></mat-datepicker>
+                          </vitamui-select-with-tree>
+
+                          <div class="w-50" formArrayName="metadataValue">
+                            @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(ruleParamForm.value.ontologyList?.Type)) {
+                              <vitamui-common-input
+                                class="w-100"
+                                [placeholder]="getName(ruleParamForm.value.ontologyList)"
+                                [formControlName]="ruleParamForm.value.ontologyList?.Path"
+                              >
+                              </vitamui-common-input>
+                            } @else if (['DATE'].includes(ruleParamForm.value.ontologyList?.Type)) {
+                              <vitamui-common-datepicker
+                                [label]="getName(ruleParamForm.value.ontologyList)"
+                                [formControlName]="ruleParamForm.value.ontologyList?.Path"
+                              ></vitamui-common-datepicker>
+                            }
+                          </div>
                         </div>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="col">
-                        <label>{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
+                        <label class="medium text bold mb-3">{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
                         <vitamui-library-filing-plan
+                          *ngIf="units"
+                          [dataSource]="units"
                           [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
                           [mode]="FilingPlanMode.SOLO"
-                          [tenantIdentifier]="tenantIdentifier"
                         >
                         </vitamui-library-filing-plan>
                       </div>
