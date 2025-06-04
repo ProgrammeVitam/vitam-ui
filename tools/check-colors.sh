@@ -4,7 +4,7 @@ cd `dirname $0`
 cd ..
 
 hexa_color_regex='^(?!\s*(?>\*|\/\/|\/\*)).*\K(?<!&)(#[0-9a-fa-f]{6}|#[0-9a-fa-f]{3}(?![0-9a-fa-f]))(?!.*[{>])' # a hexa code of length 3 or 6, not followed by a "{" or ">" on the same line (to exclude matching of id css selector like "#fac... {}" or template reference like <ng-template #back>) and without being a comment line (starting with "//" or "/*" or " * "). Also, do not match if hexa code is preceded by a "&" to prevent matching html entities (like &#123;)
-rgb_color_regex='rgba?\([\d, \/\.]+\)'
+rgb_color_regex='rgba?\([\d, \/\.%]+\)'
 hsl_color_regex='(?<!new )hsla?\([\d, \/\.\%]+\)' # exclude "new HSL(...)"
 
 find_arguments=(
