@@ -35,16 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MultipleOptionsDatepickerModule, VitamuiRepeatableInputComponent } from 'vitamui-library';
+import { MultipleOptionsDatepickerModule, InputComponent } from 'vitamui-library';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'design-system-repeatable-input',
-  imports: [ReactiveFormsModule, MultipleOptionsDatepickerModule, VitamuiRepeatableInputComponent],
-  templateUrl: './design-system-repeatable-input.component.html',
-  styleUrl: './design-system-repeatable-input.component.scss',
+  selector: 'design-system-input',
+  imports: [ReactiveFormsModule, MultipleOptionsDatepickerModule, InputComponent],
+  templateUrl: './design-system-input.component.html',
+  styleUrl: './design-system-input.component.scss',
 })
-export class DesignSystemRepeatableInputComponent {
+export class DesignSystemInputComponent {
   configs: {
     name: string;
     multiple?: boolean;
@@ -93,7 +93,7 @@ export class DesignSystemRepeatableInputComponent {
         states: [
           { id: 'Default', control: this.createControl() },
           { id: 'Active', control: this.createControl() },
-          { id: 'Disabled', control: this.createControl({ disabled: true }) },
+          { id: 'Disabled', control: this.createControl({ disabled: true, error: true }) },
           { id: 'Error', control: this.createControl({ error: true }) },
         ],
       },
@@ -102,7 +102,7 @@ export class DesignSystemRepeatableInputComponent {
         states: [
           { id: 'Default', control: this.createControl({ value: value }) },
           { id: 'Active', control: this.createControl({ value: value }) },
-          { id: 'Disabled', control: this.createControl({ disabled: true, value: value }) },
+          { id: 'Disabled', control: this.createControl({ disabled: true, error: true, value: value }) },
           { id: 'Error', control: this.createControl({ error: true, value: value }) },
         ],
       },
@@ -110,7 +110,7 @@ export class DesignSystemRepeatableInputComponent {
   }
 
   private createControl(config?: { disabled?: boolean; error?: boolean; value?: any }): FormControl {
-    const validators = config?.error ? [Validators.required, Validators.pattern('.*GB.*')] : [];
+    const validators = config?.error ? [Validators.required, Validators.pattern('.*TextContent.*')] : [];
 
     const fc = new FormControl(null, validators);
     if (config?.disabled) fc.disable();

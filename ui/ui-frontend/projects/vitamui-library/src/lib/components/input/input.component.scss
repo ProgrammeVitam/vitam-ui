@@ -1,6 +1,6 @@
-@use '../../../../sass/mixins/elevation' as elevation;
+@use '../../../sass/mixins/elevation' as elevation;
 
-:host {
+.form-field {
   @include elevation.shadow-accessible;
   cursor: text;
   border-radius: 5px;
@@ -9,11 +9,18 @@
   display: flex;
   flex-direction: column;
 
-  &.disabled {
+  :host.disabled & {
     background-color: var(--vitamui-grey-300);
+
+    label,
+    .required-marker,
+    input,
+    textarea {
+      color: var(--vitamui-grey-700) !important;
+    }
   }
 
-  &.textarea {
+  :host.textarea & {
     .vitamui-input {
       height: 100% !important;
       min-height: 92px !important;
@@ -29,16 +36,16 @@
     }
   }
 
-  &.focused,
+  :host.focused &,
   &:focus-within {
     border: solid 1px var(--vitamui-primary);
     @include elevation.shadow-0;
   }
 
-  //&.ng-invalid.ng-touched {
-  //  border: 1px solid var(--vitamui-red);
-  //  @include elevation.shadow-0;
-  //}
+  :host.ng-invalid.ng-touched & {
+    border: 1px solid var(--vitamui-red);
+    @include elevation.shadow-0;
+  }
 }
 
 input {
@@ -74,8 +81,8 @@ button.remove {
   }
 }
 
-.vitamui-focused .vitamui-input {
-  border: none;
+.vitamui-input {
+  border: none !important;
 }
 
 label {
@@ -94,6 +101,10 @@ label {
   &.first {
     border-top: none;
   }
+}
+
+textarea {
+  padding: 0;
 }
 
 // This is used to automatically grow the textarea height depending on its content

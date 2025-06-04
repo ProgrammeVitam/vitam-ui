@@ -73,7 +73,7 @@ import { PathService } from './services/path.service';
 import { SchemaService } from './services/schema.service';
 import { TemplateService } from './services/template.service';
 import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-header/dialog-header.component';
-import { VitamuiRepeatableInputComponent } from '../components/vitamui-repeatable-input/vitamui-repeatable-input.component';
+import { InputComponent } from '../../../lib/components/input/input.component';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
@@ -100,7 +100,7 @@ import { VitamuiRepeatableInputComponent } from '../components/vitamui-repeatabl
     MatInputModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    VitamuiRepeatableInputComponent,
+    InputComponent,
     MatOptionModule,
     MatSelectModule,
     EditorListInputComponent,

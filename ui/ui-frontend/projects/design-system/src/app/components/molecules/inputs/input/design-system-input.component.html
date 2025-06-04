@@ -1,3 +1,11 @@
+<h2>Input</h2>
+
+<p>This is a form component that allows the user to fill-in one or multiple string values.</p>
+<p>
+  It cans be used for a <strong>single</strong> value or <strong>multiple</strong> values and as an <strong>input</strong> or a
+  <strong>textarea</strong>.
+</p>
+
 @for (config of configs; track config.name) {
   <h3>{{ config.name }}</h3>
   @for (entry of config.entries; track entry.type) {
@@ -6,16 +14,16 @@
         @for (state of entry.states; track state.id) {
           <div class="col">
             <h4>{{ state.id + ' (' + entry.type + ')' }}</h4>
-            <vitamui-common-repeatable-input
+            <vitamui-input
               [class.focused]="state.id === 'Active'"
               [formControl]="state.control"
               placeholder="Input"
               [multiple]="config.multiple"
               [textarea]="config.textarea"
               [errorMessageMap]="{
-                pattern: 'ERRORS.CONTAINS_GB',
+                pattern: 'ERRORS.CONTAINS_TextContent',
               }"
-            ></vitamui-common-repeatable-input>
+            ></vitamui-input>
           </div>
         }
       </div>

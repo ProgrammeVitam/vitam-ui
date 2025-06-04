@@ -36,28 +36,28 @@
  */
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
+import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
-import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
+import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
+import { FormErrorsComponent } from '../form-errors/form-errors.component';
 
-export const REPEATABLE_INPUT_VALUE_ACCESSOR: any = {
+export const INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => VitamuiRepeatableInputComponent),
+  useExisting: forwardRef(() => InputComponent),
   multi: true,
 };
 
 type InternalValue = { id: number; value: string | number | boolean };
 
 @Component({
-  selector: 'vitamui-common-repeatable-input',
-  templateUrl: './vitamui-repeatable-input.component.html',
-  styleUrls: ['./vitamui-repeatable-input.component.scss'],
-  providers: [REPEATABLE_INPUT_VALUE_ACCESSOR],
+  selector: 'vitamui-input',
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss'],
+  providers: [INPUT_VALUE_ACCESSOR],
   imports: [FormsModule, CommonModule, TranslateModule, CommonTooltipModule, FormErrorsComponent],
 })
-export class VitamuiRepeatableInputComponent extends AbstractFormInputDirective {
+export class InputComponent extends AbstractFormInputDirective {
   @Input() placeholder: string;
   @Input() autofocus: boolean;
   @Input()
@@ -65,8 +65,8 @@ export class VitamuiRepeatableInputComponent extends AbstractFormInputDirective 
   @HostBinding('class.textarea')
   @Input()
   textarea = false;
-  @Input() addTooltipKey = 'REPEATABLE_INPUT.ADD_TOOLTIP';
-  @Input() removeTooltipKey = 'REPEATABLE_INPUT.REMOVE_TOOLTIP';
+  @Input() addTooltipKey = 'INPUT.ADD_TOOLTIP';
+  @Input() removeTooltipKey = 'INPUT.REMOVE_TOOLTIP';
 
   items: InternalValue[];
   focused: number;

@@ -4883,7 +4883,7 @@
       "LABEL": "Autres métadonnées"
     }
   },
-  "REPEATABLE_INPUT": {
+  "INPUT": {
     "ADD_TOOLTIP": "Ajouter une valeur",
     "REMOVE_TOOLTIP": "Supprimer la valeur"
   },

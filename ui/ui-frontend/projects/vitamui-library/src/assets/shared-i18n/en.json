@@ -4883,7 +4883,7 @@
       "LABEL": "Other metadata"
     }
   },
-  "REPEATABLE_INPUT": {
+  "INPUT": {
     "ADD_TOOLTIP": "Add a value",
     "REMOVE_TOOLTIP": "Remove a value"
   },

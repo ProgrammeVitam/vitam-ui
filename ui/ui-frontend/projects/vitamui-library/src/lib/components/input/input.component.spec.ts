@@ -41,12 +41,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
-import { input } from '../../../../../testing/src/helpers';
-import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
-import { VitamuiRepeatableInputComponent } from './vitamui-repeatable-input.component';
+import { input } from '../../../../testing/src/helpers';
+import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
+import { InputComponent } from './input.component';
 
-let component: VitamuiRepeatableInputComponent;
-let fixture: ComponentFixture<VitamuiRepeatableInputComponent>;
+let component: InputComponent;
+let fixture: ComponentFixture<InputComponent>;
 
 class TranslateServiceStub {
   onTranslationChange = of({ lang: 'fr', translations: {} });
@@ -66,17 +66,17 @@ function getInputs() {
   return fixture.nativeElement.querySelectorAll('input, textarea');
 }
 
-describe('VitamuiRepeatableInputComponent', () => {
+describe('VitamuiInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, TranslateModule.forRoot(), CommonTooltipModule],
-      declarations: [VitamuiRepeatableInputComponent],
+      declarations: [InputComponent],
       providers: [{ provide: TranslateService, useClass: TranslateServiceStub }],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VitamuiRepeatableInputComponent);
+    fixture = TestBed.createComponent(InputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

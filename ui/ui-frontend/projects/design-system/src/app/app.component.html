@@ -15,7 +15,10 @@
         <mat-accordion>
           @for (route of routes; track route.path) {
             @if (route.path) {
-              <mat-expansion-panel [hideToggle]="!route.children?.length">
+              <mat-expansion-panel
+                [hideToggle]="!route.children?.length"
+                [expanded]="isActive('/' + (parents ? parents.join('/') + '/' : '') + route.path)"
+              >
                 <mat-expansion-panel-header
                   routerLink="/{{ (parents ? parents.join('/') + '/' : '') + route.path }}"
                   routerLinkActive="active"

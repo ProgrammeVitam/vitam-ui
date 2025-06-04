@@ -42,13 +42,14 @@
     editObject?.cardinality.includes('MANY') &&
     ['textfield', 'textarea'].includes(editObject?.displayRule?.ui?.component)
   ) {
-    <vitamui-common-repeatable-input
+    <vitamui-input
+      [multiple]="true"
       [placeholder]="editObject.displayRule.ui.label | translate | empty"
       [required]="editObject.required"
       [textarea]="editObject.displayRule.ui.layout.size === 'large'"
       [formControl]="editObject.control"
     >
-    </vitamui-common-repeatable-input>
+    </vitamui-input>
     <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
   }
 
