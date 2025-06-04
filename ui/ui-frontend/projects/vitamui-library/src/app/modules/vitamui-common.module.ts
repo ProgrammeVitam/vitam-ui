@@ -87,7 +87,6 @@ import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interva
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
 import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vitamui-multi-inputs.module';
-import { VitamuiRepeatableInputModule } from './components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
@@ -113,6 +112,7 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
 import { VitamuiSupHeaderModule } from './components/vitamui-sup-header/vitamui-sup-header.module';
+import { VitamuiRepeatableInputComponent } from './components/vitamui-repeatable-input/vitamui-repeatable-input.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -195,7 +195,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUIListInputModule,
     VitamuiMenuButtonModule,
     VitamuiMultiInputsModule,
-    VitamuiRepeatableInputModule,
+    VitamuiRepeatableInputComponent,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     VitamuiSupHeaderModule,
@@ -263,7 +263,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUIFieldErrorModule,
     VitamUIListInputModule,
     VitamuiMenuButtonModule,
-    VitamuiRepeatableInputModule,
+    VitamuiRepeatableInputComponent,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     VitamuiSupHeaderModule,

@@ -35,48 +35,88 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MultipleOptionsDatepickerModule, VitamuiRepeatableInputModule } from 'vitamui-library';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MultipleOptionsDatepickerModule, VitamuiRepeatableInputComponent } from 'vitamui-library';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'design-system-repeatable-input',
-  imports: [ReactiveFormsModule, MultipleOptionsDatepickerModule, VitamuiRepeatableInputModule],
+  imports: [ReactiveFormsModule, MultipleOptionsDatepickerModule, VitamuiRepeatableInputComponent],
   templateUrl: './design-system-repeatable-input.component.html',
   styleUrl: './design-system-repeatable-input.component.scss',
 })
 export class DesignSystemRepeatableInputComponent {
-  public repeatableEmpty = new FormControl(['']);
-  public repeatableOneValue = new FormControl(['Lorem Ipsum']);
-  public repeatableThreeValues = new FormControl(['Lorem Ipsum', 'Index géographique des archives départementales de la Vendée', 'Affred']);
-  public repeatableDisabled = (() => {
-    const fc = new FormControl(['Lorem Ipsum', 'Index géographique des archives départementales de la Vendée', 'Affred']);
-    fc.disable();
+  configs: {
+    name: string;
+    multiple?: boolean;
+    textarea?: boolean;
+    entries: { type: string; states: { id: string; control: FormControl }[] }[];
+  }[];
+
+  constructor() {
+    this.configs = [
+      {
+        name: 'Simple input',
+        multiple: false,
+        textarea: false,
+        entries: this.getEntries('Test'),
+      },
+      {
+        name: 'Multiple input',
+        multiple: true,
+        textarea: false,
+        entries: this.getEntries(['Test 1', 'Test 2']),
+      },
+      {
+        name: 'Simple textarea',
+        multiple: false,
+        textarea: true,
+        entries: this.getEntries(
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        ),
+      },
+      {
+        name: 'Multiple textarea',
+        multiple: true,
+        textarea: true,
+        entries: this.getEntries([
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+          'Consectetur adipiscing elit, sed do eiusmod ut labore et dolore magna. Ut enim ad minim veniam, quis laboris nisi ut aliquip ex ea commodo consequat. ',
+        ]),
+      },
+    ];
+  }
+
+  private getEntries(value: string | string[]) {
+    return [
+      {
+        type: 'empty',
+        states: [
+          { id: 'Default', control: this.createControl() },
+          { id: 'Active', control: this.createControl() },
+          { id: 'Disabled', control: this.createControl({ disabled: true }) },
+          { id: 'Error', control: this.createControl({ error: true }) },
+        ],
+      },
+      {
+        type: 'full',
+        states: [
+          { id: 'Default', control: this.createControl({ value: value }) },
+          { id: 'Active', control: this.createControl({ value: value }) },
+          { id: 'Disabled', control: this.createControl({ disabled: true, value: value }) },
+          { id: 'Error', control: this.createControl({ error: true, value: value }) },
+        ],
+      },
+    ];
+  }
+
+  private createControl(config?: { disabled?: boolean; error?: boolean; value?: any }): FormControl {
+    const validators = config?.error ? [Validators.required, Validators.pattern('.*GB.*')] : [];
+
+    const fc = new FormControl(null, validators);
+    if (config?.disabled) fc.disable();
+    if (config?.error) fc.markAsTouched();
+    if (config?.value) fc.setValue(config.value);
+
     return fc;
-  })();
-  public repeatableTextareaEmpty = new FormControl(['']);
-  public repeatableTextareaOneValue = new FormControl([
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  ]);
-  public repeatableTextareaTwoValues = new FormControl([
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    'Consectetur adipiscing elit, sed do eiusmod ut labore et dolore magna. Ut enim ad minim veniam, quis laboris nisi ut aliquip ex ea commodo consequat. ',
-  ]);
-  public repeatableTextareaDisabled = (() => {
-    const fc = new FormControl([
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      'Consectetur adipiscing elit, sed do eiusmod ut labore et dolore magna. Ut enim ad minim veniam, quis laboris nisi ut aliquip ex ea commodo consequat. ',
-    ]);
-    fc.disable();
-    return fc;
-  })();
-  public repeatableEmptyAndRequired = (() => {
-    const fc = new FormControl([]);
-    fc.markAsTouched();
-    return fc;
-  })();
-  public repeatableRequired = (() => {
-    const fc = new FormControl(['Lorem Ipsum']);
-    fc.markAsTouched();
-    return fc;
-  })();
+  }
 }

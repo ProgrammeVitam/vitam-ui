@@ -166,7 +166,6 @@ export * from './app/modules/components/vitamui-interval-date-picker/vitamui-int
 export * from './app/modules/components/vitamui-menu-button/vitamui-menu-button.component';
 export * from './app/modules/components/vitamui-menu-button/vitamui-menu-button.module';
 export * from './app/modules/components/vitamui-repeatable-input/vitamui-repeatable-input.component';
-export * from './app/modules/components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.component';
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.interface';

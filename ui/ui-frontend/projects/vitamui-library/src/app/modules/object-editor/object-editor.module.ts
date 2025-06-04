@@ -48,7 +48,6 @@ import { DatepickerModule } from '../components/datepicker/datepicker.module';
 import { VitamUICommonInputModule } from '../components/vitamui-input/vitamui-common-input.module';
 import { VitamUIListInputModule } from '../components/vitamui-list-input';
 import { VitamuiMenuButtonModule } from '../components/vitamui-menu-button/vitamui-menu-button.module';
-import { VitamuiRepeatableInputModule } from '../components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { DisplayObjectService } from '../object-viewer/models';
 import { PathStrategyDisplayObjectService } from '../object-viewer/services/path-strategy-display-object.service';
 import { PipesModule } from '../pipes/pipes.module';
@@ -74,6 +73,7 @@ import { PathService } from './services/path.service';
 import { SchemaService } from './services/schema.service';
 import { TemplateService } from './services/template.service';
 import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-header/dialog-header.component';
+import { VitamuiRepeatableInputComponent } from '../components/vitamui-repeatable-input/vitamui-repeatable-input.component';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
@@ -100,7 +100,7 @@ import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-hea
     MatInputModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    VitamuiRepeatableInputModule,
+    VitamuiRepeatableInputComponent,
     MatOptionModule,
     MatSelectModule,
     EditorListInputComponent,

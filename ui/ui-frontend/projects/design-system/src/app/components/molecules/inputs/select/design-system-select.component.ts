@@ -105,7 +105,7 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
       ];
     });
 
-    this.multiSelectOptions$.pipe(delay(0)).subscribe(() => {
+    this.multiSelectOptions$.pipe(delay(1)).subscribe(() => {
       this.components.forEach((component) => {
         const nativeElement = component.nativeElement as HTMLElement;
         const isActive = nativeElement.getAttribute('data-active') === 'true';

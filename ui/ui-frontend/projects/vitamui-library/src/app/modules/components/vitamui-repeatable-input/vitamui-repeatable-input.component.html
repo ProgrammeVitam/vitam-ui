@@ -31,7 +31,7 @@
       ></textarea>
     </div>
 
-    <div *ngIf="!disabled" [class.hgap-1]="!textarea" [class.gap-1]="textarea">
+    <div *ngIf="!disabled && multiple" [class.hgap-1]="!textarea" [class.gap-1]="textarea">
       <button
         *ngIf="items.length > 1"
         type="button"
@@ -58,3 +58,5 @@
     </div>
   </div>
 </div>
+
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>

@@ -1,91 +1,24 @@
-<h2>Repeatable</h2>
-<div>
-  <div class="row mb-4">
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [formControl]="repeatableEmpty"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
+@for (config of configs; track config.name) {
+  <h3>{{ config.name }}</h3>
+  @for (entry of config.entries; track entry.type) {
+    <div class="container-fluid p-0">
+      <div class="row">
+        @for (state of entry.states; track state.id) {
+          <div class="col">
+            <h4>{{ state.id + ' (' + entry.type + ')' }}</h4>
+            <vitamui-common-repeatable-input
+              [class.focused]="state.id === 'Active'"
+              [formControl]="state.control"
+              placeholder="Input"
+              [multiple]="config.multiple"
+              [textarea]="config.textarea"
+              [errorMessageMap]="{
+                pattern: 'ERRORS.CONTAINS_GB',
+              }"
+            ></vitamui-common-repeatable-input>
+          </div>
+        }
+      </div>
     </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [formControl]="repeatableOneValue"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [formControl]="repeatableThreeValues"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [formControl]="repeatableDisabled"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
-    </div>
-  </div>
-  <div class="row mb-4">
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [required]="true"
-        [formControl]="repeatableEmptyAndRequired"
-        [placeholder]="'Input obligatoire sans valeur'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [required]="true"
-        [formControl]="repeatableRequired"
-        [placeholder]="'Input obligatoire avec valeur'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [textarea]="true"
-        [required]="true"
-        [formControl]="repeatableEmptyAndRequired"
-        [placeholder]="'Textarea obligatoire sans valeur'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [textarea]="true"
-        [required]="true"
-        [formControl]="repeatableTextareaOneValue"
-        [placeholder]="'Textarea obligatoire avec valeur'"
-      ></vitamui-common-repeatable-input>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [textarea]="true"
-        [formControl]="repeatableTextareaEmpty"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [textarea]="true"
-        [formControl]="repeatableTextareaOneValue"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [textarea]="true"
-        [formControl]="repeatableTextareaTwoValues"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
-    </div>
-    <div class="col-3">
-      <vitamui-common-repeatable-input
-        [textarea]="true"
-        [formControl]="repeatableTextareaDisabled"
-        [placeholder]="'Couverture juridictionnelle'"
-      ></vitamui-common-repeatable-input>
-    </div>
-  </div>
-</div>
+  }
+}

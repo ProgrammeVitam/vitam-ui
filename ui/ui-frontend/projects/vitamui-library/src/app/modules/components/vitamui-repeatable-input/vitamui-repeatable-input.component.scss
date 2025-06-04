@@ -29,15 +29,16 @@
     }
   }
 
+  &.focused,
   &:focus-within {
     border: solid 1px var(--vitamui-primary);
     @include elevation.shadow-0;
   }
 
-  &.ng-invalid.ng-touched {
-    border: 1px solid var(--vitamui-red);
-    @include elevation.shadow-0;
-  }
+  //&.ng-invalid.ng-touched {
+  //  border: 1px solid var(--vitamui-red);
+  //  @include elevation.shadow-0;
+  //}
 }
 
 input {
