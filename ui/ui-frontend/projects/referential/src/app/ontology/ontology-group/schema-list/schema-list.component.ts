@@ -46,6 +46,7 @@ import {
   SchemaService,
   TableFilterModule,
   TenantSelectionService,
+  ClickOutsideDirective,
 } from 'vitamui-library';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -68,6 +69,7 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
     MatButtonModule,
     MatProgressSpinnerModule,
     CommonTooltipModule,
+    ClickOutsideDirective,
   ],
   selector: 'app-schema-list',
   templateUrl: './schema-list.component.html',
@@ -75,6 +77,7 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
 })
 export class SchemaListComponent implements OnInit, OnDestroy {
   private _searchText: string;
+  private lastSelectedPath: string = '';
   @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
@@ -243,7 +246,12 @@ export class SchemaListComponent implements OnInit, OnDestroy {
 
   selectLine(schema: SchemaElement) {
     if (schema?.id === 'VIRTUAL_ROOT_NODES') return;
+    this.lastSelectedPath = schema?.Path;
     this.schemaService.selectedPath$.next(schema?.Path);
     this.schemaClick.emit(schema);
+  }
+
+  onClickOutsideTable(): void {
+    this.schemaService.selectedPath$.next(this.lastSelectedPath);
   }
 }
