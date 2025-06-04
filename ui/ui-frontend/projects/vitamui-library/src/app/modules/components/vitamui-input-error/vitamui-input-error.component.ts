@@ -34,31 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { VitamUICommonInputModule } from '../vitamui-input/vitamui-common-input.module';
+import { Component, HostBinding } from '@angular/core';
+import { slideDownAnimation } from '../../animations/vitamui-common-animations';
 
 @Component({
-  selector: 'vitamui-form-error-display',
-  template: `
-    @for (errorKey of errorKeys; track errorKey) {
-      <vitamui-common-input-error>
-        <i class="vitamui-icon vitamui-icon-anomalie mr-1"></i>
-        <span>{{ 'ERRORS.' + errorKey | translate: getErrorParams(errorKey) }}</span>
-      </vitamui-common-input-error>
-    }
-  `,
-  imports: [TranslatePipe, VitamUICommonInputModule],
+  selector: 'vitamui-common-input-error',
+  template: `<ng-content></ng-content>`,
+  styleUrls: ['./vitamui-input-error.component.scss'],
+  animations: [slideDownAnimation],
 })
-export class FormErrorDisplayComponent {
-  @Input() control: AbstractControl;
-
-  get errorKeys(): string[] {
-    return this.control ? Object.keys(this.control.errors || {}) : [];
-  }
-
-  getErrorParams(errorKey: string): any {
-    return this.control.errors[errorKey];
-  }
+export class VitamUIInputErrorComponent {
+  @HostBinding('@slideDownAnimation') slideDownAnimation = true;
 }

@@ -2,7 +2,7 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-dialog-content class="gap-3 align-items-stretch">
-    <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-common-input>
+    <vitamui-input formControlName="name" [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-input>
 
     <vitamui-select
       formControlName="identifier"

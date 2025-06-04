@@ -77,8 +77,12 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      shortName: [null, Validators.required],
-      identifier: [null, [Validators.required, this.ontologyCreateValidator.patternID()], this.ontologyCreateValidator.uniqueID()],
+      identifier: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.ontologyCreateValidator.patternID()],
+        this.ontologyCreateValidator.uniqueID(),
+      ],
+      shortName: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       type: [null, Validators.required],
       typeDetail: [null],
       stringSize: [null],

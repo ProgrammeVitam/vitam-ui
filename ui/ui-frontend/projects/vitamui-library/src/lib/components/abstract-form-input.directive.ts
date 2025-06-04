@@ -50,6 +50,7 @@ import {
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { MiscValidators } from '../validators/misc.validators';
 
 @Directive()
 export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
@@ -139,6 +140,10 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   }
 
   writeValue(_obj: any) {}
+
+  isRequired(): boolean {
+    return this.control.hasValidator(Validators.required) || this.control.hasValidator(MiscValidators.requiredNotBlank);
+  }
 
   private updateValidators() {
     if (this.required) this.control.addValidators(Validators.required);

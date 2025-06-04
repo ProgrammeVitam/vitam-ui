@@ -15,38 +15,20 @@
   </div>
 
   <div class="d-flex flex-column">
-    <vitamui-common-input
+    <vitamui-input
       class="pb-2"
       formControlName="portalTitle"
-      required
-      placeholder="{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate}} {{index}}"
+      [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate) + ' ' + index"
     >
-      <vitamui-common-input-error
-        *ngIf="
-            form.get('portalTitle')?.touched &&
-            !!form.get('portalTitle')?.errors?.required
-          "
-      >
-        {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-input>
+    </vitamui-input>
 
-    <vitamui-common-textarea
+    <vitamui-input
+      [textarea]="true"
       class="pb-2"
       formControlName="portalMessage"
-      required
-      placeholder="{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate}} {{index}}"
-      [maxlength]="500"
+      [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate) + ' ' + index"
     >
-      <vitamui-common-input-error
-        *ngIf="
-        form.get('portalMessage')?.touched &&
-        !!form.get('portalMessage')?.errors?.required
-      "
-      >
-        {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-textarea>
+    </vitamui-input>
     <small class="d-flex justify-content-end"
       >{{ form.get("portalMessage")?.value?.length }} {{ "CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH" | translate }}</small
     >

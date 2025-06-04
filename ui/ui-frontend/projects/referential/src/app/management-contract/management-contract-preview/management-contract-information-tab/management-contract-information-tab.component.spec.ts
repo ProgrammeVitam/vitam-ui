@@ -44,10 +44,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
+import { InputStubComponent, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
 describe('ManagementContractInformationTabComponent', () => {
   let component: ManagementContractInformationTabComponent;
@@ -187,15 +188,17 @@ describe('ManagementContractInformationTabComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 1 vitamui common textarea', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementVitamTextArea = nativeElement.querySelectorAll('vitamui-common-textarea');
+    it('should have 1 vitamui input [textarea]=true', () => {
+      const elementVitamTextArea = fixture.debugElement
+        .queryAll(By.directive(InputStubComponent))
+        .filter((input) => input.componentInstance.textarea);
       expect(elementVitamTextArea.length).toBe(1);
     });
 
-    it('should have 2 vitamui common input', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementVitamUiInput = nativeElement.querySelectorAll('vitamui-common-input');
+    it('should have 2 vitamui input [textarea]=false', () => {
+      const elementVitamUiInput = fixture.debugElement
+        .queryAll(By.directive(InputStubComponent))
+        .filter((input) => !input.componentInstance.textarea);
       expect(elementVitamUiInput.length).toBe(2);
     });
   });

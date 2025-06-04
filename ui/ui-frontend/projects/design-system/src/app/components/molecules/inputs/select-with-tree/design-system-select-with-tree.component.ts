@@ -128,7 +128,9 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
             }
           },
         ]
-      : [];
+      : config?.disabled
+        ? [Validators.required]
+        : [];
 
     const fc = new FormControl(null, validators);
     if (config?.disabled) fc.disable();

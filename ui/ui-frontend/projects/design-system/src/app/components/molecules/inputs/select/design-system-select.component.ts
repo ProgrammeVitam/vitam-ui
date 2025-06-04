@@ -105,7 +105,7 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
       ];
     });
 
-    this.multiSelectOptions$.pipe(delay(0)).subscribe(() => {
+    this.multiSelectOptions$.pipe(delay(1)).subscribe(() => {
       this.components.forEach((component) => {
         const nativeElement = component.nativeElement as HTMLElement;
         const isActive = nativeElement.getAttribute('data-active') === 'true';
@@ -138,7 +138,7 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
   }
 
   private createControl(config?: { disabled?: boolean; error?: boolean; value?: any }): FormControl {
-    const validators = config?.error ? [Validators.required, Validators.pattern('.*GB.*')] : [];
+    const validators = config?.error || config?.disabled ? [Validators.required, Validators.pattern('.*GB.*')] : [];
 
     const fc = new FormControl(null, validators);
     if (config?.disabled) fc.disable();

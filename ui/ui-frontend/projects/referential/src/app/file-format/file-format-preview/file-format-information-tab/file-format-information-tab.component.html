@@ -1,35 +1,30 @@
 <form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
   <div class="gap-3 w-100">
-    <vitamui-common-input class="w-100" formControlName="puid" [placeholder]="puidPlaceholder | translate"> </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="puid" [placeholder]="puidPlaceholder | translate"> </vitamui-input>
 
-    <vitamui-common-input class="w-100" formControlName="name" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.NAME' | translate">
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="name" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
 
-    <vitamui-common-input class="w-100" formControlName="mimeType" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MIME_TYPE' | translate">
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="mimeType" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MIME_TYPE' | translate">
+    </vitamui-input>
 
-    <vitamui-common-input class="w-100" formControlName="version" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION' | translate">
-      <ng-container *ngIf="form.get('version')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="version" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION' | translate">
+    </vitamui-input>
 
-    <vitamui-common-input class="w-100" formControlName="extensions" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.EXTENSION' | translate">
-      <ng-container *ngIf="form.get('extensions')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('extensions')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    <vitamui-input
+      [multiple]="true"
+      class="w-100"
+      formControlName="extensions"
+      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.EXTENSION' | translate"
+    >
+    </vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
+      [multiple]="true"
       *ngIf="isInternal$ | async"
       class="w-100"
       formControlName="hasPriorityOverFileFormatIDs"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
-    ></vitamui-common-input>
+    ></vitamui-input>
 
     <vitamui-select
       [multiple]="true"
@@ -42,24 +37,20 @@
     >
     </vitamui-select>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
       formControlName="createdDate"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.CREATED_DATE' | translate"
-    ></vitamui-common-input>
+    ></vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
       formControlName="updateDate"
       [placeholder]="'FILE_FORMATS.TAB.INFORMATION.MODIFIED_DATE' | translate"
-    ></vitamui-common-input>
+    ></vitamui-input>
 
-    <vitamui-common-input
-      class="w-100"
-      formControlName="versionPronom"
-      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION_PRONOM' | translate"
-    >
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="versionPronom" [placeholder]="'FILE_FORMATS.TAB.INFORMATION.VERSION_PRONOM' | translate">
+    </vitamui-input>
   </div>
 
   <button type="submit" class="btn primary" [disabled]="(canUpdate$ | async) || (submitting$ | async) || unchanged() || form.invalid">

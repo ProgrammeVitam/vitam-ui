@@ -28,14 +28,14 @@
       "TITLE": "Molecules",
       "breadcrumbs.TITLE": "Breadcrumbs",
       "loaders-steppers.TITLE": "Loaders & Steppers",
-      "inputs": {
-        "TITLE": "Inputs",
+      "forms": {
+        "TITLE": "Forms",
         "select.TITLE": "Select",
         "select-with-tree.TITLE": "Select with tree",
         "checkboxes.TITLE": "Checkboxes",
         "multiple-options-datepicker.TITLE": "Multiple options datepicker",
         "old-input.TITLE": "OLD input",
-        "repeatable-input.TITLE": "Repeatable input",
+        "input.TITLE": "Input",
         "search-with-type-selector.TITLE": "Search with type selector"
       }
     },

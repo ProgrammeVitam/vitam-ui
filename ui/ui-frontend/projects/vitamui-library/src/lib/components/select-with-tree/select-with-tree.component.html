@@ -1,5 +1,5 @@
 <mat-form-field class="w-100 p-0" [hideRequiredMarker]="true" appearance="outline" subscriptSizing="dynamic">
-  <mat-label>{{ placeholder }}<span *ngIf="control.hasValidator(Validators.required)" class="text danger bold"> *</span></mat-label>
+  <mat-label>{{ placeholder }}<span *ngIf="isRequired()" class="required-marker"> *</span></mat-label>
   <mat-select
     (closed)="onSelectClosed()"
     (openedChange)="openedChange($event)"

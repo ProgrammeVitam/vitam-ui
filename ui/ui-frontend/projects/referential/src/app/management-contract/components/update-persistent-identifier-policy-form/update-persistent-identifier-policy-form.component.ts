@@ -54,7 +54,11 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
   @Output() objectUsagePolicyAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output() objectUsagePolicyRemoved: EventEmitter<void> = new EventEmitter<void>();
 
-  readonly INVALID_AUTHORITY = ManagementContractValidationErrors.INVALID_AUTHORITY;
+  authorityErrorMap = {
+    [ManagementContractValidationErrors.INVALID_AUTHORITY]: this.translateService.instant(
+      'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_AUTHORITY',
+    ),
+  };
 
   objectUsageOptions: Option[] = [
     {

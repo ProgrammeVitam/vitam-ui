@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -48,6 +48,7 @@ import {
   Direction,
   getProjectIcon,
   getProjectWorkflow,
+  MiscValidators,
   Option,
   PageRequest,
   PaginatedResponse,
@@ -59,7 +60,6 @@ import {
 } from 'vitamui-library';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
-import { MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-preview',
@@ -191,14 +191,14 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   configForm() {
     this.form = this.formBuilder.group({
-      messageIdentifier: [null, [Validators.required]],
+      messageIdentifier: [null, [MiscValidators.requiredNotBlank]],
       id: [null],
       comment: [],
-      originatingAgencyIdentifier: [null, [Validators.required]],
-      submissionAgencyIdentifier: [],
-      archivalAgencyIdentifier: [null, Validators.required],
-      transferringAgencyIdentifier: [null, Validators.required],
-      archivalAgreement: [null, Validators.required],
+      originatingAgencyIdentifier: [null, [MiscValidators.requiredNotBlank]],
+      submissionAgencyIdentifier: [null, [MiscValidators.requiredNotBlank]],
+      archivalAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
+      transferringAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
+      archivalAgreement: [null, MiscValidators.requiredNotBlank],
       archiveProfile: [null],
       acquisitionInformation: [null],
       legalStatus: [null],

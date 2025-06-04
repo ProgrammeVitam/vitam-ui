@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ColorPickerDirective } from 'ngx-color-picker';
-import { hexToRgb, rgbToHsl } from 'vitamui-library';
-import { ColorErrorEnum } from './color-error.enum';
+import { hexToRgb, rgbToHsl, FormControlWarn } from 'vitamui-library';
 
 @Component({
   selector: 'app-input-color',
@@ -56,38 +55,43 @@ export class InputColorComponent implements OnInit {
 
   @ViewChild('colorPickerInput', { read: ColorPickerDirective, static: false })
   private colorPicker: ColorPickerDirective;
-  public colorErrorEnum: typeof ColorErrorEnum = ColorErrorEnum;
-  public colorError: ColorErrorEnum = ColorErrorEnum.NONE;
 
   constructor() {}
 
   public ngOnInit(): void {
     this.color = this.colorInput.value;
+
+    if (this.checkWarning) {
+      this.colorInput.addValidators(this.checkColor500());
+    }
+
     this.colorInput.valueChanges.subscribe((color: string) => {
+      this.colorInput.markAsTouched();
       this.color = color;
-      if (this.checkWarning) {
-        this.checkColor500(color);
-      }
     });
   }
 
-  checkColor500(color: string) {
-    this.colorError = ColorErrorEnum.NONE;
-    const rgbValue = hexToRgb(color);
-    if (rgbValue) {
-      const hslValue = rgbToHsl(rgbValue);
-      if (hslValue) {
-        if (hslValue.l > 60) {
-          this.colorError = ColorErrorEnum.COLOR_TOO_LIGHT;
-        } else if (hslValue.l < 40) {
-          this.colorError = ColorErrorEnum.COLOR_TOO_DARK;
+  private checkColor500(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const color = control.value;
+
+      const warnControl = control as FormControlWarn;
+      warnControl.warnings = {};
+
+      const rgbValue = hexToRgb(color);
+      if (rgbValue) {
+        const hslValue = rgbToHsl(rgbValue);
+        if (hslValue) {
+          if (hslValue.l > 60) {
+            warnControl.warnings = { colorTooLight: true };
+          } else if (hslValue.l < 40) {
+            warnControl.warnings = { colorTooDark: true };
+          }
+          return null;
         }
-      } else {
-        this.colorError = ColorErrorEnum.COLOR_INVALID;
       }
-    } else {
-      this.colorError = ColorErrorEnum.COLOR_INVALID;
-    }
+      return { colorInvalid: true };
+    };
   }
 
   public onPickerOpen(): void {

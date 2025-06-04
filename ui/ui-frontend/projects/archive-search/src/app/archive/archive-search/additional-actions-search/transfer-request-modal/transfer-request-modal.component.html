@@ -21,88 +21,44 @@
     <form [formGroup]="formGroups[0]">
       <mat-dialog-content class="gap-3 align-items-stretch">
         <!-- 1 Contrat d'entrée *    ------------------------->
-        <vitamui-common-input
-          formControlName="archivalAgreement"
-          minlength="2"
-          maxlength="100"
-          required
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGREEMENT' | translate }}"
-        >
-          <vitamui-common-input-error *ngIf="archivalAgreement.touched && archivalAgreement.hasError('required')">
-            {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        <vitamui-input formControlName="archivalAgreement" [placeholder]="'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGREEMENT' | translate">
+        </vitamui-input>
 
         <!-- 2 Identifiant du service producteur *    ------------------------->
-        <vitamui-common-input
+        <vitamui-input
           formControlName="originatingAgencyIdentifier"
-          minlength="2"
-          maxlength="100"
-          required
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.ORIGINATING_AGENCY_IDENTIFIER' | translate }}"
+          [placeholder]="'ARCHIVE_SEARCH.DIP.ORIGINATING_AGENCY_IDENTIFIER' | translate"
         >
-          <vitamui-common-input-error *ngIf="originatingAgencyIdentifier.touched && originatingAgencyIdentifier.hasError('required')">
-            {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        </vitamui-input>
 
         <!-- 3 Identifiant du service d'archives *    ------------------------->
-        <vitamui-common-input
-          formControlName="archivalAgencyIdentifier"
-          minlength="2"
-          maxlength="100"
-          required
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate }}"
-        >
-          <vitamui-common-input-error *ngIf="archivalAgencyIdentifier.touched && archivalAgencyIdentifier.hasError('required')">
-            {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        <vitamui-input formControlName="archivalAgencyIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate">
+        </vitamui-input>
 
         <!-- 4 Identifiant du service responsable du transfert    ------------------------->
-        <vitamui-common-input
-          [required]="false"
-          formControlName="transferringAgency"
-          maxlength="100"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.TRANSFERRING_AGENCY' | translate }}"
-        >
-        </vitamui-common-input>
+        <vitamui-input formControlName="transferringAgency" [placeholder]="'ARCHIVE_SEARCH.DIP.TRANSFERRING_AGENCY' | translate">
+        </vitamui-input>
 
         <!-- 5 Identifiant du service versant    ------------------------->
-        <vitamui-common-input
-          [required]="false"
-          formControlName="submissionAgencyIdentifier"
-          maxlength="100"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID' | translate }}"
-        >
-        </vitamui-common-input>
+        <vitamui-input formControlName="submissionAgencyIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID' | translate">
+        </vitamui-input>
 
         <!-- 6 Référence d'un transfert associé    ------------------------->
-        <vitamui-common-input
-          [required]="false"
+        <vitamui-input
           formControlName="relatedTransferReference"
-          maxlength="100"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.RELATED_TRANSFER_REFERENCE' | translate }}"
+          [placeholder]="'ARCHIVE_SEARCH.DIP.RELATED_TRANSFER_REFERENCE' | translate"
         >
-        </vitamui-common-input>
+        </vitamui-input>
 
         <!-- 7 Identifiant de la réponse à une demande de transfert    ------------------------->
-        <vitamui-common-input
-          [required]="false"
+        <vitamui-input
           formControlName="transferRequestReplyIdentifier"
-          maxlength="100"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_REPLY_IDENTIFIER' | translate }}"
+          [placeholder]="'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_REPLY_IDENTIFIER' | translate"
         >
-        </vitamui-common-input>
+        </vitamui-input>
 
         <!-- 8 Commentaire(s)    ------------------------->
-        <vitamui-common-input
-          [required]="false"
-          formControlName="comment"
-          maxlength="300"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.COMMENT' | translate }}"
-        >
-        </vitamui-common-input>
+        <vitamui-input formControlName="comment" [placeholder]="'ARCHIVE_SEARCH.DIP.COMMENT' | translate"> </vitamui-input>
       </mat-dialog-content>
     </form>
 

@@ -104,7 +104,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
     });
 
     this.form = this.formBuilder.group({
-      unitId: [null, Validators.required],
+      unitId: [null, [Validators.required, Validators.minLength(36), Validators.maxLength(36)]],
       usage: [null, Validators.required],
       version: [null, Validators.required],
       includeDetachedSigningInformation: [false, Validators.required],

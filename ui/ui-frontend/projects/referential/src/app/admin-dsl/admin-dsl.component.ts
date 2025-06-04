@@ -83,7 +83,7 @@ export class AdminDslComponent extends AppRootComponent {
 
     this.form = this.formBuilder.group({
       dslQueryType: [null, Validators.required],
-      id: null,
+      id: [null, [Validators.minLength(36), Validators.maxLength(36)]],
       accessContract: [null, Validators.required],
       dsl: [null, Validators.required],
       response: null,

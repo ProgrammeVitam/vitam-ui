@@ -41,6 +41,9 @@
   </ng-container>
 </mat-autocomplete>
 
-<div class="vitamui-input-errors">
-  <ng-content></ng-content>
-</div>
+<vitamui-form-errors
+  [control]="control"
+  [errorMessageMap]="{
+    match: 'COMMON.INCORRECT_VALUE' | translate,
+  }"
+></vitamui-form-errors>

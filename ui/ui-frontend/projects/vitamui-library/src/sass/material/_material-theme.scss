@@ -92,7 +92,6 @@ $custom-typography: mat.m2-define-typography-config(
       $font-weight: 400,
       $font-size: 14px,
       $line-height: 22px,
-      $letter-spacing: 0.1px,
     ),
   //$body-2: mat.define-typography-level(...), // TODO: define typography
   //$caption: mat.define-typography-level(...), // TODO: define typography
@@ -115,3 +114,9 @@ $custom-theme: mat.m2-define-light-theme(
 
 // In order to have 10px vertical padding on form fields, we need to set the density to -3 (otherwise it's 16px by default)
 @include mat.form-field-density(-3);
+
+:root {
+  body {
+    --mat-sys-primary: var(--vitamui-primary);
+  }
+}

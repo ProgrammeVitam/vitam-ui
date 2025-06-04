@@ -47,7 +47,6 @@ import { CommonProgressBarModule } from '../components/common-progress-bar/commo
 
 import { ConfirmDialogModule } from '../components/confirm-dialog/confirm-dialog.module';
 import { StepperModule } from '../components/stepper/stepper.module';
-import { VitamUICommonInputModule } from '../components/vitamui-input/vitamui-common-input.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
 import { PipesModule } from '../pipes/pipes.module';
 import { NotificationSnackBarComponent } from './notification-snack-bar/notification-snack-bar.component';
@@ -56,6 +55,7 @@ import { SubrogationModalComponent } from './subrogation-modal/subrogation-modal
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
 import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-header/dialog-header.component';
 import { SelectComponent } from '../../../lib/components/select/select.component';
+import { InputComponent } from '../../../lib/components/input/input.component';
 
 @NgModule({
   imports: [
@@ -67,13 +67,13 @@ import { SelectComponent } from '../../../lib/components/select/select.component
     MatSelectModule,
     StepperModule,
     ReactiveFormsModule,
-    VitamUICommonInputModule,
     ConfirmDialogModule,
     CommonProgressBarModule,
     TranslateModule,
     PipesModule,
     DialogHeaderComponent,
     SelectComponent,
+    InputComponent,
   ],
   declarations: [NotificationSnackBarComponent, SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
   exports: [SubrogationBannerComponent],

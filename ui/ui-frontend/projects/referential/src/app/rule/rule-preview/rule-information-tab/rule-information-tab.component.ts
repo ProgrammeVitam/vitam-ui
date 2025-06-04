@@ -101,9 +101,9 @@ export class RuleInformationTabComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
-      ruleValue: [null, Validators.required],
+      ruleValue: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       ruleDescription: [null, Validators.required],
-      ruleDuration: [null, Validators.required],
+      ruleDuration: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('[0-9]*')]],
       ruleMeasurement: [null, Validators.required],
     });
   }

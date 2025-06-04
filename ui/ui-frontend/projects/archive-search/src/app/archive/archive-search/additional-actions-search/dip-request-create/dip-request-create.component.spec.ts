@@ -156,7 +156,7 @@ describe('DipRequestCreateComponent', () => {
 
   describe('DOM', () => {
     it('should have 4 vitamui input', () => {
-      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-input');
+      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-input');
       expect(elementVitamuiInput.length).toBe(4);
     });
 

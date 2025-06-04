@@ -974,8 +974,8 @@
       "ACCESS_CONTRACT": "Access contract",
       "ARCHIVE_UNIT": "Archive unit",
       "TECHNICAL_OBJECT_GROUP": "Technical object group",
-      "IDIENTIFIER_LENGTH_ERROR": "A device identifier must contain {{ length }} characters",
-      "UNKOWN_UNIT": "Unknown unit",
+      "IDENTIFIER_LENGTH_ERROR": "A device identifier must contain {{ length }} characters",
+      "UNKNOWN_UNIT": "Unknown unit",
       "REQUEST": "DSL Request (JSON Format)",
       "REQUEST_RESULT": "DSL request result",
       "VALIDATE_JSON": "Validate JSON"

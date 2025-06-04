@@ -80,8 +80,8 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   ) {
     this.adminProfileForm = this.formBuilder.group({
       enabled: true,
-      name: [null, Validators.required],
-      description: [null, Validators.required],
+      name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      description: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(250)]],
       level: ['', buildValidators(this.authService.user)],
       customerId: [this.authService.user.customerId],
       applicationName: 'USERS_APP',

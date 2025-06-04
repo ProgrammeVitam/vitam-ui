@@ -6,30 +6,17 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
   <mat-dialog-content class="gap-4">
     <div class="w-100 d-flex align-items-center">
-      <vitamui-common-input
+      <vitamui-input
         class="w-100"
         formControlName="ruleId"
-        minlength="2"
-        maxlength="100"
-        required
         [placeholder]="'RULES_APP.CREATE_DIALOG.IDENTIFIER' | translate"
+        [errorMessageMap]="{
+          ruleIdExists: 'RULES_APP.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate,
+          ruleIdPattern: 'RULES_APP.CREATE_DIALOG.IDENTIFIER_NO_COMPLIANT' | translate,
+        }"
       >
-        <ng-container *ngIf="form.get('ruleId')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('ruleId')?.errors?.required">
-            {{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="!!form?.get('ruleId')?.errors?.ruleIdExists">
-            {{ 'RULES_APP.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
-          </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="!!form?.get('ruleId')?.errors?.ruleIdPattern">
-            {{ 'RULES_APP.CREATE_DIALOG.IDENTIFIER_NO_COMPLIANT' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-      <i
-        class="vitamui-icon primary vitamui-icon-info ml-3"
-        vitamuiTooltip="{{ 'RULES_APP.CREATE_DIALOG.IDENTIFIER_TOOLTIP' | translate }}"
-      >
+      </vitamui-input>
+      <i class="vitamui-icon primary vitamui-icon-info ml-3" [vitamuiTooltip]="'RULES_APP.CREATE_DIALOG.IDENTIFIER_TOOLTIP' | translate">
       </i>
     </div>
 
@@ -45,53 +32,26 @@
       <i class="vitamui-icon primary vitamui-icon-info ml-3" vitamuiTooltip="{{ 'RULES_APP.CREATE_DIALOG.TYPE_TOOLTIP' | translate }}"> </i>
     </div>
 
-    <vitamui-common-input
-      class="w-100"
-      formControlName="ruleValue"
-      minlength="2"
-      maxlength="100"
-      required
-      [placeholder]="'RULES_APP.CREATE_DIALOG.NAME' | translate"
-    >
-      <ng-container *ngIf="form.get('ruleValue')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="ruleValue" [placeholder]="'RULES_APP.CREATE_DIALOG.NAME' | translate"> </vitamui-input>
 
-    <vitamui-common-textarea
+    <vitamui-input
+      [textarea]="true"
       formControlName="ruleDescription"
-      required
       class="w-100"
       [placeholder]="'RULES_APP.CREATE_DIALOG.DESCRIPTION' | translate"
-      [rows]="1"
     >
-      <ng-container *ngIf="form.get('ruleDescription')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('ruleDescription')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-textarea>
+    </vitamui-input>
 
     <div class="w-100 hgap-2 align-items-start">
-      <vitamui-common-input
+      <vitamui-input
         class="w-50"
-        required
         formControlName="ruleDuration"
-        pattern="[0-9]*"
-        maxlength="3"
         [placeholder]="'RULES_APP.CREATE_DIALOG.PERIOD' | translate"
+        [errorMessageMap]="{
+          pattern: 'RULES_APP.TAB.ERROR.INTEGER_REQUIRED' | translate,
+        }"
       >
-        <ng-container *ngIf="form.get('ruleDuration')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required">
-            {{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.pattern">
-            {{ 'RULES_APP.TAB.ERROR.INTEGER_REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
+      </vitamui-input>
 
       <vitamui-select
         class="w-50"

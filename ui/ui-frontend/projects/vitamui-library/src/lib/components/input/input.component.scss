@@ -1,6 +1,22 @@
-@use '../../../../sass/mixins/elevation' as elevation;
+@use '../../../sass/mixins/elevation' as elevation;
 
-:host {
+mat-spinner {
+  display: none;
+  position: absolute;
+  right: 15px;
+  top: 18px;
+
+  :host.ng-pending & {
+    display: block;
+  }
+}
+
+:host.ng-pending .vitamui-input {
+  padding-right: 50px;
+}
+
+.form-field {
+  position: relative;
   @include elevation.shadow-accessible;
   cursor: text;
   border-radius: 5px;
@@ -9,11 +25,17 @@
   display: flex;
   flex-direction: column;
 
-  &.disabled {
-    background-color: var(--vitamui-grey-300);
+  :host.disabled & {
+    background-color: var(--vitamui-grey-200);
+
+    label,
+    input,
+    textarea {
+      color: var(--vitamui-grey-700) !important;
+    }
   }
 
-  &.textarea {
+  :host.textarea & {
     .vitamui-input {
       height: 100% !important;
       min-height: 92px !important;
@@ -25,16 +47,17 @@
     }
 
     label {
-      top: 24px;
+      top: 29px;
     }
   }
 
+  :host.focused &,
   &:focus-within {
     border: solid 1px var(--vitamui-primary);
     @include elevation.shadow-0;
   }
 
-  &.ng-invalid.ng-touched {
+  :host.ng-invalid.ng-touched & {
     border: 1px solid var(--vitamui-red);
     @include elevation.shadow-0;
   }
@@ -56,7 +79,7 @@ input {
   border: none;
 
   &.first {
-    height: 60px !important;
+    height: 58px !important; // 60px - (2 x 1px for borders)
   }
 }
 
@@ -73,8 +96,8 @@ button.remove {
   }
 }
 
-.vitamui-focused .vitamui-input {
-  border: none;
+.vitamui-input {
+  border: none !important;
 }
 
 label {
@@ -95,6 +118,10 @@ label {
   }
 }
 
+textarea {
+  padding: 0;
+}
+
 // This is used to automatically grow the textarea height depending on its content
 .grow-wrap {
   /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
@@ -102,7 +129,7 @@ label {
   width: 100%;
 
   .first & {
-    margin-top: 15px;
+    margin-top: 16px;
   }
 
   &::after {

@@ -8,36 +8,17 @@
       [enableSearch]="false"
     ></vitamui-select>
 
-    <vitamui-common-input
-      class="w-100"
-      formControlName="ruleValue"
-      minlength="2"
-      required
-      [placeholder]="'RULES_APP.TAB.INFORMATION.NAME' | translate"
-    >
-      <ng-container *ngIf="form.get('ruleValue')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="ruleValue" [placeholder]="'RULES_APP.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
       formControlName="ruleDuration"
-      pattern="[0-9]*"
-      required
       [placeholder]="'RULES_APP.TAB.INFORMATION.PERIOD' | translate"
+      [errorMessageMap]="{
+        pattern: 'RULES_APP.TAB.ERROR.INTEGER_REQUIRED' | translate,
+      }"
     >
-      <ng-container *ngIf="form.get('ruleDuration')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-        <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.pattern">
-          {{ 'RULES_APP.TAB.ERROR.INTEGER_REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    </vitamui-input>
 
     <vitamui-select
       class="w-100"
@@ -47,19 +28,13 @@
       [enableSearch]="false"
     ></vitamui-select>
 
-    <vitamui-common-textarea
+    <vitamui-input
+      [textarea]="true"
       class="w-100"
-      required
       formControlName="ruleDescription"
       [placeholder]="'RULES_APP.TAB.INFORMATION.DESCRIPTION' | translate"
-      [rows]="2"
     >
-      <ng-container *ngIf="form.get('ruleDescription')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('ruleDescription')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-textarea>
+    </vitamui-input>
   </div>
 
   <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited || (hasUpdateRuleRole$ | async) !== true">

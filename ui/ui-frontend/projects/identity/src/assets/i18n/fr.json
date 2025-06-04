@@ -28,8 +28,6 @@
     "MORE_RESULT": "Afficher plus de résultats...",
     "ERROR": {
       "WRONG_FORMAT": "Format incorrect",
-      "STRING_MAX_LENGTH": "{{ max }} caractères maximum",
-      "STRING_MIN_LENGTH": "{{ min }} caractères minimum",
       "NAME_ALREADY_EXISTS": "Nom déjà existant",
       "REQUIRED": "Champ requis"
     }
@@ -132,10 +130,7 @@
       "DOMAINS": "Domaines",
       "ALERT_ON_INACTIVE_USERS": "Alerte sur les utilisateurs inactifs",
       "ALERT_DURATION_ON_INACTIVE_USERS": {
-        "LABEL": "Durée d'alerte sur les utilisateurs inactifs (mois)",
-        "REQUIRED": "Champ obligatoire et il faut une valeur supérieure à 0",
-        "WRONG_FORMAT": "Format incorrect",
-        "MIN_VALUE": "Il faut une valeur supérieure à 0"
+        "LABEL": "Durée d'alerte sur les utilisateurs inactifs (mois)"
       },
       "CODE_ALREADY_EXIST": "Code déjà existant",
       "PWD_REVOCATION_THREE": "3 mois",
@@ -223,9 +218,8 @@
       "TERTIARY_COLOR_HIDE": "Ne pas afficher la couleur tertiaire",
       "SUBMIT": "Appliquer la charte graphique",
       "INVALID": "Couleur incorrecte",
-      "TOO_LIGHT": "La couleur est trop claire.",
-      "TOO_DARK": "La couleur est trop foncée.",
-      "INCOMPATIBLE": "Cette couleur ne sera pas compatible avec les normes d'accessibilité RGAA."
+      "TOO_LIGHT": "La couleur est trop claire. Cette couleur ne sera pas compatible avec les normes d'accessibilité RGAA.",
+      "TOO_DARK": "La couleur est trop foncée. Cette couleur ne sera pas compatible avec les normes d'accessibilité RGAA."
     },
     "HOMEPAGE_MESSAGE": {
       "LANGUAGE_TITLE": "Titre",

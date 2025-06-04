@@ -235,7 +235,9 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
     }
 
     const isOptionValid = this.isOptionValid(control.value);
-    return isOptionValid ? null : { match: true };
+    const validationErrors = isOptionValid ? null : { match: true };
+    this.control.setErrors(validationErrors);
+    return validationErrors;
   }
 
   private sortedOption(options: Option[]): Option[] {

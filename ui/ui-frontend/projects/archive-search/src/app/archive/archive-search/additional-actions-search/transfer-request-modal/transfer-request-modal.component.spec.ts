@@ -141,7 +141,7 @@ describe('TransferRequestModalComponent tests', () => {
 
   describe('DOM', () => {
     it('should have 8 vitamui input', () => {
-      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-input');
+      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-input');
       expect(elementVitamuiInput.length).toBe(8);
     });
 

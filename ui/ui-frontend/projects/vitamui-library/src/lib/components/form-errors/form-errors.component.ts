@@ -38,6 +38,7 @@ import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateDirective } from '@ngx-translate/core';
+import { FormControlWarn } from './form-control-warn';
 
 @Component({
   selector: 'vitamui-form-errors',
@@ -52,6 +53,10 @@ export class FormErrorsComponent {
    * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
    */
   @Input() errorMessageMap: { [key: string]: string } = {};
+
+  get errors() {
+    return { ...((this.control as FormControlWarn).warnings || {}), ...(this.control.errors || {}) };
+  }
 
   getErrorMessageKey(errorKey: string): string {
     return (this.errorMessageMap && this.errorMessageMap[errorKey]) || 'ERRORS.' + errorKey;

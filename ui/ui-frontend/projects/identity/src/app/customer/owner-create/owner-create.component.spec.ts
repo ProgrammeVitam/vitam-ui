@@ -111,9 +111,7 @@ describe('OwnerCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         MatOptionModule,
-        MatOptionModule,
         MatProgressBarModule,
-        MatSelectModule,
         MatSelectModule,
         NoopAnimationsModule,
         ReactiveFormsModule,

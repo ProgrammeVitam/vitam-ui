@@ -83,8 +83,6 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
 
   @Output() selectedTypeChange = new EventEmitter<SearchType>();
 
-  protected isRequired = false;
-
   @HostBinding('class.vitamui-float')
   get labelFloat() {
     return !!this.control?.value?.value;
@@ -103,7 +101,6 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
   }
 
   afterControlSet() {
-    this.isRequired = this.control.hasValidator(Validators.required);
     if (this._selectedType) this.selectType(this._selectedType);
     this.applyValidatorsToInputValue();
     this.control.valueChanges.subscribe((value: SearchWithTypeSelectorValue) => ((this.control as any).resetValue = { type: value?.type })); // resetValue is a metadata that is used to keep the selected type when we reset the field from a FormFieldValueWrapperComponent

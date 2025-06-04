@@ -182,9 +182,9 @@ describe('ManagementContractStorageTabComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 3 vitamui common input', () => {
+    it('should have 3 vitamui input', () => {
       const nativeElement = fixture.nativeElement;
-      const elementVitamUiInput = nativeElement.querySelectorAll('vitamui-common-input');
+      const elementVitamUiInput = nativeElement.querySelectorAll('vitamui-input');
       expect(elementVitamUiInput.length).toBe(3);
     });
   });

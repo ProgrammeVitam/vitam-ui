@@ -35,44 +35,51 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
+import { FormsModule, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { AbstractFormInputDirective } from '../abstract-form-input.directive';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
+import { FormErrorsComponent } from '../form-errors/form-errors.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-export const REPEATABLE_INPUT_VALUE_ACCESSOR: any = {
+export const INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => VitamuiRepeatableInputComponent),
+  useExisting: forwardRef(() => InputComponent),
   multi: true,
 };
 
 type InternalValue = { id: number; value: string | number | boolean };
 
 @Component({
-  selector: 'vitamui-common-repeatable-input',
-  templateUrl: './vitamui-repeatable-input.component.html',
-  styleUrls: ['./vitamui-repeatable-input.component.scss'],
-  providers: [REPEATABLE_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  selector: 'vitamui-input',
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss'],
+  providers: [INPUT_VALUE_ACCESSOR],
+  imports: [FormsModule, CommonModule, TranslateModule, CommonTooltipModule, FormErrorsComponent, MatProgressSpinner],
 })
-export class VitamuiRepeatableInputComponent extends AbstractFormInputDirective {
+export class InputComponent extends AbstractFormInputDirective {
   @Input() placeholder: string;
   @Input() autofocus: boolean;
+  @Input()
+  multiple = false;
   @HostBinding('class.textarea')
   @Input()
   textarea = false;
-  @Input() addTooltipKey = 'REPEATABLE_INPUT.ADD_TOOLTIP';
-  @Input() removeTooltipKey = 'REPEATABLE_INPUT.REMOVE_TOOLTIP';
+  @Input() addTooltipKey = 'INPUT.ADD_TOOLTIP';
+  @Input() removeTooltipKey = 'INPUT.REMOVE_TOOLTIP';
+  @Input() type: 'text' | 'number' = 'text';
 
-  items: InternalValue[];
+  items: InternalValue[] = [{ id: 0, value: '' }];
   focused: number;
-  @HostBinding('class.disabled') disabled: boolean;
+  @HostBinding('class.disabled') get isDisabled() {
+    return this.control.disabled;
+  }
 
   @HostBinding('class.vitamui-float')
   get labelFloat() {
     return !!this.items && !this.isEmpty(this.items[0]?.value);
   }
-
-  onChange = (_: any) => {};
-  onTouched = () => {};
 
   @HostListener('click', ['$event.target'])
   onClick(target: Element) {
@@ -93,8 +100,11 @@ export class VitamuiRepeatableInputComponent extends AbstractFormInputDirective 
     super(injector);
   }
 
-  writeValue(values: InternalValue['value'][]) {
-    this.items = (values && values.length ? values : ['']).map((v, i) => ({ id: i, value: v.toString() }));
+  writeValue(values?: InternalValue['value'] | InternalValue['value'][]) {
+    this.items = (Array.isArray(values) ? (values && values.length ? values : ['']) : [values || '']).map((v, i) => ({
+      id: i,
+      value: v.toString(),
+    }));
   }
 
   addInput() {
@@ -108,17 +118,9 @@ export class VitamuiRepeatableInputComponent extends AbstractFormInputDirective 
     this.onChange(this.items.map((v) => v.value).filter((v) => !this.isEmpty(v)));
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
   onValueChange(value: string, i: number) {
     this.items[i].value = value;
-    this.onChange(this.items.map((v) => v.value).filter((v) => !!v));
+    this.onChange(this.multiple ? this.items.map((v) => v.value).filter((v) => !!v) : this.items[0].value);
   }
 
   onFocus(i: number) {
@@ -141,10 +143,6 @@ export class VitamuiRepeatableInputComponent extends AbstractFormInputDirective 
 
   trackBy(_: number, item: InternalValue) {
     return item.id;
-  }
-
-  setDisabledState(isDisabled: boolean) {
-    this.disabled = isDisabled;
   }
 
   protected readonly Validators = Validators;

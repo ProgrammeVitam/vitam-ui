@@ -106,7 +106,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
 
   initializeSamlControls() {
     return this.formBuilder.group({
-      keystorePassword: [null, Validators.required],
+      keystorePassword: [null, [Validators.required, Validators.maxLength(50)]],
       authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
       maximumAuthenticationLifetime: [null, Validators.pattern('^[0-9]*$')],
       wantsAssertionsSigned: [true],
@@ -134,7 +134,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       protocoleType: [ProtocoleType.CERTIFICAT, Validators.required],
       customerId: [this.data.customer.id, Validators.required],
       enabled: [true, Validators.required],
-      name: [null, Validators.required],
+      name: [null, [Validators.required, Validators.maxLength(100)]],
       internal: [{ value: false, disabled: true }, Validators.required],
       patterns: [null, Validators.required],
       mailAttribute: [null],

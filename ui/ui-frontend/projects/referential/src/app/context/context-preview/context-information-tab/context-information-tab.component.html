@@ -8,8 +8,16 @@
       {{ 'CONTEXTS_APP.TAB.INFORMATION.TENANT_TOGGLE' | translate }}
     </vitamui-common-slide-toggle>
 
-    <vitamui-common-input class="w-100" formControlName="name" [placeholder]="'CONTEXTS_APP.TAB.INFORMATION.NAME' | translate" disabled>
-    </vitamui-common-input>
+    <vitamui-input
+      class="w-100"
+      formControlName="name"
+      [placeholder]="'CONTEXTS_APP.TAB.INFORMATION.NAME' | translate"
+      [errorMessageMap]="{
+        nameExists: 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.NAME_ALREADY_EXISTS' | translate,
+        incorrectName: 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.INCORRECT_NAME' | translate,
+      }"
+    >
+    </vitamui-input>
 
     <vitamui-select
       formControlName="securityProfile"
@@ -47,7 +55,7 @@
     </vitamui-common-multiple-options-datepicker>
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited">
+  <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submitted">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

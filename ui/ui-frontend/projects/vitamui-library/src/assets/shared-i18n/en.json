@@ -3551,7 +3551,6 @@
       "SUBMISSION_AGENCY_ID": "Submission agency identifier",
       "SUBMISSION_AGENCY_ID_PLACEHOLDER": "Submission agency",
       "SUBMISSION_AGENCY_ID_SEARCHBAR_PLACEHOLDER": "Please select a submission agency identifier",
-      "REQUIRED": "Required field",
       "DIP_EXPORT": "Export a DIP",
       "TRANSFER_REQUEST_TITLE": "Request an archive transfer",
       "DIP_CONTEXT": "Context description",
@@ -4098,9 +4097,7 @@
       "SAVE_DELETE_CRITERIA_LABEL": "Deletion of",
       "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criteria ?",
       "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criteria:",
-      "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE": "You have reached the limit on the number of saved searches. Please delete at least one of your searches from the home page.",
-      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
       "SAVE_REPLACE_CANCEL_BUTTON": "CANCEL",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRM",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save?",
@@ -4686,9 +4683,7 @@
       "SAVE_DELETE_CRITERIA_LABEL": "Deletion of",
       "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criteria ?",
       "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criteria:",
-      "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE": "You have reached the limit on the number of saved searches. Please delete at least one of your searches from the home page.",
-      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
       "SAVE_REPLACE_CANCEL_BUTTON": "CANCEL",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRM",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save?",
@@ -4927,7 +4922,7 @@
       "LABEL": "Other metadata"
     }
   },
-  "REPEATABLE_INPUT": {
+  "INPUT": {
     "ADD_TOOLTIP": "Add a value",
     "REMOVE_TOOLTIP": "Remove a value"
   },
@@ -4938,6 +4933,7 @@
   "ERRORS": {
     "required": "This field is required.",
     "requiredNotBlank": "This field is required.",
+    "min": "Value must be greater than or equal to  {{ min }}.",
     "minlength": "Minimum length is {{ requiredLength }} characters.",
     "maxlength": "Maximum length is {{ requiredLength }} characters.",
     "email": "Invalid email address.",

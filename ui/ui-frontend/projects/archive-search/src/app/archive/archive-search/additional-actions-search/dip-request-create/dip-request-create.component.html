@@ -20,29 +20,10 @@
   <cdk-step>
     <form [formGroup]="formGroups[0]">
       <mat-dialog-content class="gap-4 align-items-stretch">
-        <vitamui-common-input
-          formControlName="messageRequestIdentifier"
-          minlength="2"
-          maxlength="100"
-          required
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.REQUEST_ID' | translate }}"
-        >
-          <vitamui-common-input-error *ngIf="messageRequestIdentifier.touched && messageRequestIdentifier.hasError('required')"
-            >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        <vitamui-input formControlName="messageRequestIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.REQUEST_ID' | translate">
+        </vitamui-input>
 
-        <vitamui-common-input
-          formControlName="requesterIdentifier"
-          minlength="2"
-          maxlength="100"
-          required
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.REQUESTER_ID' | translate }}"
-        >
-          <vitamui-common-input-error *ngIf="requesterIdentifier.touched && requesterIdentifier.hasError('required')"
-            >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        <vitamui-input formControlName="requesterIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.REQUESTER_ID' | translate"> </vitamui-input>
 
         <vitamui-select
           formControlName="archivalAgencyIdentifier"
@@ -51,13 +32,11 @@
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY_SEARCHBAR_PLACEHOLDER' | translate"
         ></vitamui-select>
 
-        <vitamui-common-input
-          [required]="false"
+        <vitamui-input
           formControlName="authorizationRequestReplyIdentifier"
-          maxlength="300"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.AUTHORISATION_REQUEST_REPLY' | translate }}"
+          [placeholder]="'ARCHIVE_SEARCH.DIP.AUTHORISATION_REQUEST_REPLY' | translate"
         >
-        </vitamui-common-input>
+        </vitamui-input>
 
         <vitamui-select
           formControlName="submissionAgencyIdentifier"
@@ -66,13 +45,7 @@
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID_SEARCHBAR_PLACEHOLDER' | translate"
         ></vitamui-select>
 
-        <vitamui-common-input
-          [required]="false"
-          formControlName="comment"
-          maxlength="300"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.COMMENT' | translate }}"
-        >
-        </vitamui-common-input>
+        <vitamui-input formControlName="comment" [placeholder]="'ARCHIVE_SEARCH.DIP.COMMENT' | translate"> </vitamui-input>
       </mat-dialog-content>
     </form>
 

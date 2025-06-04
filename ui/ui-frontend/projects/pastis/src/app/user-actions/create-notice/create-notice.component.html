@@ -4,35 +4,31 @@
   <mat-dialog-content class="gap-3 align-items-stretch">
     <div class="row">
       <div class="col-10 form-control" *ngIf="externalIdentifierEnabled">
-        <vitamui-common-input
+        <vitamui-input
           class="col-9 px-0"
-          placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate }}"
+          [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate"
           formControlName="identifier"
         >
-        </vitamui-common-input>
+        </vitamui-input>
       </div>
     </div>
 
     <div class="row">
       <div class="col-10 form-control">
-        <vitamui-common-input
-          class="col-9 px-0"
-          formControlName="name"
-          placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate }} "
-        >
-        </vitamui-common-input>
+        <vitamui-input class="col-9 px-0" formControlName="name" [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate">
+        </vitamui-input>
       </div>
     </div>
 
     <div class="row">
       <div class="col-10 form-control">
-        <vitamui-common-textarea
+        <vitamui-input
+          [textarea]="true"
           formControlName="description"
-          placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate }} "
-          [rows]="4"
+          [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate"
           style="width: 100%"
         >
-        </vitamui-common-textarea>
+        </vitamui-input>
       </div>
     </div>
 

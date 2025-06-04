@@ -79,11 +79,15 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.form = this.formBuilder.group({
       status: ['INACTIVE'],
-      name: [null, Validators.required, [this.contextCreateValidators.allowedName(), this.contextCreateValidators.uniqueName()]],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.contextCreateValidators.allowedName()],
+        [this.contextCreateValidators.uniqueName()],
+      ],
       identifier: [
         null,
-        Validators.required,
-        [this.contextCreateValidators.allowedIdentifier(), this.contextCreateValidators.uniqueIdentifier()],
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.contextCreateValidators.allowedIdentifier()],
+        this.contextCreateValidators.uniqueIdentifier(),
       ],
       securityProfile: [null, Validators.required],
       enableControl: [false],

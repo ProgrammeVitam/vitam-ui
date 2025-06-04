@@ -137,9 +137,17 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
+      identifier: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        this.accessContractCreateValidators.uniqueIdentifier(),
+      ],
       status: [false],
-      name: [null, [Validators.required], this.accessContractCreateValidators.uniqueName()],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        this.accessContractCreateValidators.uniqueName(),
+      ],
       description: [null],
       accessLog: [false],
       /* <- step 3 -> */

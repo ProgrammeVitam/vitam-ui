@@ -67,10 +67,14 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: [null, MiscValidators.requiredNotBlank, this.groupValidators.nameExists(this.authService.user.customerId)],
+      name: [
+        null,
+        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
+        this.groupValidators.nameExists(this.authService.user.customerId),
+      ],
       enabled: [true],
       level: ['', buildValidators(this.authService.user)],
-      description: [null, MiscValidators.requiredNotBlank],
+      description: [null, [MiscValidators.requiredNotBlank, Validators.minLength(4), Validators.maxLength(100)]],
       profileIds: [null, Validators.required],
       customerId: [this.authService.user.customerId],
       units: [null],

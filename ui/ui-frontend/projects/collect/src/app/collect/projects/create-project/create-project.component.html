@@ -53,21 +53,17 @@
       <mat-dialog-content>
         <div class="gap-3 align-items-stretch">
           <div class="row">
-            <vitamui-common-input
-              class="col"
-              formControlName="messageIdentifier"
-              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate }}"
-              required
-            >
-            </vitamui-common-input>
+            <vitamui-input class="col" formControlName="messageIdentifier" [placeholder]="'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate">
+            </vitamui-input>
           </div>
           <div class="row">
-            <vitamui-common-textarea
+            <vitamui-input
+              [textarea]="true"
               class="col"
               formControlName="comment"
-              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_DESC' | translate }}"
+              [placeholder]="'COLLECT.PROJECT_DESCRIPTION_DESC' | translate"
             >
-            </vitamui-common-textarea>
+            </vitamui-input>
           </div>
 
           <div class="row">
@@ -82,34 +78,24 @@
           </div>
 
           <div class="row">
-            <vitamui-common-input
+            <vitamui-input
               class="col-5"
               formControlName="originatingAgencyIdentifier"
-              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
-              required
+              [placeholder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
             >
-            </vitamui-common-input>
-            <vitamui-common-input
-              [disabled]="true"
-              class="col"
-              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
-            >
-            </vitamui-common-input>
+            </vitamui-input>
+            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate">
+            </vitamui-input>
           </div>
           <div class="row">
-            <vitamui-common-input
+            <vitamui-input
               class="col-5"
               formControlName="submissionAgencyIdentifier"
-              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
-              required
+              [placeholder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
             >
-            </vitamui-common-input>
-            <vitamui-common-input
-              [disabled]="true"
-              class="col"
-              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
-            >
-            </vitamui-common-input>
+            </vitamui-input>
+            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate">
+            </vitamui-input>
           </div>
         </div>
       </mat-dialog-content>
@@ -137,55 +123,44 @@
         </div>
         <div class="gap-3 align-items-stretch">
           <div class="row">
-            <vitamui-common-input
+            <vitamui-input
               class="col-5"
               formControlName="archivalAgencyIdentifier"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-              required
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
             >
-            </vitamui-common-input>
-            <vitamui-common-input [disabled]="true" class="col" placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}">
-            </vitamui-common-input>
+            </vitamui-input>
+            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate">
+            </vitamui-input>
           </div>
           <div class="row">
-            <vitamui-common-input
+            <vitamui-input
               class="col-5"
               formControlName="transferringAgencyIdentifier"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-              required
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
             >
-            </vitamui-common-input>
-            <vitamui-common-input
-              [disabled]="true"
-              class="col"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-            >
-            </vitamui-common-input>
+            </vitamui-input>
+            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate">
+            </vitamui-input>
           </div>
           <div class="row">
-            <vitamui-common-input
+            <vitamui-input
               class="col-5"
               formControlName="archivalAgreement"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
-              required
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
             >
-            </vitamui-common-input>
-            <vitamui-common-input
-              [disabled]="true"
-              class="col"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
-            >
-            </vitamui-common-input>
+            </vitamui-input>
+            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate">
+            </vitamui-input>
           </div>
           <div class="row">
-            <vitamui-common-input
+            <vitamui-input
               class="col-5"
               formControlName="archiveProfile"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
             >
-            </vitamui-common-input>
-            <vitamui-common-input [disabled]="true" class="col" placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}">
-            </vitamui-common-input>
+            </vitamui-input>
+            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate">
+            </vitamui-input>
           </div>
           <vitamui-select
             formControlName="acquisitionInformation"
@@ -361,12 +336,12 @@
 
                           <div class="w-50" formArrayName="metadataValue">
                             @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(ruleParamForm.value.ontologyList?.Type)) {
-                              <vitamui-common-input
+                              <vitamui-input
                                 class="w-100"
                                 [placeholder]="getName(ruleParamForm.value.ontologyList)"
                                 [formControlName]="ruleParamForm.value.ontologyList?.Path"
                               >
-                              </vitamui-common-input>
+                              </vitamui-input>
                             } @else if (['DATE'].includes(ruleParamForm.value.ontologyList?.Type)) {
                               <vitamui-common-datepicker
                                 [label]="getName(ruleParamForm.value.ontologyList)"

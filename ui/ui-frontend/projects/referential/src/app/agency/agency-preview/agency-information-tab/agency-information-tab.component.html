@@ -1,28 +1,23 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="gap-5">
   <div class="gap-3 w-100 align-items-stretch">
-    <vitamui-common-input
+    <vitamui-input
       [disabled]="(checkUpdateRole | async) === false"
       formControlName="name"
       [placeholder]="'AGENCY.TAB.NAME' | translate"
+      [errorMessageMap]="{
+        nameExists: 'AGENCY.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate,
+        onlyWhitespaces: 'AGENCY.CREATE_DIALOG.INVALID_FIELD' | translate,
+      }"
     >
-      <ng-container *ngIf="form.get('name')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    </vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
       [disabled]="(checkUpdateRole | async) === false"
       formControlName="description"
       [placeholder]="'AGENCY.TAB.DESCRIPTION' | translate"
+      [textarea]="true"
     >
-      <ng-container *ngIf="form.get('description')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    </vitamui-input>
   </div>
 
   <button

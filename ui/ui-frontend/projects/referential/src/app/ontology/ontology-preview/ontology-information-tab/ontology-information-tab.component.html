@@ -1,15 +1,9 @@
 <form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
   <div class="gap-3 w-100">
-    <vitamui-common-input class="w-100" formControlName="identifier" [placeholder]="'ONTOLOGY.TAB.INFORMATION.IDENTIFIER' | translate">
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="identifier" [placeholder]="'ONTOLOGY.TAB.INFORMATION.IDENTIFIER' | translate">
+    </vitamui-input>
 
-    <vitamui-common-input
-      class="w-100"
-      formControlName="shortName"
-      [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate"
-      [required]="true"
-    >
-    </vitamui-common-input>
+    <vitamui-input class="w-100" formControlName="shortName" [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
 
     <vitamui-select
       class="w-100"
@@ -41,26 +35,22 @@
       [enableSelectAll]="false"
     ></vitamui-select>
 
-    <vitamui-common-textarea
+    <vitamui-input
+      [textarea]="true"
       class="w-100"
       formControlName="description"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.DESCRIPTION' | translate"
-      [rows]="3"
     >
-      <ng-container *ngIf="form.get('description')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-textarea>
+    </vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
-      [value]="form.get('creationDate').value | dateTime: 'dd/MM/yyyy'"
+      [ngModel]="form.get('creationDate').value | dateTime: 'dd/MM/yyyy'"
+      [ngModelOptions]="{ standalone: true }"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.CREATION_DATE' | translate"
       [disabled]="true"
     >
-    </vitamui-common-input>
+    </vitamui-input>
   </div>
 
   <button type="submit" class="btn primary" [disabled]="unchanged() || form.invalid || submitted">

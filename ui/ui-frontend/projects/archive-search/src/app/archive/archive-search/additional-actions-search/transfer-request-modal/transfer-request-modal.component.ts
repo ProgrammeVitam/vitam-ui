@@ -96,14 +96,14 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   private initForms() {
     this.formGroups = [
       this.fb.group({
-        archivalAgreement: [null, Validators.required],
-        originatingAgencyIdentifier: [null, Validators.required],
-        comment: [null],
-        submissionAgencyIdentifier: [null],
-        relatedTransferReference: [null],
-        transferRequestReplyIdentifier: [null],
-        archivalAgencyIdentifier: [null, Validators.required],
-        transferringAgency: [null],
+        archivalAgreement: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+        originatingAgencyIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+        archivalAgencyIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+        transferringAgency: [null, [Validators.maxLength(100)]],
+        submissionAgencyIdentifier: [null, [Validators.maxLength(100)]],
+        relatedTransferReference: [null, [Validators.maxLength(100)]],
+        transferRequestReplyIdentifier: [null, [Validators.maxLength(100)]],
+        comment: [null, [Validators.maxLength(300)]],
       }),
       this.fb.group({
         includeLifeCycleLogs: [true],

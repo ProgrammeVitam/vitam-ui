@@ -102,19 +102,13 @@ export class ContextCreateValidators {
 
   allowedName = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors => {
-      if (!control.value) {
-        return of({ incorrectName: true });
-      }
-      return control.value.match('^[a-zA-Z0-9+=@_-]*$') ? of(null) : of({ incorrectName: true });
+      return !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectName: true };
     };
   };
 
   allowedIdentifier = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors => {
-      if (!control.value) {
-        return of({ incorrectIdentifier: true });
-      }
-      return control.value.match('^[a-zA-Z0-9+=@_-]*$') ? of(null) : of({ incorrectIdentifier: true });
+      return !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true };
     };
   };
 }

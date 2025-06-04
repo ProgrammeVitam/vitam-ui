@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import {
   AdminUserProfile,
   AuthService,
@@ -56,13 +56,11 @@ import {
 import { GroupSelection } from './../group-selection.interface';
 import { UserInfoService } from './../user-info.service';
 
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { UserService } from '../user.service';
-import { UserValidators } from '../user.validators';
 import { UserCreateValidators } from './user-create.validators';
 
-const emailValidator: RegExp =
-  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+const emailFirstPartValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
 
 @Component({
   selector: 'app-user-create',
@@ -79,7 +77,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   public fullGroup: Group[];
   public groupName: string;
   public connectedUserInfo: AdminUserProfile;
-  public addressEmpty = true;
   public creating = false;
   private keyPressSubscription: Subscription;
   public countries: Option[];
@@ -123,67 +120,83 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     this.customer = this.data.customer;
     this.connectedUserInfo = this.data.userInfo;
 
-    this.formEmail = this.formBuilder.group({
-      emailFirstPart: null,
-      domain: [this.customer.emailDomains[0], Validators.required],
-    });
-
-    this.form = this.formBuilder.group(
+    this.formEmail = this.formBuilder.group(
       {
-        enabled: true,
-        email: [null, [Validators.required, Validators.pattern(emailValidator)], this.userCreateValidators.uniqueEmail()],
-        firstname: [null, Validators.required],
-        lastname: [null, Validators.required],
-        mobile: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-        phone: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-        groupId: [null, Validators.required],
-        customerId: this.authService.user.customerId,
-        otp: [
-          {
-            value: this.customer.otp !== OtpState.DEACTIVATED,
-            disabled: this.customer.otp !== OtpState.OPTIONAL,
-          },
-        ],
-        type: [{ value: 'NOMINATIVE', disabled: !this.connectedUserInfo.genericAllowed }],
-        subrogeable: false,
-        status: null,
-        userInfoId: null,
-        address: this.formBuilder.group({
-          street: [null, Validators.maxLength(this.maxStreetLength)],
-          zipCode: [null],
-          city: [null],
-          country: ['FR'],
-        }),
-        internalCode: [null],
-        siteCode: [null],
-        centerCodes: [null],
-        autoProvisioningEnabled: false,
+        emailFirstPart: [null, [Validators.required, Validators.maxLength(50), Validators.pattern(emailFirstPartValidator)]],
+        domain: [this.customer.emailDomains[0], Validators.required],
       },
-      { validator: UserValidators.missingPhoneNumber },
+      {
+        asyncValidators: () => {
+          const emailFirstPart = this.formEmail.get('emailFirstPart');
+          emailFirstPart.markAsPending();
+          return (this.userCreateValidators.uniqueEmail()(this.form.get('email')) as Observable<ValidationErrors | null>).pipe(
+            tap((validationErrors) => emailFirstPart.setErrors(validationErrors)),
+          );
+        },
+      },
     );
+
+    this.form = this.formBuilder.group({
+      enabled: true,
+      email: [null],
+      firstname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      mobile: [null, [Validators.required, Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
+      phone: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
+      groupId: [null, Validators.required],
+      customerId: this.authService.user.customerId,
+      otp: [
+        {
+          value: this.customer.otp !== OtpState.DEACTIVATED,
+          disabled: this.customer.otp !== OtpState.OPTIONAL,
+        },
+      ],
+      type: [{ value: 'NOMINATIVE', disabled: !this.connectedUserInfo.genericAllowed }],
+      subrogeable: false,
+      status: null,
+      userInfoId: null,
+      address: this.formBuilder.group({
+        street: [null, Validators.maxLength(this.maxStreetLength)],
+        zipCode: [null, [Validators.maxLength(10)]],
+        city: [null, [Validators.maxLength(100)]],
+        country: ['FR'],
+      }),
+      internalCode: [null, [Validators.maxLength(20)]],
+      siteCode: [null],
+      centerCodes: [null],
+      autoProvisioningEnabled: false,
+    });
     this.applyUserProfile();
     this.onChanges();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
-    this.form
-      .get('address')
-      .valueChanges.pipe(
+    const addressControl = this.form.get('address');
+    addressControl.valueChanges
+      .pipe(
         map((value) => !value.street && !value.zipCode && !value.city),
         distinctUntilChanged(),
       )
       .subscribe((addressEmpty) => {
-        this.addressEmpty = addressEmpty;
+        const streetControl = addressControl.get('street');
+        const zipCodeControl = addressControl.get('zipCode');
+        const cityControl = addressControl.get('city');
         if (addressEmpty) {
-          this.form.get('address.street').clearValidators();
-          this.form.get('address.zipCode').clearValidators();
-          this.form.get('address.city').clearValidators();
+          [streetControl, zipCodeControl, cityControl].forEach((control) => control.removeValidators(Validators.required));
         } else {
-          this.form.get('address.street').setValidators(Validators.required);
-          this.form.get('address.zipCode').setValidators(Validators.required);
-          this.form.get('address.city').setValidators(Validators.required);
+          [streetControl, zipCodeControl, cityControl].forEach((control) => control.addValidators(Validators.required));
         }
-        this.form.get('address').updateValueAndValidity({ emitEvent: false });
+        [streetControl, zipCodeControl, cityControl].forEach((control) => control.updateValueAndValidity());
       });
+
+    this.form.get('otp').valueChanges.subscribe((otp) => {
+      const mobileControl = this.form.get('mobile');
+      if (otp) {
+        mobileControl.addValidators(Validators.required);
+      } else {
+        mobileControl.removeValidators(Validators.required);
+      }
+      mobileControl.updateValueAndValidity();
+    });
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
@@ -245,17 +258,17 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   onChanges(): void {
     this.formEmail.valueChanges.subscribe((emailData) => {
-      this.form.patchValue({ email: emailData.emailFirstPart + '@' + emailData.domain });
+      this.form.patchValue({ email: `${emailData.emailFirstPart}@${emailData.domain}` });
     });
   }
 
   firstStepInvalid(): boolean {
     return (
       this.form.pending ||
-      this.form.get('email').invalid ||
-      this.form.get('email').pending ||
       this.form.get('firstname').invalid ||
       this.form.get('lastname').invalid ||
+      this.formEmail.get('emailFirstPart').invalid ||
+      this.formEmail.get('emailFirstPart').pending ||
       this.formEmail.get('domain').invalid ||
       this.form.get('enabled').invalid
     );

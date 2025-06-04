@@ -77,19 +77,7 @@
           </button>
         </div>
 
-        <vitamui-common-input
-          class="col"
-          formControlName="endDate"
-          minlength="2"
-          maxlength="100"
-          placeholder=" {{ 'RULES.APPRAISAL_RULES.END_DATE' | translate }}"
-        >
-          <vitamui-common-input-error
-            *ngIf="ruleDetailsForm?.get('endDate')?.touched && ruleDetailsForm?.get('endDate')?.hasError('required')"
-          >
-            {{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        <vitamui-input class="col" formControlName="endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate"> </vitamui-input>
       </div>
     </div>
 

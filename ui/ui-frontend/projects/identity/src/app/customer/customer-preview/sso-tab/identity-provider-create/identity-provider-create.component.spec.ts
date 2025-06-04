@@ -205,10 +205,10 @@ describe('IdentityProviderCreateComponent', () => {
       expect(elEnabled).toBeTruthy();
       expect(elEnabled.textContent).toContain('CUSTOMER.SSO.ACTIVE_SWITCH');
 
-      const elName = fixture.nativeElement.querySelector('vitamui-common-input[formControlName=name]');
+      const elName = fixture.nativeElement.querySelector('vitamui-input[formControlName=name]');
       expect(elName).toBeTruthy();
 
-      const elKeystorePassword = fixture.nativeElement.querySelector('vitamui-common-input[formControlName=keystorePassword]');
+      const elKeystorePassword = fixture.nativeElement.querySelector('vitamui-input[formControlName=keystorePassword]');
       expect(elKeystorePassword).toBeTruthy();
 
       const elPatterns = fixture.nativeElement.querySelector('app-pattern[formControlName=patterns]');
