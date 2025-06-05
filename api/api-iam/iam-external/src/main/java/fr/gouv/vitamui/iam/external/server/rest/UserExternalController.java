@@ -96,6 +96,7 @@ public class UserExternalController implements CrudController<UserDto> {
         userExternalService = userService;
     }
 
+    @Secured(ServicesData.ROLE_GET_USERS)
     @GetMapping(CommonConstants.PATH_EXPORT)
     public Resource exportUsers(final Optional<String> criteria) {
         LOGGER.debug("Export all users to xlsx file");
