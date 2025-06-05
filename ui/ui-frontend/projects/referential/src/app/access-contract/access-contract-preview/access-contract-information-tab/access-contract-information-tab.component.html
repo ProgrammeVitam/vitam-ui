@@ -4,73 +4,65 @@
       <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVE_CONTRACT' | translate }}</span>
     </vitamui-common-slide-toggle>
 
-    <vitamui-common-input
-      class="w-100"
+    <vitamui-input
       formControlName="name"
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.NAME' | translate }}"
-      required
+      class="w-100"
+      [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.NAME' | translate"
+      [errorMessageMap]="{ nameExists: 'COMMON.NAME_ALREADY_EXISTS' | translate }"
     >
-      <ng-container *ngIf="form.get('name')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-          >{{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-        <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
-          {{ 'COMMON.NAME_ALREADY_EXISTS' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+    </vitamui-input>
 
-    <vitamui-common-textarea
+    <vitamui-input
       class="w-100"
       formControlName="description"
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.DESCRIPTION' | translate }}"
+      [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.DESCRIPTION' | translate"
+      [textarea]="true"
     >
-      <ng-container *ngIf="form.get('description')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
-          {{ 'COMMON.REQUIRED' | translate }}
-        </vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-textarea>
+    </vitamui-input>
 
     <vitamui-common-slide-toggle class="w-100" [formControl]="accessLogControl">
       <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACCESS_LOGS' | translate }}</span>
     </vitamui-common-slide-toggle>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate"
-      [value]="accessContract?.creationDate | dateTime: 'dd/MM/yyyy'"
+      [ngModel]="accessContract?.creationDate | dateTime: 'dd/MM/yyyy'"
+      [ngModelOptions]="{ standalone: true }"
       disabled
     >
-    </vitamui-common-input>
+    </vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate"
-      [value]="accessContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
+      [ngModel]="accessContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
+      [ngModelOptions]="{ standalone: true }"
       disabled
     >
-    </vitamui-common-input>
+    </vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate"
-      [value]="
+      [ngModel]="
         accessContract?.status === 'ACTIVE' && accessContract?.activationDate
           ? (accessContract.activationDate | dateTime: 'dd/MM/yyyy')
           : '-'
       "
+      [ngModelOptions]="{ standalone: true }"
       disabled
     >
-    </vitamui-common-input>
+    </vitamui-input>
 
-    <vitamui-common-input
+    <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
-      [value]="accessContract?.deactivationDate ? (accessContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      [ngModel]="accessContract?.deactivationDate ? (accessContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      [ngModelOptions]="{ standalone: true }"
       disabled
     >
-    </vitamui-common-input>
+    </vitamui-input>
   </div>
 
   <button type="submit" class="btn primary" [disabled]="isInvalid() || unChanged || submitted">

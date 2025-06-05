@@ -115,3 +115,9 @@ $custom-theme: mat.m2-define-light-theme(
 
 // In order to have 10px vertical padding on form fields, we need to set the density to -3 (otherwise it's 16px by default)
 @include mat.form-field-density(-3);
+
+:root {
+  body {
+    --mat-sys-primary: var(--vitamui-primary);
+  }
+}

@@ -41,6 +41,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export const INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,7 +56,7 @@ type InternalValue = { id: number; value: string | number | boolean };
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   providers: [INPUT_VALUE_ACCESSOR],
-  imports: [FormsModule, CommonModule, TranslateModule, CommonTooltipModule, FormErrorsComponent],
+  imports: [FormsModule, CommonModule, TranslateModule, CommonTooltipModule, FormErrorsComponent, MatProgressSpinner],
 })
 export class InputComponent extends AbstractFormInputDirective {
   @Input() placeholder: string;

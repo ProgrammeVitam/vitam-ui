@@ -974,8 +974,8 @@
       "ACCESS_CONTRACT": "Contrat d'accès",
       "ARCHIVE_UNIT": "Unité d'archive",
       "TECHNICAL_OBJECT_GROUP": "Groupe d'objet technique",
-      "IDIENTIFIER_LENGTH_ERROR": "L'identifiant d'une unité doit contenir {{ length }} caractères",
-      "UNKOWN_UNIT": "Unité inconnue",
+      "IDENTIFIER_LENGTH_ERROR": "L'identifiant d'une unité doit contenir {{ length }} caractères",
+      "UNKNOWN_UNIT": "Unité inconnue",
       "REQUEST": "Requête DSL (Format JSON)",
       "REQUEST_RESULT": "Résultat de la requête DSL",
       "VALIDATE_JSON": "Valider JSON"

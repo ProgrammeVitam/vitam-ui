@@ -1,6 +1,22 @@
 @use '../../../sass/mixins/elevation' as elevation;
 
+mat-spinner {
+  display: none;
+  position: absolute;
+  right: 15px;
+  top: 18px;
+
+  :host.ng-pending & {
+    display: block;
+  }
+}
+
+:host.ng-pending .vitamui-input {
+  padding-right: 50px;
+}
+
 .form-field {
+  position: relative;
   @include elevation.shadow-accessible;
   cursor: text;
   border-radius: 5px;
@@ -10,7 +26,7 @@
   flex-direction: column;
 
   :host.disabled & {
-    background-color: var(--vitamui-grey-300);
+    background-color: var(--vitamui-grey-200);
 
     label,
     .required-marker,

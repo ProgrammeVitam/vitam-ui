@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
@@ -69,8 +68,7 @@ function getInputs() {
 describe('VitamuiInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, TranslateModule.forRoot(), CommonTooltipModule],
-      declarations: [InputComponent],
+      imports: [FormsModule, NoopAnimationsModule, TranslateModule.forRoot(), CommonTooltipModule],
       providers: [{ provide: TranslateService, useClass: TranslateServiceStub }],
     }).compileComponents();
   });
@@ -85,104 +83,110 @@ describe('VitamuiInputComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should update component items and input values on writeValue', () => {
-    const values = ['test1', 'test2'];
-    component.writeValue(values);
-    fixture.detectChanges();
-
-    expect(component.items.length).toEqual(2);
-    expect(component.items[0].value).toEqual(values[0]);
-    expect(component.items[1].value).toEqual(values[1]);
-
-    fixture.whenStable().then(() => {
-      const inputs = getInputs();
-      expect(inputs[0].value).toEqual(values[0]);
-      expect(inputs[1].value).toEqual(values[1]);
+  describe('multiple', () => {
+    beforeEach(() => {
+      component.multiple = true;
     });
-  });
 
-  it('should update component item value and call onChange on input change', fakeAsync(() => {
-    const onChangeSpy = spyOn(component, 'onChange');
-    const initialValues = ['value1'];
-    component.writeValue(initialValues);
-    fixture.detectChanges();
+    it('should update component items and input values on writeValue', () => {
+      const values = ['test1', 'test2'];
+      component.writeValue(values);
+      fixture.detectChanges();
 
-    const updatedValue = 'updated value';
-    input(getInputs()[0], updatedValue);
+      expect(component.items.length).toEqual(2);
+      expect(component.items[0].value).toEqual(values[0]);
+      expect(component.items[1].value).toEqual(values[1]);
 
-    expect(component.items[0].value).toEqual(updatedValue);
-    expect(onChangeSpy).toHaveBeenCalledWith([updatedValue]);
-  }));
+      fixture.whenStable().then(() => {
+        const inputs = getInputs();
+        expect(inputs[0].value).toEqual(values[0]);
+        expect(inputs[1].value).toEqual(values[1]);
+      });
+    });
 
-  it('should focus the first input on component click', () => {
-    component.writeValue(['value1']);
-    fixture.detectChanges();
+    it('should update component item value and call onChange on input change', fakeAsync(() => {
+      const onChangeSpy = spyOn(component, 'onChange');
+      const initialValues = ['value1'];
+      component.writeValue(initialValues);
+      fixture.detectChanges();
 
-    fixture.nativeElement.click();
-    expect(document.activeElement).toBe(getInputs()[0]);
-  });
+      const updatedValue = 'updated value';
+      input(getInputs()[0], updatedValue);
 
-  it('should set focus to current element and unset on blur', () => {
-    component.writeValue(['value1', 'value2']);
-    fixture.detectChanges();
+      expect(component.items[0].value).toEqual(updatedValue);
+      expect(onChangeSpy).toHaveBeenCalledWith([updatedValue]);
+    }));
 
-    component.onFocus(0);
-    expect(component.focused).toBe(0);
+    it('should focus the first input on component click', () => {
+      component.writeValue(['value1']);
+      fixture.detectChanges();
 
-    component.onFocus(1);
-    expect(component.focused).toBe(1);
-    fixture.detectChanges();
+      fixture.nativeElement.click();
+      expect(document.activeElement).toBe(getInputs()[0]);
+    });
 
-    component.onBlur(1);
-    expect(component.focused).toBeNull();
-  });
+    it('should set focus to current element and unset on blur', () => {
+      component.writeValue(['value1', 'value2']);
+      fixture.detectChanges();
 
-  it('should add input', () => {
-    const initialValues = ['value1'];
-    component.writeValue(initialValues);
-    fixture.detectChanges();
-    expect(getInputs().length).toBe(1);
+      component.onFocus(0);
+      expect(component.focused).toBe(0);
 
-    // We add an input
-    component.addInput();
-    fixture.detectChanges();
-    expect(getInputs().length).toBe(2);
+      component.onFocus(1);
+      expect(component.focused).toBe(1);
+      fixture.detectChanges();
 
-    // We set a value to that new input
-    const onChangeSpy = spyOn(component, 'onChange');
-    const newValue = 'value2';
-    input(getInputs()[1], newValue);
-    fixture.detectChanges();
-    expect(onChangeSpy).toHaveBeenCalledWith([...initialValues, newValue]);
-  });
+      component.onBlur(1);
+      expect(component.focused).toBeNull();
+    });
 
-  it('should remove input', () => {
-    const onChangeSpy = spyOn(component, 'onChange');
-    const initialValues = ['value1', 'value2'];
-    component.writeValue(initialValues);
-    fixture.detectChanges();
-    expect(getInputs().length).toBe(2);
+    it('should add input', () => {
+      const initialValues = ['value1'];
+      component.writeValue(initialValues);
+      fixture.detectChanges();
+      expect(getInputs().length).toBe(1);
 
-    component.removeInput(0);
-    fixture.detectChanges();
-    expect(getInputs().length).toBe(1);
-    expect(onChangeSpy).toHaveBeenCalledWith([initialValues[1]]);
-  });
+      // We add an input
+      component.addInput();
+      fixture.detectChanges();
+      expect(getInputs().length).toBe(2);
 
-  it('should remove empty input on blur', () => {
-    const initialValues = ['value1', 'value2'];
-    component.writeValue(initialValues);
-    fixture.detectChanges();
+      // We set a value to that new input
+      const onChangeSpy = spyOn(component, 'onChange');
+      const newValue = 'value2';
+      input(getInputs()[1], newValue);
+      fixture.detectChanges();
+      expect(onChangeSpy).toHaveBeenCalledWith([...initialValues, newValue]);
+    });
 
-    const onChangeSpy = spyOn(component, 'onChange');
-    expect(getInputs().length).toBe(2);
-    input(getInputs()[1], '');
-    component.onBlur(1);
+    it('should remove input', () => {
+      const onChangeSpy = spyOn(component, 'onChange');
+      const initialValues = ['value1', 'value2'];
+      component.writeValue(initialValues);
+      fixture.detectChanges();
+      expect(getInputs().length).toBe(2);
 
-    fixture.detectChanges();
+      component.removeInput(0);
+      fixture.detectChanges();
+      expect(getInputs().length).toBe(1);
+      expect(onChangeSpy).toHaveBeenCalledWith([initialValues[1]]);
+    });
 
-    expect(getInputs().length).toBe(1);
+    it('should remove empty input on blur', () => {
+      const initialValues = ['value1', 'value2'];
+      component.writeValue(initialValues);
+      fixture.detectChanges();
 
-    expect(onChangeSpy).toHaveBeenCalledWith([initialValues[0]]);
+      const onChangeSpy = spyOn(component, 'onChange');
+      expect(getInputs().length).toBe(2);
+      input(getInputs()[1], '');
+      component.onBlur(1);
+
+      fixture.detectChanges();
+
+      expect(getInputs().length).toBe(1);
+
+      expect(onChangeSpy).toHaveBeenCalledWith([initialValues[0]]);
+    });
   });
 });

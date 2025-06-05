@@ -43,6 +43,7 @@ import { isEmpty } from 'underscore';
 import { Agency, ApplicationId, diff, Role, SecurityService, AgencyService, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { AgencyCreateValidators } from '../../agency-create/agency-create.validators';
 
 @Component({
   selector: 'app-agency-information-tab',
@@ -61,7 +62,7 @@ export class AgencyInformationTabComponent {
 
   form: FormGroup;
   previousValue = (): any => {
-    return (Object.keys(this.form.controls) as (keyof Agency)[]).reduce((acc: any, key) => {
+    return (Object.keys(this.form.controls || {}) as (keyof Agency)[]).reduce((acc: any, key) => {
       acc[key] = this._agency[key];
       return acc;
     }, {} as Partial<Agency>);
@@ -95,9 +96,10 @@ export class AgencyInformationTabComponent {
     private formBuilder: FormBuilder,
     private agencyService: AgencyService,
     private securityService: SecurityService,
+    private agencyCreateValidators: AgencyCreateValidators,
   ) {
     this.form = this.formBuilder.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.required, agencyCreateValidators.onlyWhitespaces]],
       description: [null],
     });
 
@@ -151,7 +153,8 @@ export class AgencyInformationTabComponent {
       });
   }
 
-  resetForm(Agency: Agency) {
-    this.form.reset(Agency, { emitEvent: false });
+  resetForm(agency: Agency) {
+    this.form.get('name').setAsyncValidators(this.agencyCreateValidators.uniqueName(agency.name)); // Keep this line before reset to make sure the new form value is used for validation.
+    this.form.reset(agency, { emitEvent: false });
   }
 }
