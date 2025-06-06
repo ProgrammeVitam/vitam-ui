@@ -12,12 +12,8 @@
   notify: reload nginx
 
 - name: Install static ressources for ui-identity-admin - Copy folder
-  copy:
-    src: "{{ frontend_data_dir }}/identity/"
-    dest: "{{ frontend_data_dir }}/identity-admin"
-    group: "{{ frontend_group }}"
-    owner: "{{ frontend_user }}"
-    remote_src: yes
+  command:
+    cmd: cp -va "{{ frontend_data_dir }}/identity/." "{{ frontend_data_dir }}/identity-admin"
   when: vitamui_struct.vitamui_component == "ui-identity-admin"
 
 - name: Get package facts
