@@ -41,8 +41,8 @@ dbIam.tenants.find({
     dbIam.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-ONTOLOGY_APP-ADMIN",
         "identifier": NumberInt(maxIdProfile++),
-        "name": "Profil pour la consultation des ontologies et gestion des schémas",
-        "description": "Consultation des ontologies et gestion des schémas",
+        "name": "Ontologie - gestion",
+        "description": "Profil pour la consultation et la gestion des ontologies et schémas dans Vitam",
         "tenantIdentifier": NumberInt(tenant.identifier),
         "applicationName": "ONTOLOGY_APP",
         "level": "",
