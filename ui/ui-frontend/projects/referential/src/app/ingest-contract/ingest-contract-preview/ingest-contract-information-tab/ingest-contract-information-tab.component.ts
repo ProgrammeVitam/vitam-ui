@@ -61,7 +61,7 @@ export class IngestContractInformationTabComponent implements OnInit {
 
   form: FormGroup;
 
-  submited = false;
+  submitted = false;
   isReadOnly = false;
 
   ruleFilter = new FormControl();
@@ -206,20 +206,20 @@ export class IngestContractInformationTabComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submited = true;
+    this.submitted = true;
     if (this.isInvalid()) {
       return;
     }
     this.prepareSubmit().subscribe(
       () => {
         this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
-          this.submited = false;
+          this.submitted = false;
           this.ingestContract = response;
           this.updatedIngestContract.emit(response);
         });
       },
       () => {
-        this.submited = false;
+        this.submitted = false;
       },
     );
   }

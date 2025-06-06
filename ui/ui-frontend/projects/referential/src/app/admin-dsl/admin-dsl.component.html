@@ -43,15 +43,20 @@
 
     <div class="vitamui-content">
       <form [formGroup]="form" class="request">
-        <div class="w-100 mr-3">
-          <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST' | translate }}</div>
-          <vitamui-common-textarea class="w-100" formControlName="dsl"></vitamui-common-textarea>
-        </div>
+        <vitamui-input
+          [textarea]="true"
+          [placeholder]="'DSL.HOME.REQUEST' | translate"
+          class="w-100 mr-3"
+          formControlName="dsl"
+        ></vitamui-input>
 
-        <div class="w-100">
-          <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST_RESULT' | translate }}</div>
-          <vitamui-common-textarea class="w-100" formControlName="response" disabled #responseText></vitamui-common-textarea>
-        </div>
+        <vitamui-input
+          [textarea]="true"
+          [placeholder]="'DSL.HOME.REQUEST_RESULT' | translate"
+          class="w-100"
+          formControlName="response"
+          #responseText
+        ></vitamui-input>
       </form>
 
       <div class="actions">

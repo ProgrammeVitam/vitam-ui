@@ -123,13 +123,13 @@
       <p>
         {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_FORCED_MODE_REASON' | translate }}
       </p>
-      <vitamui-common-textarea
+      <vitamui-input
+        [textarea]="true"
         class="w-100"
         [formControl]="reason"
-        [required]="true"
         [placeholder]="'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER' | translate"
       >
-      </vitamui-common-textarea>
+      </vitamui-input>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="dialog-action">

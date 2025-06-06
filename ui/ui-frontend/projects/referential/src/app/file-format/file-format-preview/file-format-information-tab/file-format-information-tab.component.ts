@@ -58,10 +58,8 @@ export class FileFormatInformationTabComponent {
   private isInternal = new BehaviorSubject(true);
   private canUpdateFileFormat = new BehaviorSubject<boolean>(false);
   private submitting = new BehaviorSubject<boolean>(false);
-  private fileFormats = new BehaviorSubject<FileFormat[]>([]);
-  private fileFormats$ = this.fileFormats.asObservable();
-  private tenantId = new BehaviorSubject<string>(null);
-  private tenantId$ = this.tenantId.asObservable();
+  private fileFormats$ = new BehaviorSubject<FileFormat[]>([]);
+  private tenantId$ = new BehaviorSubject<string>(null);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -130,7 +128,6 @@ export class FileFormatInformationTabComponent {
       this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
       this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
@@ -143,11 +140,11 @@ export class FileFormatInformationTabComponent {
   ) {
     this.form = this.formBuilder.group({
       puid: [{ value: null, disabled: true }, Validators.required],
-      name: [{ value: null, disabled: true }, Validators.required],
-      mimeType: [{ value: null, disabled: true }],
-      version: [{ value: null, disabled: true }, Validators.required],
-      extensions: [{ value: null, disabled: true }],
-      hasPriorityOverFileFormatIDs: [{ value: null, disabled: true }],
+      name: [{ value: null }, Validators.required],
+      mimeType: [{ value: null }],
+      version: [{ value: null }, Validators.required],
+      extensions: [{ value: null }],
+      hasPriorityOverFileFormatIDs: [{ value: null }],
       createdDate: [{ value: null, disabled: true }],
       updateDate: [{ value: null, disabled: true }],
       versionPronom: [{ value: null, disabled: true }],
@@ -155,7 +152,7 @@ export class FileFormatInformationTabComponent {
     this.route.params
       .pipe(
         filter((params: any) => params.tenantIdentifier),
-        tap((params: { tenantIdentifier: string }) => this.tenantId.next(params.tenantIdentifier)),
+        tap((params: { tenantIdentifier: string }) => this.tenantId$.next(params.tenantIdentifier)),
         switchMap((params: { tenantIdentifier: string }) =>
           this.securityService.hasRole$(ApplicationId.FILE_FORMATS_APP, Role.ROLE_UPDATE_FILE_FORMATS, +params.tenantIdentifier),
         ),
@@ -163,7 +160,7 @@ export class FileFormatInformationTabComponent {
       .subscribe((canUpdateFileFormat) => this.canUpdateFileFormat.next(canUpdateFileFormat));
     this.tenantId$
       .pipe(switchMap((tenantId) => this.fileFormatService.getAllForTenant(tenantId)))
-      .subscribe((fileFormats) => this.fileFormats.next(fileFormats));
+      .subscribe((fileFormats) => this.fileFormats$.next(fileFormats));
   }
 
   unchanged(): boolean {
@@ -176,9 +173,6 @@ export class FileFormatInformationTabComponent {
     const previousValue = this.previousValue();
     const { id, puid } = previousValue;
     const patchData = diff(this.form.getRawValue(), previousValue);
-
-    // The extensions property must be an array of string, not a string
-    if (patchData.extensions) patchData.extensions = patchData.extensions.replace(/\s/g, '').split(',');
 
     return of(patchData).pipe(
       filter((data) => !isEmpty(data)),

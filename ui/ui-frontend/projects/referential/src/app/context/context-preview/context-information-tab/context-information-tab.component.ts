@@ -43,6 +43,7 @@ import { Context, Option, diff } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
+import { ContextCreateValidators } from '../../context-create/context-create.validators';
 
 @Component({
   selector: 'app-context-information-tab',
@@ -55,7 +56,7 @@ export class ContextInformationTabComponent {
 
   form: FormGroup;
 
-  submited = false;
+  submitted = false;
 
   statusControl = new FormControl();
 
@@ -65,8 +66,11 @@ export class ContextInformationTabComponent {
 
   rules: Option[] = RULE_TYPES;
 
-  previousValue = (): Context => {
-    return this._context;
+  previousValue = (): any => {
+    return (Object.keys(this.form.controls || {}) as (keyof Context)[]).reduce((acc: any, key) => {
+      acc[key] = this._context[key] || null;
+      return acc;
+    }, {} as Partial<Context>);
   };
 
   @Input()
@@ -94,9 +98,14 @@ export class ContextInformationTabComponent {
     private formBuilder: FormBuilder,
     private contextService: ContextService,
     private securityProfileService: SecurityProfileService,
+    private contextCreateValidators: ContextCreateValidators,
   ) {
     this.form = this.formBuilder.group({
-      name: [null],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.contextCreateValidators.allowedName()],
+        this.contextCreateValidators.uniqueName(),
+      ],
       status: [null, Validators.required],
       securityProfile: [null, Validators.required],
       enableControl: [null, Validators.required],
@@ -149,7 +158,7 @@ export class ContextInformationTabComponent {
   }
 
   onSubmit() {
-    this.submited = true;
+    this.submitted = true;
     if (this.isInvalid()) {
       return;
     }
@@ -159,18 +168,19 @@ export class ContextInformationTabComponent {
           .get(this._context.identifier)
           .pipe(tap((response) => this.contextService.updated.next(response)))
           .subscribe((response) => {
-            this.submited = false;
+            this.submitted = false;
             this.context = response;
           });
       },
       () => {
-        this.submited = false;
+        this.submitted = false;
       },
     );
   }
 
   resetForm(context: Context) {
     this.statusControl.setValue(context.status === 'ACTIVE');
+    this.form.get('name').setAsyncValidators(this.contextCreateValidators.uniqueName(context.name)); // Keep this line before reset to make sure the new form value is used for validation.
     this.form.reset(context, { emitEvent: false });
   }
 }
