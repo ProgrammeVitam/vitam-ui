@@ -1,10 +1,18 @@
 @use '../../../../../sass/mixins/elevation' as elevation;
 
 :host::ng-deep {
+  ::ng-deep .mat-mdc-form-field {
+    --mat-select-enabled-arrow-color: var(--vitamui-header-footer-font);
+  }
+
   .selected-item-label,
   .unselected-item-label {
     color: var(--vitamui-primary);
     font-size: 16px;
     font-weight: 700;
   }
+}
+
+mat-form-field {
+  background-color: transparent !important;
 }
