@@ -2,7 +2,7 @@
   set_fact:
     prefix: "trusted-ca-certs-"
   tags:
-    - update_vitam_configuration
+    - update_vitamui_configuration
     - update_vitamui_certificates
 
 - name: List existing CA certs
@@ -11,7 +11,7 @@
     patterns: "{{ prefix }}*.crt"
   register: existing_ca_certs
   tags:
-    - update_vitam_configuration
+    - update_vitamui_configuration
     - update_vitamui_certificates
 
 - name: List trusted CA files
@@ -21,7 +21,7 @@
   delegate_to: localhost
   register: trusted_ca_certs
   tags:
-    - update_vitam_configuration
+    - update_vitamui_configuration
     - update_vitamui_certificates
 
 - name: Check trusted CA files present
@@ -39,7 +39,7 @@
   with_items: "{{ trusted_ca_certs.files | map(attribute='path') | list }}"
   notify: restart service
   tags:
-    - update_vitam_configuration
+    - update_vitamui_configuration
     - update_vitamui_certificates
 
 - name: Store copied filenames in a variable
@@ -47,7 +47,7 @@
     # regex is used to prefix file-names
     copied_cert_files: "{{ trusted_ca_certs.files | map(attribute='path') | map('basename') | map('regex_replace', '^(.*)$', prefix + '\\1') | list }}"
   tags:
-    - update_vitam_configuration
+    - update_vitamui_configuration
     - update_vitamui_certificates
 
 - name: Deleting obsolete certs
@@ -56,6 +56,6 @@
     state: absent
   with_items: "{{ existing_ca_certs['files'] | map(attribute='path') | map('basename') | difference(copied_cert_files) }}"
   tags:
-    - update_vitam_configuration
+    - update_vitamui_configuration
     - update_vitamui_certificates
   notify: restart service
