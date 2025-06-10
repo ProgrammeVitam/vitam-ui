@@ -71,6 +71,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   }
 
   private _searchText: string;
+  private lastSelectedId: string;
 
   @Output() ontologyClick = new EventEmitter<Ontology>();
 
@@ -174,11 +175,16 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   }
 
   selectLine(ontology: Ontology) {
+    this.lastSelectedId = ontology?.id;
     this.ontologyService.selectedId$.next(ontology.id);
     this.ontologyClick.emit(ontology);
   }
 
   canDelete(ontology: Ontology) {
     return ontology.origin === 'EXTERNAL' && ontology.tenant === this.tenantSelectionService.getSelectedTenant().identifier;
+  }
+
+  onClickOutsideTable(): void {
+    this.ontologyService.selectedId$.next(this.lastSelectedId);
   }
 }

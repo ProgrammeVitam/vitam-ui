@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Ontology, SchemaElement } from 'vitamui-library';
+import { Ontology, SchemaElement, SchemaService } from 'vitamui-library';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
@@ -45,6 +45,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
 import { SchemaListComponent } from './schema-list/schema-list.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { OntologyService } from '../ontology.service';
 
 @Component({
   imports: [MatTabsModule, CommonModule, TranslatePipe, OntologyListComponent, SchemaListComponent],
@@ -61,6 +62,8 @@ export class OntologyGroupComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private schemaService: SchemaService,
+    private ontologyService: OntologyService,
   ) {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.tabIndex = params.tab;
@@ -69,6 +72,8 @@ export class OntologyGroupComponent {
 
   changeTab(matTabChangeEvent: MatTabChangeEvent) {
     this.setQueryParams({ tab: matTabChangeEvent.index });
+    this.schemaService.selectedPath$.next('');
+    this.ontologyService.selectedId$.next('');
   }
 
   private setQueryParams(queryParams: Params): Observable<boolean> {
