@@ -7,8 +7,6 @@ mongo_express:
         password: changeit_aadmin1234
 
 ## mongo-vitamui
-mongod_replicaset_passphrase: changeit_passphrase
-
 mongodb:
     passphrase: changeit_mongogo
     admin:
