@@ -112,13 +112,7 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
     }
 
     private AuthUserDto getAuthenticateUser(HttpContext httpContext) {
-        final AuthUserDto userDto;
-        if (supportsCrossTenants(httpContext)) {
-            userDto = extAuthService.getAuthenticatedUser(httpContext);
-        } else {
-            userDto = extAuthService.getUserFromHttpContext(httpContext);
-        }
-        return userDto;
+        return extAuthService.getUserFromHttpContext(httpContext);
     }
 
     /**
@@ -128,9 +122,5 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
     @Override
     public boolean supports(final Class<?> authentication) {
         return authentication.equals(PreAuthenticatedAuthenticationToken.class);
-    }
-
-    public boolean supportsCrossTenants(HttpContext context) {
-        return false;
     }
 }
