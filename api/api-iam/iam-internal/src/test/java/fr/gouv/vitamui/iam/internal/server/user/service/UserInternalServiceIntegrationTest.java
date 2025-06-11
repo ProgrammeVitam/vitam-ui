@@ -84,14 +84,18 @@ import static org.mockito.Mockito.when;
 public final class UserInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private static final String TOKEN_VALUE = "TOK1234567890";
+    private static final String CAS_SECRET_TOKEN = "some_cas_secret_token";
 
     private static final String USER_ID = "userId";
+    private static final String CAS_USER_ID = "casuser";
 
     private static final String CUSTOMER_ID = "customerId";
+    private static final String CAS_CUSTOMER_ID = "system_customer";
 
     private static final String LEVEL = "DEV";
 
     private static final String GROUP_ID = "groupId";
+    private static final String CAS_GROUP_ID = "casGroupId";
 
     private static int ttlInMinutes = 30;
     private UserInternalService internalUserService;
@@ -174,6 +178,7 @@ public final class UserInternalServiceIntegrationTest extends AbstractLogbookInt
         );
         iamAuthentificationService.setTokenMaxTtl(30);
         iamAuthentificationService.setTokenAdditionalTtl(15);
+        iamAuthentificationService.setCasSecretToken(CAS_SECRET_TOKEN);
 
         tokenRepository.deleteAll();
         userRepository.deleteAll();
@@ -235,6 +240,42 @@ public final class UserInternalServiceIntegrationTest extends AbstractLogbookInt
         final UserDto userProfile = iamAuthentificationService.getUserFromHttpContext(internalHttpContext);
 
         assertEquals(USER_ID, userProfile.getId());
+    }
+
+    @Test
+    public void testGetUserProfileByTokenForCasSecretToken() {
+        final User user = IamServerUtilsTest.buildUser(
+            CAS_USER_ID,
+            "cas@vitamui.com",
+            CAS_GROUP_ID,
+            CAS_CUSTOMER_ID,
+            ""
+        );
+        userRepository.save(user);
+
+        when(groupInternalService.getOne(ArgumentMatchers.anyString(), any(), ArgumentMatchers.any())).thenReturn(
+            new GroupDto()
+        );
+        when(groupInternalService.getMany(any(String.class))).thenReturn(Arrays.asList(new GroupDto()));
+        Mockito.when(internalSecurityService.userIsRootLevel()).thenReturn(true);
+
+        final Customer customer = IamServerUtilsTest.buildCustomer();
+        customer.setId(CAS_CUSTOMER_ID);
+        final Tenant tenant = new Tenant();
+        tenant.setId("id");
+        tenant.setIdentifier(1);
+        tenant.setEnabled(true);
+        tenant.setProof(true);
+        when(customerRepository.findById(CAS_CUSTOMER_ID)).thenReturn(Optional.of(customer));
+        when(tenantRepository.findByCustomerId(CAS_CUSTOMER_ID)).thenReturn(List.of(tenant));
+
+        when(internalSecurityService.getLevel()).thenReturn("");
+        when(groupInternalService.getMany(CAS_GROUP_ID)).thenReturn(List.of(buildGroupDto()));
+        when(groupInternalService.getOneByPassSecurity(CAS_GROUP_ID, Optional.empty())).thenReturn(buildGroupDto());
+        when(internalHttpContext.getUserToken()).thenReturn(CAS_SECRET_TOKEN);
+        final UserDto userProfile = iamAuthentificationService.getUserFromHttpContext(internalHttpContext);
+
+        assertThat(userProfile.getId()).isEqualTo(CAS_USER_ID);
     }
 
     @Test

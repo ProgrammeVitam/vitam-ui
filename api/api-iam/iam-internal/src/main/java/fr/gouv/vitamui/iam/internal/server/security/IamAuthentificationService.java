@@ -46,13 +46,12 @@ import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -60,6 +59,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
+@Slf4j
 public class IamAuthentificationService {
 
     public static final String INTERNAL_CAS_USER_NAME = "casuser";
@@ -76,6 +76,10 @@ public class IamAuthentificationService {
     @Value("${token.additional.ttl}")
     @NotNull
     private Integer tokenAdditionalTtl;
+
+    @Value("${cas.secret.token}")
+    @NotNull
+    private String casSecretToken;
 
     public IamAuthentificationService(
         final UserInternalService internalUserService,
@@ -102,17 +106,26 @@ public class IamAuthentificationService {
         return getUserByToken(userToken);
     }
 
-    private AuthUserDto getUserByToken(final String userToken) {
-        final Token token = tokenRepository
+    private Token getToken(String userToken) {
+        if (this.casSecretToken.equals(userToken)) {
+            log.debug("Granted access to CAS token");
+            Token token = new Token();
+            token.setRefId(INTERNAL_CAS_USER_NAME);
+            return token;
+        }
+
+        log.debug("Checking access for user token: '{}'", userToken);
+        Token token = tokenRepository
             .findById(userToken)
             .orElseThrow(() -> new BadCredentialsException("No user found for usertoken: " + userToken));
 
+        log.debug("Found valid token: {}", token);
         if (!token.isSurrogation()) {
             Date tokenMaxExpirationDate = DateUtils.addMinutes(token.getCreatedDate(), tokenMaxTtl);
             Date currentTokenExpirationDate = token.getUpdatedDate();
             Date newTokenExpirationDate = DateUtils.addMinutes(new Date(), tokenAdditionalTtl);
 
-            if (!token.getRefId().equals(INTERNAL_CAS_USER_NAME) && currentTokenExpirationDate.before(new Date())) {
+            if (currentTokenExpirationDate.before(new Date())) {
                 throw new BadCredentialsException("Expired token  usertoken: " + userToken);
             }
             if (
@@ -123,6 +136,11 @@ public class IamAuthentificationService {
                 tokenRepository.save(token);
             }
         }
+        return token;
+    }
+
+    private AuthUserDto getUserByToken(final String userToken) {
+        final Token token = getToken(userToken);
 
         final UserDto userDto = internalUserService.findUserById(token.getRefId());
         final AuthUserDto authUserDto = internalUserService.loadGroupAndProfiles(userDto);
@@ -145,9 +163,5 @@ public class IamAuthentificationService {
         internalUserService.addTenantsByAppInformation(authUserDto);
         authUserDto.setAuthToken(userToken);
         return authUserDto;
-    }
-
-    private LocalDate convertToLocalDate(final Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 }

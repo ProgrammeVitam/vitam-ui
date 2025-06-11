@@ -98,6 +98,18 @@ container_repository:
   password:
 ```
 
+### Configuration des jetons de communication interne CAS
+
+> Cette opération doit être effectuée en cas de mise à jour majeure depuis une version v7.0.x vers une version v7.1.3+ (version 7.1.3 ou supérieure).
+
+Une nouvelle clé `vitamui.cas_server.secret_token` doit être éditée dans le fichier de configuration `environments/group_vars/all/vault-vitamui.yml`. Elle permet de sécuriser les appels d'API entre le CAS Server et IAM.
+
+```sh
+ansible-vault edit --vault-password-file vault_pass.txt environments/group_vars/all/vault-vitamui.yml
+```
+
+> Attention, la clé devrait être configurée avec une clé alphanumérique longue et sans caractères spéciaux.
+
 ---
 
 ## Procédures à exécuter AVANT la montée de version

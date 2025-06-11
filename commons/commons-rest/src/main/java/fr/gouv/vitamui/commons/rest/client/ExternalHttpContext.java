@@ -36,15 +36,11 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -109,80 +105,6 @@ public class ExternalHttpContext extends AbstractHttpContext {
     ) {
         super(tenantIdentifier, userToken, applicationId, identity, requestId, accessContract);
         this.requestUri = requestUri;
-    }
-
-    /**
-     * Build an ExternalContext from request header in the UI layer.
-     * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter.
-     */
-    public static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final AuthUserDto principal)
-        throws PreconditionFailedException {
-        return buildFromUiRequest(request, principal.getAuthToken(), null, null);
-    }
-
-    /**
-     * Build an ExternalContext from request header in the UI layer.
-     * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter.
-     */
-    public static ExternalHttpContext buildFromUiRequest(
-        final HttpServletRequest request,
-        final AuthUserDto principal,
-        final Integer tenantIdentifier,
-        final String accessContract
-    ) throws PreconditionFailedException {
-        return buildFromUiRequest(request, principal.getAuthToken(), tenantIdentifier, accessContract);
-    }
-
-    /**
-     * Build an ExternalContext from request header in the UI layer.
-     * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter.
-     * @param request
-     * @param userToken
-     * @param tenantIdentifier
-     * @param accessContract
-     * @return
-     */
-    private static ExternalHttpContext buildFromUiRequest(
-        final HttpServletRequest request,
-        final String userToken,
-        final Integer tenantIdentifier,
-        final String accessContract
-    ) throws PreconditionFailedException {
-        LOGGER.debug(
-            "Request Headers : {}",
-            VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders())
-        );
-        String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
-        final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
-        String requestId = request.getHeader(CommonConstants.X_REQUEST_ID_HEADER);
-        SanityChecker.checkSecureParameter(applicationId, identity, requestId);
-        if (StringUtils.isBlank(requestId)) {
-            requestId = VitamUIUtils.generateRequestId();
-        }
-
-        // Only applicationid is kept through API's
-        applicationId = applicationId + requestId;
-
-        String accessContractToUse = accessContract;
-        if (StringUtils.isBlank(accessContractToUse)) {
-            accessContractToUse = request.getHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER);
-            SanityChecker.checkSecureParameter(accessContractToUse);
-        }
-        Integer tenantIdentifierToUse = tenantIdentifier;
-        if (tenantIdentifierToUse == null) {
-            tenantIdentifierToUse = getTenantIdentifier(
-                request.getHeader(CommonConstants.X_TENANT_ID_HEADER),
-                request.getRequestURI()
-            );
-        }
-        return new ExternalHttpContext(
-            tenantIdentifierToUse,
-            userToken,
-            applicationId,
-            identity,
-            requestId,
-            accessContractToUse
-        );
     }
 
     /**
