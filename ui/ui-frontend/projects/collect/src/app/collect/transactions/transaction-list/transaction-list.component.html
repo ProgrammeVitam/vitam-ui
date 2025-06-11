@@ -72,7 +72,11 @@
                   <button mat-menu-item [disabled]="!transactionIsOpen(transaction)" (click)="validateTransaction(transaction)">
                     {{ 'COLLECT.VALIDATE_ACTION' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsReady(transaction)" (click)="sendTransaction(transaction)">
+                  <button
+                    mat-menu-item
+                    [disabled]="!transactionIsReady(transaction) || disabledSendTransactions.has(transaction.id)"
+                    (click)="sendTransaction(transaction)"
+                  >
                     {{ 'COLLECT.INGEST_ACTION' | translate }}
                   </button>
                   <button mat-menu-item [disabled]="!transactionIsEditable(transaction)" (click)="editTransaction(transaction)">

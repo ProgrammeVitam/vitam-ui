@@ -31,6 +31,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'ui-frontend-common';
 import { TransactionsService } from '../transactions.service';
+import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -42,9 +43,11 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
   tenantIdentifier: string;
+  disabledSendTransactions = new Set<string>();
 
   constructor(
     private snackBar: MatSnackBar,
+    private archiveUnitCollectService: ArchiveCollectService,
     private transactionService: TransactionsService,
     private translateService: TranslateService,
     private router: Router,
@@ -91,10 +94,12 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   validateTransaction(transaction: Transaction) {
     this.transactionService.validateTransaction(transaction.id).subscribe(
       () => {
-        const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
         transaction.status = TransactionStatus.READY;
+        this.archiveUnitCollectService.getProjectById(transaction.projectId).subscribe((project) => {
+          if (project.automaticIngest) this.disabledSendTransactions.add(transaction.id);
+        });
+        const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
         this.snackBar.open(message, null, {
-          panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
