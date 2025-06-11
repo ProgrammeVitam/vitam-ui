@@ -177,6 +177,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   tenantIdentifier: string;
   projectName: string;
+  isAutomaticIngest: boolean;
+  isAutomaticIngestValidated: boolean;
   breadcrumbData: BreadCrumbData[];
 
   archiveUnitAllunitup: string[];
@@ -325,10 +327,13 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             const { projectId, transactionId } = params;
             const path$: Observable<BreadCrumbData>[] = [
               this.archiveUnitCollectService.getProjectById(projectId).pipe(
-                map((project) => ({
-                  label: project.messageIdentifier,
-                  redirectUrl: `collect/transactions/${projectId}`,
-                })),
+                map((project) => {
+                  this.isAutomaticIngest = project.automaticIngest;
+                  return {
+                    label: project.messageIdentifier,
+                    redirectUrl: `collect/transactions/${projectId}`,
+                  };
+                }),
               ),
             ];
             if (transactionId) path$.push(this.transaction$.pipe(map((transaction) => ({ label: transaction.messageIdentifier }))));
@@ -1249,6 +1254,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.archiveUnitCollectService.validateTransaction(this.transaction.id).subscribe(() => {
       this.isNotOpen$.next(true);
       this.isNotReady$.next(false);
+      this.isAutomaticIngestValidated = true;
       const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
       this.snackBar.open(message, null, {
         duration: 10000,
