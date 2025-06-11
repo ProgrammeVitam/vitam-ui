@@ -1,12 +1,14 @@
-print("START v8.1.0-04_update_collect_app.js");
+print("START v8.1.1-01_update_collect_app.js");
 
 dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
+
 dbIam.profiles.updateMany({
     applicationName: "COLLECT_APP"
 }, {
     $addToSet: {
         roles: {
             $each: [
+                { name: "ROLE_GET_UNITS" },
                 { name: "ROLE_GET_AGENCIES" },
                 { name: "ROLE_GET_ARCHIVE_PROFILES_UNIT" }
             ]
@@ -14,20 +16,25 @@ dbIam.profiles.updateMany({
     }
 });
 
+// Update previously migrated profiles, during upgrade to 8.0.0, to expected name
+dbIam.profiles.updateMany(
+  { name: "Archiviste-gestion et collecte" },
+  { $set: { name: "Archiviste - gestion et collecte" } }
+);
+
+// We need a regex for newest profiles created from customer-init because it contains the tenantId...
 dbIam.profiles.updateMany({
-    "applicationName": "COLLECT_APP",
-    "name": {
-        $in: [
-            "Archiviste - Administrateur",
-            "Archiviste - gestion et collecte"
-        ]
-    }
+    applicationName: "COLLECT_APP",
+    $or: [
+        { name: { $regex: "^Archiviste - Administrateur" } },
+        { name: { $regex: "^Archiviste - gestion et collecte" } }
+    ]
 }, {
     $addToSet: {
-        "roles": {
+        roles: {
             $each: [
-                { "name": "ROLE_COLLECT_RECLASSIFICATION" },
-                { "name": "ROLE_COLLECT_DELETE_ARCHIVE_UNIT" }
+                { name: "ROLE_COLLECT_RECLASSIFICATION" },
+                { name: "ROLE_COLLECT_DELETE_ARCHIVE_UNIT" }
             ]
         }
     }
@@ -49,4 +56,4 @@ dbSecurity.contexts.updateOne({
     }
 });
 
-print("END v8.1.0-04_update_collect_app.js");
+print("END v8.1.1-01_update_collect_app.js");
