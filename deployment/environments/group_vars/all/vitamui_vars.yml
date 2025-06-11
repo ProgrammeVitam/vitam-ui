@@ -1,4 +1,10 @@
 ---
+
+# VitamUI deployment mode. Allowed values are :
+# - "prod" (default): Enforces additional security checks.
+# - "dev" (NOT for sensitive / production environments): Ignoring additional security checks.
+deployment_mode: prod
+
 single_vm_hostnames: [ "localhost" ]
 
 pki_dir: "{{ inventory_dir }}/certs"

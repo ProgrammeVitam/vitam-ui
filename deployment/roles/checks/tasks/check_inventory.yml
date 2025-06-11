@@ -1,0 +1,7 @@
+---
+
+- name: Ensure hosts_browse is empty in production mode
+  fail:
+    msg: "hosts_browse should not be enabled in production mode (hosts_browse must be empty)"
+  when: groups['hosts_browse'] | default([]) | length > 0
+  ignore_errors: "{{ true if deployment_mode | default('prod') == 'dev' else false }}"
