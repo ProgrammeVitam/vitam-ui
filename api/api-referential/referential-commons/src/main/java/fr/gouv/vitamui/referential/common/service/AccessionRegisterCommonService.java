@@ -44,7 +44,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class AccessionRegisterCommonService {
 
@@ -52,7 +51,6 @@ public class AccessionRegisterCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public AccessionRegisterCommonService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

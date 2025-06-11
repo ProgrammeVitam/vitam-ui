@@ -650,7 +650,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
             .setApplicationSessionId(securityService.getApplicationId());
 
         final Optional<Group> group = getRepository().findById(id);
-        group.orElseThrow(() -> new NotFoundException(String.format("No group found with id : %s", id)));
+        group.orElseThrow(() -> new NotFoundException("No group found with id : %s".formatted(id)));
         final JsonNode body = logbookService
             .findEventsByIdentifierAndCollectionNames(
                 group.get().getIdentifier(),

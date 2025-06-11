@@ -41,15 +41,15 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.server.security.WebSecurityConfig;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import(value = { WebSecurityConfig.class, RestExceptionHandler.class })
 public abstract class ApiReferentialControllerTest<T extends IdDto> extends ApiControllerTest<T> {
 
-    @MockBean
+    @MockitoBean
     private ApiAuthenticationProvider apiAuthenticationProvider;
 
-    @MockBean
+    @MockitoBean
     private SecurityService securityService;
 }

@@ -140,7 +140,7 @@ public class LogbookUtils {
             .orElseThrow(
                 () ->
                     new ApplicationServerException(
-                        String.format("No logbook returned in the following response : %s", response)
+                        "No logbook returned in the following response : %s".formatted(response)
                     )
             );
 

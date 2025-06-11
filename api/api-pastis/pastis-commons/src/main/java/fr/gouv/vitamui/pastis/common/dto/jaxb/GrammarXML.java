@@ -38,9 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.dto.jaxb;
 
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
-
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:grammar")
 public class GrammarXML extends BaliseXML {

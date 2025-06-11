@@ -48,6 +48,7 @@ import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
@@ -68,7 +69,7 @@ import java.util.Optional;
  */
 @NoRepositoryBean
 public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializable>
-    extends PagingAndSortingRepository<T, I>, QueryByExampleExecutor<T> {
+    extends PagingAndSortingRepository<T, I>, CrudRepository<T, I>, QueryByExampleExecutor<T> {
     /**
      * Generate a super ID.
      * @return

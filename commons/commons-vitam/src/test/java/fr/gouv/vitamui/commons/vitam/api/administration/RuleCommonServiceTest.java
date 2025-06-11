@@ -10,10 +10,10 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
 import fr.gouv.vitam.common.model.administration.RuleMeasurementEnum;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -24,6 +24,8 @@ import java.util.Optional;
 import static org.mockito.Mockito.when;
 
 public class RuleCommonServiceTest {
+
+    private AutoCloseable mocks;
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -37,9 +39,9 @@ public class RuleCommonServiceTest {
 
     private static final Long RULE_DURATION = 10L;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -71,9 +73,10 @@ public class RuleCommonServiceTest {
             requestResponseOk
         );
         // Do and Verify
-        var thrownException = Assertions.assertThrows(UnexpectedDataException.class, () -> {
-            ruleCommonService.findRulesDurationByRuleId(new VitamContext(TENANT_IDENTIFIER), RULE_ID);
-        });
+        var thrownException = Assertions.assertThrows(
+            UnexpectedDataException.class,
+            () -> ruleCommonService.findRulesDurationByRuleId(new VitamContext(TENANT_IDENTIFIER), RULE_ID)
+        );
         Assertions.assertEquals(
             "The rule duration measurement should be in years.",
             thrownException.getMessage(),
@@ -81,10 +84,11 @@ public class RuleCommonServiceTest {
         );
     }
 
-    @After
-    public void destroy() {
+    @AfterEach
+    public void destroy() throws Exception {
         ruleCommonService = null;
         adminExternalClient = null;
+        mocks.close();
     }
 
     private static FileRulesModel buildFileRuleModel(RuleMeasurementEnum ruleMeasurementEnum) {

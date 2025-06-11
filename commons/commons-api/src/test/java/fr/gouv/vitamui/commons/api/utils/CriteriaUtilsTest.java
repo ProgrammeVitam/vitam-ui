@@ -4,8 +4,8 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,7 +55,7 @@ public class CriteriaUtilsTest {
 
         try {
             CriteriaUtils.checkFormat(criteria);
-            Assert.fail();
+            Assertions.fail();
         } catch (final BadRequestException e) {
             assertThat(e.getMessage()).contains("lastname");
         }
@@ -69,9 +69,9 @@ public class CriteriaUtilsTest {
 
         try {
             CriteriaUtils.checkFormat(criteria);
-            Assert.assertTrue(true);
+            Assertions.assertTrue(true);
         } catch (final BadRequestException e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
 
@@ -83,7 +83,7 @@ public class CriteriaUtilsTest {
 
         try {
             CriteriaUtils.checkFormat(criteria);
-            Assert.fail();
+            Assertions.fail();
         } catch (final BadRequestException e) {
             assertThat(e.getMessage()).contains("externalParamId");
         }

@@ -41,12 +41,12 @@ package fr.gouv.vitamui.pastis.common.util;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.factory.RngTag;
 import fr.gouv.vitamui.pastis.common.dto.factory.RngTagFactory;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -55,7 +55,7 @@ import java.nio.charset.StandardCharsets;
 
 public class PastisMarshaller {
 
-    public static final String CHAR_ESCAPE_HANDLER = "com.sun.xml.bind.marshaller.CharacterEscapeHandler";
+    public static final String CHAR_ESCAPE_HANDLER = "org.glassfish.jaxb.marshaller.CharacterEscapeHandler";
     public static final String MARSHALLER_FORMAT = Marshaller.JAXB_FORMATTED_OUTPUT;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisMarshaller.class);

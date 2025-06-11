@@ -36,21 +36,23 @@ import fr.gouv.vitamui.iam.security.filter.TenantHeaderFilter;
 import fr.gouv.vitamui.iam.security.filter.TokenExtractor;
 import fr.gouv.vitamui.iam.security.filter.X509CertificateExtractor;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +69,7 @@ import static org.springframework.http.HttpMethod.PUT;
  */
 @Getter
 @Setter
-public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public abstract class ApiWebSecurityConfig {
 
     private static final String GATEWAY_ENABLED = "gateway.enabled";
     private static final String CAS_TENANT_IDENTIFIER = "cas.tenant.identifier";
@@ -87,7 +89,6 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
         final SecurityService securityService,
         final Environment env
     ) {
-        super();
         this.apiAuthenticationProvider = apiAuthenticationProvider;
         this.restExceptionHandler = restExceptionHandler;
         this.securityService = securityService;
@@ -97,48 +98,40 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
         this.casTenantIdentifier = env.getProperty(CAS_TENANT_IDENTIFIER, Integer.class, -1);
     }
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(apiAuthenticationProvider);
-    }
-
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager)
+        throws Exception {
         // @formatter:off
-        http
-            .authorizeRequests()
-                .antMatchers(getAuthList())
-                .permitAll()
-            .and()
-            .authorizeRequests()
+        return http
+            .authorizeHttpRequests(
+                requests -> requests
+                    .requestMatchers(getAuthList())
+                    .permitAll())
+            .authorizeHttpRequests(requests -> requests
                 .anyRequest()
-                .authenticated()
-            .and()
-                .cors()
-                .configurationSource(this::getCorsConfiguration)
-            .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(getUnauthorizedHandler())
-            .and()
-                .csrf()
-                .disable()
-            .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
+                .authenticated())
+            .cors(cors -> cors.configurationSource(this::getCorsConfiguration))
+            .exceptionHandling(handling -> handling
+                .authenticationEntryPoint(getUnauthorizedHandler()))
+            .csrf(CsrfConfigurer::disable)
+            .addFilterAt(getRequestHeadersAuthenticationFilter(authenticationManager), BasicAuthenticationFilter.class)
             .addFilterAt(getTenantHeaderFilter(), BasicAuthenticationFilter.class)
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(apiAuthenticationProvider)
+            .build();
         // @formatter:on
     }
 
-    private CorsConfiguration getCorsConfiguration() {
+    private CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
         var corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         var methodsAllowed = List.of(GET.name(), POST.name(), HEAD.name(), PATCH.name(), PUT.name(), DELETE.name());
         corsConfiguration.setAllowedMethods(methodsAllowed);
         return corsConfiguration;
     }
 
-    @Override
-    public void configure(final WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(getAuthList());
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(getAuthList());
     }
 
     protected String[] getAuthList() {
@@ -156,13 +149,21 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
     }
 
     @Bean
+    public AuthenticationManager getAuthenticationManager(AuthenticationConfiguration authenticationConfiguration)
+        throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
     protected ApiAuthenticationEntryPoint getUnauthorizedHandler() {
         return new ApiAuthenticationEntryPoint(restExceptionHandler);
     }
 
-    protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter() throws Exception {
+    protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter(
+        AuthenticationManager authenticationManager
+    ) throws Exception {
         return new RequestHeadersAuthenticationFilter(
-            authenticationManager(),
+            authenticationManager,
             getX509CertificateExtractors(),
             getTokenExtractors()
         );
@@ -193,9 +194,5 @@ public abstract class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter 
             tokenExtractors.add(TokenExtractor.bearerExtractor());
         }
         return tokenExtractors;
-    }
-
-    private CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-        return getCorsConfiguration();
     }
 }

@@ -8,22 +8,20 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.externalparamprofile.service.ExternalParamProfileService;
 import fr.gouv.vitamui.iam.server.utils.ApiIamServerUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ExternalParamProfileController.class })
 public class ExternalParamProfileExternalControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
 
@@ -32,10 +30,10 @@ public class ExternalParamProfileExternalControllerTest extends ApiIamController
     @Autowired
     private ExternalParamProfileController externalParamProfileController;
 
-    @MockBean
+    @MockitoBean
     ExternalParamProfileService externalParamProfileService;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         this.mockMvc = MockMvcBuilders.standaloneSetup(externalParamProfileController)
             .setControllerAdvice(new RestExceptionHandler())
@@ -52,11 +50,13 @@ public class ExternalParamProfileExternalControllerTest extends ApiIamController
         super.testGetPaginatedEntities();
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     @WithMockUser(roles = "EDIT_EXTERNAL_PARAM_PROFILE")
     public void testUpdatePaginatedExternalParamProfile() {
-        LOGGER.debug("testUpdatePaginatedExternalParamProfile");
-        super.testUpdateEntity();
+        assertThrows(AssertionError.class, () -> {
+            LOGGER.debug("testUpdatePaginatedExternalParamProfile");
+            super.testUpdateEntity();
+        });
     }
 
     @Override

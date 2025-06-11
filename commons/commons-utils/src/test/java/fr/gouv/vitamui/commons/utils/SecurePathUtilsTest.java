@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.commons.utils;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SecurePathUtilsTest {
 
-    @Test
     @ParameterizedTest
     @ValueSource(
         strings = {
@@ -27,12 +26,9 @@ class SecurePathUtilsTest {
         }
     )
     void testBuildFullPathKo(String untrustedFileName) {
-        assertThrows(SecurityException.class, () -> {
-            SecurePathUtils.buildFilePath("/tmp", untrustedFileName);
-        });
+        assertThrows(SecurityException.class, () -> SecurePathUtils.buildFilePath("/tmp", untrustedFileName));
     }
 
-    @Test
     @ParameterizedTest
     @MethodSource("testBuildFullPathOkParameters")
     void testBuildFullPathOk(String trustedPartialPath, String untrustedFileName, String expectedResult) {
@@ -56,13 +52,13 @@ class SecurePathUtilsTest {
         );
     }
 
-    @Test
     @ParameterizedTest
     @MethodSource("buildFullSecuredFilePathKoParameters")
     void buildFullSecuredFilePathKo(String trustedPartialPath, String untrustedBasePath, String untrustedFileName) {
-        assertThrows(SecurityException.class, () -> {
-            SecurePathUtils.buildFullSecuredFilePath(trustedPartialPath, untrustedBasePath, untrustedFileName);
-        });
+        assertThrows(
+            SecurityException.class,
+            () -> SecurePathUtils.buildFullSecuredFilePath(trustedPartialPath, untrustedBasePath, untrustedFileName)
+        );
     }
 
     private static Stream<Arguments> testBuildFullPathOkParameters() {

@@ -39,7 +39,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.standalone;
 
 import fr.gouv.vitamui.pastis.standalone.config.PastisConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -61,7 +60,6 @@ public class ApiPastisStandaloneApplication extends SpringBootServletInitializer
 
     private final PastisConfiguration pastisConfiguration;
 
-    @Autowired
     public ApiPastisStandaloneApplication(final PastisConfiguration pastisConfiguration) {
         this.pastisConfiguration = pastisConfiguration;
     }

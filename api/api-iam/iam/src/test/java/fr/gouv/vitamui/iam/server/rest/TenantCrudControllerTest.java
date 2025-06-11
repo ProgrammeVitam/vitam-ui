@@ -34,8 +34,9 @@ import fr.gouv.vitamui.iam.server.tenant.service.InitVitamTenantService;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -46,8 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -59,6 +59,8 @@ import static org.mockito.Mockito.when;
  * Tests the {@link TenantController}.
  */
 public final class TenantCrudControllerTest implements CrudControllerTest {
+
+    private AutoCloseable mocks;
 
     private static final String TENANT_ID = "tenantId";
     private static final String POFILE_NAME = "name";
@@ -126,9 +128,9 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     @Mock
     protected ExternalParametersService externalParametersService;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
         controller = new TenantController(tenantService);
@@ -320,10 +322,12 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
-        prepareServices();
-        controller.delete(TENANT_ID);
+    @Test
+    public void testCannotDelete() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            prepareServices();
+            controller.delete(TENANT_ID);
+        });
     }
 
     @Test
@@ -367,5 +371,10 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
 
     private Tenant buildTenant() {
         return IamServerUtilsTest.buildTenant();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

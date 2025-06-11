@@ -9,8 +9,6 @@ rng:
 spring:
   config:
     use-legacy-processing: true
-  profiles:
-    active: dev, swagger
 
   cloud:
     consul: #disabled for dev

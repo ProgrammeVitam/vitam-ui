@@ -36,14 +36,14 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.net.URI;
 import java.util.UUID;
@@ -79,7 +79,7 @@ public class CustomHttpComponentsClientHttpRequestFactory extends HttpComponents
     public CustomHttpComponentsClientHttpRequestFactory(HttpClient httpClient, String userToken) {
         super(httpClient);
         // set factory userToken if defined or else use a random uuid
-        if (!StringUtils.isEmpty(userToken)) {
+        if (!ObjectUtils.isEmpty(userToken)) {
             this.userToken = userToken;
         }
     }
@@ -92,8 +92,8 @@ public class CustomHttpComponentsClientHttpRequestFactory extends HttpComponents
      */
     @Override
     protected HttpContext createHttpContext(HttpMethod httpMethod, URI uri) {
-        HttpContext context = HttpClientContext.create();
-        context.setAttribute(HttpClientContext.USER_TOKEN, userToken);
+        HttpClientContext context = HttpClientContext.create();
+        context.setUserToken(userToken);
         return context;
     }
 }

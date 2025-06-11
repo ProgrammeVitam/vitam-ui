@@ -50,11 +50,10 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -76,9 +75,9 @@ import java.util.List;
 /**
  * UI Archive-Search External controller
  */
-@Api(tags = "Archives search")
 @RequestMapping(RestApi.ARCHIVE_SEARCH_PATH)
 @RestController
+@Tag(name = "Archives search")
 @ResponseBody
 public class ArchivesSearchController {
 
@@ -94,7 +93,6 @@ public class ArchivesSearchController {
     private final ArchiveSearchEliminationService archiveSearchEliminationService;
     private final ArchiveSearchMgtRulesService archiveSearchMgtRulesService;
 
-    @Autowired
     public ArchivesSearchController(
         ArchiveSearchService archiveSearchService,
         ArchiveSearchUnitExportCsvService archiveSearchUnitExportCsvService,
@@ -264,10 +262,7 @@ public class ArchivesSearchController {
         return archiveSearchService.reclassification(reclassificationCriteriaDto);
     }
 
-    @ApiOperation(
-        value = "Upload an ATR file for the transfer acknowledgment",
-        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
-    )
+    @Operation(summary = "Upload an ATR file for the transfer acknowledgment")
     @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
     @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public String transferAcknowledgment(InputStream inputStream)

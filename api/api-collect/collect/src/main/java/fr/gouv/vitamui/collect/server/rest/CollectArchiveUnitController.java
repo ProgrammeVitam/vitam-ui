@@ -34,8 +34,10 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -46,15 +48,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import java.util.Set;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
 
-@Api(tags = "Collect")
 @RestController
+@Tag(name = "Collect")
 @RequestMapping("/collect-api/archive-units/{transactionId}")
 @RequiredArgsConstructor
 public class CollectArchiveUnitController {
@@ -65,9 +65,11 @@ public class CollectArchiveUnitController {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.COLLECT_UPDATE_BULK_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates several archive units asynchronously by passing partial changes to apply to an archive unit")
+    @Operation(
+        summary = "Updates several archive units asynchronously by passing partial changes to apply to an archive unit"
+    )
     public ResponseEntity<OperationIdDto> updateArchiveUnitsByTransaction(
-        @PathVariable("transactionId") final String transactionId,
+        @PathVariable final String transactionId,
         @RequestBody @Validated final Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet
     ) {
         return ResponseEntity.ok(archiveUnitService.update(transactionId, updateArchiveUnitDtoSet));
@@ -77,9 +79,11 @@ public class CollectArchiveUnitController {
     @Consumes(APPLICATION_JSON_PATCH_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on an archive unit")
+    @Operation(
+        summary = "Updates one archive unit asynchronously by passing a list of operation to do on an archive unit"
+    )
     public ResponseEntity<OperationIdDto> updateArchiveUnitByTransaction(
-        @PathVariable("transactionId") final String transactionId,
+        @PathVariable final String transactionId,
         @RequestBody @Validated final JsonPatch jsonPatch,
         @PathVariable final String archiveUnitId
     ) {
@@ -91,9 +95,9 @@ public class CollectArchiveUnitController {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on this one")
+    @Operation(summary = "Updates one archive unit asynchronously by passing a list of operation to do on this one")
     public ResponseEntity<OperationIdDto> updateArchiveUnitByTransaction(
-        @PathVariable("transactionId") final String transactionId,
+        @PathVariable final String transactionId,
         @RequestBody @Validated final JsonPatchDto jsonPatchDto
     ) {
         return ResponseEntity.ok(archiveUnitService.update(transactionId, jsonPatchDto));
@@ -103,9 +107,11 @@ public class CollectArchiveUnitController {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.COLLECT_UPDATE_BULK_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates several archive units asynchronously by passing a list of operation to do on these ones")
+    @Operation(
+        summary = "Updates several archive units asynchronously by passing a list of operation to do on these ones"
+    )
     public ResponseEntity<OperationIdDto> updateArchiveUnitsByTransaction(
-        @PathVariable("transactionId") final String transactionId,
+        @PathVariable final String transactionId,
         @RequestBody @Validated final MultiJsonPatchDto multiJsonPatchDto
     ) {
         return ResponseEntity.ok(archiveUnitService.update(transactionId, multiJsonPatchDto));

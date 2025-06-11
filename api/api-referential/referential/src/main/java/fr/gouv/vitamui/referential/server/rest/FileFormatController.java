@@ -53,6 +53,8 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.fileformat.FileFormatService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -71,14 +73,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Map;
@@ -125,7 +124,7 @@ public class FileFormatController {
     }
 
     @Secured(ServicesData.ROLE_GET_FILE_FORMATS)
-    @RequestMapping(value = "/**", method = RequestMethod.GET)
+    @GetMapping("/**")
     public Object getByIdOrHistory(HttpServletRequest request)
         throws UnsupportedEncodingException, InvalidParseOperationException, VitamClientException {
         LOGGER.debug("getByIdOrHistory ");
@@ -208,7 +207,7 @@ public class FileFormatController {
      */
     @Secured(ServicesData.ROLE_IMPORT_FILE_FORMATS)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importFileFormats(@RequestParam("file") MultipartFile file) {
+    public JsonNode importFileFormats(@RequestParam MultipartFile file) {
         ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         SanityChecker.isValidFileName(file.getOriginalFilename());

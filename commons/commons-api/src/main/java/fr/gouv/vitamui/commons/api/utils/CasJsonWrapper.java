@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.utils.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -56,6 +57,7 @@ public class CasJsonWrapper implements Serializable {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Object data;

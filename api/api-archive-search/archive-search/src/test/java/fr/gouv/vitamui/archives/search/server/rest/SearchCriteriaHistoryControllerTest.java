@@ -41,26 +41,23 @@ import fr.gouv.vitamui.archives.search.server.searchcriteria.service.SearchCrite
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.util.Arrays;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = { SearchCriteriaHistoryController.class })
 public class SearchCriteriaHistoryControllerTest extends ApiArchiveSearchControllerTest<SearchCriteriaHistoryDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private SearchCriteriaHistoryService service;
 
     private SearchCriteriaHistoryController mockedController = MvcUriComponentsBuilder.on(

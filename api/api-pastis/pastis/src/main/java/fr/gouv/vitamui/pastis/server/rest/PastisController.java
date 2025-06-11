@@ -55,8 +55,8 @@ import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -75,9 +75,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
-@Api(tags = "pastis")
 @RequestMapping(RestApi.PASTIS)
 @RestController
+@Tag(name = "pastis")
 @ResponseBody
 class PastisController {
 
@@ -89,7 +89,7 @@ class PastisController {
         this.profileService = profileService;
     }
 
-    @ApiOperation(value = "Download Pa Profile rng file")
+    @Operation(summary = "Download Pa Profile rng file")
     @Secured(ServicesData.ROLE_GET_PROFILES)
     @PostMapping(
         value = RestApi.PASTIS_DOWNLOAD_PA,
@@ -113,7 +113,7 @@ class PastisController {
         }
     }
 
-    @ApiOperation(value = "Download Pua Profile json file")
+    @Operation(summary = "Download Pua Profile json file")
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     @PostMapping(
         value = RestApi.PASTIS_DOWNLOAD_PUA,
@@ -131,7 +131,7 @@ class PastisController {
         }
     }
 
-    @ApiOperation(value = "Retrieve json representation from PUA notice")
+    @Operation(summary = "Retrieve json representation from PUA notice")
     @Secured({ ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES })
     @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
     ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice)
@@ -153,7 +153,7 @@ class PastisController {
         }
     }
 
-    @ApiOperation(value = "Retrieve json representation from input file")
+    @Operation(summary = "Retrieve json representation from input file")
     @Secured({ ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES })
     @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE, consumes = "multipart/form-data", produces = "application/json")
     ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file)
@@ -168,14 +168,14 @@ class PastisController {
         }
     }
 
-    @ApiOperation(value = "Retrieve json representation from PA file")
+    @Operation(summary = "Retrieve json representation from PA file")
     @Secured({ ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES })
     @PostMapping(
         value = RestApi.PASTIS_TRANSFORM_PROFILE_PA,
         consumes = "multipart/form-data",
         produces = "application/json"
     )
-    ResponseEntity<ElementProperties> loadPA(@RequestParam("file") MultipartFile file) {
+    ResponseEntity<ElementProperties> loadPA(@RequestParam MultipartFile file) {
         ElementProperties elementProperties = profileService.loadProfilePA(file);
         if (elementProperties != null) {
             return ResponseEntity.ok(elementProperties);
@@ -184,7 +184,7 @@ class PastisController {
         }
     }
 
-    @ApiOperation(value = "Get template profile by type")
+    @Operation(summary = "Get template profile by type")
     @Secured({ ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES })
     @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
     ResponseEntity<ProfileResponse> createProfile(
@@ -205,10 +205,10 @@ class PastisController {
         }
     }
 
-    @ApiOperation(value = "Get meta-model by type and version")
+    @Operation(summary = "Get meta-model by type and version")
     @Secured({ ServicesData.ROLE_GET_ARCHIVE_PROFILES, ServicesData.ROLE_GET_PROFILES })
     @GetMapping(value = RestApi.PASTIS_METAMODEL)
-    ResponseEntity<SedaNode> getMetaModel(@RequestParam(name = "version") String version) throws IOException {
+    ResponseEntity<SedaNode> getMetaModel(@RequestParam String version) throws IOException {
         SanityChecker.checkSecureParameter(version);
         ProfileVersion profileVersion = ProfileVersion.fromVersionString(version);
         SedaNode sedaNode = profileService.getMetaModel(profileVersion);

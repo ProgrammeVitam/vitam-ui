@@ -38,32 +38,30 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-@RunWith(Parameterized.class)
 public class PuaPastisValidatorOKTest {
 
-    @Parameters
     public static Collection<String> data() {
         return Arrays.asList(new String[] { "pua/pua_OK.json", "pua/pua_OK_with_management.json" });
     }
 
-    private final String fileName;
-    private final PuaPastisValidatorTest puaPastisValidatorTest;
+    private String fileName;
+    private PuaPastisValidatorTest puaPastisValidatorTest;
 
-    public PuaPastisValidatorOKTest(String fileName) {
+    public void initPuaPastisValidatorOKTest(String fileName) {
         this.fileName = fileName;
         this.puaPastisValidatorTest = new PuaPastisValidatorTest();
     }
 
-    @Test
-    public void testImports() {
+    @MethodSource("data")
+    @ParameterizedTest
+    public void testImports(String fileName) {
+        initPuaPastisValidatorOKTest(fileName);
         puaPastisValidatorTest.testImport(fileName, true);
     }
 }

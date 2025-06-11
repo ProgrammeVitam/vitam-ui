@@ -32,7 +32,6 @@ package fr.gouv.vitamui.archives.search.server.service;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -50,7 +49,6 @@ public class ArchiveSearchThresholdService {
 
     private final ExternalParametersApi externalParametersApi;
 
-    @Autowired
     public ArchiveSearchThresholdService(final ExternalParametersApi externalParametersApi) {
         this.externalParametersApi = externalParametersApi;
     }

@@ -39,6 +39,7 @@ package fr.gouv.vitamui.commons.logbook.scheduler;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -47,7 +48,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.annotation.PostConstruct;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 

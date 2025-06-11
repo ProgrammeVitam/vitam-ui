@@ -57,15 +57,14 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import org.apache.commons.lang.StringUtils;
+import jakarta.validation.constraints.NotNull;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -124,7 +123,6 @@ public class ArchiveSearchFacetsService {
     private final ArchiveSearchService archiveSearchService;
     private final ObjectMapper objectMapper;
 
-    @Autowired
     public ArchiveSearchFacetsService(
         final @Lazy ArchiveSearchService archiveSearchService,
         final ObjectMapper objectMapper

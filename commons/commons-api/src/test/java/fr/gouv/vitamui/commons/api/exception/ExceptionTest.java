@@ -2,19 +2,16 @@ package fr.gouv.vitamui.commons.api.exception;
 
 import fr.gouv.vitamui.commons.api.ApplicationTest;
 import fr.gouv.vitamui.commons.api.controller.TestController;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ApplicationTest.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
 public class ExceptionTest {
@@ -29,9 +26,9 @@ public class ExceptionTest {
             String.class
         );
         assertEquals(
-            "Status code should be correctly defined.",
             HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode()
+            result.getStatusCode(),
+            "Status code should be correctly defined."
         );
     }
 
@@ -42,9 +39,9 @@ public class ExceptionTest {
             String.class
         );
         assertEquals(
-            "Status code should be correctly defined.",
             HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode()
+            result.getStatusCode(),
+            "Status code should be correctly defined."
         );
     }
 
@@ -55,9 +52,9 @@ public class ExceptionTest {
             String.class
         );
         assertEquals(
-            "Status code should be correctly defined.",
             HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode()
+            result.getStatusCode(),
+            "Status code should be correctly defined."
         );
     }
 
@@ -67,7 +64,7 @@ public class ExceptionTest {
             TestController.BAD_REQUEST_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -76,7 +73,7 @@ public class ExceptionTest {
             TestController.BAD_REQUEST_EXCEPTION_WITH_THROWABLE,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -85,7 +82,7 @@ public class ExceptionTest {
             TestController.FORBIDDEN_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.FORBIDDEN, result.getStatusCode());
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -95,9 +92,9 @@ public class ExceptionTest {
             String.class
         );
         assertEquals(
-            "Status code should be correctly defined.",
             HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode()
+            result.getStatusCode(),
+            "Status code should be correctly defined."
         );
     }
 
@@ -107,7 +104,7 @@ public class ExceptionTest {
             TestController.INVALID_AUTHENTICATION_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.UNAUTHORIZED, result.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -116,7 +113,7 @@ public class ExceptionTest {
             TestController.INVALID_FORMAT_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -125,7 +122,7 @@ public class ExceptionTest {
             TestController.NOT_FOUND_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.NOT_FOUND, result.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -134,7 +131,7 @@ public class ExceptionTest {
             TestController.NO_RIGHTS_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.FORBIDDEN, result.getStatusCode());
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -143,7 +140,7 @@ public class ExceptionTest {
             TestController.NOT_IMPLEMENTED_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.NOT_IMPLEMENTED, result.getStatusCode());
+        assertEquals(HttpStatus.NOT_IMPLEMENTED, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -152,7 +149,7 @@ public class ExceptionTest {
             TestController.PARSE_OPERATION_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -161,7 +158,7 @@ public class ExceptionTest {
             TestController.PARSE_OPERATION_EXCEPTION_WITH_THROWABLE,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -170,7 +167,7 @@ public class ExceptionTest {
             TestController.ROUTE_NOT_FOUND_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.NOT_FOUND, result.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -179,7 +176,7 @@ public class ExceptionTest {
             TestController.UN_AUTHORIZED_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.UNAUTHORIZED, result.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode(), "Status code should be correctly defined.");
     }
 
     @Test
@@ -188,6 +185,6 @@ public class ExceptionTest {
             TestController.VALIDATION_EXCEPTION,
             String.class
         );
-        assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
     }
 }

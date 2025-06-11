@@ -46,7 +46,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -63,10 +63,10 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private TransactionService transactionService;
 
-    @MockBean
+    @MockitoBean
     private ExternalParametersService externalParametersService;
 
     private TransactionController transactionController;

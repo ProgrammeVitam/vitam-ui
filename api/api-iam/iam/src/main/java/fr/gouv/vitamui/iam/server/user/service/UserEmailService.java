@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -52,7 +53,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 

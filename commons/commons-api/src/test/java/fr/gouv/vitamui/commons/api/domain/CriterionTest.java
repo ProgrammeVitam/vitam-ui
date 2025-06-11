@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.commons.api.domain;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -13,7 +13,7 @@ public class CriterionTest {
 
     private Criterion criteria;
 
-    @Before
+    @BeforeEach
     public void setup() {
         criteria = new Criterion();
     }

@@ -41,23 +41,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
 import fr.gouv.vitamui.pastis.common.util.PastisSAX2Handler;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jakarta.xml.bind.JAXBException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
 public class PastisTest {
 
@@ -83,7 +83,7 @@ public class PastisTest {
         mappedJson.initTree(mappedJson);
 
         String responseFromMarshaller = pastisMarshaller.getMarshalledObject(mappedJson);
-        Assert.assertFalse("RNG profile generated successfully", responseFromMarshaller.isEmpty());
+        Assertions.assertFalse(responseFromMarshaller.isEmpty(), "RNG profile generated successfully");
     }
 
     @Test
@@ -99,6 +99,6 @@ public class PastisTest {
         xmlReader.parse(loader.getResource(this.rngFileName).toURI().toString());
         String jsonTree = getJson.getJsonParsedTree(handler.getElementRNGRoot());
 
-        Assert.assertNotNull("JSON profile generated successfully", jsonTree);
+        Assertions.assertNotNull(jsonTree, "JSON profile generated successfully");
     }
 }

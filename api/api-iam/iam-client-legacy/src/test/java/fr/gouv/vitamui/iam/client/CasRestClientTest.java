@@ -3,8 +3,8 @@ package fr.gouv.vitamui.iam.client;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -24,7 +24,7 @@ public class CasRestClientTest {
 
     private final HttpContext header = new HttpContext(1, "", false, "", "", null, null, null);
 
-    @Before
+    @BeforeEach
     public void setup() {
         Mockito.reset(restTemplate);
         client = new CasRestClient(restTemplate, "http://localhost:8080");

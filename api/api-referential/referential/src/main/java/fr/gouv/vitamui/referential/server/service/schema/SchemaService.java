@@ -55,7 +55,6 @@ import fr.gouv.vitamui.referential.server.service.utils.ImportCSVUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -83,7 +82,6 @@ public class SchemaService extends AbstractService {
     private final AdminExternalClient adminExternalClient;
     private final SecurityService securityService;
 
-    @Autowired
     public SchemaService(
         final AdminExternalClient adminExternalClient,
         final SecurityService securityService,
@@ -113,12 +111,7 @@ public class SchemaService extends AbstractService {
     }
 
     public List<SchemaDto> getSchemas(final Set<Collection> collections) {
-        return collections
-            .stream()
-            .map(this::getSchema)
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .collect(Collectors.toList());
+        return collections.stream().map(this::getSchema).flatMap(Optional::stream).collect(Collectors.toList());
     }
 
     public String deleteSchemas(final List<String> paths)

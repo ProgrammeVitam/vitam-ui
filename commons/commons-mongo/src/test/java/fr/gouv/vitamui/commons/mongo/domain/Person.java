@@ -48,12 +48,11 @@ public class Person extends IdDocument {
 
     @Override
     public String toString() {
-        return String.format(
-            "Person[id=%s, firstName='%s', lastName='%s', email='%s']",
-            getId(),
-            firstName,
-            lastName,
-            emails
-        );
+        return "Person[id=%s, firstName='%s', lastName='%s', email='%s']".formatted(
+                getId(),
+                firstName,
+                lastName,
+                emails
+            );
     }
 }

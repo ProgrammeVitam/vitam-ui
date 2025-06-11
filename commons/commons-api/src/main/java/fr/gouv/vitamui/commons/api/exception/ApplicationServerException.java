@@ -39,6 +39,7 @@ package fr.gouv.vitamui.commons.api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.Serial;
 import java.util.List;
 
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
@@ -47,6 +48,7 @@ public class ApplicationServerException extends VitamUIException {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 6612570153911055086L;
 
     /**

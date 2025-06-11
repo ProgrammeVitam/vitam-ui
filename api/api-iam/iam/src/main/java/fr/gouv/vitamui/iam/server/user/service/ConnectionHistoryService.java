@@ -9,7 +9,6 @@ import fr.gouv.vitamui.iam.server.user.converter.ConnectionHistoryConverter;
 import fr.gouv.vitamui.iam.server.user.dao.ConnectionHistoryRepository;
 import fr.gouv.vitamui.iam.server.user.domain.ConnectionHistory;
 import fr.gouv.vitamui.iam.server.user.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,6 @@ public class ConnectionHistoryService {
     private final SecurityService securityService;
     private final UserService userService;
 
-    @Autowired
     public ConnectionHistoryService(
         final ConnectionHistoryRepository connectionHistoryRepository,
         final ConnectionHistoryExportService exportService,

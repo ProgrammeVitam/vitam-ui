@@ -46,7 +46,6 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class VitamUIAccessContractCommonService {
 
@@ -54,7 +53,6 @@ public class VitamUIAccessContractCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public VitamUIAccessContractCommonService(AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

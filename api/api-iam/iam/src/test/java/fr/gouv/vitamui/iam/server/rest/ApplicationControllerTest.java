@@ -6,22 +6,20 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -30,7 +28,6 @@ import static org.mockito.Mockito.when;
  *
  *
  */
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ApplicationController.class })
 public final class ApplicationControllerTest extends ApiIamControllerTest<ApplicationDto> {
 
@@ -39,10 +36,10 @@ public final class ApplicationControllerTest extends ApiIamControllerTest<Applic
     @Autowired
     ApplicationController applicationController;
 
-    @MockBean
+    @MockitoBean
     private ApplicationService applicationService;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(applicationController)
             .setControllerAdvice(new RestExceptionHandler())

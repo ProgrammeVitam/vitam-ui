@@ -10,9 +10,10 @@ import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -25,8 +26,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -41,6 +42,8 @@ import static org.mockito.Mockito.when;
  */
 
 public class IdentityProviderServiceTest {
+
+    private AutoCloseable mocks;
 
     private IdentityProviderService service;
 
@@ -65,9 +68,9 @@ public class IdentityProviderServiceTest {
     @Mock
     private SecurityService securityService;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
 
         service = new IdentityProviderService(
             sequenceGeneratorService,
@@ -204,9 +207,7 @@ public class IdentityProviderServiceTest {
         dto.setAutoProvisioningEnabled(true);
 
         // Do
-        var thrownException = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            service.create(dto);
-        });
+        var thrownException = Assertions.assertThrows(IllegalArgumentException.class, () -> service.create(dto));
 
         // Verify
         final String expectedMessage = "autoProvisioningEnabled cannot be true for an internal provider";
@@ -328,9 +329,7 @@ public class IdentityProviderServiceTest {
         dto.setInternal(true);
 
         // Do
-        var thrownException = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            service.create(dto);
-        });
+        var thrownException = Assertions.assertThrows(IllegalArgumentException.class, () -> service.create(dto));
 
         //Verify
         final String expectedMessage = "autoProvisioningEnabled cannot be true for an internal provider";
@@ -452,5 +451,10 @@ public class IdentityProviderServiceTest {
 
     private Customer buildCustomer() {
         return IamServerUtilsTest.buildCustomer();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

@@ -21,8 +21,9 @@ import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.server.user.service.UserEmailService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -36,8 +37,7 @@ import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -51,6 +51,8 @@ import static org.mockito.Mockito.when;
  * Emmanuel Deviller
  */
 public final class UserControllerTest implements CrudControllerTest {
+
+    private AutoCloseable mocks;
 
     private static final String IDENTIFIER = "userIdentifier";
 
@@ -91,9 +93,9 @@ public final class UserControllerTest implements CrudControllerTest {
     @Mock
     private ConnectionHistoryService connectionHistoryService;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         userController = new UserController(userService, connectionHistoryService, securityService);
         Mockito.when(userConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(userConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
@@ -421,9 +423,9 @@ public final class UserControllerTest implements CrudControllerTest {
         assertThat(result).isEqualTo(userDto);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
-        userController.delete("dummy");
+    @Test
+    public void testCannotDelete() {
+        assertThrows(UnsupportedOperationException.class, () -> userController.delete("dummy"));
     }
 
     protected CustomerDto buildCustomerDto() {
@@ -453,5 +455,10 @@ public final class UserControllerTest implements CrudControllerTest {
 
     private Customer buildCustomer() {
         return IamServerUtilsTest.buildCustomer();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

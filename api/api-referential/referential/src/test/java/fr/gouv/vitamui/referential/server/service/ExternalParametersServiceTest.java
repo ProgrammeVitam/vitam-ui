@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashMap;
@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 class ExternalParametersServiceTest {
 
-    @MockBean(name = "externalParametersApi")
+    @MockitoBean(name = "externalParametersApi")
     private ExternalParametersApi externalParametersApi;
 
-    @MockBean(name = "securityService")
+    @MockitoBean(name = "securityService")
     private SecurityService securityService;
 
     @InjectMocks
@@ -56,7 +56,7 @@ class ExternalParametersServiceTest {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(PARAM_BULK_OPERATIONS_THRESHOLD_NAME, null);
         when(externalParametersApi.getMyExternalParameters()).thenReturn(parameters);
-        assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
+        assertTrue(externalParametersService.retrieveProfilThreshold().isEmpty());
     }
 
     @Test
@@ -64,6 +64,6 @@ class ExternalParametersServiceTest {
         Map<String, String> parameters = Map.of();
         when(externalParametersApi.getMyExternalParameters()).thenReturn(parameters);
 
-        assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
+        assertTrue(externalParametersService.retrieveProfilThreshold().isEmpty());
     }
 }

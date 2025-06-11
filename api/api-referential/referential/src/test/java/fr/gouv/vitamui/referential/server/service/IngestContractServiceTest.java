@@ -539,8 +539,10 @@ public class IngestContractServiceTest {
         //Then
         String result = asString(exportFile);
         String whened =
-            "\uFEFF\"Identifier\";\"Name\";\"Description\";\"Status\";\"ArchiveProfiles\";\"CheckParentLink\";\"CheckParentId\";\"LinkParentId\";\"FormatUnidentifiedAuthorized\";\"EveryFormatType\";\"FormatType\";\"ManagementContractId\";\"ComputedInheritedRulesAtIngest\";\"MasterMandatory\";\"EveryDataObjectVersion\";\"DataObjectVersion\";\"SignedDocument\";\"SigningRole\";\"ActivationDate\";\"DesactivationDate\"\n" +
-            "\"IC-000001\";\"Name\";\"Description\";\"ACTIVE\";\"PR-000001\";\"AUTHORIZED\";\"CheckParentId\";\"LinkParentId\";\"true\";\"true\";\"FormatType\";\"ManagementContractId\";\"true\";\"true\";\"true\";\"PhysicalMaster\";\"ALLOWED\";\"\";\"31/12/2023\";\"31/12/2023\"\n";
+            """
+            ﻿"Identifier";"Name";"Description";"Status";"ArchiveProfiles";"CheckParentLink";"CheckParentId";"LinkParentId";"FormatUnidentifiedAuthorized";"EveryFormatType";"FormatType";"ManagementContractId";"ComputedInheritedRulesAtIngest";"MasterMandatory";"EveryDataObjectVersion";"DataObjectVersion";"SignedDocument";"SigningRole";"ActivationDate";"DesactivationDate"
+            "IC-000001";"Name";"Description";"ACTIVE";"PR-000001";"AUTHORIZED";"CheckParentId";"LinkParentId";"true";"true";"FormatType";"ManagementContractId";"true";"true";"true";"PhysicalMaster";"ALLOWED";"";"31/12/2023";"31/12/2023"
+            """;
         assertThat(result).isEqualTo(whened);
     }
 

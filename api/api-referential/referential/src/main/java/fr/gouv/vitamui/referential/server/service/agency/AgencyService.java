@@ -67,9 +67,9 @@ import fr.gouv.vitamui.referential.common.service.VitamAgencyCommonService;
 import fr.gouv.vitamui.referential.common.utils.AgencyConverter;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import fr.gouv.vitamui.referential.server.service.utils.ExportCSVUtils;
+import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -77,7 +77,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,7 +102,6 @@ public class AgencyService extends AbstractService {
 
     private VitamAgencyCommonService vitamAgencyCommonService;
 
-    @Autowired
     public AgencyService(
         AgencyCommonService agencyCommonService,
         ObjectMapper objectMapper,
@@ -314,11 +312,8 @@ public class AgencyService extends AbstractService {
         Response response = this.export(vitamContext);
         Object entity = response.getEntity();
 
-        if (entity instanceof InputStream) {
-            var mergedBomCsvInputStream = new SequenceInputStream(
-                new ByteArrayInputStream(ExportCSVUtils.BOM),
-                (InputStream) entity
-            );
+        if (entity instanceof InputStream stream) {
+            var mergedBomCsvInputStream = new SequenceInputStream(new ByteArrayInputStream(ExportCSVUtils.BOM), stream);
             Resource resource = new InputStreamResource(mergedBomCsvInputStream);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }

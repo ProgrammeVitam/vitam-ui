@@ -14,8 +14,8 @@ import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,8 +29,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -64,7 +63,7 @@ public final class ExternalApiAuthenticationProviderTest {
 
     private ExternalApiAuthenticationProvider provider;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         final ContextsApi contextsApi = mock(ContextsApi.class);
         final UsersApi usersApi = mock(UsersApi.class);
@@ -87,16 +86,20 @@ public final class ExternalApiAuthenticationProviderTest {
         when(usersApi.getMe()).thenReturn(userProfile);
     }
 
-    @Test(expected = BadCredentialsException.class)
+    @Test
     public void testBadToken() {
-        final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test", "test");
-        provider.authenticate(token);
+        assertThrows(BadCredentialsException.class, () -> {
+            final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test", "test");
+            provider.authenticate(token);
+        });
     }
 
-    @Test(expected = BadCredentialsException.class)
+    @Test
     public void testNoPrincipalOrCredential() {
-        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(null, null);
-        provider.authenticate(token);
+        assertThrows(BadCredentialsException.class, () -> {
+            final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(null, null);
+            provider.authenticate(token);
+        });
     }
 
     @Test

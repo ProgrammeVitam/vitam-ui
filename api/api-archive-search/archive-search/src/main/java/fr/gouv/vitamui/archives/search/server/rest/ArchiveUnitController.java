@@ -34,9 +34,10 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
@@ -46,21 +47,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import java.util.Set;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
 
 @RestController
+@Tag(name = "ArchiveUnitController")
 @RequestMapping("/archive-units")
-@Api(tags = "ArchiveUnitController", value = "Archive Search units management")
 public class ArchiveUnitController {
 
     private final ArchiveUnitService archiveUnitService;
 
-    @Autowired
     public ArchiveUnitController(ArchiveUnitService archiveUnitService) {
         this.archiveUnitService = archiveUnitService;
     }
@@ -69,7 +67,9 @@ public class ArchiveUnitController {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates several archive units asynchronously by passing partial changes to apply to an archive unit")
+    @Operation(
+        summary = "Updates several archive units asynchronously by passing partial changes to apply to an archive unit"
+    )
     public ResponseEntity<OperationIdDto> updateMultipleArchiveUnits(
         @RequestBody @Validated final Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet
     ) {
@@ -80,7 +80,9 @@ public class ArchiveUnitController {
     @Consumes(APPLICATION_JSON_PATCH_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on an archive unit")
+    @Operation(
+        summary = "Updates one archive unit asynchronously by passing a list of operation to do on an archive unit"
+    )
     public ResponseEntity<OperationIdDto> updateArchiveUnitById(
         @RequestBody @Validated final JsonPatch jsonPatch,
         @RequestParam String archiveUnitId
@@ -93,7 +95,7 @@ public class ArchiveUnitController {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on this one")
+    @Operation(summary = "Updates one archive unit asynchronously by passing a list of operation to do on this one")
     public ResponseEntity<OperationIdDto> updateArchiveUnit(@RequestBody @Validated final JsonPatchDto jsonPatchDto) {
         return ResponseEntity.ok(archiveUnitService.update(jsonPatchDto));
     }
@@ -102,7 +104,9 @@ public class ArchiveUnitController {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
-    @ApiOperation("Updates several archive units asynchronously by passing a list of operation to do on these ones")
+    @Operation(
+        summary = "Updates several archive units asynchronously by passing a list of operation to do on these ones"
+    )
     public ResponseEntity<OperationIdDto> updateArchiveUnit(
         @RequestBody @Validated final MultiJsonPatchDto multiJsonPatchDto
     ) {

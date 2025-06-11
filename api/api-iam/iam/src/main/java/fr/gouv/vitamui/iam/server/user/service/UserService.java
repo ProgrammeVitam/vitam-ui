@@ -912,7 +912,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             query.addCriteria(Criteria.where("email").regex("^" + ADMIN_EMAIL_PATTERN));
             query.addCriteria(Criteria.where("customerId").is(customerId));
             final Optional<User> adminUser = getRepository().findOne(query);
-            Assert.isTrue(!adminUser.isPresent(), message + ": admin user already exists");
+            Assert.isTrue(adminUser.isEmpty(), message + ": admin user already exists");
         }
     }
 
@@ -1005,7 +1005,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
     public UserDto getDefaultAdminUser(final String customerId) {
         final Optional<Customer> customer = customerRepository.findById(customerId);
-        if (!customer.isPresent()) {
+        if (customer.isEmpty()) {
             throw new NotFoundException("No customer found for: " + customerId);
         }
         final String email =
@@ -1063,7 +1063,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .stream()
             .filter(Tenant::isProof)
             .findFirst();
-        if (!proofTenant.isPresent()) {
+        if (proofTenant.isEmpty()) {
             throw new NotFoundException(
                 "Cannot find any proof tenant attached for customer : " + customerId + " of the user: " + userId
             );
@@ -1175,7 +1175,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .setApplicationSessionId(securityService.getApplicationId());
 
         final Optional<User> user = getRepository().findById(id);
-        user.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
+        user.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
         final JsonNode body = logbookService
             .findEventsByIdentifierAndCollectionNames(
                 user.get().getIdentifier(),
@@ -1246,7 +1246,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     private User getUserById(final String id) {
         return getRepository()
             .findById(id)
-            .orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
+            .orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
     }
 
     private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
@@ -1266,7 +1266,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .forEach(key -> {
                 if (!analyticsPatchAllowedFields.contains(key)) {
                     throw new IllegalArgumentException(
-                        String.format("Unable to patch user analytics key : %s is not allowed", key)
+                        "Unable to patch user analytics key : %s is not allowed".formatted(key)
                     );
                 }
             });
@@ -1295,7 +1295,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .anyMatch(application -> Objects.equals(application.getIdentifier(), applicationId));
         if (!userHasPermission && !applicationId.equals(PORTAL_APP_IDENTIFIER)) {
             throw new IllegalArgumentException(
-                String.format("User has no permission to access to the application : %s", applicationId)
+                "User has no permission to access to the application : %s".formatted(applicationId)
             );
         }
     }
@@ -1356,7 +1356,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             if (
                 !(criterion.getOperator().equals(CriterionOperator.EQUALS) && userType.equals(UserTypeEnum.NOMINATIVE))
             ) {
-                throw new ForbiddenException(String.format("User's type %s is not allowed", userType));
+                throw new ForbiddenException("User's type %s is not allowed".formatted(userType));
             }
         } else {
             criteria.addCriterion(new Criterion(TYPE_KEY, UserTypeEnum.NOMINATIVE, CriterionOperator.EQUALS));

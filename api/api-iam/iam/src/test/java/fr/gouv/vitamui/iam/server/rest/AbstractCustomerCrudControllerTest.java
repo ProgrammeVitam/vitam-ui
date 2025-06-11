@@ -14,23 +14,23 @@ import fr.gouv.vitamui.iam.server.common.domain.CustomerIdDocument;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Base tests for any {@link fr.gouv.vitamui.commons.rest.CrudController}.
@@ -60,7 +60,7 @@ public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto
     protected SecurityService securityService;
 
     @Override
-    @Before
+    @BeforeEach
     public void setup() {
         super.setup();
         reset(customSequenceRepository);
@@ -70,7 +70,7 @@ public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto
         reset(securityService);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testCreationFailsAsCustomerDoesNotExist() throws Exception {
         final D dto = buildDto();
@@ -84,7 +84,7 @@ public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto
         }
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
         final D dto = buildDto();
@@ -105,28 +105,33 @@ public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto
         when(customSequenceRepository.incrementSequence(anyString(), anyInt())).thenReturn(
             Optional.of(new CustomSequence())
         );
-        when(
-            DtoFactory.buildProfileDto(
-                anyString(),
-                anyString(),
-                anyBoolean(),
-                anyString(),
-                anyInt(),
-                anyString(),
-                anyList(),
-                anyString()
-            )
-        ).thenReturn(new ProfileDto());
+        try (MockedStatic<DtoFactory> mockDtoFactory1 = mockStatic(DtoFactory.class)) {
+            mockDtoFactory1
+                .when(
+                    () ->
+                        DtoFactory.buildProfileDto(
+                            anyString(),
+                            anyString(),
+                            anyBoolean(),
+                            anyString(),
+                            anyInt(),
+                            anyString(),
+                            anyList(),
+                            anyString()
+                        )
+                )
+                .thenReturn(new ProfileDto());
 
-        final ProfileDto profileDto = new ProfileDto();
-        profileDto.setId("profile_id");
-        when(profileService.create(ArgumentMatchers.any(ProfileDto.class))).thenReturn(profileDto);
+            final ProfileDto profileDto = new ProfileDto();
+            profileDto.setId("profile_id");
+            when(profileService.create(ArgumentMatchers.any(ProfileDto.class))).thenReturn(profileDto);
 
-        final AuthUserDto userDto = new AuthUserDto();
-        userDto.setId("CURRENT_USER_ID");
-        userDto.setLevel("DSI");
+            final AuthUserDto userDto = new AuthUserDto();
+            userDto.setId("CURRENT_USER_ID");
+            userDto.setLevel("DSI");
 
-        when(securityService.getUser()).thenReturn(userDto);
-        when(securityService.getLevel()).thenReturn(userDto.getLevel());
+            when(securityService.getUser()).thenReturn(userDto);
+            when(securityService.getLevel()).thenReturn(userDto.getLevel());
+        }
     }
 }

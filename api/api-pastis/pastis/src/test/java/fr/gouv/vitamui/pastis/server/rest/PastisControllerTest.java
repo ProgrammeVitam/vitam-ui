@@ -12,16 +12,14 @@ import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -31,19 +29,18 @@ import java.security.NoSuchAlgorithmException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = PastisController.class)
 @Import(value = { WebSecurityConfig.class, RestExceptionHandler.class })
 public class PastisControllerTest extends ControllerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private PastisService service;
 
     private PastisController controller;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         controller = new PastisController(service);
     }

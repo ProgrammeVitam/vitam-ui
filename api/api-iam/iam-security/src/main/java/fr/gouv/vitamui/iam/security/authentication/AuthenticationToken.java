@@ -42,6 +42,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.io.Serial;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 7516300143014484275L;
 
     private final HttpContext credentials;

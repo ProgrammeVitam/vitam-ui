@@ -42,8 +42,8 @@ import fr.gouv.vitamui.iam.server.user.domain.ApplicationAnalytics;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.bson.Document;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -63,9 +63,7 @@ import java.util.Optional;
 import static fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest.CUSTOMER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -126,7 +124,7 @@ public final class UserServiceTest {
 
     private UserInfoService userInfoService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         sequenceGeneratorService = mock(SequenceGeneratorService.class);
         userRepository = mock(UserRepository.class);
@@ -166,10 +164,12 @@ public final class UserServiceTest {
         tokenRepository = mock(TokenRepository.class);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testGetUserByTokenNoTokenInDatabase() {
-        Mockito.when(securityService.userIsRootLevel()).thenReturn(true);
-        userService.findUserById(TOKEN_VALUE);
+        assertThrows(NotFoundException.class, () -> {
+            Mockito.when(securityService.userIsRootLevel()).thenReturn(true);
+            userService.findUserById(TOKEN_VALUE);
+        });
     }
 
     @Test
@@ -235,7 +235,7 @@ public final class UserServiceTest {
         when(securityService.getCustomerId()).thenReturn(customerDto.getId());
 
         final UserDto userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
     }
 
@@ -274,7 +274,7 @@ public final class UserServiceTest {
         when(securityService.getCustomerId()).thenReturn(customerDto.getId());
 
         final UserDto userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
     }
 
@@ -494,62 +494,66 @@ public final class UserServiceTest {
         partialDto.put("customerId", user.getCustomerId());
         partialDto.put("status", UserStatusEnum.DISABLED.toString());
         final UserDto userUpdatedDto = userService.patch(partialDto);
-        assertNotNull("User shouldn't be null", userUpdatedDto);
-        assertEquals("User status isn't correct", UserStatusEnum.DISABLED, userUpdatedDto.getStatus());
+        assertNotNull(userUpdatedDto, "User shouldn't be null");
+        assertEquals(UserStatusEnum.DISABLED, userUpdatedDto.getStatus(), "User status isn't correct");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void beforePatch_whenUserWasNotBlocked_thenIllegalArgumentException() {
-        final User user = IamServerUtilsTest.buildUser(USER_ID, "test@vitamui.com", "profileGroupId");
+        assertThrows(IllegalArgumentException.class, () -> {
+            final User user = IamServerUtilsTest.buildUser(USER_ID, "test@vitamui.com", "profileGroupId");
 
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+            when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
-        final Map<String, Object> partialDto = new HashMap<>();
-        partialDto.put("id", USER_ID);
-        partialDto.put("customerId", user.getCustomerId());
-        partialDto.put("status", UserStatusEnum.BLOCKED.toString());
-        userService.beforePatch(partialDto);
+            final Map<String, Object> partialDto = new HashMap<>();
+            partialDto.put("id", USER_ID);
+            partialDto.put("customerId", user.getCustomerId());
+            partialDto.put("status", UserStatusEnum.BLOCKED.toString());
+            userService.beforePatch(partialDto);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void beforePatch_whenUserWasBlocked_thenIllegalArgumentException() {
-        final String emailToTest = "test@vitamui.com";
-        final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
-        user.setStatus(UserStatusEnum.BLOCKED);
-        final User userUpdated = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
-        userUpdated.setStatus(UserStatusEnum.BLOCKED);
-        final UserDto userToUpdate = new UserDto();
-        VitamUIUtils.copyProperties(user, userToUpdate);
-        final GroupDto groupDto = buildGroupDto();
-        groupDto.setId(user.getGroupId());
-        groupDto.setCustomerId(user.getCustomerId());
-        groupDto.setLevel(user.getLevel());
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String emailToTest = "test@vitamui.com";
+            final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
+            user.setStatus(UserStatusEnum.BLOCKED);
+            final User userUpdated = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
+            userUpdated.setStatus(UserStatusEnum.BLOCKED);
+            final UserDto userToUpdate = new UserDto();
+            VitamUIUtils.copyProperties(user, userToUpdate);
+            final GroupDto groupDto = buildGroupDto();
+            groupDto.setId(user.getGroupId());
+            groupDto.setCustomerId(user.getCustomerId());
+            groupDto.setLevel(user.getLevel());
 
-        when(userRepository.save(any())).thenReturn(userUpdated);
-        when(userRepository.findByEmailIgnoreCaseAndCustomerId(emailToTest, CUSTOMER_ID)).thenReturn(user);
-        when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        when(userRepository.existsById(any())).thenReturn(true);
+            when(userRepository.save(any())).thenReturn(userUpdated);
+            when(userRepository.findByEmailIgnoreCaseAndCustomerId(emailToTest, CUSTOMER_ID)).thenReturn(user);
+            when(userRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(user));
+            when(userRepository.findById(any())).thenReturn(Optional.of(user));
+            when(userRepository.existsById(any())).thenReturn(true);
 
-        when(securityService.getLevel()).thenReturn("DSI");
-        when(securityService.isLevelAllowed(any())).thenReturn(true);
-        when(securityService.getUser()).thenReturn(new AuthUserDto());
-        when(groupService.getOne(any(), any(), any())).thenReturn(groupDto);
-        final Customer customer = new Customer();
-        customer.setEnabled(true);
-        customer.setId(user.getCustomerId());
-        customer.setOtp(OtpEnum.OPTIONAL);
-        final CustomerDto customerDto = new CustomerDto();
-        VitamUIUtils.copyProperties(customer, customerDto);
+            when(securityService.getLevel()).thenReturn("DSI");
+            when(securityService.isLevelAllowed(any())).thenReturn(true);
+            when(securityService.getUser()).thenReturn(new AuthUserDto());
+            when(groupService.getOne(any(), any(), any())).thenReturn(groupDto);
+            final Customer customer = new Customer();
+            customer.setEnabled(true);
+            customer.setId(user.getCustomerId());
+            customer.setOtp(OtpEnum.OPTIONAL);
+            final CustomerDto customerDto = new CustomerDto();
+            VitamUIUtils.copyProperties(customer, customerDto);
 
-        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
-        when(securityService.getCustomerId()).thenReturn(customerDto.getId());
+            when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
+            when(securityService.getCustomerId()).thenReturn(customerDto.getId());
 
-        final Map<String, Object> partialDto = new HashMap<>();
-        partialDto.put("id", USER_ID);
-        partialDto.put("customerId", user.getCustomerId());
-        partialDto.put("status", UserStatusEnum.BLOCKED.toString());
-        userService.beforePatch(partialDto);
+            final Map<String, Object> partialDto = new HashMap<>();
+            partialDto.put("id", USER_ID);
+            partialDto.put("customerId", user.getCustomerId());
+            partialDto.put("status", UserStatusEnum.BLOCKED.toString());
+            userService.beforePatch(partialDto);
+        });
     }
 
     /**
@@ -597,8 +601,8 @@ public final class UserServiceTest {
         partialDto.put("customerId", user.getCustomerId());
         partialDto.put("status", UserStatusEnum.ENABLED.toString());
         final UserDto userUpdatedDto = userService.patch(partialDto);
-        assertNotNull("User shouldn't be null", userUpdatedDto);
-        assertEquals("User status isn't correct", UserStatusEnum.ENABLED, userUpdatedDto.getStatus());
+        assertNotNull(userUpdatedDto, "User shouldn't be null");
+        assertEquals(UserStatusEnum.ENABLED, userUpdatedDto.getStatus(), "User status isn't correct");
     }
 
     @Test
@@ -774,7 +778,7 @@ public final class UserServiceTest {
         updatedUser.setEmail(userToUpdate.getEmail());
         when(userRepository.save(any())).thenReturn(updatedUser);
         UserDto userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
 
         userToUpdate.setEmail("test@vitamui.fr");
@@ -783,7 +787,7 @@ public final class UserServiceTest {
         updatedUser.setEmail(userToUpdate.getEmail());
         when(userRepository.save(any())).thenReturn(updatedUser);
         userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
     }
 
@@ -920,7 +924,7 @@ public final class UserServiceTest {
         updatedUser.setPhone(userToUpdate.getPhone());
         when(userRepository.save(any())).thenReturn(updatedUser);
         UserDto userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
 
         userToUpdate.setPhone("+333171270699");
@@ -928,7 +932,7 @@ public final class UserServiceTest {
         updatedUser.setPhone(userToUpdate.getPhone());
         when(userRepository.save(any())).thenReturn(updatedUser);
         userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
 
         userToUpdate.setMobile("+33671270699");
@@ -937,7 +941,7 @@ public final class UserServiceTest {
         updatedUser.setMobile(userToUpdate.getMobile());
         when(userRepository.save(any())).thenReturn(updatedUser);
         userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
 
         userToUpdate.setMobile("+333671270699");
@@ -946,7 +950,7 @@ public final class UserServiceTest {
         updatedUser.setMobile(userToUpdate.getMobile());
         when(userRepository.save(any())).thenReturn(updatedUser);
         userUpdated = userService.update(userToUpdate);
-        assertNotNull("User shouldn't be null", userUpdated);
+        assertNotNull(userUpdated, "User shouldn't be null");
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
     }
 

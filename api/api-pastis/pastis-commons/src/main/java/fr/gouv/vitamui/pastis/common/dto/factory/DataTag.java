@@ -39,9 +39,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
 import fr.gouv.vitamui.pastis.common.util.RNGConstants;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.NoArgsConstructor;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:data")
 @NoArgsConstructor

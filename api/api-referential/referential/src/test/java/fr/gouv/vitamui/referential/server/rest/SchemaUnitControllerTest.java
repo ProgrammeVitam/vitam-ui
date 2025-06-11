@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.referential.server.rest;
 
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.server.service.schema.SchemaService;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -25,7 +22,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 public class SchemaUnitControllerTest {
 
     @InjectMocks
@@ -59,11 +55,6 @@ public class SchemaUnitControllerTest {
 
         // Mock schemaExternalService.importUnitSchemas behavior
         when(schemaService.importUnitSchema(any())).thenReturn(expectedResponse);
-
-        // Mock securityService.getHttpContext() to return a valid HttpContext
-        HttpContext mockHttpContext = mock(HttpContext.class);
-        when(securityService.getHttpContext()).thenReturn(mockHttpContext);
-        when(mockHttpContext.getTenantIdentifier()).thenReturn(1);
 
         // Prepare a valid file using the file in the resources
         byte[] fileContent = loadTestFileContent(TEST_FILE_NAME);
@@ -104,11 +95,6 @@ public class SchemaUnitControllerTest {
             new byte[0]
         );
 
-        // Mock the securityService.getHttpContext() to return a valid HttpContext
-        HttpContext mockHttpContext = mock(HttpContext.class);
-        when(securityService.getHttpContext()).thenReturn(mockHttpContext);
-        when(mockHttpContext.getTenantIdentifier()).thenReturn(1);
-
         // When & Then
         assertThrows(
             IllegalArgumentException.class,
@@ -131,10 +117,6 @@ public class SchemaUnitControllerTest {
         when(schemaService.importUnitSchema(any())).thenThrow(
             new RuntimeException("Mocked exception from schemaExternalService")
         );
-
-        HttpContext mockHttpContext = mock(HttpContext.class);
-        when(securityService.getHttpContext()).thenReturn(mockHttpContext);
-        when(mockHttpContext.getTenantIdentifier()).thenReturn(1);
 
         // When & Then
         RuntimeException exception = assertThrows(

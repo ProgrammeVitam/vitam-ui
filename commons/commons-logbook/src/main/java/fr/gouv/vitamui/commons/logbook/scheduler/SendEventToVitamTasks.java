@@ -55,6 +55,9 @@ import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import jakarta.annotation.PostConstruct;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -70,9 +73,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Collection;
@@ -222,7 +222,7 @@ public class SendEventToVitamTasks {
             if (response != null && response.getStatus() == Response.Status.CONFLICT.getStatusCode()) {
                 LOGGER.warn("Event already send to vitam", e);
             } else {
-                LOGGER.error(String.format("Failed to send event %s to vitam", logbookOperationParams), e);
+                LOGGER.error("Failed to send event %s to vitam".formatted(logbookOperationParams), e);
             }
         } finally {
             final EventStatus status = hasError ? EventStatus.ERROR : EventStatus.SUCCESS;

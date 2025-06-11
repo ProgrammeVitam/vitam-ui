@@ -7,6 +7,7 @@ import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIDto;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import jakarta.validation.Valid;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpMethod;
@@ -16,17 +17,17 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
@@ -94,11 +95,7 @@ public class TestController {
 
     public static final String REQUEST_TIMEOUT_ERROR = "/test/requestTimeOutException";
 
-    @RequestMapping(
-        value = VITAMUI_EXCEPTION,
-        method = RequestMethod.POST,
-        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
-    )
+    @PostMapping(value = VITAMUI_EXCEPTION, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String vitamuiException(@RequestBody final VitamUIDto name) {
         throw new VitamUIException("Test") {
             /**
@@ -178,19 +175,18 @@ public class TestController {
         throw ApiErrorGenerator.getRouteNotFoundException(HttpMethod.POST, "/path");
     }
 
-    @RequestMapping(value = SPRING_BAD_REQUEST_EXCEPTION, method = RequestMethod.GET)
+    @GetMapping(SPRING_BAD_REQUEST_EXCEPTION)
     public String springBadRequest(
-        @RequestParam(value = "name", required = true) final Integer name,
-        @RequestHeader(value = "myheader") final String myheader
+        @RequestParam(required = true) final Integer name,
+        @RequestHeader final String myheader
     ) {
         return "";
     }
 
-    @RequestMapping(
+    @PostMapping(
         value = SPRING_POST_BAD_REQUEST_EXCEPTION,
         produces = MediaType.TEXT_PLAIN_VALUE,
-        method = RequestMethod.POST,
-        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+        consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public @ResponseBody String springBadRequestPost(@RequestBody final VitamUIError name) {
         return "";
@@ -201,7 +197,7 @@ public class TestController {
         return "";
     }
 
-    @RequestMapping(value = SPRING_POST, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = SPRING_POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String springPost(@Valid @RequestBody final VitamUIDto name) {
         return "";
     }

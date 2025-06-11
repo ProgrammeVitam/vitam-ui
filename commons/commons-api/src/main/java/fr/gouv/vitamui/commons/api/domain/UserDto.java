@@ -40,14 +40,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fr.gouv.vitamui.commons.api.deserializer.ToLowerCaseConverter;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serial;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -62,6 +63,7 @@ import java.util.List;
 @ToString(callSuper = true)
 public class UserDto extends CustomerIdDto {
 
+    @Serial
     private static final long serialVersionUID = -7977759384732830987L;
 
     @NotNull

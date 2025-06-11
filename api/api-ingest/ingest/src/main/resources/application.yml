@@ -8,9 +8,8 @@ spring:
     name: API Ingest
     description: This API is used to manage Vitam's ingests
     version: v1
-  mvc:
-    favicon:
-      enabled: false
+  # This property is deprecated and will be removed in future Spring Boot versions
+      # enabled: false
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -37,3 +36,5 @@ swagger:
   layer: api-external
   file-path: file:../../../tools/swagger/docs/api-external/ingest/swagger.json
 
+gateway:
+  enabled: true

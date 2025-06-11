@@ -6,21 +6,18 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.subrogation.service.SubrogationService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { SubrogationController.class })
 public class SubrogationControllerTest extends ApiIamControllerTest<SubrogationDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SubrogationControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     SubrogationService subrogationService;
 
     @Test

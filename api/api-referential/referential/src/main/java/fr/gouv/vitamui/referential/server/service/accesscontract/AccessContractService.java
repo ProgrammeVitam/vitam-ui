@@ -85,7 +85,6 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -127,7 +126,6 @@ public class AccessContractService extends AbstractService {
 
     private final SecurityService securityService;
 
-    @Autowired
     public AccessContractService(
         AccessContractCommonService accessContractCommonService,
         VitamUIAccessContractCommonService vitamUIAccessContractCommonService,

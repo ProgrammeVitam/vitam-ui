@@ -50,10 +50,10 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportCommonService;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -67,12 +67,14 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class ProbativeValueServiceTest {
+
+    private AutoCloseable mocks;
 
     @InjectMocks
     private ProbativeValueService probativeValueService;
@@ -83,19 +85,19 @@ public class ProbativeValueServiceTest {
     @Mock
     private UnitCommonService unitCommonService;
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    @TempDir
+    public File folder;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         probativeValueService = new ProbativeValueService(vitamProbativeValueService, unitCommonService);
     }
 
     @Test
     public void shoudl_generate_report_on_probativereport()
         throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
-        File workspace = this.folder.newFolder();
+        File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
             buildVitamProbativeReport("data/provative_report_WARNING.json")
         );
@@ -129,7 +131,7 @@ public class ProbativeValueServiceTest {
     @Test
     public void shoudl_generate_report_on_probativereport_multiple_entries()
         throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
-        File workspace = this.folder.newFolder();
+        File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
             buildVitamProbativeReport("data/provative_report_WARNING_multiple_entries.json")
         );
@@ -172,7 +174,7 @@ public class ProbativeValueServiceTest {
     @Test
     public void shoudl_generate_report_on_probativereport_ko()
         throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
-        File workspace = this.folder.newFolder();
+        File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
             buildVitamProbativeReport("data/provative_report_KO.json")
         );
@@ -227,5 +229,19 @@ public class ProbativeValueServiceTest {
         return RequestResponseOK.getFromJsonNode(
             objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
         );
+    }
+
+    private static File newFolder(File root, String... subDirs) throws IOException {
+        String subFolder = String.join("/", subDirs);
+        File result = new File(root, subFolder);
+        if (!result.mkdirs()) {
+            throw new IOException("Couldn't create folders " + root);
+        }
+        return result;
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

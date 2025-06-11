@@ -39,7 +39,6 @@ package fr.gouv.vitamui.iam.security.provider;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -60,7 +59,6 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
     private final InternalApiAuthenticationProvider internalApiAuthenticationProvider;
     private final ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
 
-    @Autowired
     public ApiAuthenticationProvider(
         final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
         final ExternalApiAuthenticationProvider externalApiAuthenticationProvider

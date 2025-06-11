@@ -45,7 +45,6 @@ import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class AgencyCommonService {
 
@@ -53,7 +52,6 @@ public class AgencyCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public AgencyCommonService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

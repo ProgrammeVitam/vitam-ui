@@ -4,12 +4,12 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderBuilder;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link Pac4jClientBuilder} and {@link SpMetadataGenerator}.
@@ -22,7 +22,7 @@ public final class SpMetadataGeneratorTest {
 
     private Pac4jClientBuilder builder;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         builder = new Pac4jClientBuilder();
         builder.setCasLoginUrl(CAS_URL);

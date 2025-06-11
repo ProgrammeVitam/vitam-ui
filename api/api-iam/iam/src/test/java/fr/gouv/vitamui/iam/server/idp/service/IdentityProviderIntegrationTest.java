@@ -20,18 +20,16 @@ import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,7 +42,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
 public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationTest {
@@ -54,16 +51,16 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
 
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
 
-    @MockBean
+    @MockitoBean
     private TenantRepository tenantRepository;
 
-    @MockBean
+    @MockitoBean
     private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private HttpContext httpContext;
 
-    @MockBean
+    @MockitoBean
     private SpMetadataGenerator spMetadataGenerator;
 
     @Autowired
@@ -71,10 +68,10 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
 
     private IdentityProviderService service;
 
-    @MockBean
+    @MockitoBean
     private ConnectionHistoryService connectionHistoryService;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
     @BeforeEach

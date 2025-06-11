@@ -8,7 +8,7 @@ import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 

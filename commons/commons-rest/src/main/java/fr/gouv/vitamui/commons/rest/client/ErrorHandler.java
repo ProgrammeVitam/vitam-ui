@@ -68,7 +68,7 @@ public class ErrorHandler extends DefaultResponseErrorHandler {
         // on HEAD requests, we don't have a body
         if (StringUtils.isBlank(body)) {
             error = new VitamUIError();
-            error.setStatus(response.getRawStatusCode());
+            error.setStatus(response.getStatusCode().value());
             error.setMessage("Unknown problem");
             error.setError("apierror.unknown");
         } else {

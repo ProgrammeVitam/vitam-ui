@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.commons.utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -9,10 +9,10 @@ public class VitamUIStringUtilsTest {
 
     @Test
     public void TestIsBoolean() throws IOException {
-        Assert.assertTrue(VitamUIStringUtils.isBoolean("y"));
-        Assert.assertTrue(VitamUIStringUtils.isBoolean("true"));
-        Assert.assertTrue(VitamUIStringUtils.isBoolean("false"));
-        Assert.assertFalse(VitamUIStringUtils.isBoolean(null));
-        Assert.assertFalse(VitamUIStringUtils.isBoolean("test"));
+        Assertions.assertTrue(VitamUIStringUtils.isBoolean("y"));
+        Assertions.assertTrue(VitamUIStringUtils.isBoolean("true"));
+        Assertions.assertTrue(VitamUIStringUtils.isBoolean("false"));
+        Assertions.assertFalse(VitamUIStringUtils.isBoolean(null));
+        Assertions.assertFalse(VitamUIStringUtils.isBoolean("test"));
     }
 }

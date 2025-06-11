@@ -42,6 +42,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -60,6 +61,7 @@ public class AddressDto implements Serializable {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 2678515905095483780L;
 
     private String street;

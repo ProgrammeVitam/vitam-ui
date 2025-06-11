@@ -35,7 +35,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +57,9 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_OBJECT
 /**
  * Collect Archive search External controller
  */
-@Api(tags = "Collect")
 @RequestMapping(COLLECT_PROJECT_OBJECT_GROUPS_PATH)
 @RestController
+@Tag(name = "Collect")
 @ResponseBody
 @RequiredArgsConstructor
 public class ProjectObjectGroupController {

@@ -45,7 +45,6 @@ import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -123,14 +122,13 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 @Configuration
 @Import(
     {
         RestExceptionHandler.class,
-        SwaggerConfiguration.class,
         WebSecurityConfig.class,
         VitamAccessConfig.class,
         VitamAdministrationConfig.class,
@@ -142,7 +140,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public MultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
+        return new StandardServletMultipartResolver();
     }
 
     @Bean
@@ -197,26 +195,14 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        IamUserAuthentificationService iamUserAuthentificationService
-    ) {
-        return new InternalApiAuthenticationProvider(iamUserAuthentificationService);
-    }
-
-    @Bean
-    public ExternalApiAuthenticationProvider externalApiAuthenticationProvider(
-        ContextsApi contextsApi,
-        IamUserAuthentificationService iamAuthentificationService
-    ) {
-        return new ExternalApiAuthenticationProvider(contextsApi, iamAuthentificationService);
-    }
-
-    @Bean
     public ApiAuthenticationProvider apiAuthenticationProvider(
-        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
-        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+        IamUserAuthentificationService iamUserAuthentificationService,
+        ContextsApi contextsApi
     ) {
-        return new ApiAuthenticationProvider(internalApiAuthenticationProvider, externalApiAuthenticationProvider);
+        return new ApiAuthenticationProvider(
+            new InternalApiAuthenticationProvider(iamUserAuthentificationService),
+            new ExternalApiAuthenticationProvider(contextsApi, iamUserAuthentificationService)
+        );
     }
 
     @Bean

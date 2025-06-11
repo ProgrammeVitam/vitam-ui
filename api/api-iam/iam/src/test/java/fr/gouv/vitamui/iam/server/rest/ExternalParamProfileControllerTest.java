@@ -7,24 +7,21 @@ import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersService;
 import fr.gouv.vitamui.iam.server.externalparamprofile.service.ExternalParamProfileService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ExternalParamProfileController.class })
 public class ExternalParamProfileControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParamProfileControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private ExternalParametersService externalParametersService;
 
-    @MockBean
+    @MockitoBean
     private ExternalParamProfileService externalParamProfileService;
 
     @Test

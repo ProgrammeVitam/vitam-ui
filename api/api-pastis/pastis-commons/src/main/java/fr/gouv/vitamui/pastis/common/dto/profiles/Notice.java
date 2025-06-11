@@ -47,12 +47,12 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileStatus;
 import fr.gouv.vitam.common.model.administration.ProfileFormat;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.core.io.Resource;
 
-import javax.annotation.CheckForNull;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -153,7 +153,7 @@ public class Notice extends IdDto {
         }
     }
 
-    @CheckForNull
+    @Nullable
     private String getFileBaseName(String fileName) {
         String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
         return tokens[0];

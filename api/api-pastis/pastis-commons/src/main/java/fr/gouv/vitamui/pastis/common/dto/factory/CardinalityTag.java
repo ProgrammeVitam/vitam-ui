@@ -38,7 +38,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 
 @XmlSeeAlso({ OneOrMoreTag.class, ZeroOrMoreTag.class, OptionalTag.class })
 public class CardinalityTag extends RngTag {}

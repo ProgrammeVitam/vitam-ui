@@ -68,13 +68,12 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AgencyCSVDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.utils.AgencyConverter;
+import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -94,7 +93,6 @@ public class VitamAgencyCommonService {
 
     private ObjectMapper objectMapper;
 
-    @Autowired
     public VitamAgencyCommonService(
         AdminExternalClient adminExternalClient,
         AgencyCommonService agencyCommonService,

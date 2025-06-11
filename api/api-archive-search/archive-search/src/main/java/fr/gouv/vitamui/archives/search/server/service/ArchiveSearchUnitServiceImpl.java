@@ -60,7 +60,6 @@ import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -79,7 +78,6 @@ public class ArchiveSearchUnitServiceImpl implements ArchiveUnitService {
     private final JsonPatchDtoToUpdateMultiQueryConverter jsonPatchDtoToUpdateMultiQueryConverter;
     private final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto;
 
-    @Autowired
     public ArchiveSearchUnitServiceImpl(
         final AccessExternalClient accessExternalClient,
         final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter,

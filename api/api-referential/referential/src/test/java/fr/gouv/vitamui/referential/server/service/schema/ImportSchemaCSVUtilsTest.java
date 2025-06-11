@@ -6,12 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -22,11 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Unit Tests for ImportSchemaCSVUtils")
-@MockitoSettings(strictness = Strictness.LENIENT)
 class ImportSchemaCSVUtilsTest {
 
     @Mock
@@ -69,9 +64,6 @@ class ImportSchemaCSVUtilsTest {
     @Test
     @DisplayName("Should throw exception for empty schema file")
     void shouldThrowExceptionForEmptyFile() throws Exception {
-        // Arrange: Mock the file to simulate an empty file
-        when(mockFile.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
-
         // Act & Assert: Verify exception is thrown with the expected message
         BadRequestException exception = assertThrows(
             BadRequestException.class,

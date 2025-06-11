@@ -37,7 +37,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class VitamUIManagementContractCommonService {
 
@@ -45,7 +44,6 @@ public class VitamUIManagementContractCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public VitamUIManagementContractCommonService(AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

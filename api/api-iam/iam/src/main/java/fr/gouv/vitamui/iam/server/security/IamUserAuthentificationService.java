@@ -45,6 +45,7 @@ import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.server.token.domain.Token;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +53,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**

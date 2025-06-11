@@ -5,21 +5,18 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { UserInfoController.class })
 public class UserInfoControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
 
     @Test

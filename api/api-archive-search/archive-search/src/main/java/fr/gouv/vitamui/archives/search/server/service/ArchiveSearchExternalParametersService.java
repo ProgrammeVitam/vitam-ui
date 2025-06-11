@@ -43,7 +43,6 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -60,7 +59,6 @@ public class ArchiveSearchExternalParametersService {
     private final ExternalParametersApi externalParametersApi;
     private final SecurityService securityService;
 
-    @Autowired
     public ArchiveSearchExternalParametersService(
         final ExternalParametersApi externalParametersApi,
         final SecurityService securityService

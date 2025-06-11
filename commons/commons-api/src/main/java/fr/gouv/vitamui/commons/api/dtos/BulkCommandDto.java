@@ -30,10 +30,10 @@ package fr.gouv.vitamui.commons.api.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.validation.constraints.Size;
 import java.util.Collection;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;

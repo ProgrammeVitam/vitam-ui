@@ -38,14 +38,15 @@ package fr.gouv.vitamui.iam.common.dto;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serial;
 import java.time.Instant;
 
 /**
@@ -60,6 +61,7 @@ public class SubrogationDto extends IdDto {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 8284964624297766778L;
 
     @NotNull

@@ -55,7 +55,6 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.servers.ServerVariable;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -96,7 +95,6 @@ class PastisController {
 
     private final PastisService profileService;
 
-    @Autowired
     public PastisController(final PastisService pastisService) {
         this.profileService = pastisService;
     }
@@ -249,7 +247,7 @@ class PastisController {
         tags = { "pastis" }
     )
     @GetMapping(value = RestApi.PASTIS_METAMODEL)
-    ResponseEntity<SedaNode> getMetaModel(@RequestParam(name = "version") String version) throws IOException {
+    ResponseEntity<SedaNode> getMetaModel(@RequestParam String version) throws IOException {
         ProfileVersion profileVersion = ProfileVersion.fromVersionString(version);
         SedaNode sedaNode = profileService.getMetaModel(profileVersion);
         if (sedaNode == null) {

@@ -1,15 +1,16 @@
 package fr.gouv.vitamui.iam.server.rest;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests the {@link IdentityProviderController}.
@@ -18,32 +19,43 @@ import org.mockito.MockitoAnnotations;
  */
 public final class IdentityProviderCrudControllerTest {
 
+    private AutoCloseable mocks;
+
     @InjectMocks
     private IdentityProviderController controller;
 
     @Mock
     private IdentityProviderService service;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
     }
 
     private void prepareServices() {}
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testCannotUpdate() {
-        final IdentityProviderDto dto = buildIdentityProviderDto();
-        controller.update("id", dto);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            final IdentityProviderDto dto = buildIdentityProviderDto();
+            controller.update("id", dto);
+        });
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
-        prepareServices();
-        controller.delete("Id");
+    @Test
+    public void testCannotDelete() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            prepareServices();
+            controller.delete("Id");
+        });
     }
 
     private IdentityProviderDto buildIdentityProviderDto() {
         return IamServerUtilsTest.buildIdentityProviderDto();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

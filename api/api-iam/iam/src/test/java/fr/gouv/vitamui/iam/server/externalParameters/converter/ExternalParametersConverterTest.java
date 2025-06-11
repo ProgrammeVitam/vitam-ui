@@ -7,21 +7,21 @@ import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.iam.server.common.domain.Parameter;
 import fr.gouv.vitamui.iam.server.externalParameters.domain.ExternalParameters;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExternalParametersConverterTest {
 
     private DummyData dummyData;
     final ExternalParametersConverter externalParametersConverter = new ExternalParametersConverter();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         dummyData = new DummyData();
     }

@@ -43,13 +43,11 @@ import fr.gouv.vitam.common.model.ItemStatus;
 import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.processing.ProcessDetail;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class VitamOperationCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public VitamOperationCommonService(AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

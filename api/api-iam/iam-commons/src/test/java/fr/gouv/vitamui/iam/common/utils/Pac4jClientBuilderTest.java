@@ -2,8 +2,8 @@ package fr.gouv.vitamui.iam.common.utils;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.oidc.config.OidcConfiguration;
@@ -11,9 +11,7 @@ import org.pac4j.oidc.config.OidcConfiguration;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests {@link Pac4jClientBuilder}.
@@ -29,7 +27,7 @@ public class Pac4jClientBuilderTest {
     private static final JWSAlgorithm ALGORITHM = JWSAlgorithm.HS256;
     private static final Map CUSTOM_PARAMS = Map.of("prompt", "login");
 
-    @Ignore
+    @Disabled
     @Test
     public void testOidcProviderCreationSuccessful() {
         final IdentityProviderDto provider = new IdentityProviderDto();

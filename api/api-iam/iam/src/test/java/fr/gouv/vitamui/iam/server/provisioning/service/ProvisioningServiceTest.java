@@ -45,7 +45,7 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.provisioning.client.ProvisioningWebClient;
 import fr.gouv.vitamui.iam.server.provisioning.config.IdPProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.server.provisioning.config.ProvisioningClientConfiguration;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -101,7 +101,7 @@ class ProvisioningServiceTest {
             IdPProvisioningClientConfiguration idpFound = service.getProvisioningClientConfiguration("idp");
 
             // Verify
-            Assert.assertEquals(idpConfiguration, idpFound);
+            Assertions.assertEquals(idpConfiguration, idpFound);
         }
     }
 
@@ -118,7 +118,7 @@ class ProvisioningServiceTest {
         ProvisioningWebClient webClient = service.buildWebClient(idpConfiguration);
 
         // Verify
-        Assert.assertNotNull(webClient);
+        Assertions.assertNotNull(webClient);
     }
 
     @Test

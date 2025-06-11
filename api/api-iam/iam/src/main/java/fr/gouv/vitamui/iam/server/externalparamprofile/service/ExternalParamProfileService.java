@@ -69,7 +69,6 @@ import fr.gouv.vitamui.iam.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
@@ -106,7 +105,6 @@ public class ExternalParamProfileService {
     private static final String ID_EXTERNAL_PARAM = "idExternalParam";
     private static final String EXTERNAL_PARAM_PROFILE = "externalparamprofile";
 
-    @Autowired
     public ExternalParamProfileService(
         final ExternalParametersService externalParametersService,
         final ProfileService profileService,

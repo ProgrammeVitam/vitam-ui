@@ -44,10 +44,9 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Service de lancement des workflows d'élimination d'analyse et d'action
@@ -60,7 +59,6 @@ public class EliminationService {
 
     private final AccessExternalClient accessExternalClient;
 
-    @Autowired
     public EliminationService(final AccessExternalClient accessExternalClient) {
         this.accessExternalClient = accessExternalClient;
     }

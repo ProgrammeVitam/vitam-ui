@@ -63,12 +63,12 @@ import fr.gouv.vitamui.referential.server.service.managementcontract.ManagementC
 import fr.gouv.vitamui.referential.server.service.managementcontract.ManagementContractModelToDtoConverter;
 import fr.gouv.vitamui.referential.server.service.managementcontract.PatchManagementContractModel;
 import fr.gouv.vitamui.referential.server.service.managementcontract.converter.ManagementContractConverter;
+import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -98,7 +98,6 @@ public class ManagementContractService extends AbstractService {
     private ManagementContractDtoToModelConverter managementContractDtoToModelConverter;
     private ManagementContractModelToDtoConverter managementContractModelToDtoConverter;
 
-    @Autowired
     public ManagementContractService(
         final ManagementContractCommonService managementContractCommonService,
         final VitamUIManagementContractCommonService vitamUIManagementContractCommonService,

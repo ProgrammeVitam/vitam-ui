@@ -61,7 +61,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -71,7 +70,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +91,6 @@ public class ProbativeValueService {
 
     private final UnitCommonService unitCommonService;
 
-    @Autowired
     ProbativeValueService(
         VitamBatchReportCommonService vitamBatchReportCommonService,
         UnitCommonService unitCommonService
@@ -181,13 +178,13 @@ public class ProbativeValueService {
         try {
             final List<Path> filesPaths = new ArrayList<>();
 
-            filesPaths.add(Paths.get(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".json")));
-            filesPaths.add(Paths.get(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".pdf")));
+            filesPaths.add(Path.of(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".json")));
+            filesPaths.add(Path.of(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".pdf")));
 
             SecureZipUtils.zipFiles(filesPaths, outputStream);
         } catch (Exception e) {
             LOGGER.error("Unable to generate ZIP", e.getMessage());
-            throw new InternalServerException(String.format("Unable to generate ZIP: %s", e.getMessage()), e);
+            throw new InternalServerException("Unable to generate ZIP: %s".formatted(e.getMessage()), e);
         }
     }
 
@@ -268,19 +265,15 @@ public class ProbativeValueService {
     private void checkWorkspacePath(String workspaceOperationPath) {
         Assert.isTrue(StringUtils.isNotBlank(workspaceOperationPath), "No operation workspace path has been set");
 
-        final Path workspaceOperation = Paths.get(workspaceOperationPath);
+        final Path workspaceOperation = Path.of(workspaceOperationPath);
         if (!Files.exists(workspaceOperation)) {
-            final String message = String.format(
-                "The following operation workspace does not exists: %s",
-                workspaceOperation.toString()
-            );
+            final String message =
+                "The following operation workspace does not exists: %s".formatted(workspaceOperation.toString());
             throw new InternalServerException(message);
         }
         if (!Files.isDirectory(workspaceOperation)) {
-            final String message = String.format(
-                "The following operation workspace is not a directory: %s",
-                workspaceOperation.toString()
-            );
+            final String message =
+                "The following operation workspace is not a directory: %s".formatted(workspaceOperation.toString());
             throw new InternalServerException(message);
         }
     }

@@ -50,7 +50,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.BufferedReader;
@@ -80,10 +80,10 @@ class TransferVitamOperationsServiceTest {
     @Mock
     private ArchiveSearchService archiveSearchService;
 
-    @MockBean(name = "externalParametersService")
+    @MockitoBean(name = "externalParametersService")
     private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
 
-    @MockBean(name = "archiveSearchThresholdService")
+    @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
 
     @InjectMocks

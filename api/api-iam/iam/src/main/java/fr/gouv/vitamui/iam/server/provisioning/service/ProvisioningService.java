@@ -45,12 +45,12 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.provisioning.client.ProvisioningWebClient;
 import fr.gouv.vitamui.iam.server.provisioning.config.IdPProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.server.provisioning.config.ProvisioningClientConfiguration;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -101,12 +101,11 @@ public class ProvisioningService {
 
             if (Objects.isNull(providedUser)) {
                 throw new NotFoundException(
-                    String.format(
-                        "No user returned by provisioning with email %s, technicalUserId %s, idp %s",
-                        email,
-                        userIdentifier,
-                        idp
-                    )
+                    "No user returned by provisioning with email %s, technicalUserId %s, idp %s".formatted(
+                            email,
+                            userIdentifier,
+                            idp
+                        )
                 );
             }
 
@@ -131,10 +130,7 @@ public class ProvisioningService {
             .filter(provisioningClient -> provisioningClient.getIdpIdentifier().equalsIgnoreCase(idp))
             .findFirst()
             .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        String.format("Provisioning client configuration not found for IdP : %S", idp)
-                    )
+                () -> new NotFoundException("Provisioning client configuration not found for IdP : %S".formatted(idp))
             );
     }
 

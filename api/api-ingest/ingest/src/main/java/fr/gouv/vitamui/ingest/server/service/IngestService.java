@@ -70,17 +70,16 @@ import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.odftoolkit.simple.TextDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.w3c.dom.Document;
 
-import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -120,7 +119,6 @@ public class IngestService {
 
     private final IngestAccessContractService ingestAccessContractService;
 
-    @Autowired
     public IngestService(
         final SecurityService securityService,
         final LogbookService logbookService,
@@ -241,8 +239,8 @@ public class IngestService {
             String manifest = "";
             Response response = ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.MANIFESTS);
             Object entity = response.getEntity();
-            if (entity instanceof InputStream) {
-                Resource resource = new InputStreamResource((InputStream) entity);
+            if (entity instanceof InputStream stream) {
+                Resource resource = new InputStreamResource(stream);
                 manifest = ingestGeneratorODTFile.resourceAsString(resource).replaceAll(ILLEGAL_CHARACTERS, "");
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
@@ -262,8 +260,8 @@ public class IngestService {
                 IngestCollection.ARCHIVETRANSFERREPLY
             );
             Object entity = response.getEntity();
-            if (entity instanceof InputStream) {
-                Resource resource = new InputStreamResource((InputStream) entity);
+            if (entity instanceof InputStream stream) {
+                Resource resource = new InputStreamResource(stream);
                 atr = ingestGeneratorODTFile.resourceAsString(resource).replaceAll(ILLEGAL_CHARACTERS, "");
             }
             LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());

@@ -27,12 +27,12 @@
 
 package fr.gouv.vitamui.iam.security.filter;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -53,10 +53,9 @@ public class RequestHeaderX509CertificateExtractor implements X509CertificateExt
         final String certificate = request.getHeader(certificateHeaderName);
         if (StringUtils.isBlank(certificate)) {
             LOGGER.error(
-                String.format(
-                    "Can not extract X509 certificate from header %s : with error: [Header value is empty!].",
-                    certificateHeaderName
-                )
+                "Can not extract X509 certificate from header %s : with error: [Header value is empty!].".formatted(
+                        certificateHeaderName
+                    )
             );
             return null;
         }
@@ -68,11 +67,7 @@ public class RequestHeaderX509CertificateExtractor implements X509CertificateExt
             );
         } catch (final CertificateException e) {
             LOGGER.error(
-                String.format(
-                    "Can not extract X509 certificate from header %s : %s",
-                    certificateHeaderName,
-                    certificate
-                ),
+                "Can not extract X509 certificate from header %s : %s".formatted(certificateHeaderName, certificate),
                 e
             );
         }

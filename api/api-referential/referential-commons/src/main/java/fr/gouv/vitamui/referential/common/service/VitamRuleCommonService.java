@@ -68,14 +68,13 @@ import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.RuleCSVDto;
+import jakarta.ws.rs.core.Response;
+import jakarta.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -92,7 +91,6 @@ public class VitamRuleCommonService {
 
     private ObjectMapper objectMapper;
 
-    @Autowired
     public VitamRuleCommonService(
         AdminExternalClient adminExternalClient,
         ObjectMapper objectMapper,
@@ -341,10 +339,9 @@ public class VitamRuleCommonService {
                 ) {
                     LOGGER.error("Can't find the requested rule with identifier, this rule does not exist in VITAM");
                     throw new ConflictException(
-                        String.format(
-                            "Can't find the requested rule with identifier %s, this rule does not exist in VITAM",
-                            checkRule.getRuleId()
-                        ),
+                        "Can't find the requested rule with identifier %s, this rule does not exist in VITAM".formatted(
+                                checkRule.getRuleId()
+                            ),
                         checkRule.getRuleId()
                     );
                 }

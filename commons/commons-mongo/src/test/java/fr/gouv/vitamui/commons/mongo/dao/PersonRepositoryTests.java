@@ -9,11 +9,9 @@ import fr.gouv.vitamui.commons.mongo.domain.Person;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
@@ -24,7 +22,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -37,9 +34,9 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @EnableMongoRepositories(basePackageClasses = PersonRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class PersonRepositoryTests extends AbstractMongoTests {
 
@@ -54,16 +51,16 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     @Test
     public void readFirstPageCorrectly() {
         final Page<Person> persons = repository.findAll(PageRequest.of(0, 10));
-        MatcherAssert.assertThat(persons.isFirst(), is(true));
+        assertThat(persons.isFirst(), is(true));
     }
 
     @Test
     public void readEmptyCollection() {
         Iterable<Person> persons = repository.findAll();
-        MatcherAssert.assertThat(persons.iterator().hasNext(), is(false));
+        assertThat(persons.iterator().hasNext(), is(false));
         repository.deleteAll();
         persons = repository.findAll();
-        MatcherAssert.assertThat(persons.iterator().hasNext(), is(false));
+        assertThat(persons.iterator().hasNext(), is(false));
     }
 
     @Test
@@ -242,7 +239,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         persons = repository.findByEmailsContainsIgnoreCase(emailOuidouMoctar.toLowerCase());
         Assertions.assertEquals(1, persons.size(), "Incorrect number of persons in database.");
 
-        MatcherAssert.assertThat(persons.get(0).getFirstName(), is("Moctar"));
+        assertThat(persons.get(0).getFirstName(), is("Moctar"));
     }
 
     @Test
@@ -261,7 +258,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -283,7 +280,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
         Assertions.assertTrue(persons.getValues().contains(moctar), "Incorrect person find");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -304,7 +301,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -325,7 +322,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -347,7 +344,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -371,7 +368,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
         Assertions.assertTrue(persons.getValues().contains(moctar), "Incorrect person find");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -399,7 +396,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
             persons.getValues().contains(moctar) && persons.getValues().contains(makhtar),
             "Incorrect person find"
         );
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -440,7 +437,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -459,7 +456,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -481,7 +478,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(2, persons.getValues().size(), "Incorrect values size.");
         Assertions.assertTrue(persons.getValues().contains(cakhtar), "Incorrect person find");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
         final Iterator<Person> it = persons.getValues().iterator();
         final Person firstPerson = it.next();
         Assertions.assertNotNull(firstPerson, "Incorrect result: person is null.");
@@ -511,7 +508,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
         Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
         Assertions.assertTrue(persons.getValues().contains(moctar), "Incorrect person find");
-        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test

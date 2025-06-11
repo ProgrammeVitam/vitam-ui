@@ -37,11 +37,14 @@
 
 package fr.gouv.vitamui.commons.api.exception;
 
+import java.io.Serial;
+
 public class IngestFileGenerationException extends VitamUIException {
 
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public IngestFileGenerationException(final String message) {

@@ -58,7 +58,6 @@ import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -84,7 +83,6 @@ public class ArchiveSearchRulesService {
     private final ObjectMapper objectMapper;
     private final RuleCommonService ruleCommonService;
 
-    @Autowired
     public ArchiveSearchRulesService(final ObjectMapper objectMapper, final RuleCommonService ruleCommonService) {
         this.objectMapper = objectMapper;
         this.ruleCommonService = ruleCommonService;

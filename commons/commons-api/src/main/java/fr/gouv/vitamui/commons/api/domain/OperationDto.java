@@ -38,13 +38,14 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.io.Serial;
 import java.time.OffsetDateTime;
 
 @Getter
@@ -57,6 +58,7 @@ public class OperationDto extends IdDto implements IOperationDto {
     /**
      * Serial.
      */
+    @Serial
     private static final long serialVersionUID = -3962480065920989325L;
 
     @NotNull

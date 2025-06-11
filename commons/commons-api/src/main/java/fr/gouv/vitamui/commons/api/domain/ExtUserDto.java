@@ -42,6 +42,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
+
 /**
  * The DTO v1 for a user profile.
  *
@@ -53,6 +55,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class ExtUserDto extends UserDto {
 
+    @Serial
     private static final long serialVersionUID = 6788320011462052701L;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

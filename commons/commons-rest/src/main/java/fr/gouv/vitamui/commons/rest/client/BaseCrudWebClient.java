@@ -39,11 +39,11 @@ package fr.gouv.vitamui.commons.rest.client;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -200,14 +200,14 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_CHECK);
         builder.addParameter(CRITERIA_QUERY_PARAM, criteria);
 
-        final HttpStatus httpStatus = webClient
+        final HttpStatusCode httpStatusCode = webClient
             .head()
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .exchange()
             .block()
             .statusCode();
-        return HttpStatus.OK.equals(httpStatus);
+        return httpStatusCode.is2xxSuccessful();
     }
 
     protected abstract ParameterizedTypeReference<List<D>> getDtoListClass();

@@ -38,6 +38,7 @@ package fr.gouv.vitamui.commons.api.exception;
 
 import lombok.Getter;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public abstract class VitamUIException extends RuntimeException {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = -8392328557296005386L;
 
     private final String key;

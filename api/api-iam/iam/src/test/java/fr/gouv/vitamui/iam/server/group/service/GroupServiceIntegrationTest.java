@@ -29,18 +29,16 @@ import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -56,7 +54,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
 public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest {
@@ -82,13 +79,13 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     @Autowired
     private CustomSequenceRepository sequenceRepository;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
     @Mock
     private HttpContext httpContext;
 
-    @MockBean
+    @MockitoBean
     private TenantRepository tenantRepository;
 
     @BeforeEach

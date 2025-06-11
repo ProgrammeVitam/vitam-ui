@@ -36,13 +36,14 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serial;
 
 /**
  * The DTO v1 for a tenant.
@@ -55,6 +56,7 @@ import javax.validation.constraints.Size;
 @ToString(callSuper = true)
 public class TenantDto extends CustomerIdDto {
 
+    @Serial
     private static final long serialVersionUID = -8680039660031373602L;
 
     @NotNull

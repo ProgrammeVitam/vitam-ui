@@ -52,7 +52,6 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -77,7 +76,6 @@ public class ArchiveSearchEliminationService {
     private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
     private final ObjectMapper objectMapper;
 
-    @Autowired
     public ArchiveSearchEliminationService(
         final @Lazy ArchiveSearchService archiveSearchService,
         final EliminationService eliminationService,

@@ -8,9 +8,8 @@ spring:
     name: API Pastis
     description: This API is used to manage Vitam's profile
     version: v1
-  mvc:
-    favicon:
-      enabled: false
+  # This property is deprecated and will be removed in future Spring Boot versions
+      # enabled: false
   jackson:
     serialization:
       write-dates-as-timestamps: false

@@ -42,6 +42,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -57,6 +58,7 @@ import java.io.Serializable;
 @ToString
 public class ParameterDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3137972847122776634L;
 
     private String key;

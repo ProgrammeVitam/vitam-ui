@@ -23,7 +23,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.HEAD;
+import static org.springframework.http.HttpMethod.PATCH;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -117,27 +123,18 @@ public abstract class AbstractRestControllerMockMvcTest {
     ) {
         ResultActions result = null;
         MockHttpServletRequestBuilder request = null;
-        switch (method) {
-            case GET:
-                request = MockMvcRequestBuilders.get(builder.build().toUri()).contentType(MediaType.APPLICATION_JSON);
-                break;
-            case HEAD:
-                request = MockMvcRequestBuilders.head(builder.build().toUri());
-                break;
-            case PATCH:
-                request = MockMvcRequestBuilders.patch(builder.build().toUri());
-                break;
-            case DELETE:
-                request = MockMvcRequestBuilders.delete(builder.build().toUri());
-                break;
-            case PUT:
-                request = MockMvcRequestBuilders.put(builder.build().toUri());
-                break;
-            case POST:
-                request = MockMvcRequestBuilders.post(builder.build().toUri());
-                break;
-            default:
-                break;
+        if (method.equals(GET)) {
+            request = MockMvcRequestBuilders.get(builder.build().toUri()).contentType(MediaType.APPLICATION_JSON);
+        } else if (method.equals(HEAD)) {
+            request = MockMvcRequestBuilders.head(builder.build().toUri());
+        } else if (method.equals(PATCH)) {
+            request = MockMvcRequestBuilders.patch(builder.build().toUri());
+        } else if (method.equals(DELETE)) {
+            request = MockMvcRequestBuilders.delete(builder.build().toUri());
+        } else if (method.equals(PUT)) {
+            request = MockMvcRequestBuilders.put(builder.build().toUri());
+        } else if (method.equals(POST)) {
+            request = MockMvcRequestBuilders.post(builder.build().toUri());
         }
         if (StringUtils.isNoneBlank(jsonBody)) {
             request.contentType(MediaType.APPLICATION_JSON).content(jsonBody);
@@ -156,13 +153,13 @@ public abstract class AbstractRestControllerMockMvcTest {
 
     protected ResultActions performHead(final String endpoint, final ResultMatcher resultMatcher) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, resultMatcher, getHeaders());
+        return perform(builder, StringUtils.EMPTY, HEAD, resultMatcher, getHeaders());
     }
 
     protected ResultActions performHead(final String endpoint, final Map<String, Object> params) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, status().isOk(), getHeaders());
+        return perform(builder, StringUtils.EMPTY, HEAD, status().isOk(), getHeaders());
     }
 
     protected ResultActions performHead(
@@ -172,7 +169,7 @@ public abstract class AbstractRestControllerMockMvcTest {
     ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, resultMatcher, getHeaders());
+        return perform(builder, StringUtils.EMPTY, HEAD, resultMatcher, getHeaders());
     }
 
     protected ResultActions performHead(
@@ -183,35 +180,35 @@ public abstract class AbstractRestControllerMockMvcTest {
     ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, resultMatcher, headers);
+        return perform(builder, StringUtils.EMPTY, HEAD, resultMatcher, headers);
     }
 
     protected ResultActions performHead(final UriComponentsBuilder builder, final HttpHeaders headers) {
-        return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, status().isOk(), headers);
+        return perform(builder, StringUtils.EMPTY, HEAD, status().isOk(), headers);
     }
 
     protected ResultActions performGet(final String endpoint) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), getHeaders());
+        return perform(builder, StringUtils.EMPTY, GET, status().isOk(), getHeaders());
     }
 
     protected ResultActions performGet(final String endpoint, final HttpHeaders headers) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), headers);
+        return perform(builder, StringUtils.EMPTY, GET, status().isOk(), headers);
     }
 
     protected ResultActions performGet(final UriComponentsBuilder builder) {
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), getHeaders());
+        return perform(builder, StringUtils.EMPTY, GET, status().isOk(), getHeaders());
     }
 
     protected ResultActions performGet(final UriComponentsBuilder builder, final HttpHeaders headers) {
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), headers);
+        return perform(builder, StringUtils.EMPTY, GET, status().isOk(), headers);
     }
 
     protected ResultActions performGet(final String endpoint, final Map<String, Object> params) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), getHeaders());
+        return perform(builder, StringUtils.EMPTY, GET, status().isOk(), getHeaders());
     }
 
     protected ResultActions performGet(
@@ -221,7 +218,7 @@ public abstract class AbstractRestControllerMockMvcTest {
     ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, resultMatcher, getHeaders());
+        return perform(builder, StringUtils.EMPTY, GET, resultMatcher, getHeaders());
     }
 
     protected ResultActions performGet(
@@ -231,7 +228,7 @@ public abstract class AbstractRestControllerMockMvcTest {
     ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), headers);
+        return perform(builder, StringUtils.EMPTY, GET, status().isOk(), headers);
     }
 
     protected ResultActions performGet(
@@ -242,7 +239,7 @@ public abstract class AbstractRestControllerMockMvcTest {
     ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, resultMatcher, headers);
+        return perform(builder, StringUtils.EMPTY, GET, resultMatcher, headers);
     }
 
     /**
@@ -286,32 +283,28 @@ public abstract class AbstractRestControllerMockMvcTest {
      */
     private RequestPostProcessor getRequestPostProcessor(final HttpMethod method) {
         RequestPostProcessor requestPostProcessor = null;
-        switch (method) {
-            case POST:
-                requestPostProcessor = request -> {
-                    request.setMethod("POST");
-                    return request;
-                };
-                break;
-            case PUT:
-                requestPostProcessor = request -> {
-                    request.setMethod("PUT");
-                    return request;
-                };
-            case PATCH:
-                requestPostProcessor = request -> {
-                    request.setMethod("PATCH");
-                    return request;
-                };
-            default:
-                break;
+        if (method.equals(POST)) {
+            requestPostProcessor = request -> {
+                request.setMethod("POST");
+                return request;
+            };
+        } else if (method.equals(PUT)) {
+            requestPostProcessor = request -> {
+                request.setMethod("PUT");
+                return request;
+            };
+        } else if (method.equals(PATCH)) {
+            requestPostProcessor = request -> {
+                request.setMethod("PATCH");
+                return request;
+            };
         }
         return requestPostProcessor;
     }
 
     protected ResultActions performPostMultipart(final String endpoint, final Collection<MockMultipartFile> parts) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), getHeaders());
+        return performMultiPart(builder, POST, parts, status().isCreated(), getHeaders());
     }
 
     protected ResultActions performPostMultipart(
@@ -320,14 +313,14 @@ public abstract class AbstractRestControllerMockMvcTest {
         final HttpHeaders headers
     ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), headers);
+        return performMultiPart(builder, POST, parts, status().isCreated(), headers);
     }
 
     protected ResultActions performPostMultipart(
         final UriComponentsBuilder builder,
         final Collection<MockMultipartFile> parts
     ) {
-        return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), getHeaders());
+        return performMultiPart(builder, POST, parts, status().isCreated(), getHeaders());
     }
 
     protected ResultActions performPostMultipart(
@@ -335,7 +328,7 @@ public abstract class AbstractRestControllerMockMvcTest {
         final Collection<MockMultipartFile> parts,
         final HttpHeaders headers
     ) {
-        return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), headers);
+        return performMultiPart(builder, POST, parts, status().isCreated(), headers);
     }
 
     protected ResultActions performPostMultipart(
@@ -344,7 +337,7 @@ public abstract class AbstractRestControllerMockMvcTest {
         final ResultMatcher status,
         final HttpHeaders headers
     ) {
-        return performMultiPart(builder, HttpMethod.POST, parts, status, headers);
+        return performMultiPart(builder, POST, parts, status, headers);
     }
 
     protected ResultActions performPutMultipart(
@@ -352,19 +345,19 @@ public abstract class AbstractRestControllerMockMvcTest {
         final HttpHeaders headers,
         final Collection<MockMultipartFile> parts
     ) {
-        return performMultiPart(builder, HttpMethod.PUT, parts, status().isOk(), headers);
+        return performMultiPart(builder, PUT, parts, status().isOk(), headers);
     }
 
     protected ResultActions performPatchMultipart(final String endpoint, final Collection<MockMultipartFile> parts) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return performMultiPart(builder, HttpMethod.PATCH, parts, status().isOk(), getHeaders());
+        return performMultiPart(builder, PATCH, parts, status().isOk(), getHeaders());
     }
 
     protected ResultActions performPatchMultipart(
         final UriComponentsBuilder builder,
         final Collection<MockMultipartFile> parts
     ) {
-        return performMultiPart(builder, HttpMethod.PATCH, parts, status().isOk(), getHeaders());
+        return performMultiPart(builder, PATCH, parts, status().isOk(), getHeaders());
     }
 
     protected ResultActions performPatchMultipart(
@@ -372,7 +365,7 @@ public abstract class AbstractRestControllerMockMvcTest {
         final Collection<MockMultipartFile> parts,
         final HttpHeaders headers
     ) {
-        return performMultiPart(builder, HttpMethod.PATCH, parts, status().isOk(), headers);
+        return performMultiPart(builder, PATCH, parts, status().isOk(), headers);
     }
 
     protected ResultActions performPost(
@@ -380,28 +373,28 @@ public abstract class AbstractRestControllerMockMvcTest {
         final String jsonBody,
         final ResultMatcher resultMatcher
     ) {
-        return perform(builder, jsonBody, HttpMethod.POST, resultMatcher, getHeaders());
+        return perform(builder, jsonBody, POST, resultMatcher, getHeaders());
     }
 
     protected ResultActions performPatch(final String endpoint) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.PATCH, status().isOk(), getHeaders());
+        return perform(builder, StringUtils.EMPTY, PATCH, status().isOk(), getHeaders());
     }
 
     protected ResultActions performPatch(final String endpoint, final String jsonBody) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return perform(builder, jsonBody, HttpMethod.PATCH, status().isOk(), getHeaders());
+        return perform(builder, jsonBody, PATCH, status().isOk(), getHeaders());
     }
 
     protected ResultActions performDelete(final String endpoint) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.DELETE, status().isOk(), getHeaders());
+        return perform(builder, StringUtils.EMPTY, DELETE, status().isOk(), getHeaders());
     }
 
     protected ResultActions performDelete(final String endpoint, final Map<String, Object> params) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
-        return perform(builder, StringUtils.EMPTY, HttpMethod.DELETE, status().isOk(), getHeaders());
+        return perform(builder, StringUtils.EMPTY, DELETE, status().isOk(), getHeaders());
     }
 
     protected abstract Authentication buildUserAuthenticated();

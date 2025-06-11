@@ -43,7 +43,6 @@ import fr.gouv.vitamui.commons.api.converter.UpdateMultiQueriesToBulkCommandDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
@@ -71,7 +70,6 @@ import org.springframework.context.annotation.Import;
 @Import(
     {
         RestExceptionHandler.class,
-        SwaggerConfiguration.class,
         HttpMessageConvertersAutoConfiguration.class,
         WebSecurityConfig.class,
         VitamAccessConfig.class,
@@ -106,26 +104,14 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        UserAuthenticationService userAuthenticationService
-    ) {
-        return new InternalApiAuthenticationProvider(userAuthenticationService);
-    }
-
-    @Bean
-    public ExternalApiAuthenticationProvider externalApiAuthenticationProvider(
-        ContextsApi contextsApi,
-        UserAuthenticationService userAuthenticationService
-    ) {
-        return new ExternalApiAuthenticationProvider(contextsApi, userAuthenticationService);
-    }
-
-    @Bean
     public ApiAuthenticationProvider apiAuthenticationProvider(
-        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
-        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+        UserAuthenticationService userAuthenticationService,
+        ContextsApi contextsApi
     ) {
-        return new ApiAuthenticationProvider(internalApiAuthenticationProvider, externalApiAuthenticationProvider);
+        return new ApiAuthenticationProvider(
+            new InternalApiAuthenticationProvider(userAuthenticationService),
+            new ExternalApiAuthenticationProvider(contextsApi, userAuthenticationService)
+        );
     }
 
     @Bean

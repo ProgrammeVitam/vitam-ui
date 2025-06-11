@@ -39,7 +39,7 @@ public class GroupExportService {
     private final ApplicationService applicationService;
 
     public static String getFilename() {
-        return String.format("export-groupes-%s.xlsx", DATE_TIME_FORMATTER_ISO_WITH_MS.format(LocalDateTime.now()));
+        return "export-groupes-%s.xlsx".formatted(DATE_TIME_FORMATTER_ISO_WITH_MS.format(LocalDateTime.now()));
     }
 
     public Resource exportProfileGroups(

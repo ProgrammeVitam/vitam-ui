@@ -20,8 +20,9 @@ import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -33,8 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -47,6 +47,8 @@ import static org.mockito.Mockito.when;
  *
  */
 public final class GroupControllerTest implements CrudControllerTest {
+
+    private AutoCloseable mocks;
 
     private GroupController controller;
 
@@ -79,9 +81,9 @@ public final class GroupControllerTest implements CrudControllerTest {
     @Mock
     private GroupConverter groupConverter;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
 
         Mockito.when(groupConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(groupConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
@@ -199,35 +201,41 @@ public final class GroupControllerTest implements CrudControllerTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     @Override
     public void testUpdateOK() {
-        final GroupDto dto = buildGroupDto();
+        assertThrows(UnsupportedOperationException.class, () -> {
+            final GroupDto dto = buildGroupDto();
 
-        prepareServices();
-        when(groupRepository.findByIdAndCustomerId(anyString(), anyString())).thenReturn(Optional.of(buildGroup()));
+            prepareServices();
+            when(groupRepository.findByIdAndCustomerId(anyString(), anyString())).thenReturn(Optional.of(buildGroup()));
 
-        controller.update(dto.getId(), dto);
+            controller.update(dto.getId(), dto);
+        });
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     @Override
     public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() {
-        final GroupDto dto = buildGroupDto();
+        assertThrows(UnsupportedOperationException.class, () -> {
+            final GroupDto dto = buildGroupDto();
 
-        prepareServices();
+            prepareServices();
 
-        controller.update("Bad Id" + dto.getId(), dto);
+            controller.update("Bad Id" + dto.getId(), dto);
+        });
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testUpdateFailsAsCustomerDoesNotExist() {
-        final GroupDto dto = buildGroupDto();
+        assertThrows(UnsupportedOperationException.class, () -> {
+            final GroupDto dto = buildGroupDto();
 
-        prepareServices();
-        when(groupRepository.findByIdAndCustomerId(anyString(), anyString())).thenReturn(Optional.empty());
+            prepareServices();
+            when(groupRepository.findByIdAndCustomerId(anyString(), anyString())).thenReturn(Optional.empty());
 
-        controller.update(dto.getId(), dto);
+            controller.update(dto.getId(), dto);
+        });
     }
 
     private Group buildGroup() {
@@ -252,5 +260,10 @@ public final class GroupControllerTest implements CrudControllerTest {
         dto.setTenantIdentifier(tenantDto.getIdentifier());
         dto.setTenantName(tenantDto.getName());
         return dto;
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

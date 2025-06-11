@@ -32,6 +32,7 @@ package fr.gouv.vitamui.commons.api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.Serial;
 import java.util.List;
 
 @ResponseStatus(value = HttpStatus.REQUEST_TIMEOUT)
@@ -40,6 +41,7 @@ public class RequestTimeOutException extends VitamUIException {
     /**
      * Serial ID
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public RequestTimeOutException(final String message) {

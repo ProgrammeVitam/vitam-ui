@@ -45,7 +45,6 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +53,6 @@ public class IngestContractCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public IngestContractCommonService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

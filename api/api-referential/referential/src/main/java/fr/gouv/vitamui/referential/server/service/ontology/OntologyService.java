@@ -70,7 +70,6 @@ import fr.gouv.vitamui.referential.common.service.OntologyCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,7 +98,6 @@ public class OntologyService extends AbstractService {
     @Value("${internal_ontology_file_path}")
     private String internalOntologieFilePath;
 
-    @Autowired
     public OntologyService(
         OntologyCommonService ontologyCommonService,
         ObjectMapper objectMapper,

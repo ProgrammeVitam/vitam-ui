@@ -46,7 +46,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -69,7 +68,7 @@ public class SecureZipUtils {
      */
     public static void unzipFolder(final String zipFilePath, final String unzipFolderPath)
         throws IOException, SecurityException {
-        Path zipFile = Paths.get(zipFilePath);
+        Path zipFile = Path.of(zipFilePath);
 
         try (InputStream zipFileStream = new FileInputStream(zipFile.toFile())) {
             unzipFolder(zipFileStream, unzipFolderPath);
@@ -83,7 +82,7 @@ public class SecureZipUtils {
      * @throws SecurityException if attack is being detected
      */
     public static void unzipFolder(InputStream zipFileStream, String unzipFolderPath) throws IOException {
-        Path unzipFolder = Paths.get(unzipFolderPath);
+        Path unzipFolder = Path.of(unzipFolderPath);
         if (unzipFolder.toFile().exists() && !unzipFolder.toFile().isDirectory()) {
             throw new IOException("The specified destination is not a directory.");
         }
@@ -178,7 +177,7 @@ public class SecureZipUtils {
      */
     public static void zipFolder(final String sourceFolderPath, final OutputStream zipOutputStream) throws IOException {
         try (ZipOutputStream realZipOutputStream = new ZipOutputStream(zipOutputStream)) {
-            Path folderToZipPath = Paths.get(sourceFolderPath);
+            Path folderToZipPath = Path.of(sourceFolderPath);
             final List<Path> filePaths;
             try (final var fileStream = Files.walk(folderToZipPath)) {
                 filePaths = fileStream.collect(Collectors.toList());

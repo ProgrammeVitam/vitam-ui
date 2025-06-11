@@ -8,17 +8,14 @@ import fr.gouv.vitamui.commons.mongo.domain.Address;
 import fr.gouv.vitamui.commons.mongo.domain.Person;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -28,9 +25,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @EnableMongoRepositories(basePackageClasses = PersonRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTests {
 
@@ -59,7 +56,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
         Assertions.assertEquals(1, addresses.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(addresses.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, addresses.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", addresses.isHasMore(), is(true));
+        assertThat("We have more data in database.", addresses.isHasMore(), is(true));
 
         final PaginatedValuesDto<Address> addresses2 = repository.getPaginatedNestedValues(
             Address.class,
@@ -75,7 +72,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
         Assertions.assertEquals(1, addresses2.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(addresses2.getValues(), "Incorrect values.");
         Assertions.assertEquals(0, addresses2.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", addresses2.isHasMore(), is(false));
+        assertThat("We have more data in database.", addresses2.isHasMore(), is(false));
     }
 
     @Test
@@ -95,7 +92,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
         Assertions.assertEquals(4, addresses.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(addresses.getValues(), "Incorrect values.");
         Assertions.assertEquals(4, addresses.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", addresses.isHasMore(), is(false));
+        assertThat("We have more data in database.", addresses.isHasMore(), is(false));
         final List<Address> result = addresses.getValues().stream().toList();
         Assertions.assertEquals("1", result.get(0).getIdentifier(), "Incorrect values size.");
         Assertions.assertEquals("2", result.get(1).getIdentifier(), "Incorrect values size.");
@@ -120,7 +117,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
         Assertions.assertEquals(1, addresses.getPageSize(), "Incorrect page size.");
         Assertions.assertNotNull(addresses.getValues(), "Incorrect values.");
         Assertions.assertEquals(1, addresses.getValues().size(), "Incorrect values size.");
-        MatcherAssert.assertThat("We have more data in database.", addresses.isHasMore(), is(true));
+        assertThat("We have more data in database.", addresses.isHasMore(), is(true));
     }
 
     @Test

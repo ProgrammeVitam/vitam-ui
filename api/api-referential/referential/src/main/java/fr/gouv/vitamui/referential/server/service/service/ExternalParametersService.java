@@ -33,7 +33,6 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -53,7 +52,6 @@ public class ExternalParametersService {
     private final ExternalParametersApi externalParametersApi;
     private final SecurityService securityService;
 
-    @Autowired
     public ExternalParametersService(
         final ExternalParametersApi externalParametersApi,
         final SecurityService securityService

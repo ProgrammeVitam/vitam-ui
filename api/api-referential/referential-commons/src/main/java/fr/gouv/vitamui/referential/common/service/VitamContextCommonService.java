@@ -63,7 +63,6 @@ import fr.gouv.vitamui.referential.common.dto.converter.ContextDtoConverterUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.io.ByteArrayInputStream;
@@ -86,7 +85,6 @@ public class VitamContextCommonService {
     private static final String INGEST_CONTRACTS = "ingestContracts";
     private static final String ACCESS_CONTRACTS = "accessContracts";
 
-    @Autowired
     public VitamContextCommonService(AdminExternalClient adminExternalClient, ObjectMapper objectMapper) {
         this.adminExternalClient = adminExternalClient;
         this.objectMapper = objectMapper;

@@ -9,9 +9,8 @@ spring:
     name: API Security Internal
     description: This API is used to manage certificates for HTTPS access and their associated contexts. This API is used for internal purposes only.
     version: v1
-  mvc:
-    favicon:
-      enabled : false
+  # This property is deprecated and will be removed in future Spring Boot versions
+      # enabled : false
   jmx:
     unique-names: true
 

@@ -5,22 +5,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class VitamRestUtilsTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VitamRestUtilsTest.class);
@@ -39,16 +40,18 @@ public class VitamRestUtilsTest {
             VitamRestUtils.checkResponse(vitamResponse, 200, 201, 202);
         } catch (final InternalServerException e) {
             LOGGER.error("testCheckResponseOk failed", e);
-            Assert.fail("Response should be accepted");
+            Assertions.fail("Response should be accepted");
         }
     }
 
-    @Test(expected = InternalServerException.class)
-    public void testCheckResponseNotAccepted() throws IOException {
-        final JsonNode resposeContent = stringToJsonNode("{\"message\": \"an error occured\"}");
-        final RequestResponseOK<JsonNode> vitamResponse = new RequestResponseOK<>(resposeContent);
-        vitamResponse.setHttpCode(500);
-        VitamRestUtils.checkResponse(vitamResponse);
+    @Test
+    public void testCheckResponseNotAccepted() {
+        assertThrows(InternalServerException.class, () -> {
+            final JsonNode resposeContent = stringToJsonNode("{\"message\": \"an error occured\"}");
+            final RequestResponseOK<JsonNode> vitamResponse = new RequestResponseOK<>(resposeContent);
+            vitamResponse.setHttpCode(500);
+            VitamRestUtils.checkResponse(vitamResponse);
+        });
     }
 
     @Test
@@ -60,7 +63,7 @@ public class VitamRestUtilsTest {
             VitamRestUtils.checkResponse(vitamResponse, 200, 201);
         } catch (final InternalServerException e) {
             LOGGER.error("testCheckResponseOk failed", e);
-            Assert.fail("Response should be accepted");
+            Assertions.fail("Response should be accepted");
         }
     }
 
@@ -80,7 +83,7 @@ public class VitamRestUtilsTest {
             assertThat(e.getMessage()).contains(responseMessage);
             return;
         }
-        Assert.fail("checkResponse should throw a NotFoundException");
+        Assertions.fail("checkResponse should throw a NotFoundException");
     }
 
     protected JsonNode stringToJsonNode(final String str) throws IOException {

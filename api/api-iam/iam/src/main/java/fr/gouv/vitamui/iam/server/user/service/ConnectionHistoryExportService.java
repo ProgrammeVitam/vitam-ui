@@ -44,10 +44,7 @@ public class ConnectionHistoryExportService extends ExcelFileGenerator<Connectio
 
     @Override
     public String getFileName(String identificationElement) {
-        return String.format(
-            "reports-export-connection-%s.xlsx",
-            DATE_TIME_FORMATTER_ISO_WITH_MS.format(Instant.now())
-        );
+        return "reports-export-connection-%s.xlsx".formatted(DATE_TIME_FORMATTER_ISO_WITH_MS.format(Instant.now()));
     }
 
     @Override

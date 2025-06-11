@@ -266,8 +266,8 @@ public final class MongoUtils {
         switch (operator) {
             case EQUALS:
                 if (
-                    val instanceof String &&
-                    (StringUtils.contains((String) val, "*") || StringUtils.contains((String) val, ".*"))
+                    val instanceof String string &&
+                    (StringUtils.contains(string, "*") || StringUtils.contains(string, ".*"))
                 ) {
                     final String valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
                     final StringBuilder options = new StringBuilder();

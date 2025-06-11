@@ -44,8 +44,9 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.Consumes;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.Consumes;
 import java.io.IOException;
 import java.util.List;
 
@@ -74,9 +74,9 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_AR
 /**
  * Project Archive units External controller
  */
-@Api(tags = "Collect")
 @RequestMapping(COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH)
 @RestController
+@Tag(name = "Collect")
 @ResponseBody
 @RequiredArgsConstructor
 public class TransactionArchiveUnitController {
@@ -90,7 +90,7 @@ public class TransactionArchiveUnitController {
     private final ExternalParametersService externalParametersService;
     private final SecurityService securityService;
 
-    @ApiOperation(value = "find archive units by criteria")
+    @Operation(summary = "find archive units by criteria")
     @Secured(ServicesData.ROLE_GET_PROJECTS)
     @PostMapping("/{transactionId}" + ARCHIVE_UNITS)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
@@ -184,10 +184,7 @@ public class TransactionArchiveUnitController {
     }
 
     @Secured(ServicesData.COLLECT_DELETE_ARCHIVE_UNIT_ROLE)
-    @ApiOperation(
-        value = "Upload on streaming metadata file and update archive units",
-        consumes = MediaType.APPLICATION_JSON_VALUE
-    )
+    @Operation(summary = "Upload on streaming metadata file and update archive units")
     @PostMapping(
         value = CommonConstants.TRANSACTION_PATH_ID + DELETION_ACTION,
         consumes = MediaType.APPLICATION_JSON_VALUE

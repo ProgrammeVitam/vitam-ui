@@ -16,13 +16,12 @@ import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileModel;
 import fr.gouv.vitamui.commons.api.exception.*;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitResponseDto;
+import jakarta.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.JAXBException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,7 +39,6 @@ public class VitamArchivalProfileUnitCommonService {
 
     private ObjectMapper objectMapper;
 
-    @Autowired
     public VitamArchivalProfileUnitCommonService(
         AdminExternalClient adminExternalClient,
         ObjectMapper objectMapper,

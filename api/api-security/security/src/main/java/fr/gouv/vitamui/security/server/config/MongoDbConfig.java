@@ -40,12 +40,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import fr.gouv.vitamui.security.server.common.domain.MongoDbCollections;
+import jakarta.annotation.PostConstruct;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
-
-import javax.annotation.PostConstruct;
 
 /**
  * MongoDB configuration.
