@@ -369,8 +369,8 @@ customer-init:
         - ROLE_IMPORT_ARCHIVE_PROFILES
         - ROLE_DELETE_ARCHIVE_PROFILES
 
-    - name: Profil pour la consultation des ontologies et gestion des schémas
-      description: Consultation des ontologies et gestion des schémas
+    - name: Ontologie - gestion
+      description: Profil pour la consultation et la gestion des ontologies et schémas dans Vitam
       app-name: ONTOLOGY_APP
       level:
       roles:
