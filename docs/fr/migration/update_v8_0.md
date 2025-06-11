@@ -43,6 +43,18 @@ Si vous utilisez la PKI d'exemple de VitamUI, vous pouvez procéder à la re-gé
 
 > **Important :** La mise à jour des certificats est fortement recommandée. Dans le cas où vous ne souhaitez pas la réaliser, il faudra alors désactiver les contrôles de certificats via la clé `vitamui_defaults.services.ssl_hostname_verification`.
 
+### Configuration des jetons de communication interne CAS
+
+> Cette opération doit être effectuée en cas de mise à jour majeure depuis une version v8.0.0 vers une version v8.0.1+ (version 8.0.1 ou supérieure).
+
+Une nouvelle clé `vitamui.cas_server.secret_token` doit être éditée dans le fichier de configuration `environments/group_vars/all/vault-vitamui.yml`. Elle permet de sécuriser les appels d'API entre le CAS Server et IAM.
+
+```sh
+ansible-vault edit --vault-password-file vault_pass.txt environments/group_vars/all/vault-vitamui.yml
+```
+
+> Attention, la clé devrait être configurée avec une clé alphanumérique longue et sans caractères spéciaux.
+
 ---
 
 ## Procédures à exécuter AVANT la montée de version
