@@ -4,4 +4,5 @@
   roles:
     - normalize
     - users
+    - { role: checks, when: checks | default(true) | bool == true }
     - { role: docker, when: install_mode | default('legacy') == "container" }
