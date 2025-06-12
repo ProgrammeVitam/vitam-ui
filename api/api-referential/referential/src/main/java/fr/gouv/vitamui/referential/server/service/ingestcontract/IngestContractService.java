@@ -374,7 +374,7 @@ public class IngestContractService extends AbstractService {
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
             ArrayNode actions = JsonHandler.createArrayNode();
-            if (partialDto.get("managementContractId") == null) {
+            if (partialDto.containsKey("managementContractId") && partialDto.get("managementContractId") == null) {
                 ObjectNode unsetAction = JsonNodeFactory.instance.objectNode();
                 ArrayNode unsetArray = JsonNodeFactory.instance.arrayNode();
                 unsetArray.add("ManagementContractId");
