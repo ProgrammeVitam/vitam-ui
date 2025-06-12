@@ -160,6 +160,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   tenantIdentifier: string;
   projectName: string;
+  isAutomaticIngest: boolean;
+  isAutomaticIngestValidated: boolean;
   breadcrumbData: BreadCrumbData[];
 
   selectedArchive$: Observable<Unit>;
@@ -286,6 +288,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }),
         mergeMap((params) => {
           const { projectId, transactionId } = params;
+
+          this.archiveUnitCollectService.getProjectById(projectId).subscribe((project) => {
+            this.isAutomaticIngest = project.automaticIngest;
+          });
 
           if (transactionId) {
             return this.archiveUnitCollectService.getTransactionById(transactionId);
@@ -997,6 +1003,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.archiveUnitCollectService.validateTransaction(this.transaction.id).subscribe(() => {
       this.isNotOpen$.next(true);
       this.isNotReady$.next(false);
+      this.isAutomaticIngestValidated = true;
       const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
       this.snackBar.open(message, null, {
         panelClass: 'vitamui-snack-bar',

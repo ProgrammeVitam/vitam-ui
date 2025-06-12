@@ -78,7 +78,7 @@
                   </button>
                   <button
                     mat-menu-item
-                    [disabled]="!transactionIsReady(transaction) || !hasSendTransactionRole"
+                    [disabled]="!transactionIsReady(transaction) || !hasSendTransactionRole || disabledSendTransactions.has(transaction.id)"
                     (click)="sendTransaction(transaction)"
                   >
                     {{ 'COLLECT.INGEST_ACTION' | translate }}
