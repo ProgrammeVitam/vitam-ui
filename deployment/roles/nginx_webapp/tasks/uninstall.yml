@@ -20,5 +20,5 @@
     - "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key_pass"
     - "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}-ssl.conf"
     - "{{ nginx_conf_dir }}/{{ vitamui_struct.vitamui_component }}.conf"
-    - "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}/assets/config.json"
+    - "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component }}/assets/config.json"
   notify: reload nginx

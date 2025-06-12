@@ -7,7 +7,7 @@ server {
   listen  {{ ip_service }}:{{ vitamui_struct.port_service }};
   {% endif %}
 
-  root    {{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }};
+  root    {{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component }};
 
   location ~* \.(jpg|jpeg|png|gif|ico|svg|ttf|woff|woff2|eot|css|js|json)$ {
     add_header X-Content-Type-Options "nosniff" always;
