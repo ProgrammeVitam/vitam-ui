@@ -1,40 +1,16 @@
 <div class="container">
   <form [formGroup]="storageRuleCriteriaForm">
     <div class="row justify-content-start">
-      <div class="form-control">
-        <p class="title-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.STORAGE_TITLE' | translate }}</p>
-      </div>
-    </div>
-
-    <div class="row justify-content-start">
       <div class="col-5 form-control">
-        <vitamui-common-editable-input
+        <vitamui-select
           formControlName="storageRuleIdentifier"
-          [validator]="storageRuleCriteriaForm?.get('storageRuleIdentifier')?.validator"
-          [asyncValidator]="storageRuleCriteriaForm?.get('storageRuleIdentifier')?.asyncValidator"
-          label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ID_DUA' | translate }}"
-          minlength="1"
+          [options]="storageRuleOptions"
+          [multiple]="true"
+          [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_DUC' | translate"
+          [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_DUC' | translate"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
-          <vitamui-common-field-error errorKey="ruleIdPattern"
-            >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
-          </vitamui-common-field-error>
-
-          <vitamui-common-field-error errorKey="ruleIdExists"
-            >{{ 'ARCHIVE_SEARCH.RULE.CODE_NOT_EXIST' | translate }}
-          </vitamui-common-field-error>
-        </vitamui-common-editable-input>
+        </vitamui-select>
       </div>
-      <div class="col-1 form-control"></div>
-      <div class="col-5 form-control">
-        <vitamui-common-editable-input
-          formControlName="storageRuleTitle"
-          [validator]="storageRuleCriteriaForm?.get('storageRuleTitle')?.validator"
-          label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE_DUA' | translate }}"
-        >
-        </vitamui-common-editable-input>
-      </div>
-      <div class="col-1 form-control"></div>
     </div>
 
     <div class="row justify-content-start">

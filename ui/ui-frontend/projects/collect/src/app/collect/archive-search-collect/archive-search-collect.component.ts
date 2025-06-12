@@ -61,6 +61,8 @@ import {
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
+  Rule,
+  RuleService,
   ReclassificationDialogComponent,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
@@ -182,6 +184,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   archiveUnitAllunitup: string[];
 
   selectedArchive$: Observable<Unit>;
+  rulesToExport$: Observable<Rule[]>;
 
   search$: Observable<number>;
 
@@ -211,6 +214,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     public dialog: MatDialog,
     private queryParamsService: QueryParamsService,
     private searchCriteriaService: SearchCriteriaService,
+    private ruleService: RuleService,
   ) {
     super(route, globalEventService);
 
@@ -364,6 +368,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       const threshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
       this.bulkOperationsThreshold = threshold;
     });
+
+    this.rulesToExport$ = this.ruleService
+      .getAllForTenant(this.tenantIdentifier)
+      .pipe(map((rules) => rules.sort((a, b) => a.ruleId.localeCompare(b.ruleId))));
 
     this.checkUpdateUnitPermissions();
   }

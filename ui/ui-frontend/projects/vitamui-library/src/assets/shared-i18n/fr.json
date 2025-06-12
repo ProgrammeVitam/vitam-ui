@@ -3807,8 +3807,8 @@
     "SEARCH_CRITERIA_BETWEEN": "Entre le ",
     "SEARCH_CRITERIA_FILTER": {
       "ACCESS_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
         "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
@@ -3823,8 +3823,8 @@
       },
       "ACCESS_TITLE": "Communicabilité",
       "APPRAISAL_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
         "RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
@@ -3846,8 +3846,8 @@
       },
       "DATES": "Dates",
       "DISSEMINATION_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
         "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
@@ -3936,6 +3936,16 @@
         "ID_DISSEMINATION": "Identifiant",
         "ID_DUA": "Identifiant",
         "ID_REUSE": "Identifiant",
+        "PLACEHOLDER_ACCESS": "Règle de communicabilité",
+        "PLACEHOLDER_DISSEMINATION": "Règle de diffusion",
+        "PLACEHOLDER_DUA": "Règle de durée d'utilité administrative",
+        "PLACEHOLDER_DUC": "Règle de durée d'utilité courante",
+        "PLACEHOLDER_REUSE": "Règle de réutilisation",
+        "PLACEHOLDER_SEARCHBAR_ACCESS": "Sélectionnez une ou plusieurs règle(s) de communicabilité",
+        "PLACEHOLDER_SEARCHBAR_DISSEMINATION": "Sélectionnez une ou plusieurs règle(s) de diffusion",
+        "PLACEHOLDER_SEARCHBAR_DUA": "Sélectionnez une ou plusieurs règle(s) de durée d'utilité administrative",
+        "PLACEHOLDER_SEARCHBAR_DUC": "Sélectionnez une ou plusieurs règle(s) de durée d'utilité courante",
+        "PLACEHOLDER_SEARCHBAR_REUSE": "Sélectionnez une ou plusieurs règle(s) de réutilisation",
         "NODE": "Position",
         "PersistentIdentifier.PersistentIdentifierContent": "Identifiant pérenne",
         "ORIGIN": {
@@ -3994,19 +4004,15 @@
           "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
           "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets"
         },
-        "WAITING_RECALCULATE": "En attente de recalcul",
-        "START_DATE": "Date de début ≥",
-        "END_DATE": "Date de fin ≤",
-        "TITLE": "Intitulé",
-        "DESCRIPTION": "Description"
+        "WAITING_RECALCULATE": "En attente de recalcul"
       },
       "NODES": {
         "NODE": "Position"
       },
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "REUSE_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
         "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
@@ -4021,8 +4027,8 @@
       },
       "REUSE_TITLE": "Réutilisation",
       "STORAGE_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "FINAL_ACTION_STORAGE_RULE": "Sort final DUC",
         "FINAL_ACTION_TYPE_STORAGE_RULE": "Sort final",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
@@ -4394,8 +4400,8 @@
     "SEARCH_CRITERIA_BETWEEN": "Entre le ",
     "SEARCH_CRITERIA_FILTER": {
       "ACCESS_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
         "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
@@ -4410,8 +4416,8 @@
       },
       "ACCESS_TITLE": "Communicabilité",
       "APPRAISAL_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
         "RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
@@ -4433,8 +4439,8 @@
       },
       "DATES": "Dates",
       "DISSEMINATION_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
         "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
@@ -4519,6 +4525,16 @@
         "ID_DISSEMINATION": "Identifiant",
         "ID_DUA": "Identifiant",
         "ID_REUSE": "Identifiant",
+        "PLACEHOLDER_ACCESS": "Règle de communicabilité",
+        "PLACEHOLDER_DISSEMINATION": "Règle de diffusion",
+        "PLACEHOLDER_DUA": "Règle de durée d'utilité administrative",
+        "PLACEHOLDER_DUC": "Règle de durée d'utilité courante",
+        "PLACEHOLDER_REUSE": "Règle de réutilisation",
+        "PLACEHOLDER_SEARCHBAR_ACCESS": "Sélectionnez une ou plusieurs règle(s) de communicabilité",
+        "PLACEHOLDER_SEARCHBAR_DISSEMINATION": "Sélectionnez une ou plusieurs règle(s) de diffusion",
+        "PLACEHOLDER_SEARCHBAR_DUA": "Sélectionnez une ou plusieurs règle(s) de durée d'utilité administrative",
+        "PLACEHOLDER_SEARCHBAR_DUC": "Sélectionnez une ou plusieurs règle(s) de durée d'utilité courante",
+        "PLACEHOLDER_SEARCHBAR_REUSE": "Sélectionnez une ou plusieurs règle(s) de réutilisation",
         "NODE": "Position",
         "ORIGIN": {
           "HAS_AT_LEAST_ONE_ACCESS_RULE": "Porte au moins une règle de communicabilité",
@@ -4581,8 +4597,8 @@
       },
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "REUSE_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
         "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
@@ -4597,8 +4613,8 @@
       },
       "REUSE_TITLE": "Réutilisation",
       "STORAGE_RULE": {
-        "CREATE_INTERVAL": "Créer un intervale",
-        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "CREATE_INTERVAL": "Créer un intervalle",
+        "DELETE_INTERVAL": "Supprimer l'intervalle",
         "FINAL_ACTION_STORAGE_RULE": "Sort final DUC",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",

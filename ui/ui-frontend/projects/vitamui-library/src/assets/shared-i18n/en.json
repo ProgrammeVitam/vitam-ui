@@ -3841,7 +3841,7 @@
         "RULE_END_DATE_APPRAISAL_RULE": "DUAEnd Date",
         "RULE_END_DATE_BEGIN": "DUA: min End date",
         "RULE_END_DATE_END": "DUA: max End date",
-        "RULE_IDENTIFIER_APPRAISAL_RULE": "DUA Rule identifier",
+        "RULE_IDENTIFIER_APPRAISAL_RULE": "Appraisal Rule identifier",
         "RULE_ORIGIN_APPRAISAL_RULE": "DUA Rule"
       },
       "DATES": "Dates",
@@ -3936,6 +3936,16 @@
         "ID_DISSEMINATION": "Identifier",
         "ID_DUA": "Id",
         "ID_REUSE": "Identifier",
+        "PLACEHOLDER_ACCESS": "Access rule",
+        "PLACEHOLDER_DISSEMINATION": "Dissemination rule",
+        "PLACEHOLDER_DUA": "Appraisal rule",
+        "PLACEHOLDER_DUC": "Storage rule",
+        "PLACEHOLDER_REUSE": "Reuse rule",
+        "PLACEHOLDER_SEARCHBAR_ACCESS": "Choose one or more access rules",
+        "PLACEHOLDER_SEARCHBAR_DISSEMINATION": "Choose one or more dissemination rules",
+        "PLACEHOLDER_SEARCHBAR_DUA": "Choose one or more appraisal rules",
+        "PLACEHOLDER_SEARCHBAR_DUC": "Choose one or more storage rules",
+        "PLACEHOLDER_SEARCHBAR_REUSE": "Choose one or more reuse rules",
         "NODE": "Node",
         "PersistentIdentifier.PersistentIdentifierContent": "Permanent identifier",
         "ORIGIN": {
@@ -3994,11 +4004,7 @@
           "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
           "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive without objects"
         },
-        "WAITING_RECALCULATE": "Waiting to compute",
-        "START_DATE": "Start date ≥",
-        "END_DATE": "End date ≤",
-        "TITLE": "Title",
-        "DESCRIPTION": "Description"
+        "WAITING_RECALCULATE": "Waiting to compute"
       },
       "NODES": {
         "NODE": "Position"
@@ -4039,7 +4045,7 @@
         "RULE_END_DATE_END": "Storage: Max end date",
         "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
         "RULE_END_DATE_STORAGE_RULE": "Date de fin DUC",
-        "RULE_IDENTIFIER_STORAGE_RULE": "Identifiant règle DUC",
+        "RULE_IDENTIFIER_STORAGE_RULE": "Storage Rule identifier",
         "RULE_TITLE_STORAGE_RULE": "Intitulé règle DUC"
       },
       "STORAGE_TITLE": "Storage",
@@ -4428,7 +4434,7 @@
         "RULE_END_DATE_APPRAISAL_RULE": "DUAEnd Date",
         "RULE_END_DATE_BEGIN": "DUA: min End date",
         "RULE_END_DATE_END": "DUA: max End date",
-        "RULE_IDENTIFIER_APPRAISAL_RULE": "DUA Rule identifier",
+        "RULE_IDENTIFIER_APPRAISAL_RULE": "Appraisal Rule identifier",
         "RULE_ORIGIN_APPRAISAL_RULE": "DUA Rule"
       },
       "DATES": "Dates",
@@ -4519,6 +4525,16 @@
         "ID_DISSEMINATION": "Identifier",
         "ID_DUA": "Id",
         "ID_REUSE": "Identifier",
+        "PLACEHOLDER_ACCESS": "Access rule",
+        "PLACEHOLDER_DISSEMINATION": "Dissemination rule",
+        "PLACEHOLDER_DUA": "Appraisal rule",
+        "PLACEHOLDER_DUC": "Storage rule",
+        "PLACEHOLDER_REUSE": "Reuse rule",
+        "PLACEHOLDER_SEARCHBAR_ACCESS": "Choose one or more access rules",
+        "PLACEHOLDER_SEARCHBAR_DISSEMINATION": "Choose one or more dissemination rules",
+        "PLACEHOLDER_SEARCHBAR_DUA": "Choose one or more appraisal rules",
+        "PLACEHOLDER_SEARCHBAR_DUC": "Choose one or more storage rules",
+        "PLACEHOLDER_SEARCHBAR_REUSE": "Choose one or more reuse rules",
         "NODE": "Node",
         "ORIGIN": {
           "HAS_AT_LEAST_ONE_ACCESS_RULE": "Define at least one Access rule",
@@ -4615,7 +4631,7 @@
         "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
         "RULE_END_DATE_STORAGE_RULE": "Date de fin DUC",
         "FINAL_ACTION_TYPE_STORAGE_RULE": "Sort final",
-        "RULE_IDENTIFIER_STORAGE_RULE": "Identifiant règle DUC",
+        "RULE_IDENTIFIER_STORAGE_RULE": "Storage Rule identifier",
         "RULE_TITLE_STORAGE_RULE": "Intitulé règle DUC"
       },
       "STORAGE_TITLE": "Storage",

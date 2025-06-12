@@ -38,18 +38,20 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription, merge } from 'rxjs';
+import { Subscription, merge, Observable } from 'rxjs';
 import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  ManagementRuleValidators,
   SearchCriteriaTypeEnum,
   diff,
   CriteriaSearchCriteria,
   SearchCriteriaValue,
   QueryParamsService,
+  Rule,
+  VitamuiSelectOptions,
+  SearchCriteriaService,
   STORAGE_RULE,
   FINAL_ACTION_TYPE_COPY,
   FINAL_ACTION_TYPE_TRANSFER,
@@ -61,17 +63,15 @@ import {
   FINAL_ACTION,
   FINAL_ACTION_TYPE,
   RULE_ORIGIN,
-  RULE_TITLE,
   RULE_END_DATE,
   RULE_IDENTIFIER,
   ID_DUC,
-  TITLE_DUC,
   END_DATE_DUC,
   INTERVAL_DATE_DUC,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
-import { RuleValidator } from '../../services/rule.validator';
+import { Params } from '@angular/router';
 
 const RULE_TYPE = STORAGE_RULE;
 const RULE_TYPE_SUFFIX = '_' + STORAGE_RULE;
@@ -87,6 +87,12 @@ const keysList = [RULE_ORIGIN + RULE_TYPE_SUFFIX, FINAL_ACTION + RULE_TYPE_SUFFI
 export class StorageRuleSearchComponent implements OnInit, OnDestroy {
   @Input()
   hasWaitingToRecalculateCriteria: boolean;
+  @Input()
+  tenantIdentifier: string;
+  @Input()
+  rules: Observable<Rule[]>;
+
+  storageRuleOptions: VitamuiSelectOptions;
 
   storageRuleCriteriaForm: FormGroup;
 
@@ -96,7 +102,6 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
   endDateInterval = false;
   previousStorageCriteriaValue: {
     storageRuleIdentifier?: string;
-    storageRuleTitle?: string;
     storageRuleStartDate?: any;
     storageRuleEndDate?: any;
     storageRuleOriginInheriteAtLeastOne: boolean;
@@ -114,12 +119,11 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataService,
-    private ruleValidator: RuleValidator,
     private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     this.storageRuleCriteriaForm = this.formBuilder.group({
-      storageRuleIdentifier: [null, [ManagementRuleValidators.ruleIdPattern], this.ruleValidator.uniqueRuleId()],
-      storageRuleTitle: ['', []],
+      storageRuleIdentifier: [[], { updateOn: 'blur' }],
       storageRuleStartDate: ['', []],
       storageRuleEndDate: ['', []],
 
@@ -136,25 +140,6 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
         this.resetStorageRuleCriteriaForm();
       });
 
-    this.storageRuleCriteriaForm.get('storageRuleTitle').valueChanges.subscribe((value) => {
-      if (
-        this.storageRuleCriteriaForm.get('storageRuleTitle').value !== null &&
-        this.storageRuleCriteriaForm.get('storageRuleTitle').value !== ''
-      ) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_DUC, value },
-          value,
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.STORAGE_RULE,
-        );
-        this.resetStorageRuleCriteriaForm();
-      }
-    });
-
     this.subscriptionStorageFromMainSearchCriteria = this.archiveExchangeDataService.storageFromMainSearchCriteriaObservable.subscribe(
       (criteria) => {
         if (criteria) {
@@ -167,6 +152,26 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
           }
         }
       },
+    );
+
+    Object.entries(this.storageRuleCriteriaForm.controls)
+      .filter(([key, _value]) => key === 'storageRuleIdentifier')
+      .forEach(([key, control]) => {
+        control.valueChanges
+          .pipe(
+            debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+            filter((value) => !!value),
+          )
+          .subscribe((value) => {
+            this.addCriteriaFromParams({ [key]: value });
+            control.reset(undefined, { emitEvent: false });
+          });
+      });
+  }
+
+  private addCriteriaFromParams(params: Params) {
+    Object.entries(params).forEach(async ([key, value]) =>
+      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(await this.searchCriteriaService.toSearchCriteria({ [key]: value })),
     );
   }
 
@@ -188,7 +193,6 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
 
     this.previousStorageCriteriaValue = {
       storageRuleIdentifier: '',
-      storageRuleTitle: '',
       storageRuleStartDate: '',
       storageRuleEndDate: '',
       storageRuleOriginInheriteAtLeastOne: true,
@@ -203,6 +207,20 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
       storageRuleFinalActionInheriteFinalAction: false,
       restrictAccessFinalActionType: false,
     };
+
+    this.rules
+      .pipe(
+        map((rules) => rules.filter((rule) => rule.ruleType === 'StorageRule')),
+        map(
+          (rules): VitamuiSelectOptions => ({
+            options: rules.map((rule) => ({
+              key: rule.ruleId,
+              label: `${rule.ruleId} - ${rule.ruleValue}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.storageRuleOptions = options));
 
     this.archiveExchangeDataService.searchCriteria$
       .pipe(
@@ -424,34 +442,19 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   isEmpty(formData: any): boolean {
-    if (formData) {
-      if (formData.storageRuleIdentifier) {
-        this.addCriteria(
-          RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: ID_DUC, value: formData.storageRuleIdentifier.trim() },
-
-          formData.storageRuleIdentifier.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.STORAGE_RULE,
-        );
-        this.resetStorageRuleCriteriaForm();
-        return true;
-      } else if (formData.storageRuleTitle) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_DUC, value: formData.storageRuleTitle.trim() },
-          formData.storageRuleTitle.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.STORAGE_RULE,
-        );
-        return true;
-      }
+    if (formData.storageRuleIdentifier) {
+      this.addCriteria(
+        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
+        { id: ID_DUC, value: formData.storageRuleIdentifier },
+        formData.storageRuleIdentifier,
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING,
+        SearchCriteriaTypeEnum.STORAGE_RULE,
+      );
+      this.resetStorageRuleCriteriaForm();
+      return true;
     } else {
       return false;
     }
@@ -499,9 +502,6 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
 
   get storageRuleIdentifier() {
     return this.storageRuleCriteriaForm.controls.storageRuleIdentifier;
-  }
-  get storageRuleTitle() {
-    return this.storageRuleCriteriaForm.controls.storageRuleTitle;
   }
   get storageRuleStartDate() {
     return this.storageRuleCriteriaForm.controls.storageRuleStartDate;

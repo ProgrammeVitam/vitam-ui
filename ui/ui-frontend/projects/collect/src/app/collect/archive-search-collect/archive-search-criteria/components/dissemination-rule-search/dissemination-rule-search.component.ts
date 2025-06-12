@@ -38,34 +38,34 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription, merge } from 'rxjs';
+import { Subscription, merge, Observable } from 'rxjs';
 import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  ManagementRuleValidators,
   SearchCriteriaTypeEnum,
   diff,
   CriteriaSearchCriteria,
   SearchCriteriaValue,
   QueryParamsService,
+  Rule,
+  VitamuiSelectOptions,
+  SearchCriteriaService,
   DISSEMINATION_RULE,
   ORIGIN_WAITING_RECALCULATE,
   ORIGIN_HAS_NO_ONE,
   ORIGIN_HAS_AT_LEAST_ONE,
   RULE_ORIGIN,
-  RULE_TITLE,
   RULE_END_DATE,
   RULE_IDENTIFIER,
   ID_DISSEMINATION,
-  TITLE_DISSEMINATION,
   END_DATE_DISSEMINATION,
   INTERVAL_DATE_DISSEMINATION,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
-import { RuleValidator } from '../../services/rule.validator';
+import { Params } from '@angular/router';
 
 const RULE_TYPE = DISSEMINATION_RULE;
 const RULE_TYPE_SUFFIX = '_' + DISSEMINATION_RULE;
@@ -79,6 +79,12 @@ const RULE_TYPE_SUFFIX = '_' + DISSEMINATION_RULE;
 export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
   @Input()
   hasWaitingToRecalculateCriteria: boolean;
+  @Input()
+  tenantIdentifier: string;
+  @Input()
+  rules: Observable<Rule[]>;
+
+  disseminationRuleOptions: VitamuiSelectOptions;
 
   disseminationRuleCriteriaForm: FormGroup;
 
@@ -88,7 +94,6 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
   endDateInterval = false;
   previousDisseminationCriteriaValue: {
     disseminationRuleIdentifier?: string;
-    disseminationRuleTitle?: string;
     disseminationRuleStartDate?: any;
     disseminationRuleEndDate?: any;
     disseminationRuleOriginInheriteAtLeastOne: boolean;
@@ -103,16 +108,13 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataService,
-    private ruleValidator: RuleValidator,
     private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     this.disseminationRuleCriteriaForm = this.formBuilder.group({
-      disseminationRuleIdentifier: [null, [ManagementRuleValidators.ruleIdPattern], this.ruleValidator.uniqueRuleId()],
-      disseminationRuleTitle: ['', []],
+      disseminationRuleIdentifier: [[], { updateOn: 'blur' }],
       disseminationRuleStartDate: ['', []],
       disseminationRuleEndDate: ['', []],
-
-      disseminationRuleEliminationIdentifier: ['', []],
     });
     merge(this.disseminationRuleCriteriaForm.statusChanges, this.disseminationRuleCriteriaForm.valueChanges)
       .pipe(
@@ -124,25 +126,6 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.resetDisseminationRuleCriteriaForm();
       });
-
-    this.disseminationRuleCriteriaForm.get('disseminationRuleTitle').valueChanges.subscribe((value) => {
-      if (
-        this.disseminationRuleCriteriaForm.get('disseminationRuleTitle').value !== null &&
-        this.disseminationRuleCriteriaForm.get('disseminationRuleTitle').value !== ''
-      ) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_DISSEMINATION, value },
-          value,
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.DISSEMINATION_RULE,
-        );
-        this.resetDisseminationRuleCriteriaForm();
-      }
-    });
 
     this.subscriptionDisseminationFromMainSearchCriteria =
       this.archiveExchangeDataService.disseminationFromMainSearchCriteriaObservable.subscribe((criteria) => {
@@ -156,6 +139,26 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    Object.entries(this.disseminationRuleCriteriaForm.controls)
+      .filter(([key, _value]) => key === 'disseminationRuleIdentifier')
+      .forEach(([key, control]) => {
+        control.valueChanges
+          .pipe(
+            debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+            filter((value) => !!value),
+          )
+          .subscribe((value) => {
+            this.addCriteriaFromParams({ [key]: value });
+            control.reset(undefined, { emitEvent: false });
+          });
+      });
+  }
+
+  private addCriteriaFromParams(params: Params) {
+    Object.entries(params).forEach(async ([key, value]) =>
+      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(await this.searchCriteriaService.toSearchCriteria({ [key]: value })),
+    );
   }
 
   checkBoxChange(field: string, event: any) {
@@ -277,34 +280,19 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   isEmpty(formData: any): boolean {
-    if (formData) {
-      if (formData.disseminationRuleIdentifier) {
-        this.addCriteria(
-          RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: ID_DISSEMINATION, value: formData.disseminationRuleIdentifier.trim() },
-
-          formData.disseminationRuleIdentifier.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.DISSEMINATION_RULE,
-        );
-        this.resetDisseminationRuleCriteriaForm();
-        return true;
-      } else if (formData.disseminationRuleTitle) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_DISSEMINATION, value: formData.disseminationRuleTitle.trim() },
-          formData.disseminationRuleTitle.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.DISSEMINATION_RULE,
-        );
-        return true;
-      }
+    if (formData.disseminationRuleIdentifier) {
+      this.addCriteria(
+        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
+        { id: ID_DISSEMINATION, value: formData.disseminationRuleIdentifier },
+        formData.disseminationRuleIdentifier,
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING,
+        SearchCriteriaTypeEnum.DISSEMINATION_RULE,
+      );
+      this.resetDisseminationRuleCriteriaForm();
+      return true;
     } else {
       return false;
     }
@@ -331,7 +319,6 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
 
     this.previousDisseminationCriteriaValue = {
       disseminationRuleIdentifier: '',
-      disseminationRuleTitle: '',
       disseminationRuleStartDate: '',
       disseminationRuleEndDate: '',
       disseminationRuleOriginInheriteAtLeastOne: true,
@@ -339,6 +326,20 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
       disseminationRuleOriginHasNoOne: false,
       disseminationRuleOriginWaitingRecalculate: this.hasWaitingToRecalculateCriteria,
     };
+
+    this.rules
+      .pipe(
+        map((rules) => rules.filter((rule) => rule.ruleType === 'DisseminationRule')),
+        map(
+          (rules): VitamuiSelectOptions => ({
+            options: rules.map((rule) => ({
+              key: rule.ruleId,
+              label: `${rule.ruleId} - ${rule.ruleValue}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.disseminationRuleOptions = options));
 
     this.archiveExchangeDataService.searchCriteria$
       .pipe(
@@ -397,9 +398,6 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
 
   get disseminationRuleIdentifier() {
     return this.disseminationRuleCriteriaForm.controls.disseminationRuleIdentifier;
-  }
-  get disseminationRuleTitle() {
-    return this.disseminationRuleCriteriaForm.controls.disseminationRuleTitle;
   }
   get disseminationRuleStartDate() {
     return this.disseminationRuleCriteriaForm.controls.disseminationRuleStartDate;

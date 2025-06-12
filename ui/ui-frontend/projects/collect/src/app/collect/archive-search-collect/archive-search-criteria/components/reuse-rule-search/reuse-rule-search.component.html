@@ -1,36 +1,16 @@
 <div class="container">
   <form [formGroup]="reuseRuleCriteriaForm">
     <div class="row justify-content-start">
-      <div class="form-control">
-        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.REUSE_TITLE' | translate }}</p>
-      </div>
-    </div>
-
-    <div class="row justify-content-start">
       <div class="col-5 form-control">
-        <vitamui-common-editable-input
+        <vitamui-select
           formControlName="reuseRuleIdentifier"
-          [validator]="reuseRuleCriteriaForm?.get('reuseRuleIdentifier')?.validator"
-          [asyncValidator]="reuseRuleCriteriaForm?.get('reuseRuleIdentifier')?.asyncValidator"
-          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ID_REUSE' | translate }}"
-          minlength="1"
+          [options]="reuseRuleOptions"
+          [multiple]="true"
+          [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_REUSE' | translate"
+          [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_DUC' | translate"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
-          <vitamui-common-field-error errorKey="ruleIdPattern">{{ 'COLLECT.RULE.WRONG_FORMAT' | translate }} </vitamui-common-field-error>
-
-          <vitamui-common-field-error errorKey="ruleIdExists">{{ 'COLLECT.RULE.CODE_NOT_EXIST' | translate }} </vitamui-common-field-error>
-        </vitamui-common-editable-input>
+        </vitamui-select>
       </div>
-      <div class="col-1 form-control"></div>
-      <div class="col-5 form-control">
-        <vitamui-common-editable-input
-          formControlName="reuseRuleTitle"
-          [validator]="reuseRuleCriteriaForm?.get('reuseRuleTitle')?.validator"
-          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE_REUSE' | translate }}"
-        >
-        </vitamui-common-editable-input>
-      </div>
-      <div class="col-1 form-control"></div>
     </div>
 
     <div class="row justify-content-start">
