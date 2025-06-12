@@ -290,9 +290,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
     return this.rulesParams.controls.map((ruleParamControl: FormControl) => {
       const ruleParam = ruleParamControl.value;
+      const metadataKey = ruleParam.ontologyList.ApiField;
+      const metadataValue = ruleParam.metadataValue[metadataKey];
       return {
-        metadataKey: ruleParam.ontologyList.ApiField,
-        metadataValue: ruleParam.metadataValue,
+        metadataKey: metadataKey,
+        metadataValue: metadataValue,
         unitUp: ruleParam.unitUp.included[0],
       };
     });
