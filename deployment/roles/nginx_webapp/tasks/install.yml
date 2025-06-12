@@ -13,7 +13,7 @@
 
 - name: Install static ressources for ui-identity-admin - Copy folder
   command:
-    cmd: cp -va "{{ frontend_data_dir }}/identity/." "{{ frontend_data_dir }}/identity-admin"
+    cmd: cp -va "{{ frontend_data_dir }}/ui-identity/." "{{ frontend_data_dir }}/ui-identity-admin"
   when: vitamui_struct.vitamui_component == "ui-identity-admin"
 
 - name: Get package facts
@@ -37,7 +37,7 @@
 - name: Add config.json file
   template:
     src: frontend/config.json.j2
-    dest: "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}/assets/config.json"
+    dest: "{{ frontend_data_dir }}/{{ vitamui_struct.vitamui_component }}/assets/config.json"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
