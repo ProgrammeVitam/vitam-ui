@@ -58,10 +58,12 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   hasEditTransactionRole = false;
   hasSendTransactionRole = false;
   hasCloseTransactionRole = false;
+  disabledSendTransactions = new Set<string>();
 
   constructor(
     private snackBar: MatSnackBar,
     private transactionService: TransactionsService,
+    private archiveUnitCollectService: ArchiveCollectService,
     private archiveCollectService: ArchiveCollectService,
     private translateService: TranslateService,
     private router: Router,
@@ -106,8 +108,11 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   validateTransaction(transaction: Transaction) {
     this.transactionService.validateTransaction(transaction.id).subscribe(
       () => {
-        const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
         transaction.status = TransactionStatus.READY;
+        this.archiveUnitCollectService.getProjectById(transaction.projectId).subscribe((project) => {
+          if (project.automaticIngest) this.disabledSendTransactions.add(transaction.id);
+        });
+        const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
         this.snackBar.open(message, null, {
           duration: 10000,
         });

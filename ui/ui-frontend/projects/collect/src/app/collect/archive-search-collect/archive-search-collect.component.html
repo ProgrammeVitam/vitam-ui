@@ -90,7 +90,7 @@
             <button
               mat-menu-item
               (click)="sendTransaction()"
-              [disabled]="!hasSendTransactionRole || (isNotReady$ | async) || (isNotOpen$ | async)"
+              [disabled]="!hasSendTransactionRole || (isNotReady$ | async) || (isAutomaticIngest && isAutomaticIngestValidated)"
             >
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
