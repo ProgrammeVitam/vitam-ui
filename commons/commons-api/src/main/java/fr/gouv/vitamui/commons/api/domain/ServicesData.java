@@ -38,7 +38,6 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,6 +85,7 @@ public class ServicesData {
     public static final String ROLE_MFA_USERS = "ROLE_MFA_" + SERVICE_USERS;
 
     public static final String ROLE_UPDATE_ME_USERS = UPDATE_ME_ROLE_PREFIX + SERVICE_USERS;
+    public static final String ROLE_ADMIN_UPDATE_ME_USERS = "ROLE_ADMIN_UPDATE_ME_" + SERVICE_USERS;
 
     //------------------------------------ USERS INFO ROLE_GET_USER_INFOS  -------------------------------------------
 
@@ -690,7 +690,7 @@ public class ServicesData {
         ROLE_GENERIC_USERS,
         ROLE_MFA_USERS,
         ROLE_ANONYMIZATION_USERS,
-        ROLE_UPDATE_ME_USERS,
+        ROLE_ADMIN_UPDATE_ME_USERS,
 
         ROLE_GET_USER_INFOS,
         ROLE_CREATE_USER_INFOS,
@@ -856,15 +856,6 @@ public class ServicesData {
             );
 
     //@formatter:on
-
-    public static List<String> getAdminVitamUIRoleNames() {
-        return new ArrayList<>(ADMIN_VITAMUI_ROLES);
-    }
-
-    public static List<String> getAllRoleNames() {
-        return new ArrayList<>(ROLE_NAMES);
-    }
-
     public static List<Role> getAdminVitamUIRoles() {
         return ADMIN_VITAMUI_ROLES.stream().map(Role::new).collect(Collectors.toList());
     }
@@ -875,10 +866,6 @@ public class ServicesData {
 
     public static boolean checkIfRoleNameExists(final List<String> roleNames) {
         return roleNames.stream().allMatch(role -> ROLE_NAMES.contains(role));
-    }
-
-    public static boolean checkIfRoleExists(final List<Role> roles) {
-        return roles.stream().allMatch(role -> ROLE_NAMES.contains(role.getName()));
     }
 
     public static List<String> getServicesByName(final String... serviceName) {
