@@ -155,9 +155,14 @@ describe('DipRequestCreateComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 6 vitamui input', () => {
+    it('should have 4 vitamui input', () => {
       const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-input');
-      expect(elementVitamuiInput.length).toBe(6);
+      expect(elementVitamuiInput.length).toBe(4);
+    });
+
+    it('should have 2 vitamui select', () => {
+      const elementVitamSelect = fixture.nativeElement.querySelectorAll('vitamui-select');
+      expect(elementVitamSelect.length).toBe(2);
     });
 
     it('should have 3 mat-button-toggle-group', () => {

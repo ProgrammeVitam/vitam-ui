@@ -49,6 +49,7 @@ import {
   StartupService,
   UsageVersionEnum,
   VitamuiSelectOptions,
+  AgencyService,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
@@ -64,6 +65,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   formGroups: FormGroup[];
   isLoading = false;
   usageOptions: VitamuiSelectOptions[] = [];
+  agencyOptions: VitamuiSelectOptions;
 
   constructor(
     private translate: TranslateService,
@@ -73,6 +75,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     private startupService: StartupService,
     private confirmDialogService: ConfirmDialogService,
     private logger: Logger,
+    private agencyService: AgencyService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       itemSelected: number;
@@ -94,6 +97,20 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     this.selectedItemCountKnown = this.data.selectedItemCountKnown;
     this.initForms();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+    this.agencyService
+      .getAll()
+      .pipe(
+        map((agencies) => agencies.sort((a, b) => a.identifier.localeCompare(b.identifier))),
+        map(
+          (agencies): VitamuiSelectOptions => ({
+            options: agencies.map((agency) => ({
+              key: agency.identifier,
+              label: `${agency.identifier} - ${agency.name}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((selectOptions) => (this.agencyOptions = selectOptions));
   }
 
   private initForms() {
