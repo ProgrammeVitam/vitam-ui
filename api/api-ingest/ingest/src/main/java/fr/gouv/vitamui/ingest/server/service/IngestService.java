@@ -284,7 +284,7 @@ public class IngestService {
                     "Could not retrieve current user or his customer id to generate the document"
                 );
             }
-            CustomerDto myCustomer = customerRestClient.getOne(securityService.getHttpContext(), me.getCustomerId());
+            CustomerDto myCustomer = customerRestClient.getMyCustomer(securityService.getHttpContext());
             Resource customerLogo = null;
             Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
             Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(
