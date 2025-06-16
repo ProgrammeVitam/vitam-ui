@@ -28,7 +28,7 @@ FPM_PACK_REMOVE_SCRIPTS     = --after-remove "$(TEMPLATE_TMP_DIR)/after-remove-r
 # variable used to copy
 NAME_WITHOUT_SUFFIX  := $(subst ui-,,$(NAME))
 RESSOURCE_DIR_ORIGIN := $(abspath $(STAGING_ROOT)/../../../ui/ui-frontend/dist/$(NAME_WITHOUT_SUFFIX)/browser/*)
-RESSOURCE_DIR_DEST   := $(abspath $(STAGING_ROOT)/vitamui/data/$(NAME_WITHOUT_SUFFIX)/)
+RESSOURCE_DIR_DEST   := $(abspath $(STAGING_ROOT)/vitamui/data/$(NAME)/)
 
 clean:
 	@rm -Rf $(TEMPLATE_TMP_DIR) $(STAGING_ROOT)
@@ -39,7 +39,7 @@ $(STAGING_ROOT):
 stage: $(STAGING_ROOT)
 
 $(VITAMUI_DIRS): stage
-	@mkdir -p $(abspath $(STAGING_ROOT)/vitamui/$@/$(NAME_WITHOUT_SUFFIX))
+	@mkdir -p $(abspath $(STAGING_ROOT)/vitamui/$@/$(NAME))
 
 vitamui-dirs:  $(VITAMUI_DIRS)
 
@@ -48,7 +48,7 @@ template-files:
 	@for fic in  $(TEMPLATE_SRC) ; \
 	do \
 		sed  \
-			-e "s/__NAME__/$(NAME_WITHOUT_SUFFIX)/g" \
+			-e "s/__NAME__/$(NAME)/g" \
 			-e "s/__USER__/$(USER)/g" \
 			-e "s/__GROUP__/$(GROUP)/g" \
 			$$fic >  $(TEMPLATE_TMP_DIR)/`basename $$fic`; \
