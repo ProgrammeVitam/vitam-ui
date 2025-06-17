@@ -3,7 +3,7 @@
 - include_tasks: daemon_update_conf.yml
 
 - include_tasks: RedHat.yml
-  when: ansible_os_family == 'RedHat'
+  when: ansible_os_family in ['RedHat', 'Rocky']
 
 - include_tasks: Debian.yml
   when: ansible_os_family == 'Debian'
@@ -22,7 +22,7 @@
     src: "http_proxy.conf.j2"
     dest: /etc/systemd/system/docker.service.d/http_proxy.conf
   notify:
-  - "docker - restart service"
+    - "docker - restart service"
   when:
     - http_proxy_environnement is defined
     - http_proxy_environnement != ""
@@ -31,7 +31,7 @@
   user:
     name: vitam
     groups: docker
-    append: yes
+    append: true
   notify: "docker - restart service"
 
 - meta: flush_handlers
@@ -48,5 +48,5 @@
 - name: Make sure net.ipv4.ip_unprivileged_port_start is disabled
   sysctl:
     name: net.ipv4.ip_unprivileged_port_start
-    sysctl_set: yes
+    sysctl_set: true
     value: '0'
