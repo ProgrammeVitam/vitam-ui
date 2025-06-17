@@ -15,31 +15,31 @@
 # Force a specific version to install (even downgrade)
 - block:
 
-  - name: "Install {{ package_name }} package"
-    apt:
-      name: "{{ package_name }}={{ force_vitamui_version }}"
-      force: yes
-      state: present
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
-    tags: mongo-express
-    notify: restart mongo-express
-    when: ansible_os_family == "Debian"
+    - name: "Install {{ package_name }} package"
+      apt:
+        name: "{{ package_name }}={{ force_vitamui_version }}"
+        force: true
+        state: present
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
+      tags: mongo-express
+      notify: restart mongo-express
+      when: ansible_os_family == "Debian"
 
-  - name: "Install {{ package_name }} package"
-    yum:
-      name: "{{ package_name }}-{{ force_vitamui_version }}"
-      allow_downgrade : yes
-      state: present
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
-    tags: mongo-express
-    notify: restart mongo-express
-    when: ansible_os_family == "RedHat"
+    - name: "Install {{ package_name }} package"
+      yum:
+        name: "{{ package_name }}-{{ force_vitamui_version }}"
+        allow_downgrade: true
+        state: present
+      register: result
+      retries: "{{ packages_install_retries_number | default(2) }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay | default(10) }}"
+      tags: mongo-express
+      notify: restart mongo-express
+      when: ansible_os_family in ['RedHat', 'Rocky']
 
   when: force_vitamui_version is defined
 
@@ -87,5 +87,5 @@
     name: "{{ mongo_express.service_name | default('vitamui-mongo-express') }}"
     state: started
     enabled: "{{ mongo_express.at_boot | default(service_at_boot) }}"
-    daemon_reload: yes
+    daemon_reload: true
   tags: mongo-express
