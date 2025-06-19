@@ -281,6 +281,7 @@ public class ArchiveSearchConsts {
     public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
     public static final String FACETS_FINAL_ACTION_COMPUTED = "FINAL_ACTION_COMPUTED";
     public static final String FACETS_COMPUTE_RULES_AU_NUMBER = "COMPUTE_RULES_AU_NUMBER";
+    public static final String FACETS_VIRTUAL_TREE = "FACETS_VIRTUAL_TREE";
     public static final String FACETS_COUNT_BY_NODE = "COUNT_BY_NODE";
     public static final String FACETS_COUNT_WITHOUT_RULES = "COUNT_WITHOUT_RULES";
     public static final String COUNT_CONFLICT_RULES = "Conflict";

@@ -43,6 +43,9 @@ export interface Unit {
   '#unitups': string[];
   '#allunitups': string[];
   '#unitType': UnitType;
+  realParentId?: string;
+  FilePlanPosition?: string[];
+  '#vups'?: string[];
   '#object'?: string;
   // computed data from #object
   objectGroup?: ApiUnitObject;

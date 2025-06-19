@@ -20,7 +20,7 @@
   [vitamuiTooltip]="node?.title"
   [vitamuiTooltipShowDelay]="300"
 >
-  <label class="node-label" (click)="onLabelClick($event)">
+  <label class="node-label" [ngClass]="(node?.unitType?.valueOf() === 'VIRTUAL')? 'virtual' : ''" (click)="onLabelClick($event)">
     <i class="mr-1 vitamui-icon {{ icon }}"></i>
     {{ node?.title }}
   </label>

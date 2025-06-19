@@ -586,6 +586,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveSharedDataService.emitSearchCriterias(searchCriterias);
     this.archiveService.searchArchiveUnitsByCriteria(searchCriterias).subscribe(
       (pagedResult: PagedResult) => {
+        console.log(pagedResult)
+        // c là
         if (includeFacets) {
           this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
           this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);

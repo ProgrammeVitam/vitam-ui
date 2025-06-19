@@ -79,6 +79,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOper
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_BY_NODE;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_VIRTUAL_TREE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACET_SIZE_MULTIPLIER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FILING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.HOLDING_UNIT_TYPE;
@@ -128,6 +129,15 @@ public final class MetadataSearchCriteriaUtils {
 
         SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
         addPositionsNodesFacet(searchQuery, selectMultiQuery);
+
+        selectMultiQuery.addFacets(
+            FacetHelper.terms(
+                FACETS_VIRTUAL_TREE,
+                "#vups",
+                30,
+                FacetOrder.ASC
+            )
+        );
 
         if (searchQuery.isComputeFacets()) {
             selectMultiQuery.addFacets(

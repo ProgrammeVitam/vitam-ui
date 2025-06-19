@@ -395,6 +395,7 @@ export class FilingHoldingSchemeHandler {
       descriptionLevel: unit.DescriptionLevel,
       children: [],
       vitamId: unit['#id'],
+      realParentId: unit.realParentId,
       checked: false,
       isLoadingChildren: false,
       canLoadMoreChildren: unit.DescriptionLevel !== DescriptionLevel.ITEM,
