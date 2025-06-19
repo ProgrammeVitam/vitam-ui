@@ -81,54 +81,54 @@
 
 - block:
 
-  # Install resolvconf package to maintain proper nameserver for consul resolution
+    # Install resolvconf package to maintain proper nameserver for consul resolution
 
-  - name: Install resolvconf package
-    package:
-      name: "{{ 'resolvconf' if ansible_distribution == 'Debian' else 'vitam-resolvconf' }}"
-      state: latest
-    register: result
-    retries: "{{ packages_install_retries_number }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay }}"
+    - name: Install resolvconf package
+      package:
+        name: "{{ 'resolvconf' if ansible_distribution == 'Debian' else 'vitam-resolvconf' }}"
+        state: latest
+      register: result
+      retries: "{{ packages_install_retries_number }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay }}"
 
-  # For Debian add nameserver 127.0.0.1 entry in /etc/resolvconf/resolv.conf.d/head
-  - name: Add nameserver entry in /etc/resolvconf/resolv.conf.d/head
-    blockinfile:
-      backup: yes
-      dest: /etc/resolvconf/resolv.conf.d/head
-      insertbefore: BOF
-      create: yes
-      block: |
-        nameserver 127.0.0.1
-    when: ansible_os_family == "Debian"
+    # For Debian add nameserver 127.0.0.1 entry in /etc/resolvconf/resolv.conf.d/head
+    - name: Add nameserver entry in /etc/resolvconf/resolv.conf.d/head
+      blockinfile:
+        backup: true
+        dest: /etc/resolvconf/resolv.conf.d/head
+        insertbefore: BOF
+        create: true
+        block: |
+          nameserver 127.0.0.1
+      when: ansible_os_family == "Debian"
 
-  - name: Add consul nameserver to resolv.conf
-    blockinfile:
-      backup: yes
-      dest: /etc/resolv.conf
-      insertbefore: BOF # necessary or this entry won't be asked
-      marker: "# {mark} ANSIBLE MANAGED BLOCK"
-      block: |
-        nameserver 127.0.0.1
-    when: inventory_hostname not in single_vm_hostnames
+    - name: Add consul nameserver to resolv.conf
+      blockinfile:
+        backup: true
+        dest: /etc/resolv.conf
+        insertbefore: BOF # necessary or this entry won't be asked
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        block: |
+          nameserver 127.0.0.1
+      when: inventory_hostname not in single_vm_hostnames
 
-  - name: Start the resolvconf service
-    systemd:
-      name: resolvconf
-      enabled: yes
-      state: started
-    when: ansible_os_family == "Debian"
+    - name: Start the resolvconf service
+      systemd:
+        name: resolvconf
+        enabled: true
+        state: started
+      when: ansible_os_family == "Debian"
 
-  - name: Start the vitam-resolvconf services
-    systemd:
-      name: "{{ item }}"
-      enabled: yes
-      state: started
-    with_items:
-      - vitam_dns_localhost_enforce.path
-      - vitam_dns_localhost_enforce.service
-    when: ansible_os_family == "RedHat"
+    - name: Start the vitam-resolvconf services
+      systemd:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      with_items:
+        - vitam_dns_localhost_enforce.path
+        - vitam_dns_localhost_enforce.service
+      when: ansible_os_family in ['RedHat', 'Rocky']
 
   when: inventory_hostname not in single_vm_hostnames
 
