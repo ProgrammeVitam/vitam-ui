@@ -37,12 +37,13 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { VitamUISnackBarService } from '../../modules/components/vitamui-snack-bar';
 import { RuleApiService } from '../api/rule-api.service';
 import { Rule } from '../models/rule/rule.interface';
 import { SearchService } from '../vitamui-table';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
+import { VitamuiSelectOptions } from '../../../lib/components/select/select.component';
 
 const keySnackbar = 'APPLICATION.RULES_APP.MESSAGES.';
 
@@ -68,6 +69,20 @@ export class RuleService extends SearchService<Rule> {
     const params = new HttpParams().set('embedded', 'ALL');
     const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantId);
     return this.ruleApiService.getAllByParams(params, headers);
+  }
+
+  getRuleOptionsList(rulesList: Observable<Rule[]>, ruleCategory: string) {
+    return rulesList.pipe(
+      map((rules) => rules.filter((rule) => rule.ruleType === ruleCategory)),
+      map(
+        (rules): VitamuiSelectOptions => ({
+          options: rules.map((rule) => ({
+            key: rule.ruleId,
+            label: `${rule.ruleId} - ${rule.ruleValue}`,
+          })),
+        }),
+      ),
+    );
   }
 
   existsProperties(properties: { name?: string; ruleId?: string; ruleType?: string }): Observable<any> {

@@ -43,7 +43,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  BASE_URL,
+  InjectorModule,
+  LoggerModule,
+  SearchCriteriaDto,
+  WINDOW_LOCATION,
+  TenantSelectionService,
+  Tenant,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { UpdateUnitManagementRuleService } from '../../../../common-services/update-unit-management-rule.service';
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';
@@ -149,6 +157,21 @@ const searchCriteriaDto: SearchCriteriaDto = {
   trackTotalHits: false,
 };
 
+const tenant: Tenant = {
+  identifier: 1,
+  name: '',
+  ownerId: '',
+  customerId: '',
+  enabled: false,
+  proof: false,
+  readonly: false,
+  ingestContractHoldingIdentifier: '',
+  itemIngestContractIdentifier: '',
+  accessContractHoldingIdentifier: '',
+  accessContractLogbookIdentifier: '',
+  id: '',
+};
+
 describe('ArchiveUnitRulesComponent', () => {
   let component: ArchiveUnitRulesComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesComponent>;
@@ -169,6 +192,10 @@ describe('ArchiveUnitRulesComponent', () => {
 
   const updateUnitManagementRuleServiceMock = {
     getRuleManagementCategory: () => of({}),
+  };
+
+  const tenantSelectionServiceMock = {
+    getSelectedTenant: () => of(tenant),
   };
 
   beforeEach(async () => {
@@ -193,6 +220,7 @@ describe('ArchiveUnitRulesComponent', () => {
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
+        { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

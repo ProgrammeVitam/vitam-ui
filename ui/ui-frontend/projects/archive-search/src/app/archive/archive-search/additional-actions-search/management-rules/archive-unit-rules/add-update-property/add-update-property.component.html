@@ -1,10 +1,10 @@
-<div class="container gap-5 align-items-stretch">
-  <div class="gap-3 align-items-stretch">
-    <label class="text bold normal primary">{{ 'RULES.FINAL_ACTION.TITLE' | translate }}</label>
+<div class="container p-4 gap-4 align-items-stretch">
+  <div class="gap-2 align-items-stretch">
+    <label class="text bold normal primary uppercase">{{ 'RULES.FINAL_ACTION.TITLE' | translate }}</label>
 
     <vitamui-select
-      class="w-50"
-      [placeholder]="'RULES.FINAL_ACTION.SELECT_VALUE' | translate"
+      class="w-100"
+      [placeholder]="'RULES.FINAL_ACTION.TITLE' | translate"
       (change)="onChangeValue()"
       [(ngModel)]="rulePropertyName"
       [options]="
@@ -33,8 +33,8 @@
     </div>
   </div>
 
-  <div class="d-flex padding-btm-style">
-    <button type="button" (click)="onUpdateRuleProperty()" [disabled]="isValidValue" class="btn primary mr-4">
+  <div class="d-flex hgap-4">
+    <button type="button" (click)="onUpdateRuleProperty()" [disabled]="isValidValue" class="btn primary">
       {{ 'RULES.COMMON.CONTROL' | translate }}
     </button>
     <button type="button" (click)="onCancelAddRuleProperty()" [disabled]="isCancelAddRulePropertyButtonDisabled" class="btn link cancel">

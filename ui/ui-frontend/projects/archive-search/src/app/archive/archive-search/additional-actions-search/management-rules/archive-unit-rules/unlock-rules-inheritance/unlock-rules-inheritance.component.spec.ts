@@ -54,6 +54,7 @@ import {
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   WINDOW_LOCATION,
+  Rule,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
@@ -221,6 +222,7 @@ describe('UnlockRulesInheritanceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UnlockRulesInheritanceComponent);
     component = fixture.componentInstance;
+    component.rulesList = new Observable<Rule[]>();
     fixture.detectChanges();
   });
 
@@ -254,11 +256,11 @@ describe('UnlockRulesInheritanceComponent', () => {
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);
-      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.APPRAISAL_RULES.SOURCE_RULE');
+      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.SOURCE_MANAGEMENT_RULE');
     });
 
-    it('should have 1 vitamui editable input', () => {
-      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-editable-input');
+    it('should have 1 vitamui select', () => {
+      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-select');
       expect(elementVitamuiInput.length).toBe(1);
     });
 

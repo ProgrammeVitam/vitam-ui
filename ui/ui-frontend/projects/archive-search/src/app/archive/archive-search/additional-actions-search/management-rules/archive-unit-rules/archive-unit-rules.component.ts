@@ -36,10 +36,11 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
+import { Rule } from 'vitamui-library';
 
 @Component({
   selector: 'app-archive-unit-rules',
@@ -62,6 +63,9 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
   ruleCategory: string;
   @Input()
   hasExactCount: boolean;
+  @Input()
+  rules$: Observable<Rule[]>;
+
   ruleCategoryDuaActions: RuleCategoryAction;
 
   managementRules: ManagementRules[] = [];
@@ -280,4 +284,6 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
         managementRule.actionType === RuleActionsEnum.DELETE_RULES && managementRule.ruleCategoryAction.rules.length === 0,
     );
   }
+
+  protected readonly Number = Number;
 }

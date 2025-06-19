@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { merge, Subscription } from 'rxjs';
+import { merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff, ManagementRuleValidators, Rule, RuleService, SearchCriteriaDto } from 'vitamui-library';
+import { diff, ManagementRuleValidators, Rule, RuleService, SearchCriteriaDto, VitamuiSelectOptions } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
@@ -51,12 +51,16 @@ import { ManagementRulesValidatorService } from '../../../../../validators/manag
   styleUrls: ['./block-rules-inheritance.component.css'],
   standalone: false,
 })
-export class BlockRulesInheritanceComponent implements OnDestroy {
+export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   @Input()
   ruleCategory: string;
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
+  @Input()
+  rulesList: Observable<Rule[]>;
+
+  ruleOptions: VitamuiSelectOptions;
 
   showText = false;
   isLoading = false;
@@ -75,7 +79,6 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
   ruleDetailsForm: FormGroup;
   previousRuleDetails: {
     rule: string;
-    ruleName: string;
   };
 
   @ViewChild('confirmDeleteBlockBlocRuleDialog', { static: true })
@@ -84,13 +87,12 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
   constructor(
     private managementRulesValidatorService: ManagementRulesValidatorService,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private ruleService: RuleService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
+    private ruleService: RuleService,
   ) {
     this.previousRuleDetails = {
       rule: '',
-      ruleName: '',
     };
 
     this.ruleDetailsForm = this.formBuilder.group({
@@ -99,7 +101,6 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
         [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.uniquePreventRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
-      ruleName: [{ value: null, disabled: true }],
     });
     merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
       .pipe(
@@ -112,6 +113,11 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
       });
   }
+
+  ngOnInit() {
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
+  }
+
   ngOnDestroy() {
     this.getRuleSuscription?.unsubscribe();
     this.showConfirmDeleteBlocRuleSuscription?.unsubscribe();
@@ -121,7 +127,6 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
   patchForm(data: any): boolean {
     this.previousRuleDetails = {
       rule: data.rule ? data.rule : this.previousRuleDetails.rule,
-      ruleName: this.ruleDetailsForm.get('ruleName').value,
     };
 
     return true;
@@ -130,13 +135,8 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
   isEmpty(formData: any): boolean {
     if (formData) {
       if (formData.rule) {
-        this.getRuleSuscription = this.ruleService.get(formData.rule.trim()).subscribe((ruleResponse) => {
-          this.rule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ ruleName: ruleResponse.ruleValue });
-          this.disabledControl = false;
-        });
+        this.disabledControl = false;
         this.cancelStep.emit();
-
         return true;
       }
     }
@@ -162,7 +162,6 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
 
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
-      name: this.ruleDetailsForm.get('ruleName').value,
     };
 
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {

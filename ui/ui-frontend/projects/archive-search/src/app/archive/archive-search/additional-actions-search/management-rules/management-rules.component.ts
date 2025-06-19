@@ -38,9 +38,18 @@ import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { Logger, Option, SearchCriteriaDto, SearchCriteriaEltDto, SelectComponent, StartupService } from 'vitamui-library';
+import { Observable, Subscription } from 'rxjs';
+import { filter, map, shareReplay } from 'rxjs/operators';
+import {
+  Logger,
+  Option,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SelectComponent,
+  StartupService,
+  Rule,
+  RuleService,
+} from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -72,6 +81,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   selectedItemToShow: string;
   ruleActions: ActionsRules[] = [];
   actionsSelected: string[] = [];
+  rules$: Observable<Rule[]>;
   private ruleCategoryDuaActionsToAdd: RuleCategoryAction = {
     rules: [],
     finalAction: '',
@@ -159,6 +169,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     private startupService: StartupService,
     private translateService: TranslateService,
     private logger: Logger,
+    private ruleService: RuleService,
   ) {
     this.applyChanges();
   }
@@ -342,6 +353,14 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.add(
       this.route.params.subscribe((params) => {
         this.tenantIdentifier = params.tenantIdentifier;
+        this.rules$ = this.ruleService.getAllForTenant(this.tenantIdentifier).pipe(
+          map((rules) =>
+            rules.sort((a, b) => {
+              return a.ruleId.localeCompare(b.ruleId);
+            }),
+          ),
+          shareReplay(1),
+        );
       }),
     );
     this.subscriptions.add(

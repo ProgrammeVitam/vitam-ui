@@ -4,7 +4,6 @@
     font-style: Mulish;
     font-weight: 800;
     line-height: 32px;
-    margin-bottom: 10px;
 }
 
 .message-text-ko {
@@ -17,4 +16,5 @@
 
 .toggle-design {
     margin-top: 12px;
+    margin-left: 10px;
 }

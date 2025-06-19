@@ -44,7 +44,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION, Rule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { BlockRulesInheritanceComponent } from './block-rules-inheritance.component';
@@ -168,6 +168,7 @@ describe('BlockRulesInheritanceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BlockRulesInheritanceComponent);
     component = fixture.componentInstance;
+    component.rulesList = new Observable<Rule[]>();
     fixture.detectChanges();
   });
 
@@ -192,11 +193,11 @@ describe('BlockRulesInheritanceComponent', () => {
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);
-      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.APPRAISAL_RULES.SOURCE_RULE');
+      expect(formTitlesHtmlElements[0].textContent).toContain('RULES.SOURCE_MANAGEMENT_RULE');
     });
 
-    it('should have 1 vitamui editable input', () => {
-      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-editable-input');
+    it('should have 1 vitamui select', () => {
+      const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-select');
       expect(elementVitamuiInput.length).toBe(1);
     });
   });

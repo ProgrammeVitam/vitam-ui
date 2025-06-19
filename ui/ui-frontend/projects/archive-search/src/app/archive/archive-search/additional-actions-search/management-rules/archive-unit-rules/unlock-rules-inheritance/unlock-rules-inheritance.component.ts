@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { merge, Subscription } from 'rxjs';
+import { merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
@@ -52,6 +52,7 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
@@ -68,7 +69,7 @@ const APPRAISAL_RULE_INHERITED_CRITERIA = 'APPRAISAL_RULE_INHERITED_CRITERIA';
   styleUrls: ['./unlock-rules-inheritance.component.css'],
   standalone: false,
 })
-export class UnlockRulesInheritanceComponent implements OnDestroy {
+export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
@@ -78,6 +79,10 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
   ruleCategory: string;
   @Input()
   hasExactCount: boolean;
+  @Input()
+  rulesList: Observable<Rule[]>;
+
+  ruleOptions: VitamuiSelectOptions;
 
   resultNumberToShow: string;
   rule: Rule;
@@ -91,7 +96,6 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
   ruleDetailsForm: FormGroup;
   previousRuleDetails: {
     rule: string;
-    ruleName: string;
   };
 
   showText = false;
@@ -111,16 +115,15 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
     private managementRulesValidatorService: ManagementRulesValidatorService,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
-    private ruleService: RuleService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private translateService: TranslateService,
     private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
+    private ruleService: RuleService,
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
       rule: '',
-      ruleName: '',
     };
 
     this.ruleDetailsForm = this.formBuilder.group({
@@ -129,7 +132,6 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
         [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.uniquePreventRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
-      ruleName: [{ value: null, disabled: true }],
     });
     merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
       .pipe(
@@ -150,7 +152,6 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
 
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
-      name: this.ruleDetailsForm.get('ruleName').value,
     };
 
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
@@ -207,6 +208,10 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
       .subscribe(() => {
         this.delete.emit(this.ruleDetailsForm.get('rule').value);
       });
+  }
+
+  ngOnInit() {
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
   }
 
   ngOnDestroy(): void {
@@ -283,7 +288,6 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
   patchForm(data: any): boolean {
     this.previousRuleDetails = {
       rule: data.rule ? data.rule : this.previousRuleDetails.rule,
-      ruleName: this.ruleDetailsForm.get('ruleName').value,
     };
 
     return true;
@@ -292,13 +296,8 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
   isEmpty(formData: any): boolean {
     if (formData) {
       if (formData.rule) {
-        this.getRuleSuscription = this.ruleService.get(formData.rule.trim()).subscribe((ruleResponse) => {
-          this.rule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ ruleName: ruleResponse.ruleValue });
-          this.disabledControl = false;
-        });
+        this.disabledControl = false;
         this.cancelStep.emit();
-
         return true;
       }
     }

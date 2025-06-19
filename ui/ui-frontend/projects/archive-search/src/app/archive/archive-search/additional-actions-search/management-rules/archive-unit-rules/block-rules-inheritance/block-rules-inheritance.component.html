@@ -1,40 +1,16 @@
-<div class="container">
-  <form [formGroup]="ruleDetailsForm">
-    <label class="text bold normal primary"> {{ 'RULES.APPRAISAL_RULES.SOURCE_RULE' | translate }}</label>
-    <div class="row content vitamui-form" style="margin-right: 0px">
-      <vitamui-common-editable-input
-        class="col-6"
-        formControlName="rule"
-        [validator]="ruleDetailsForm?.get('rule')?.validator"
-        [asyncValidator]="ruleDetailsForm?.get('rule')?.asyncValidator"
-        label="{{ 'RULES.APPRAISAL_RULES.RULE_ID' | translate }}"
-      >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniquePreventRuleId">
-          {{ 'RULES.APPRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
-        >
-        <vitamui-common-field-error errorKey="ruleIdPattern"
-          >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
-        </vitamui-common-field-error>
-
-        <vitamui-common-field-error errorKey="ruleIdExists"
-          >{{ 'RULES.APPRAISAL_RULES.RULE_NOT_EXIST' | translate }}
-        </vitamui-common-field-error>
-      </vitamui-common-editable-input>
-
-      <vitamui-common-input
-        class="col-6 px-0"
-        formControlName="ruleName"
-        minlength="2"
-        maxlength="100"
-        required
-        placeholder="{{ 'RULES.APPRAISAL_RULES.RULE_NAME' | translate }}"
-      >
-        <vitamui-common-input-error
-          *ngIf="ruleDetailsForm?.get('ruleName')?.touched && ruleDetailsForm?.get('ruleName')?.hasError('required')"
-          >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
-        >
-      </vitamui-common-input>
+<div class="container p-4">
+  <form [formGroup]="ruleDetailsForm" class="gap-4 align-items-stretch">
+    <div class="gap-2 align-items-stretch">
+      <label class="text bold normal primary uppercase"> {{ 'RULES.SOURCE_MANAGEMENT_RULE' | translate }}</label>
+      <div class="row content vitamui-form">
+        <vitamui-select
+          class="col"
+          formControlName="rule"
+          [options]="ruleOptions"
+          [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
+          [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
+        ></vitamui-select>
+      </div>
     </div>
 
     <div *ngIf="showText" class="row message-text-ok">
@@ -44,8 +20,13 @@
       </div>
     </div>
 
-    <div class="d-flex mt-4 padding-btm-style">
-      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl" (click)="blockRuleInheritance()">
+    <div class="d-flex">
+      <button
+        type="submit"
+        class="btn primary mr-4"
+        [disabled]="disabledControl || !ruleDetailsForm.valid"
+        (click)="blockRuleInheritance()"
+      >
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
