@@ -281,6 +281,7 @@ public class ArchiveSearchConsts {
     public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
     public static final String FACETS_FINAL_ACTION_COMPUTED = "FINAL_ACTION_COMPUTED";
     public static final String FACETS_COMPUTE_RULES_AU_NUMBER = "COMPUTE_RULES_AU_NUMBER";
+    public static final String FACETS_VIRTUAL_TREE = "FACETS_VIRTUAL_TREE";
     public static final String FACETS_COUNT_BY_NODE = "COUNT_BY_NODE";
     public static final String FACETS_COUNT_WITHOUT_RULES = "COUNT_WITHOUT_RULES";
     public static final String COUNT_CONFLICT_RULES = "Conflict";
@@ -301,6 +302,7 @@ public class ArchiveSearchConsts {
     public static Map<String, String> SIMPLE_FIELDS_VALUES_MAPPING = Map.ofEntries(
         entry("GUID", GUID),
         entry("GUID_OPI", "#opi"),
+        entry("VIRTUAL", "#vups"),
         entry(ORIGINATING_AGENCY_ID_FIELD, PRODUCER_SERVICE),
         entry("START_DATE", START_DATE),
         entry("END_DATE", END_DATE),

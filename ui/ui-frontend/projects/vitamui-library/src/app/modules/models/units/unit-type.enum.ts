@@ -39,4 +39,5 @@ export enum UnitType {
   FILING_UNIT = 'FILING_UNIT',
   INGEST = 'INGEST',
   WITH_KEY_VALUE = 'WITH_KEY_VALUE',
+  VIRTUAL = 'VIRTUAL',
 }

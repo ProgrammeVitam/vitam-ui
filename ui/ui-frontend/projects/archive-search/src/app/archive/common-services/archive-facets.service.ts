@@ -50,12 +50,13 @@ export class ArchiveFacetsService {
   COUNT_WITHOUT_RULES_PREFIX = 'COUNT_WITHOUT_RULES_';
   COMPUTE_RULES_AU_NUMBER = 'COMPUTE_RULES_AU_NUMBER';
   COUNT_BY_NODE = 'COUNT_BY_NODE';
+  FACETS_VIRTUAL_TREE = 'FACETS_VIRTUAL_TREE';
 
   extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
     const nodesFacets: ResultFacet[] = [];
     if (facetResults && facetResults.length > 0) {
       for (const facet of facetResults) {
-        if (facet.name === this.COUNT_BY_NODE) {
+        if ([this.COUNT_BY_NODE, this.FACETS_VIRTUAL_TREE].includes(facet.name)) {
           for (const bucket of facet.buckets) {
             nodesFacets.push({ node: bucket.value, count: bucket.count });
           }

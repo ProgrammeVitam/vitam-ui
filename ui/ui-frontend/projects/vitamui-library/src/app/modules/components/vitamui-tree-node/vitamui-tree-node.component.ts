@@ -40,6 +40,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+import { UnitType } from '../../models';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -71,11 +72,16 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
   }
 
   onLabelClick(event: MouseEvent) {
+    if (this.isVirtualNode()) return;
     this.labelClick.emit();
     if (!this.labelIsLinkedToCheckbox) {
       event.stopPropagation();
     } else {
       this.node.checked = !this.node.checked;
     }
+  }
+
+  isVirtualNode() {
+    return this.node.unitType === UnitType.VIRTUAL;
   }
 }

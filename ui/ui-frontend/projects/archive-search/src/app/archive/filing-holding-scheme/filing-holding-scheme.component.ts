@@ -50,6 +50,7 @@ import {
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   Unit,
+  UnitType,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -193,10 +194,22 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   }
 
   addToSearchCriteria(node: FilingHoldingSchemeNode) {
-    this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
+    const virtual = node.unitType === UnitType.VIRTUAL;
+    this.nodeData = {
+      id: node.id,
+      title: node.title,
+      checked: node.checked,
+      count: node.count,
+      realParentId: node.realParentId,
+      isVirtual: virtual,
+    };
     FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
     FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
     this.archiveSharedDataService.emitNode(this.nodeData);
+    if (virtual) {
+      FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.realParentId);
+      FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.realParentId);
+    }
   }
 
   switchViewAllNodes() {
