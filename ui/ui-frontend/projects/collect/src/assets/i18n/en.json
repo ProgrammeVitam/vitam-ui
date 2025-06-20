@@ -94,7 +94,7 @@
       "RULES_TITLE": "Set up attachment rules",
       "RULES_PARAMS_ADD": "Add an attachment",
       "UPLOAD_FILES": "Uploading files",
-      "UPLOAD_CONF_FILES": "Uploading an automatic metadata installation configuration file",
+      "UPLOAD_CONF_FILES": "Uploading a metadata transformation JSLT configuration",
       "PROJECT_CREATED": "Upload project has been created",
       "RULE_PARAMETER_PREFIX": "Attachment ",
       "REMOVE_PARAM": "Remove this attachment",

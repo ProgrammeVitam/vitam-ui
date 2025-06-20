@@ -4372,7 +4372,9 @@
       "CONFIGURATION": {
         "AUTO_INGEST": "Gestion automatique des transactions",
         "ENABLED": "Activée",
-        "DISABLED": "Non activée"
+        "DISABLED": "Non activée",
+        "JSLT_CONFIGURATION_METADATA_TRANSFORM": "Configuration JSLT de transformation des métadonnées",
+        "TRANSFORMATION_RULES_FILE": "TransformationRules.jslt"
       },
       "FIELDS": {
         "NAME": "Intitulé",
