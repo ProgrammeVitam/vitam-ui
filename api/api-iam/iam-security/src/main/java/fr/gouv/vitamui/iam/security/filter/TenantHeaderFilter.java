@@ -101,8 +101,8 @@ public class TenantHeaderFilter extends OncePerRequestFilter {
                 log.warn("Invalid tenant ID format: {}", tenantIdHeader);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid tenant ID format");
                 return;
-            } catch (UnAuthorizedException e1) {
-                log.error("User not authenticated ");
+            } catch (UnAuthorizedException e) {
+                log.error("User not authenticated ", e);
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized user");
                 return;
             }

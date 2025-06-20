@@ -82,7 +82,7 @@ public class ExternalParametersController {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ME)
-    @Secured(ServicesData.ROLE_GET_EXTERNAL_PARAMS)
+    @Secured({ ServicesData.ROLE_GET_EXTERNAL_PARAMS, ServicesData.ROLE_INTERNAL })
     public Map<String, String> getMyExternalParameters() {
         LOGGER.debug("GetMyExternalParameters");
         final ExternalParametersDto userParameters = externalParametersService.getMyExternalParameters();

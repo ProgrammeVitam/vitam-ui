@@ -52,8 +52,11 @@ import fr.gouv.vitamui.iam.client.ExternalParametersRestClient;
 import fr.gouv.vitamui.iam.client.IamRestClientFactory;
 import fr.gouv.vitamui.iam.client.UserRestClient;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterCommonService;
 import fr.gouv.vitamui.referential.common.service.ImportSchemaCommonService;
 import fr.gouv.vitamui.referential.common.service.IngestContractCommonService;
@@ -259,16 +262,34 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public AuthentificationService authentificationService(
-        final ContextRestClient contextRestClient,
-        final UserRestClient userRestClient
-    ) {
-        return new AuthentificationService(contextRestClient, userRestClient);
+    public UserAuthenticationService authentificationService(final UserRestClient userRestClient) {
+        return new IamClientUserAuthenticationService(userRestClient);
     }
 
     @Bean
-    public ApiAuthenticationProvider apiAuthenticationProvider(final AuthentificationService authentificationService) {
-        return new ApiAuthenticationProvider(authentificationService);
+    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
+        UserAuthenticationService userAuthenticationService
+    ) {
+        return new InternalApiAuthenticationProvider(userAuthenticationService);
+    }
+
+    @Bean
+    public ExternalApiAuthenticationProvider externalApiAuthenticationProvider(
+        SecurityRestClientFactory securityRestClientFactory,
+        UserAuthenticationService userAuthenticationService
+    ) {
+        return new ExternalApiAuthenticationProvider(
+            securityRestClientFactory.getContextRestClient(),
+            userAuthenticationService
+        );
+    }
+
+    @Bean
+    public ApiAuthenticationProvider apiAuthenticationProvider(
+        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
+        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+    ) {
+        return new ApiAuthenticationProvider(internalApiAuthenticationProvider, externalApiAuthenticationProvider);
     }
 
     @Bean

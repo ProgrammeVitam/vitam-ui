@@ -8,7 +8,6 @@ import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +41,9 @@ public class EventServiceIntegrationTest extends AbstractMongoTests {
     }
 
     @Test
-    @Disabled
     public void createLogbook() {
         String evIdReq = UUID.randomUUID().toString();
-        HttpContext context = new HttpContext(10, "", "x-application-id", "identity", evIdReq, "");
+        HttpContext context = new HttpContext(10, "", true, "x-application-id", "identity", evIdReq, "", null);
         service.logCreate(context, "AC-000002", 10, "obId", "TEST", EventType.EXT_VITAMUI_CREATE_USER, "data");
         Optional<Event> logbook = repository.findOne(Query.query(Criteria.where("evIdReq").is(evIdReq)));
         assertThat(logbook).isPresent();

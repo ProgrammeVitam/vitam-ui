@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.client;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
@@ -293,5 +294,13 @@ public class CasRestClient extends BaseRestClient<HttpContext> {
     @Override
     public String getPathUrl() {
         return RestApi.V1_CAS_URL;
+    }
+
+    @Override
+    protected MultiValueMap<String, String> buildHeaders(HttpContext context) {
+        MultiValueMap<String, String> headers = super.buildHeaders(context);
+        // Hack for CAS - CAS is considered as an external server requiring proper roles
+        headers.set(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_EXTERNAL);
+        return headers;
     }
 }

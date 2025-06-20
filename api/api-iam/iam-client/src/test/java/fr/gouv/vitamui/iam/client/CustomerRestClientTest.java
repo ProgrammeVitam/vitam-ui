@@ -34,7 +34,7 @@ public class CustomerRestClientTest {
 
     @Test
     public void getMyCustomer_returnsCustomer() {
-        HttpContext context = new HttpContext(9, "", "", "");
+        HttpContext context = new HttpContext(9, "", false, "", "", null, null, null);
         String url = "http://localhost:8083/iam/v1/customers/me";
         Mockito.when(
             restTemplate.exchange(
@@ -49,7 +49,7 @@ public class CustomerRestClientTest {
 
     @Test(expected = InternalServerException.class)
     public void getMyCustomer_WhenResponseStatus_isNotOK() {
-        HttpContext context = new HttpContext(9, "", "", "");
+        HttpContext context = new HttpContext(9, "", false, "", "", null, null, null);
         String url = "http://localhost:8083/iam/v1/customers/me";
         Mockito.when(
             restTemplate.exchange(
@@ -64,7 +64,7 @@ public class CustomerRestClientTest {
 
     @Test
     public void getCustomerLogo_returnsResource() throws URISyntaxException {
-        HttpContext context = new HttpContext(9, "", "", "");
+        HttpContext context = new HttpContext(9, "", false, "", "", null, null, null);
         String url = "http://localhost:8083/iam/v1/customers/123/logo";
         URIBuilder builder = new URIBuilder(url);
         Mockito.when(

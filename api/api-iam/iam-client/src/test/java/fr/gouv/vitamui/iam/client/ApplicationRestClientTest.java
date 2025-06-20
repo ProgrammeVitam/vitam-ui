@@ -35,7 +35,7 @@ public class ApplicationRestClientTest {
 
     @Test
     public void getAll_returnsApplications() throws Exception {
-        HttpContext context = new HttpContext(9, "", "", "");
+        HttpContext context = new HttpContext(9, "", false, "", "", null, null, null);
         String url = "http://localhost:8083" + RestApi.V1_APPLICATIONS_URL;
         final URIBuilder builder = new URIBuilder(url);
         Mockito.when(

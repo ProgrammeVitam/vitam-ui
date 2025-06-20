@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.server.security;
+package fr.gouv.vitamui.iam.security.provider;
 
-import fr.gouv.vitamui.commons.api.domain.Role;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -47,21 +48,21 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import java.util.List;
+import java.util.Collections;
 
 /**
  * General authentication provider for the API.
  *
  *
  */
-public class IamApiAuthenticationProvider implements AuthenticationProvider {
+public class InternalApiAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IamApiAuthenticationProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InternalApiAuthenticationProvider.class);
 
-    private final IamAuthentificationService iamAuthentificationService;
+    private final UserAuthenticationService userAuthenticationService;
 
-    public IamApiAuthenticationProvider(final IamAuthentificationService iamAuthentificationService) {
-        this.iamAuthentificationService = iamAuthentificationService;
+    public InternalApiAuthenticationProvider(final UserAuthenticationService userAuthenticationService) {
+        this.userAuthenticationService = userAuthenticationService;
     }
 
     @Override
@@ -72,24 +73,17 @@ public class IamApiAuthenticationProvider implements AuthenticationProvider {
             LOGGER.debug("HttpContext: {}", httpContext);
 
             if (httpContext != null) {
-                final AuthUserDto userProfile = iamAuthentificationService.getUserFromHttpContext(httpContext);
-                List<String> roles = computeRoles(userProfile);
-                LOGGER.debug("Roles: {}", roles);
-                return new AuthenticationToken(userProfile, httpContext, null, roles);
+                final AuthUserDto userProfile = userAuthenticationService.getUserFromHttpContext(token);
+                return new AuthenticationToken(
+                    userProfile,
+                    httpContext,
+                    null,
+                    Collections.singletonList(ServicesData.ROLE_INTERNAL)
+                );
             }
         }
 
         throw new BadCredentialsException("Unable to authenticate REST call");
-    }
-
-    private List<String> computeRoles(AuthUserDto userProfile) {
-        return userProfile
-            .getProfileGroup()
-            .getProfiles()
-            .stream()
-            .flatMap(p -> p.getRoles().stream())
-            .map(Role::getName)
-            .toList();
     }
 
     @Override

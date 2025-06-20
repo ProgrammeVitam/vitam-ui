@@ -102,7 +102,7 @@ public class AgencyInternalServiceTest {
     public void setUp() {
         Mockito.when(securityService.getVitamContext()).thenReturn(new VitamContext(10));
         Mockito.when(securityService.getHttpContext()).thenReturn(
-            new HttpContext(10, "userToken", "applicationId", "id")
+            new HttpContext(10, "userToken", false, "applicationId", "id", null, null, null)
         );
         ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         agencyService = new AgencyService(

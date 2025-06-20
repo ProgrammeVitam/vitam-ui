@@ -37,9 +37,7 @@
 package fr.gouv.vitamui.iam.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
@@ -57,18 +55,6 @@ public class IamRestClientFactory extends BaseRestClientFactory {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public IamRestClientFactory(
-        final RestClientConfiguration restClientConfiguration,
-        final HttpPoolConfiguration httpHostConfiguration,
-        final RestTemplateBuilder restTemplateBuilder
-    ) {
-        super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
-    }
-
-    public IamStatusRestClient getIamStatusExternalRestClient() {
-        return new IamStatusRestClient(getRestTemplate(), getBaseUrl());
-    }
-
     public CustomerRestClient getCustomerExternalRestClient() {
         return new CustomerRestClient(getRestTemplate(), getBaseUrl());
     }
@@ -77,32 +63,8 @@ public class IamRestClientFactory extends BaseRestClientFactory {
         return new IdentityProviderRestClient(getRestTemplate(), getBaseUrl());
     }
 
-    public ProfileRestClient getProfileExternalRestClient() {
-        return new ProfileRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public GroupRestClient getGroupExternalRestClient() {
-        return new GroupRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public TenantRestClient getTenantExternalRestClient() {
-        return new TenantRestClient(getRestTemplate(), getBaseUrl());
-    }
-
     public UserRestClient getUserExternalRestClient() {
         return new UserRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public UserInfoRestClient getUserInfoInfoExternalRestClient() {
-        return new UserInfoRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public OwnerRestClient getOwnerExternalRestClient() {
-        return new OwnerRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public SubrogationRestClient getSubrogationExternalRestClient() {
-        return new SubrogationRestClient(getRestTemplate(), getBaseUrl());
     }
 
     public CasRestClient getCasExternalRestClient() {
@@ -113,15 +75,7 @@ public class IamRestClientFactory extends BaseRestClientFactory {
         return new ApplicationRestClient(getRestTemplate(), getBaseUrl());
     }
 
-    public LogbookExternalRestClient getLogbookExternalRestClient() {
-        return new LogbookExternalRestClient(getRestTemplate(), getBaseUrl());
-    }
-
     public ExternalParametersRestClient getExternalParametersExternalRestClient() {
         return new ExternalParametersRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public ExternalParamProfileRestClient getExternalParamProfileExternalRestClient() {
-        return new ExternalParamProfileRestClient(getRestTemplate(), getBaseUrl());
     }
 }

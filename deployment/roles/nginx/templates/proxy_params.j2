@@ -14,3 +14,4 @@ proxy_hide_header {{ authorization_header_name }};
 {% else %}
 proxy_set_header Authorization $http_authorization;
 {% endif %}
+proxy_hide_header X-Origin;

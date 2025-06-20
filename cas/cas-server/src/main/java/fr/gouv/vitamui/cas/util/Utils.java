@@ -89,7 +89,7 @@ public class Utils {
     private final String casServerPrefix;
 
     public HttpContext buildContext(final String username) {
-        return new HttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
+        return new HttpContext(casTenantIdentifier, casToken, true, "cas+" + username, casIdentity, null, null, null);
     }
 
     public Event performClientRedirection(
