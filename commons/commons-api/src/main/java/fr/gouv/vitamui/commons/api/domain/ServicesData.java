@@ -63,6 +63,10 @@ public class ServicesData {
 
     protected ServicesData() {}
 
+    //------------------------------------INTERNAL-----------------------------------------
+    // Role for internal-only APIs (otherwise, the API would be publicly open)
+    public static final String ROLE_INTERNAL = ROLE_PREFIX + "INTERNAL";
+
     //------------------------------------ USERS -------------------------------------------
     public static final String SERVICE_USERS = "USERS";
 

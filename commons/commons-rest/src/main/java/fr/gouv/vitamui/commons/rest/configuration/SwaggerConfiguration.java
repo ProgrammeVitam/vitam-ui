@@ -153,6 +153,11 @@ public class SwaggerConfiguration {
     @Setter
     private Boolean accessContractHeaderEnabled;
 
+    @Value("${swagger.header.origin.enabled}")
+    @NotNull
+    @Setter
+    private Boolean originHeaderEnabled;
+
     public static final String HTTP_CODE_401_MSG = "La requête n'est pas autorisée. Le X-User-Token n'est pas valide";
 
     public static final String HTTP_CODE_403_MSG =
@@ -226,6 +231,15 @@ public class SwaggerConfiguration {
                     .parameterType(PARAMETER_TYPE_HEADER).required(true).build();
 
             parameters.add(requestIdHeader);
+        }
+
+        if(originHeaderEnabled) {
+            final Parameter originHeader = new ParameterBuilder()
+                .name(CommonConstants.X_ORIGIN_HEADER_NAME)
+                .description(CommonConstants.X_ORIGIN_HEADER_INTERNAL + "/" + CommonConstants.X_ORIGIN_HEADER_EXTERNAL)
+                .modelRef(new ModelRef(MODEL_REF_TYPE))
+                .parameterType(PARAMETER_TYPE_HEADER).required(true).build();
+            parameters.add(originHeader);
         }
 
         Set<String> produces = Collections.singleton(MimeTypeUtils.APPLICATION_JSON_VALUE);

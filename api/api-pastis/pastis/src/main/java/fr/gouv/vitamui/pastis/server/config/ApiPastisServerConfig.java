@@ -48,8 +48,11 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
@@ -90,21 +93,36 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ApiAuthenticationProvider apiAuthenticationProvider(final AuthentificationService authentificationService) {
-        return new ApiAuthenticationProvider(authentificationService);
+    public UserAuthenticationService authentificationService(final UsersApi usersApi) {
+        return new IamClientUserAuthenticationService(usersApi);
+    }
+
+    @Bean
+    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
+        UserAuthenticationService userAuthenticationService
+    ) {
+        return new InternalApiAuthenticationProvider(userAuthenticationService);
+    }
+
+    @Bean
+    public ExternalApiAuthenticationProvider externalApiAuthenticationProvider(
+        ContextsApi contextsApi,
+        UserAuthenticationService userAuthenticationService
+    ) {
+        return new ExternalApiAuthenticationProvider(contextsApi, userAuthenticationService);
+    }
+
+    @Bean
+    public ApiAuthenticationProvider apiAuthenticationProvider(
+        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
+        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+    ) {
+        return new ApiAuthenticationProvider(internalApiAuthenticationProvider, externalApiAuthenticationProvider);
     }
 
     @Bean
     public SecurityService externalSecurityService() {
         return new SecurityService();
-    }
-
-    @Bean
-    public AuthentificationService externalAuthentificationService(
-        final ContextsApi contextsApi,
-        final UsersApi usersApi
-    ) {
-        return new AuthentificationService(contextsApi, usersApi);
     }
 
     @Bean

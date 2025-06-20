@@ -40,8 +40,11 @@ import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -76,18 +79,36 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ApiAuthenticationProvider apiAuthenticationProvider(final AuthentificationService authentificationService) {
-        return new ApiAuthenticationProvider(authentificationService);
+    public UserAuthenticationService authentificationService(final UsersApi usersApi) {
+        return new IamClientUserAuthenticationService(usersApi);
+    }
+
+    @Bean
+    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
+        UserAuthenticationService userAuthenticationService
+    ) {
+        return new InternalApiAuthenticationProvider(userAuthenticationService);
+    }
+
+    @Bean
+    public ExternalApiAuthenticationProvider externalApiAuthenticationProvider(
+        ContextsApi contextsApi,
+        UserAuthenticationService userAuthenticationService
+    ) {
+        return new ExternalApiAuthenticationProvider(contextsApi, userAuthenticationService);
+    }
+
+    @Bean
+    public ApiAuthenticationProvider apiAuthenticationProvider(
+        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
+        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+    ) {
+        return new ApiAuthenticationProvider(internalApiAuthenticationProvider, externalApiAuthenticationProvider);
     }
 
     @Bean
     public SecurityService securityService() {
         return new SecurityService();
-    }
-
-    @Bean
-    public AuthentificationService authentificationService(final ContextsApi contextsApi, final UsersApi usersApi) {
-        return new AuthentificationService(contextsApi, usersApi);
     }
 
     @Bean

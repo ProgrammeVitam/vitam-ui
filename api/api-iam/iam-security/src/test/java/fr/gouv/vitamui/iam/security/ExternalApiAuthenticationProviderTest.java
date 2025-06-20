@@ -9,7 +9,9 @@ import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.openapiclient.domain.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import org.junit.Before;
@@ -38,7 +40,7 @@ import static org.mockito.Mockito.when;
  *
  *
  */
-public final class ApiAuthenticationTokenProviderTest {
+public final class ExternalApiAuthenticationProviderTest {
 
     private static final byte[] CERTIFICATE = "CERTIFICATE".getBytes();
 
@@ -60,14 +62,15 @@ public final class ApiAuthenticationTokenProviderTest {
 
     private List<ProfileDto> profiles;
 
-    private ApiAuthenticationProvider provider;
+    private ExternalApiAuthenticationProvider provider;
 
     @Before
     public void setUp() throws Exception {
         final ContextsApi contextsApi = mock(ContextsApi.class);
         final UsersApi usersApi = mock(UsersApi.class);
-        final AuthentificationService securityService = new AuthentificationService(contextsApi, usersApi);
-        provider = new ApiAuthenticationProvider(securityService);
+        final UserAuthenticationService userAuthenticationService = new IamClientUserAuthenticationService(usersApi);
+
+        provider = new ExternalApiAuthenticationProvider(contextsApi, userAuthenticationService);
         profiles = new ArrayList<>();
         context = new ContextDto();
         context.setName("name");
@@ -101,9 +104,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
         context.setRoleNames(Arrays.asList(ROLE));
@@ -126,9 +132,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setFullAccess(true);
         final ProfileDto profile = new ProfileDto();
@@ -146,9 +155,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(12));
         final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(
@@ -176,9 +188,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
 
@@ -206,9 +221,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
         context.setRoleNames(Arrays.asList("role1"));

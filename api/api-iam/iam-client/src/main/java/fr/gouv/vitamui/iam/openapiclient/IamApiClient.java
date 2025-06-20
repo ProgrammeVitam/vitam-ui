@@ -73,6 +73,7 @@ public class IamApiClient extends ApiClient {
         final String identity = context.getIdentity();
         final String requestId = context.getRequestId();
         final String accessContractId = context.getAccessContract();
+        headerParams.set(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_INTERNAL);
         if (tenantIdentifier != null) {
             headerParams.put(
                 CommonConstants.X_TENANT_ID_HEADER,

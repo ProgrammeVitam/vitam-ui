@@ -472,7 +472,7 @@ public class AccessContractCommonServiceTest {
             IOUtils.toByteArray(input)
         );
 
-        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
+        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", false, "", "", null, null, null));
 
         when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("ACCESS_CONTRACT"))).thenReturn(false);
 
@@ -498,7 +498,7 @@ public class AccessContractCommonServiceTest {
             IOUtils.toByteArray(input)
         );
 
-        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
+        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", false, "", "", null, null, null));
 
         when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("ACCESS_CONTRACT"))).thenReturn(false);
 

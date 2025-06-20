@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -71,6 +72,7 @@ public class HttpContext implements Serializable {
 
     private final Integer tenantIdentifier;
     private final String userToken;
+    private final boolean isExternalRequest;
     private final String applicationId;
     private final String identity;
     private final String requestId;
@@ -88,6 +90,7 @@ public class HttpContext implements Serializable {
     public HttpContext(
         final Integer tenantIdentifier,
         final String userToken,
+        boolean isExternalRequest,
         final String applicationId,
         final String identity,
         final String requestId,
@@ -96,6 +99,7 @@ public class HttpContext implements Serializable {
     ) {
         this.identity = identity;
         this.tenantIdentifier = tenantIdentifier;
+        this.isExternalRequest = isExternalRequest;
         this.userToken = userToken;
         this.requestId = requestId;
         this.applicationId = applicationId;
@@ -110,36 +114,6 @@ public class HttpContext implements Serializable {
     private void initMDC() {
         MDC.put(CommonConstants.X_REQUEST_ID_HEADER, requestId);
         MDC.put(CommonConstants.X_APPLICATION_ID_HEADER, applicationId);
-    }
-
-    public HttpContext(
-        final Integer tenantIdentifier,
-        final String userToken,
-        final String applicationId,
-        final String identity,
-        final String requestId,
-        final String accessContract
-    ) {
-        this(tenantIdentifier, userToken, applicationId, identity, requestId, accessContract, null);
-    }
-
-    public HttpContext(
-        final Integer tenantIdentifier,
-        final String userToken,
-        final String applicationId,
-        final String identity,
-        final String requestId
-    ) {
-        this(tenantIdentifier, userToken, applicationId, identity, requestId, null, null);
-    }
-
-    public HttpContext(
-        final Integer tenantIdentifier,
-        final String userToken,
-        final String applicationId,
-        final String identity
-    ) {
-        this(tenantIdentifier, userToken, applicationId, identity, null, null, null);
     }
 
     public static Integer getTenantIdentifier(final String tenant, final String url) {
@@ -211,15 +185,27 @@ public class HttpContext implements Serializable {
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
         final String requestId = UUID.randomUUID().toString();
         final String accessContract = request.getHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER);
+        final boolean isExternalRequest = extractIsExternalOriginHeaderFromRequest(request);
         return new HttpContext(
             tenantIdentifier,
             userToken,
+            isExternalRequest,
             applicationId,
             identity,
             requestId,
             accessContract,
             requestUri
         );
+    }
+
+    private static boolean extractIsExternalOriginHeaderFromRequest(HttpServletRequest request) {
+        final String origin = request.getHeader(CommonConstants.X_ORIGIN_HEADER_NAME);
+        ParameterChecker.checkParameter("Missing request origin header", origin);
+        return switch (origin) {
+            case CommonConstants.X_ORIGIN_HEADER_EXTERNAL -> true;
+            case CommonConstants.X_ORIGIN_HEADER_INTERNAL -> false;
+            default -> throw new BadRequestException("Unknown request origin");
+        };
     }
 
     /**
@@ -230,10 +216,12 @@ public class HttpContext implements Serializable {
         return new HttpContext(
             httpContext.getTenantIdentifier(),
             httpContext.getUserToken(),
+            httpContext.isExternalRequest(),
             applicationId,
             httpContext.getIdentity(),
             httpContext.getRequestId(),
-            httpContext.getAccessContract()
+            httpContext.getAccessContract(),
+            null
         );
     }
 }

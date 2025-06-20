@@ -63,7 +63,7 @@ public class ExternalServiceTest {
 
         Mockito.when(securityService.getUser()).thenReturn(user);
         Mockito.when(securityService.getHttpContext()).thenReturn(
-            new HttpContext(10, "userToken", "applicationid", "id")
+            new HttpContext(10, "userToken", false, "applicationid", "id", null, null, null)
         );
     }
 }

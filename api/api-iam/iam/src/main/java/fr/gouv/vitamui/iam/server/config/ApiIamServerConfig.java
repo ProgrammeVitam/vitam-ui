@@ -55,6 +55,9 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
+import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
@@ -86,8 +89,7 @@ import fr.gouv.vitamui.iam.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.provisioning.config.ProvisioningClientConfiguration;
-import fr.gouv.vitamui.iam.server.security.IamApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.server.security.IamAuthentificationService;
+import fr.gouv.vitamui.iam.server.security.IamUserAuthentificationService;
 import fr.gouv.vitamui.iam.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.iam.server.subrogation.converter.SubrogationConverter;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
@@ -173,17 +175,11 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    @ConfigurationProperties(value = "security")
-    public RestClientConfiguration securityClientProperties() {
-        return new RestClientConfiguration();
-    }
-
-    @Bean
     public SecurityApiClientsFactory securityApiClientsFactory(
         final RestTemplateBuilder restTemplateBuilder,
-        final RestClientConfiguration securityClientProperties
+        final ApiIamApplicationProperties apiIamApplicationProperties
     ) {
-        return new SecurityApiClientsFactory(securityClientProperties, restTemplateBuilder);
+        return new SecurityApiClientsFactory(apiIamApplicationProperties.getSecurityClient(), restTemplateBuilder);
     }
 
     @Bean
@@ -192,19 +188,35 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamAuthentificationService iamAuthentificationService(
+    public IamUserAuthentificationService iamAuthentificationService(
         final UserService userService,
         final TokenRepository tokenRepository,
         final SubrogationRepository subrogationRepository
     ) {
-        return new IamAuthentificationService(userService, tokenRepository, subrogationRepository);
+        return new IamUserAuthentificationService(userService, tokenRepository, subrogationRepository);
     }
 
     @Bean
-    public IamApiAuthenticationProvider apiAuthenticationProvider(
-        final IamAuthentificationService iamAuthentificationService
+    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
+        IamUserAuthentificationService iamUserAuthentificationService
     ) {
-        return new IamApiAuthenticationProvider(iamAuthentificationService);
+        return new InternalApiAuthenticationProvider(iamUserAuthentificationService);
+    }
+
+    @Bean
+    public ExternalApiAuthenticationProvider externalApiAuthenticationProvider(
+        ContextsApi contextsApi,
+        IamUserAuthentificationService iamAuthentificationService
+    ) {
+        return new ExternalApiAuthenticationProvider(contextsApi, iamAuthentificationService);
+    }
+
+    @Bean
+    public ApiAuthenticationProvider apiAuthenticationProvider(
+        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
+        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+    ) {
+        return new ApiAuthenticationProvider(internalApiAuthenticationProvider, externalApiAuthenticationProvider);
     }
 
     @Bean

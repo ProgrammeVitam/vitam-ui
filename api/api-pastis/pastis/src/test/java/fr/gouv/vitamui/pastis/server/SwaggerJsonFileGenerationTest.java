@@ -45,8 +45,8 @@ import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.AuthentificationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.junit.runner.RunWith;
@@ -77,7 +77,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     public SecurityService securityService;
 
     @MockBean
-    public AuthentificationService authentificationService;
+    public UserAuthenticationService userAuthenticationService;
 
     @MockBean
     public IamApiClientsFactory iamApiClientsFactory;

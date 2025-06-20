@@ -27,9 +27,8 @@
 
 package fr.gouv.vitamui.gateway.filters;
 
+import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -45,43 +44,49 @@ import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_EXTERNAL;
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
+
 @Order(1)
 @Component
-public class X509CertificateFilter implements GlobalFilter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(X509CertificateFilter.class);
+public class ApiGatewaySecurityFilter implements GlobalFilter {
 
     @Value("${authn.client-certificate-header-name}")
     private String clientCertificateHeaderName;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest req = exchange.getRequest();
+        var req = exchange.getRequest();
+
+        String encodedCert = extractCertificate(req);
+
+        ServerHttpRequest request = exchange
+            .getRequest()
+            .mutate()
+            .headers(httpHeaders -> {
+                httpHeaders.set(X_ORIGIN_HEADER_NAME, X_ORIGIN_HEADER_EXTERNAL);
+                httpHeaders.set(clientCertificateHeaderName, encodedCert);
+            })
+            .build();
+        return chain.filter(exchange.mutate().request(request).build());
+    }
+
+    private static String extractCertificate(ServerHttpRequest req) {
         SslInfo sslInfo = req.getSslInfo();
         if (sslInfo != null) {
             X509Certificate[] certs = sslInfo.getPeerCertificates();
             if (certs != null && certs.length > 0) {
-                ServerHttpRequest request = exchange
-                    .getRequest()
-                    .mutate()
-                    .headers(httpHeaders -> {
-                        X509Certificate certificate = certs[0];
-                        try {
-                            certificate.checkValidity();
-                            String encodedCert = new String(Base64.encodeBase64(certificate.getEncoded()));
-                            httpHeaders.set(clientCertificateHeaderName, encodedCert);
-                        } catch (
-                            CertificateEncodingException
-                            | CertificateExpiredException
-                            | CertificateNotYetValidException e
-                        ) {
-                            LOGGER.error("Certificate is invalid : {}", certificate, e);
-                        }
-                    })
-                    .build();
-                return chain.filter(exchange.mutate().request(request).build());
+                X509Certificate certificate = certs[0];
+                try {
+                    certificate.checkValidity();
+                    return new String(Base64.encodeBase64(certificate.getEncoded()));
+                } catch (
+                    CertificateEncodingException | CertificateExpiredException | CertificateNotYetValidException e
+                ) {
+                    throw new UnAuthorizedException("Certificate is invalid " + certificate, e);
+                }
             }
         }
-        return chain.filter(exchange);
+        throw new UnAuthorizedException("No certificate found");
     }
 }

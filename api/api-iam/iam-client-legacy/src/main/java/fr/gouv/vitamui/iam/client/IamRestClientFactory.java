@@ -52,27 +52,11 @@ public class IamRestClientFactory extends BaseRestClientFactory {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public CustomerRestClient getCustomerRestClient() {
-        return new CustomerRestClient(getRestTemplate(), getBaseUrl());
-    }
-
     public IdentityProviderRestClient getIdentityProviderRestClient() {
         return new IdentityProviderRestClient(getRestTemplate(), getBaseUrl());
     }
 
-    public UserRestClient getUserRestClient() {
-        return new UserRestClient(getRestTemplate(), getBaseUrl());
-    }
-
     public CasRestClient getCasExternalRestClient() {
         return new CasRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public ApplicationRestClient getApplicationRestClient() {
-        return new ApplicationRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public ExternalParametersRestClient getExternalParametersRestClient() {
-        return new ExternalParametersRestClient(getRestTemplate(), getBaseUrl());
     }
 }
