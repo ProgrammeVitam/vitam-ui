@@ -148,6 +148,7 @@ public class UserController implements CrudController<UserDto> {
 
     @Operation(operationId = "users_getMe", summary = "Get the current user")
     @GetMapping(CommonConstants.PATH_ME)
+    @Secured(ServicesData.ROLE_INTERNAL)
     public AuthUserDto getMe() {
         LOGGER.debug("getMe");
         return userService.getMe();

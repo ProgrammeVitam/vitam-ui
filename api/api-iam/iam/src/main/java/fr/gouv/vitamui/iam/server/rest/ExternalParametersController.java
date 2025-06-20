@@ -87,7 +87,7 @@ public class ExternalParametersController {
         operationId = "externalParameters_getMyExternalParameters",
         summary = "Get external parameters of the authenticated user"
     )
-    @Secured(ServicesData.ROLE_GET_EXTERNAL_PARAMS)
+    @Secured({ ServicesData.ROLE_GET_EXTERNAL_PARAMS, ServicesData.ROLE_INTERNAL })
     public Map<String, String> getMyExternalParameters() {
         LOGGER.debug("GetMyExternalParameters");
         final ExternalParametersDto userParameters = externalParametersService.getMyExternalParameters();

@@ -158,6 +158,7 @@ public class CustomerController implements CrudController<CustomerDto> {
     /**
      * Retrieve Authenticated User Customer.
      * Everyone has a right to get his customer informations.
+     * /!\ Important - Invoked from both internal and external clients. If a role is added for external use, ROLE_INTERNAL must also be added.
      * @return
      */
     @Operation(operationId = "customers_getMyCustomer", summary = "Get the customer for the authenticated user")
@@ -256,6 +257,9 @@ public class CustomerController implements CrudController<CustomerDto> {
         throw new NotImplementedException("Method is not implemented");
     }
 
+    /**
+     * /!\ Important - Invoked from both internal and external clients. If a role is added for external use, ROLE_INTERNAL must also be added.
+     */
     @Operation(operationId = "customers_getLogo", summary = "Get customer logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)

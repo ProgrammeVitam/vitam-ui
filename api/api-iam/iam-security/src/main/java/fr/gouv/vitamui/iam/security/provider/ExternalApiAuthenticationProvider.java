@@ -34,48 +34,98 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.security.service;
+package fr.gouv.vitamui.iam.security.provider;
 
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.openapiclient.UsersApi;
+import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import lombok.Getter;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Authentication service
+ * General authentication provider for the External API.
+ *
+ *
  */
-@Getter
-public class AuthentificationService {
+public class ExternalApiAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthentificationService.class);
-
-    private final UsersApi usersApi;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalApiAuthenticationProvider.class);
 
     private final ContextsApi contextsApi;
+    private final UserAuthenticationService userAuthenticationService;
 
-    @Autowired
-    public AuthentificationService(final ContextsApi contextsApi, final UsersApi usersApi) {
+    public ExternalApiAuthenticationProvider(
+        final ContextsApi contextsApi,
+        final UserAuthenticationService userAuthenticationService
+    ) {
         this.contextsApi = contextsApi;
-        this.usersApi = usersApi;
+        this.userAuthenticationService = userAuthenticationService;
+    }
+
+    /**
+     * This method is called by the Spring Security Filter
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public Authentication authenticate(final Authentication authentication) {
+        if (supports(authentication.getClass())) {
+            final PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
+            final HttpContext httpContext = (HttpContext) token.getPrincipal();
+            final X509Certificate certificate = (X509Certificate) token.getCredentials();
+            LOGGER.debug("Principal: {}", httpContext);
+            LOGGER.debug("Credential not null?: {}", certificate != null);
+
+            if (httpContext != null && certificate != null) {
+                try {
+                    final ContextDto context = getContextFromHttpContext(httpContext, certificate);
+                    final AuthUserDto userDto = userAuthenticationService.getUserFromHttpContext(token);
+                    final Integer tenantIdentifier = httpContext.getTenantIdentifier();
+                    final List<String> intersectionRoles = getRoles(context, userDto, tenantIdentifier);
+
+                    final String applicationId = buildApplicationId(userDto, httpContext, context);
+                    final HttpContext newHttpContext = HttpContext.buildFromExternalHttpContext(
+                        httpContext,
+                        applicationId
+                    );
+
+                    return new AuthenticationToken(userDto, newHttpContext, certificate, intersectionRoles);
+                } catch (final InvalidAuthenticationException vitamuiException) {
+                    throw new BadCredentialsException(vitamuiException.getMessage());
+                }
+            }
+        }
+
+        throw new BadCredentialsException("Unable to authenticate REST call");
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean supports(final Class<?> authentication) {
+        return authentication.equals(PreAuthenticatedAuthenticationToken.class);
     }
 
     /**
@@ -94,45 +144,6 @@ public class AuthentificationService {
             user.getCustomerIdentifier(),
             httpContext.getRequestId()
         );
-    }
-
-    /**
-     * This method is called before authentication by the Authentication Provider
-     */
-    public AuthUserDto getUserFromHttpContext(final HttpContext httpContext) {
-        final AuthUserDto userDto = getAuthenticatedUser(httpContext);
-
-        final Integer tenantIdentifier = httpContext.getTenantIdentifier();
-        final List<Integer> userTenants = userDto
-            .getProfileGroup()
-            .getProfiles()
-            .stream()
-            .filter(ProfileDto::isEnabled)
-            .map(ProfileDto::getTenantIdentifier)
-            .collect(Collectors.toList());
-        if (!userTenants.contains(tenantIdentifier)) {
-            LOGGER.debug("Tenant id [{}] not in user tenants [{}]", tenantIdentifier, userTenants);
-            throw new BadCredentialsException(
-                "This tenant: " +
-                httpContext.getTenantIdentifier() +
-                " is not allowed for this user: " +
-                userDto.getId()
-            );
-        }
-        return userDto;
-    }
-
-    public AuthUserDto getAuthenticatedUser(HttpContext httpContext) {
-        final String userToken = httpContext.getUserToken();
-        if (StringUtils.isBlank(userToken)) {
-            throw new BadCredentialsException("User token is empty");
-        }
-
-        final AuthUserDto userDto = usersApi.getMe();
-        if (userDto == null) {
-            throw new NotFoundException("User not found for token: " + userToken);
-        }
-        return userDto;
     }
 
     /**
@@ -195,7 +206,12 @@ public class AuthentificationService {
 
         final List<String> userRoles = getUserRoles(userProfile, tenantIdentifier);
 
-        return contextRoles.stream().filter(userRoles::contains).collect(Collectors.toList());
+        return contextRoles
+            .stream()
+            .filter(userRoles::contains)
+            // Prevent using "ROLE_INTERNAL" from external
+            .filter(role -> !ServicesData.ROLE_INTERNAL.equals(role))
+            .toList();
     }
 
     protected List<String> getUserRoles(final AuthUserDto userProfile, final int tenantIdentifier) {
@@ -204,14 +220,14 @@ public class AuthentificationService {
             .getProfileGroup()
             .getProfiles()
             .stream()
-            .filter(profile -> profile.getTenantIdentifier().intValue() == tenantIdentifier)
+            .filter(profile -> profile.getTenantIdentifier() == tenantIdentifier)
             .filter(ProfileDto::isEnabled)
             .forEach(profile -> {
                 final List<String> rolesNames = profile
                     .getRoles()
                     .stream()
                     .map(role -> ApiUtils.ensureHasRolePrefix(role.getName()))
-                    .collect(Collectors.toList());
+                    .toList();
                 userRoles.addAll(rolesNames);
             });
 

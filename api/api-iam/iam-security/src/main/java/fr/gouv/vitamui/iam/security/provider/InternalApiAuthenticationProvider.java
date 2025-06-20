@@ -36,59 +36,54 @@
  */
 package fr.gouv.vitamui.iam.security.provider;
 
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.stereotype.Service;
 
-import java.security.cert.X509Certificate;
+import java.util.Collections;
 
 /**
- * General authentication provider for the VitamUI APIs.
- * Dispatches calls to internal/external API authentication providers
+ * General authentication provider for the API.
+ *
+ *
  */
-@Service
-public class ApiAuthenticationProvider implements AuthenticationProvider {
+public class InternalApiAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApiAuthenticationProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InternalApiAuthenticationProvider.class);
 
-    private final InternalApiAuthenticationProvider internalApiAuthenticationProvider;
-    private final ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
+    private final UserAuthenticationService userAuthenticationService;
 
-    @Autowired
-    public ApiAuthenticationProvider(
-        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
-        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
-    ) {
-        this.internalApiAuthenticationProvider = internalApiAuthenticationProvider;
-        this.externalApiAuthenticationProvider = externalApiAuthenticationProvider;
+    public InternalApiAuthenticationProvider(final UserAuthenticationService userAuthenticationService) {
+        this.userAuthenticationService = userAuthenticationService;
     }
 
     @Override
     public Authentication authenticate(final Authentication authentication) {
-        if (!supports(authentication.getClass())) {
-            throw new BadCredentialsException("Unable to authenticate REST call");
+        if (supports(authentication.getClass())) {
+            final PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
+            final HttpContext httpContext = (HttpContext) token.getPrincipal();
+            LOGGER.debug("HttpContext: {}", httpContext);
+
+            if (httpContext != null) {
+                final AuthUserDto userProfile = userAuthenticationService.getUserFromHttpContext(token);
+                return new AuthenticationToken(
+                    userProfile,
+                    httpContext,
+                    null,
+                    Collections.singletonList(ServicesData.ROLE_INTERNAL)
+                );
+            }
         }
 
-        final PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
-        final HttpContext httpContext = (HttpContext) token.getPrincipal();
-        final X509Certificate certificate = (X509Certificate) token.getCredentials();
-        LOGGER.debug("Principal: {}", httpContext);
-        LOGGER.debug("Certificate: {}", certificate);
-
-        final Integer tenantIdentifier = httpContext.getTenantIdentifier();
-        LOGGER.debug("tenantIdentifier: {}", tenantIdentifier);
-
-        if (httpContext.isExternalRequest()) {
-            return this.externalApiAuthenticationProvider.authenticate(authentication);
-        } else {
-            return this.internalApiAuthenticationProvider.authenticate(authentication);
-        }
+        throw new BadCredentialsException("Unable to authenticate REST call");
     }
 
     @Override

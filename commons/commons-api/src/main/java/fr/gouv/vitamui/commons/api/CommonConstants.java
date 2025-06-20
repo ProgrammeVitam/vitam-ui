@@ -45,21 +45,11 @@ public class CommonConstants {
 
     public static final String ERROR_INVALID_PAGE_NUMBER = "ERROR_INVALID_PAGE_NUMBER";
 
-    public static final String ERROR_REQUIRED_VALUE_EMPTY_OR_NULL = "ERROR_REQUIRED_VALUE_EMPTY_OR_NULL";
-
-    public static final String IDENTIFIER_MANDATORY_PARAMETER = "The Identifier is a mandatory parameter: ";
-
     public static final String ADMIN_PATH = "/admin/v0";
 
     public static final String PATH_ID = "/{id}";
 
     public static final String PATH_LOGBOOK = "/{id}/history";
-
-    public static final String PATH_DOC_TYPE = "/{type}";
-
-    public static final String PATH_VITAM_ID = "/{vitamId}";
-
-    public static final String PATH_CUSTOMER = "/{customerId}";
 
     public static final String PATH_ME = "/me";
 
@@ -82,19 +72,13 @@ public class CommonConstants {
 
     public static final String X_REQUEST_ID_HEADER = "X-Request-Id";
 
-    public static final String X_CHUNK_OFFSET_HEADER = "X-Chunk-Offset";
-
-    public static final String X_TOTAL_SIZE_HEADER = "X-Total-Size";
-
-    public static final String X_CUSTOMER_ID_HEADER = "X-Customer-Id";
-
-    public static final String X_USER_LEVEL_HEADER = "X-User-Level";
+    public static final String X_ORIGIN_HEADER_NAME = "X-Origin";
+    public static final String X_ORIGIN_HEADER_EXTERNAL = "EXTERNAL";
+    public static final String X_ORIGIN_HEADER_INTERNAL = "INTERNAL";
 
     public static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
 
     public static final String AJAX_HEADER_NAME = "X-Requested-With";
-
-    public static final String X_LOGIN_REDIRECT_HEADER = "X-Login-Redirect";
 
     public static final String X_ACCESS_CONTRACT_ID_HEADER = "X-Access-Contract-Id";
 
@@ -111,8 +95,6 @@ public class CommonConstants {
 
     public static final String GET_ROLE_PREFIX = ROLE_PREFIX + "GET_";
 
-    public static final String GET_ME_ROLE_PREFIX = ROLE_PREFIX + "GET_ME_";
-
     public static final String CREATE_ROLE_PREFIX = ROLE_PREFIX + "CREATE_";
     public static final String SEND_ROLE_PREFIX = ROLE_PREFIX + "SEND_";
     public static final String CLOSE_ROLE_PREFIX = ROLE_PREFIX + "CLOSE_";
@@ -128,10 +110,6 @@ public class CommonConstants {
     public static final String DELETE_ROLE_PREFIX = ROLE_PREFIX + "DELETE_";
 
     public static final String CHECK_ROLE_PREFIX = ROLE_PREFIX + "CHECK_";
-
-    public static final String DOWNLOAD_ROLE_PREFIX = ROLE_PREFIX + "DOWNLOAD_";
-
-    public static final String UPLOAD_ROLE_PREFIX = ROLE_PREFIX + "UPLOAD_";
 
     public static final String EXPORT_ROLE_PREFIX = ROLE_PREFIX + "EXPORT_";
 
@@ -160,8 +138,6 @@ public class CommonConstants {
     public static final String SUBROGEABLE_ATTRIBUTE = "subrogeable";
 
     public static final String SUPER_USER_IDENTIFIER_ATTRIBUTE = "superUserIdentifier";
-
-    public static final String LANGUAGE_ATTRIBUTE = "language";
 
     public static final String PHONE_ATTRIBUTE = "phone";
 
@@ -209,56 +185,12 @@ public class CommonConstants {
 
     public static final String PROOF_TENANT_ID_ATTRIBUTE = "proofTenantId";
 
-    public static final String PORTAL_URL = "PORTAL_URL";
-
-    public static final String ARCHIVES_SEARCH_URL = "ARCHIVES_SEARCH_URL";
-
-    public static final String PASTIS_URL = "PASTIS_URL";
-
-    public static final String INGEST_URL = "INGEST_URL";
-
-    public static final String REFERENTIAL_URL = "REFERENTIAL_URL";
-
-    public static final String COLLECT_URL = "COLLECT_URL";
-
-    public static final String CAS_LOGIN_URL = "CAS_URL";
-
-    public static final String CAS_LOGOUT_URL = "CAS_LOGOUT_URL";
-
-    public static final String UI_URL = "UI_URL";
-
-    public static final String ASSET_FOLDER = "ASSET_FOLDER";
-
-    public static final String THEME_COLORS = "THEME_COLORS";
-
-    public static final String PORTAL_MESSAGE = "PORTAL_MESSAGE";
-
-    public static final String PORTAL_TITLE = "PORTAL_TITLE";
-
-    public static final String CUSTOMER = "CUSTOMER";
-
-    public static final String VERSION_RELEASE = "VERSION_RELEASE";
-
     public static final String USER_INFO_ID = "userInfoId";
-
-    public static final String USER_INFO_HISTORY = "/{id}/history";
-
-    public static final String CONNECTION_HISTORY_EXPORT = "/connection-history" + PATH_EXPORT;
 
     /**
      * Constant contains application list for portal/header applications display
      */
     public static final String APPLICATION_CONFIGURATION = "APPLICATION_CONFIGURATION";
-
-    /**
-     * Constant contains category list for portal/header applications display
-     */
-    public static final String CATEGORY_CONFIGURATION = "CATEGORY_CONFIGURATION";
-
-    /**
-     * Constant contains redirect URL for cas after logout
-     */
-    public static final String LOGOUT_REDIRECT_UI_URL = "LOGOUT_REDIRECT_UI_URL";
 
     public static final String CAS_IDP_PARAMETER = "cas_idp";
 
@@ -281,27 +213,17 @@ public class CommonConstants {
 
     public static final String EMAIL_SEPARATOR = "@";
 
-    public static final String CUSTOMERS_APPLICATIONS_NAME = "CUSTOMERS_APP";
-
     public static final String USERS_APPLICATIONS_NAME = "USERS_APP";
 
     public static final String PROFILES_GROUPS_APPLICATIONS_NAME = "GROUPS_APP";
 
     public static final String PROFILES_APPLICATIONS_NAME = "PROFILES_APP";
 
-    public static final String SUBROGATION_APPLICATIONS_NAME = "SUBROGATIONS_APP";
-
     public static final String ACCOUNTS_APPLICATIONS_NAME = "ACCOUNTS_APP";
 
     public static final String HIERARCHY_PROFILE_APPLICATIONS_NAME = "HIERARCHY_PROFILE_APP";
 
-    public static final String EXTERNAL_PARAM_PROFILE_APP = "EXTERNAL_PARAM_PROFILE_APP";
-
     public static final String EXTERNAL_PARAMS_APP = "EXTERNAL_PARAMS";
-
-    public static final String DEFAULT_INGEST_CONTRACT_IDENTIFIER = "IC-000001";
-
-    public static final String DEFAULT_HOLDING_ACCESS_CONTRACT_IDENTIFIER = "AC-000001";
 
     public static final String DEFAULT_LOGBOOK_ACCESS_CONTRACT_IDENTIFIER = "AC-000002";
 
@@ -342,10 +264,8 @@ public class CommonConstants {
     public static final String INGEST_UPLOAD = "/upload";
     public static final String X_ACTION = "X-Action";
     public static final String X_CONTEXT_ID = "X-Context-Id";
-    public static final String HISTORY = "history";
     public static final String EXTERNAL_ONTOLOGIES_LIST = "/external-ontologies";
     public static final String INTERNAL_ONTOLOGY_LIST = "/internal-ontologies";
     public static final String SCHEMAS = "/schemas";
     public static final String SCHEMAS_UNIT = "/schemas-unit";
-    public static final String ARCHIVE_UNIT_PROFILE_SCHEMAS = SCHEMAS + "/archive-unit-profile";
 }

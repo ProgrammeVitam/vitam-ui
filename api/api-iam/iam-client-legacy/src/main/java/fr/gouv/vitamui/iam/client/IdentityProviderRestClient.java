@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.client;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -107,5 +108,13 @@ public class IdentityProviderRestClient extends BaseCrudRestClient<IdentityProvi
         );
         checkResponse(response, 200, 201);
         return response.getBody();
+    }
+
+    @Override
+    protected MultiValueMap<String, String> buildHeaders(HttpContext context) {
+        MultiValueMap<String, String> headers = super.buildHeaders(context);
+        // Hack for CAS - CAS is considered as an external server requiring proper roles
+        headers.set(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_EXTERNAL);
+        return headers;
     }
 }

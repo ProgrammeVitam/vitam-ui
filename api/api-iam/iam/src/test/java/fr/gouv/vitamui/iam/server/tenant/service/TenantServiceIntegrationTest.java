@@ -283,10 +283,12 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
         final HttpContext httpContext = new HttpContext(
             IamServerUtilsTest.TENANT_IDENTIFIER,
             USER_TOKEN,
+            false,
             IamServerUtilsTest.CUSTOMER_ID,
             IDENTITY,
             REQUEST_ID,
-            ACCESS_CONTRACT
+            ACCESS_CONTRACT,
+            null
         );
         when(securityService.getHttpContext()).thenReturn(httpContext);
         when(securityService.getLevel()).thenReturn("");

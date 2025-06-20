@@ -117,6 +117,9 @@ public class ApplicationController {
         return applicationService.getApplications(filterApp);
     }
 
+    /**
+     * /!\ Important - Invoked from both internal and external clients. If a role is added for external use, ROLE_INTERNAL must also be added.
+     */
     @GetMapping(path = "/{identifier:.+}/externalid")
     @Operation(
         operationId = "isApplicationExternalIdentifierEnabled",

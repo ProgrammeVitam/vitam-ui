@@ -445,7 +445,7 @@ public class IngestContractServiceTest {
             getClass().getResourceAsStream("/data/" + fileName)
         );
 
-        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
+        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", false, "", "", null, null, null));
 
         when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("INGEST_CONTRACT"))).thenReturn(false);
 
@@ -472,7 +472,7 @@ public class IngestContractServiceTest {
             getClass().getResourceAsStream("/data/" + fileName)
         );
 
-        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", "", ""));
+        when(securityService.getHttpContext()).thenReturn(new HttpContext(0, "", false, "", "", null, null, null));
 
         when(applicationsApi.isApplicationExternalIdentifierEnabled(eq("INGEST_CONTRACT"))).thenReturn(false);
 
