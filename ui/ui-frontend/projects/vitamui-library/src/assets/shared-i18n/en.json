@@ -3492,7 +3492,22 @@
     "BULK_ATOMIC_UPDATE_UNIT_DESC.STARTED.WARNING": "Warning during the beginning of process of mass unitary updating of descriptive metadata of archival units",
     "BULK_ATOMIC_UPDATE_UNIT_DESC.STARTED": "Beginning of process of mass unitary updating of descriptive metadata of archival units",
     "BULK_ATOMIC_UPDATE_UNIT_DESC.WARNING": "Warning during process of mass unitary updating of descriptive metadata of archival units",
-    "BULK_ATOMIC_UPDATE_UNIT_DESC": "Process of mass unitary updating of descriptive metadata of archival units"
+    "BULK_ATOMIC_UPDATE_UNIT_DESC": "Process of mass unitary updating of descriptive metadata of archival units",
+    "STP_PREPARE_TRACEABILITY_LINKED_CHECK.STARTED": "Successfully started the process of preparing the secure log verification",
+    "STP_PREPARE_TRACEABILITY_LINKED_CHECK": "Successfully completed the process of preparing the secure log verification",
+    "TRACEABILITY_LINKED_CHECK_PREPARE": "Successfully prepared the secure log verification",
+    "PREPARE_STORAGE_STRATEGIES": "Successfully retrieved the list of storage strategies",
+    "STP_TRACEABILITY_LINKED_CHECKS.STARTED": "Successfully started the process of secure log verification",
+    "STP_TRACEABILITY_LINKED_CHECKS": "Successfully completed the process of secure log verification",
+    "RETRIEVE_SECURE_TRACEABILITY_DATA_FILE": "Successfully checked the existence of the secure file in storage offers and retrieved the corresponding hash",
+    "CHECKS_SECURE_TRACEABILITY_DATA_HASHES": "Successfully verified the integrity of the secure file",
+    "EXTRACT_SECURE_TRACEABILITY_DATA_FILE": "Successfully extracted the secure file",
+    "VERIFY_TIMESTAMP.VERIFY_TOKEN_TIMESTAMP": "Successfully verified the timestamp",
+    "CHECKS_SECURE_TRACEABILITY_DATA_STORAGELOG": "Successfully verified the write logs",
+    "STP_FINALIZE_TRACEABILITY_LINKED_CHECKS.STARTED": "Successfully started the process of finalizing the secure log verification",
+    "STP_FINALIZE_TRACEABILITY_LINKED_CHECKS": "Successfully completed the process of finalizing the secure log verification",
+    "TRACEABILITY_FINALIZATION": "Successfully finalized the secure log verification",
+    "LINKED_CHECK_SECURISATION": "Successfully audited the secure log verification"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
