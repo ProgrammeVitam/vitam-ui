@@ -84,6 +84,7 @@ public abstract class BaseClient<C extends HttpContext> implements RestClient {
         final String identity = context.getIdentity();
         final String requestId = context.getRequestId();
         final String accessContractId = context.getAccessContract();
+        headers.set(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_INTERNAL);
         if (tenantIdentifier != null) {
             headers.put(
                 CommonConstants.X_TENANT_ID_HEADER,

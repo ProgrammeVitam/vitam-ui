@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.iam.security;
+package fr.gouv.vitamui.iam.security.provider;
 
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -8,8 +8,8 @@ import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.client.UserRestClient;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
-import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.AuthentificationService;
+import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import org.junit.Before;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
  *
  *
  */
-public final class ApiAuthenticationTokenProviderTest {
+public final class ExternalApiAuthenticationProviderTest {
 
     private static final byte[] CERTIFICATE = "CERTIFICATE".getBytes();
 
@@ -62,14 +62,17 @@ public final class ApiAuthenticationTokenProviderTest {
 
     private List<ProfileDto> profiles;
 
-    private ApiAuthenticationProvider provider;
+    private ExternalApiAuthenticationProvider provider;
 
     @Before
     public void setUp() throws Exception {
         final ContextRestClient contextRestClient = mock(ContextRestClient.class);
         final UserRestClient userRestClient = mock(UserRestClient.class);
-        final AuthentificationService securityService = new AuthentificationService(contextRestClient, userRestClient);
-        provider = new ApiAuthenticationProvider(securityService);
+        final UserAuthenticationService userAuthenticationService = new IamClientUserAuthenticationService(
+            userRestClient
+        );
+
+        provider = new ExternalApiAuthenticationProvider(contextRestClient, userAuthenticationService);
         profiles = new ArrayList<>();
         context = new ContextDto();
         context.setName("name");
@@ -108,9 +111,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
         context.setRoleNames(Arrays.asList(ROLE));
@@ -133,9 +139,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setFullAccess(true);
         final ProfileDto profile = new ProfileDto();
@@ -153,9 +162,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(12));
         final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(
@@ -183,9 +195,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
 
@@ -213,9 +228,12 @@ public final class ApiAuthenticationTokenProviderTest {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
+            true,
             APPLICATION_ID,
             IDENTITY,
-            REQUEST_ID
+            REQUEST_ID,
+            null,
+            null
         );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
         context.setRoleNames(Arrays.asList("role1"));

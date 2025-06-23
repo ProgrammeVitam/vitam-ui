@@ -1,45 +1,33 @@
-package fr.gouv.vitamui.iam.server.security;
+package fr.gouv.vitamui.iam.security.provider;
 
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
-import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
-import fr.gouv.vitamui.iam.server.user.service.UserService;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Tests the {@link IamApiAuthenticationProvider}.
- *
- *
- */
-public final class IamApiAuthenticationProviderTest {
-
-    private static final String USER_TOKEN = "userToken";
+public final class InternalApiAuthenticationProviderTest {
 
     private static final String USER_ID = "userId";
 
-    private IamApiAuthenticationProvider provider;
+    private InternalApiAuthenticationProvider provider;
 
     @Before
     public void setUp() throws Exception {
-        final UserService userService = mock(UserService.class);
-        final TokenRepository tokenRepository = mock(TokenRepository.class);
-        final SubrogationRepository subrogationRepository = mock(SubrogationRepository.class);
-        provider = new IamApiAuthenticationProvider(
-            new IamAuthentificationService(userService, tokenRepository, subrogationRepository)
-        );
+        final UserAuthenticationService userAuthenticationService = mock(UserAuthenticationService.class);
+        provider = new InternalApiAuthenticationProvider(userAuthenticationService);
 
-        final UserDto userProfile = new UserDto();
+        final AuthUserDto userProfile = new AuthUserDto();
         userProfile.setId(USER_ID);
         userProfile.setLevel("LEVEL");
 
-        when(userService.findUserById(USER_TOKEN)).thenReturn(userProfile);
+        when(userAuthenticationService.getUserFromHttpContext(any())).thenReturn(userProfile);
     }
 
     @Test(expected = BadCredentialsException.class)

@@ -70,7 +70,7 @@ public class ExternalParametersRestClientTest {
 
     @Test
     public void getMyExternalParameters() {
-        HttpContext context = new HttpContext(9, "", "", "");
+        HttpContext context = new HttpContext(9, "", false, "", "", null, null, null);
         String url = "http://localhost:8083/iam/v1/externalparameters/me";
 
         final Map<String, String> mock = new HashMap<>();

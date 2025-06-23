@@ -143,6 +143,7 @@ public class UserController implements CrudController<UserDto> {
     }
 
     @GetMapping(CommonConstants.PATH_ME)
+    @Secured(ServicesData.ROLE_INTERNAL)
     public AuthUserDto getMe() {
         LOGGER.debug("getMe");
         return userService.getMe();

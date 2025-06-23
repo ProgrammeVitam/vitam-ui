@@ -37,7 +37,7 @@ class ExternalParametersServiceTest {
 
     @BeforeEach
     public void setUp() {
-        doReturn(new HttpContext(0, "", "", "")).when(securityService).getHttpContext();
+        doReturn(new HttpContext(0, "", false, "", "", null, null, null)).when(securityService).getHttpContext();
         externalParametersService = new ExternalParametersService(externalParametersRestClient, securityService);
     }
 

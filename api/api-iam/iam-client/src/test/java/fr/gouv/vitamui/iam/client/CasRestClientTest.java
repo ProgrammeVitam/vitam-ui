@@ -22,7 +22,7 @@ public class CasRestClientTest {
 
     private final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 
-    private final HttpContext header = new HttpContext(1, "", "", "");
+    private final HttpContext header = new HttpContext(1, "", false, "", "", null, null, null);
 
     @Before
     public void setup() {

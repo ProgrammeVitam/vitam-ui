@@ -36,12 +36,7 @@
  */
 package fr.gouv.vitamui.iam.security.provider;
 
-import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
-import fr.gouv.vitamui.iam.security.service.AuthentificationService;
-import fr.gouv.vitamui.security.common.dto.ContextDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,76 +44,53 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.stereotype.Service;
 
 import java.security.cert.X509Certificate;
-import java.util.List;
 
 /**
- * General authentication provider for the External API.
- *
- *
+ * General authentication provider for the VitamUI APIs.
+ * Dispatches calls to internal/external API authentication providers
  */
-
+@Service
 public class ApiAuthenticationProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiAuthenticationProvider.class);
 
-    private final AuthentificationService extAuthService;
+    private final InternalApiAuthenticationProvider internalApiAuthenticationProvider;
+    private final ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
 
-    /**
-     * ApiAuthenticationProvider
-     * @param externalAuthenticationService
-     */
     @Autowired
-    public ApiAuthenticationProvider(final AuthentificationService externalAuthenticationService) {
-        extAuthService = externalAuthenticationService;
+    public ApiAuthenticationProvider(
+        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
+        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+    ) {
+        this.internalApiAuthenticationProvider = internalApiAuthenticationProvider;
+        this.externalApiAuthenticationProvider = externalApiAuthenticationProvider;
     }
 
-    /**
-     * This method is called by the Spring Security Filter
-     *
-     * {@inheritDoc}
-     */
     @Override
     public Authentication authenticate(final Authentication authentication) {
-        if (supports(authentication.getClass())) {
-            final PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
-            final HttpContext httpContext = (HttpContext) token.getPrincipal();
-            final X509Certificate certificate = (X509Certificate) token.getCredentials();
-            LOGGER.debug("Principal: {}", httpContext);
-            LOGGER.debug("Credential not null?: {}", certificate != null);
-
-            if (httpContext != null && certificate != null) {
-                try {
-                    final ContextDto context = extAuthService.getContextFromHttpContext(httpContext, certificate);
-                    final AuthUserDto userDto = getAuthenticateUser(httpContext);
-                    final Integer tenantIdentifier = httpContext.getTenantIdentifier();
-                    final List<String> intersectionRoles = extAuthService.getRoles(context, userDto, tenantIdentifier);
-
-                    final String applicationId = extAuthService.buildApplicationId(userDto, httpContext, context);
-                    final HttpContext newHttpContext = HttpContext.buildFromExternalHttpContext(
-                        httpContext,
-                        applicationId
-                    );
-
-                    return new AuthenticationToken(userDto, newHttpContext, certificate, intersectionRoles);
-                } catch (final InvalidAuthenticationException vitamuiException) {
-                    throw new BadCredentialsException(vitamuiException.getMessage());
-                }
-            }
+        if (!supports(authentication.getClass())) {
+            throw new BadCredentialsException("Unable to authenticate REST call");
         }
 
-        throw new BadCredentialsException("Unable to authenticate REST call");
+        final PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
+        final HttpContext httpContext = (HttpContext) token.getPrincipal();
+        final X509Certificate certificate = (X509Certificate) token.getCredentials();
+        LOGGER.debug("Principal: {}", httpContext);
+        LOGGER.debug("Certificate: {}", certificate);
+
+        final Integer tenantIdentifier = httpContext.getTenantIdentifier();
+        LOGGER.debug("tenantIdentifier: {}", tenantIdentifier);
+
+        if (httpContext.isExternalRequest()) {
+            return this.externalApiAuthenticationProvider.authenticate(authentication);
+        } else {
+            return this.internalApiAuthenticationProvider.authenticate(authentication);
+        }
     }
 
-    private AuthUserDto getAuthenticateUser(HttpContext httpContext) {
-        return extAuthService.getUserFromHttpContext(httpContext);
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
     @Override
     public boolean supports(final Class<?> authentication) {
         return authentication.equals(PreAuthenticatedAuthenticationToken.class);

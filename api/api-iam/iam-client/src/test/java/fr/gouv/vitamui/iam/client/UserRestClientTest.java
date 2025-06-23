@@ -41,7 +41,7 @@ public class UserRestClientTest {
     @Test
     public void patchAnalyticsShouldReturnUserWithNewData() {
         UserDto user = UserBuilder.buildWithAnalytics();
-        HttpContext context = new HttpContext(9, "", "", "");
+        HttpContext context = new HttpContext(9, "", false, "", "", null, null, null);
         var PATCH_ANALYTIC_URL = BASE_URL + "/iam/v1/users/analytics";
         when(
             restTemplate.exchange(eq(URI.create(PATCH_ANALYTIC_URL)), eq(HttpMethod.POST), any(), eq(UserDto.class))

@@ -8,6 +8,7 @@ import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
+import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
@@ -20,7 +21,6 @@ import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
-import fr.gouv.vitamui.iam.server.security.IamApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.server.subrogation.service.SubrogationService;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
@@ -84,7 +84,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     private PasswordEncoder passwordEncoder;
 
     @MockBean
-    private IamApiAuthenticationProvider iamApiAuthenticationProvider;
+    private ApiAuthenticationProvider apiAuthenticationProvider;
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;

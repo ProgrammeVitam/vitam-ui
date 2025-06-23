@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.security.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
@@ -54,18 +53,6 @@ public class SecurityRestClientFactory extends BaseRestClientFactory {
         final RestTemplateBuilder restTemplateBuilder
     ) {
         super(restClientConfiguration, null, restTemplateBuilder);
-    }
-
-    public SecurityRestClientFactory(
-        RestClientConfiguration restClientConfiguration,
-        HttpPoolConfiguration httpHostConfiguration,
-        final RestTemplateBuilder restTemplateBuilder
-    ) {
-        super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
-    }
-
-    public CertificateCrudRestClient getCertificateRestClient() {
-        return new CertificateCrudRestClient(this.getRestTemplate(), this.getBaseUrl());
     }
 
     public ContextRestClient getContextRestClient() {
