@@ -20,7 +20,7 @@
     <span>{{ 'INGEST_CONTRACT.TAB.FORMAT.ALLOW_FORMAT' | translate }}</span>
   </vitamui-common-slide-toggle>
 
-  <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submitted">
+  <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submitted || isReadOnly">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

@@ -54,7 +54,7 @@
   </div>
   <div class="row separator"></div>
   <div class="row">
-    <button type="submit" class="btn primary" [disabled]="submitting || signaturePolicyUnchanged()">
+    <button type="submit" class="btn primary" [disabled]="submitting || signaturePolicyUnchanged() || readOnly">
       <!-- dirty // pristine ?-->
       {{ 'COMMON.SAVE' | translate }}
     </button>
