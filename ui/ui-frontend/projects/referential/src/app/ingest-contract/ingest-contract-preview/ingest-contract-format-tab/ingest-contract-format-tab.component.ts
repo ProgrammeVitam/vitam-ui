@@ -69,6 +69,7 @@ export class IngestContractFormatTabComponent implements OnInit {
   }
 
   @Input() set readOnly(readOnly: boolean) {
+    this.isReadOnly = readOnly;
     if (readOnly && this.form.enabled) {
       this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
@@ -82,6 +83,7 @@ export class IngestContractFormatTabComponent implements OnInit {
 
   form: FormGroup;
   submitted = false;
+  isReadOnly = false;
   formatOptions: VitamuiSelectOptions;
 
   private _ingestContract: IngestContract;

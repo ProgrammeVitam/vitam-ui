@@ -55,6 +55,7 @@ export class IngestContractObjectTabComponent {
 
   form: FormGroup;
   submited = false;
+  isReadOnly = false;
   private _ingestContract: IngestContract;
 
   // FIXME: Get list from common var ?
@@ -96,6 +97,7 @@ export class IngestContractObjectTabComponent {
 
   @Input()
   set readOnly(readOnly: boolean) {
+    this.isReadOnly = readOnly;
     if (readOnly && this.form.enabled) {
       this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {

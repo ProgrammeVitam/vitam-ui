@@ -22,7 +22,7 @@
     </ng-container>
   </div>
 
-  <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submited">
+  <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submited || isReadOnly">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>
