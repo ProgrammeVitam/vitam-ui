@@ -100,6 +100,7 @@ public class UserController implements CrudController<UserDto> {
     private final ConnectionHistoryService connectionHistoryService;
     private final SecurityService securityService;
 
+    @Secured(ServicesData.ROLE_GET_USERS)
     @GetMapping(CommonConstants.PATH_EXPORT)
     public Resource exportUsers(@RequestParam(required = false) final Optional<String> criteria) {
         LOGGER.debug("Export all users to xlsx file");
