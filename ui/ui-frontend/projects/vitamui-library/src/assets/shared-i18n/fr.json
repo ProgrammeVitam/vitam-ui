@@ -4095,6 +4095,10 @@
     },
     "PERSISTENT_IDENTIFIER_SEARCH": {
       "GO_TO_PAGE": "Recherche par identifiant pérenne"
+    },
+    "LOGBOOK": {
+      "BY_USER": "par l'utilisateur",
+      "SUBROGATE_BY": "subrogé par"
     }
   },
   "COLLECT": {
