@@ -35,15 +35,15 @@ function generateCerts {
     generateHostCertAndStorePassphrase   pastis                  hosts_vitamui_pastis
 
     #Zone UI
-    generateHostCertAndStorePassphrase   ui-portal               hosts_ui_portal
-    generateHostCertAndStorePassphrase   ui-identity             hosts_ui_identity
-    generateHostCertAndStorePassphrase   ui-identity-admin       hosts_ui_identity_admin
-    generateHostCertAndStorePassphrase   ui-referential          hosts_ui_referential
-    generateHostCertAndStorePassphrase   ui-ingest               hosts_ui_ingest
-    generateHostCertAndStorePassphrase   ui-archive-search       hosts_ui_archive_search
-    generateHostCertAndStorePassphrase   ui-collect              hosts_ui_collect
-    generateHostCertAndStorePassphrase   ui-pastis               hosts_ui_pastis
-    generateHostCertAndStorePassphrase   ui-design-system        hosts_ui_design_system
+    generateClientCertificate   ui-portal               hosts_ui_portal
+    generateClientCertificate   ui-identity             hosts_ui_identity
+    generateClientCertificate   ui-identity-admin       hosts_ui_identity_admin
+    generateClientCertificate   ui-referential          hosts_ui_referential
+    generateClientCertificate   ui-ingest               hosts_ui_ingest
+    generateClientCertificate   ui-archive-search       hosts_ui_archive_search
+    generateClientCertificate   ui-collect              hosts_ui_collect
+    generateClientCertificate   ui-pastis               hosts_ui_pastis
+    generateClientCertificate   ui-design-system        hosts_ui_design_system
 
     #Reverse
     generateHostCertAndStorePassphrase   reverse                 hosts_vitamui_reverseproxy
