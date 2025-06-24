@@ -36,6 +36,7 @@
  */
 import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilingHoldingSchemeNode } from '../../models/nodes';
+import {UnitType} from "../../models";
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -63,15 +64,21 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
   }
 
   onCheckboxClick() {
+    if (this.isVirtualNode()) return;
     this.checkboxClick.emit();
   }
 
   onLabelClick(event: MouseEvent) {
+    if (this.isVirtualNode()) return;
     this.labelClick.emit();
     if (!this.labelIsLinkedToCheckbox) {
       event.stopPropagation();
     } else {
       this.node.checked = !this.node.checked;
     }
+  }
+
+  isVirtualNode() {
+    return this.node.unitType === UnitType.VIRTUAL;
   }
 }

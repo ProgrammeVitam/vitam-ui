@@ -108,9 +108,9 @@ export class LeavesTreeService {
   public searchUnderNode(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchUnderNode(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
-        console.log('[LeavesTreeService] - searchUnderNode(): ', {pagedResult, parentNode})
         this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(parentNode, pagedResult);
+        const newUnits = this.reattachVirtualUnits(pagedResult);
+        console.log('newUnits : ', newUnits)
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
@@ -121,9 +121,9 @@ export class LeavesTreeService {
   public searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchUnderNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
-        console.log('[LeavesTreeService] - searchUnderNodeWithSearchCriterias(): ', {pagedResult, parentNode})
         this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(parentNode, pagedResult);
+        const newUnits = this.reattachVirtualUnits(pagedResult);
+        console.log('newUnits : ', newUnits)
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
         const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
@@ -136,9 +136,9 @@ export class LeavesTreeService {
   public searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchAtNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
-        console.log('[LeavesTreeService] - searchAtNodeWithSearchCriterias(): ', {pagedResult, parentNode})
         this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(parentNode, pagedResult);
+        const newUnits = this.reattachVirtualUnits(pagedResult);
+        console.log('newUnits : ', newUnits)
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
@@ -150,7 +150,6 @@ export class LeavesTreeService {
   public searchOrphans(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchOrphans(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
-        console.log('[LeavesTreeService] - searchOrphans(): ', {pagedResult, parentNode})
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
@@ -161,7 +160,6 @@ export class LeavesTreeService {
   public searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchOrphansWithSearchCriterias(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
-        console.log('[LeavesTreeService] - searchOrphansWithSearchCriterias(): ', {pagedResult, parentNode})
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
@@ -191,14 +189,9 @@ export class LeavesTreeService {
 
   private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult) {
     const realParentId = (parentNode.unitType === 'VIRTUAL') ? parentNode.realParentId : parentNode.id;
-    const results: Unit[] = pagedResult.results;
     const virtualTreeFacet = pagedResult.facets?.find(f => f.name === 'FACETS_VIRTUAL_TREE');
     const facetTree = virtualTreeFacet?.buckets ?? [];
-
     const pathToUnitIdMap: Map<string, string> = new Map();
-
-    // const declaredPaths = new Set(facetTree.map(f => f.value));
-
     const allPaths: string[] = [];
 
     facetTree.forEach(facet => {
@@ -209,10 +202,7 @@ export class LeavesTreeService {
       }
     });
 
-    // Supprime les doublons
     let uniquePaths = Array.from(new Set(allPaths));
-    console.log({realParentId, uniquePaths})
-
     uniquePaths.forEach(path => {
       if (pathToUnitIdMap.has(path)) return;
 
@@ -227,7 +217,6 @@ export class LeavesTreeService {
       }
 
       const unitUps = parentPath ? [pathToUnitIdMap.get(parentPath)!] : [realParentId];
-
       const virtualUnit = {
         ...this.getVirtualUnitTemplate(),
         '#id': path,
@@ -241,49 +230,30 @@ export class LeavesTreeService {
       pagedResult.results.push(virtualUnit);
       pathToUnitIdMap.set(path, path);
     });
+  }
 
-    console.log('[LeavesTreeService] - addVirtualUnits()', {
-      parentNode,
-      facetTree,
-      oldResults: results,
-      results: pagedResult.results,
+  private reattachVirtualUnits(pagedResult: PagedResult): Unit[] {
+    return (pagedResult.results || []).map((unit: Unit) => {
+      const vups = unit['#vups'] || [];
+      const filePlanPosition = unit.FilePlanPosition || [];
+      const hasVirtualUps = vups.length > 0;
+      const hasFilePlanPosition = filePlanPosition.length > 0;
+
+      if (hasVirtualUps && hasFilePlanPosition) {
+        unit['#unitups'] = filePlanPosition.map(pos => `/${pos}`);
+        unit['#allunitups'] = [...(unit['#allunitups'] || []), ...vups];
+      }
+
+      return unit;
     });
   }
 
-
-  /**
-   * Modèle de base pour une unité virtuelle
-   */
-  public  getVirtualUnitTemplate(): any {
+  private  getVirtualUnitTemplate(): any {
     return {
       '#tenant': 1,
       '#unitups': [],
       '#allunitups': [],
     };
-  }
-
-  private reattachVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult):  Unit[] {
-    const parentId = parentNode.id;
-    let newUnits: Unit[] = []
-    pagedResult.results?.forEach((unit: Unit) => {
-      const hasVirtualUps = unit['#vups']?.length > 0;
-      const hasFilePlanPosition = unit.FilePlanPosition?.length > 0;
-
-      if (hasVirtualUps && hasFilePlanPosition) {
-        // console.log(unit)
-        unit["#unitups"] = [...unit.FilePlanPosition.map(el => '/'+el)];
-        unit["#allunitups"] = [...unit["#allunitups"], ...unit['#vups']];
-      }
-      /*else {
-        unit["#unitups"] = unit["#unitups"].filter(el => !!el);
-      }*/
-      newUnits.push(unit)
-    });
-    console.log('[LeavesTreeService] - reattachVirtualUnits()', {
-      parentId,
-      newUnits: newUnits,
-    });
-    return newUnits;
   }
 
 
