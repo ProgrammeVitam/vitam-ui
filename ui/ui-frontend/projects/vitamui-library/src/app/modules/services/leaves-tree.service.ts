@@ -187,42 +187,41 @@ export class LeavesTreeService {
     this.leavesTreeApiService.setTransactionId(transactionId);
   }
 
-  private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult) {
-    const realParentId = (parentNode.unitType === 'VIRTUAL') ? parentNode.realParentId : parentNode.id;
-    const virtualTreeFacet = pagedResult.facets?.find(f => f.name === 'FACETS_VIRTUAL_TREE');
-    const facetTree = virtualTreeFacet?.buckets ?? [];
-    const pathToUnitIdMap: Map<string, string> = new Map();
-    const allPaths: string[] = [];
+  private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult): void {
+    const realParentId = parentNode.unitType === 'VIRTUAL' ? parentNode.realParentId : parentNode.id;
+    if (pagedResult.results.length === 0) return;
+    const vupsList = pagedResult.results
+      .filter(unit => {
+        return unit['#unitups']?.includes(realParentId) && this.hasVirtualAttachement(unit);
+      })
+      .flatMap(unit => unit['#vups']);
 
-    facetTree.forEach(facet => {
-      const segments = facet.value.split('/').filter(Boolean);
-      for (let i = 1; i <= segments.length; i++) {
-        const subPath = '/' + segments.slice(0, i).join('/');
-        if (realParentId !== subPath) allPaths.push(subPath);
-      }
+    if (vupsList.length === 0) return;
+
+    const allPaths = vupsList.flatMap(vup => {
+      const segments = vup.split('/').filter(Boolean);
+      return segments.map((_: any, i:number) => '/' + segments.slice(0, i + 1).join('/'))
+        .filter((path: string) => path !== realParentId);
     });
 
-    let uniquePaths = Array.from(new Set(allPaths));
+    const uniquePaths = Array.from(new Set(allPaths));
+    const pathToUnitIdMap = new Map<string, string>();
+
     uniquePaths.forEach(path => {
       if (pathToUnitIdMap.has(path)) return;
 
       const segments = path.split('/').filter(Boolean);
-      const title = segments[segments.length - 1];
-
-      let parentPath: string | null;
-      if (segments.length === 1) {
-        parentPath = null;
-      } else {
-        parentPath = '/' + segments.slice(0, -1).join('/');
-      }
+      const title = segments.at(-1) ?? '';
+      const parentPath = segments.length > 1 ? '/' + segments.slice(0, -1).join('/') : null;
 
       const unitUps = parentPath ? [pathToUnitIdMap.get(parentPath)!] : [realParentId];
-      const virtualUnit = {
+
+      const virtualUnit: Unit = {
         ...this.getVirtualUnitTemplate(),
         '#id': path,
-        'Title': title,
+        Title: title,
         '#unitups': unitUps,
-        'realParentId': realParentId,
+        realParentId,
         '#allunitups': [...unitUps, realParentId],
         '#unitType': 'VIRTUAL',
       };
@@ -233,18 +232,21 @@ export class LeavesTreeService {
   }
 
   private reattachVirtualUnits(pagedResult: PagedResult): Unit[] {
-    return (pagedResult.results || []).map((unit: Unit) => {
+    const updatedUnits = (pagedResult.results || []).map((unit: Unit) => {
       const vups = unit['#vups'] || [];
       const filePlanPosition = unit.FilePlanPosition || [];
-      const hasVirtualUps = vups.length > 0;
-      const hasFilePlanPosition = filePlanPosition.length > 0;
-
-      if (hasVirtualUps && hasFilePlanPosition) {
+      if (this.hasVirtualAttachement(unit)) {
         unit['#unitups'] = filePlanPosition.map(pos => `/${pos}`);
         unit['#allunitups'] = [...(unit['#allunitups'] || []), ...vups];
       }
 
       return unit;
+    });
+
+    return updatedUnits.sort((a, b) => {
+      const aIsVirtual = a['#unitType'] === 'VIRTUAL' ? 1 : 0;
+      const bIsVirtual = b['#unitType'] === 'VIRTUAL' ? 1 : 0;
+      return aIsVirtual - bIsVirtual; // VIRTUAL à la fin
     });
   }
 
@@ -256,5 +258,9 @@ export class LeavesTreeService {
     };
   }
 
-
+  private hasVirtualAttachement(unit: Unit) {
+    const vups = unit['#vups'] || [];
+    const filePlanPosition = unit.FilePlanPosition || [];
+    return vups.length > 0 && filePlanPosition.length > 0;
+  }
 }
