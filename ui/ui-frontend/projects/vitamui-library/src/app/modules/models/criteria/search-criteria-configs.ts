@@ -110,6 +110,26 @@ const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> }
     keyTranslated: true,
     operator: CriteriaOperator.IN,
   },
+  storageRuleIdentifier: {
+    keyElt: 'RULE_IDENTIFIER_STORAGE_RULE',
+    keyTranslated: true,
+  },
+  appraisalRuleIdentifier: {
+    keyElt: 'RULE_IDENTIFIER_APPRAISAL_RULE',
+    keyTranslated: true,
+  },
+  accessRuleIdentifier: {
+    keyElt: 'RULE_IDENTIFIER_ACCESS_RULE',
+    keyTranslated: true,
+  },
+  disseminationRuleIdentifier: {
+    keyElt: 'RULE_IDENTIFIER_DISSEMINATION_RULE',
+    keyTranslated: true,
+  },
+  reuseRuleIdentifier: {
+    keyElt: 'RULE_IDENTIFIER_REUSE_RULE',
+    keyTranslated: true,
+  },
 };
 searchCriteriaConfigs.Title = searchCriteriaConfigs.title;
 searchCriteriaConfigs.Description = searchCriteriaConfigs.description;
@@ -196,6 +216,12 @@ export const FINAL_ACTION_TYPE_KEEP = 'FINAL_ACTION_TYPE_KEEP';
 export const FINAL_ACTION_TYPE_COPY = 'FINAL_ACTION_TYPE_COPY';
 export const FINAL_ACTION_TYPE_TRANSFER = 'FINAL_ACTION_TYPE_TRANSFER';
 export const FINAL_ACTION_TYPE_RESTRICT_ACCESS = 'FINAL_ACTION_TYPE_RESTRICT_ACCESS';
+
+export const STORAGE_RULE_IDENTIFIER = 'storageRuleIdentifier';
+export const APPRAISAL_RULE_IDENTIFIER = 'appraisalRuleIdentifier';
+export const ACCESS_RULE_IDENTIFIER = 'accessRuleIdentifier';
+export const DISSEMINATION_RULE_IDENTIFIER = 'disseminationRuleIdentifier';
+export const REUSE_RULE_IDENTIFIER = 'reuseRuleIdentifier';
 
 export const RULE_ORIGINS = [ORIGIN_HAS_AT_LEAST_ONE, ORIGIN_HAS_NO_ONE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_WAITING_RECALCULATE];
 export const FINAL_ACTIONS = [FINAL_ACTION_HAS_FINAL_ACTION, FINAL_ACTION_INHERITE_FINAL_ACTION];

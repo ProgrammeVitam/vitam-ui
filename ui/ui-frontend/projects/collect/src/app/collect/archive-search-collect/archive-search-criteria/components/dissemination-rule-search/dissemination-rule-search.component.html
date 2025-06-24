@@ -1,36 +1,16 @@
 <div class="container">
   <form [formGroup]="disseminationRuleCriteriaForm">
     <div class="row justify-content-start">
-      <div class="form-control">
-        <p class="title-text">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.DISSEMINATION_TITLE' | translate }}</p>
-      </div>
-    </div>
-
-    <div class="row justify-content-start">
       <div class="col-5 form-control">
-        <vitamui-common-editable-input
+        <vitamui-select
           formControlName="disseminationRuleIdentifier"
-          [validator]="disseminationRuleCriteriaForm?.get('disseminationRuleIdentifier')?.validator"
-          [asyncValidator]="disseminationRuleCriteriaForm?.get('disseminationRuleIdentifier')?.asyncValidator"
-          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.ID_DISSEMINATION' | translate }}"
-          minlength="1"
+          [options]="disseminationRuleOptions"
+          [multiple]="true"
+          [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_DISSEMINATION' | translate"
+          [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_DUC' | translate"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }} </vitamui-common-field-error>
-          <vitamui-common-field-error errorKey="ruleIdPattern">{{ 'COLLECT.RULE.WRONG_FORMAT' | translate }} </vitamui-common-field-error>
-
-          <vitamui-common-field-error errorKey="ruleIdExists">{{ 'COLLECT.RULE.CODE_NOT_EXIST' | translate }} </vitamui-common-field-error>
-        </vitamui-common-editable-input>
+        </vitamui-select>
       </div>
-      <div class="col-1 form-control"></div>
-      <div class="col-5 form-control">
-        <vitamui-common-editable-input
-          formControlName="disseminationRuleTitle"
-          [validator]="disseminationRuleCriteriaForm?.get('disseminationRuleTitle')?.validator"
-          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE_DISSEMINATION' | translate }}"
-        >
-        </vitamui-common-editable-input>
-      </div>
-      <div class="col-1 form-control"></div>
     </div>
 
     <div class="row justify-content-start">

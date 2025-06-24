@@ -53,7 +53,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, tap } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractService,
@@ -83,6 +83,8 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
+  Rule,
+  RuleService,
   ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
@@ -192,6 +194,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   hasTransferAcknowledgmentRole = false;
 
   selectedArchive$: Observable<Unit>;
+  rulesToExport$: Observable<Rule[]>;
 
   displayedColumns = ['checkbox', 'type', 'name_description', 'start_date', 'end_date', 'originating_agency'];
 
@@ -226,6 +229,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private cdr: ChangeDetectorRef,
     private queryParamsService: QueryParamsService,
     private searchCriteriaService: SearchCriteriaService,
+    private ruleService: RuleService,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
@@ -406,6 +410,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
     this.managementRulesSharedDataService.emitManagementRules([]);
+
+    this.rulesToExport$ = this.ruleService
+      .getAllForTenant(this.tenantIdentifier.toString())
+      .pipe(map((rules) => rules.sort((a, b) => a.ruleId.localeCompare(b.ruleId))));
   }
 
   ngAfterViewInit() {

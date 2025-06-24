@@ -42,7 +42,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/archive-shared-data.service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   BASE_URL,
   CriteriaDataType,
@@ -51,6 +51,7 @@ import {
   InjectorModule,
   LoggerModule,
   WINDOW_LOCATION,
+  Rule,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RuleValidator } from '../../rule.validator';
@@ -104,6 +105,7 @@ describe('AppraisalRuleSearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppraisalRuleSearchComponent);
     component = fixture.componentInstance;
+    component.rules = new Observable<Rule[]>();
     fixture.detectChanges();
   });
 
@@ -147,28 +149,38 @@ describe('AppraisalRuleSearchComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 17 rows', () => {
+    it('should have 15 rows', () => {
       const nativeElement = fixture.nativeElement;
       const elementRow = nativeElement.querySelectorAll('.row');
-      expect(elementRow.length).toBe(17);
+      expect(elementRow.length).toBe(15);
     });
 
     it('should have 6 text titles', () => {
       const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.title-text');
 
       expect(formTitlesHtmlElements).toBeTruthy();
-      expect(formTitlesHtmlElements.length).toBe(6);
-      expect(formTitlesHtmlElements[0].textContent).toContain('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DUA_TITLE');
+      expect(formTitlesHtmlElements.length).toBe(5);
+      expect(formTitlesHtmlElements[0].textContent).toContain('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA');
     });
 
-    it('should have 3 vitamui editable input  ', () => {
+    it('should have 1 vitamui editable input  ', () => {
       // When
       const nativeElement = fixture.nativeElement;
       const elementVitamuiInput = nativeElement.querySelectorAll('vitamui-common-editable-input');
 
       // Then
       expect(elementVitamuiInput).toBeTruthy();
-      expect(elementVitamuiInput.length).toBe(3);
+      expect(elementVitamuiInput.length).toBe(1);
+    });
+
+    it('should have 1 vitamui select  ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementVitamuiInput = nativeElement.querySelectorAll('vitamui-select');
+
+      // Then
+      expect(elementVitamuiInput).toBeTruthy();
+      expect(elementVitamuiInput.length).toBe(1);
     });
   });
 });

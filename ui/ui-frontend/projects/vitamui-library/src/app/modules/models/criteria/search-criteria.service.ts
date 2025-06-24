@@ -38,9 +38,12 @@ import { SearchCriteriaAddAction, SearchCriteriaTypeEnum } from './search-criter
 import { CriteriaDataType, CriteriaOperator } from './criteria.enums';
 import {
   ACCESS_RULE,
+  ACCESS_RULE_IDENTIFIER,
   APPRAISAL_RULE,
+  APPRAISAL_RULE_IDENTIFIER,
   CLASSIFICATION_RULE,
   DISSEMINATION_RULE,
+  DISSEMINATION_RULE_IDENTIFIER,
   ELIM_TECH_ID_DUA,
   END_DATE_ACCESS,
   END_DATE_DISSEMINATION,
@@ -65,7 +68,9 @@ import {
   ORIGIN_HAS_AT_LEAST_ONE,
   ORIGIN_HAS_NO_ONE,
   REUSE_RULE,
+  REUSE_RULE_IDENTIFIER,
   STORAGE_RULE,
+  STORAGE_RULE_IDENTIFIER,
   TITLE_ACCESS,
   TITLE_DISSEMINATION,
   TITLE_DUA,
@@ -184,6 +189,7 @@ export class SearchCriteriaService {
       case END_DATE_DUA:
       case INTERVAL_DATE_DUA:
       case ELIM_TECH_ID_DUA:
+      case APPRAISAL_RULE_IDENTIFIER:
         categoryForKey = SearchCriteriaTypeEnum.APPRAISAL_RULE;
         break;
       case ACCESS_RULE:
@@ -191,6 +197,7 @@ export class SearchCriteriaService {
       case TITLE_ACCESS:
       case END_DATE_ACCESS:
       case INTERVAL_DATE_ACCESS:
+      case ACCESS_RULE_IDENTIFIER:
         categoryForKey = SearchCriteriaTypeEnum.ACCESS_RULE;
         break;
       case CLASSIFICATION_RULE:
@@ -201,6 +208,7 @@ export class SearchCriteriaService {
       case TITLE_DISSEMINATION:
       case END_DATE_DISSEMINATION:
       case INTERVAL_DATE_DISSEMINATION:
+      case DISSEMINATION_RULE_IDENTIFIER:
         categoryForKey = SearchCriteriaTypeEnum.DISSEMINATION_RULE;
         break;
       case REUSE_RULE:
@@ -208,6 +216,7 @@ export class SearchCriteriaService {
       case TITLE_REUSE:
       case END_DATE_REUSE:
       case INTERVAL_DATE_REUSE:
+      case REUSE_RULE_IDENTIFIER:
         categoryForKey = SearchCriteriaTypeEnum.REUSE_RULE;
         break;
       case STORAGE_RULE:
@@ -215,6 +224,7 @@ export class SearchCriteriaService {
       case TITLE_DUC:
       case END_DATE_DUC:
       case INTERVAL_DATE_DUC:
+      case STORAGE_RULE_IDENTIFIER:
         categoryForKey = SearchCriteriaTypeEnum.STORAGE_RULE;
         break;
       case HOLD_RULE:

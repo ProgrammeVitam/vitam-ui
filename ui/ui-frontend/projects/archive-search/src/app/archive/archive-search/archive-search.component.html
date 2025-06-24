@@ -128,6 +128,8 @@
             </div>
             <app-storage-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+              [tenantIdentifier]="tenantIdentifier"
+              [rules]="rulesToExport$"
             ></app-storage-rule-search>
           </div>
         </ng-container>
@@ -146,6 +148,8 @@
             </div>
             <app-appraisal-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+              [tenantIdentifier]="tenantIdentifier"
+              [rules]="rulesToExport$"
             ></app-appraisal-rule-search>
           </div>
         </ng-container>
@@ -164,6 +168,8 @@
             </div>
             <app-access-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+              [tenantIdentifier]="tenantIdentifier"
+              [rules]="rulesToExport$"
             ></app-access-rule-search>
           </div>
         </ng-container>
@@ -182,6 +188,8 @@
             </div>
             <app-reuse-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+              [tenantIdentifier]="tenantIdentifier"
+              [rules]="rulesToExport$"
             ></app-reuse-rule-search>
           </div>
         </ng-container>
@@ -200,6 +208,8 @@
             </div>
             <app-dissemination-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+              [tenantIdentifier]="tenantIdentifier"
+              [rules]="rulesToExport$"
             ></app-dissemination-rule-search>
           </div>
         </ng-container>

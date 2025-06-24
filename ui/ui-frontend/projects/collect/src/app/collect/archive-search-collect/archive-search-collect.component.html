@@ -198,7 +198,11 @@
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
                   }}</a>
                 </div>
-                <app-storage-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-storage-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+                  [tenantIdentifier]="tenantIdentifier"
+                  [rules]="rulesToExport$"
+                >
                 </app-storage-rule-search>
               </div>
             </ng-container>
@@ -209,7 +213,11 @@
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
                   }}</a>
                 </div>
-                <app-appraisal-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-appraisal-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+                  [tenantIdentifier]="tenantIdentifier"
+                  [rules]="rulesToExport$"
+                >
                 </app-appraisal-rule-search>
               </div>
             </ng-container>
@@ -220,7 +228,11 @@
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
                   }}</a>
                 </div>
-                <app-access-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-access-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+                  [tenantIdentifier]="tenantIdentifier"
+                  [rules]="rulesToExport$"
+                >
                 </app-access-rule-search>
               </div>
             </ng-container>
@@ -231,7 +243,11 @@
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
                   }}</a>
                 </div>
-                <app-reuse-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-reuse-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+                  [tenantIdentifier]="tenantIdentifier"
+                  [rules]="rulesToExport$"
+                >
                 </app-reuse-rule-search>
               </div>
             </ng-container>
@@ -242,7 +258,11 @@
                     'COLLECT.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
                   }}</a>
                 </div>
-                <app-dissemination-rule-search [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()">
+                <app-dissemination-rule-search
+                  [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+                  [tenantIdentifier]="tenantIdentifier"
+                  [rules]="rulesToExport$"
+                >
                 </app-dissemination-rule-search>
               </div>
             </ng-container>

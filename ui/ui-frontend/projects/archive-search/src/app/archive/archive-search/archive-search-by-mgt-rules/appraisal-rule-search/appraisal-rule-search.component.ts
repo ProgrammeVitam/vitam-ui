@@ -37,18 +37,20 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription, merge } from 'rxjs';
+import { Subscription, merge, Observable } from 'rxjs';
 import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  ManagementRuleValidators,
   SearchCriteriaTypeEnum,
   diff,
   CriteriaSearchCriteria,
   SearchCriteriaValue,
   QueryParamsService,
+  VitamuiSelectOptions,
+  SearchCriteriaService,
+  Rule,
   APPRAISAL_RULE,
   FINAL_ACTION_TYPE_ELIMINATION,
   FINAL_ACTION_TYPE_KEEP,
@@ -61,19 +63,15 @@ import {
   FINAL_ACTION,
   FINAL_ACTION_TYPE,
   RULE_ORIGIN,
-  RULE_TITLE,
   RULE_END_DATE,
-  RULE_IDENTIFIER,
   ELIMINATION_TECHNICAL_ID,
-  ID_DUA,
-  TITLE_DUA,
   INTERVAL_DATE_DUA,
   END_DATE_DUA,
   ELIM_TECH_ID_DUA,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
-import { RuleValidator } from '../../rule.validator';
+import { Params } from '@angular/router';
 
 const RULE_TYPE = APPRAISAL_RULE;
 const RULE_TYPE_SUFFIX = '_' + APPRAISAL_RULE;
@@ -89,6 +87,12 @@ const keysList = [RULE_ORIGIN + RULE_TYPE_SUFFIX, FINAL_ACTION + RULE_TYPE_SUFFI
 export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   @Input()
   hasWaitingToRecalculateCriteria: boolean;
+  @Input()
+  tenantIdentifier: number;
+  @Input()
+  rules: Observable<Rule[]>;
+
+  appraisalRuleOptions: VitamuiSelectOptions;
 
   appraisalRuleCriteriaForm: FormGroup;
 
@@ -98,7 +102,6 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   endDateInterval = false;
   previousAppraisalCriteriaValue: {
     appraisalRuleIdentifier?: string;
-    appraisalRuleTitle?: string;
     appraisalRuleStartDate?: any;
     appraisalRuleEndDate?: any;
     appraisalRuleOriginInheriteAtLeastOne: boolean;
@@ -109,7 +112,6 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     keepFinalActionType?: boolean;
     appraisalRuleFinalActionHasFinalAction: boolean;
     appraisalRuleFinalActionInheriteFinalAction: boolean;
-
     appraisalRuleEliminationIdentifier?: string;
   };
 
@@ -117,15 +119,13 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataService,
-    private ruleValidator: RuleValidator,
     private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     this.appraisalRuleCriteriaForm = this.formBuilder.group({
-      appraisalRuleIdentifier: [null, [ManagementRuleValidators.ruleIdPattern], this.ruleValidator.uniqueRuleId()],
-      appraisalRuleTitle: ['', []],
+      appraisalRuleIdentifier: [[], { updateOn: 'blur' }],
       appraisalRuleStartDate: ['', []],
       appraisalRuleEndDate: ['', []],
-
       appraisalRuleEliminationIdentifier: ['', []],
     });
     merge(this.appraisalRuleCriteriaForm.statusChanges, this.appraisalRuleCriteriaForm.valueChanges)
@@ -138,25 +138,6 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.resetAppraisalRuleCriteriaForm();
       });
-
-    this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').valueChanges.subscribe((value) => {
-      if (
-        this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').value !== null &&
-        this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').value !== ''
-      ) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_DUA, value },
-          value,
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.APPRAISAL_RULE,
-        );
-        this.resetAppraisalRuleCriteriaForm();
-      }
-    });
 
     this.subscriptionAppraisalFromMainSearchCriteria = this.archiveExchangeDataService
       .receiveAppraisalFromMainSearchCriteriaSubject()
@@ -171,6 +152,26 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    Object.entries(this.appraisalRuleCriteriaForm.controls)
+      .filter(([key, _value]) => key === 'appraisalRuleIdentifier')
+      .forEach(([key, control]) => {
+        control.valueChanges
+          .pipe(
+            debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+            filter((value) => !!value),
+          )
+          .subscribe((value) => {
+            this.addCriteriaFromParams({ [key]: value });
+            control.reset(undefined, { emitEvent: false });
+          });
+      });
+  }
+
+  private addCriteriaFromParams(params: Params) {
+    Object.entries(params).forEach(async ([key, value]) =>
+      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(await this.searchCriteriaService.toSearchCriteria({ [key]: value })),
+    );
   }
 
   checkBoxChange(field: string, event: any) {
@@ -391,32 +392,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
 
   isEmpty(formData: any): boolean {
     if (formData) {
-      if (formData.appraisalRuleIdentifier) {
-        this.addCriteria(
-          RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: ID_DUA, value: formData.appraisalRuleIdentifier.trim() },
-          formData.appraisalRuleIdentifier.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.APPRAISAL_RULE,
-        );
-        this.resetAppraisalRuleCriteriaForm();
-        return true;
-      } else if (formData.appraisalRuleTitle) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_DUA, value: formData.appraisalRuleTitle.trim() },
-          formData.appraisalRuleTitle.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.APPRAISAL_RULE,
-        );
-        return true;
-      } else if (formData.appraisalRuleEliminationIdentifier) {
+      if (formData.appraisalRuleEliminationIdentifier) {
         this.addCriteria(
           ELIMINATION_TECHNICAL_ID + RULE_TYPE_SUFFIX,
           { id: ELIM_TECH_ID_DUA, value: formData.appraisalRuleEliminationIdentifier.trim() },
@@ -462,22 +438,32 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
 
     this.previousAppraisalCriteriaValue = {
       appraisalRuleIdentifier: '',
-      appraisalRuleTitle: '',
       appraisalRuleStartDate: '',
       appraisalRuleEndDate: '',
       appraisalRuleOriginInheriteAtLeastOne: true,
       appraisalRuleOriginHasAtLeastOne: true,
       appraisalRuleOriginHasNoOne: false,
       appraisalRuleOriginWaitingRecalculate: this.hasWaitingToRecalculateCriteria,
-
       eliminationFinalActionType: false,
       keepFinalActionType: false,
-
       appraisalRuleFinalActionHasFinalAction: false,
       appraisalRuleFinalActionInheriteFinalAction: false,
-
       appraisalRuleEliminationIdentifier: '',
     };
+
+    this.rules
+      .pipe(
+        map((rules) => rules.filter((rule) => rule.ruleType === 'AppraisalRule')),
+        map(
+          (rules): VitamuiSelectOptions => ({
+            options: rules.map((rule) => ({
+              key: rule.ruleId,
+              label: `${rule.ruleId} - ${rule.ruleValue}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.appraisalRuleOptions = options));
 
     this.archiveExchangeDataService.searchCriteria$
       .pipe(
@@ -541,9 +527,6 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
 
   get appraisalRuleIdentifier() {
     return this.appraisalRuleCriteriaForm.controls.appraisalRuleIdentifier;
-  }
-  get appraisalRuleTitle() {
-    return this.appraisalRuleCriteriaForm.controls.appraisalRuleTitle;
   }
   get appraisalRuleStartDate() {
     return this.appraisalRuleCriteriaForm.controls.appraisalRuleStartDate;

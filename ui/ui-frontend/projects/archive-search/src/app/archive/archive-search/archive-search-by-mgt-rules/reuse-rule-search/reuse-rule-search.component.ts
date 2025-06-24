@@ -37,35 +37,35 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription, merge } from 'rxjs';
+import { Subscription, merge, Observable } from 'rxjs';
 import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  ManagementRuleValidators,
   SearchCriteriaTypeEnum,
   diff,
   CriteriaSearchCriteria,
   SearchCriteriaValue,
   QueryParamsService,
+  VitamuiSelectOptions,
+  SearchCriteriaService,
+  Rule,
   REUSE_RULE,
   ORIGIN_WAITING_RECALCULATE,
   ORIGIN_HAS_NO_ONE,
   ORIGIN_HAS_AT_LEAST_ONE,
   ORIGIN_INHERITE_AT_LEAST_ONE,
   RULE_ORIGIN,
-  RULE_TITLE,
   RULE_END_DATE,
   RULE_IDENTIFIER,
   ID_REUSE,
-  TITLE_REUSE,
   END_DATE_REUSE,
   INTERVAL_DATE_REUSE,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
-import { RuleValidator } from '../../rule.validator';
+import { Params } from '@angular/router';
 
 const RULE_TYPE = REUSE_RULE;
 const RULE_TYPE_SUFFIX = '_' + REUSE_RULE;
@@ -79,6 +79,12 @@ const RULE_TYPE_SUFFIX = '_' + REUSE_RULE;
 export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
   @Input()
   hasWaitingToRecalculateCriteria: boolean;
+  @Input()
+  tenantIdentifier: number;
+  @Input()
+  rules: Observable<Rule[]>;
+
+  reuseRuleOptions: VitamuiSelectOptions;
 
   reuseRuleCriteriaForm: FormGroup;
 
@@ -88,7 +94,6 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
   endDateInterval = false;
   previousReuseCriteriaValue: {
     reuseRuleIdentifier?: string;
-    reuseRuleTitle?: string;
     reuseRuleStartDate?: any;
     reuseRuleEndDate?: any;
     reuseRuleOriginInheriteAtLeastOne: boolean;
@@ -101,16 +106,13 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private archiveExchangeDataService: ArchiveSharedDataService,
-    private ruleValidator: RuleValidator,
     private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     this.reuseRuleCriteriaForm = this.formBuilder.group({
-      reuseRuleIdentifier: [null, [ManagementRuleValidators.ruleIdPattern], this.ruleValidator.uniqueRuleId()],
-      reuseRuleTitle: ['', []],
+      reuseRuleIdentifier: [[], { updateOn: 'blur' }],
       reuseRuleStartDate: ['', []],
       reuseRuleEndDate: ['', []],
-
-      reuseRuleEliminationIdentifier: ['', []],
     });
     merge(this.reuseRuleCriteriaForm.statusChanges, this.reuseRuleCriteriaForm.valueChanges)
       .pipe(
@@ -122,25 +124,6 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.resetReuseRuleCriteriaForm();
       });
-
-    this.reuseRuleCriteriaForm.get('reuseRuleTitle').valueChanges.subscribe((value) => {
-      if (
-        this.reuseRuleCriteriaForm.get('reuseRuleTitle').value !== null &&
-        this.reuseRuleCriteriaForm.get('reuseRuleTitle').value !== ''
-      ) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_REUSE, value },
-          value,
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.REUSE_RULE,
-        );
-        this.resetReuseRuleCriteriaForm();
-      }
-    });
 
     this.subscriptionReuseFromMainSearchCriteria = this.archiveExchangeDataService
       .receiveReuseFromMainSearchCriteriaSubject()
@@ -155,6 +138,26 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    Object.entries(this.reuseRuleCriteriaForm.controls)
+      .filter(([key, _value]) => key === 'reuseRuleIdentifier')
+      .forEach(([key, control]) => {
+        control.valueChanges
+          .pipe(
+            debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+            filter((value) => !!value),
+          )
+          .subscribe((value) => {
+            this.addCriteriaFromParams({ [key]: value });
+            control.reset(undefined, { emitEvent: false });
+          });
+      });
+  }
+
+  private addCriteriaFromParams(params: Params) {
+    Object.entries(params).forEach(async ([key, value]) =>
+      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(await this.searchCriteriaService.toSearchCriteria({ [key]: value })),
+    );
   }
 
   checkBoxChange(field: string, event: any) {
@@ -293,34 +296,19 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   isEmpty(formData: any): boolean {
-    if (formData) {
-      if (formData.reuseRuleIdentifier) {
-        this.addCriteria(
-          RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
-          { id: ID_REUSE, value: formData.reuseRuleIdentifier.trim() },
-
-          formData.reuseRuleIdentifier.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.REUSE_RULE,
-        );
-        this.resetReuseRuleCriteriaForm();
-        return true;
-      } else if (formData.reuseRuleTitle) {
-        this.addCriteria(
-          RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: TITLE_REUSE, value: formData.reuseRuleTitle.trim() },
-          formData.reuseRuleTitle.trim(),
-          true,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-          SearchCriteriaTypeEnum.REUSE_RULE,
-        );
-        return true;
-      }
+    if (formData.reuseRuleIdentifier) {
+      this.addCriteria(
+        RULE_IDENTIFIER + RULE_TYPE_SUFFIX,
+        { id: ID_REUSE, value: formData.reuseRuleIdentifier },
+        formData.reuseRuleIdentifier,
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING,
+        SearchCriteriaTypeEnum.REUSE_RULE,
+      );
+      this.resetReuseRuleCriteriaForm();
+      return true;
     } else {
       return false;
     }
@@ -348,7 +336,6 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
 
     this.previousReuseCriteriaValue = {
       reuseRuleIdentifier: '',
-      reuseRuleTitle: '',
       reuseRuleStartDate: '',
       reuseRuleEndDate: '',
       reuseRuleOriginInheriteAtLeastOne: true,
@@ -356,6 +343,20 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
       reuseRuleOriginHasNoOne: false,
       reuseRuleOriginWaitingRecalculate: this.hasWaitingToRecalculateCriteria,
     };
+
+    this.rules
+      .pipe(
+        map((rules) => rules.filter((rule) => rule.ruleType === 'ReuseRule')),
+        map(
+          (rules): VitamuiSelectOptions => ({
+            options: rules.map((rule) => ({
+              key: rule.ruleId,
+              label: `${rule.ruleId} - ${rule.ruleValue}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.reuseRuleOptions = options));
 
     this.archiveExchangeDataService.searchCriteria$
       .pipe(
@@ -419,9 +420,6 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
 
   get reuseRuleIdentifier() {
     return this.reuseRuleCriteriaForm.controls.reuseRuleIdentifier;
-  }
-  get reuseRuleTitle() {
-    return this.reuseRuleCriteriaForm.controls.reuseRuleTitle;
   }
   get reuseRuleStartDate() {
     return this.reuseRuleCriteriaForm.controls.reuseRuleStartDate;
