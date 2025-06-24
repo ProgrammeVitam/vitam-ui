@@ -286,7 +286,6 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     } else {
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys.includes(option.key));
     }
-    setTimeout(() => this.matSelect?._onBlur()); // Required to prevent the label to keep floating when resetting the value or to make the label float if a value is selected
     this.updateCheckboxes();
     this.updateSelectAll();
 
@@ -397,6 +396,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.control.reset = (value?: any, options?: any) => {
       this.updateSelectedOptionsFromValue(value);
       previousReset.bind(this.control)(value, options);
+      this.matSelect._onBlur(); // Required to prevent the label to keep floating when resetting the value
     };
   }
 

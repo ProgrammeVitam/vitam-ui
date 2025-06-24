@@ -4,7 +4,7 @@
   [title]="['ARCHIVE_SEARCH.DIP.DIP_CONTEXT' | translate, 'ARCHIVE_SEARCH.DIP.DIP_PARAMS' | translate]"
 ></vitamui-dialog-header>
 
-<div class="text medium light">
+<div class="text medium mb-4">
   <ng-container *ngIf="selectedItemCountKnown && itemSelected > 1"
     >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
   </ng-container>
@@ -19,7 +19,7 @@
 <vitamui-common-stepper #stepper>
   <cdk-step>
     <form [formGroup]="formGroups[0]">
-      <mat-dialog-content class="gap-3 align-items-stretch">
+      <mat-dialog-content class="gap-4 align-items-stretch">
         <vitamui-common-input
           formControlName="messageRequestIdentifier"
           minlength="2"
@@ -44,17 +44,12 @@
           </vitamui-common-input-error>
         </vitamui-common-input>
 
-        <vitamui-common-input
+        <vitamui-select
           formControlName="archivalAgencyIdentifier"
-          minlength="2"
-          maxlength="300"
-          required
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate }}"
-        >
-          <vitamui-common-input-error *ngIf="archivalAgencyIdentifier.touched && archivalAgencyIdentifier.hasError('required')"
-            >{{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+          [options]="agencyOptions"
+          [placeholder]="'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY_PLACEHOLDER' | translate"
+          [searchBarPlaceHolder]="'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY_SEARCHBAR_PLACEHOLDER' | translate"
+        ></vitamui-select>
 
         <vitamui-common-input
           [required]="false"
@@ -64,13 +59,12 @@
         >
         </vitamui-common-input>
 
-        <vitamui-common-input
-          [required]="false"
+        <vitamui-select
           formControlName="submissionAgencyIdentifier"
-          maxlength="100"
-          placeholder="{{ 'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID' | translate }}"
-        >
-        </vitamui-common-input>
+          [options]="agencyOptions"
+          [placeholder]="'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID_PLACEHOLDER' | translate"
+          [searchBarPlaceHolder]="'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID_SEARCHBAR_PLACEHOLDER' | translate"
+        ></vitamui-select>
 
         <vitamui-common-input
           [required]="false"
