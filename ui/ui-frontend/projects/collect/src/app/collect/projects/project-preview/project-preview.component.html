@@ -298,9 +298,24 @@
         label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONFIGURATION' | translate }}"
       >
         <vitamui-common-data
+          class="mb-2"
           [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.AUTO_INGEST' | translate"
           [value]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.' + (selectedProject.automaticIngest ? 'ENABLED' : 'DISABLED') | translate"
         ></vitamui-common-data>
+
+        <div class="d-flex align-items-center justify-content-between">
+          <vitamui-common-data
+            [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.JSLT_CONFIGURATION_METADATA_TRANSFORM' | translate"
+            [value]="
+              selectedProject.transformationRules
+                ? ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.TRANSFORMATION_RULES_FILE' | translate)
+                : ' '
+            "
+          ></vitamui-common-data>
+          <button class="btn btn-circle primary medium" [disabled]="!project.transformationRules" (click)="downloadJSLT()">
+            <i class="vitamui-icon vitamui-icon-telecharger"></i>
+          </button>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </form>

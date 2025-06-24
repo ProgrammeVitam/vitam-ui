@@ -94,7 +94,7 @@
       "RULES_TITLE": "Paramétrer les règles de rattachement",
       "RULES_PARAMS_ADD": "Ajouter un rattachement",
       "UPLOAD_FILES": "Téléchargement des fichiers",
-      "UPLOAD_CONF_FILES": "Chargement d'un fichier de configuration de pose automatique de métadonnées",
+      "UPLOAD_CONF_FILES": "Chargement de la configuration JSLT de transformation des métadonnées",
       "PROJECT_CREATED": "Le projet de versement a été créé",
       "RULE_PARAMETER_PREFIX": "Rattachement ",
       "REMOVE_PARAM": "Supprimer ce rattachement",

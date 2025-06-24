@@ -55,6 +55,7 @@ import {
   Transaction,
   TransactionStatus,
   Workflow,
+  download,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
@@ -79,6 +80,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   form: FormGroup;
 
   project: Project;
+  jsltFilename = 'TransformationRules.jslt';
 
   acquisitionInformationsList: string[];
   legalStatusList: Option[] = [];
@@ -259,6 +261,11 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     transaction.legalStatus = this.project.legalStatus;
     transaction.comment = this.project.comment;
     transaction.acquisitionInformation = this.project.acquisitionInformation;
+  }
+
+  downloadJSLT() {
+    const blob = new Blob([this.project.transformationRules], { type: 'octet/stream' });
+    download(blob, this.jsltFilename);
   }
 
   onConfirm() {
