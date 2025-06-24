@@ -1,0 +1,8 @@
+---
+
+- name: Check consul_encrypt variable
+  assert:
+    fail_msg: "ERROR: You must generate a dedicated consul_encrypt key for production environments ! Please use the script: ./pki/scripts/generate_consul_key.sh to generate a proper key."
+    success_msg: "consul_encrypt key is properly updated !"
+    that: consul_encrypt != 'Biz14ohqN4HtvZmrXp3N4A=='
+  ignore_errors: "{{ true if deployment_mode | default('prod') == 'dev' else false }}"
