@@ -102,6 +102,7 @@ import org.springframework.core.Ordered;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.validation.constraints.NotNull;
 import java.util.EnumSet;
 
 /**
@@ -186,7 +187,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Autowired
     private PasswordConfiguration passwordConfiguration;
 
-    @Value("${token.api.cas}")
+    @Value("${cas.secret.token}")
+    @NotNull
     private String tokenApiCas;
 
     @Value("${ip.header}")
