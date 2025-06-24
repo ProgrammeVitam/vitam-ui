@@ -1,0 +1,37 @@
+---
+
+- name: Check if mongo_express is enabled on any host in the group
+  set_fact:
+    mongo_express_enabled_on_a_host: >-
+      {{
+        groups['hosts_vitamui_mongod'] | map('extract', hostvars, 'mongo_express_enabled') |
+        select('defined') |
+        map('bool') |
+        select('equalto', true) |
+        list |
+        length > 0
+      }}
+
+- name: Check mongo_express configuration
+  fail:
+    msg: "mongo_express should not be deployed in production without, at least, a dedicated user/password and readonly mode."
+  when: >
+    mongo_express_enabled_on_a_host
+    and (
+      mongo_express.basicauth.username == ''
+      or mongo_express.basicauth.password == ''
+      or mongo_express.readonly | default(true) | bool == false
+    )
+  ignore_errors: "{{ true if deployment_mode | default('prod') == 'dev' else false }}"
+
+- name: Fail if mongo_express.basicauth.password is not properly updated for production deployment
+  fail:
+    msg: "mongo_express.basicauth.password is not secured for production deployement."
+  when: >
+    mongo_express_enabled_on_a_host
+    and (
+      mongo_express.basicauth.password is search('^changeit')
+      or mongo_express.basicauth.password is search('1234$')
+    )
+  ignore_errors: "{{ true if deployment_mode | default('prod') == 'dev' else false }}"
+  no_log: "{{ hide_passwords_during_deploy }}"
