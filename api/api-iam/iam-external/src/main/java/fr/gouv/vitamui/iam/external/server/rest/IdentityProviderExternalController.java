@@ -237,7 +237,9 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @PatchMapping(value = "/{id}/keystore")
     @ApiOperation(value = "Update keystore provider")
     @ResponseStatus(HttpStatus.OK)
-    @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
+    @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
+    @ApiIgnore
+    // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
     public IdentityProviderDto patchProviderKeystore(
         final @RequestPart("keystore") MultipartFile keystore,
         final @RequestPart("provider") String provider,
@@ -261,7 +263,9 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @PatchMapping(value = "/{id}/idpMetadata")
     @ApiOperation(value = "Update idpMetadata provider")
     @ResponseStatus(HttpStatus.OK)
-    @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
+    @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
+    @ApiIgnore
+    // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
     public IdentityProviderDto patchProviderIdpMetadata(
         final @RequestPart("idpMetadata") MultipartFile idpMetadata,
         final @RequestPart("provider") String provider,
