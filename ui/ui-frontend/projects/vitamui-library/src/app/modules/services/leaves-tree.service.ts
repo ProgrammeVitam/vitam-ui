@@ -110,7 +110,6 @@ export class LeavesTreeService {
       map((pagedResult) => {
         this.addVirtualUnits(parentNode, pagedResult);
         const newUnits = this.reattachVirtualUnits(pagedResult);
-        console.log('newUnits : ', newUnits)
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
@@ -123,7 +122,6 @@ export class LeavesTreeService {
       map((pagedResult) => {
         this.addVirtualUnits(parentNode, pagedResult);
         const newUnits = this.reattachVirtualUnits(pagedResult);
-        console.log('newUnits : ', newUnits)
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
         const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
@@ -138,7 +136,6 @@ export class LeavesTreeService {
       map((pagedResult) => {
         this.addVirtualUnits(parentNode, pagedResult);
         const newUnits = this.reattachVirtualUnits(pagedResult);
-        console.log('newUnits : ', newUnits)
         this.extractAndAddNewFacets(pagedResult);
         const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
@@ -188,8 +185,8 @@ export class LeavesTreeService {
   }
 
   private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult): void {
-    const realParentId = parentNode.unitType === 'VIRTUAL' ? parentNode.realParentId : parentNode.id;
     if (pagedResult.results.length === 0) return;
+    const realParentId = parentNode.unitType === 'VIRTUAL' ? parentNode.realParentId : parentNode.id;
     const vupsList = pagedResult.results
       .filter(unit => {
         return unit['#unitups']?.includes(realParentId) && this.hasVirtualAttachement(unit);
