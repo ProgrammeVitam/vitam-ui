@@ -37,7 +37,7 @@
 import { isEmpty } from 'lodash-es';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {FilingHoldingSchemeHandler, FilingHoldingSchemeNode, Unit} from '../models';
+import {FilingHoldingSchemeHandler, FilingHoldingSchemeNode, Unit, UnitType} from '../models';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
 import { FacetsUtils } from '../models/criteria/search-criteria.utils';
 import { LeavesTreeApiService } from './leaves-tree-api.service';
@@ -213,14 +213,15 @@ export class LeavesTreeService {
 
       const unitUps = parentPath ? [pathToUnitIdMap.get(parentPath)!] : [realParentId];
 
+      const opi = pagedResult.results[0]['#opi'];
       const virtualUnit: Unit = {
-        ...this.getVirtualUnitTemplate(),
         '#id': path,
         Title: title,
         '#unitups': unitUps,
         realParentId,
         '#allunitups': [...unitUps, realParentId],
-        '#unitType': 'VIRTUAL',
+        '#unitType': UnitType.VIRTUAL,
+        '#opi': opi
       };
 
       pagedResult.results.push(virtualUnit);
@@ -245,14 +246,6 @@ export class LeavesTreeService {
       const bIsVirtual = b['#unitType'] === 'VIRTUAL' ? 1 : 0;
       return aIsVirtual - bIsVirtual; // VIRTUAL à la fin
     });
-  }
-
-  private  getVirtualUnitTemplate(): any {
-    return {
-      '#tenant': 1,
-      '#unitups': [],
-      '#allunitups': [],
-    };
   }
 
   private hasVirtualAttachement(unit: Unit) {
