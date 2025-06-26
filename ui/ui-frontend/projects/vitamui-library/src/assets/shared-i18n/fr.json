@@ -3507,7 +3507,17 @@
     "STP_FINALIZE_TRACEABILITY_LINKED_CHECKS.STARTED": "Succès du début du processus de la finalisation de la vérification des journaux sécurisés",
     "STP_FINALIZE_TRACEABILITY_LINKED_CHECKS": "Succès du processus de la finalisation de la vérification des journaux sécurisés",
     "TRACEABILITY_FINALIZATION": "Succès de la finalisation de la vérification des journaux sécurisés",
-    "LINKED_CHECK_SECURISATION": "Succès d'audit de la vérification des journaux sécurisés"
+    "LINKED_CHECK_SECURISATION": "Succès d'audit de la vérification des journaux sécurisés",
+    "PRESERVATION_CHECK_RESOURCE_AVAILABILITY": "Vérification de la disponibilité des objets binaires sur l'offre de stockage",
+    "PRESERVATION_UNIT_METADATA_SECURITY_CHECKS": "Vérification de la sécurité des unités archivistiques",
+    "PRESERVATION_TESSERACT_SPLIT_TEXT_CONTENT": "Découpage des métadonnées",
+    "PRESERVATION_EXTRACTION_AU": "Extraction des métadonnées descriptives",
+    "STP_PRESERVATION_PREPARATION_INSERTION_AU_METADATA.STARTED": "Début du processus de préparation de l'insertion des métadonnées",
+    "STP_PRESERVATION_PREPARATION_INSERTION_AU_METADATA": "Processus de préparation de l'insertion des métadonnées",
+    "PRESERVATION_PREPARATION_INSERTION_AU_METADATA": "Préparation de l'insertion des unités archivistiques",
+    "STP_PRESERVATION_INSERTION_AU_METADATA.STARTED": "Début du processus de l'insertion des métadonnées",
+    "STP_PRESERVATION_INSERTION_AU_METADATA": "Processus de l'insertion des métadonnées",
+    "PRESERVATION_INSERTION_AU_METADATA": "Indexation des métadonnées des unités archivistiques"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer cette opération.",
