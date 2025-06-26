@@ -3507,7 +3507,17 @@
     "STP_FINALIZE_TRACEABILITY_LINKED_CHECKS.STARTED": "Successfully started the process of finalizing the secure log verification",
     "STP_FINALIZE_TRACEABILITY_LINKED_CHECKS": "Successfully completed the process of finalizing the secure log verification",
     "TRACEABILITY_FINALIZATION": "Successfully finalized the secure log verification",
-    "LINKED_CHECK_SECURISATION": "Successfully audited the secure log verification"
+    "LINKED_CHECK_SECURISATION": "Successfully audited the secure log verification",
+    "PRESERVATION_CHECK_RESOURCE_AVAILABILITY": "Check the availability of binary objects on the storage offer",
+    "PRESERVATION_UNIT_METADATA_SECURITY_CHECKS": "Check the security of archival units",
+    "PRESERVATION_TESSERACT_SPLIT_TEXT_CONTENT": "Split metadata",
+    "PRESERVATION_EXTRACTION_AU": "Extract descriptive metadata",
+    "STP_PRESERVATION_PREPARATION_INSERTION_AU_METADATA.STARTED": "Start of the process of preparing the insertion of metadata",
+    "STP_PRESERVATION_PREPARATION_INSERTION_AU_METADATA": "Process of preparing the insertion of metadata",
+    "PRESERVATION_PREPARATION_INSERTION_AU_METADATA": "Preparation of the insertion of archival units",
+    "STP_PRESERVATION_INSERTION_AU_METADATA.STARTED": "Start of the process of inserting metadata",
+    "STP_PRESERVATION_INSERTION_AU_METADATA": "Process of inserting metadata",
+    "PRESERVATION_INSERTION_AU_METADATA": "Indexation of archival units metadata"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
