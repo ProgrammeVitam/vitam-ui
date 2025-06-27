@@ -9,16 +9,18 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'ACCESSION_REGISTER.ACCESSION_REGISTER' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
-      <search-bar-with-sibling-button
-        buttonLabel="{{ 'ACCESSION_REGISTER.SEARCH_BAR_BUTTON_LABEL' | translate }}"
-        placeholder="{{ 'ACCESSION_REGISTER.SEARCH_BAR_PLACEHOLDER' | translate }}"
+      </vitamui-title-breadcrumb>
+
+      <vitamui-banner
+        [searchbarPlaceholder]="'ACCESSION_REGISTER.SEARCH_BAR_PLACEHOLDER' | translate"
         (search)="onSearchSubmit()"
         (searchChanged)="onSearchTextChanged($event)"
-        (clear)="onSearchTextChanged($event)"
       >
+        <button class="btn primary ml-5" (click)="onSearchSubmit()">
+          <span>{{ 'ACCESSION_REGISTER.SEARCH_BAR_BUTTON_LABEL' | translate }}</span>
+        </button>
         <div class="d-flex div-btn-delete ml-3">
           <button
             (click)="resetAdvancedSearch()"
@@ -32,7 +34,7 @@
             'ACCESSION_REGISTER.ADVANCED_SEARCH_FILTERS_ACTIVATED' | translate
           }}</strong>
         </div>
-      </search-bar-with-sibling-button>
+      </vitamui-banner>
 
       <app-accession-register-advanced-search
         [ngClass]="{ 'hide-panel': (advancedSearchPanelOpenState$ | async) !== true }"

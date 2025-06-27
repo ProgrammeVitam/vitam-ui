@@ -37,14 +37,14 @@
 import { Component, Input } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NgIf } from '@angular/common';
-import { CommonProgressBarModule } from '../../../../app/modules/components/common-progress-bar/common-progress-bar.module';
 import { CdkStepper } from '@angular/cdk/stepper';
+import { CommonProgressBarComponent } from '../../../../app/modules/components/common-progress-bar/common-progress-bar.component';
 
 @Component({
   selector: 'vitamui-dialog-header',
   templateUrl: './dialog-header.component.html',
   styleUrl: './dialog-header.component.scss',
-  imports: [MatDialogModule, NgIf, CommonProgressBarModule],
+  imports: [MatDialogModule, NgIf, CommonProgressBarComponent],
 })
 export class DialogHeaderComponent {
   @Input() stepper?: CdkStepper;

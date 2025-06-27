@@ -1,0 +1,25 @@
+@use '../../../../sass/mixins/elevation' as elevation;
+
+:host::ng-deep {
+  .btn-circle {
+    &.small {
+      width: 24px;
+      height: 24px;
+
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+button {
+  position: relative;
+  left: -2rem;
+  @include elevation.shadow-0;
+}
+
+vitamui-breadcrumb {
+  position: relative;
+  left: -1rem;
+}

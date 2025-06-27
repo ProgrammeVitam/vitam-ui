@@ -45,11 +45,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../../pipes/pipes.module';
-import { SearchBarModule } from '../../search-bar/search-bar.module';
 import { ItemSelectModule } from '../item-select/item-select.module';
 import { MenuApplicationTileComponent } from './menu-application-tile/menu-application-tile.component';
 import { MenuOverlayService } from './menu-overlay.service';
 import { MenuComponent } from './menu.component';
+import { SearchBarComponent } from '../../search-bar/search-bar.component';
 
 @NgModule({
   declarations: [MenuComponent, MenuApplicationTileComponent],
@@ -62,7 +62,7 @@ import { MenuComponent } from './menu.component';
     MatIconModule,
     MatListModule,
     A11yModule,
-    SearchBarModule,
+    SearchBarComponent,
     PipesModule,
     TranslateModule,
     ItemSelectModule,

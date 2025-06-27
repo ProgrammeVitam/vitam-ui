@@ -5,22 +5,22 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'ONTOLOGY.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
-      <vitamui-common-banner [searchbarPlaceholder]="'ONTOLOGY.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      </vitamui-title-breadcrumb>
+      <vitamui-banner [searchbarPlaceholder]="'ONTOLOGY.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-3 mr-3" [disabled]="canCreateVocabulary === false" (click)="openCreateOntologyDialog()">
           <span>{{ 'ONTOLOGY.HOME.CREATE_VOCABULARY' | translate }}</span>
         </button>
-        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="false">
+        <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="false">
           <button mat-menu-item [disabled]="canImportSchema === false" (click)="openSchemaImportDialog()">
             {{ 'ONTOLOGY.HOME.IMPORT_SCHEMA' | translate }}
           </button>
           <button mat-menu-item [disabled]="canImportOntology === false" (click)="openOntologyImportDialog()">
             {{ 'ONTOLOGY.HOME.IMPORT_ONTOLOGY' | translate }}
           </button>
-        </vitamui-common-menu-button>
-      </vitamui-common-banner>
+        </vitamui-menu-button>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

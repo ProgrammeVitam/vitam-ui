@@ -1,12 +1,12 @@
 <form [formGroup]="form">
-  <vitamui-common-slide-toggle
+  <vitamui-slide-toggle
     formControlName="enabled"
     [vitamuiTooltip]="'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
     [vitamuiTooltipDisabled]="profile?.groupsCount === 0"
   >
     <span *ngIf="!form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
     <span *ngIf="form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
-  </vitamui-common-slide-toggle>
+  </vitamui-slide-toggle>
 
   <div class="row">
     <div class="col-12">

@@ -55,8 +55,8 @@ describe('LogbookOperationListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), OverlayModule],
-      declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe, TableFilterDirective],
+      imports: [TranslateModule.forRoot(), OverlayModule, TableFilterDirective],
+      declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe],
       providers: [
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },

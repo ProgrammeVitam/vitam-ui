@@ -65,16 +65,17 @@ import { mergeMap, of, Subscription } from 'rxjs';
 import { StartupService } from '../../../app/modules/startup.service';
 import { ReclassificationValidatorService } from './reclassification-validator.service';
 import { DialogHeaderComponent } from '../dialog/dialog-header/dialog-header.component';
-import { StepperModule } from '../../../app/modules/components/stepper/stepper.module';
 import { I18nPluralPipe, NgForOf, NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { BadgeComponent } from '../../../app/modules/components/badge/badge.component';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { FilingPlanModule } from '../filing-plan/filing-plan.module';
-import { VitamUISnackBarService } from '../../../app/modules/components/vitamui-snack-bar';
+import { VitamUISnackBarService } from '../../../app/modules/components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { NextStepComponent } from '../next-step/next-step.component';
 import { PreviousStepComponent } from '../previous-step/previous-step.component';
 import { InputComponent } from '../input/input.component';
+import { StepperComponent } from '../../../app/modules';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 const PULL = 'PULL';
 const REPLACE = 'REPLACE';
@@ -90,7 +91,8 @@ export enum ReclassificationToggle {
   styleUrls: ['./reclassification-dialog.component.scss'],
   imports: [
     DialogHeaderComponent,
-    StepperModule,
+    CdkStepperModule,
+    StepperComponent,
     ReactiveFormsModule,
     NgIf,
     MatProgressSpinner,

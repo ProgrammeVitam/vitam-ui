@@ -10,13 +10,13 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-slide-toggle formControlName="enabled">
+        <vitamui-slide-toggle formControlName="enabled">
           <span *ngIf="!form?.get('enabled').value">{{ 'USER.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
           <span *ngIf="form?.get('enabled').value">{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
         <div class="hgap-2 align-items-start">
           <vitamui-input class="w-50" formControlName="lastname" [placeholder]="'USER.INFORMATIONS.LASTNAME' | translate"> </vitamui-input>
@@ -66,13 +66,11 @@
           </div>
         </div>
 
-        <vitamui-common-slide-toggle formControlName="subrogeable"
-          >{{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }}
-        </vitamui-common-slide-toggle>
+        <vitamui-slide-toggle formControlName="subrogeable">{{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }} </vitamui-slide-toggle>
 
-        <vitamui-common-slide-toggle formControlName="autoProvisioningEnabled"
+        <vitamui-slide-toggle formControlName="autoProvisioningEnabled"
           >{{ 'USER.INFORMATIONS.ACTIVATE_AUTO_PROVISIONING' | translate }}
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
       </mat-dialog-content>
 
       <mat-dialog-actions>
@@ -146,7 +144,7 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-common-slide-toggle formControlName="otp">{{ 'USER.INFORMATIONS.VALIDATIONS' | translate }} </vitamui-common-slide-toggle>
+        <vitamui-slide-toggle formControlName="otp">{{ 'USER.INFORMATIONS.VALIDATIONS' | translate }} </vitamui-slide-toggle>
 
         <div class="d-flex mt-3">
           <vitamui-input
@@ -178,5 +176,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

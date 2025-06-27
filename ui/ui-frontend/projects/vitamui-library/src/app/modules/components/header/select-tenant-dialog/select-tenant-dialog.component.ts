@@ -37,7 +37,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { StartupService } from './../../../startup.service';
-import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
+import { MenuOption } from '../../../models/menu-option.interface';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';

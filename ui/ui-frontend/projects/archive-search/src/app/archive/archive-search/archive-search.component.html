@@ -14,14 +14,14 @@
       </button>
     </div>
     <div class="col-1 form-control">
-      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+      <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
         <button mat-menu-item [disabled]="!hasTransferAcknowledgmentRole" (click)="showAcknowledgmentTransferForm()">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACTION_TITLE' | translate }}
         </button>
         <button mat-menu-item (click)="goToPersistentIdentifierSearchPage()">
           {{ 'ARCHIVE_SEARCH.PERSISTENT_IDENTIFIER_SEARCH.GO_TO_PAGE' | translate }}
         </button>
-      </vitamui-common-menu-button>
+      </vitamui-menu-button>
     </div>
   </div>
   <div class="row justify-content-around">
@@ -298,7 +298,7 @@
       <button class="btn btn-circle large tertiary" [disabled]="!(totalResults > 0 && selectedItemCount > 0)">
         <i class="vitamui-icon vitamui-icon-import-csv" (click)="exportArchiveUnitsToCsvFile()"></i>
       </button>
-      <vitamui-common-menu-button menuButtonSize="medium" class="ml-2" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+      <vitamui-menu-button menuButtonSize="medium" class="ml-2" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
         <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
           {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
         </button>
@@ -359,7 +359,7 @@
         <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
           {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
         </button>
-      </vitamui-common-menu-button>
+      </vitamui-menu-button>
     </ng-container>
   </vitamui-sup-header>
 
@@ -645,55 +645,55 @@
 <ng-template #type>
   <span
     >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}
-    <vitamui-common-order-by-button
+    <vitamui-order-by-button
       orderByKey="#unitType"
       [(orderBy)]="orderBy"
       [(direction)]="direction"
       (orderChange)="emitOrderChange()"
-    ></vitamui-common-order-by-button
+    ></vitamui-order-by-button
   ></span>
 </ng-template>
 <ng-template #name_description>
   <span
     >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate }}
-    <vitamui-common-order-by-button
+    <vitamui-order-by-button
       orderByKey="Title"
       [(orderBy)]="orderBy"
       [(direction)]="direction"
       (orderChange)="emitOrderChange()"
-    ></vitamui-common-order-by-button
+    ></vitamui-order-by-button
   ></span>
 </ng-template>
 <ng-template #start_date>
   <span
     >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.START_DATE' | translate }}
-    <vitamui-common-order-by-button
+    <vitamui-order-by-button
       orderByKey="StartDate"
       [(orderBy)]="orderBy"
       [(direction)]="direction"
       (orderChange)="emitOrderChange()"
-    ></vitamui-common-order-by-button
+    ></vitamui-order-by-button
   ></span>
 </ng-template>
 <ng-template #end_date>
   <span
     >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.END_DATE' | translate }}
-    <vitamui-common-order-by-button
+    <vitamui-order-by-button
       orderByKey="EndDate"
       [(orderBy)]="orderBy"
       [(direction)]="direction"
       (orderChange)="emitOrderChange()"
-    ></vitamui-common-order-by-button
+    ></vitamui-order-by-button
   ></span>
 </ng-template>
 <ng-template #originating_agency>
   <span
     >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.SP' | translate }}
-    <vitamui-common-order-by-button
+    <vitamui-order-by-button
       orderByKey="#originating_agencies"
       [(orderBy)]="orderBy"
       [(direction)]="direction"
       (orderChange)="emitOrderChange()"
-    ></vitamui-common-order-by-button
+    ></vitamui-order-by-button
   ></span>
 </ng-template>

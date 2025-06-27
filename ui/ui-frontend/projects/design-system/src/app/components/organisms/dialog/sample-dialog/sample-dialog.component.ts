@@ -45,7 +45,7 @@ import {
   DialogHeaderComponent,
   NextStepComponent,
   PreviousStepComponent,
-  SlideToggleModule,
+  SlideToggleComponent,
   VitamUICommonModule,
 } from 'vitamui-library';
 
@@ -58,7 +58,7 @@ import {
     TranslatePipe,
     MatDialogModule,
     DialogHeaderComponent,
-    SlideToggleModule,
+    SlideToggleComponent,
     VitamUICommonModule,
     FormsModule,
     NextStepComponent,

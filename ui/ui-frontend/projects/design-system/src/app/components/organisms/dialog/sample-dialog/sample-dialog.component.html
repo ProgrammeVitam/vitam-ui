@@ -4,16 +4,14 @@
   [title]="showTitle ? (showSteps ? titles : titles[0]) : ''"
 ></vitamui-dialog-header>
 <mat-dialog-content>
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <!-- Step 1 -->
     <cdk-step>
       <div class="gap-2">
-        <vitamui-common-slide-toggle [(ngModel)]="showSteps">Toggle stepper</vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle [(ngModel)]="showSubhead">Toggle subhead</vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle [(ngModel)]="showTitle">Toggle title</vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle [ngModel]="smallDialog" (ngModelChange)="toggleSmall($event)"
-          >Small dialog</vitamui-common-slide-toggle
-        >
+        <vitamui-slide-toggle [(ngModel)]="showSteps">Toggle stepper</vitamui-slide-toggle>
+        <vitamui-slide-toggle [(ngModel)]="showSubhead">Toggle subhead</vitamui-slide-toggle>
+        <vitamui-slide-toggle [(ngModel)]="showTitle">Toggle title</vitamui-slide-toggle>
+        <vitamui-slide-toggle [ngModel]="smallDialog" (ngModelChange)="toggleSmall($event)">Small dialog</vitamui-slide-toggle>
       </div>
     </cdk-step>
 
@@ -58,7 +56,7 @@
         </div>
       </vitamui-dialog-content-with-state>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </mat-dialog-content>
 <mat-dialog-actions>
   <div>

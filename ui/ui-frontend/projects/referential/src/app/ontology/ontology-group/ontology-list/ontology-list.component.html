@@ -6,24 +6,24 @@
         <th>
           <span>
             {{ 'ONTOLOGY.HOME.ARRAY.NAME' | translate }}
-            <vitamui-common-order-by-button
+            <vitamui-order-by-button
               [orderByKey]="shortName"
               [(direction)]="direction"
               [(orderBy)]="orderBy"
               (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
+            ></vitamui-order-by-button>
           </span>
         </th>
         <!-- COL 2: IDENTIFIANT -->
         <th>
           <span>
             {{ 'ONTOLOGY.HOME.ARRAY.IDENTIFIER' | translate }}
-            <vitamui-common-order-by-button
+            <vitamui-order-by-button
               [orderByKey]="identifier"
               [(direction)]="direction"
               [(orderBy)]="orderBy"
               (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
+            ></vitamui-order-by-button>
           </span>
         </th>
         <!-- COL 3: DESCRIPTION -->
@@ -34,12 +34,12 @@
         <th>
           <span class="no-wrap">
             {{ 'ONTOLOGY.HOME.ARRAY.CREATION_DATE' | translate }}
-            <vitamui-common-order-by-button
+            <vitamui-order-by-button
               [orderByKey]="creationDate"
               [(direction)]="direction"
               [(orderBy)]="orderBy"
               (orderChange)="emitOrderChange()"
-            ></vitamui-common-order-by-button>
+            ></vitamui-order-by-button>
           </span>
         </th>
         <!-- COL 5: HIDDEN DELETE BUTTON -->

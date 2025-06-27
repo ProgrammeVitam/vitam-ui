@@ -15,12 +15,12 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-slide-toggle [formControl]="statusControl"
+        <vitamui-slide-toggle [formControl]="statusControl"
           >{{ 'INGEST_CONTRACT.CREATE_DIALOG.INGEST_CONTRACT_ACTIVE' | translate }}
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
         <div class="d-flex" *ngIf="isSlaveMode">
           <vitamui-input
@@ -82,14 +82,14 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-common-slide-toggle class="d-block" formControlName="everyFormatType">
+        <vitamui-slide-toggle class="d-block" formControlName="everyFormatType">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.EVERY_FORMAT_TYPES' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
             vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_EVERY_FORMAT_TYPES' | translate }}"
             vitamuiTooltipPosition="TOP"
           ></i>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
         <div class="d-flex mb-5" *ngIf="form?.controls.everyFormatType?.value === false">
           <vitamui-select
@@ -109,13 +109,13 @@
           </div>
         </div>
 
-        <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized">
+        <vitamui-slide-toggle formControlName="formatUnidentifiedAuthorized">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
             vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS_DESCRIPTION' | translate }}"
           ></i>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
       </mat-dialog-content>
 
       <mat-dialog-actions>
@@ -129,21 +129,21 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-common-slide-toggle class="d-block" formControlName="binaryObjectMandatory">
+        <vitamui-slide-toggle class="d-block" formControlName="binaryObjectMandatory">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.BINARY_OBJECT_MANDATORY' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
             vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.BINARY_OBJECT_MANDATORY_TOOLTIP' | translate }}"
           ></i>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
-        <vitamui-common-slide-toggle class="d-block" formControlName="everyDataObjectVersion">
+        <vitamui-slide-toggle class="d-block" formControlName="everyDataObjectVersion">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALL_USAGES_ALLOWED' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
             vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALL_USAGES_ALLOWED_TOOLTIP' | translate }}"
           ></i>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
         <div class="d-flex" *ngIf="form?.controls.everyDataObjectVersion?.value === false">
           <vitamui-select
@@ -171,13 +171,13 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-common-slide-toggle class="d-block" formControlName="computeInheritedRulesAtIngest">
+        <vitamui-slide-toggle class="d-block" formControlName="computeInheritedRulesAtIngest">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.COMPUTING_INHERITED_RULES' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
             vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.COMPUTING_INHERITED_RULES_TOOLIP' | translate }}"
           ></i>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
       </mat-dialog-content>
 
       <mat-dialog-actions>
@@ -341,5 +341,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

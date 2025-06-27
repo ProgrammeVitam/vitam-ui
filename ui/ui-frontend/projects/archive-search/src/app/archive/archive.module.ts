@@ -53,7 +53,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { AgenciesModule, TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { AgenciesModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -123,7 +123,6 @@ import { MatTableModule } from '@angular/material/table';
     MatTreeModule,
     ReactiveFormsModule,
     SharedModule,
-    TableFilterModule,
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,

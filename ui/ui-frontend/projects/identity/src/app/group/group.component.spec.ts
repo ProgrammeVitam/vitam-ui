@@ -38,7 +38,7 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBarService } from 'vitamui-library';
+import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarComponent, VitamUISnackBarService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -101,7 +101,7 @@ describe('GroupComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
         InjectorModule,
-        SearchBarModule,
+        SearchBarComponent,
         LoggerModule.forRoot(),
         MatSnackBarModule,
       ],

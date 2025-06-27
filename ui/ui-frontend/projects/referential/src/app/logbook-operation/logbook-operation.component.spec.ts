@@ -41,15 +41,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import {
-  ENVIRONMENT,
-  GlobalEventService,
-  InjectorModule,
-  LoggerModule,
-  MultipleOptionsDatepickerModule,
-  SearchBarComponent,
-  SearchBarModule,
-} from 'vitamui-library';
+import { DatepickerComponent, ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
@@ -70,12 +62,12 @@ describe('LogbookOperationComponent', () => {
         LoggerModule.forRoot(),
         MatMenuModule,
         MatMomentDateModule,
-        MultipleOptionsDatepickerModule,
+        DatepickerComponent,
         ReactiveFormsModule,
-        SearchBarModule,
+        SearchBarComponent,
         TranslateModule.forRoot(),
       ],
-      declarations: [LogbookOperationComponent, SearchBarComponent],
+      declarations: [LogbookOperationComponent],
       providers: [
         DatePipe,
         { provide: MatDialog, useValue: matDialogSpy },

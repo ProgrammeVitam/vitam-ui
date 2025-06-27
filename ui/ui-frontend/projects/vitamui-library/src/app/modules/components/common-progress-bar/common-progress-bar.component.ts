@@ -35,6 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslateModule } from '@ngx-translate/core';
 
 const PROGRESS_BAR_MULTIPLIER = 100;
 
@@ -42,7 +45,7 @@ const PROGRESS_BAR_MULTIPLIER = 100;
   selector: 'vitamui-common-progress-bar',
   templateUrl: './common-progress-bar.component.html',
   styleUrls: ['./common-progress-bar.component.scss'],
-  standalone: false,
+  imports: [CommonModule, MatProgressBarModule, TranslateModule],
 })
 export class CommonProgressBarComponent {
   @Input() hideCounter = false;

@@ -40,6 +40,5 @@ import { Component } from '@angular/core';
   selector: 'vitamui-sup-header',
   templateUrl: './vitamui-sup-header.component.html',
   styleUrl: './vitamui-sup-header.component.scss',
-  standalone: false,
 })
 export class VitamuiSupHeaderComponent {}

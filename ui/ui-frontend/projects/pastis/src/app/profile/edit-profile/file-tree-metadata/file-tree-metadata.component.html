@@ -46,7 +46,7 @@
       </div>
     </div>
     <div class="button-filter">
-      <vitamui-common-banner
+      <vitamui-banner
         (search)="applyFilterTier($event)"
         [searchbarPlaceholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SEARCH_PLACEHOLDER' | translate"
       >
@@ -59,7 +59,7 @@
         >
           {{ resolveButtonLabel(clickedNode) }}
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <!--Metatada table container-->

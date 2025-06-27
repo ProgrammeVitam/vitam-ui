@@ -5,22 +5,22 @@
 
       <div class="col-6 d-flex align-items-center justify-content-between">
         <div>{{ 'SECURITY_PROFILE_APP.HOME.ARRAY.IDENTIFIER' | translate }}</div>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Identifier"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-5 d-flex align-items-center justify-content-between">
         <div>{{ 'SECURITY_PROFILE_APP.HOME.ARRAY.NAME' | translate }}</div>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Name"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
     </div>
 

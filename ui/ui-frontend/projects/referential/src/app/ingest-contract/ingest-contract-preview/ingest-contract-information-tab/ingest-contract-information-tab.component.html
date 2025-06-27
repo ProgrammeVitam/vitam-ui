@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="gap-5">
   <div class="gap-3 align-items-stretch w-100">
-    <vitamui-common-slide-toggle [disabled]="isReadOnly" [formControl]="statusControl" class="w-100">
+    <vitamui-slide-toggle [disabled]="isReadOnly" [formControl]="statusControl" class="w-100">
       <span>{{ 'INGEST_CONTRACT.TAB.INFORMATION.' + (statusControl.value ? 'ACTIVE_CONTRACT' : 'INACTIVE_CONTRACT') | translate }}</span>
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
 
     <vitamui-input
       formControlName="name"

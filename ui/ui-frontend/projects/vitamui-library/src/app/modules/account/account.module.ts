@@ -43,12 +43,12 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { EditableFieldModule } from '../components/editable-field/editable-field.module';
 import { UserPhotoModule } from '../components/header/user-photo/user-photo.module';
-import { SlideToggleModule } from '../components/slide-toggle/slide-toggle.module';
-import { VitamuiContentBreadcrumbModule } from '../components/vitamui-content-breadcrumb/vitamui-content-breadcrumb.module';
-import { VitamUIFieldErrorModule } from '../components/vitamui-field-error/vitamui-field-error.module';
 import { AccountApplicationTabComponent } from './account-application-tab/account-application-tab.component';
 import { AccountInformationTabComponent } from './account-information-tab/account-information-tab.component';
 import { AccountComponent } from './account.component';
+import { SlideToggleComponent } from '../../../lib/components/slide-toggle/slide-toggle.component';
+import { VitamuiTitleBreadcrumbComponent } from '../components/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
+import { VitamUIFieldErrorComponent } from '../components/vitamui-field-error/vitamui-field-error.component';
 
 @NgModule({
   imports: [
@@ -56,10 +56,10 @@ import { AccountComponent } from './account.component';
     ReactiveFormsModule,
     EditableFieldModule,
     MatSlideToggleModule,
-    SlideToggleModule,
+    SlideToggleComponent,
     MatTabsModule,
-    VitamUIFieldErrorModule,
-    VitamuiContentBreadcrumbModule,
+    VitamUIFieldErrorComponent,
+    VitamuiTitleBreadcrumbComponent,
     UserPhotoModule,
     TranslateModule,
   ],

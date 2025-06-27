@@ -4,12 +4,12 @@
       <div class="col-1"></div>
       <div class="col-2 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.IDENTIFIER' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="RuleId"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
       <div class="col-2 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.TYPE' | translate }}</span>
@@ -22,21 +22,21 @@
       </div>
       <div class="col-1 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.PERIOD' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="RuleDuration"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
       <div class="col-1 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.UNIT_MEASURE' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="RuleMeasurement"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
       <div class="col-1"></div>
     </div>

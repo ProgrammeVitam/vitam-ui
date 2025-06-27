@@ -36,9 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { VitamUICommonModule } from 'vitamui-library';
-
-import { CollapseDirectiveModule, SearchBarModule } from 'vitamui-library';
+import { CollapseDirectiveModule, VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionComponent } from './group-attribution.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
@@ -47,7 +45,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, CollapseDirectiveModule, SearchBarModule, VitamUICommonModule, TranslateModule, MatDialogModule],
+  imports: [CommonModule, SharedModule, CollapseDirectiveModule, VitamUICommonModule, TranslateModule, MatDialogModule],
   declarations: [GroupAttributionComponent, GroupDetailComponent, GroupListComponent],
   exports: [GroupAttributionComponent, GroupDetailComponent, GroupListComponent],
 })

@@ -49,7 +49,7 @@ import { AlertAnalytics, AlertOption, Application, AuthUser, ThemeDataType, User
 import { Tenant } from '../../models/customer/tenant.interface';
 import { StartupService } from '../../startup.service';
 import { ThemeService } from '../../theme.service';
-import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
+import { MenuOption } from '../../models/menu-option.interface';
 import { UserAlertsService } from '../user-alerts/user-alerts.service';
 import { buildAlertLabel } from '../user-alerts/user-alerts.util';
 import { ApplicationId } from './../../application-id.enum';

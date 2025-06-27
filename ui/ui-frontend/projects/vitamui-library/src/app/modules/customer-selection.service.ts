@@ -36,7 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MenuOption } from './components/navbar/customer-menu/menu-option.interface';
+import { MenuOption } from './models/menu-option.interface';
 
 @Injectable({
   providedIn: 'root',

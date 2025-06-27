@@ -17,15 +17,15 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'CUSTOMER.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.INFORMATIONS.CODE' | translate" [disableSearchBar]="true">
+      <vitamui-banner [searchbarPlaceholder]="'CUSTOMER.INFORMATIONS.CODE' | translate" [disableSearchBar]="true">
         <button class="btn primary ml-5" (click)="openCreateCustomerDialog()">
           <span>{{ 'CUSTOMER.HOME.CREATE_TITLE' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

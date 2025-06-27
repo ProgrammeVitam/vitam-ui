@@ -43,10 +43,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
-import { AccordionModule } from '../components/accordion/accordion.module';
-import { DatepickerModule } from '../components/datepicker/datepicker.module';
-import { VitamUIListInputModule } from '../components/vitamui-list-input';
-import { VitamuiMenuButtonModule } from '../components/vitamui-menu-button/vitamui-menu-button.module';
 import { DisplayObjectService } from '../object-viewer/models';
 import { PathStrategyDisplayObjectService } from '../object-viewer/services/path-strategy-display-object.service';
 import { PipesModule } from '../pipes/pipes.module';
@@ -64,7 +60,6 @@ import { HintComponent } from '../components/hint/hint.component';
 import { EditorInputComponent } from './components/editor-input.component';
 import { EditorTextareaComponent } from './components/editor-textarea.component';
 import { EditorSelectComponent } from './components/editor-select.component';
-import { MultipleOptionsDatepickerModule } from '../components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { EditorListDateComponent } from './components/editor-list-date.component';
 import { EditObjectService } from './services/edit-object.service';
 import { PathService } from './services/path.service';
@@ -72,6 +67,9 @@ import { SchemaService } from './services/schema.service';
 import { TemplateService } from './services/template.service';
 import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-header/dialog-header.component';
 import { InputComponent } from '../../../lib/components/input/input.component';
+import { AccordionComponent } from '../components/accordion/accordion.component';
+import { DatepickerComponent } from '../components/datepicker/datepicker.component';
+import { VitamuiMenuButtonComponent } from '../components/vitamui-menu-button/vitamui-menu-button.component';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
@@ -88,10 +86,8 @@ import { InputComponent } from '../../../lib/components/input/input.component';
     PipesModule,
     FormsModule,
     ReactiveFormsModule,
-    VitamUIListInputModule,
-    AccordionModule,
-    VitamuiMenuButtonModule,
-    DatepickerModule,
+    AccordionComponent,
+    VitamuiMenuButtonComponent,
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
@@ -109,7 +105,7 @@ import { InputComponent } from '../../../lib/components/input/input.component';
     EditorTextareaComponent,
     EditorSelectComponent,
     EditorListDateComponent,
-    MultipleOptionsDatepickerModule,
+    DatepickerComponent,
     DialogHeaderComponent,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],

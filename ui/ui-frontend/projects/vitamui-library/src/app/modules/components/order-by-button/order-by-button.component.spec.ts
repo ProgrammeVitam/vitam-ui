@@ -44,7 +44,7 @@ describe('OrderByButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OrderByButtonComponent],
+      imports: [OrderByButtonComponent],
     }).compileComponents();
   });
 

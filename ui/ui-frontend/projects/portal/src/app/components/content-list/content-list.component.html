@@ -16,8 +16,8 @@
 
 <ng-template #apps let-values="values">
   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let value of values">
-    <vitamui-common-application-card [application]="value">
+    <vitamui-application-card [application]="value">
       <svg-icon src="{{ value.identifier }}" [svgStyle]="{ 'width.%': 60 }"></svg-icon>
-    </vitamui-common-application-card>
+    </vitamui-application-card>
   </div>
 </ng-template>

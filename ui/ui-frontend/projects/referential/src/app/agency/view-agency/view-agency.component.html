@@ -26,12 +26,12 @@
   -->
 
 <div class="vitamui-heading">
-  <vitamui-common-title-breadcrumb [data]="breadcrumbData">
+  <vitamui-title-breadcrumb [data]="breadcrumbData">
     <h5>{{ 'AGENCY.HOME.TITLE' | translate }}</h5>
     @if (agency) {
       <span class="sub-title">{{ agency.identifier }} - {{ agency.name }}</span>
     }
-  </vitamui-common-title-breadcrumb>
+  </vitamui-title-breadcrumb>
   <vitamui-common-object-viewer [data]="agency" [template]="agencyTemplate" mode="template-driven"></vitamui-common-object-viewer>
   <button type="button" (click)="back()" class="btn link back">
     <i class="vitamui-icon vitamui-icon-chevron-left"></i>

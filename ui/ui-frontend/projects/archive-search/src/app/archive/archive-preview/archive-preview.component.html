@@ -7,7 +7,7 @@
   [toolTipTitleDuration]="300"
   (onclose)="emitClose()"
 >
-  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+  <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button
       mat-menu-item
       [vitamuiTooltip]="!accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : ''"
@@ -17,7 +17,7 @@
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
-  </vitamui-common-menu-button>
+  </vitamui-menu-button>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">

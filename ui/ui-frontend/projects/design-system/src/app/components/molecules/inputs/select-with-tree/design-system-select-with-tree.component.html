@@ -12,10 +12,8 @@ configured:
 
 <div class="gap-2">
   <p>Toggle the options and see the result below:</p>
-  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableSearch">Display search bar</vitamui-common-slide-toggle>
-  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableDisplaySelected"
-    >Display "cart" (in multiple mode)
-  </vitamui-common-slide-toggle>
+  <vitamui-slide-toggle class="col" [(ngModel)]="enableSearch">Display search bar</vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [(ngModel)]="enableDisplaySelected">Display "cart" (in multiple mode) </vitamui-slide-toggle>
 </div>
 
 @if (schemaOptions$ | async; as schemaOptions) {

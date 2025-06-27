@@ -48,7 +48,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../shared/pipes/pipes.module';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
 import { LogbookOperationPopupComponent } from './logbook-operation-detail/logbook-operation-popup.component';
@@ -74,7 +74,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     LogbookOperationRoutingModule,
     MatMomentDateModule,
     MatSelectModule,
-    TableFilterModule,
     MatFormFieldModule,
     MatInputModule,
     PipesModule,

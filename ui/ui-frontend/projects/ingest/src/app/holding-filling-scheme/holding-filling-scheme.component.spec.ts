@@ -48,7 +48,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, SearchBarModule } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { IngestType } from '../core/common/ingest-type.enum';
@@ -87,7 +87,7 @@ describe('HoldingFilingSchemeComponent', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule,
+        SearchBarComponent,
         MatDialogModule,
       ],
       declarations: [HoldingFillingSchemeComponent, IngestListStubComponent],

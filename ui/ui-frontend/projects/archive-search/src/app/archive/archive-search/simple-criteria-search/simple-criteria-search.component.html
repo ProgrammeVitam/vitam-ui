@@ -158,11 +158,11 @@
               <vitamui-common-editable-input [label]="getCriteriaName(otherCriteria)" [formControlName]="otherCriteria.Path" class="w-100">
               </vitamui-common-editable-input>
             } @else if (['DATE'].includes(otherCriteria.Type)) {
-              <vitamui-common-datepicker
+              <vitamui-datepicker
                 [label]="getCriteriaName(otherCriteria)"
                 [formControlName]="otherCriteria.Path"
                 class="w-100"
-              ></vitamui-common-datepicker>
+              ></vitamui-datepicker>
             } @else {
               <!--FIXME: what do we do with OBJECT type?-->
             }

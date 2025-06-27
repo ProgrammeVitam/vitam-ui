@@ -2,8 +2,6 @@
 
 <h3>Date (deprecated)</h3>
 <div class="d-flex">
-  <vitamui-common-datepicker [formControl]="datePickerControl" label="Common datepicker"></vitamui-common-datepicker>
-
   <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
     <input [matDatepicker]="pickerStart" matInput placeholder="Depuis" />
     <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
@@ -68,14 +66,6 @@
         [disabled]="true"
       ></vitamui-common-editable-email-input>
     </div>
-    <div class="row m-0">
-      <div class="col-8">
-        <vitamui-common-multiple-email-input [formControl]="emails" [label]="'Editable multiple email input'">
-        </vitamui-common-multiple-email-input>
-      </div>
-      <vitamui-common-multiple-email-input [formControl]="emails" [label]="'Editable multiple email input disabled'" [disabled]="true">
-      </vitamui-common-multiple-email-input>
-    </div>
   </div>
 
   <h3>Editable patterns</h3>
@@ -83,13 +73,6 @@
     <div class="row m-0 pl-3 pr-3 mt-4">
       <app-editable-patterns [formControl]="editablePatterns" label="Editable patterns" [options]="editablePatternsOptions">
       </app-editable-patterns>
-    </div>
-  </div>
-
-  <h3>List</h3>
-  <div class="d-flex flex-column">
-    <div class="row m-0 pl-3 pr-3 mt-4">
-      <vitamui-common-list-input [formControl]="list" [placeholder]="'Multiple input'"></vitamui-common-list-input>
     </div>
   </div>
 
@@ -171,12 +154,10 @@
     <h3>Toggle</h3>
     <div class="row m-0">
       <div class="col-12 mt-4">
-        <vitamui-common-slide-toggle class="mr-3">Slide Toggle Off</vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle [checked]="false" [disabled]="true" class="mr-3"
-          >Slide Toggle Off disabled
-        </vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle [checked]="true" class="mr-3">Slide Toggle On</vitamui-common-slide-toggle>
-        <vitamui-common-slide-toggle [checked]="true" [disabled]="true" class="mr-3">Slide Toggle On disabled </vitamui-common-slide-toggle>
+        <vitamui-slide-toggle class="mr-3">Slide Toggle Off</vitamui-slide-toggle>
+        <vitamui-slide-toggle [checked]="false" [disabled]="true" class="mr-3">Slide Toggle Off disabled </vitamui-slide-toggle>
+        <vitamui-slide-toggle [checked]="true" class="mr-3">Slide Toggle On</vitamui-slide-toggle>
+        <vitamui-slide-toggle [checked]="true" [disabled]="true" class="mr-3">Slide Toggle On disabled </vitamui-slide-toggle>
       </div>
     </div>
     <h3>Toggle Group</h3>
@@ -224,20 +205,6 @@
       </div>
     </div>
 
-    <h3>Duration</h3>
-    <div class="d-flex flex-column">
-      <div class="row m-0 mt-4">
-        <div class="col-8">
-          <vitamui-common-editable-duration-input [formControl]="duration" [label]="'Editable duration input'">
-          </vitamui-common-editable-duration-input>
-        </div>
-        <vitamui-common-editable-duration-input
-          [formControl]="duration"
-          [label]="'Editable duration input disabled'"
-          [disabled]="true"
-        ></vitamui-common-editable-duration-input>
-      </div>
-    </div>
     <h3>File</h3>
     <div class="row m-0">
       <div class="col-8 mt-4">

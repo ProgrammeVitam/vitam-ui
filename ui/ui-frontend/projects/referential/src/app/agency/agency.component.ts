@@ -48,7 +48,6 @@ import {
   Role,
   SecurityService,
   SidenavPage,
-  TableFilterModule,
   VitamUICommonModule,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
@@ -79,7 +78,6 @@ import { map } from 'rxjs/operators';
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatSnackBarModule,
-    TableFilterModule,
     TranslatePipe,
     VitamUICommonModule,
   ],

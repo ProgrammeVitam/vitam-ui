@@ -45,7 +45,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { GlobalEventService, InjectorModule, LoggerModule, MultipleOptionsDatepickerModule } from 'vitamui-library';
+import { GlobalEventService, InjectorModule, LoggerModule, DatepickerComponent } from 'vitamui-library';
 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
@@ -73,7 +73,7 @@ describe('SecurisationComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
         MatSidenavModule,
-        MultipleOptionsDatepickerModule,
+        DatepickerComponent,
         NoopAnimationsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,

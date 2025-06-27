@@ -42,20 +42,20 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ContentListModule } from '../components/content-list/content-list.module';
-import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';
+import { ContentListComponent } from '../components/content-list/content-list.component';
+import { WelcomeMessageComponent } from '../components/welcome-message/welcome-message.component';
 
 @NgModule({
-  declarations: [PortalComponent],
   imports: [
     CommonModule,
+    ContentListComponent,
     MatMenuModule,
+    MatProgressSpinnerModule,
+    PortalComponent,
     ReactiveFormsModule,
     RouterModule,
-    WelcomeMessageModule,
-    ContentListModule,
-    MatProgressSpinnerModule,
+    WelcomeMessageComponent,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })

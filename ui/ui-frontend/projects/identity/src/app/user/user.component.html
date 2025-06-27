@@ -11,11 +11,11 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'APPLICATION.USERS_APP.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'USER.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-banner [searchbarPlaceholder]="'USER.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary mr-3" *ngIf="groups" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
           <span>{{ 'USER.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
@@ -23,7 +23,7 @@
         <button class="btn secondary" (click)="export()" [disabled]="exportLoading">
           <span>{{ 'USER.HOME.EXPORT' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

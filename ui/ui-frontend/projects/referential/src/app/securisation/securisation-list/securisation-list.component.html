@@ -3,12 +3,12 @@
     <div class="col-1"><i class="vitamui-icon vitamui-icon-operation"></i></div>
     <div class="col-2 d-flex align-items-center justify-content-between">
       {{ 'SECURE.HOME.ARRAY.IDENTIFIER' | translate }}
-      <vitamui-common-order-by-button
+      <vitamui-order-by-button
         orderByKey="#id"
         [(orderBy)]="orderBy"
         [(direction)]="direction"
         (orderChange)="emitOrderChange()"
-      ></vitamui-common-order-by-button>
+      ></vitamui-order-by-button>
     </div>
     <div class="col-3 d-flex align-items-center justify-content-between">
       {{ 'SECURE.HOME.ARRAY.CATEGORY' | translate }}
@@ -23,12 +23,12 @@
     </div>
     <div class="col-2 d-flex align-items-center justify-content-between">
       {{ 'SECURE.HOME.ARRAY.CREATION_DATE' | translate }}
-      <vitamui-common-order-by-button
+      <vitamui-order-by-button
         orderByKey="evDateTime"
         [(orderBy)]="orderBy"
         [(direction)]="direction"
         (orderChange)="emitOrderChange()"
-      ></vitamui-common-order-by-button>
+      ></vitamui-order-by-button>
     </div>
     <div class="col-1">{{ 'SECURE.HOME.ARRAY.STATUS' | translate }}</div>
     <div class="col-3">{{ 'SECURE.HOME.ARRAY.MESSAGE' | translate }}</div>

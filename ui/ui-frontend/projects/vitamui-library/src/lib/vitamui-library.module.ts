@@ -41,7 +41,6 @@ import { FilingPlanModule } from './components/filing-plan/filing-plan.module';
 import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
 import { VitamUIRadioGroupModule } from './components/vitamui-radio-group/vitamui-radio-group.module';
 import { VitamUIRadioModule } from './components/vitamui-radio/vitamui-radio.module';
-import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-option/vitamui-select-all-option.module';
 import { MAT_TABS_CONFIG } from '@angular/material/tabs';
 import { SelectComponent } from './components/select/select.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
@@ -60,7 +59,6 @@ import { AlertDialogComponent } from './components/dialog/alert-dialog/alert-dia
 import { DialogContentWithStateComponent } from './components/dialog/dialog-content-with-state/dialog-content-with-state.component';
 import { ErrorDialogComponent } from './components/dialog/error-dialog/error-dialog.component';
 import { TranslateWithOptionalTypeSuffixPipe } from '../app/modules/pipes/translate-with-optional-type-suffix.pipe';
-import { VitamUIInputErrorComponent } from '../app/modules/components/vitamui-input-error/vitamui-input-error.component';
 
 const components = [
   AlertDialogComponent,
@@ -81,8 +79,6 @@ const components = [
   VitamUIInputModule,
   VitamUIRadioGroupModule,
   VitamUIRadioModule,
-  VitamUISelectAllOptionModule,
-  VitamUIInputErrorComponent,
 ];
 
 @NgModule({

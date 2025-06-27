@@ -4,7 +4,7 @@
   [title]="['COLLECT.ADD_UNITS.UPLOAD_FILES_TITLE' | translate, 'COLLECT.ADD_UNITS.ATTACHMENT_POSITION_TITLE' | translate]"
 ></vitamui-dialog-header>
 
-<vitamui-common-stepper #stepper>
+<vitamui-stepper #stepper>
   <!-- stepIndex 1 : upload de fichier -->
   <cdk-step>
     <mat-dialog-content>
@@ -55,7 +55,7 @@
       <vitamui-previous-step></vitamui-previous-step>
     </mat-dialog-actions>
   </cdk-step>
-</vitamui-common-stepper>
+</vitamui-stepper>
 
 <ng-template #confirmCancelDialog>
   <vitamui-dialog-header [title]="'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate"></vitamui-dialog-header>

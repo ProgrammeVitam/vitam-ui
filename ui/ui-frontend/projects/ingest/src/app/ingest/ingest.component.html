@@ -11,10 +11,10 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'APPLICATION.INGEST_MANAGEMENT_APP.NAME' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
-      <vitamui-common-banner [searchbarPlaceholder]="'INGEST_ACTION.SEARCH' | translate" (search)="onSearchSubmit($event)">
+      </vitamui-title-breadcrumb>
+      <vitamui-banner [searchbarPlaceholder]="'INGEST_ACTION.SEARCH' | translate" (search)="onSearchSubmit($event)">
         <button
           class="btn secondary"
           (click)="refresh()"
@@ -35,12 +35,12 @@
           <span>{{ 'INGEST_ACTION.NEW_INGEST' | translate }}</span>
         </button>
 
-        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+        <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
           <button mat-menu-item (click)="openImportSipDialog(IngestType.BLANK_TEST)">
             {{ 'INGEST_ACTION.NEW_INGEST_BLANK' | translate }}
           </button>
-        </vitamui-common-menu-button>
-      </vitamui-common-banner>
+        </vitamui-menu-button>
+      </vitamui-banner>
 
       <div class="actions">
         <form [formGroup]="dateRangeFilterForm">

@@ -9,13 +9,13 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-slide-toggle formControlName="enabled">
+        <vitamui-slide-toggle formControlName="enabled">
           <span *ngIf="!form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
           <span *ngIf="form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
         <vitamui-input
           formControlName="name"
@@ -81,5 +81,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

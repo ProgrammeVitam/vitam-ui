@@ -58,12 +58,13 @@ import { DesignSystemSelectWithTreeComponent } from './components/molecules/inpu
 import { DesignSystemOldInputsComponent } from './components/molecules/inputs/old-input/design-system-old-inputs.component';
 import { DesignSystemInputComponent } from './components/molecules/inputs/input/design-system-input.component';
 import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecules/inputs/search-with-type-selector/design-system-search-with-type-selector.component';
-import { DesignSystemMultipleOptionsDatepickerComponent } from './components/molecules/inputs/multiple-options-datepicker/design-system-multiple-options-datepicker.component';
+import { DesignSystemDatepickerComponent } from './components/molecules/inputs/datepicker/design-system-datepicker.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TabGroupComponent } from './components/organisms/tab-group/tab-group.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { DialogComponent } from './components/organisms/dialog/dialog.component';
 import { SnackbarComponent } from './components/organisms/snackbar/snackbar.component';
+import { SlideToggleComponent } from './components/atoms/slide-toggle/slide-toggle.component';
 
 export interface RouteData {
   // Alternative search terms
@@ -93,6 +94,7 @@ const routes: Routes = [
       { path: 'chips', component: DesignSystemChipsComponent },
       { path: 'badges', component: DesignSystemBadgesComponent },
       { path: 'icons', component: IconsComponent },
+      { path: 'slide-toggle', component: SlideToggleComponent },
       { path: 'tooltip', component: TooltipComponent },
     ],
   },
@@ -110,7 +112,7 @@ const routes: Routes = [
           { path: 'select', component: DesignSystemSelectComponent },
           { path: 'select-with-tree', component: DesignSystemSelectWithTreeComponent },
           { path: 'checkboxes', component: DesignSystemCheckboxComponent },
-          { path: 'multiple-options-datepicker', component: DesignSystemMultipleOptionsDatepickerComponent },
+          { path: 'datepicker', component: DesignSystemDatepickerComponent },
           { path: 'search-with-type-selector', component: DesignSystemSearchWithTypeSelectorComponent },
           { path: 'old-input', component: DesignSystemOldInputsComponent },
         ],

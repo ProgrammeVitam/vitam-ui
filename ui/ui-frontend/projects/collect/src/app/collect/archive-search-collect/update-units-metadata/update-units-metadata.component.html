@@ -1,6 +1,6 @@
 <vitamui-dialog-header [stepper]="stepper" [title]="'COLLECT.UPDATE_UNITS_METADATA.ACTION_TITLE' | translate"></vitamui-dialog-header>
 
-<vitamui-common-stepper #stepper>
+<vitamui-stepper #stepper>
   <!-- Step 1 -->
   <cdk-step>
     <mat-dialog-content>
@@ -28,7 +28,7 @@
       </button>
     </mat-dialog-actions>
   </cdk-step>
-</vitamui-common-stepper>
+</vitamui-stepper>
 
 <ng-template #confirmDeleteUpdateUnitsMetadataDialog>
   <vitamui-dialog-header [title]="'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate"></vitamui-dialog-header>

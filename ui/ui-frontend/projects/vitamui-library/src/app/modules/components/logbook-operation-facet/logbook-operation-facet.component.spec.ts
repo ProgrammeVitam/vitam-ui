@@ -37,13 +37,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LogbookOperationFacetComponent } from './logbook-operation-facet.component';
 
-describe('LogbookOperationFacetteComponent', () => {
+describe('LogbookOperationFacetComponent', () => {
   let component: LogbookOperationFacetComponent;
   let fixture: ComponentFixture<LogbookOperationFacetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LogbookOperationFacetComponent],
+      imports: [LogbookOperationFacetComponent],
     }).compileComponents();
   });
 

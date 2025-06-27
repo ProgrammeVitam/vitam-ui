@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vitamui-common-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
-  standalone: false,
+  imports: [CommonModule, FormsModule],
 })
 export class SearchBarComponent implements OnChanges {
   @Input() placeholder: string;

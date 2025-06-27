@@ -47,8 +47,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { EllipsisDirectiveModule } from '../../directives/ellipsis/ellipsis.directive.module';
 import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
-import { EditableDurationInputComponent } from './editable-duration-input/editable-duration-input.component';
-import { HumanizedDurationPipe } from './editable-duration-input/humanized-duration.pipe';
 import { EditableEmailInputComponent } from './editable-email-input/editable-email-input.component';
 import { EditableFieldComponent } from './editable-field.component';
 import { EditableFileComponent } from './editable-file/editable-file.component';
@@ -58,9 +56,7 @@ import { SubLevelPipe } from './editable-level-input/sub-level.pipe';
 import { EditableTextareaComponent } from './editable-textarea/editable-textarea.component';
 import { EditableButtonToggleComponent } from './editable-toggle-group/editable-button-toggle.component';
 import { EditableToggleGroupComponent } from './editable-toggle-group/editable-toggle-group.component';
-import { EmailsInputModule } from './emails-input/emails-input.module';
 import { LevelInputModule } from './level-input/level-input.module';
-import { MultipleEmailInputComponent } from './multiple-email-input/multiple-email-input.component';
 
 @NgModule({
   imports: [
@@ -73,7 +69,6 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     MatButtonToggleModule,
     MatDialogModule,
     ConfirmDialogModule,
-    EmailsInputModule,
     LevelInputModule,
     MatInputModule,
     MatFormFieldModule,
@@ -83,15 +78,12 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
   declarations: [
     EditableFieldComponent,
     EditableButtonToggleComponent,
-    EditableDurationInputComponent,
     EditableEmailInputComponent,
     EditableFileComponent,
     EditableInputComponent,
     EditableLevelInputComponent,
     EditableTextareaComponent,
     EditableToggleGroupComponent,
-    HumanizedDurationPipe,
-    MultipleEmailInputComponent,
     SubLevelPipe,
   ],
   exports: [
@@ -103,12 +95,8 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     EditableFileComponent,
     EditableEmailInputComponent,
     EditableLevelInputComponent,
-    MultipleEmailInputComponent,
-    EditableDurationInputComponent,
-    HumanizedDurationPipe,
     SubLevelPipe,
     LevelInputModule,
-    EmailsInputModule,
   ],
 })
 export class EditableFieldModule {}

@@ -4,10 +4,10 @@
   <mat-dialog-content class="gap-3 align-items-stretch">
     <div class="d-flex justify-content-between">
       <div class="d-flex align-items-center">
-        <vitamui-common-slide-toggle formControlName="enabled">
+        <vitamui-slide-toggle formControlName="enabled">
           <span *ngIf="!form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
           <span *ngIf="form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
       </div>
 
       <div class="d-flex">

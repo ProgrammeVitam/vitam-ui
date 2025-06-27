@@ -37,13 +37,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 import { SecurisationListComponent } from './securisation-list.component';
 
 @NgModule({
   declarations: [SecurisationListComponent],
-  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule, PipesModule, TableFilterModule],
+  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule, PipesModule],
   exports: [SecurisationListComponent],
 })
 export class SecurisationListModule {}

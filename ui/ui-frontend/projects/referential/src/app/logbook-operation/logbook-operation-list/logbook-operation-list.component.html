@@ -16,11 +16,11 @@
     <div class="col-2">{{ 'LOGBOOK.HOME.ARRAY.OPERATION' | translate }}</div>
     <div class="col-1 d-flex align-items-center justify-content-between">
       <div>{{ 'LOGBOOK.HOME.ARRAY.START_DATE' | translate }}</div>
-      <vitamui-common-order-by-button
+      <vitamui-order-by-button
         orderByKey="dateTime"
         [(direction)]="orderDirection"
         (orderChange)="changeOrderByDate()"
-      ></vitamui-common-order-by-button>
+      ></vitamui-order-by-button>
     </div>
     <div class="col-1">
       <div>{{ 'LOGBOOK.HOME.ARRAY.END_DATE' | translate }}</div>

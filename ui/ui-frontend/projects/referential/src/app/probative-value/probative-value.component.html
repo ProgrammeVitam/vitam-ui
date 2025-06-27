@@ -9,30 +9,27 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'PROBATIVE_VALUE.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner
-        [searchbarPlaceholder]="'PROBATIVE_VALUE.HOME.SEARCH_PLACEHOLDER' | translate"
-        (search)="onSearchSubmit($event)"
-      >
+      <vitamui-banner [searchbarPlaceholder]="'PROBATIVE_VALUE.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary mr-3" (click)="openCreateProbativeValueDialog()">
           <span>{{ 'PROBATIVE_VALUE.HOME.GENERATE_VALUE' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
 
       <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2 hgap-3">
-        <vitamui-common-multiple-options-datepicker
+        <vitamui-datepicker
           formControlName="startDate"
           [label]="'PROBATIVE_VALUE.HOME.START_DATE' | translate"
           [max]="dateRangeFilterForm.get('endDate')?.value"
-        ></vitamui-common-multiple-options-datepicker>
-        <vitamui-common-multiple-options-datepicker
+        ></vitamui-datepicker>
+        <vitamui-datepicker
           formControlName="endDate"
           [label]="'PROBATIVE_VALUE.HOME.END_DATE' | translate"
           [min]="dateRangeFilterForm.get('startDate')?.value"
-        ></vitamui-common-multiple-options-datepicker>
+        ></vitamui-datepicker>
       </form>
     </div>
 

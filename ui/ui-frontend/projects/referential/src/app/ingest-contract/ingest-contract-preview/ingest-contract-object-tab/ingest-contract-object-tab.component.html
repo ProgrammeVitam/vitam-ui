@@ -1,11 +1,11 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-slide-toggle formControlName="masterMandatory" class="w-100 p-0">
+  <vitamui-slide-toggle formControlName="masterMandatory" class="w-100 p-0">
     <span>{{ 'INGEST_CONTRACT.TAB.OBJECTS.BINARY_MANDATORY' | translate }}</span>
-  </vitamui-common-slide-toggle>
+  </vitamui-slide-toggle>
 
-  <vitamui-common-slide-toggle formControlName="everyDataObjectVersion" class="w-100 p-0">
+  <vitamui-slide-toggle formControlName="everyDataObjectVersion" class="w-100 p-0">
     <span>{{ 'INGEST_CONTRACT.TAB.OBJECTS.ALL_USAGES' | translate }}</span>
-  </vitamui-common-slide-toggle>
+  </vitamui-slide-toggle>
 
   <div *ngIf="!form?.controls.everyDataObjectVersion?.value" class="py-3">
     <ng-container *ngIf="!form?.controls.everyDataObjectVersion?.value">

@@ -1,20 +1,114 @@
-i {
-  transform: scale(1.5);
+@use '../../../../sass/mixins/elevation' as elevation;
+
+.vitamui-input,
+.vitamui-input label {
+  cursor: text;
 }
 
-.filled {
-  .search-date-label {
-    top: 13px;
+.hidden-input {
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
+}
 
-    transition: top 150ms ease-out;
+mat-datepicker-toggle mat-icon {
+  vertical-align: unset;
+  font-size: 18px;
+  color: var(--vitamui-primary);
+}
+
+::ng-deep .mat-datepicker-content {
+  @include elevation.shadow-8dp-dark('!important');
+
+  --mat-datepicker-calendar-navigation-button-icon-color: var(--vitamui-primary);
+  --mat-datepicker-calendar-navigation-button-disabled-icon-color: red;
+
+  .mat-calendar {
+    height: fit-content !important;
+
+    .mat-calendar-header {
+      .mat-calendar-period-button {
+        font-weight: bold;
+      }
+
+      .mat-calendar-previous-button,
+      .mat-calendar-next-button {
+        color: var(--vitamui-primary);
+
+        &[disabled] {
+          color: var(--vitamui-grey);
+        }
+      }
+    }
+
+    .mat-calendar-content {
+      .mat-calendar-table {
+        tbody > tr:not(.no-hover):hover {
+          background-color: transparent;
+        }
+
+        tr {
+          th:first-child:not(.no-first-cell-padding) {
+            padding-left: 0;
+          }
+
+          td:first-child:not(.no-first-cell-padding) {
+            padding-left: 15px;
+          }
+
+          td,
+          th {
+            &:not(.no-border):before {
+              border: none;
+            }
+          }
+        }
+      }
+
+      .mat-calendar-body-cell-content:hover,
+      .mat-calendar-body-active .mat-calendar-body-cell-content {
+        background: var(--vitamui-grey-300) !important;
+      }
+
+      .mat-calendar-body-today {
+        border-color: var(--vitamui-primary);
+      }
+
+      .mat-calendar-body-selected.mat-calendar-body-today {
+        @include elevation.shadow-0;
+      }
+
+      .mat-calendar-body-selected {
+        background: var(--vitamui-primary);
+
+        &:hover {
+          color: var(--vitamui-primary);
+        }
+      }
+
+      .mat-calendar-body-active .mat-calendar-body-selected {
+        color: var(--vitamui-primary);
+      }
+    }
+  }
+}
+
+.hint-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  color: var(--vitamui-grey-700);
+  font-size: 12px;
+  padding-top: 5px;
+
+  .info i,
+  .info mat-hint {
+    color: var(--vitamui-grey-700);
   }
 
-  input {
-    position: relative;
-    top: 8px;
-    left: -2px;
-
-    transition: top left 150ms ease-out;
-    transition: left 150ms ease-out;
+  .error i,
+  .error mat-hint {
+    color: var(--vitamui-red);
   }
 }

@@ -1,12 +1,12 @@
 <form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
   <div class="gap-3 align-items-stretch w-100">
-    <vitamui-common-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
+    <vitamui-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
       {{ 'CONTEXTS_APP.TAB.INFORMATION.STATUS_TOGGLE' | translate }}
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
 
-    <vitamui-common-slide-toggle formControlName="enableControl">
+    <vitamui-slide-toggle formControlName="enableControl">
       {{ 'CONTEXTS_APP.TAB.INFORMATION.TENANT_TOGGLE' | translate }}
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
 
     <vitamui-input
       class="w-100"
@@ -26,33 +26,21 @@
       [enableSearch]="false"
     ></vitamui-select>
 
-    <vitamui-common-multiple-options-datepicker
-      class="w-100"
-      formControlName="creationDate"
-      [label]="'CONTEXTS_APP.TAB.INFORMATION.CREATION_DATE' | translate"
-    >
-    </vitamui-common-multiple-options-datepicker>
+    <vitamui-datepicker class="w-100" formControlName="creationDate" [label]="'CONTEXTS_APP.TAB.INFORMATION.CREATION_DATE' | translate">
+    </vitamui-datepicker>
 
-    <vitamui-common-multiple-options-datepicker
-      class="w-100"
-      formControlName="lastUpdate"
-      [label]="'CONTEXTS_APP.TAB.INFORMATION.LAST_UPDATE_DATE' | translate"
-    >
-    </vitamui-common-multiple-options-datepicker>
+    <vitamui-datepicker class="w-100" formControlName="lastUpdate" [label]="'CONTEXTS_APP.TAB.INFORMATION.LAST_UPDATE_DATE' | translate">
+    </vitamui-datepicker>
 
-    <vitamui-common-multiple-options-datepicker
-      class="w-100"
-      formControlName="activationDate"
-      [label]="'CONTEXTS_APP.TAB.INFORMATION.ACTIVATION_DATE' | translate"
-    >
-    </vitamui-common-multiple-options-datepicker>
+    <vitamui-datepicker class="w-100" formControlName="activationDate" [label]="'CONTEXTS_APP.TAB.INFORMATION.ACTIVATION_DATE' | translate">
+    </vitamui-datepicker>
 
-    <vitamui-common-multiple-options-datepicker
+    <vitamui-datepicker
       class="w-100"
       formControlName="deactivationDate"
       [label]="'CONTEXTS_APP.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
     >
-    </vitamui-common-multiple-options-datepicker>
+    </vitamui-datepicker>
   </div>
 
   <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submitted">

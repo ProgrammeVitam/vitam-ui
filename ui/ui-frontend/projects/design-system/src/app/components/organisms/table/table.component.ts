@@ -43,7 +43,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatTableModule } from '@angular/material/table';
-import { TableFilterModule } from 'vitamui-library';
 
 @Component({
   templateUrl: './table.component.html',
@@ -55,7 +54,6 @@ import { TableFilterModule } from 'vitamui-library';
     VitamUICommonModule,
     VitamUILibraryModule,
     MatButtonToggleModule,
-    TableFilterModule,
     TranslatePipe,
     MatDialogModule,
     MatTableModule,

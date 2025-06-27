@@ -38,7 +38,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PipesModule, TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { PipesModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -68,7 +68,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
     VitamUILibraryModule,
     ReactiveFormsModule,
     MatFormFieldModule,

@@ -16,42 +16,42 @@
             class="col-3 d-flex align-items-center"
             [vitamuiTooltip]="permission.readPermission && permission.readPermission.description"
           >
-            <vitamui-common-slide-toggle
+            <vitamui-slide-toggle
               *ngIf="permission.readPermission"
               [formControlName]="getPermissionString(permission.service, permission.readPermission, 'read')"
               [checked]="permission.readPermission.activated"
               [disabled]="forceDisabled || !permission.readPermission"
               (change)="onSubmit()"
             >
-            </vitamui-common-slide-toggle>
+            </vitamui-slide-toggle>
           </div>
 
           <div
             class="col-3 d-flex align-items-center"
             [vitamuiTooltip]="permission.writePermission && permission.writePermission.description"
           >
-            <vitamui-common-slide-toggle
+            <vitamui-slide-toggle
               *ngIf="permission.writePermission"
               [formControlName]="getPermissionString(permission.service, permission.writePermission, 'update')"
               [checked]="permission.writePermission.activated"
               [disabled]="forceDisabled || !permission.writePermission"
               (change)="onSubmit()"
             >
-            </vitamui-common-slide-toggle>
+            </vitamui-slide-toggle>
           </div>
 
           <div
             class="col-3 d-flex align-items-center"
             [vitamuiTooltip]="permission.deletePermission && permission.deletePermission.description"
           >
-            <vitamui-common-slide-toggle
+            <vitamui-slide-toggle
               *ngIf="permission.deletePermission"
               [formControlName]="getPermissionString(permission.service, permission.deletePermission, 'delete')"
               [checked]="permission.deletePermission.activated"
               [disabled]="forceDisabled || !permission.deletePermission"
               (change)="onSubmit()"
             >
-            </vitamui-common-slide-toggle>
+            </vitamui-slide-toggle>
           </div>
         </div>
       </div>

@@ -37,6 +37,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import {
+  ClickOutsideDirective,
   CommonTooltipModule,
   ItemFlatNode,
   ItemNode,
@@ -44,9 +45,8 @@ import {
   normalizeString,
   SchemaElement,
   SchemaService,
-  TableFilterModule,
   TenantSelectionService,
-  ClickOutsideDirective,
+  VitamUICommonModule,
 } from 'vitamui-library';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -64,7 +64,7 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
     CommonModule,
     MatTableModule,
     TranslatePipe,
-    TableFilterModule,
+    VitamUICommonModule,
     MatButtonToggleModule,
     MatButtonModule,
     MatProgressSpinnerModule,

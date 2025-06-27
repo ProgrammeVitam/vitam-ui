@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MultipleOptionsDatepickerModule, InputComponent } from 'vitamui-library';
+import { InputComponent } from 'vitamui-library';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'design-system-input',
-  imports: [ReactiveFormsModule, MultipleOptionsDatepickerModule, InputComponent],
+  imports: [ReactiveFormsModule, InputComponent],
   templateUrl: './design-system-input.component.html',
   styleUrl: './design-system-input.component.scss',
 })

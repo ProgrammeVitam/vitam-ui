@@ -12,7 +12,7 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-input
@@ -33,9 +33,9 @@
         </vitamui-input>
 
         <div>
-          <vitamui-common-slide-toggle formControlName="fullAccess">
+          <vitamui-slide-toggle formControlName="fullAccess">
             {{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.ACCESS' | translate }}
-          </vitamui-common-slide-toggle>
+          </vitamui-slide-toggle>
           <i
             class="vitamui-icon primary vitamui-icon-info ml-3"
             [vitamuiTooltip]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.ACCESS_TOOLTIP' | translate"
@@ -77,5 +77,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

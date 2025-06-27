@@ -37,12 +37,15 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 
 @Component({
-  selector: 'vitamui-common-drag-drop-file',
+  selector: 'vitamui-drag-drop-file',
   templateUrl: './vitamui-drag-drop-file.component.html',
   styleUrls: ['./vitamui-drag-drop-file.component.scss'],
-  standalone: false,
+  imports: [CommonModule, MatIconModule, DragAndDropDirective],
 })
 export class VitamuiDragDropFileComponent {
   private IMAGE_TYPE_PREFIX = 'image';

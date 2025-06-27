@@ -12,7 +12,7 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer">
-  <vitamui-common-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
+  <vitamui-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-input
@@ -59,7 +59,7 @@
           <label for="alerte" class="inline-label label-alerte">
             Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br />
           </label>
-          <vitamui-common-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus"></vitamui-common-slide-toggle>
+          <vitamui-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus"></vitamui-slide-toggle>
           <label for="duréealerte" class="inline-label label-alertDelay">
             Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
           </label>
@@ -245,5 +245,5 @@
     <ng-template #cancel>
       <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </ng-template>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

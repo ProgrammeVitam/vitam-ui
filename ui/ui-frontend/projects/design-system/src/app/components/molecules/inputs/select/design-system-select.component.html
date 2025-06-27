@@ -12,13 +12,9 @@ This is a form component that allows the user to select an option from a list of
 
 <div class="gap-2">
   <p>Toggle the options and see the result below:</p>
-  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableSearch">Display search bar</vitamui-common-slide-toggle>
-  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableSelectAll"
-    >Display "select all" option (in multiple mode)
-  </vitamui-common-slide-toggle>
-  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableDisplaySelected"
-    >Display "cart" (in multiple mode)
-  </vitamui-common-slide-toggle>
+  <vitamui-slide-toggle class="col" [(ngModel)]="enableSearch">Display search bar</vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [(ngModel)]="enableSelectAll">Display "select all" option (in multiple mode) </vitamui-slide-toggle>
+  <vitamui-slide-toggle class="col" [(ngModel)]="enableDisplaySelected">Display "cart" (in multiple mode) </vitamui-slide-toggle>
 </div>
 
 @if (multiSelectOptions$ | async; as multiSelectOptions) {

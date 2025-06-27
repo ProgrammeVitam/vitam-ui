@@ -13,14 +13,11 @@
 
   <mat-sidenav-content vitamuiCommonInfiniteScroll>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb *ngIf="!isStandalone">
+      <vitamui-title-breadcrumb *ngIf="!isStandalone">
         <h5>{{ 'APPLICATION.PASTIS_APP.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner
-        (search)="onSearchSubmit($event)"
-        [searchbarPlaceholder]="'PROFILE.LIST_PROFILE.SEARCH_PLACEHOLDER' | translate"
-      >
+      <vitamui-banner (search)="onSearchSubmit($event)" [searchbarPlaceholder]="'PROFILE.LIST_PROFILE.SEARCH_PLACEHOLDER' | translate">
         <button (click)="createProfile()" *ngIf="true" class="btn primary ml-5">
           <i class="vitamui-icon vitamui-icon-plus mr-3"></i>
           <span style="align-items: center; margin: auto">{{ 'PROFILE.LIST_PROFILE.CREER_NOUVEAU_PROFIL' | translate }}</span>
@@ -41,7 +38,7 @@
           />
         </button>
         <pastis-popup-option *ngIf="!isStandalone" [sedaUrl]="sedaUrl" [newProfileUrl]="newProfileUrl"></pastis-popup-option>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <!--The profile types cards container-->
@@ -102,23 +99,20 @@
                 <div *ngIf="!isStandalone">
                   {{ 'PROFILE.LIST_PROFILE.TABLE.TYPE_ETAT' | translate }}
                 </div>
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="type">
-                </vitamui-common-order-by-button>
+                <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="type"> </vitamui-order-by-button>
               </div>
               <div class="col-3 d-flex align-items-center">
                 {{ 'PROFILE.LIST_PROFILE.TABLE.IDENTIFIANT' | translate }}
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="id">
-                </vitamui-common-order-by-button>
+                <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="id"> </vitamui-order-by-button>
               </div>
               <div class="col-3 d-flex align-items-center">
                 {{ 'PROFILE.LIST_PROFILE.TABLE.INTITULE' | translate }}
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="baseName">
-                </vitamui-common-order-by-button>
+                <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="baseName"> </vitamui-order-by-button>
               </div>
               <div class="col-4 d-flex align-items-center">
                 {{ 'PROFILE.LIST_PROFILE.TABLE.DERNIERES_MODIFICATIONS' | translate }}
-                <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="lastModified">
-                </vitamui-common-order-by-button>
+                <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="lastModified">
+                </vitamui-order-by-button>
               </div>
             </div>
           </div>

@@ -37,9 +37,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { VitamUICustomerSelectComponent } from 'vitamui-library';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
 import { SubrogationResolver } from './subrogation-resolver.service';
+import { CustomerSelectComponent } from './customer-select/customer-select.component';
 
 const routes: Route[] = [
   {
@@ -49,7 +49,7 @@ const routes: Route[] = [
   },
   {
     path: 'customer',
-    component: VitamUICustomerSelectComponent,
+    component: CustomerSelectComponent,
     resolve: { customers: SubrogationResolver },
   },
   {

@@ -23,7 +23,7 @@
       [multiple]="editObject.cardinality.includes('MANY')"
       [required]="editObject.required"
     ></vitamui-editor-select>
-    <vitamui-common-multiple-options-datepicker
+    <vitamui-datepicker
       *ngSwitchCase="'datepicker'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty"
@@ -31,8 +31,8 @@
       [pickerType]="getPickerType(editObject)"
     >
       <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
-    </vitamui-common-multiple-options-datepicker>
-    <vitamui-common-multiple-options-datepicker
+    </vitamui-datepicker>
+    <vitamui-datepicker
       *ngSwitchCase="'datetime'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty"
@@ -40,6 +40,6 @@
       [pickerType]="getPickerType(editObject)"
     >
       <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
-    </vitamui-common-multiple-options-datepicker>
+    </vitamui-datepicker>
   </ng-container>
 </ng-container>

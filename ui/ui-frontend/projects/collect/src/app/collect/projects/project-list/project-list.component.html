@@ -22,56 +22,56 @@
               <!-- inttitulé -->
               <div class="row flex-nowrap">
                 <span class="no-wrap">{{ 'COLLECT.FIELD_MESSAGE_IDENTIFIER' | translate }}</span>
-                <vitamui-common-order-by-button
+                <vitamui-order-by-button
                   [orderByKey]="messageIdentifier"
                   [(direction)]="direction"
                   [(orderBy)]="column"
                   (directionChange)="changeDirection($event)"
                   (orderByChange)="changeColumn($event)"
                   (orderChange)="sortTable()"
-                ></vitamui-common-order-by-button>
+                ></vitamui-order-by-button>
               </div>
             </th>
             <th>
               <!-- service versant -->
               <div class="row flex-nowrap">
                 <span class="no-wrap">{{ 'COLLECT.FIELD_SUBMISSION_AGENCY_IDENTIFIER' | translate }}</span>
-                <vitamui-common-order-by-button
+                <vitamui-order-by-button
                   [orderByKey]="submissionAgencyIdentifier"
                   [(direction)]="direction"
                   [(orderBy)]="column"
                   (directionChange)="changeDirection($event)"
                   (orderByChange)="changeColumn($event)"
                   (orderChange)="sortTable()"
-                ></vitamui-common-order-by-button>
+                ></vitamui-order-by-button>
               </div>
             </th>
             <th>
               <!-- date de création -->
               <div class="row flex-nowrap">
                 <span class="no-wrap">{{ 'COLLECT.FIELD_CREATED_ON' | translate }}</span>
-                <vitamui-common-order-by-button
+                <vitamui-order-by-button
                   [orderByKey]="createdOn"
                   [(direction)]="direction"
                   [(orderBy)]="column"
                   (directionChange)="changeDirection($event)"
                   (orderByChange)="changeColumn($event)"
                   (orderChange)="sortTable()"
-                ></vitamui-common-order-by-button>
+                ></vitamui-order-by-button>
               </div>
             </th>
             <th>
               <!-- date de modification -->
               <div class="row flex-nowrap">
                 <span class="no-wrap">{{ 'COLLECT.FIELD_LAST_MODIFY_ON' | translate }}</span>
-                <vitamui-common-order-by-button
+                <vitamui-order-by-button
                   [orderByKey]="lastModifyOn"
                   [(direction)]="direction"
                   [(orderBy)]="column"
                   (directionChange)="changeDirection($event)"
                   (orderByChange)="changeColumn($event)"
                   (orderChange)="sortTable()"
-                ></vitamui-common-order-by-button>
+                ></vitamui-order-by-button>
               </div>
             </th>
             <th>
@@ -99,7 +99,7 @@
               <div>{{ project.lastModifyOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
             </td>
             <td>
-              <vitamui-common-menu-button
+              <vitamui-menu-button
                 [overlayPos]="'end'"
                 [icon]="'vitamui-icon-more-horiz'"
                 menuButtonSize="medium"
@@ -111,7 +111,7 @@
                 <button mat-menu-item (click)="searchTransactions(project)">
                   {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.ACTIONS.SHOW_TRANSACTIONS' | translate }}
                 </button>
-              </vitamui-common-menu-button>
+              </vitamui-menu-button>
             </td>
           </tr>
         </tbody>

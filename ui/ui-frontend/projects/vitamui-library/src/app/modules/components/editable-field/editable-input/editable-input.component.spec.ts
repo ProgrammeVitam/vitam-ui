@@ -81,8 +81,15 @@ describe('EditableInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, NoopAnimationsModule],
-      declarations: [TesthostComponent, EditableInputComponent, VitamUIFieldErrorComponent],
+      imports: [
+        FormsModule,
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        OverlayModule,
+        ReactiveFormsModule,
+        VitamUIFieldErrorComponent,
+      ],
+      declarations: [EditableInputComponent, TesthostComponent],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

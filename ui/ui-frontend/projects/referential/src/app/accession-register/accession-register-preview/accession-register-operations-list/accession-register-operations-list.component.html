@@ -36,66 +36,66 @@
       <th>
         <span>
           {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_CREATION_DATE' | translate }}
-          <vitamui-common-order-by-button
+          <vitamui-order-by-button
             [orderByKey]="orderKeyOperationCreationDate"
             [orderBy]="orderColumn"
             [direction]="orderDirection"
             (directionChange)="changeOrderDirection($event)"
             (orderByChange)="changeOrderColumn($event)"
             (orderChange)="sortTable()"
-          ></vitamui-common-order-by-button>
+          ></vitamui-order-by-button>
         </span>
       </th>
       <th>
         <span>
           {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_UNITS' | translate }}
-          <vitamui-common-order-by-button
+          <vitamui-order-by-button
             [orderByKey]="orderKeyOperationUnits"
             [orderBy]="orderColumn"
             [direction]="orderDirection"
             (directionChange)="changeOrderDirection($event)"
             (orderByChange)="changeOrderColumn($event)"
             (orderChange)="sortTable()"
-          ></vitamui-common-order-by-button>
+          ></vitamui-order-by-button>
         </span>
       </th>
       <th>
         <span
           >{{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_OBJECTS' | translate }}
-          <vitamui-common-order-by-button
+          <vitamui-order-by-button
             [orderByKey]="orderKeyOperationObjects"
             [orderBy]="orderColumn"
             [direction]="orderDirection"
             (directionChange)="changeOrderDirection($event)"
             (orderByChange)="changeOrderColumn($event)"
             (orderChange)="sortTable()"
-          ></vitamui-common-order-by-button>
+          ></vitamui-order-by-button>
         </span>
       </th>
       <th>
         <span>
           {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_GOTS' | translate }}
-          <vitamui-common-order-by-button
+          <vitamui-order-by-button
             [orderByKey]="orderKeyOperationGots"
             [orderBy]="orderColumn"
             [direction]="orderDirection"
             (directionChange)="changeOrderDirection($event)"
             (orderByChange)="changeOrderColumn($event)"
             (orderChange)="sortTable()"
-          ></vitamui-common-order-by-button>
+          ></vitamui-order-by-button>
         </span>
       </th>
       <th>
         <span
           >{{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_OBJ_SIZE' | translate }}
-          <vitamui-common-order-by-button
+          <vitamui-order-by-button
             [orderByKey]="orderKeyOperationObjSize"
             [orderBy]="orderColumn"
             [direction]="orderDirection"
             (directionChange)="changeOrderDirection($event)"
             (orderByChange)="changeOrderColumn($event)"
             (orderChange)="sortTable()"
-          ></vitamui-common-order-by-button
+          ></vitamui-order-by-button
         ></span>
       </th>
     </tr>

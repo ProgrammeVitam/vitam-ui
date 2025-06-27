@@ -11,10 +11,10 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'LOGBOOK_OPERATION_PAGE.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
-      <vitamui-common-banner
+      </vitamui-title-breadcrumb>
+      <vitamui-banner
         [searchValue]="searchValue"
         [searchbarPlaceholder]="'LOGBOOK_OPERATION_PAGE.SEARCH' | translate"
         (searchChanged)="updateSearchValue($event)"
@@ -24,7 +24,7 @@
           <i class="vitamui-icon vitamui-icon-refresh"></i>
           <span>{{ 'LOGBOOK_OPERATION_PAGE.REFRESH' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
 
       <form [formGroup]="dateRangeFilterForm" [ngStyle]="{ padding: '10px' }">
         <div class="row row-data">
