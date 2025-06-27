@@ -1,0 +1,112 @@
+{
+  "configVersion": 1,
+  "timestamp": 1751019302684,
+  "index": "/vitam-ui/14771-input-textarea/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/vitam-ui/14771-input-textarea/main-SMDTJEFU.js",
+        "/vitam-ui/14771-input-textarea/polyfills-QWIB3X6O.js",
+        "/vitam-ui/14771-input-textarea/styles-LQIFRB7Q.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/vitam-ui/14771-input-textarea/assets/account-header-bg.jpg",
+        "/vitam-ui/14771-input-textarea/assets/bg-customer-select.svg",
+        "/vitam-ui/14771-input-textarea/assets/bg-tenant-select.svg",
+        "/vitam-ui/14771-input-textarea/assets/country/en.svg",
+        "/vitam-ui/14771-input-textarea/assets/country/fr.svg",
+        "/vitam-ui/14771-input-textarea/assets/footer-logo.svg",
+        "/vitam-ui/14771-input-textarea/assets/i18n/en.json",
+        "/vitam-ui/14771-input-textarea/assets/i18n/fr.json",
+        "/vitam-ui/14771-input-textarea/assets/logo.png",
+        "/vitam-ui/14771-input-textarea/assets/logo.svg",
+        "/vitam-ui/14771-input-textarea/assets/logo_FOOTER.png",
+        "/vitam-ui/14771-input-textarea/assets/logo_HEADER.png",
+        "/vitam-ui/14771-input-textarea/assets/logo_PORTAL.png",
+        "/vitam-ui/14771-input-textarea/assets/logo_USER.png",
+        "/vitam-ui/14771-input-textarea/assets/my-account.svg",
+        "/vitam-ui/14771-input-textarea/assets/shared-i18n/README.md",
+        "/vitam-ui/14771-input-textarea/assets/shared-i18n/en.json",
+        "/vitam-ui/14771-input-textarea/assets/shared-i18n/fr.json",
+        "/vitam-ui/14771-input-textarea/assets/user_icon.png",
+        "/vitam-ui/14771-input-textarea/assets/vitam-logo.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "assets",
+      "patterns": [
+        "\\/assets\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 100,
+      "maxAge": 1800000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/vitam-ui/14771-input-textarea/assets/account-header-bg.jpg": "fdc25ee6846edde0c4d5d6991d970e621f1a0aa0",
+    "/vitam-ui/14771-input-textarea/assets/bg-customer-select.svg": "0e9bc0fabae742969014b5fef803eee707922634",
+    "/vitam-ui/14771-input-textarea/assets/bg-tenant-select.svg": "da489f784d433747fae9a8d873c7e8d658fbdf20",
+    "/vitam-ui/14771-input-textarea/assets/country/en.svg": "2b5148a18b90f933e47bf895c26d61a52d21d9d8",
+    "/vitam-ui/14771-input-textarea/assets/country/fr.svg": "e3deb99b897e85df223b6d5d63628ea6d9c762c1",
+    "/vitam-ui/14771-input-textarea/assets/footer-logo.svg": "8d54e762125574e92769c3dfe308afc2307cce3b",
+    "/vitam-ui/14771-input-textarea/assets/i18n/en.json": "d7aa91cdc26ea30c936fcc16c1f646f8c7c0b7cd",
+    "/vitam-ui/14771-input-textarea/assets/i18n/fr.json": "6f1cd73efbadfbed8b4309959c0c1fef91dbb217",
+    "/vitam-ui/14771-input-textarea/assets/logo.png": "918f4351c803e4440d869b689744c3f77a263461",
+    "/vitam-ui/14771-input-textarea/assets/logo.svg": "163806bb7a3e5505d7c2432965564eb8f851dc13",
+    "/vitam-ui/14771-input-textarea/assets/logo_FOOTER.png": "5b8fd9e0bdc417b8ecf5d06739a1ef89b1741d1e",
+    "/vitam-ui/14771-input-textarea/assets/logo_HEADER.png": "5b8fd9e0bdc417b8ecf5d06739a1ef89b1741d1e",
+    "/vitam-ui/14771-input-textarea/assets/logo_PORTAL.png": "918f4351c803e4440d869b689744c3f77a263461",
+    "/vitam-ui/14771-input-textarea/assets/logo_USER.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
+    "/vitam-ui/14771-input-textarea/assets/my-account.svg": "6fd87f211c8f87de0e73b0e01c138eaf90239869",
+    "/vitam-ui/14771-input-textarea/assets/shared-i18n/README.md": "8827078e00e335c7e108ee0a1e9976d6d24fb89f",
+    "/vitam-ui/14771-input-textarea/assets/shared-i18n/en.json": "55a2c2a41cedf5ea2b665b6b28dbef925f34f9be",
+    "/vitam-ui/14771-input-textarea/assets/shared-i18n/fr.json": "98ac8ac10887beb15a8bff602fbc934332233c44",
+    "/vitam-ui/14771-input-textarea/assets/user_icon.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
+    "/vitam-ui/14771-input-textarea/assets/vitam-logo.png": "0bcb4aaad694b796cf574e4f7aca90b740bcb9f2",
+    "/vitam-ui/14771-input-textarea/main-SMDTJEFU.js": "ac5401ac4658041d9d4a828c8316edfb44e10db6",
+    "/vitam-ui/14771-input-textarea/polyfills-QWIB3X6O.js": "20e213ba4c052ea028307ccabb759a0c9079c5bb",
+    "/vitam-ui/14771-input-textarea/styles-LQIFRB7Q.css": "c01e839d285ade80d1e237152870c6831e480841"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

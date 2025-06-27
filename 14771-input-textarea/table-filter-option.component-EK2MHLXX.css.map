@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/table-filter/table-filter-option/table-filter-option.component.scss"],
+  "sourcesContent": [":host {\n  > div {\n    display: flex;\n    align-items: center;\n    padding: 15px;\n    cursor: pointer;\n\n    &.disabled {\n      pointer-events: none;\n      background-color: var(--vitamui-grey-300);\n    }\n\n    &:hover,\n    &:active {\n      background: rgba(var(--vitamui-primary-rgb), 0.15);\n    }\n\n    &.table-filter-option-separator:not(:first-child) {\n      border-top: 1px solid var(--vitamui-grey-300);\n    }\n\n    &.table-filter-option-separator:not(:last-child) {\n      border-bottom: 1px solid var(--vitamui-grey-300);\n    }\n  }\n}\n\n.vitamui-checkbox {\n  margin-right: 15px;\n}\n"],
+  "mappings": "AACE,KAAA,CAAA,IACE,QAAA,KACA,YAAA,OAFF,QAGE,KACA,OAAA,QAEA,KAAA,CAAA,GAAA,CAAA,SACE,eAAA,KACA,iBAAA,IAAA,oBAGF,KAAA,CAAA,GAAA,OAAA,KAAA,CAAA,GAAA,QAEE,WAAA,KAAA,IAAA,sBAAA,CAAA,KAGF,KAAA,CAAA,GAAA,CAAA,6BAAA,KAAA,cACE,WAAA,IAAA,MAAA,IAAA,oBAGF,KAAA,CAAA,GAAA,CAJA,6BAIA,KAAA,aACE,cAAA,IAAA,MAAA,IAAA,oBAKN,CAAA,iBACE,aAAA",
+  "names": []
+}

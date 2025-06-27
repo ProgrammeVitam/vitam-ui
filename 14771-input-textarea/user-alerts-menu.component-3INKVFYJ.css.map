@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/user-alerts/user-alerts-menu/user-alerts-menu.component.scss"],
+  "sourcesContent": [":host {\n  width: 100%;\n\n  ::ng-deep.mat-mdc-menu-panel {\n    min-height: inherit;\n    max-width: none;\n    width: 325px;\n  }\n}\n\n.content {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n\n.vitamui-icon-notifications {\n  color: var(--vitamui-header-footer-font);\n  font-size: 36px;\n}\n\n.notification-counter {\n  background-color: var(--vitamui-header-footer-font);\n  color: var(--vitamui-header-footer);\n  border-radius: 50%;\n  position: absolute;\n  top: 10px;\n  width: 20px;\n  height: 20px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  margin-left: 30px;\n}\n\n.alert {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n\n  > div {\n    width: 90%;\n    text-overflow: ellipsis;\n    overflow: hidden;\n  }\n}\n"],
+  "mappings": "AAAA,MACE,MAAA,KAEA,MAAA,UAAA,CAAA,mBACE,WAAA,QACA,UAAA,KACA,MAAA,MAIJ,CAAA,QACE,QAAA,KACA,YAAA,OACA,gBAAA,OACA,MAAA,KACA,OAAA,KACA,SAAA,SAGF,CAAA,2BACE,MAAA,IAAA,8BACA,UAAA,KAGF,CAAA,qBACE,iBAAA,IAAA,8BACA,MAAA,IAAA,yBA1BF,cA2BE,IACA,SAAA,SACA,IAAA,KACA,MAAA,KACA,OAAA,KACA,QAAA,KACA,gBAAA,OACA,YAAA,OACA,YAAA,KAGF,CAAA,MACE,QAAA,KACA,YAAA,OACA,gBAAA,cAEA,CALF,KAKE,CAAA,IACE,MAAA,IACA,cAAA,SACA,SAAA",
+  "names": []
+}

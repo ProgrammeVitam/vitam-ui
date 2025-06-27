@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/editable-field/emails-input/emails-input.component.scss"],
+  "sourcesContent": [":host {\n  width: 100%;\n  display: block;\n}\n\nbutton {\n  background-color: var(--vitamui-primary) !important;\n  width: 35px;\n  height: 35px;\n\n  i {\n    font-size: 20px;\n    font-weight: 600;\n  }\n\n  &:disabled {\n    background-color: var(--vitamui-grey-300) !important;\n\n    > i {\n      color: var(--vitamui-grey-800);\n    }\n  }\n}\n\n.domain-input-control {\n  display: flex;\n  height: 60px;\n\n  .domain-input-wrapper {\n    display: flex;\n    align-items: center;\n  }\n\n  .actions {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: flex-end;\n  }\n\n  mat-spinner {\n    margin-left: 1rem;\n  }\n}\n\n.vitamui-input-errors {\n  padding: 0;\n  position: relative;\n  top: -8px;\n}\n\n.vitamui-chip-list {\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n"],
+  "mappings": "AAAA,MACE,MAAA,KACA,QAAA,MAGF,OACE,iBAAA,IAAA,6BACA,MAAA,KACA,OAAA,KAEA,OAAA,EACE,UAAA,KACA,YAAA,IAGF,MAAA,UACE,iBAAA,IAAA,8BAEA,MAAA,SAAA,CAAA,EACE,MAAA,IAAA,oBAKN,CAAA,qBACE,QAAA,KACA,OAAA,KAEA,CAJF,qBAIE,CAAA,qBACE,QAAA,KACA,YAAA,OAGF,CATF,qBASE,CAAA,QACE,MAAA,KACA,QAAA,KACA,YAAA,OACA,gBAAA,SAGF,CAhBF,qBAgBE,YACE,YAAA,KAIJ,CAAA,qBA7CA,QA8CE,EACA,SAAA,SACA,IAAA,KAGF,CAAA,kBACE,WAAA,MACA,cAAA",
+  "names": []
+}
