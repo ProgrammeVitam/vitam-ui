@@ -98,6 +98,7 @@ public class LogbookExternalController {
 
     @ApiOperation(value = "Get operation by id")
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -108,6 +109,7 @@ public class LogbookExternalController {
 
     @ApiOperation(value = "Get logbook unit lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -118,6 +120,7 @@ public class LogbookExternalController {
 
     @ApiOperation(value = "Get logbook object lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
