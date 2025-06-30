@@ -85,7 +85,7 @@
 
         <!-- override it to fix mockito java 21 issue -->
         <byte-buddy.version>1.15.5</byte-buddy.version>
-        
+
         <!--Plugins version -->
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
@@ -639,7 +639,7 @@
                                         <!-- If you want to changes default dependencies (only
                                         systemd),
                                         define them as a comma separated list of packages -->
-                                        <argument>DEPENDENCIES=systemd,java-17-openjdk</argument>
+                                        <argument>DEPENDENCIES=systemd</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -1030,7 +1030,6 @@
                     </snapshots>
                 </repository>
             </repositories>
-
         </profile>
 
     </profiles>
