@@ -6,23 +6,27 @@ FPM             =  /usr/local/bin/fpm
 USER            := vitamui
 GROUP           := $(USER)
 
+# Timestamp handling for SNAPSHOT versions
+TIMESTAMP              ?= $(shell date +%Y%m%d%H%M%S)
+VERSION_WITH_TIMESTAMP := $(shell if echo "$(VERSION)" | grep -q "SNAPSHOT"; then echo "$(VERSION)$(TIMESTAMP)"; else echo "$(VERSION)"; fi)
+
 # Package metas
-COPYRIGHT           = VitamUI Copyright 2018 VITAM_UI
-COMMIT_ID           = $(shell  git rev-parse --short HEAD)
-BRANCHE             = $(shell  git rev-parse --abbv6L6zFUCr82Bjy9Qrev-ref HEAD)
-DESCRIPTION         = $(NAME)-rsc package for vitamui solution. Branch: $(BRANCHE), commit: $(COMMIT_ID)
+COPYRIGHT           = Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+COMMIT_ID           = $(shell git rev-parse HEAD)
+BRANCH_NAME         = $(shell git rev-parse --abbrev-ref HEAD)
+DESCRIPTION         = $(NAME)-rsc package for vitamui solution. Branch: $(BRANCH_NAME), commit: $(COMMIT_ID)
 
 # Install params
 VITAMUI_DIRS         =  data
 PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
 TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
-RPM_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION).rpm
-DEB_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION).deb
+RPM_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION_WITH_TIMESTAMP).rpm
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-rsc-$(VERSION_WITH_TIMESTAMP).deb
 
 # fpm packaging default args
 FPM_PACK_ARGS               = -f --description "$(DESCRIPTION)"
-FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(NAME)-rsc" -v $(VERSION)
+FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(NAME)-rsc" -v $(VERSION_WITH_TIMESTAMP)
 FPM_PACK_INSTALL_SCRIPTS    = --before-install "$(TEMPLATE_TMP_DIR)/before-install-rsc.sh" --after-install "$(TEMPLATE_TMP_DIR)/after-install-rsc.sh"
 FPM_PACK_REMOVE_SCRIPTS     = --after-remove "$(TEMPLATE_TMP_DIR)/after-remove-rsc.sh"
 
