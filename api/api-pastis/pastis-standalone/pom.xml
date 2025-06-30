@@ -253,8 +253,8 @@
                                 <configuration>
                                     <target>
                                         <get
-                                                src="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.13%2B11/OpenJDK17U-jdk_x64_windows_hotspot_17.0.13_11.zip"
-                                                dest="${project.build.directory}/jdk17.zip"
+                                                src="https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.zip"
+                                                dest="${project.build.directory}/jdk21.zip"
                                                 verbose="false"
                                                 usetimestamp="true"/>
                                     </target>
@@ -268,8 +268,8 @@
                                 <configuration>
                                     <tasks>
                                         <echo message="unzipping file"/>
-                                        <unzip src="${project.build.directory}/jdk17.zip"
-                                               dest="${project.build.directory}/jdk17/"/>
+                                        <unzip src="${project.build.directory}/jdk21.zip"
+                                               dest="${project.build.directory}/jdk21/"/>
                                     </tasks>
                                 </configuration>
                                 <goals>
@@ -299,8 +299,8 @@
                             <outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
                             <errTitle>Erreur</errTitle>
                             <jre>
-                                <minVersion>17</minVersion>
-                                <path>./jdk17/jdk-17.0.13+11</path>
+                                <minVersion>21</minVersion>
+                                <path>./jdk21/jdk-21.0.7+6</path>
                                 <requires64Bit/>
                                 <requiresJdk/>
                             </jre>
