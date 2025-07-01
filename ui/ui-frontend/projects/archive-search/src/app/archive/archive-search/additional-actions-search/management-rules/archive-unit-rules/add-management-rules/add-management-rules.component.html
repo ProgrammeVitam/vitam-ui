@@ -1,99 +1,78 @@
-<div class="container">
-  <label class="text bold normal primary"> {{ 'RULES.APPRAISAL_RULES.MANAGEMENT_RULES' | translate }}</label>
-  <form [formGroup]="ruleDetailsForm">
-    <div class="row content vitamui-form" style="margin-right: 0px">
-      <vitamui-common-editable-input
-        class="col-6"
-        formControlName="rule"
-        [validator]="ruleDetailsForm?.get('rule')?.validator"
-        [asyncValidator]="ruleDetailsForm?.get('rule')?.asyncValidator"
-        label="{{ 'RULES.APPRAISAL_RULES.RULE_ID' | translate }}"
-      >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueRuleId">
-          {{ 'RULES.APPRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
-        >
-        <vitamui-common-field-error errorKey="ruleIdPattern"
-          >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
-        </vitamui-common-field-error>
+<div class="container p-4 align-items-stretch">
+  <div class="gap-2 align-items-stretch">
+    <label class="text bold normal primary uppercase"> {{ 'RULES.MANAGEMENT_RULE' | translate }}</label>
 
-        <vitamui-common-field-error errorKey="ruleIdExists"
-          >{{ 'RULES.APPRAISAL_RULES.RULE_NOT_EXIST' | translate }}
-        </vitamui-common-field-error>
-      </vitamui-common-editable-input>
-
-      <vitamui-common-input
-        class="col-6 px-0"
-        formControlName="name"
-        minlength="2"
-        maxlength="100"
-        placeholder="{{ 'RULES.APPRAISAL_RULES.RULE_NAME' | translate }}"
-      >
-        <vitamui-common-input-error *ngIf="ruleDetailsForm?.get('name')?.touched && ruleDetailsForm?.get('name')?.hasError('required')">{{
-          'COMMON.REQUIRED' | translate
-        }}</vitamui-common-input-error>
-      </vitamui-common-input>
-    </div>
-
-    <div class="row content vitamui-form" style="margin-right: 0px">
-      <div class="col-6 form-control">
-        <div class="vitamui-input" (click)="pickerSatrDate.open()">
-          <span
-            *ngIf="!ruleDetailsForm.get('startDate').value; else showStartDate"
-            (click)="pickerSatrDate.open()"
-            class="search-date-label"
-          >
-            {{ 'RULES.APPRAISAL_RULES.START_DATE' | translate }}</span
-          >
-
-          <ng-template #showStartDate
-            ><span (click)="pickerSatrDate.open()">{{ ruleDetailsForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }} </span>
-          </ng-template>
-          <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
-          <mat-datepicker #pickerSatrDate></mat-datepicker>
-        </div>
-        <button
-          [ngStyle]="{
-            'background-color': 'var(--vitamui-green)',
-            color: 'var(--vitamui-white)',
-            width: '30',
-            height: '30',
-            position: 'absolute',
-            right: '20px',
-            top: '10px',
-          }"
-          *ngIf="ruleDetailsForm.get('startDate').value && isShowCheckButton"
-          type="button"
-          mat-mini-fab
-          (click)="addStartDate()"
-        >
-          <i class="material-icons">check</i>
-        </button>
+    <form [formGroup]="ruleDetailsForm" class="gap-4 align-items-stretch">
+      <div class="row hgap-4">
+        <vitamui-select
+          class="col w-50"
+          formControlName="rule"
+          [options]="ruleOptions"
+          [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
+          [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
+        ></vitamui-select>
       </div>
 
-      <vitamui-common-input
-        class="col-6 px-0"
-        formControlName="endDate"
-        minlength="2"
-        maxlength="100"
-        placeholder=" {{ 'RULES.APPRAISAL_RULES.END_DATE' | translate }}"
-      >
-        <vitamui-common-input-error
-          *ngIf="ruleDetailsForm?.get('endDate')?.touched && ruleDetailsForm?.get('endDate')?.hasError('required')"
-          >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
+      <div class="row hgap-4">
+        <div class="col w-50">
+          <div class="vitamui-input" (click)="pickerSatrDate.open()">
+            <span
+              *ngIf="!ruleDetailsForm.get('startDate').value; else showStartDate"
+              (click)="pickerSatrDate.open()"
+              class="search-date-label"
+            >
+              {{ 'RULES.APPRAISAL_RULES.START_DATE' | translate }}</span
+            >
+
+            <ng-template #showStartDate
+              ><span (click)="pickerSatrDate.open()">{{ ruleDetailsForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }} </span>
+            </ng-template>
+            <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
+            <mat-datepicker #pickerSatrDate></mat-datepicker>
+          </div>
+          <button
+            [ngStyle]="{
+              'background-color': 'var(--vitamui-green)',
+              color: 'var(--vitamui-white)',
+              width: '30',
+              height: '30',
+              position: 'absolute',
+              right: '20px',
+              top: '10px',
+            }"
+            *ngIf="ruleDetailsForm.get('startDate').value && isShowCheckButton"
+            type="button"
+            mat-mini-fab
+            (click)="addStartDate()"
+          >
+            <i class="material-icons">check</i>
+          </button>
+        </div>
+
+        <vitamui-common-input
+          class="col"
+          formControlName="endDate"
+          minlength="2"
+          maxlength="100"
+          placeholder=" {{ 'RULES.APPRAISAL_RULES.END_DATE' | translate }}"
         >
-      </vitamui-common-input>
-    </div>
+          <vitamui-common-input-error
+            *ngIf="ruleDetailsForm?.get('endDate')?.touched && ruleDetailsForm?.get('endDate')?.hasError('required')"
+            >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
+          >
+        </vitamui-common-input>
+      </div>
 
-    <div *ngIf="isLoading; then loadingMode; else resultsFound"></div>
+      <div *ngIf="isLoading; then loadingMode; else resultsFound"></div>
 
-    <div class="d-flex mt-4 padding-btm-style">
-      <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled" (click)="submit()">
-        {{ 'RULES.COMMON.CONTROL' | translate }}
-      </button>
-      <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
-    </div>
-  </form>
+      <div class="d-flex">
+        <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled" (click)="submit()">
+          {{ 'RULES.COMMON.CONTROL' | translate }}
+        </button>
+        <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <ng-template #confirmDeleteAddRuleDialog>

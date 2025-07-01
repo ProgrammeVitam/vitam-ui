@@ -39,7 +39,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
-import { finalize, merge, Subscription } from 'rxjs';
+import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
@@ -50,6 +50,7 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -61,12 +62,12 @@ import { ManagementRulesValidatorService } from '../../../../../validators/manag
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 const LocalValidators = {
-  differentRuleNames: (control: AbstractControl): ValidationErrors | null => {
-    const oldRuleName = control.get('oldRule')?.value;
-    const newRuleName = control.get('newRule')?.value;
+  differentRuleIds: (control: AbstractControl): ValidationErrors | null => {
+    const oldRuleId = control.get('oldRule')?.value;
+    const newRuleId = control.get('newRule')?.value;
 
-    if (oldRuleName && newRuleName && oldRuleName === newRuleName) {
-      return { sameTargetRule: { value: newRuleName } };
+    if (oldRuleId && newRuleId && oldRuleId === newRuleId) {
+      return { sameTargetRule: { value: newRuleId } };
     }
 
     return null;
@@ -95,6 +96,9 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   @Input() selectedItem: number;
   @Input() ruleCategory: string;
   @Input() hasExactCount: boolean;
+  @Input() rulesList: Observable<Rule[]>;
+
+  ruleOptions: VitamuiSelectOptions;
 
   ruleDetailsForm: FormGroup;
   isShowCheckButton = true;
@@ -105,9 +109,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   ruleTypeDUA: RuleCategoryAction;
   previousRuleDetails: {
     oldRule: string;
-    oldRuleName: string;
     newRule: string;
-    newRuleName: string;
     startDate: string;
     endDate: string;
     ruleUpdated: boolean;
@@ -141,9 +143,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
       oldRule: '',
-      oldRuleName: '',
       newRule: '',
-      newRuleName: '',
       startDate: '',
       endDate: '',
       ruleUpdated: false,
@@ -157,16 +157,14 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
           [Validators.required, ManagementRuleValidators.ruleIdPattern],
           [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
         ],
-        oldRuleName: [{ value: null, disabled: true }],
         newRule: [null, [ManagementRuleValidators.ruleIdPattern], [this.managementRulesValidatorService.checkRuleIdExistence()]],
-        newRuleName: [{ value: null, disabled: true }],
         startDate: [null],
         endDate: [{ value: null, disabled: true }],
         ruleUpdated: [{ value: false, disabled: true }],
         startDateUpdated: [{ value: false, disabled: true }],
       },
       {
-        validators: [LocalValidators.differentRuleNames, LocalValidators.mustUpdateRuleOrStartDate],
+        validators: [LocalValidators.differentRuleIds, LocalValidators.mustUpdateRuleOrStartDate],
       },
     );
 
@@ -176,8 +174,6 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
         this.cancelStep.emit();
         this.ruleDetailsForm.patchValue({ newRule: null });
         this.previousRuleDetails.newRule = null;
-        this.previousRuleDetails.newRuleName = null;
-        this.ruleDetailsForm.patchValue({ newRuleName: null });
         this.ruleDetailsForm.patchValue({ endDate: null });
         this.newRule = null;
       }
@@ -206,6 +202,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.ruleCategoryKey = this.archiveService.getRuleCategoryValue(this.ruleCategory);
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
   }
 
   ngOnDestroy() {
@@ -232,7 +229,6 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       this.subscriptions.add(
         this.ruleService.get(formData.oldRule.trim()).subscribe((ruleResponse) => {
           this.oldRule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ oldRuleName: ruleResponse.ruleValue });
           this.ruleDetailsForm.patchValue({ endDate: null });
         }),
       );
@@ -247,7 +243,6 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       this.subscriptions.add(
         this.ruleService.get(formData.newRule.trim()).subscribe((ruleResponse) => {
           this.newRule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ newRuleName: ruleResponse.ruleValue });
           this.ruleDetailsForm.patchValue({ endDate: null });
         }),
       );
@@ -262,9 +257,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     this.disabledControl = false;
     this.previousRuleDetails = {
       oldRule: data.oldRule ? data.oldRule : this.previousRuleDetails.oldRule,
-      oldRuleName: this.ruleDetailsForm.get('oldRuleName').value,
       newRule: data.newRule ? data.newRule : this.previousRuleDetails.newRule,
-      newRuleName: this.ruleDetailsForm.get('newRuleName').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
       endDate: this.ruleDetailsForm.get('endDate').value,
       ruleUpdated: this.ruleDetailsForm.get('ruleUpdated').value,
@@ -282,7 +275,6 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       rule: this.ruleDetailsForm.get('newRule').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
       endDate: null,
-      name: this.ruleDetailsForm.get('newRuleName').value,
       oldRule: this.ruleDetailsForm.get('oldRule').value,
     };
 

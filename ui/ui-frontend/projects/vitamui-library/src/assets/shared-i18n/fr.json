@@ -3828,10 +3828,6 @@
     "RESULT": "résultat",
     "RESULTS": "résultats",
     "RETRIEVE_EXACT_COUNT": "Afficher le nombre exact",
-    "RULE": {
-      "CODE_NOT_EXIST": "Le code de la règle renseigné n'existe pas dans cette catégorie",
-      "WRONG_FORMAT": "Mauvais format de règle"
-    },
     "SEARCH_CRITERIA_AND": "Et le ",
     "SEARCH_CRITERIA_BETWEEN": "Entre le ",
     "SEARCH_CRITERIA_FILTER": {
@@ -3965,6 +3961,7 @@
         "ID_DISSEMINATION": "Identifiant",
         "ID_DUA": "Identifiant",
         "ID_REUSE": "Identifiant",
+        "PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE": "Sélectionnez une règle de gestion",
         "PLACEHOLDER_ACCESS": "Règle de communicabilité",
         "PLACEHOLDER_DISSEMINATION": "Règle de diffusion",
         "PLACEHOLDER_DUA": "Règle de durée d'utilité administrative",
@@ -4944,7 +4941,9 @@
     "minlength": "La longueur minimale est de {{ requiredLength }} caractères.",
     "maxlength": "La longueur maximale est de {{ requiredLength }} caractères.",
     "email": "Adresse e-mail invalide.",
-    "pattern": "Format attendu : {{ requiredPattern }}."
+    "pattern": "Format attendu : {{ requiredPattern }}.",
+    "uniquePreventRuleId": "Code identique à l'action précédente",
+    "uniqueRuleId": "Code identique à l'action précédente"
   },
   "ACCESS_CONTRACT": {
     "HOME": {

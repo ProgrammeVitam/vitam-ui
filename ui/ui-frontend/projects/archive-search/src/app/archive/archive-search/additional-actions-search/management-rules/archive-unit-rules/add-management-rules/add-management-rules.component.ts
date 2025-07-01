@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
-import { merge, Subscription } from 'rxjs';
+import { merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
@@ -50,6 +50,7 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -68,7 +69,7 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   styleUrls: ['./add-management-rules.component.css'],
   standalone: false,
 })
-export class AddManagementRulesComponent implements OnDestroy {
+export class AddManagementRulesComponent implements OnDestroy, OnInit {
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
@@ -78,11 +79,15 @@ export class AddManagementRulesComponent implements OnDestroy {
   ruleCategory: string;
   @Input()
   hasExactCount: boolean;
+  @Input()
+  rulesList: Observable<Rule[]>;
+
+  ruleOptions: VitamuiSelectOptions;
+
   ruleDetailsForm: FormGroup;
   ruleTypeDUA: RuleCategoryAction;
   public previousRuleDetails: {
     rule: string;
-    name: string;
     startDate: string;
     endDate: string;
   };
@@ -90,7 +95,6 @@ export class AddManagementRulesComponent implements OnDestroy {
   isShowCheckButton = true;
   showText = false;
 
-  selectedItemSubscription: Subscription;
   itemsWithSameRule: string;
   itemsWithSameRuleAndDate: string;
   itemsToUpdate: string;
@@ -125,7 +129,6 @@ export class AddManagementRulesComponent implements OnDestroy {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
       rule: '',
-      name: '',
       startDate: '',
       endDate: '',
     };
@@ -136,7 +139,6 @@ export class AddManagementRulesComponent implements OnDestroy {
         [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.uniqueRuleId(this.ruleCategory), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
-      name: [{ value: null, disabled: true }, Validators.required],
       startDate: [null],
       endDate: [{ value: null, disabled: true }],
     });
@@ -172,6 +174,10 @@ export class AddManagementRulesComponent implements OnDestroy {
       }
     }
     return false;
+  }
+
+  ngOnInit() {
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
   }
 
   ngOnDestroy() {
@@ -293,7 +299,6 @@ export class AddManagementRulesComponent implements OnDestroy {
     this.isDisabled = false;
     this.previousRuleDetails = {
       rule: data.rule ? data.rule : this.previousRuleDetails.rule,
-      name: this.ruleDetailsForm.get('name').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
       endDate: this.ruleDetailsForm.get('endDate').value,
     };
@@ -316,7 +321,6 @@ export class AddManagementRulesComponent implements OnDestroy {
   addStartDate() {
     this.previousRuleDetails = {
       rule: this.ruleDetailsForm.get('rule').value,
-      name: this.ruleDetailsForm.get('name').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
       endDate: this.ruleDetailsForm.get('endDate').value,
     };
@@ -356,7 +360,6 @@ export class AddManagementRulesComponent implements OnDestroy {
       rule: this.ruleDetailsForm.get('rule').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
       endDate: null,
-      name: this.ruleDetailsForm.get('name').value,
     };
 
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {

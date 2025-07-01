@@ -40,17 +40,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { merge, Subscription } from 'rxjs';
+import { merge, Subscription, Observable } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
-  diff,
   ManagementRuleValidators,
   Rule,
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+  VitamuiSelectOptions,
+  diff,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -77,6 +78,10 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   ruleCategory: string;
   @Input()
   hasExactCount: boolean;
+  @Input()
+  rulesList: Observable<Rule[]>;
+
+  ruleOptions: VitamuiSelectOptions;
 
   showText = false;
   isLoading = false;
@@ -90,7 +95,6 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   ruleDetailsForm: FormGroup;
   previousRuleDetails: {
     rule: string;
-    ruleName: string;
   };
   managementRules: ManagementRules[] = [];
   ruleTypeDUA: RuleCategoryAction;
@@ -109,16 +113,15 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
     private managementRulesValidatorService: ManagementRulesValidatorService,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
-    private ruleService: RuleService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private translateService: TranslateService,
     private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
+    private ruleService: RuleService,
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
       rule: '',
-      ruleName: '',
     };
 
     this.ruleDetailsForm = this.formBuilder.group({
@@ -127,7 +130,6 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
         [Validators.required, ManagementRuleValidators.ruleIdPattern],
         [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
-      ruleName: [{ value: null, disabled: true }],
     });
 
     merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
@@ -144,12 +146,12 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.ruleCategoryKey = this.archiveService.getRuleCategoryValue(this.ruleCategory);
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
   }
 
   patchForm(data: any): boolean {
     this.previousRuleDetails = {
       rule: data.rule ? data.rule : this.previousRuleDetails.rule,
-      ruleName: this.ruleDetailsForm.get('ruleName').value,
     };
 
     return true;
@@ -158,13 +160,8 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   isEmpty(formData: any): boolean {
     if (formData) {
       if (formData.rule) {
-        this.getRuleSuscription = this.ruleService.get(formData.rule.trim()).subscribe((ruleResponse) => {
-          this.rule = ruleResponse;
-          this.ruleDetailsForm.patchValue({ ruleName: ruleResponse.ruleValue });
-          this.disabledControl = false;
-        });
+        this.disabledControl = false;
         this.cancelStep.emit();
-
         return true;
       }
     }
@@ -197,7 +194,6 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
 
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
-      name: this.ruleDetailsForm.get('ruleName').value,
     };
 
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {

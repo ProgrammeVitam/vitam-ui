@@ -13,9 +13,10 @@
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
-        [selectedItem]="selectedItem"
+        [selectedItem]="Number(selectedItem)"
         [ruleCategory]="ruleCategory"
         [hasExactCount]="hasExactCount"
+        [rulesList]="rules$"
       ></app-add-management-rules>
     </div>
   </div>
@@ -31,12 +32,13 @@
     <div class="collapsible" [@collapse]="deleteRuleCollapsed" *ngFor="let actionName of getActions()">
       <app-delete-unit-rules
         *ngIf="actionName.actionType === action && action === 'DELETE_RULES'"
-        [selectedItem]="selectedItem"
+        [selectedItem]="Number(selectedItem)"
         [ruleCategory]="ruleCategory"
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
         [hasExactCount]="hasExactCount"
+        [rulesList]="rules$"
       ></app-delete-unit-rules>
     </div>
   </div>
@@ -68,9 +70,10 @@
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
-        [selectedItem]="selectedItem"
+        [selectedItem]="Number(selectedItem)"
         [ruleCategory]="ruleCategory"
         [hasExactCount]="hasExactCount"
+        [rulesList]="rules$"
       ></app-update-unit-rules>
     </div>
   </div>
@@ -100,7 +103,7 @@
       <app-unlock-category-inheritance
         [ruleCategory]="ruleCategory"
         [hasExactCount]="hasExactCount"
-        [selectedItem]="selectedItem"
+        [selectedItem]="Number(selectedItem)"
       ></app-unlock-category-inheritance>
     </div>
   </div>
@@ -123,6 +126,7 @@
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
+        [rulesList]="rules$"
       ></app-block-rules-inheritance>
     </div>
   </div>
@@ -142,9 +146,10 @@
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
-        [selectedItem]="selectedItem"
+        [selectedItem]="Number(selectedItem)"
         [ruleCategory]="ruleCategory"
         [hasExactCount]="hasExactCount"
+        [rulesList]="rules$"
       ></app-unlock-rules-inheritance>
     </div>
   </div>
