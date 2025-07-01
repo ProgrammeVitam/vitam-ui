@@ -2,7 +2,8 @@
 
 - block:
 
-  - fail: msg="Variable '{{ mongod_source_template_dir }}' is not defined"
+  - fail:
+      msg: "Variable '{{ mongod_source_template_dir }}' is not defined"
     when: mongod_source_template_dir is undefined
 
   - name: Unset mongo_nodes fact
@@ -34,7 +35,7 @@
     shell: "rm -Rf {{ mongod_output_dir_entry_point }}/*"
 
   # We sort directories by theirs versions
-  - name: List script files versions in the directory {{ mongod_source_template_dir }}
+  - name: "List script files versions in the directory {{ mongod_source_template_dir }}"
     delegate_to: localhost
     shell:
       cmd: find * -maxdepth 1 -type d | sort -V
@@ -42,7 +43,7 @@
     register: versions
 
   # For each version, we apply a second sort on the index of the script file.
-  - name: List script files in the directory {{ mongod_source_template_dir }}
+  - name: "List script files in the directory {{ mongod_source_template_dir }}"
     delegate_to: localhost
     shell:
       cmd: find {{ version }}/* -type f -print | sort -V -t '_' -k1
@@ -52,7 +53,7 @@
     loop_control:
       loop_var: version
 
-  - name: "Compute file scripts"
+  - name: Compute file scripts
     delegate_to: localhost
     set_fact:
       mongod_files: "{{ (mongod_files| default([])) + item.stdout_lines }}"
@@ -81,7 +82,7 @@
 
   - name: Prepare query to get already executed scripts from versioning.changelog (docker)
     set_fact:
-      executed_scripts_query: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"{{ executed_scripts_query }}\""
+      executed_scripts_query: "docker exec {{ mongodb.docker.image_name }} /bin/bash -c \"{{ executed_scripts_query }}\""
     when: mongodb.docker is defined and mongodb.docker.enable
 
   - name: Execute query to get already executed scripts
@@ -95,9 +96,19 @@
       executed_scripts_list: "{{ executed_scripts_results.stdout | from_json | default([]) }}"
     when: executed_scripts_results is defined and executed_scripts_results.rc == 0
 
-  - name: Filter out already executed scripts from eligible files
+  - name: Reset filtered eligible files list
     set_fact:
-      mongod_eligible_files: "{{ mongod_eligible_files | rejectattr('finalname', 'in', executed_scripts_list | default([])) | list | sort(attribute='finalname') }}"
+      mongod_eligible_files_filtered: []
+
+  - name: Add eligible files not in executed list
+    set_fact:
+      mongod_eligible_files_filtered: "{{ mongod_eligible_files_filtered + [item] }}"
+    with_items: "{{ mongod_eligible_files }}"
+    when: item.finalname not in (executed_scripts_list | default([]))
+
+  - name: Replace eligible files with filtered list sorted by finalname
+    set_fact:
+      mongod_eligible_files: "{{ mongod_eligible_files_filtered | sort(attribute='finalname') }}"
 
   # We generate scripts and upload on remote host
   - name: Compute and copy script files
@@ -130,14 +141,8 @@
     when: mongodb.docker is not defined or not mongodb.docker.enable
 
   - name: Load script in database test (docker)
-    command: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"mongosh mongodb://{{ mongod_uri }}/admin {{ mongo_credentials }} --quiet --file {{ mongodb.docker.internal_dir}}/app/mongod/main_script.js\""
+    shell: "docker exec {{ mongodb.docker.image_name }} /bin/bash -c \"mongosh mongodb://{{ mongod_uri }}/admin {{ mongo_credentials }} --quiet --file {{ mongodb.docker.internal_dir}}/app/mongod/main_script.js\""
     no_log: "{{ hide_passwords_during_deploy }}"
     when: mongodb.docker is defined and mongodb.docker.enable
-
-  # - name: "Execute file"
-  #   include_tasks: "execute_script.yml"
-  #   loop: "{{ mongod_eligible_files | unique }}"
-  #   loop_control:
-  #     loop_var: mongo_file
 
   run_once: true
