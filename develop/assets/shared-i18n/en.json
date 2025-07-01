@@ -3828,10 +3828,6 @@
     "RESULT": "Result",
     "RESULTS": "Results",
     "RETRIEVE_EXACT_COUNT": "Load exact count",
-    "RULE": {
-      "CODE_NOT_EXIST": "The rule code entered does not exist in this category",
-      "WRONG_FORMAT": "Wrong rule format"
-    },
     "SEARCH_CRITERIA_AND": "AND",
     "SEARCH_CRITERIA_BETWEEN": "BETWEEN",
     "SEARCH_CRITERIA_FILTER": {
@@ -3965,6 +3961,7 @@
         "ID_DISSEMINATION": "Identifier",
         "ID_DUA": "Id",
         "ID_REUSE": "Identifier",
+        "PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE": "Choose one management rule",
         "PLACEHOLDER_ACCESS": "Access rule",
         "PLACEHOLDER_DISSEMINATION": "Dissemination rule",
         "PLACEHOLDER_DUA": "Appraisal rule",
@@ -4944,7 +4941,9 @@
     "minlength": "Minimum length is {{ requiredLength }} characters.",
     "maxlength": "Maximum length is {{ requiredLength }} characters.",
     "email": "Invalid email address.",
-    "pattern": "Expected format : {{ message }}."
+    "pattern": "Expected format : {{ message }}.",
+    "uniquePreventRuleId": "Code identical to the previous action",
+    "uniqueRuleId": "Code identical to the previous action"
   },
   "ACCESS_CONTRACT": {
     "HOME": {
