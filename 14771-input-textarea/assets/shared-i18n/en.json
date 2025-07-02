@@ -3827,10 +3827,6 @@
     "RESULT": "Result",
     "RESULTS": "Results",
     "RETRIEVE_EXACT_COUNT": "Load exact count",
-    "RULE": {
-      "CODE_NOT_EXIST": "The rule code entered does not exist in this category",
-      "WRONG_FORMAT": "Wrong rule format"
-    },
     "SEARCH_CRITERIA_AND": "AND",
     "SEARCH_CRITERIA_BETWEEN": "BETWEEN",
     "SEARCH_CRITERIA_FILTER": {

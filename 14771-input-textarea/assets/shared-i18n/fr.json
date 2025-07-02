@@ -3827,10 +3827,6 @@
     "RESULT": "résultat",
     "RESULTS": "résultats",
     "RETRIEVE_EXACT_COUNT": "Afficher le nombre exact",
-    "RULE": {
-      "CODE_NOT_EXIST": "Le code de la règle renseigné n'existe pas dans cette catégorie",
-      "WRONG_FORMAT": "Mauvais format de règle"
-    },
     "SEARCH_CRITERIA_AND": "Et le ",
     "SEARCH_CRITERIA_BETWEEN": "Entre le ",
     "SEARCH_CRITERIA_FILTER": {
