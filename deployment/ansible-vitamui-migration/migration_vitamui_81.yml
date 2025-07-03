@@ -31,6 +31,10 @@
       until: result is succeeded
       delay: "{{ packages_install_retries_delay | default(10) }}"
 
+    - name: Debug - Display package removal result
+      ansible.builtin.debug:
+        var: removal_result # This will output the full registered variable
+
     - block:
 
         - name: Find folders matching the pattern
