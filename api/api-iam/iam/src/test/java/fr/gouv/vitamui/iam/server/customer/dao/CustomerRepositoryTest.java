@@ -20,7 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -85,14 +84,14 @@ public class CustomerRepositoryTest extends AbstractMongoTests {
         final Customer julien = IamServerUtilsTest.buildCustomer(
             "id1",
             "julien",
-            Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
+            "123456",
             Arrays.asList("julien@vitamui.com", "pierre@vitamui.com")
         );
 
         final Customer moctar = IamServerUtilsTest.buildCustomer(
             "id2",
             "moctar",
-            Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
+            "999999",
             Arrays.asList("julien@vitamui.com", "pierre@vitamui.com")
         );
 
@@ -124,7 +123,7 @@ public class CustomerRepositoryTest extends AbstractMongoTests {
         assertThat(customersFound.size()).isEqualTo(1);
         assertThat(customersFound.get(0)).usingRecursiveComparison().isEqualTo(julien);
 
-        term = julien.getCode().substring(0, 4);
+        term = julien.getCode();
         query = Query.query(
             MongoUtils.buildOrOperator(
                 (Criteria) MongoUtils.buildCriteriaContainsIgnoreCase("code", term),
