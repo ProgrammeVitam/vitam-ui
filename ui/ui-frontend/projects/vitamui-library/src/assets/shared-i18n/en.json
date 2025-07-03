@@ -3519,6 +3519,7 @@
     "STP_PRESERVATION_INSERTION_AU_METADATA": "Process of inserting metadata",
     "PRESERVATION_INSERTION_AU_METADATA": "Indexation of archival units metadata"
   },
+  "PRESERVATION_INSERTION_AU_METADATA.OK": "Success of the indexation of the metadata of the archival units",
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
     "HTTP_STATUS_CODE_BAD_REQUEST": "Error: invalid request",

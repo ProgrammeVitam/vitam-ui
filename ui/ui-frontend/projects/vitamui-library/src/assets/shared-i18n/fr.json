@@ -3519,6 +3519,7 @@
     "STP_PRESERVATION_INSERTION_AU_METADATA": "Processus de l'insertion des métadonnées",
     "PRESERVATION_INSERTION_AU_METADATA": "Indexation des métadonnées des unités archivistiques"
   },
+  "PRESERVATION_INSERTION_AU_METADATA.OK": "Succès de l'indexation des métadonnées des unités archivistiques",
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer cette opération.",
     "HTTP_STATUS_CODE_BAD_REQUEST": "Erreur : requête invalide",
