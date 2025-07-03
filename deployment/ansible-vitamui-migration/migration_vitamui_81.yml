@@ -33,7 +33,7 @@
 
     - name: Debug - Display package removal result
       ansible.builtin.debug:
-        var: removal_result # This will output the full registered variable
+        var: result # This will output the full registered variable
 
     - block:
 
