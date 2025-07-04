@@ -5,7 +5,7 @@
 <div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of profilesDisplay">
   <div>
     <div class="text caption light mb-1">{{ 'APPLICATION.' + profile.appId + '.NAME' | translate }}</div>
-    <div class="text medium">{{ profile?.tenantName }} : {{ profile?.profileName | titlecase }}</div>
+    <div class="text medium">{{ profile?.tenantName }} : {{ profile?.profileName }}</div>
   </div>
 
   <div>
