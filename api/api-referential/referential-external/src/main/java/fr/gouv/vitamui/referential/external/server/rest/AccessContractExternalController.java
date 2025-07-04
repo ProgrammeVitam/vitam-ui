@@ -65,6 +65,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -116,7 +118,7 @@ public class AccessContractExternalController {
         ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getAccessContract identifier={}");
-        return accessContractExternalService.getOne(identifier);
+        return accessContractExternalService.getOne(URLEncoder.encode(identifier, StandardCharsets.UTF_8));
     }
 
     @Secured({ ServicesData.ROLE_GET_ACCESS_CONTRACTS })
