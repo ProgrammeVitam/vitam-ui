@@ -62,7 +62,7 @@ import { CollectZippedUploadFile } from '../../shared/collect-upload/collect-upl
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
-import { CreateProjectComponent } from './create-project.component';
+import { CreateProjectComponent, ImportType } from './create-project.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import SpyObj = jasmine.SpyObj;
 
@@ -176,6 +176,7 @@ describe('CreateProjectComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateProjectComponent);
     component = fixture.componentInstance;
+    component.importType = ImportType.DIRECTORIES_FILES;
     fixture.detectChanges();
   });
 
@@ -259,8 +260,8 @@ describe('CreateProjectComponent', () => {
   describe('DOM', () => {
     it('should have an input file', () => {
       const nativeElement = fixture.nativeElement;
-      const elInput = nativeElement.querySelector('vitamui-file-selector');
-      expect(elInput).toBeTruthy();
+      const elInput = nativeElement.querySelectorAll('vitamui-file-selector');
+      expect(elInput.length).toBe(1);
     });
 
     it('should have 3 cdk steps', () => {

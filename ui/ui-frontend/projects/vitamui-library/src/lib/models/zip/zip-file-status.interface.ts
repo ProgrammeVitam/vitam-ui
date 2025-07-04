@@ -39,6 +39,5 @@ export interface ZipFileStatus {
   name: string;
   size: number;
   uploadedSize: number;
-  currentFile?: string;
   currentFileUploadedSize?: number;
 }

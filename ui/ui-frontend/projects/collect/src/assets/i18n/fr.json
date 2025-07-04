@@ -106,11 +106,19 @@
       "VALUE": "Valeur de la Métadonnée",
       "ATTACH_POSITION": "Définir la position de rattachement",
       "PROJECT_CREATION_ERROR": "Erreur lors de la création du projet de versement",
-      "UPLOAD_SUB_TITLE": "Chargement des répertoires et des documents à verser",
+      "UPLOAD_SUB_TITLE": "Chargement des données à verser",
       "ARCHIVE_POSITION_SUB_TITLE": "Définir la position fixe de rattachement",
       "AUTO_INGEST": "Gestion automatique des transactions :",
       "AUTO_INGEST_TRUE": "Oui",
-      "AUTO_INGEST_FALSE": "Non"
+      "AUTO_INGEST_FALSE": "Non",
+      "IMPORT_TYPE_PLACEHOLDER": "Sélectionner le type d'import",
+      "IMPORT_TYPE_DIRECTORIES_FILES": "Import de dossiers et fichiers (accompagné ou non d'un métadata.csv)",
+      "IMPORT_TYPE_COMPRESSED": "Import d'un dossier compressé (.zip)",
+      "DRAG_AND_DROP": "Glisser-déposer",
+      "OR": "ou",
+      "BROWSE": "parcourir",
+      "BROWSE_DIRECTORIES": "parcourir des dossiers",
+      "BROWSE_FILES": "parcourir des fichiers"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {

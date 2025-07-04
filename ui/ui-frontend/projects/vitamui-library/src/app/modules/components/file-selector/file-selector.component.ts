@@ -37,7 +37,7 @@
 import { Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { I18nPluralPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DisplayFile } from './display-file.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -47,7 +47,7 @@ import { CustomFile } from '../../../../lib/models/custom-file';
   selector: 'vitamui-file-selector',
   templateUrl: './file-selector.component.html',
   styleUrl: './file-selector.component.scss',
-  imports: [DragAndDropDirective, TranslatePipe, NgIf, NgForOf, PipesModule, NgTemplateOutlet],
+  imports: [DragAndDropDirective, TranslatePipe, NgIf, NgForOf, PipesModule, NgTemplateOutlet, I18nPluralPipe],
 })
 export class FileSelectorComponent {
   /**
@@ -71,15 +71,25 @@ export class FileSelectorComponent {
 
   @Output() filesChanged = new EventEmitter<File[]>();
 
-  @ViewChild('inputFiles') inputFiles: ElementRef;
+  @ViewChild('fileSelector') fileSelector: ElementRef;
+  @ViewChild('directorySelector') directorySelector: ElementRef;
 
   files: File[] = [];
   displayFiles: DisplayFile[] = [];
+
+  format: { [k: string]: string } = {
+    '=1': 'FILE_SELECTOR.ALLOWED_FORMATS_SINGULAR',
+    other: 'FILE_SELECTOR.ALLOWED_FORMATS_PLURAL',
+  };
 
   constructor(
     private translationService: TranslateService,
     public snackBar: MatSnackBar,
   ) {}
+
+  get displayMessageAndLinks() {
+    return this.multiple || this.directoryMode || !this.displayFiles?.length;
+  }
 
   handleFilesSelection(files: FileList | File[]) {
     if (!this.multiple && (this.files?.length > 0 || files.length > 1)) {
@@ -117,7 +127,11 @@ export class FileSelectorComponent {
   }
 
   openFileSelectorOSDialog() {
-    this.inputFiles.nativeElement.click();
+    this.fileSelector.nativeElement.click();
+  }
+
+  openDirectorySelectorOSDialog() {
+    this.directorySelector.nativeElement.click();
   }
 
   removeFile(displayFile: DisplayFile) {
@@ -137,9 +151,8 @@ export class FileSelectorComponent {
    * Reset the value to allow a new "change" event.
    */
   private resetInput(): void {
-    if (this.inputFiles) {
-      this.inputFiles.nativeElement.value = '';
-    }
+    if (this.fileSelector) this.fileSelector.nativeElement.value = '';
+    if (this.directorySelector) this.directorySelector.nativeElement.value = '';
   }
 
   private getRootElements(files: FileList | File[]): DisplayFile[] {

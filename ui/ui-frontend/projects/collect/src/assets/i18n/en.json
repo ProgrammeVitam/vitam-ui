@@ -106,11 +106,19 @@
       "VALUE": "Metadata value",
       "ATTACH_POSITION": "Set attachment position",
       "PROJECT_CREATION_ERROR": "Error while creating attachment project",
-      "UPLOAD_SUB_TITLE": "Loading directories and documents to be poured",
+      "UPLOAD_SUB_TITLE": "Loading data to be poured",
       "ARCHIVE_POSITION_SUB_TITLE": "Define fixed attachment position",
       "AUTO_INGEST": "Automatic transaction management:",
       "AUTO_INGEST_TRUE": "Yes",
-      "AUTO_INGEST_FALSE": "No"
+      "AUTO_INGEST_FALSE": "No",
+      "IMPORT_TYPE_PLACEHOLDER": "Select import type",
+      "IMPORT_TYPE_DIRECTORIES_FILES": "Directories and files import (attached or not with metadata.csv)",
+      "IMPORT_TYPE_COMPRESSED": "Compressed directory import (.zip)",
+      "DRAG_AND_DROP": "Drag and drop",
+      "OR": "or",
+      "BROWSE": "browse",
+      "BROWSE_DIRECTORIES": "browse directories",
+      "BROWSE_FILES": "browse files"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {

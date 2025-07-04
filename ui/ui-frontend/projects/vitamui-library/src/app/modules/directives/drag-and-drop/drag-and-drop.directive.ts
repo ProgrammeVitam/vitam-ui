@@ -146,7 +146,8 @@ export class DragAndDropDirective {
     for (let i = 0; i < dataTransferItemList.length; i++) {
       // Note webkitGetAsEntry a non-standard feature and may change
       // Usage is necessary for handling directories
-      queue.push(dataTransferItemList[i].webkitGetAsEntry());
+      const entry = dataTransferItemList[i].webkitGetAsEntry();
+      if (entry) queue.push(entry);
     }
     while (queue.length > 0) {
       const entry: FileSystemEntry = queue.shift();
