@@ -2,15 +2,7 @@
 
 - name: Check if mongo_express is enabled on any host in the group
   set_fact:
-    mongo_express_enabled_on_a_host: >-
-      {{
-        groups['hosts_vitamui_mongod'] | map('extract', hostvars, 'mongo_express_enabled') |
-        select('defined') |
-        map('bool') |
-        select('equalto', true) |
-        list |
-        length > 0
-      }}
+    mongo_express_enabled_on_a_host: "{{ groups['hosts_vitamui_mongod'] | map('extract', hostvars, 'mongo_express_enabled') | select('defined') | map('bool') | list | sum > 0 }}"
 
 - name: Check mongo_express configuration
   fail:
