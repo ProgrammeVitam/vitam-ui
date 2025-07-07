@@ -81,7 +81,7 @@
             <button
               mat-menu-item
               (click)="sendTransaction()"
-              [disabled]="(isNotReady$ | async) || disabledSendTransactions.has(transaction.id)"
+              [disabled]="(isNotReady$ | async)"
             >
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
