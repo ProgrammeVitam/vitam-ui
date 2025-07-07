@@ -5,4 +5,3 @@ chmod 0555 /vitamui/ /vitamui/*
 chmod 0750 /vitamui/*/*
 
 systemctl daemon-reload
-
