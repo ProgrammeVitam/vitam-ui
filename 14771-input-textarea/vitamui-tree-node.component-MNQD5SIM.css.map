@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-tree-node/vitamui-tree-node.component.scss"],
-  "sourcesContent": [":host {\n  width: 100%;\n  overflow: hidden;\n  min-height: 40px;\n  max-height: 275px;\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  justify-content: flex-start;\n\n  .arrow {\n    --mdc-icon-button-state-layer-size: 24px;\n    padding: 0;\n    margin-left: 10px;\n    display: flex;\n    justify-content: center;\n  }\n\n  .mat-mdc-checkbox {\n    --mdc-checkbox-state-layer-size: 24px;\n\n    &-disabled {\n      pointer-events: unset;\n    }\n\n    ::ng-deep {\n      .mat-mdc-checkbox-touch-target {\n        width: 24px;\n        height: 24px;\n      }\n      .mdc-label {\n        padding-left: 0;\n        margin-left: 5px;\n      }\n    }\n  }\n\n  .node-label {\n    flex-grow: 1;\n    white-space: nowrap;\n  }\n\n  .hover-btn {\n    margin-right: 8px;\n  }\n}\n"],
-  "mappings": "AAAA,MACE,MAAA,KACA,SAAA,OACA,WAAA,KACA,WAAA,MACA,QAAA,KACA,eAAA,IACA,YAAA,OACA,gBAAA,WAEA,MAAA,CAAA,MACE,oCAAA,KAXJ,QAYI,EACA,YAAA,KACA,QAAA,KACA,gBAAA,OAGF,MAAA,CAAA,iBACE,iCAAA,KAEA,MAAA,CAAA,0BACE,eAAA,MAIA,MAAA,CARJ,iBAQI,UAAA,CAAA,8BACE,MAAA,KACA,OAAA,KAEF,MAAA,CAZJ,iBAYI,UAAA,CAAA,UACE,aAAA,EACA,YAAA,IAKN,MAAA,CAAA,WACE,UAAA,EACA,YAAA,OAGF,MAAA,CAAA,UACE,aAAA",
-  "names": []
-}

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/cancelled-snack-bar/cancelled-snack-bar.component.scss"],
-  "sourcesContent": [".cancelled-label {\n  padding: 15px;\n}\n"],
-  "mappings": "AAAA,CAAA,gBAAA,QACE",
-  "names": []
-}

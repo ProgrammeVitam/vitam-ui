@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-customer-select/vitamui-customer-select.component.scss"],
-  "sourcesContent": ["@use '../../../../sass/mixins/elevation' as elevation;\n\n.customer-bg {\n  z-index: -2;\n  position: fixed;\n  bottom: -70px;\n  right: -20px;\n  width: 518px;\n}\n\n.vitamui-header {\n  background: none;\n\n  h2 {\n    font-size: 48px;\n    text-align: center;\n  }\n\n  .vitamui-container {\n    padding-bottom: 0px;\n  }\n}\n"],
-  "mappings": "AAEA,CAAA,YACE,QAAA,GACA,SAAA,MACA,OAAA,MACA,MAAA,MACA,MAAA,MAGF,CAAA,eACE,WAAA,KAEA,CAHF,eAGE,GACE,UAAA,KACA,WAAA,OAGF,CARF,eAQE,CAAA,kBACE,eAAA",
-  "names": []
-}

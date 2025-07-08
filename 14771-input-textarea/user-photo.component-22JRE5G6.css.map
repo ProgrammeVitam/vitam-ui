@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/header/user-photo/user-photo.component.scss"],
-  "sourcesContent": [".user-photo img {\n  border-radius: 30px;\n}\n\nspan {\n  position: relative;\n  right: 7px;\n  bottom: 7px;\n}\n"],
-  "mappings": "AAAA,CAAA,WAAA,IAAA,cACE,KAGF,KACE,SAAA,SACA,MAAA,IACA,OAAA",
-  "names": []
-}

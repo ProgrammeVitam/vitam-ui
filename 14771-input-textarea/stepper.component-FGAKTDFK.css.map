@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/stepper/stepper.component.scss"],
-  "sourcesContent": [".step {\n  outline: none;\n\n  &.hidden {\n    overflow: hidden;\n  }\n}\n"],
-  "mappings": "AAAA,CAAA,KACE,QAAA,KAEA,CAHF,IAGE,CAAA,OACE,SAAA",
-  "names": []
-}
