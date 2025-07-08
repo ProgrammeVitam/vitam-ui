@@ -56,6 +56,7 @@ import { ContextPermissionTabComponent } from './context-permission-tab/context-
 import { ContextPreviewComponent } from './context-preview.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -78,6 +79,7 @@ import { MatInputModule } from '@angular/material/input';
     MatDividerModule,
     MatDatepickerModule,
     MatInputModule,
+    TranslatePipe,
   ],
   declarations: [ContextPreviewComponent, ContextInformationTabComponent, ContextPermissionTabComponent],
   exports: [ContextPreviewComponent],

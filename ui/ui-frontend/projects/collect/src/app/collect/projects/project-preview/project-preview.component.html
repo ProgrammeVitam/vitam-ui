@@ -24,104 +24,92 @@
     >
       <!-- DESCRIPTION TAB -->
       <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate }}">
-        <div class="row">
-          <div class="col-12">
-            <div class="read-only-field" *ngIf="!editMode">
-              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
-              <div>
-                <ng-container *ngIf="selectedProject.messageIdentifier">
-                  {{ selectedProject.messageIdentifier }}
-                </ng-container>
-              </div>
+        <div class="align-items-stretch" [class.gap-3]="editMode">
+          <div class="read-only-field" *ngIf="!editMode">
+            <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
+            <div>
+              <ng-container *ngIf="selectedProject.messageIdentifier">
+                {{ selectedProject.messageIdentifier }}
+              </ng-container>
             </div>
-            <div class="form-control read-only-field" *ngIf="editMode">
-              <vitamui-common-input
-                formControlName="messageIdentifier"
-                required
-                placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
-                class="col-12 px-0 mr-4"
+          </div>
+          <vitamui-input
+            *ngIf="editMode"
+            formControlName="messageIdentifier"
+            [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate"
+          >
+          </vitamui-input>
+
+          <div class="read-only-field">
+            <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate }} :</label>
+            <div>
+              <ng-container *ngIf="selectedProject.id">
+                {{ selectedProject.id }}
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="read-only-field" *ngIf="!editMode">
+            <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
+            <div>
+              <ng-container *ngIf="selectedProject.comment">
+                {{ selectedProject.comment }}
+              </ng-container>
+            </div>
+          </div>
+
+          @if (editMode) {
+            <vitamui-input
+              [textarea]="true"
+              formControlName="comment"
+              [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate"
+            >
+            </vitamui-input>
+
+            <div class="hgap-2">
+              <vitamui-input
+                class="w-50"
+                formControlName="originatingAgencyIdentifier"
+                [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate"
               >
-              </vitamui-common-input>
+              </vitamui-input>
+              <vitamui-input class="w-50" [disabled]="true" [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate">
+              </vitamui-input>
             </div>
 
-            <div class="read-only-field">
-              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate }} :</label>
-              <div>
-                <ng-container *ngIf="selectedProject.id">
-                  {{ selectedProject.id }}
-                </ng-container>
-              </div>
-            </div>
-
-            <div class="read-only-field" *ngIf="!editMode">
-              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
-              <div>
-                <ng-container *ngIf="selectedProject.comment">
-                  {{ selectedProject.comment }}
-                </ng-container>
-              </div>
-            </div>
-            <div class="form-control read-only-field col-12 px-0" *ngIf="editMode">
-              <vitamui-common-textarea
-                formControlName="comment"
-                placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }}"
+            <div class="hgap-2">
+              <vitamui-input
+                class="w-50"
+                formControlName="submissionAgencyIdentifier"
+                [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate"
               >
-              </vitamui-common-textarea>
+              </vitamui-input>
+              <vitamui-input class="w-50" [disabled]="true" [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate">
+              </vitamui-input>
             </div>
 
-            <vitamui-common-input
-              class="col-6 px-0 mb-3"
-              formControlName="originatingAgencyIdentifier"
-              placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
-              required
-              *ngIf="editMode"
-            >
-            </vitamui-common-input>
-
-            <vitamui-common-input
-              [disabled]="true"
-              class="col-6"
-              placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
-              *ngIf="editMode"
-            >
-            </vitamui-common-input>
-            <vitamui-common-input
-              class="col-6 px-0"
-              formControlName="submissionAgencyIdentifier"
-              placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} "
-              *ngIf="editMode"
-              required
-            >
-            </vitamui-common-input>
-            <vitamui-common-input
-              [disabled]="true"
-              class="col-6"
-              placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} "
-              *ngIf="editMode"
-            >
-            </vitamui-common-input>
-            <div class="mt-5 hgap-3" *ngIf="editMode">
+            <div class="mt-5 hgap-3">
               <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
                 {{ 'UNIT_UPDATE.SAVE' | translate }}
               </button>
               <button class="btn link cancel" type="button" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
             </div>
+          }
 
-            <div class="read-only-field" *ngIf="!editMode">
-              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} :</label>
-              <div>
-                <ng-container *ngIf="selectedProject.originatingAgencyIdentifier">
-                  {{ selectedProject.originatingAgencyIdentifier }}
-                </ng-container>
-              </div>
+          <div class="read-only-field" *ngIf="!editMode">
+            <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} :</label>
+            <div>
+              <ng-container *ngIf="selectedProject.originatingAgencyIdentifier">
+                {{ selectedProject.originatingAgencyIdentifier }}
+              </ng-container>
             </div>
-            <div class="read-only-field" *ngIf="!editMode">
-              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} :</label>
-              <div>
-                <ng-container *ngIf="selectedProject.submissionAgencyIdentifier">
-                  {{ selectedProject.submissionAgencyIdentifier }}
-                </ng-container>
-              </div>
+          </div>
+          <div class="read-only-field" *ngIf="!editMode">
+            <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} :</label>
+            <div>
+              <ng-container *ngIf="selectedProject.submissionAgencyIdentifier">
+                {{ selectedProject.submissionAgencyIdentifier }}
+              </ng-container>
             </div>
           </div>
         </div>
@@ -183,50 +171,39 @@
             <div class="gap-5" *ngIf="editMode">
               <div class="gap-3 w-100 align-items-stretch">
                 <div class="hgap-2">
-                  <vitamui-common-input
+                  <vitamui-input
                     class="w-50"
                     formControlName="archivalAgencyIdentifier"
-                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-                    required
+                    [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
                   >
-                  </vitamui-common-input>
+                  </vitamui-input>
 
-                  <vitamui-common-input
-                    [disabled]="true"
-                    class="w-50"
-                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-                  >
-                  </vitamui-common-input>
+                  <vitamui-input [disabled]="true" class="w-50" [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate">
+                  </vitamui-input>
                 </div>
                 <div class="hgap-2">
-                  <vitamui-common-input
+                  <vitamui-input
                     class="w-50"
                     formControlName="transferringAgencyIdentifier"
-                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-                    required
+                    [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
                   >
-                  </vitamui-common-input>
-                  <vitamui-common-input
-                    [disabled]="true"
-                    class="w-50"
-                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-                  >
-                  </vitamui-common-input>
+                  </vitamui-input>
+                  <vitamui-input [disabled]="true" class="w-50" [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate">
+                  </vitamui-input>
                 </div>
-                <vitamui-common-input
+                <vitamui-input
                   class="w-50"
                   formControlName="archivalAgreement"
-                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
-                  required
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
                 >
-                </vitamui-common-input>
+                </vitamui-input>
 
-                <vitamui-common-input
+                <vitamui-input
                   class="w-50"
                   formControlName="archiveProfile"
-                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
                 >
-                </vitamui-common-input>
+                </vitamui-input>
 
                 <vitamui-select
                   class="w-50"

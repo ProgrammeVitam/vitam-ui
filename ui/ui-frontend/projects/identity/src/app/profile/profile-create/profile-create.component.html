@@ -7,33 +7,14 @@
       <span *ngIf="adminProfileForm?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
     </vitamui-common-slide-toggle>
 
-    <vitamui-common-input
+    <vitamui-input
       formControlName="name"
-      minlength="2"
-      maxlength="100"
-      required
       [placeholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate"
+      [errorMessageMap]="{ nameExists: 'USER_PROFILE.INFORMATIONS.MODAL.EXISTING_NAME' | translate }"
     >
-      <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.required">{{
-        'COMMON.ERROR.REQUIRED' | translate
-      }}</vitamui-common-input-error>
-      <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.nameExists">{{
-        'USER_PROFILE.INFORMATIONS.MODAL.EXISTING_NAME' | translate
-      }}</vitamui-common-input-error>
-    </vitamui-common-input>
+    </vitamui-input>
 
-    <vitamui-common-input
-      formControlName="description"
-      minlength="2"
-      maxlength="250"
-      required
-      [placeholder]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate"
-    >
-      <vitamui-common-input-error
-        *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required"
-        >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-      >
-    </vitamui-common-input>
+    <vitamui-input formControlName="description" [placeholder]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate"> </vitamui-input>
 
     <div class="d-flex">
       <div class="mr-4 p-2">

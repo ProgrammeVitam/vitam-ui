@@ -40,11 +40,6 @@ import { Option, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
 import { ManagementContractValidationErrors, ManagementContractValidators } from '../../validators/management-contract-validators';
 import { TranslateService } from '@ngx-translate/core';
 
-interface PersistentIdentifierPolicyTypeOption {
-  label: string;
-  value: PersistentIdentifierPolicyTypeEnum | string;
-}
-
 @Component({
   selector: 'app-create-persistent-identifier-policy-form',
   templateUrl: './create-persistent-identifier-policy-form.component.html',
@@ -56,13 +51,17 @@ export class CreatePersistentIdentifierPolicyFormComponent implements OnChanges 
   @Output() objectUsagePolicyAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output() objectUsagePolicyRemoved: EventEmitter<void> = new EventEmitter<void>();
 
-  readonly INVALID_AUTHORITY = ManagementContractValidationErrors.INVALID_AUTHORITY;
+  authorityErrorMap = {
+    [ManagementContractValidationErrors.INVALID_AUTHORITY]: this.translateService.instant(
+      'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_AUTHORITY',
+    ),
+  };
 
-  policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
+  policyTypeOptions: Option[] = [
+    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', key: '' },
     ...Object.values(PersistentIdentifierPolicyTypeEnum).map((pipt) => ({
       label: `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
-      value: pipt,
+      key: pipt,
     })),
   ];
   objectUsageOptions: Option[] = [

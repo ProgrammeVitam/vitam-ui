@@ -71,10 +71,10 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { BadgeComponent } from '../../../app/modules/components/badge/badge.component';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { FilingPlanModule } from '../filing-plan/filing-plan.module';
-import { VitamUICommonInputModule } from '../../../app/modules/components/vitamui-input/vitamui-common-input.module';
 import { VitamUISnackBarService } from '../../../app/modules/components/vitamui-snack-bar';
 import { NextStepComponent } from '../next-step/next-step.component';
 import { PreviousStepComponent } from '../previous-step/previous-step.component';
+import { InputComponent } from '../input/input.component';
 
 const PULL = 'PULL';
 const REPLACE = 'REPLACE';
@@ -102,11 +102,11 @@ export enum ReclassificationToggle {
     MatButtonToggle,
     NgForOf,
     FilingPlanModule,
-    VitamUICommonInputModule,
     MatDialogContent,
     MatDialogActions,
     NextStepComponent,
     PreviousStepComponent,
+    InputComponent,
   ],
 })
 export class ReclassificationDialogComponent implements OnInit, OnDestroy {

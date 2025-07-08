@@ -45,6 +45,7 @@ import { ApplicationApiService, ApplicationService, ProfileService, VitamUIAutoc
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProfilesFormComponent } from './profiles-form.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 const expectedProfiles = [
   {
@@ -163,6 +164,7 @@ describe('ProfilesFormComponent', () => {
         NoopAnimationsModule,
         VitamUIAutocompleteModule,
         VitamUICommonTestModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [ProfilesFormComponent, TesthostComponent],
       providers: [

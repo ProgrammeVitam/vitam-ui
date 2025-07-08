@@ -79,15 +79,12 @@ import { VitamuiContentBreadcrumbModule } from './components/vitamui-content-bre
 import { VitamUICustomerSelectModule } from './components/vitamui-customer-select/vitamui-customer-select.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { VitamuiDragDropFileModule } from './components/vitamui-drag-drop-file/vitamui-drag-drop-file.module';
-import { VitamUIDurationInputModule } from './components/vitamui-duration-input/vitamui-duration-input.module';
 import { VitamuiFacetModule } from './components/vitamui-facet/vitamui-facet.module';
 import { VitamUIFieldErrorModule } from './components/vitamui-field-error/vitamui-field-error.module';
-import { VitamUICommonInputModule } from './components/vitamui-input/vitamui-common-input.module';
 import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interval-date-picker/vitamui-interval-date-picker.component';
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
 import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vitamui-multi-inputs.module';
-import { VitamuiRepeatableInputModule } from './components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
@@ -113,6 +110,7 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
 import { VitamuiSupHeaderModule } from './components/vitamui-sup-header/vitamui-sup-header.module';
+import { InputComponent } from '../../lib/components/input/input.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -183,19 +181,17 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUIAutocompleteModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
-    VitamUICommonInputModule,
     VitamuiContentBreadcrumbModule,
     VitamUICustomerSelectModule,
     VitamUIDisplayNodeModule,
     VitamuiDragDropFileModule,
-    VitamUIDurationInputModule,
     VitamuiFacetModule,
     VitamUIFieldErrorModule,
     VitamuiIntervalDatePickerComponent,
     VitamUIListInputModule,
     VitamuiMenuButtonModule,
     VitamuiMultiInputsModule,
-    VitamuiRepeatableInputModule,
+    InputComponent,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     VitamuiSupHeaderModule,
@@ -253,17 +249,15 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUIAutocompleteModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
-    VitamUICommonInputModule,
     VitamuiContentBreadcrumbModule,
     VitamUICustomerSelectModule,
     VitamUIDisplayNodeModule,
     VitamuiDragDropFileModule,
-    VitamUIDurationInputModule,
     VitamuiFacetModule,
     VitamUIFieldErrorModule,
     VitamUIListInputModule,
     VitamuiMenuButtonModule,
-    VitamuiRepeatableInputModule,
+    InputComponent,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     VitamuiSupHeaderModule,

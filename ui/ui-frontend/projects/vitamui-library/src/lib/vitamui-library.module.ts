@@ -60,6 +60,7 @@ import { AlertDialogComponent } from './components/dialog/alert-dialog/alert-dia
 import { DialogContentWithStateComponent } from './components/dialog/dialog-content-with-state/dialog-content-with-state.component';
 import { ErrorDialogComponent } from './components/dialog/error-dialog/error-dialog.component';
 import { TranslateWithOptionalTypeSuffixPipe } from '../app/modules/pipes/translate-with-optional-type-suffix.pipe';
+import { VitamUIInputErrorComponent } from '../app/modules/components/vitamui-input-error/vitamui-input-error.component';
 
 const components = [
   AlertDialogComponent,
@@ -81,6 +82,7 @@ const components = [
   VitamUIRadioGroupModule,
   VitamUIRadioModule,
   VitamUISelectAllOptionModule,
+  VitamUIInputErrorComponent,
 ];
 
 @NgModule({

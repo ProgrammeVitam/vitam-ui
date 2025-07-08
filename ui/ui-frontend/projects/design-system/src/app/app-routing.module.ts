@@ -56,7 +56,7 @@ import { DesignSystemCheckboxComponent } from './components/molecules/inputs/che
 import { DesignSystemSelectComponent } from './components/molecules/inputs/select/design-system-select.component';
 import { DesignSystemSelectWithTreeComponent } from './components/molecules/inputs/select-with-tree/design-system-select-with-tree.component';
 import { DesignSystemOldInputsComponent } from './components/molecules/inputs/old-input/design-system-old-inputs.component';
-import { DesignSystemRepeatableInputComponent } from './components/molecules/inputs/repeatable-input/design-system-repeatable-input.component';
+import { DesignSystemInputComponent } from './components/molecules/inputs/input/design-system-input.component';
 import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecules/inputs/search-with-type-selector/design-system-search-with-type-selector.component';
 import { DesignSystemMultipleOptionsDatepickerComponent } from './components/molecules/inputs/multiple-options-datepicker/design-system-multiple-options-datepicker.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
@@ -103,16 +103,16 @@ const routes: Routes = [
       { path: 'breadcrumbs', component: BreadcrumbsComponent, data: { altSearch: { fr: ["Fil d'Ariane"] } } satisfies RouteData },
       { path: 'loaders-steppers', component: LoadersSteppersComponent },
       {
-        path: 'inputs',
+        path: 'forms',
         children: [
-          { path: '', redirectTo: 'select', pathMatch: 'full' },
+          { path: '', redirectTo: 'input', pathMatch: 'full' },
+          { path: 'input', component: DesignSystemInputComponent, data: { altSearch: { fr: ['Textarea'] } } satisfies RouteData },
           { path: 'select', component: DesignSystemSelectComponent },
           { path: 'select-with-tree', component: DesignSystemSelectWithTreeComponent },
           { path: 'checkboxes', component: DesignSystemCheckboxComponent },
-          { path: 'old-input', component: DesignSystemOldInputsComponent },
           { path: 'multiple-options-datepicker', component: DesignSystemMultipleOptionsDatepickerComponent },
-          { path: 'repeatable-input', component: DesignSystemRepeatableInputComponent },
           { path: 'search-with-type-selector', component: DesignSystemSearchWithTypeSelectorComponent },
+          { path: 'old-input', component: DesignSystemOldInputsComponent },
         ],
       },
     ],

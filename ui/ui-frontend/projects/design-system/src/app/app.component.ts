@@ -53,8 +53,13 @@ export class AppComponent {
   routes: Routes;
   searchOptions: VitamuiSelectOptions;
   form: FormGroup;
+  url: string;
 
-  constructor(router: Router, fb: FormBuilder, translateService: TranslateService) {
+  constructor(
+    private router: Router,
+    fb: FormBuilder,
+    translateService: TranslateService,
+  ) {
     this.routes = router.config;
 
     function extractSearchData(context: string, route: Route, acc: VitamuiSelectOptions) {
@@ -93,6 +98,15 @@ export class AppComponent {
         router.navigateByUrl(value);
         setTimeout(() => searchControl.reset());
       }
+    });
+  }
+
+  isActive(url: string): boolean {
+    return this.router.isActive(url, {
+      paths: 'subset',
+      queryParams: 'subset',
+      fragment: 'ignored',
+      matrixParams: 'ignored',
     });
   }
 }

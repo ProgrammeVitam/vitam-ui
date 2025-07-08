@@ -1,0 +1,32 @@
+<h2>Input</h2>
+
+<p>This is a form component that allows the user to fill-in one or multiple string values.</p>
+<p>
+  It can be used for a <strong>single</strong> value or <strong>multiple</strong> values and as an <strong>input</strong> or a
+  <strong>textarea</strong>.
+</p>
+
+@for (config of configs; track config.name) {
+  <h3>{{ config.name }}</h3>
+  @for (entry of config.entries; track entry.type) {
+    <div class="container-fluid p-0">
+      <div class="row">
+        @for (state of entry.states; track state.id) {
+          <div class="col">
+            <h4>{{ state.id + ' (' + entry.type + ')' }}</h4>
+            <vitamui-input
+              [class.focused]="state.id === 'Active'"
+              [formControl]="state.control"
+              placeholder="Label"
+              [multiple]="config.multiple"
+              [textarea]="config.textarea"
+              [errorMessageMap]="{
+                pattern: 'ERRORS.CONTAINS_TextContent',
+              }"
+            ></vitamui-input>
+          </div>
+        }
+      </div>
+    </div>
+  }
+}

@@ -36,21 +36,19 @@
  */
 import { Component, Input } from '@angular/core';
 import { HintComponent } from '../../components/hint/hint.component';
-import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { PipesModule } from '../../pipes/pipes.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { VitamUICommonInputModule } from '../../components/vitamui-input/vitamui-common-input.module';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { InputComponent } from '../../../../lib/components/input/input.component';
 
 @Component({
   selector: 'vitamui-editor-textarea',
   template: `
-    <vitamui-common-textarea [formControl]="control" [placeholder]="label | translate | empty" [required]="required" class="w-100">
-      <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
-      <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
-    </vitamui-common-textarea>
+    <vitamui-input [textarea]="true" [formControl]="control" [placeholder]="label | translate | empty" [required]="required" class="w-100">
+    </vitamui-input>
+    <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
   `,
-  imports: [HintComponent, FormErrorDisplayComponent, PipesModule, TranslatePipe, VitamUICommonInputModule, ReactiveFormsModule],
+  imports: [HintComponent, PipesModule, TranslatePipe, ReactiveFormsModule, InputComponent],
 })
 export class EditorTextareaComponent {
   @Input({ required: true }) control!: FormControl;

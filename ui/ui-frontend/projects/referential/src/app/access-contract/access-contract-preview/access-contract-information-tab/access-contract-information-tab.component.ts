@@ -150,7 +150,11 @@ export class AccessContractInformationTabComponent {
   private initForm(): void {
     this.form = this.formBuilder.group({
       status: ['ACTIVE'],
-      name: [null, Validators.required, this.accessContractCreateValidators.uniqueNameWhileEdit(this.previousValue)],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        this.accessContractCreateValidators.uniqueNameWhileEdit(this.previousValue),
+      ],
       description: [null],
       accessLog: ['ACTIVE'],
       ruleCategoryToFilter: [new Array<string>()],

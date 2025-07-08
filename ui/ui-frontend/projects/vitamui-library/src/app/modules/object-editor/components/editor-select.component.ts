@@ -37,11 +37,11 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HintComponent } from '../../components/hint/hint.component';
-import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
 
 @Component({
   selector: 'vitamui-editor-select',
@@ -59,11 +59,11 @@ import { MatSelectModule } from '@angular/material/select';
         <i class="material-icons">keyboard_arrow_up</i>
         <i class="material-icons">keyboard_arrow_down</i>
       </div>
-      <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
-      <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
     </mat-form-field>
+    <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
+    <vitamui-form-errors [control]="control"></vitamui-form-errors>
   `,
-  imports: [ReactiveFormsModule, HintComponent, FormErrorDisplayComponent, TranslatePipe, PipesModule, MatFormFieldModule, MatSelectModule],
+  imports: [ReactiveFormsModule, HintComponent, TranslatePipe, PipesModule, MatFormFieldModule, MatSelectModule, FormErrorsComponent],
 })
 export class EditorSelectComponent {
   @Input({ required: true }) control!: FormControl;

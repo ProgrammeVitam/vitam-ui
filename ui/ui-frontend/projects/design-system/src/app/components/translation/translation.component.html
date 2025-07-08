@@ -29,25 +29,13 @@
     <span class="text medium mb-3">{{
       'TRANSLATION.TRANSLATE_PARAMETERS' | translate: { param1: firstInput.value, param2: secondInput.value }
     }}</span>
-    <vitamui-common-input
-      class="ml-3"
-      [formControl]="firstInput"
-      [placeholder]="'TRANSLATION.FIRST_INPUT' | translate"
-    ></vitamui-common-input>
-    <vitamui-common-input
-      class="ml-3"
-      [formControl]="secondInput"
-      [placeholder]="'TRANSLATION.SECOND_INPUT' | translate"
-    ></vitamui-common-input>
+    <vitamui-input class="ml-3" [formControl]="firstInput" [placeholder]="'TRANSLATION.FIRST_INPUT' | translate"></vitamui-input>
+    <vitamui-input class="ml-3" [formControl]="secondInput" [placeholder]="'TRANSLATION.SECOND_INPUT' | translate"></vitamui-input>
   </div>
 
   <div class="d-flex align-items-center">
     <span class="text medium mb-3">{{ nbApples.value | i18nPlural: nbApplesTextMap | translate: { number: nbApples.value } }}</span>
-    <vitamui-common-input
-      class="ml-3"
-      [formControl]="nbApples"
-      [placeholder]="'TRANSLATION.NUMBER_OF_APPLE' | translate"
-    ></vitamui-common-input>
+    <vitamui-input class="ml-3" [formControl]="nbApples" [placeholder]="'TRANSLATION.NUMBER_OF_APPLE' | translate"></vitamui-input>
   </div>
 
   <div class="text medium mb-3" innerHtml="{{ 'TRANSLATION.TRANSLATE_HTML' | translate }}"></div>

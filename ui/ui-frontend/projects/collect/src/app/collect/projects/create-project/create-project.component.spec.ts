@@ -268,9 +268,9 @@ describe('CreateProjectComponent', () => {
       expect(elementCdkStep.length).toBe(6);
     });
 
-    it('should have 13 VitamUI Common Input', () => {
-      const elementCdkStep = fixture.nativeElement.querySelectorAll('vitamui-common-input');
-      expect(elementCdkStep.length).toBe(13);
+    it('should have 14 VitamUI Input', () => {
+      const elementCdkStep = fixture.nativeElement.querySelectorAll('vitamui-input');
+      expect(elementCdkStep.length).toBe(14);
     });
   });
 });

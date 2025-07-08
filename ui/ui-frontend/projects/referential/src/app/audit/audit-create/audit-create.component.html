@@ -32,21 +32,13 @@
 
         <div class="mt-4" *ngIf="!showAuditPerimeter()">
           <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.ENTER_CONCERNED_CONSISTENCY_AUDIT_IDENTIFIER' | translate }}</div>
-          <vitamui-common-input
+          <vitamui-input
             class="w-100 mt-4"
             formControlName="evidenceAudit"
-            required
-            placeholder="{{ 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate }}"
+            [placeholder]="'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate"
+            [errorMessageMap]="{ invalidEvidenceAuditId: 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }"
           >
-            <ng-container *ngIf="form.get('evidenceAudit')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('evidenceAudit').errors?.required">
-                {{ 'COMMON.REQUIRED' | translate }}
-              </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!form?.get('evidenceAudit').errors?.invalidEvidenceAuditId">
-                {{ 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }}
-              </vitamui-common-input-error>
-            </ng-container>
-          </vitamui-common-input>
+          </vitamui-input>
         </div>
       </mat-dialog-content>
 
@@ -72,14 +64,13 @@
           >
           </vitamui-select>
         } @else if (enterIngestOperationsIdentifiers()) {
-          <vitamui-common-input
+          <vitamui-input
             class="w-100 mt-4"
             [formControl]="ingestOperationsEntries"
             formControlName="ingestOperationIds"
-            required
-            placeholder="{{ 'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER' | translate }}"
+            [placeholder]="'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER' | translate"
           >
-          </vitamui-common-input>
+          </vitamui-input>
         } @else if (chooseAttachmentPosition()) {
           <vitamui-library-filing-plan
             [formControl]="selectedNodes"

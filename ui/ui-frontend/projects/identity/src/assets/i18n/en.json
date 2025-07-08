@@ -28,8 +28,6 @@
     },
     "ERROR": {
       "WRONG_FORMAT": "Wrong format",
-      "STRING_MAX_LENGTH": "{{ max }} characters maximum",
-      "STRING_MIN_LENGTH": "{{ min }} characters minimum",
       "NAME_ALREADY_EXISTS": "Name already exists",
       "REQUIRED": "Required field"
     }
@@ -132,10 +130,7 @@
       "DOMAINS": "Domains",
       "ALERT_ON_INACTIVE_USERS": "Alert on inactive users",
       "ALERT_DURATION_ON_INACTIVE_USERS": {
-        "LABEL": "Alert duration on inactive users (months)",
-        "REQUIRED": "Mandatory field and should be a positive value",
-        "WRONG_FORMAT": "Incorrect format",
-        "MIN_VALUE": "It should be a positive value"
+        "LABEL": "Alert duration on inactive users (months)"
       },
       "CODE_ALREADY_EXIST": "Code already exists",
       "PWD_REVOCATION_THREE": "3 months",
@@ -223,9 +218,8 @@
       "TERTIARY_COLOR_HIDE": "Hide tertiary color",
       "SUBMIT": "Apply graphic idendity chart",
       "INVALID": "Incorrect color",
-      "TOO_LIGHT": "The color is too light.",
-      "TOO_DARK": "The color is too dark.",
-      "INCOMPATIBLE": "This color will not be compatible with RGAA accessibility standards."
+      "TOO_LIGHT": "The color is too light. This color will not be compatible with RGAA accessibility standards.",
+      "TOO_DARK": "The color is too dark. This color will not be compatible with RGAA accessibility standards."
     },
     "HOMEPAGE_MESSAGE": {
       "LANGUAGE_TITLE": "Title",

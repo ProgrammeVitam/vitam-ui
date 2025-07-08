@@ -434,27 +434,30 @@
               </div>
               <div class="row col">
                 <div class="col-6">
-                  <vitamui-common-textarea
+                  <vitamui-input
+                    [textarea]="true"
                     class="w-100"
                     [disabled]="isNotRegexCustomisable()"
                     [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' | translate"
                     [(ngModel)]="customRegex"
                     (ngModelChange)="radioExpressionReguliere = 'input'"
-                    [required]="true"
+                    [required]="radioExpressionReguliere === 'input'"
                     [maxlength]="115"
                   >
-                  </vitamui-common-textarea>
+                  </vitamui-input>
                 </div>
                 <div class="col-6">
-                  <vitamui-common-textarea
+                  <vitamui-input
+                    [textarea]="true"
                     class="w-100"
                     [disabled]="isNotRegexCustomisable()"
                     [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PATTERN_COMMENT' | translate"
                     [(ngModel)]="commentaire"
-                    [required]="true"
+                    (ngModelChange)="radioExpressionReguliere = 'input'"
+                    [required]="radioExpressionReguliere === 'input'"
                     [maxlength]="115"
                   >
-                  </vitamui-common-textarea>
+                  </vitamui-input>
                 </div>
               </div>
             </div>

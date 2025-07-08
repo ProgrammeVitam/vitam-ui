@@ -84,7 +84,6 @@ export class DesignSystemOldInputsComponent implements OnInit {
   autoCompleteSelectDisabled = new FormControl();
 
   streetEmpty = new FormControl('', [Validators.maxLength(3)]);
-  streetInvalid = new FormControl('azerty', [Validators.maxLength(3)]);
   streetDisable = new FormControl('azerty', [Validators.maxLength(6)]);
 
   editablePatterns = new FormControl();

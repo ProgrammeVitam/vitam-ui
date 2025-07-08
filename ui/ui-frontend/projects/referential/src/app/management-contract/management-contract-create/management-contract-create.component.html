@@ -13,63 +13,30 @@
           <vitamui-common-slide-toggle class="w-100" formControlName="status">{{
             'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CONTRACT_STATUS' | translate
           }}</vitamui-common-slide-toggle>
-          <vitamui-common-input
+          <vitamui-input
             *ngIf="isSlaveMode"
             class="w-100"
             formControlName="identifier"
-            placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER' | translate }}"
-            required
+            [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER' | translate"
+            [errorMessageMap]="{ identifierExists: 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER_ALREADY_EXIST' | translate }"
           >
-            <ng-container *ngIf="identifier?.touched">
-              <vitamui-common-input-error *ngIf="!!identifier?.errors?.required">
-                {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANDATORY_FIELD' | translate }}
-              </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!identifier?.errors?.identifierExists">
-                {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.IDENTIFIER_ALREADY_EXIST' | translate }}
-              </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!identifier?.errors?.minlength">
-                {{ 'COMMON.MIN_LENGTH' | translate: identifier?.errors }}
-              </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!identifier?.errors?.maxlength">
-                {{ 'COMMON.MAX_LENGTH' | translate: identifier?.errors }}
-              </vitamui-common-input-error>
-            </ng-container>
-          </vitamui-common-input>
+          </vitamui-input>
 
-          <vitamui-common-input
+          <vitamui-input
             class="w-100"
             formControlName="name"
-            placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME' | translate }}"
-            required
+            [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME' | translate"
+            [errorMessageMap]="{ nameExists: 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME_ALREADY_EXIST' | translate }"
           >
-            <ng-container *ngIf="name?.touched">
-              <vitamui-common-input-error *ngIf="!!name?.errors?.required">{{
-                'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.MANDATORY_FIELD' | translate
-              }}</vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!name?.errors?.nameExists">
-                {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.NAME_ALREADY_EXIST' | translate }}
-              </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!name?.errors?.minlength">
-                {{ 'COMMON.MIN_LENGTH' | translate: name?.errors }}
-              </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!name?.errors?.maxlength">
-                {{ 'COMMON.MAX_LENGTH' | translate: name?.errors }}
-              </vitamui-common-input-error>
-            </ng-container>
-          </vitamui-common-input>
+          </vitamui-input>
 
-          <vitamui-common-textarea
+          <vitamui-input
+            [textarea]="true"
             class="w-100"
             formControlName="description"
-            placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.DESCRIPTION' | translate }}"
-            [rows]="4"
+            [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.DESCRIPTION' | translate"
           >
-            <ng-container *ngIf="description?.touched">
-              <vitamui-common-input-error *ngIf="!!description?.errors?.required">
-                {{ 'COMMON.REQUIRED' | translate }}
-              </vitamui-common-input-error>
-            </ng-container>
-          </vitamui-common-textarea>
+          </vitamui-input>
         </div>
       </mat-dialog-content>
 
@@ -91,24 +58,24 @@
 
       <mat-dialog-content>
         <div class="gap-4" formGroupName="storage" style="width: 100%">
-          <vitamui-common-input
+          <vitamui-input
             class="w-100"
             formControlName="unitStrategy"
-            placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.UNIT_STRATEGY' | translate }}"
+            [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.UNIT_STRATEGY' | translate"
           >
-          </vitamui-common-input>
-          <vitamui-common-input
+          </vitamui-input>
+          <vitamui-input
             class="w-100"
             formControlName="objectGroupStrategy"
             placeholder=" {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.OBJECT_GROUP_STRATEGY' | translate }}"
           >
-          </vitamui-common-input>
-          <vitamui-common-input
+          </vitamui-input>
+          <vitamui-input
             class="w-100"
             formControlName="objectStrategy"
-            placeholder="{{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.OBJECT_STRATEGY' | translate }}"
+            [placeholder]="'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.OBJECT_STRATEGY' | translate"
           >
-          </vitamui-common-input>
+          </vitamui-input>
         </div>
       </mat-dialog-content>
 
@@ -143,7 +110,7 @@
           [enableSearch]="false"
         ></vitamui-select>
 
-        <div formArrayName="persistentIdentifierPolicies">
+        <div class="mt-3" formArrayName="persistentIdentifierPolicies">
           <div *ngFor="let persistentIdentifier of getPersistentIdentifierPolicies().controls">
             <app-create-persistent-identifier-policy-form
               [form]="persistentIdentifier"

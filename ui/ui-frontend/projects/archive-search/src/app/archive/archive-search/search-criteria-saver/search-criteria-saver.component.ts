@@ -36,7 +36,7 @@
  */
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -72,7 +72,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   criteriaToUpdate: SearchCriteriaHistory;
   saveSearchCriteriaHistorySubscription: Subscription;
   updateSearchCriteriaHistorySubscription: Subscription;
-  maxlength = 150;
   displaySearchCriterias: DisplaySearchCriteria[] = [];
 
   constructor(
@@ -88,7 +87,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
-      name: null,
+      name: [null, [Validators.required, Validators.maxLength(150)]],
     });
 
     this.criteria = data.criteria;

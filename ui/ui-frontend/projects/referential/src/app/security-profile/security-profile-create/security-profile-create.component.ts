@@ -72,8 +72,16 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: [null, [Validators.required], this.securityProfileCreateValidators.uniqueName()],
-      identifier: [null, Validators.required, this.securityProfileCreateValidators.uniqueIdentifier()],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        this.securityProfileCreateValidators.uniqueName(),
+      ],
+      identifier: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        this.securityProfileCreateValidators.uniqueIdentifier(),
+      ],
       fullAccess: [true],
       permissions: null,
     });

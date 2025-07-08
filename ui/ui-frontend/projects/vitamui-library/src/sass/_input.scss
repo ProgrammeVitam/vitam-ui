@@ -11,7 +11,7 @@
   width: 100%;
   border-radius: 5px;
   background-color: white;
-  padding: 10px 15px;
+  padding: 8px 14px; // 9px 15px - 1px for borders
   vertical-align: top;
 
   &:not(.editable-field) {
@@ -46,15 +46,10 @@
     font-size: 14px;
     font-weight: 700;
     color: var(--vitamui-primary) !important;
-    letter-spacing: 0.1px;
     line-height: 10px;
     white-space: nowrap;
     transform-origin: left;
     transition: transform $anim-timing;
-
-    .required-marker {
-      color: var(--vitamui-red);
-    }
   }
 
   input,
@@ -69,7 +64,6 @@
   }
 
   input {
-    line-height: 18px;
     transform-origin: left;
     transition: margin $anim-timing;
     width: 100%;
@@ -146,15 +140,24 @@
 .vitamui-float .vitamui-input,
 .vitamui-float.vitamui-input {
   label:first-of-type {
-    transform: scale((12 / 14)) translateY(-12px);
+    transform: scale((12 / 14)) translateY(-14px);
   }
 
   input {
     padding: 0;
-    padding-top: 15px !important;
+    padding-top: 14px !important;
   }
   textarea {
     margin-top: 25px;
     padding: 0;
+  }
+}
+
+.required-marker {
+  color: var(--vitamui-red);
+
+  .mdc-text-field--disabled &,
+  .disabled & {
+    color: var(--vitamui-grey-700) !important;
   }
 }

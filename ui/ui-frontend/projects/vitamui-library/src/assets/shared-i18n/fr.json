@@ -3551,7 +3551,6 @@
       "SUBMISSION_AGENCY_ID": "Identifiant du service versant",
       "SUBMISSION_AGENCY_ID_PLACEHOLDER": "Service versant",
       "SUBMISSION_AGENCY_ID_SEARCHBAR_PLACEHOLDER": "Veuillez sélectionner un identifiant de service versant",
-      "REQUIRED": "Champ requis",
       "DIP_EXPORT": "Exporter un DIP",
       "TRANSFER_REQUEST_TITLE": "Demander un transfert d'archives",
       "DIP_CONTEXT": "Description du contexte",
@@ -4098,9 +4097,7 @@
       "SAVE_DELETE_CRITERIA_LABEL": "Suppression de la",
       "SAVE_DELETE_CRITERIA_MESSGE": "Voulez-vous supprimer la sauvegarde enregistrée ?",
       "SAVE_NOT_POSSIBLE_ALERT": "Enregistrement impossible:",
-      "SAVE_NOT_POSSIBLE_ALERT_NAME": "Limite de caractères atteinte",
       "SAVE_NOT_POSSIBLE_MESSAGE": "Vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherche depuis la page d'accueil.",
-      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé.",
       "SAVE_REPLACE_CANCEL_BUTTON": "ANNULER",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRMER",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Etes-vous sûr de vouloir remplacer la sauvegarde suivante ?",
@@ -4686,9 +4683,7 @@
       "SAVE_DELETE_CRITERIA_LABEL": "Suppression de la",
       "SAVE_DELETE_CRITERIA_MESSGE": "Voulez-vous supprimer la sauvegarde enregistrée ?",
       "SAVE_NOT_POSSIBLE_ALERT": "Enregistrement impossible:",
-      "SAVE_NOT_POSSIBLE_ALERT_NAME": "Limite de caractères atteinte",
       "SAVE_NOT_POSSIBLE_MESSAGE": "Vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherche depuis la page d'accueil.",
-      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé.",
       "SAVE_REPLACE_CANCEL_BUTTON": "ANNULER",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRMER",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Etes-vous sûr de vouloir remplacer la sauvegarde suivante ?",
@@ -4927,7 +4922,7 @@
       "LABEL": "Autres métadonnées"
     }
   },
-  "REPEATABLE_INPUT": {
+  "INPUT": {
     "ADD_TOOLTIP": "Ajouter une valeur",
     "REMOVE_TOOLTIP": "Supprimer la valeur"
   },
@@ -4938,6 +4933,7 @@
   "ERRORS": {
     "required": "Ce champ est obligatoire.",
     "requiredNotBlank": "Ce champ est obligatoire.",
+    "min": "Il faut une valeur supérieure ou égale à {{ min }}.",
     "minlength": "La longueur minimale est de {{ requiredLength }} caractères.",
     "maxlength": "La longueur maximale est de {{ requiredLength }} caractères.",
     "email": "Adresse e-mail invalide.",

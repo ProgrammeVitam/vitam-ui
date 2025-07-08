@@ -94,8 +94,8 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
     this.externalParamProfileForm = this.formBuilder.group({
       enabled: true,
       accessContract: [null, Validators.required],
-      description: [null, Validators.required],
-      name: [null, Validators.required],
+      description: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(250)]],
+      name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       usePlatformThreshold: true,
       bulkOperationsThreshold: [null, []],
     });

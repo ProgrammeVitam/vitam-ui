@@ -117,12 +117,15 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     const messageRequestIdentifier = uuid.v4();
     this.formGroups = [
       this.fb.group({
-        messageRequestIdentifier: [{ value: messageRequestIdentifier, disabled: true }, Validators.required],
-        requesterIdentifier: [null, Validators.required],
-        archivalAgencyIdentifier: [null, Validators.required],
-        authorizationRequestReplyIdentifier: [null],
-        submissionAgencyIdentifier: [null],
-        comment: [null],
+        messageRequestIdentifier: [
+          { value: messageRequestIdentifier, disabled: true },
+          [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        ],
+        requesterIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+        archivalAgencyIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(300)]],
+        authorizationRequestReplyIdentifier: [null, [Validators.maxLength(300)]],
+        submissionAgencyIdentifier: [null, [Validators.maxLength(100)]],
+        comment: [null, [Validators.maxLength(300)]],
         archivalAgreement: [this.data.accessContract],
       }),
       this.fb.group({

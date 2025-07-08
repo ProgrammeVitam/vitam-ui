@@ -19,7 +19,7 @@
 </p>
 <p>
   You can customize the text (even HTML) of the tooltip here:
-  <vitamui-common-textarea class="w-100" [(ngModel)]="tooltipText"></vitamui-common-textarea>
+  <vitamui-input [textarea]="true" class="w-100" [(ngModel)]="tooltipText"></vitamui-input>
 </p>
 
 @for (outline of outlineValues; track outline) {

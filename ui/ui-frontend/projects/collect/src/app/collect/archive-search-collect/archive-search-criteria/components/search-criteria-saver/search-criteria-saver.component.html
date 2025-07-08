@@ -25,31 +25,16 @@
     <div class="row triangle"></div>
     <form [formGroup]="searchCriteriaForm" class="pl-5">
       <div class="sauvegarde-text">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}</div>
-      <vitamui-common-input
+      <vitamui-input
         [(ngModel)]="nameControl"
         class="w-100"
         formControlName="name"
-        maxlength="maxlength"
-        required
-        placeholder="{{ 'COLLECT.SEARCH_CRITERIA_SAVER.NAME' | translate }}"
+        [placeholder]="'COLLECT.SEARCH_CRITERIA_SAVER.NAME' | translate"
       >
-      </vitamui-common-input>
+      </vitamui-input>
 
       <div *ngIf="ToUpdate !== null && !ToUpdate">
-        <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === '' || nameControl.length > maxlength">
-          OK
-        </button>
-      </div>
-
-      <div *ngIf="nameControl.length > maxlength" class="warning">
-        <span class="ko-icon">
-          <i class="material-icons">report_problem</i>
-          {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT_NAME' | translate }}
-        </span>
-        <br />
-        <span class="warning-message">
-          {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_MESSAGE_NAME' | translate }}
-        </span>
+        <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="searchCriteriaForm.invalid">OK</button>
       </div>
     </form>
   </div>

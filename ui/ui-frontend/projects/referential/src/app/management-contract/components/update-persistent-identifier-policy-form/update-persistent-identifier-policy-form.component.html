@@ -1,19 +1,13 @@
 <div [formGroup]="form">
-  <div class="row">
-    <div class="col">
-      <vitamui-common-input
-        *ngIf="isExistingTypeOption"
-        formControlName="authority"
-        placeholder="{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.NAMING_AUTHORITY' | translate }}"
-        class="mt-2 w-100"
-      >
-        <vitamui-common-input-error *ngIf="form.get('authority').hasError(INVALID_AUTHORITY)" class="error">
-          {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_AUTHORITY' | translate }}
-        </vitamui-common-input-error>
-      </vitamui-common-input>
-    </div>
-  </div>
-  <ng-container *ngIf="isExistingTypeOption">
+  <vitamui-input
+    *ngIf="isExistingTypeOption"
+    formControlName="authority"
+    [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.NAMING_AUTHORITY' | translate"
+    class="mt-2 w-100"
+    [errorMessageMap]="authorityErrorMap"
+  >
+  </vitamui-input>
+  @if (isExistingTypeOption) {
     <h5 class="primary">{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.POSITIONING_TITLE' | translate }}</h5>
     <div class="header row">
       <div class="col">
@@ -126,5 +120,5 @@
     <vitamui-common-input-error *ngIf="form.hasError('invalidPersistentIdentifierPolicyTarget')" class="vitamui-input-errors">
       {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET' | translate }}
     </vitamui-common-input-error>
-  </ng-container>
+  }
 </div>

@@ -98,28 +98,21 @@
               }
               @case (ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID) {
                 <div class="gap-3 align-items-stretch">
-                  <vitamui-common-input
+                  <vitamui-input
                     formControlName="targetGuid"
                     required
                     [placeholder]="'RECLASSIFICATION.COMMON.ATTACHMENT_GUID_LABEL' | translate"
+                    [errorMessageMap]="{
+                      targetGuid: 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate,
+                      alreadyExistParents: 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate,
+                    }"
                   >
-                    <ng-container *ngIf="form.get('targetGuid')?.touched">
-                      <vitamui-common-input-error *ngIf="!!form.get('targetGuid')?.errors?.required"
-                        >{{ 'COMMON.REQUIRED' | translate }}
-                      </vitamui-common-input-error>
-                      <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.targetGuid">
-                        {{ 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate }}
-                      </vitamui-common-input-error>
-                      <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.alreadyExistParents"
-                        >{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate }}
-                      </vitamui-common-input-error>
-                    </ng-container>
-                  </vitamui-common-input>
-                  <vitamui-common-input
+                  </vitamui-input>
+                  <vitamui-input
                     formControlName="targetAuTitle"
                     required
                     [placeholder]="'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate"
-                  ></vitamui-common-input>
+                  ></vitamui-input>
                 </div>
               }
             }

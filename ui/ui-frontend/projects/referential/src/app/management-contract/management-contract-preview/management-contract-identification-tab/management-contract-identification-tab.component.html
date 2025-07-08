@@ -12,7 +12,7 @@
     }"
   ></vitamui-select>
 
-  <div formArrayName="persistentIdentifierPolicies">
+  <div class="mt-3" formArrayName="persistentIdentifierPolicies">
     <div *ngFor="let persistentIdentifier of getPersistentIdentifierPolicies().controls">
       <app-update-persistent-identifier-policy-form
         [form]="persistentIdentifier"

@@ -41,9 +41,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MultipleOptionsDatepickerComponent } from './multiple-options-datepicker.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { VitamUICommonInputModule } from '../vitamui-input/vitamui-common-input.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
 
 @NgModule({
   imports: [
@@ -53,9 +53,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
-    VitamUICommonInputModule,
     TranslateModule,
     MatFormFieldModule,
+    FormErrorsComponent,
   ],
   declarations: [MultipleOptionsDatepickerComponent],
   exports: [MultipleOptionsDatepickerComponent],

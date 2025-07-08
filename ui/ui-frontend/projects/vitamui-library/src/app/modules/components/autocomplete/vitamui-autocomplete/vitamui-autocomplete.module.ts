@@ -44,6 +44,8 @@ import { AutocompletePositionDirectiveModule } from '../../../directives/autocom
 import { EllipsisDirectiveModule } from '../../../directives/ellipsis/ellipsis.directive.module';
 import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';
 import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
+import { FormErrorsComponent } from '../../../../../lib/components/form-errors/form-errors.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -54,6 +56,8 @@ import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
     AutocompletePositionDirectiveModule,
     CommonTooltipModule,
     EllipsisDirectiveModule,
+    FormErrorsComponent,
+    TranslatePipe,
   ],
   declarations: [VitamUIAutocompleteComponent],
   exports: [VitamUIAutocompleteComponent],

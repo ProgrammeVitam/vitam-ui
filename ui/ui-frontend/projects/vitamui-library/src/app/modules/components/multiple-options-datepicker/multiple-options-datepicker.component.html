@@ -1,7 +1,7 @@
 <div class="vitamui-input" [class.disabled]="control.disabled">
   <label>
     {{ label | translate }}
-    <span *ngIf="control.hasValidator(Validators.required)" class="required-marker">*</span>
+    <span *ngIf="isRequired()" class="required-marker">*</span>
   </label>
   <input
     class="hidden-input"
@@ -14,7 +14,7 @@
   <input
     #vitamUIInput
     [disabled]="control.disabled"
-    [required]="control.hasValidator(Validators.required)"
+    [required]="isRequired()"
     (focus)="onFocus()"
     (blur)="onBlur()"
     [ngModel]="control.value"
@@ -37,12 +37,10 @@
     <i class="vitamui-icon vitamui-icon-info"></i>
     <mat-hint *ngIf="hint"> {{ hint | translate }} </mat-hint>
   </div>
-  <div class="error" *ngIf="control.touched && !!control.errors?.pattern">
-    <i class="vitamui-icon vitamui-icon-anomalie"></i>
-    <mat-hint> {{ 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate } }} </mat-hint>
-  </div>
-  <div class="error" *ngIf="control.touched && !!control.errors?.required">
-    <i class="vitamui-icon vitamui-icon-anomalie"></i>
-    <mat-hint> {{ 'DATE.ERROR.REQUIRED_FIELD' | translate }} </mat-hint>
-  </div>
 </div>
+<vitamui-form-errors
+  [control]="control"
+  [errorMessageMap]="{
+    pattern: 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate },
+  }"
+></vitamui-form-errors>

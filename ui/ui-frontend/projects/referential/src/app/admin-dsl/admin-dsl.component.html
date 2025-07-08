@@ -17,27 +17,18 @@
           [enableSearch]="false"
         ></vitamui-select>
 
-        <vitamui-common-input
+        <vitamui-input
           class="w-100 mx-3"
-          maxlength="36"
           formControlName="id"
-          placeholder="{{ 'DSL.HOME.IDENTIFIER' | translate }}"
+          [placeholder]="'DSL.HOME.IDENTIFIER' | translate"
           [required]="isUnitIdRequired()"
+          [errorMessageMap]="{
+            minlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.minlength?.requiredLength },
+            maxlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.maxlength?.requiredLength },
+            unknownUnit: 'DSL.HOME.UNKNOWN_UNIT' | translate,
+          }"
         >
-          <ng-container *ngIf="form.get('id')?.touched">
-            <vitamui-common-input-error *ngIf="!!form.get('id')?.errors?.required">
-              {{ 'COMMON.REQUIRED' | translate }}
-            </vitamui-common-input-error>
-
-            <vitamui-common-input-error *ngIf="!!form.get('id')?.errors?.minlength || !!form.get('id')?.errors?.maxlength">
-              {{ 'DSL.HOME.IDIENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id').errors.minlength.requiredLength } }}
-            </vitamui-common-input-error>
-
-            <vitamui-common-input-error *ngIf="!!form?.get('id')?.errors?.unknownUnit">
-              {{ 'DSL.HOME.UNKOWN_UNIT' | translate }}
-            </vitamui-common-input-error>
-          </ng-container>
-        </vitamui-common-input>
+        </vitamui-input>
 
         <vitamui-select
           class="w-100"
@@ -52,15 +43,20 @@
 
     <div class="vitamui-content">
       <form [formGroup]="form" class="request">
-        <div class="w-100 mr-3">
-          <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST' | translate }}</div>
-          <vitamui-common-textarea class="w-100" formControlName="dsl"></vitamui-common-textarea>
-        </div>
+        <vitamui-input
+          [textarea]="true"
+          [placeholder]="'DSL.HOME.REQUEST' | translate"
+          class="w-100 mr-3"
+          formControlName="dsl"
+        ></vitamui-input>
 
-        <div class="w-100">
-          <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST_RESULT' | translate }}</div>
-          <vitamui-common-textarea class="w-100" formControlName="response" disabled #responseText></vitamui-common-textarea>
-        </div>
+        <vitamui-input
+          [textarea]="true"
+          [placeholder]="'DSL.HOME.REQUEST_RESULT' | translate"
+          class="w-100"
+          formControlName="response"
+          #responseText
+        ></vitamui-input>
       </form>
 
       <div class="actions">

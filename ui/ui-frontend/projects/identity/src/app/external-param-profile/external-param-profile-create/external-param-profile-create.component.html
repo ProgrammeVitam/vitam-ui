@@ -16,37 +16,17 @@
           >{{ 'COMMON.ACTIVE' | translate }}</vitamui-common-slide-toggle
         >
 
-        <vitamui-common-input
+        <vitamui-input
           formControlName="name"
-          minlength="2"
-          maxlength="100"
-          required
-          placeholder="{{ 'EXTERNAL_PARAM_PROFILE.EXTERNAL_PARAM_PROFILE_NAME_POPUP' | translate }}"
+          [placeholder]="'EXTERNAL_PARAM_PROFILE.EXTERNAL_PARAM_PROFILE_NAME_POPUP' | translate"
+          [errorMessageMap]="{
+            nameExists: 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate,
+          }"
         >
-          <vitamui-common-input-error
-            *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required"
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-          >
-          <vitamui-common-input-error
-            *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists"
-            >{{ 'COMMON.ERROR.NAME_ALREADY_EXISTS' | translate }}</vitamui-common-input-error
-          >
-        </vitamui-common-input>
+        </vitamui-input>
 
-        <vitamui-common-input
-          formControlName="description"
-          minlength="2"
-          maxlength="250"
-          required
-          placeholder="{{ 'EXTERNAL_PARAM_PROFILE.DESCRIPTION_ADMIN_PROFILE' | translate }}"
-        >
-          <vitamui-common-input-error
-            *ngIf="
-              externalParamProfileForm?.get('description')?.touched && !!externalParamProfileForm?.get('description')?.errors?.required
-            "
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-          >
-        </vitamui-common-input>
+        <vitamui-input formControlName="description" [placeholder]="'EXTERNAL_PARAM_PROFILE.DESCRIPTION_ADMIN_PROFILE' | translate">
+        </vitamui-input>
 
         <vitamui-select
           formControlName="accessContract"

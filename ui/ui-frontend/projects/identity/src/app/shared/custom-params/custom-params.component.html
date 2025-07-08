@@ -1,25 +1,9 @@
-<div class="row mt-2">
-  <div class="col-9">
-    <vitamui-common-input
-      class="p-0 col-5"
-      [formControl]="controlKey"
-      [placeholder]="keyPlaceholder | translate"
-      (blur)="onTouched()"
-      (keydown.enter)="add()"
-    >
-    </vitamui-common-input>
-    <vitamui-common-input
-      class="p-0 col-5 ml-4"
-      [formControl]="controlValue"
-      [placeholder]="valuePlaceholder | translate"
-      (blur)="onTouched()"
-      (keydown.enter)="add()"
-    >
-    </vitamui-common-input>
-  </div>
-  <div class="col-2">
-    <button type="button" class="btn primary" (click)="add()" [disabled]="buttonAddDisabled()">{{ 'COMMON.ADD' | translate }}</button>
-  </div>
+<div class="hgap-4">
+  <vitamui-input [formControl]="controlKey" [placeholder]="keyPlaceholder | translate" (blur)="onTouched()" (keydown.enter)="add()">
+  </vitamui-input>
+  <vitamui-input [formControl]="controlValue" [placeholder]="valuePlaceholder | translate" (blur)="onTouched()" (keydown.enter)="add()">
+  </vitamui-input>
+  <button type="button" class="btn primary" (click)="add()" [disabled]="buttonAddDisabled()">{{ 'COMMON.ADD' | translate }}</button>
 </div>
 <div class="vitamui-input-errors">
   <ng-content select="vitamui-common-field-error"></ng-content>

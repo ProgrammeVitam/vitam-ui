@@ -34,29 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormControl, ValidationErrors } from '@angular/forms';
 
-import { VitamUIInputErrorComponent } from './vitamui-input-error.component';
-
-describe('VitamUIInputErrorComponent', () => {
-  let component: VitamUIInputErrorComponent;
-  let fixture: ComponentFixture<VitamUIInputErrorComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [VitamUIInputErrorComponent],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(VitamUIInputErrorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+export class FormControlWarn extends FormControl {
+  warnings?: ValidationErrors | null = null;
+}

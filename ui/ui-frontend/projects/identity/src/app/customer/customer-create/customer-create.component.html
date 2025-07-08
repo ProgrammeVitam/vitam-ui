@@ -15,85 +15,32 @@
   <vitamui-common-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-input class="col-6 pl-0" formControlName="code" required [placeholder]="'CUSTOMER.INFORMATIONS.CODE' | translate">
-          <ng-container *ngIf="form.get('code')?.touched">
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-            </vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern"
-              >{{ 'COMMON.ERROR.WRONG_FORMAT' | translate }}
-            </vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.maxlength"
-              >{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: customerCodeMaxLength } }}
-            </vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
-              >{{ 'CUSTOMER.INFORMATIONS.MODAL.CODE_ALREADY_EXIST' | translate }}
-            </vitamui-common-input-error>
-          </ng-container>
-        </vitamui-common-input>
+        <vitamui-input
+          class="col-6 pl-0"
+          formControlName="code"
+          [placeholder]="'CUSTOMER.INFORMATIONS.CODE' | translate"
+          [errorMessageMap]="{
+            pattern: 'COMMON.ERROR.WRONG_FORMAT' | translate,
+            uniqueCode: 'CUSTOMER.INFORMATIONS.MODAL.CODE_ALREADY_EXIST' | translate,
+          }"
+        >
+        </vitamui-input>
 
         <div class="d-flex">
-          <vitamui-common-input
-            class="col-6 pl-0"
-            formControlName="name"
-            maxlength="100"
-            required
-            [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate"
-          >
-            <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-            </vitamui-common-input-error>
-          </vitamui-common-input>
-          <vitamui-common-input
-            class="col-6"
-            formControlName="companyName"
-            maxlength="250"
-            required
-            [placeholder]="'CUSTOMER.INFORMATIONS.SOCIAL_REASON' | translate"
-          >
-            <vitamui-common-input-error *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-            </vitamui-common-input-error>
-          </vitamui-common-input>
+          <vitamui-input class="col-6 pl-0" formControlName="name" [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
+          </vitamui-input>
+          <vitamui-input class="col-6" formControlName="companyName" [placeholder]="'CUSTOMER.INFORMATIONS.SOCIAL_REASON' | translate">
+          </vitamui-input>
         </div>
 
         <ng-container formGroupName="address">
-          <vitamui-common-input
-            class="col-12 pl-0"
-            formControlName="street"
-            maxlength="{{ maxStreetLength }}"
-            required
-            [placeholder]="'COMMON.ADRESS.STREET' | translate"
-          >
-            <vitamui-common-input-error *ngIf="form.get('address.street')?.touched && !!form.get('address.street')?.errors?.required"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-            </vitamui-common-input-error>
-          </vitamui-common-input>
+          <vitamui-input class="col-12 pl-0" formControlName="street" [placeholder]="'COMMON.ADRESS.STREET' | translate"> </vitamui-input>
 
           <div class="d-flex">
-            <vitamui-common-input
-              class="col-4 pl-0"
-              formControlName="zipCode"
-              maxlength="10"
-              required
-              [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate"
-            >
-              <vitamui-common-input-error *ngIf="form.get('address.zipCode')?.touched && !!form.get('address.zipCode')?.errors?.required"
-                >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-              </vitamui-common-input-error>
-            </vitamui-common-input>
+            <vitamui-input class="col-4 pl-0" formControlName="zipCode" [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
+            </vitamui-input>
 
-            <vitamui-common-input
-              class="col-4"
-              formControlName="city"
-              maxlength="100"
-              required
-              [placeholder]="'COMMON.ADRESS.CITY' | translate"
-            >
-              <vitamui-common-input-error *ngIf="form.get('address.city')?.touched && !!form.get('address.city')?.errors?.required"
-                >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-              </vitamui-common-input-error>
-            </vitamui-common-input>
+            <vitamui-input class="col-4" formControlName="city" [placeholder]="'COMMON.ADRESS.CITY' | translate"> </vitamui-input>
 
             <vitamui-select
               class="col-4"
@@ -105,13 +52,8 @@
           </div>
         </ng-container>
 
-        <vitamui-common-input
-          class="col-12 pl-0"
-          formControlName="internalCode"
-          maxlength="20"
-          [placeholder]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate"
-        >
-        </vitamui-common-input>
+        <vitamui-input class="col-12 pl-0" formControlName="internalCode" [placeholder]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate">
+        </vitamui-input>
 
         <div class="d-flex">
           <label for="alerte" class="inline-label label-alerte">
@@ -121,22 +63,12 @@
           <label for="duréealerte" class="inline-label label-alertDelay">
             Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
           </label>
-          <vitamui-common-input
+          <vitamui-input
             [disabled]="gdprReadOnlyStatus || !form.get('gdprAlert').value"
             formControlName="gdprAlertDelay"
-            maxlength="250"
-            required
             placeholder="Durée d'alerte"
           >
-            <vitamui-common-input-error
-              *ngIf="form.get('gdprAlert').value && form.get('gdprAlertDelay')?.touched && !!form.get('gdprAlertDelay')?.errors?.required"
-            >
-              {{ 'COMMON.ERROR.REQUIRED' | translate }}
-            </vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="form.get('gdprAlert').value && !!form.get('gdprAlertDelay')?.errors?.min">
-              {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.MIN_VALUE' | translate }}
-            </vitamui-common-input-error>
-          </vitamui-common-input>
+          </vitamui-input>
         </div>
 
         <div class="col-12 d-flex align-items-center">
@@ -284,14 +216,12 @@
 
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
-          <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')"
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')"
-            >{{ 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        <vitamui-input
+          formControlName="tenantName"
+          [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"
+          [errorMessageMap]="{ uniqueName: 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }"
+        >
+        </vitamui-input>
 
         <vitamui-select
           formControlName="tenantId"

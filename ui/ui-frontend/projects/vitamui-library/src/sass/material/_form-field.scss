@@ -12,12 +12,14 @@
     --mdc-outlined-text-field-error-hover-label-text-color: var(--vitamui-primary);
     --mdc-outlined-text-field-error-focus-label-text-color: var(--vitamui-primary);
     --mdc-outlined-text-field-disabled-label-text-color: var(--vitamui-grey-700);
+    --mdc-outlined-text-field-disabled-outline-color: transparent;
     --mdc-outlined-text-field-label-text-weight: 700;
 
     --mat-select-enabled-trigger-text-color: var(--vitamui-grey-900);
     --mat-select-enabled-arrow-color: var(--vitamui-primary);
     --mat-select-disabled-arrow-color: var(--vitamui-grey);
     --mat-select-trigger-text-size: 16px;
+    --mat-select-disabled-trigger-text-color: var(--vitamui-grey-700);
 
     --mdc-shape-small: 5px;
 
@@ -53,7 +55,6 @@
       height: 60px;
 
       &--focused,
-      &--disabled,
       &--invalid {
         @include elevation.shadow-0;
       }
@@ -83,10 +84,11 @@
 
     .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
       top: 50%;
+      left: 3px;
     }
 
     .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
-      transform: translateY(-20px) scale(calc(12 / 14));
+      transform: translateY(-19px) scale(calc(12 / 14));
     }
 
     .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-floating-label {
@@ -108,7 +110,7 @@
 
     .mat-mdc-select-value {
       position: relative;
-      top: 10px;
+      top: 8px;
     }
 
     .mat-mdc-select {
@@ -145,10 +147,6 @@
   .mat-form-field-label {
     color: var(--vitamui-grey);
     font-weight: 400;
-    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    .mat-form-field-required-marker {
-      color: var(--vitamui-red);
-    }
   }
   /* TODO(mdc-migration): The following rule targets internal classes of input that may no longer apply for the MDC version. */
   /* TODO(mdc-migration): The following rule targets internal classes of input that may no longer apply for the MDC version. */

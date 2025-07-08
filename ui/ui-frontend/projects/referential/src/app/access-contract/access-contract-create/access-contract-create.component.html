@@ -18,54 +18,29 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.STATUS' | translate }}
         </vitamui-common-slide-toggle>
 
-        <vitamui-common-input
+        <vitamui-input
           formControlName="name"
           class="w-100"
-          minlength="2"
-          maxlength="100"
-          required
           [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.NAME' | translate"
+          [errorMessageMap]="{ nameExists: 'ACCESS_CONTRACT.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }"
         >
-          @if (form.get('name')?.touched) {
-            @if (!!form.get('name')?.errors?.required) {
-              <vitamui-common-input-error>
-                {{ 'COMMON.REQUIRED' | translate }}
-              </vitamui-common-input-error>
-            } @else if (!!form?.get('name')?.errors?.nameExists) {
-              <vitamui-common-input-error>
-                {{ 'ACCESS_CONTRACT.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
-              </vitamui-common-input-error>
-            }
-          }
-        </vitamui-common-input>
+        </vitamui-input>
         @if (isSlaveMode) {
-          <vitamui-common-input
+          <vitamui-input
             formControlName="identifier"
             class="w-100"
-            minlength="2"
-            maxlength="100"
-            required
             [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER' | translate"
+            [errorMessageMap]="{ identifierExists: 'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }"
           >
-            @if (form.get('identifier')?.touched) {
-              @if (!!form.get('identifier')?.errors?.required) {
-                <vitamui-common-input-error>
-                  {{ 'COMMON.REQUIRED' | translate }}
-                </vitamui-common-input-error>
-              } @else if (!!form?.get('identifier')?.errors?.identifierExists) {
-                <vitamui-common-input-error>
-                  {{ 'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
-                </vitamui-common-input-error>
-              }
-            }
-          </vitamui-common-input>
+          </vitamui-input>
         }
-        <vitamui-common-textarea
+        <vitamui-input
           class="w-100"
           formControlName="description"
           [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.DESCRIPTION' | translate"
+          [textarea]="true"
         >
-        </vitamui-common-textarea>
+        </vitamui-input>
 
         <vitamui-common-slide-toggle class="w-100" formControlName="accessLog">
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG' | translate }}

@@ -71,8 +71,11 @@ export class SecurityProfileInformationTabComponent {
 
   private _securityProfile: SecurityProfile;
 
-  previousValue = (): SecurityProfile => {
-    return this._securityProfile;
+  previousValue = (): any => {
+    return (Object.keys(this.form.controls || {}) as (keyof SecurityProfile)[]).reduce((acc: any, key) => {
+      acc[key] = this._securityProfile[key];
+      return acc;
+    }, {} as Partial<SecurityProfile>);
   };
 
   @Input()
@@ -113,10 +116,6 @@ export class SecurityProfileInformationTabComponent {
     return unchanged;
   }
 
-  isInvalid(): boolean {
-    return false;
-  }
-
   prepareSubmit(): Observable<SecurityProfile> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
@@ -132,7 +131,7 @@ export class SecurityProfileInformationTabComponent {
 
   onSubmit() {
     this.submitted = true;
-    if (this.isInvalid()) {
+    if (this.form.invalid) {
       return;
     }
     this.prepareSubmit().subscribe(

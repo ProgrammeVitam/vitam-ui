@@ -17,34 +17,14 @@
           <span *ngIf="form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
         </vitamui-common-slide-toggle>
 
-        <vitamui-common-input
+        <vitamui-input
           formControlName="name"
-          minlength="2"
-          maxlength="100"
-          required
           [placeholder]="'GROUP.INFORMATIONS.NAME' | translate"
+          [errorMessageMap]="{ nameExists: 'GROUP.INFORMATIONS.MODAL.EXISTING_NAME' | translate }"
         >
-          <ng-container *ngIf="form.get('name')?.touched">
-            <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.requiredNotBlank">{{
-              'COMMON.ERROR.REQUIRED' | translate
-            }}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">{{
-              'GROUP.INFORMATIONS.MODAL.EXISTING_NAME' | translate
-            }}</vitamui-common-input-error>
-          </ng-container>
-        </vitamui-common-input>
+        </vitamui-input>
 
-        <vitamui-common-input
-          formControlName="description"
-          minlength="4"
-          maxlength="100"
-          required
-          [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"
-        >
-          <vitamui-common-input-error *ngIf="form.get('description')?.touched && form.get('description')?.hasError('requiredNotBlank')">{{
-            'COMMON.ERROR.REQUIRED' | translate
-          }}</vitamui-common-input-error>
-        </vitamui-common-input>
+        <vitamui-input formControlName="description" [placeholder]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"> </vitamui-input>
 
         <div class="d-flex">
           <div class="mr-4 p-2">

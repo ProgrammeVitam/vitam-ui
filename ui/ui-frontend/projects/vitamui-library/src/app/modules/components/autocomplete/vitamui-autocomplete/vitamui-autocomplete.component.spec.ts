@@ -39,6 +39,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('VitamUIAutocompleteComponent', () => {
   let component: VitamUIAutocompleteComponent;
@@ -46,7 +47,7 @@ describe('VitamUIAutocompleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatAutocompleteModule],
+      imports: [ReactiveFormsModule, MatAutocompleteModule, TranslateModule.forRoot()],
       declarations: [VitamUIAutocompleteComponent],
     }).compileComponents();
   });

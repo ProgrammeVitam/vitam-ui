@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SchemaElement, SchemaService, Option } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
 import { CommonModule } from '@angular/common';
@@ -111,19 +111,19 @@ export class SchemaInformationTabComponent {
     public schemaService: SchemaService,
   ) {
     this.form = this.formBuilder.group({
-      Path: [{ value: '', disabled: true }],
-      ApiPath: [{ value: '', disabled: true }],
+      Path: [{ value: '', disabled: true }, [Validators.required]],
+      ApiPath: [{ value: '', disabled: true }, [Validators.required]],
       ShortName: [{ value: '', disabled: true }],
-      FieldName: [{ value: '', disabled: true }],
+      FieldName: [{ value: '', disabled: true }, [Validators.required]],
       SedaField: [{ value: '', disabled: true }],
       ApiField: [{ value: '', disabled: true }],
-      Description: [{ value: '', disabled: true }],
-      Type: [{ value: '', disabled: true }],
-      DataType: [{ value: '', disabled: true }],
-      Collection: [{ value: '', disabled: true }],
+      Description: [{ value: '', disabled: true }, [Validators.required]],
+      Type: [{ value: '', disabled: true }, [Validators.required]],
+      DataType: [{ value: '', disabled: true }, [Validators.required]],
+      Collection: [{ value: '', disabled: true }, [Validators.required]],
       Origin: [{ value: '', disabled: true }],
-      Category: [{ value: '', disabled: true }],
-      Cardinality: [{ value: '', disabled: true }],
+      Category: [{ value: '', disabled: true }, [Validators.required]],
+      Cardinality: [{ value: '', disabled: true }, [Validators.required]],
       SedaVersions: [{ value: '', disabled: true }],
       StringSize: [{ value: '', disabled: true }],
       CustomSearchTypes: [{ value: '', disabled: true }],
