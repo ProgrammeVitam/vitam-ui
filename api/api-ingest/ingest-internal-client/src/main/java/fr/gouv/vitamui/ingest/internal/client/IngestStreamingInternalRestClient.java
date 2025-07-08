@@ -94,7 +94,6 @@ public class IngestStreamingInternalRestClient
 
     public ResponseEntity<Void> streamingUpload(
         final InternalHttpContext context,
-        String originalFileName,
         InputStream inputStream,
         final String contextId,
         final String action
@@ -106,7 +105,6 @@ public class IngestStreamingInternalRestClient
         headersList.addAll(buildHeaders(context));
         headersList.add(CommonConstants.X_CONTEXT_ID, contextId);
         headersList.add(CommonConstants.X_ACTION, action);
-        headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, originalFileName);
 
         HttpHeaders headersParams = new HttpHeaders();
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
