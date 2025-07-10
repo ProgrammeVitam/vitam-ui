@@ -216,7 +216,13 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     } else if (this.connectedUserInfo.type === 'LIST') {
       this.groups = this.connectedUserInfo.profilGroup.map((group) => {
         const profilGroup = this.groups.find((g) => g.id === group.id);
-        return Object({ id: group.id, name: group.name, description: group.description, selected: false, profiles: profilGroup?.profiles });
+        return Object({
+          id: group.id,
+          name: group.name,
+          description: group.description,
+          selected: false,
+          profiles: profilGroup?.profiles,
+        });
       });
       this.groups.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
     }
@@ -241,7 +247,10 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     this.userInfoService.create({ id: null, language: this.customer.language }).subscribe(
       (response: UserInfo) => {
         this.form.get('userInfoId').setValue(response.id);
-        this.userService.create(this.form.getRawValue()).subscribe(
+        const formData = this.form.getRawValue();
+        // centerCodes is used for auto-provisioning (Xelians) and should be an array
+        const centerCodes = formData.centerCodes?.split(',')?.map((v: string) => v.trim());
+        this.userService.create({ ...formData, centerCodes }).subscribe(
           () => this.dialogRef.close(true),
           (error) => {
             this.creating = false;
