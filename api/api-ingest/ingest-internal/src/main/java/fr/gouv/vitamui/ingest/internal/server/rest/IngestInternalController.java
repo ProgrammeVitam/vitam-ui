@@ -29,7 +29,6 @@ package fr.gouv.vitamui.ingest.internal.server.rest;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
-import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -151,19 +150,11 @@ public class IngestInternalController {
     public ResponseEntity<Void> streamingUpload(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
-        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
-        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId
     ) throws IngestExternalException, PreconditionFailedException, InvalidParseOperationException {
-        ParameterChecker.checkParameter(
-            "The action and the context ID are mandatory parameters: ",
-            action,
-            contextId,
-            originalFileName
-        );
-        SanityChecker.isValidFileName(originalFileName);
-        SafeFileChecker.checkSafeFilePath(originalFileName);
-        SanityChecker.checkSecureParameter(action, contextId, originalFileName);
-        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
+        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId);
+        SanityChecker.checkSecureParameter(action, contextId);
+        LOGGER.debug("[Internal] upload file v2");
         final String operationId = ingestInternalService.streamingUpload(inputStream, contextId, action);
         if (operationId != null) {
             return ResponseEntity.ok().header(CommonConstants.X_OPERATION_ID_HEADER, operationId).build();
