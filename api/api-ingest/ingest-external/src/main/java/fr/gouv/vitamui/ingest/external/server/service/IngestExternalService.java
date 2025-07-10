@@ -115,15 +115,9 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
         return ingestInternalRestClient;
     }
 
-    public ResponseEntity<Void> streamingUpload(
-        InputStream inputStream,
-        final String originalFileName,
-        final String contextId,
-        final String action
-    ) {
+    public ResponseEntity<Void> streamingUpload(InputStream inputStream, final String contextId, final String action) {
         return ingestStreamingInternalRestClient.streamingUpload(
             getInternalHttpContext(),
-            originalFileName,
             inputStream,
             contextId,
             action
