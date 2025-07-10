@@ -84,7 +84,7 @@ public class CustomerRepositoryTest extends AbstractMongoTests {
         final Customer julien = IamServerUtilsTest.buildCustomer(
             "id1",
             "julien",
-            "123456",
+            "654321",
             Arrays.asList("julien@vitamui.com", "pierre@vitamui.com")
         );
 
