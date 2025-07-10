@@ -66,6 +66,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ALL_UNIT_UPS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_FILING_UNIT;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_HOLDING_UNIT;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_VIRTUAL_PATHS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_WITHOUT_OBJECTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ARCHIVE_UNIT_WITH_OBJECTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
@@ -77,10 +78,10 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCate
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.EQ;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.MISSING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_FACET_SIZE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_BY_NODE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_VIRTUAL_TREE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACET_SIZE_MULTIPLIER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FILING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.HOLDING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ID;
@@ -128,9 +129,13 @@ public final class MetadataSearchCriteriaUtils {
         fillWaitingToComputeCriteria(searchQuery);
 
         SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
-        addPositionsNodesFacet(searchQuery, selectMultiQuery);
+        selectMultiQuery.addFacets(
+            FacetHelper.terms(FACETS_COUNT_BY_NODE, ALL_UNIT_UPS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
+        );
 
-        selectMultiQuery.addFacets(FacetHelper.terms(FACETS_VIRTUAL_TREE, "#vups", 30, FacetOrder.ASC));
+        selectMultiQuery.addFacets(
+            FacetHelper.terms(FACETS_VIRTUAL_TREE, ARCHIVE_UNIT_VIRTUAL_PATHS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
+        );
 
         if (searchQuery.isComputeFacets()) {
             selectMultiQuery.addFacets(
@@ -1700,19 +1705,6 @@ public final class MetadataSearchCriteriaUtils {
             ArchiveSearchConsts.CriteriaOperators.EQ.name().equals(searchCriteria.getOperator()) &&
             searchCriteria.getValues().size() == 1 &&
             StringUtils.isNotEmpty(searchCriteria.getValues().get(0).getValue())
-        );
-    }
-
-    private static void addPositionsNodesFacet(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
-        throws InvalidCreateOperationException {
-        List<String> nodesCriteriaList = searchQuery.extractNodesCriteria();
-        selectMultiQuery.addFacets(
-            FacetHelper.terms(
-                FACETS_COUNT_BY_NODE,
-                ALL_UNIT_UPS,
-                (nodesCriteriaList.size() + 1) * FACET_SIZE_MULTIPLIER,
-                FacetOrder.ASC
-            )
         );
     }
 

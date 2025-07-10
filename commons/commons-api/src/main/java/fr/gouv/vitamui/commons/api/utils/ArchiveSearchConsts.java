@@ -239,7 +239,8 @@ public class ArchiveSearchConsts {
     public static final String ORIGINATING_AGENCY_ID_FIELD = "SP_CODE";
 
     public static final int DEFAULT_DEPTH = 10;
-    public static final int FACET_SIZE_MULTIPLIER = 100;
+    public static final int DEFAULT_FACET_SIZE = 1000;
+    public static final int DEFAULT_FACET_RULES_SIZE = 100;
 
     /* Query fields */
     public static final String IDENTIFIER = "Identifier";
@@ -256,6 +257,7 @@ public class ArchiveSearchConsts {
     public static final String DESCRIPTION_LEVEL_CRITERIA = "DESCRIPTION_LEVEL";
     public static final String DESCRIPTION_LEVEL = "DescriptionLevel";
     public static final String ARCHIVE_UNIT_OBJECTS = "#object";
+    public static final String ARCHIVE_UNIT_VIRTUAL_PATHS = "#vups";
 
     /* Query fields */
     public static final String ID = "#id";
