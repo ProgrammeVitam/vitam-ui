@@ -5098,7 +5098,7 @@
       "SELECTED_UNIT": "unité archivistique sélectionnée",
       "SELECTED_UNIT_PLURAL": "unités archivistiques sélectionnées",
       "CHILDS": "fils",
-      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Comprenant {{ nbDocuments }} dossiers et documents",
+      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Comprenant {{ nbDocuments }} dossiers ou documents",
       "SELECT_ACTION_MESSAGE_1": "Sélectionner une action de reclassement",
       "SELECT_ACTION_MESSAGE_2": "Action de reclassement",
       "CURRENT_PARENT_FOLDERS": "Il y a 1 dossier parent actuel",
