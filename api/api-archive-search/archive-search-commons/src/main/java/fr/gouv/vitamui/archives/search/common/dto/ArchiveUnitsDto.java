@@ -34,6 +34,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,6 +45,8 @@ import java.io.Serializable;
 @ToString
 public class ArchiveUnitsDto extends IdDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 19051220419502517L;
+
     private VitamUIArchiveUnitResponseDto archives;
 }

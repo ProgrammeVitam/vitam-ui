@@ -20,8 +20,6 @@ management:
   endpoint:
     health:
       show-details: always
-    prometheus:
-      enabled: true
 
 swagger:
   layer: api-external
@@ -45,3 +43,5 @@ cas.reset.password.url: /extras/resetPassword?username={username}&firstname={fir
 
 user.connection.tracing.enabled: false
 
+gateway:
+  enabled: true

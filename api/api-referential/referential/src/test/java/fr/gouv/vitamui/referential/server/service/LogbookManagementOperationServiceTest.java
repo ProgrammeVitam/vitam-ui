@@ -42,13 +42,12 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamSearchRequestDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.server.service.logbookmanagement.LogbookManagementOperationService;
-import org.junit.Before;
-import org.junit.Test;
+import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import javax.ws.rs.core.Response;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
@@ -70,7 +69,7 @@ public class LogbookManagementOperationServiceTest {
 
     private DummyData dummyData;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
@@ -105,13 +104,14 @@ public class LogbookManagementOperationServiceTest {
         );
 
         //When //Then
-        assertThatCode(() -> {
-            logbookManagementOperationService.updateOperationActionProcess(
-                vitamContext,
-                replay.toString(),
-                operationId
-            );
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () ->
+                logbookManagementOperationService.updateOperationActionProcess(
+                    vitamContext,
+                    replay.toString(),
+                    operationId
+                )
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -131,9 +131,9 @@ public class LogbookManagementOperationServiceTest {
         ).thenReturn(dummyData.updateOperationActionProcessRequestResponse());
 
         //When //Then
-        assertThatCode(() -> {
-            logbookManagementOperationService.updateOperationActionProcess(vitamContext, actionId, operationId);
-        }).hasMessage("Cannot update  the operation, because the actionId given is not correct");
+        assertThatCode(
+            () -> logbookManagementOperationService.updateOperationActionProcess(vitamContext, actionId, operationId)
+        ).hasMessage("Cannot update  the operation, because the actionId given is not correct");
     }
 
     @Test
@@ -148,9 +148,9 @@ public class LogbookManagementOperationServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         //When //Then
-        assertThatCode(() -> {
-            logbookManagementOperationService.cancelOperationProcessExecution(vitamContext, identifier);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(
+            () -> logbookManagementOperationService.cancelOperationProcessExecution(vitamContext, identifier)
+        ).isInstanceOf(VitamClientException.class);
     }
 
     private static class DummyData {

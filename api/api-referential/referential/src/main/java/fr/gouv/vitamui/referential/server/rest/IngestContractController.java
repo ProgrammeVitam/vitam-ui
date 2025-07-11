@@ -48,7 +48,8 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.ingestcontract.IngestContractService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +73,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Map;
@@ -189,7 +189,7 @@ public class IngestContractController {
     @Secured(ServicesData.ROLE_CREATE_INGEST_CONTRACTS)
     @PostMapping(CommonConstants.PATH_IMPORT)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> importIngestContracts(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> importIngestContracts(@RequestParam MultipartFile file) {
         ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
         SanityChecker.isValidFileName(file.getOriginalFilename());
         LOGGER.debug("Import ingest contracts file {}", file.getOriginalFilename());
@@ -197,7 +197,7 @@ public class IngestContractController {
         return ingestContractService.importIngestContracts(file);
     }
 
-    @ApiOperation(value = "Export ingest contracts to a csv file")
+    @Operation(summary = "Export ingest contracts to a csv file")
     @GetMapping(path = RestApi.EXPORT_CSV)
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
     public ResponseEntity<Resource> exportIngestContracts() {

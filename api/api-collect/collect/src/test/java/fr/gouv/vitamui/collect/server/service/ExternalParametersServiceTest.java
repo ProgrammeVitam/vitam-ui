@@ -44,7 +44,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Map;
@@ -55,16 +55,16 @@ public class ExternalParametersServiceTest {
     public static final String SOME_ACCESS_CONTRACT = "SOME_ACCESS_CONTRACT";
     public static final int SOME_TENANT = 1;
 
-    @MockBean
+    @MockitoBean
     private ExternalParametersApi externalParametersApi;
 
-    @MockBean
+    @MockitoBean
     private SecurityService securityService;
 
     @InjectMocks
     private ExternalParametersService externalParametersService;
 
-    @MockBean
+    @MockitoBean
     private AccessContractCommonService accessContractCommonService;
 
     @BeforeEach

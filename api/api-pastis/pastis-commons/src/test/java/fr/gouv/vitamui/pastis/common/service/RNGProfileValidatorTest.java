@@ -41,36 +41,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
 public class RNGProfileValidatorTest {
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir
+    public File tempFolder;
 
     private RNGProfileValidator rngProfileValidator;
 
     @Value("${json.base.file}")
     private String jsonFileName;
 
-    @Before
+    @BeforeEach
     public void init() {
         rngProfileValidator = new RNGProfileValidator();
     }
@@ -82,7 +82,7 @@ public class RNGProfileValidatorTest {
     public void validateRNGProfileOK() throws Exception {
         File fileProfileXsd = PropertiesUtils.getResourceFile("profiles/profile_ok.rng");
 
-        Assert.assertTrue(rngProfileValidator.validateRNG(fileProfileXsd));
+        Assertions.assertTrue(rngProfileValidator.validateRNG(fileProfileXsd));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class RNGProfileValidatorTest {
     public void validateRNGProfileNOK() throws Exception {
         File fileProfileXsd = PropertiesUtils.getResourceFile("profiles/profile_nok.rng");
 
-        Assert.assertFalse(rngProfileValidator.validateRNG(fileProfileXsd));
+        Assertions.assertFalse(rngProfileValidator.validateRNG(fileProfileXsd));
     }
 
     @Test
@@ -123,16 +123,13 @@ public class RNGProfileValidatorTest {
         );
         Marshaller marshallerObj = contextObj.createMarshaller();
         marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerObj.setProperty(
-            "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-            new PastisCustomCharacterEscapeHandler()
-        );
+        marshallerObj.setProperty(PastisMarshaller.CHAR_ESCAPE_HANDLER, new PastisCustomCharacterEscapeHandler());
 
-        File rngProfile = tempFolder.newFile();
+        File rngProfile = File.createTempFile("junit", null, tempFolder);
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(rngProfile), "UTF-8");
         marshallerObj.marshal(eparentRng, writer);
         writer.close();
 
-        Assert.assertTrue(rngProfileValidator.validateRNG(rngProfile));
+        Assertions.assertTrue(rngProfileValidator.validateRNG(rngProfile));
     }
 }

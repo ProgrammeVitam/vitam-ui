@@ -6,18 +6,15 @@ import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @EnableMongoRepositories(basePackageClasses = PersonRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class CustomSequenceRepositoryTest extends AbstractMongoTests {
 

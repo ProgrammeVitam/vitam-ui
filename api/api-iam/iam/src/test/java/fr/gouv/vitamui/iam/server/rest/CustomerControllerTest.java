@@ -7,27 +7,24 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.utils.ApiIamServerUtils;
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { CustomerController.class })
 public class CustomerControllerTest extends ApiIamControllerTest<CustomerDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private CustomerService customerService;
 
     @Test

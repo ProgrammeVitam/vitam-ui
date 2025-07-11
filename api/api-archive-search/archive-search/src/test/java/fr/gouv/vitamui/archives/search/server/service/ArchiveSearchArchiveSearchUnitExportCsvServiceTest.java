@@ -59,7 +59,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import lombok.SneakyThrows;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,9 +68,9 @@ import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -89,25 +89,25 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("unchecked")
 public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
 
-    @MockBean(name = "objectMapper")
+    @MockitoBean(name = "objectMapper")
     private ObjectMapper objectMapper;
 
-    @MockBean(name = "unitCommonService")
+    @MockitoBean(name = "unitCommonService")
     private UnitCommonService unitCommonService;
 
-    @MockBean(name = "agencyCommonService")
+    @MockitoBean(name = "agencyCommonService")
     private AgencyCommonService agencyCommonService;
 
-    @MockBean(name = "archiveSearchAgenciesService")
+    @MockitoBean(name = "archiveSearchAgenciesService")
     private ArchiveSearchAgenciesService archiveSearchAgenciesService;
 
-    @MockBean(name = "archiveSearchService")
+    @MockitoBean(name = "archiveSearchService")
     private ArchiveSearchService archiveSearchService;
 
-    @MockBean(name = "externalParametersService")
+    @MockitoBean(name = "externalParametersService")
     private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
 
-    @MockBean(name = "archiveSearchThresholdService")
+    @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
 
     @InjectMocks

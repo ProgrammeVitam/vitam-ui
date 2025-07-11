@@ -36,18 +36,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -68,7 +66,6 @@ import static org.mockito.Mockito.when;
  */
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
 public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTest {
@@ -88,25 +85,25 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     @Autowired
     private ProfileConverter profileConverter;
 
-    @MockBean
+    @MockitoBean
     private GroupRepository groupRepository;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
-    @MockBean
+    @MockitoBean
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @MockBean
+    @MockitoBean
     private CustomerRepository customerRepository;
 
-    @MockBean
+    @MockitoBean
     private TenantRepository tenantRepository;
 
-    @MockBean
+    @MockitoBean
     private HttpContext httpContext;
 
-    @MockBean
+    @MockitoBean
     private CustomSequenceRepository sequenceRepository;
 
     private static final Integer TENANT_IDENTIFIER = 10;

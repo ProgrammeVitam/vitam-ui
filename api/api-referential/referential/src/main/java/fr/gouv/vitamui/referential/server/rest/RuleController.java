@@ -53,6 +53,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.rule.RuleService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -77,7 +78,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -212,7 +212,7 @@ public class RuleController {
      */
     @Secured(ServicesData.ROLE_IMPORT_RULES)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importRules(@RequestParam("file") MultipartFile file) {
+    public JsonNode importRules(@RequestParam MultipartFile file) {
         LOGGER.debug("Import referential file {}", file != null ? file.getOriginalFilename() : null);
         if (file == null) {
             throw new BadRequestException("No file to check .");

@@ -34,9 +34,9 @@ import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.query.Query;
@@ -49,8 +49,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyCollection;
@@ -117,7 +116,7 @@ public class CustomerServiceTest {
 
     private CustomerService customerService;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         AddressConverter addressConverter = new AddressConverter();
@@ -160,12 +159,12 @@ public class CustomerServiceTest {
             Optional.empty(),
             Optional.of(DirectionDto.ASC)
         );
-        Assert.assertNotNull("Customers should be returned.", result);
-        Assert.assertNotNull("Customers should be returned.", result.getValues());
-        Assert.assertEquals("Customes size should be returned.", 1, result.getValues().size());
-        Assert.assertEquals("Customes size should be returned.", 0, result.getPageNum());
-        Assert.assertEquals("Customes size should be returned.", 5, result.getPageSize());
-        Assert.assertEquals("Customes size should be returned.", false, result.isHasMore());
+        Assertions.assertNotNull(result, "Customers should be returned.");
+        Assertions.assertNotNull(result.getValues(), "Customers should be returned.");
+        Assertions.assertEquals(1, result.getValues().size(), "Customes size should be returned.");
+        Assertions.assertEquals(0, result.getPageNum(), "Customes size should be returned.");
+        Assertions.assertEquals(5, result.getPageSize(), "Customes size should be returned.");
+        Assertions.assertEquals(false, result.isHasMore(), "Customes size should be returned.");
     }
 
     @Test
@@ -181,8 +180,8 @@ public class CustomerServiceTest {
         when(customerRepository.exists(any(Query.class))).thenReturn(true);
 
         final boolean result = customerService.checkExist(null);
-        Assert.assertTrue("Customers should be found.", result);
-        Assert.assertTrue("Customers should be found.", customerService.checkExist(null));
+        Assertions.assertTrue(result, "Customers should be found.");
+        Assertions.assertTrue(customerService.checkExist(null), "Customers should be found.");
     }
 
     @Test
@@ -190,7 +189,7 @@ public class CustomerServiceTest {
         when(customerRepository.exists(any(Query.class))).thenReturn(false);
 
         final boolean result = customerService.checkExist(null);
-        Assert.assertFalse("Customers should be found.", result);
+        Assertions.assertFalse(result, "Customers should be found.");
     }
 
     @Test
@@ -206,8 +205,8 @@ public class CustomerServiceTest {
         when(customerRepository.exists(any(Query.class))).thenReturn(true);
 
         final boolean result = customerService.checkExist(null);
-        Assert.assertTrue("Customers should be found.", result);
-        Assert.assertTrue("Customers should be found.", customerService.checkExist(null));
+        Assertions.assertTrue(result, "Customers should be found.");
+        Assertions.assertTrue(customerService.checkExist(null), "Customers should be found.");
     }
 
     @Test
@@ -215,7 +214,7 @@ public class CustomerServiceTest {
         when(customerRepository.findByEmailDomainsContainsIgnoreCase(any())).thenReturn(null);
 
         final boolean result = customerService.checkExist(null);
-        Assert.assertFalse("Customers shouldn't be found.", result);
+        Assertions.assertFalse(result, "Customers shouldn't be found.");
     }
 
     @Test
@@ -257,13 +256,17 @@ public class CustomerServiceTest {
         when(ownerRepository.findAll(any(Query.class))).thenReturn(new ArrayList<>());
 
         final CustomerDto customerDtoUpdated = customerService.update(customerToUpdate);
-        Assert.assertNotNull("Customer should be returned.", customerDtoUpdated);
-        Assert.assertEquals(
-            "Customer code should be returned.",
+        Assertions.assertNotNull(customerDtoUpdated, "Customer should be returned.");
+        Assertions.assertEquals(
             customerToUpdate.getCode(),
-            customerDtoUpdated.getCode()
+            customerDtoUpdated.getCode(),
+            "Customer code should be returned."
         );
-        Assert.assertEquals("Customer id should be returned.", customerToUpdate.getId(), customerDtoUpdated.getId());
+        Assertions.assertEquals(
+            customerToUpdate.getId(),
+            customerDtoUpdated.getId(),
+            "Customer id should be returned."
+        );
     }
 
     @Test
@@ -314,17 +317,19 @@ public class CustomerServiceTest {
         customerService.checkCode(Optional.of("id"), "0123456");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCheckCodeExistingCustomerKO() {
-        final Customer customer = IamServerUtilsTest.buildCustomer(
-            "id",
-            "name",
-            "0123456",
-            Arrays.asList("@vitamui.com")
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Customer customer = IamServerUtilsTest.buildCustomer(
+                "id",
+                "name",
+                "0123456",
+                Arrays.asList("@vitamui.com")
+            );
 
-        when(customerRepository.findByCode("0123456")).thenReturn(Optional.of(customer));
-        customerService.checkCode(Optional.of("diffId"), "0123456");
+            when(customerRepository.findByCode("0123456")).thenReturn(Optional.of(customer));
+            customerService.checkCode(Optional.of("diffId"), "0123456");
+        });
     }
 
     protected CustomerDto buildDto() {
@@ -356,7 +361,7 @@ public class CustomerServiceTest {
         when(customerRepository.findByIdAndEmailDomainsIgnoreCase(anyString(), any())).thenReturn(null);
 
         final boolean result = customerService.checkExist(null);
-        Assert.assertFalse("Customers shouldn't be found.", result);
+        Assertions.assertFalse(result, "Customers shouldn't be found.");
     }
 
     @Test

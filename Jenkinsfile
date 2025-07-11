@@ -71,9 +71,9 @@ pipeline {
                         // If checks and tests are disabled:
                         // - "-T1C" builds modules in parallel
                         // - "-Dspotless.check.skip=true" skips executing spotless
-                        // - "-Dmaven.test.skip" skips executing tests
+                        // - "-DskipTests=true" skips executing tests. Do NOT use "-Dmaven.test.skip" instead as it also doesn't build the test jars that are used in dependency in some modules
                         // - "-Dlicense.skip" skips checking license headers
-                        env.MVN_COMMAND = "${env.MVN_COMMAND} -T1C -Dspotless.check.skip=true -Dmaven.test.skip -Dlicense.skip=true"
+                        env.MVN_COMMAND = "${env.MVN_COMMAND} -T1C -Dspotless.check.skip=true -DskipTests=true -Dlicense.skip=true"
                     }
 
                     def pom = readMavenPom file: 'pom.xml'

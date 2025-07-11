@@ -64,7 +64,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.InputStream;
@@ -87,31 +87,31 @@ public class ArchiveSearchServiceTest {
     VitamContext defaultVitamContext = new VitamContext(1);
     private ObjectMapper simpleObjectMapper = new ObjectMapper();
 
-    @MockBean(name = "unitCommonService")
+    @MockitoBean(name = "unitCommonService")
     private UnitCommonService unitCommonService;
 
-    @MockBean(name = "persistentIdentifierService")
+    @MockitoBean(name = "persistentIdentifierService")
     private PersistentIdentifierService persistentIdentifierService;
 
-    @MockBean(name = "archiveSearchAgenciesService")
+    @MockitoBean(name = "archiveSearchAgenciesService")
     private ArchiveSearchAgenciesService archiveSearchAgenciesService;
 
-    @MockBean(name = "archiveSearchRulesService")
+    @MockitoBean(name = "archiveSearchRulesService")
     private ArchiveSearchRulesService archiveSearchRulesService;
 
-    @MockBean(name = "externalParametersService")
+    @MockitoBean(name = "externalParametersService")
     private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
 
-    @MockBean(name = "archiveSearchThresholdService")
+    @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
 
-    @MockBean(name = "securityService")
+    @MockitoBean(name = "securityService")
     private SecurityService securityService;
 
     @InjectMocks
     private ArchiveSearchService archiveSearchService;
 
-    @MockBean(name = "archiveSearchService")
+    @MockitoBean(name = "archiveSearchService")
     private ArchiveSearchFacetsService archiveSearchFacetsService;
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";

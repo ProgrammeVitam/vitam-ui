@@ -29,9 +29,9 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.referential.common.model.ControlType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data

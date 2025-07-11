@@ -4,6 +4,7 @@ import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,8 @@ public abstract class AbstractCrudControllerTest<D extends IdDto, E extends Base
     extends AbstractMongoTests
     implements CrudControllerTest {
 
+    private AutoCloseable mocks;
+
     protected static final String ID = "id";
 
     /**
@@ -20,7 +23,7 @@ public abstract class AbstractCrudControllerTest<D extends IdDto, E extends Base
      */
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
     }
 
     /**
@@ -86,4 +89,9 @@ public abstract class AbstractCrudControllerTest<D extends IdDto, E extends Base
     protected void prepareServices() {}
 
     protected abstract D buildDto() throws Exception;
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
+    }
 }

@@ -540,7 +540,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             vitamContext.getApplicationSessionId()
         );
         final Optional<Profile> profile = getRepository().findById(id);
-        profile.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
+        profile.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
         LOGGER.debug(
             "findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}",
             profile.get().getIdentifier(),

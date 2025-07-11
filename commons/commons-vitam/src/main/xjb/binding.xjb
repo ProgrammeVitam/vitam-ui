@@ -1,5 +1,5 @@
 <jxb:bindings version="2.0"
-	xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
 	xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">

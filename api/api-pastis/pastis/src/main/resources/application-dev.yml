@@ -17,8 +17,6 @@ pua:
 spring:
   config:
     use-legacy-processing: true
-  profiles:
-    active: dev, swagger
 
   cloud:
     consul: #disabled for dev
@@ -42,9 +40,10 @@ server:
     key-password: changeme
     trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
-    client-auth: need
+    client-auth: want
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+    client-certificate-header-name: x-ssl-cert
 
 management:
   server:
@@ -87,17 +86,3 @@ logging:
     fr.gouv.vitamui.iam.security: DEBUG
     #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
 cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost
-
----
-spring:
-  config:
-    activate:
-      on-profile: gateway
-
-gateway:
-  enabled: true
-
-server:
-  ssl:
-    client-auth: want
-    client-certificate-header-name: x-ssl-cert

@@ -15,8 +15,9 @@ import fr.gouv.vitamui.iam.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -26,8 +27,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
@@ -41,6 +42,8 @@ import static org.mockito.Mockito.when;
  */
 
 public class OwnerServiceTest {
+
+    private AutoCloseable mocks;
 
     private OwnerService ownerService;
 
@@ -67,9 +70,9 @@ public class OwnerServiceTest {
 
     private final OwnerConverter ownerConverter = new OwnerConverter(new AddressConverter());
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         ownerService = new OwnerService(
             sequenceGeneratorService,
             ownerRepository,
@@ -305,5 +308,10 @@ public class OwnerServiceTest {
 
     private Customer buildCustomer() {
         return IamServerUtilsTest.buildCustomer();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

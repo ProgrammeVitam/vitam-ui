@@ -38,10 +38,9 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.jaxb;
 
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlValue;
 import lombok.Setter;
-
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlValue;
 
 @Setter
 public class DocumentationXML {

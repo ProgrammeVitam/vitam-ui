@@ -39,38 +39,38 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { TenantController.class })
 public class TenantControllerTest extends ApiIamControllerTest<TenantDto> {
+
+    private AutoCloseable mocks;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TenantControllerTest.class);
 
     @Autowired
     private TenantController tenantController;
 
-    @MockBean
+    @MockitoBean
     private TenantService tenantService;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(tenantController)
             .setControllerAdvice(new RestExceptionHandler())
             .build();
@@ -169,5 +169,10 @@ public class TenantControllerTest extends ApiIamControllerTest<TenantDto> {
     @Override
     protected Class<TenantDto> getDtoClass() {
         return TenantDto.class;
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Map;
@@ -49,10 +49,10 @@ public class ArchiveSearchExternalParametersServiceTest {
     public static final String SOME_ACCESS_CONTRACT = "SOME_ACCESS_CONTRACT";
     public static final int SOME_TENANT = 1;
 
-    @MockBean(name = "externalParametersApi")
+    @MockitoBean(name = "externalParametersApi")
     private ExternalParametersApi externalParametersApi;
 
-    @MockBean(name = "securityService")
+    @MockitoBean(name = "securityService")
     private SecurityService securityService;
 
     @InjectMocks

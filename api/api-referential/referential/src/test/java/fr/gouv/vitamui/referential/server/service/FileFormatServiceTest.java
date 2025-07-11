@@ -56,6 +56,7 @@ import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatCommonService;
 import fr.gouv.vitamui.referential.server.service.fileformat.FileFormatConverter;
 import fr.gouv.vitamui.referential.server.service.fileformat.FileFormatService;
+import jakarta.xml.bind.JAXBException;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

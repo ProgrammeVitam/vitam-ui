@@ -34,8 +34,9 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
@@ -58,8 +58,8 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH_CRITERIA_HISTOR
 /**
  * The controller to check existence, create, read and delete the search criterias
  */
-@Api(tags = "searchCriteriaHistory", value = "Search Criteria History")
 @RestController
+@Tag(name = "searchCriteriaHistory")
 @RequestMapping(ARCHIVE_UNITS + SEARCH_CRITERIA_HISTORY)
 @RequiredArgsConstructor
 public class SearchCriteriaHistoryController {
@@ -94,7 +94,7 @@ public class SearchCriteriaHistoryController {
         searchCriteriaHistoryService.delete(id);
     }
 
-    @ApiOperation(value = "Update Search criteria history")
+    @Operation(summary = "Update Search criteria history")
     @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     @PutMapping(CommonConstants.PATH_ID)
     public void update(@RequestBody final SearchCriteriaHistoryDto entity)

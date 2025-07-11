@@ -36,34 +36,28 @@ import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
-@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 public class ApiArchiveSearchServerConfigTest {
 
-    @MockBean(name = "adminExternalClient")
+    @MockitoBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
 
-    @MockBean(name = "accessExternalClient")
+    @MockitoBean(name = "accessExternalClient")
     private AccessExternalClient accessExternalClient;
 
-    @MockBean(name = "accessExternalClientV2")
+    @MockitoBean(name = "accessExternalClientV2")
     private AccessExternalClientV2 accessExternalClientV2;
 
-    @MockBean(name = "ingestExternalClient")
+    @MockitoBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
 
-    @MockBean(name = "agencyCommonService")
+    @MockitoBean(name = "agencyCommonService")
     private AgencyCommonService agencyCommonService;
 
     @Autowired

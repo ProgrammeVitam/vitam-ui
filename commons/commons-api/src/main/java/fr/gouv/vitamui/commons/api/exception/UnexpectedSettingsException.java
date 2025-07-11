@@ -39,9 +39,12 @@ package fr.gouv.vitamui.commons.api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.Serial;
+
 @ResponseStatus(value = HttpStatus.EXPECTATION_FAILED)
 public class UnexpectedSettingsException extends VitamUIException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public UnexpectedSettingsException(final String message) {

@@ -42,13 +42,14 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,7 @@ import java.util.Map;
 @ToString(callSuper = true)
 public class CustomerDto extends IdDto {
 
+    @Serial
     private static final long serialVersionUID = 997428479132350296L;
 
     @NotNull

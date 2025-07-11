@@ -37,13 +37,14 @@
 package fr.gouv.vitamui.iam.security.config;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -57,6 +58,7 @@ public class ApiAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 586235062966009538L;
 
     private final RestExceptionHandler restExceptionHandler;

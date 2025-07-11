@@ -54,6 +54,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.profile.ProfileService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +79,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
@@ -156,7 +156,7 @@ public class ProfileController {
     @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
     public ResponseEntity<JsonNode> importProfileFile(
         final @PathVariable("id") String id,
-        @RequestParam("file") MultipartFile file
+        @RequestParam MultipartFile file
     ) throws IOException, InvalidParseOperationException, PreconditionFailedException, AccessExternalClientException {
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
@@ -217,8 +217,8 @@ public class ProfileController {
     @Secured(ServicesData.ROLE_IMPORT_ARCHIVE_PROFILES)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public ResponseEntity<JsonNode> importArchivalProfiles(
-        @RequestParam("fileName") String fileName,
-        @RequestParam("file") MultipartFile file
+        @RequestParam String fileName,
+        @RequestParam MultipartFile file
     ) {
         ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());

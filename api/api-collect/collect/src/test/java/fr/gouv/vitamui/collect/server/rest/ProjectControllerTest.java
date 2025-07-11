@@ -48,7 +48,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,10 +62,10 @@ public class ProjectControllerTest extends ApiCollectControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private ProjectService projectService;
 
-    @MockBean
+    @MockitoBean
     private ExternalParametersService externalParametersService;
 
     private ProjectController projectController;

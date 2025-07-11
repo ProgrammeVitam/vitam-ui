@@ -1,17 +1,17 @@
 package fr.gouv.vitamui.iam.server.rest;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests the {@link OwnerController}.
@@ -20,15 +20,17 @@ import static org.junit.Assert.assertEquals;
  */
 public final class OwnerControllerTest {
 
+    private AutoCloseable mocks;
+
     @InjectMocks
     private OwnerController controller;
 
     @Mock
     private OwnerService service;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
     }
 
     private void prepareServices() {}
@@ -45,13 +47,20 @@ public final class OwnerControllerTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
-        prepareServices();
-        controller.delete("Id");
+    @Test
+    public void testCannotDelete() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            prepareServices();
+            controller.delete("Id");
+        });
     }
 
     private OwnerDto buildOwnerDto() {
         return IamServerUtilsTest.buildOwnerDto();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

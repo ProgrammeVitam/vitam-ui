@@ -41,7 +41,6 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
@@ -81,14 +80,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 @Configuration
 @Import(
     {
         RestExceptionHandler.class,
-        SwaggerConfiguration.class,
         HttpMessageConvertersAutoConfiguration.class,
         WebSecurityConfig.class,
         VitamAccessConfig.class,
@@ -100,8 +98,7 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public MultipartResolver multipartResolver() {
-        final MultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        return commonsMultipartResolver;
+        return new StandardServletMultipartResolver();
     }
 
     @SuppressWarnings("rawtypes")
@@ -267,26 +264,14 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        UserAuthenticationService userAuthenticationService
-    ) {
-        return new InternalApiAuthenticationProvider(userAuthenticationService);
-    }
-
-    @Bean
-    public ExternalApiAuthenticationProvider externalApiAuthenticationProvider(
-        ContextsApi contextsApi,
-        UserAuthenticationService userAuthenticationService
-    ) {
-        return new ExternalApiAuthenticationProvider(contextsApi, userAuthenticationService);
-    }
-
-    @Bean
     public ApiAuthenticationProvider apiAuthenticationProvider(
-        final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
-        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+        UserAuthenticationService userAuthenticationService,
+        ContextsApi contextsApi
     ) {
-        return new ApiAuthenticationProvider(internalApiAuthenticationProvider, externalApiAuthenticationProvider);
+        return new ApiAuthenticationProvider(
+            new InternalApiAuthenticationProvider(userAuthenticationService),
+            new ExternalApiAuthenticationProvider(contextsApi, userAuthenticationService)
+        );
     }
 
     @Bean

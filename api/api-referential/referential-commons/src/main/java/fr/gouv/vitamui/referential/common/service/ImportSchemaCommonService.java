@@ -11,7 +11,6 @@ import fr.gouv.vitam.common.model.administration.schema.SchemaInputModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -26,7 +25,6 @@ public class ImportSchemaCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public ImportSchemaCommonService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

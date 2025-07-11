@@ -54,8 +54,8 @@ public class SpMetadataGenerator {
 
     public String generate(final IdentityProviderDto provider) {
         final IndirectClient client = pac4jClientBuilder.buildClient(provider).orElse(null);
-        if (client instanceof SAML2Client) {
-            return ((SAML2Client) client).getServiceProviderMetadataResolver().getMetadata();
+        if (client instanceof SAML2Client l2Client) {
+            return l2Client.getServiceProviderMetadataResolver().getMetadata();
         }
         return null;
     }

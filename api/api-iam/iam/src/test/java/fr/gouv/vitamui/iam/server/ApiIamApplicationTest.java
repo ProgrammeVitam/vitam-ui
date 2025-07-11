@@ -1,17 +1,17 @@
 package fr.gouv.vitamui.iam.server;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(properties = { "spring.config.name=iam-application" })
 @ActiveProfiles("test")
 public class ApiIamApplicationTest {
@@ -19,7 +19,7 @@ public class ApiIamApplicationTest {
     @Autowired
     private Environment env;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         System.setProperty("vitam.config.folder", "src/main/config");
     }

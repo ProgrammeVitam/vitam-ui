@@ -9,8 +9,8 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,7 +54,7 @@ public final class UserEmailServiceTest {
     private final String casResetPasswordUrl =
         "/cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         identityProviderHelper = mock(IdentityProviderHelper.class);
         userInfoService = mock(UserInfoService.class);

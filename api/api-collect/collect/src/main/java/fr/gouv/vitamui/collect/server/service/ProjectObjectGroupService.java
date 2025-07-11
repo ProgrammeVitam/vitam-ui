@@ -39,8 +39,10 @@ import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -51,17 +53,15 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.Response;
 import java.io.InputStream;
 
 import static fr.gouv.vitamui.commons.rest.util.RestUtils.CONTENT_DISPOSITION;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang.StringUtils.EMPTY;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 @RequiredArgsConstructor

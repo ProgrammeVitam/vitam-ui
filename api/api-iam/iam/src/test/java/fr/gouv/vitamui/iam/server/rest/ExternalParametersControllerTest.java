@@ -47,8 +47,9 @@ import fr.gouv.vitamui.iam.server.externalParameters.dao.ExternalParametersRepos
 import fr.gouv.vitamui.iam.server.externalParameters.domain.ExternalParameters;
 import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -60,7 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 /**
@@ -69,6 +70,8 @@ import static org.mockito.Mockito.when;
  *
  */
 public class ExternalParametersControllerTest {
+
+    private AutoCloseable mocks;
 
     private ExternalParametersController controller;
 
@@ -91,9 +94,9 @@ public class ExternalParametersControllerTest {
 
     private static final String PARAMETER_ID = "1";
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
 
         Mockito.when(externalParametersConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(externalParametersConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
@@ -132,5 +135,10 @@ public class ExternalParametersControllerTest {
         Map<String, String> callResult = controller.getMyExternalParameters();
 
         assertNotNull(callResult);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

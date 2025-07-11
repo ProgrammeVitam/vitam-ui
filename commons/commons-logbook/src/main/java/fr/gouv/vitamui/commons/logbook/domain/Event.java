@@ -39,6 +39,7 @@ package fr.gouv.vitamui.commons.logbook.domain;
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitamui.commons.logbook.common.*;
 import fr.gouv.vitamui.commons.mongo.IdDocument;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,7 +47,6 @@ import lombok.ToString;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 /**

@@ -22,14 +22,14 @@ import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 import java.util.List;
@@ -37,13 +37,12 @@ import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests {@link SubrogationService}.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public final class SubrogationServiceTest {
 
     public static final String USER1_EMAIL = "one@vitamui.com";
@@ -86,7 +85,7 @@ public final class SubrogationServiceTest {
     @Mock
     private IamLogbookService iamLogbookService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SubrogationConverter subrogationConverter = new SubrogationConverter(userRepository);
         service = new SubrogationService(
@@ -132,8 +131,8 @@ public final class SubrogationServiceTest {
         VitamUIUtils.copyProperties(subro, subroToCreate);
         subroToCreate.setId(null);
         final SubrogationDto dto = service.create(subroToCreate);
-        assertNotNull("Subrogation shouldn't be null", dto);
-        assertNotNull("Subrogation should have an id", dto.getId());
+        assertNotNull(dto, "Subrogation shouldn't be null");
+        assertNotNull(dto.getId(), "Subrogation should have an id");
         assertThat(dto.getSuperUser()).isEqualTo(subroToCreate.getSuperUser());
         assertThat(dto.getSuperUserCustomerId()).isEqualTo(subroToCreate.getSuperUserCustomerId());
         assertThat(dto.getSurrogate()).isEqualTo(subroToCreate.getSurrogate());
@@ -144,34 +143,36 @@ public final class SubrogationServiceTest {
     /**
      * Test that an user cannot create a subrogation for another user.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCreateSubrogationForAnotherUser() {
-        final Customer customer = buildCustomer();
-        final User user1 = new User();
-        final User user2 = new User();
-        final User user3 = new User();
-        final AuthUserDto extUser1 = IamDtoBuilder.buildAuthUserDto("id", USER1_EMAIL, USER1_CUSTOMER_ID);
-        final AuthUserDto extUser2 = IamDtoBuilder.buildAuthUserDto("id2", USER2_EMAIL, USER2_CUSTOMER_ID);
-        final AuthUserDto extUser3 = IamDtoBuilder.buildAuthUserDto("id3", USER3_EMAIL, USER3_CUSTOMER_ID);
-        VitamUIUtils.copyProperties(extUser1, user1);
-        VitamUIUtils.copyProperties(extUser2, user2);
-        VitamUIUtils.copyProperties(extUser3, user3);
-        final Subrogation subro = buildSubrogation();
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER2_EMAIL, USER2_CUSTOMER_ID)).thenReturn(
-            user2
-        );
-        Mockito.when(customerRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(customer));
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Customer customer = buildCustomer();
+            final User user1 = new User();
+            final User user2 = new User();
+            final User user3 = new User();
+            final AuthUserDto extUser1 = IamDtoBuilder.buildAuthUserDto("id", USER1_EMAIL, USER1_CUSTOMER_ID);
+            final AuthUserDto extUser2 = IamDtoBuilder.buildAuthUserDto("id2", USER2_EMAIL, USER2_CUSTOMER_ID);
+            final AuthUserDto extUser3 = IamDtoBuilder.buildAuthUserDto("id3", USER3_EMAIL, USER3_CUSTOMER_ID);
+            VitamUIUtils.copyProperties(extUser1, user1);
+            VitamUIUtils.copyProperties(extUser2, user2);
+            VitamUIUtils.copyProperties(extUser3, user3);
+            final Subrogation subro = buildSubrogation();
+            Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER2_EMAIL, USER2_CUSTOMER_ID)).thenReturn(
+                user2
+            );
+            Mockito.when(customerRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(customer));
 
-        final SubrogationDto subroToCreate = new SubrogationDto();
-        VitamUIUtils.copyProperties(subro, subroToCreate);
-        subroToCreate.setId(null);
-        subroToCreate.setSuperUser(USER3_EMAIL);
-        final SubrogationDto dto = service.create(subroToCreate);
-        assertNotNull("Subrogation shouldn't be null", dto);
-        assertNotNull("Subrogation should have an id", dto.getId());
-        assertThat(dto.getSuperUser()).isEqualTo(subroToCreate.getSuperUser());
-        assertThat(dto.getSurrogate()).isEqualTo(subroToCreate.getSurrogate());
-        assertThat(dto.getStatus()).isEqualTo(SubrogationStatusEnum.CREATED);
+            final SubrogationDto subroToCreate = new SubrogationDto();
+            VitamUIUtils.copyProperties(subro, subroToCreate);
+            subroToCreate.setId(null);
+            subroToCreate.setSuperUser(USER3_EMAIL);
+            final SubrogationDto dto = service.create(subroToCreate);
+            assertNotNull(dto, "Subrogation shouldn't be null");
+            assertNotNull(dto.getId(), "Subrogation should have an id");
+            assertThat(dto.getSuperUser()).isEqualTo(subroToCreate.getSuperUser());
+            assertThat(dto.getSurrogate()).isEqualTo(subroToCreate.getSurrogate());
+            assertThat(dto.getStatus()).isEqualTo(SubrogationStatusEnum.CREATED);
+        });
     }
 
     @Test
@@ -189,22 +190,24 @@ public final class SubrogationServiceTest {
         assertThat(dto.getStatus()).isEqualTo(SubrogationStatusEnum.ACCEPTED);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testAcceptBadUser() {
-        final Subrogation subro = buildSubrogation();
-        Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
-        Mockito.when(securityService.getUser()).thenReturn(
-            IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER1_CUSTOMER_ID)
-        );
-        try {
-            service.accept(SUBROGATION_ID);
-            fail();
-        } catch (final IllegalArgumentException e) {
-            assertThat(e.getMessage()).isEqualTo(
-                "Users " + BAD_USER_EMAIL + " can't accept subrogation of " + subro.getSurrogate()
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Subrogation subro = buildSubrogation();
+            Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
+            Mockito.when(securityService.getUser()).thenReturn(
+                IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER1_CUSTOMER_ID)
             );
-            throw e;
-        }
+            try {
+                service.accept(SUBROGATION_ID);
+                fail();
+            } catch (final IllegalArgumentException e) {
+                assertThat(e.getMessage()).isEqualTo(
+                    "Users " + BAD_USER_EMAIL + " can't accept subrogation of " + subro.getSurrogate()
+                );
+                throw e;
+            }
+        });
     }
 
     @Test
@@ -217,22 +220,24 @@ public final class SubrogationServiceTest {
         service.decline(SUBROGATION_ID);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testDeclineBadUser() {
-        final Subrogation subro = buildSubrogation();
-        Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
-        Mockito.when(securityService.getUser()).thenReturn(
-            IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER2_CUSTOMER_ID)
-        );
-        try {
-            service.decline(SUBROGATION_ID);
-            fail();
-        } catch (final IllegalArgumentException e) {
-            assertThat(e.getMessage()).isEqualTo(
-                "Users " + BAD_USER_EMAIL + " can't decline subrogation of " + subro.getSurrogate()
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Subrogation subro = buildSubrogation();
+            Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
+            Mockito.when(securityService.getUser()).thenReturn(
+                IamDtoBuilder.buildAuthUserDto("id", BAD_USER_EMAIL, USER2_CUSTOMER_ID)
             );
-            throw e;
-        }
+            try {
+                service.decline(SUBROGATION_ID);
+                fail();
+            } catch (final IllegalArgumentException e) {
+                assertThat(e.getMessage()).isEqualTo(
+                    "Users " + BAD_USER_EMAIL + " can't decline subrogation of " + subro.getSurrogate()
+                );
+                throw e;
+            }
+        });
     }
 
     private Subrogation buildSubrogation() {

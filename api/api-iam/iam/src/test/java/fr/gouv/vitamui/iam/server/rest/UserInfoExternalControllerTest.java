@@ -8,25 +8,22 @@ import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.utils.ApiIamServerUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { UserInfoController.class })
 class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoExternalControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userExternalService;
 
     private final UserInfoController userExternalController = MvcUriComponentsBuilder.on(UserInfoController.class);

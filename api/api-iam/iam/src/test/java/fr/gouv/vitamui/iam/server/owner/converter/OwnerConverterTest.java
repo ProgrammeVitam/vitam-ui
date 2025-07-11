@@ -8,7 +8,7 @@ import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.iam.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.server.common.domain.Address;
 import fr.gouv.vitamui.iam.server.owner.domain.Owner;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

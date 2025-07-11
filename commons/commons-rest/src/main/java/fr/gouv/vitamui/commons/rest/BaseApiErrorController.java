@@ -38,12 +38,11 @@ package fr.gouv.vitamui.commons.rest;
 
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
 
 public class BaseApiErrorController implements ErrorController {
 

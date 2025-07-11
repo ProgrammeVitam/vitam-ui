@@ -50,7 +50,8 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.accesscontract.AccessContractService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -74,7 +75,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -177,7 +177,7 @@ public class AccessContractController {
         return accessContractService.findHistoryById(id);
     }
 
-    @ApiOperation(value = "Export access contract to a csv file")
+    @Operation(summary = "Export access contract to a csv file")
     @GetMapping(path = RestApi.EXPORT_CSV)
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     public ResponseEntity<Resource> exportAccessContracts() {
@@ -193,7 +193,7 @@ public class AccessContractController {
     @Secured(ServicesData.ROLE_CREATE_ACCESS_CONTRACTS)
     @PostMapping(CommonConstants.PATH_IMPORT)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> importAccessContracts(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> importAccessContracts(@RequestParam MultipartFile file) {
         SanityChecker.isValidFileName(file.getOriginalFilename());
         ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
         LOGGER.debug("Import access contracts file {}", file.getOriginalFilename());

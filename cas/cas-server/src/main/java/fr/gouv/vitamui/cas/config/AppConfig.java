@@ -311,7 +311,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public IdentityProviderRestClient identityProviderCrudRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getIdentityProviderRestClient();
+        return iamRestClientFactory.getIdentityProviderExternalRestClient();
     }
 
     @RefreshScope

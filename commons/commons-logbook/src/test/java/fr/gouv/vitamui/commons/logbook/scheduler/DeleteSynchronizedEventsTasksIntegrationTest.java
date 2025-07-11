@@ -5,15 +5,14 @@ import fr.gouv.vitamui.commons.logbook.common.EventStatus;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.OffsetDateTime;
 import java.util.Collection;
@@ -21,8 +20,9 @@ import java.util.Collection;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class DeleteSynchronizedEventsTasksIntegrationTest extends AbstractMongoTests {
+
+    private AutoCloseable mocks;
 
     private final Long ttlInDays = 30L;
 
@@ -31,12 +31,12 @@ public class DeleteSynchronizedEventsTasksIntegrationTest extends AbstractMongoT
 
     private DeleteSynchronizedEventsTasks deleteSynchronizedEventsTasks;
 
-    @MockBean
+    @MockitoBean
     private AdminExternalClient adminExternalClient;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         deleteSynchronizedEventsTasks = new DeleteSynchronizedEventsTasks(eventRepository);
         deleteSynchronizedEventsTasks = Mockito.spy(deleteSynchronizedEventsTasks);
         deleteSynchronizedEventsTasks.setTtlInDays(ttlInDays);
@@ -79,5 +79,10 @@ public class DeleteSynchronizedEventsTasksIntegrationTest extends AbstractMongoT
         Collection<Event> events = deleteSynchronizedEventsTasks.getEventsElligibleToBeDeleted();
         assertThat(events).isNotEmpty();
         assertThat(events).hasSize(1);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

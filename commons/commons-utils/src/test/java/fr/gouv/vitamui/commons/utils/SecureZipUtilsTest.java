@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.commons.utils;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +86,7 @@ class SecureZipUtilsTest {
         try (var zipFile = new FileOutputStream(sipFilePath)) {
             SecureZipUtils.zipFolder(zipFolder, zipFile);
         }
-        FileUtils.deleteDirectory(Paths.get(zipFolder).toFile());
+        FileUtils.deleteDirectory(Path.of(zipFolder).toFile());
 
         testUnzipFolder(sipFilePath, zipFolder);
     }
@@ -97,9 +96,9 @@ class SecureZipUtilsTest {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
-        Path linkedFile = Paths.get(UNZIP_FOLDER + "/file.txt");
+        Path linkedFile = Path.of(UNZIP_FOLDER + "/file.txt");
         FileUtils.writeStringToFile(linkedFile.toFile(), "Hello File", Charset.defaultCharset());
-        Path link = Paths.get(zipFolder + "/link");
+        Path link = Path.of(zipFolder + "/link");
         Files.createSymbolicLink(link, linkedFile);
 
         try (var zipFile = new FileOutputStream(UNZIP_FOLDER + "/zipOutput.zip")) {
@@ -114,8 +113,8 @@ class SecureZipUtilsTest {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
-        Path linkedFile = Paths.get(UNZIP_FOLDER + "/testZip");
-        Path link = Paths.get(zipFolder + "/link");
+        Path linkedFile = Path.of(UNZIP_FOLDER + "/testZip");
+        Path link = Path.of(zipFolder + "/link");
         Files.createSymbolicLink(link, linkedFile);
 
         try (var zipFile = new FileOutputStream(UNZIP_FOLDER + "/zipOutput.zip")) {
@@ -130,13 +129,13 @@ class SecureZipUtilsTest {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
-        List<Path> filesToZip = Arrays.asList(Paths.get(zipFolder + "file.txt"));
+        List<Path> filesToZip = Arrays.asList(Path.of(zipFolder + "file.txt"));
 
         final String zipFilePath = UNZIP_FOLDER + "/zipOutput.zip";
         try (var zipFile = new FileOutputStream(zipFilePath)) {
             SecureZipUtils.zipFiles(filesToZip, zipFile);
         }
-        FileUtils.deleteDirectory(Paths.get(zipFolder).toFile());
+        FileUtils.deleteDirectory(Path.of(zipFolder).toFile());
 
         SecureZipUtils.unzipFolder(zipFilePath, UNZIP_FOLDER);
         File file = new File(UNZIP_FOLDER + "file.txt");
@@ -163,12 +162,11 @@ class SecureZipUtilsTest {
         try (var zipFile = new FileOutputStream(zipFilePath)) {
             SecureZipUtils.zipStreams(filesToZip, zipFile);
         }
-        FileUtils.deleteDirectory(Paths.get(zipFolder).toFile());
+        FileUtils.deleteDirectory(Path.of(zipFolder).toFile());
 
         testUnzipFolder(zipFilePath, zipFolder);
     }
 
-    @Test
     @ParameterizedTest
     @ValueSource(
         strings = {
@@ -185,7 +183,7 @@ class SecureZipUtilsTest {
 
         var unzipFolderFile = new File(UNZIP_FOLDER);
         if (!unzipFolderFile.exists()) {
-            Files.createDirectories(Paths.get(UNZIP_FOLDER));
+            Files.createDirectories(Path.of(UNZIP_FOLDER));
         }
 
         final String zipFilePath = UNZIP_FOLDER + "zipOutput.zip";

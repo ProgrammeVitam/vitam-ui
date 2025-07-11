@@ -15,13 +15,11 @@ import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
@@ -31,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests for {@link UserRepository}
  */
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
 public class ExternalParamProfileCustomRepositoryTest extends AbstractMongoTests {

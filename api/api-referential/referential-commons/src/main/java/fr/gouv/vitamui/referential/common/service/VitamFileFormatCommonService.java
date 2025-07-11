@@ -61,15 +61,14 @@ import fr.gouv.vitamui.referential.common.dto.FileFormatResponseDto;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormat;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatCollection;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatXMLRootDto;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -90,7 +89,6 @@ public class VitamFileFormatCommonService {
 
     private ObjectMapper objectMapper;
 
-    @Autowired
     public VitamFileFormatCommonService(
         AdminExternalClient adminExternalClient,
         ObjectMapper objectMapper,

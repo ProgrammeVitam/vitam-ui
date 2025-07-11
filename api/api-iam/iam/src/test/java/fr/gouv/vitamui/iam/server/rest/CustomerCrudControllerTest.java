@@ -48,9 +48,10 @@ import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
@@ -67,8 +68,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -79,6 +79,8 @@ import static org.mockito.Mockito.when;
  */
 
 public final class CustomerCrudControllerTest {
+
+    private AutoCloseable mocks;
 
     private CustomerController customerController;
 
@@ -160,9 +162,9 @@ public final class CustomerCrudControllerTest {
 
     private CustomerConverter customerConverter;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
         customerService = new CustomerService(
             sequenceGeneratorService,
@@ -245,7 +247,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
 
         final CustomerDto createdCustomer = customerController.create(buildCustomerData(customerDto));
-        Assert.assertNotNull("Customer should be created.", createdCustomer.getId());
+        Assertions.assertNotNull(createdCustomer.getId(), "Customer should be created.");
     }
 
     @Test
@@ -256,7 +258,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
 
         final CustomerDto createdCustomer = customerController.create(buildCustomerData(customerDto));
-        Assert.assertNotNull("Customer should be created.", createdCustomer.getId());
+        Assertions.assertNotNull(createdCustomer.getId(), "Customer should be created.");
     }
 
     @Test
@@ -268,7 +270,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
 
         final CustomerDto createdCustomer = customerController.create(buildCustomerData(customerDto));
-        Assert.assertNotNull("Customer should be created.", createdCustomer.getId());
+        Assertions.assertNotNull(createdCustomer.getId(), "Customer should be created.");
     }
 
     @Test
@@ -338,72 +340,84 @@ public final class CustomerCrudControllerTest {
         }
     }
 
-    @Test(expected = InternalServerException.class)
-    public void testRollbackOnIdpError() throws InvalidParseOperationException, PreconditionFailedException {
-        final CustomerDto customerDto = buildFullCustomerDto();
+    @Test
+    public void testRollbackOnIdpError() {
+        assertThrows(InternalServerException.class, () -> {
+            final CustomerDto customerDto = buildFullCustomerDto();
 
-        prepareServices();
-        when(identityProviderRepository.save(any())).thenThrow(new InternalServerException("IDP Creation error"));
+            prepareServices();
+            when(identityProviderRepository.save(any())).thenThrow(new InternalServerException("IDP Creation error"));
 
-        customerController.create(buildCustomerData(customerDto));
+            customerController.create(buildCustomerData(customerDto));
 
-        fail("should fail");
+            fail("should fail");
+        });
     }
 
-    @Test(expected = InternalServerException.class)
-    public void testRollbackOnOwnerError() throws InvalidParseOperationException, PreconditionFailedException {
-        final CustomerDto customerDto = buildFullCustomerDto();
+    @Test
+    public void testRollbackOnOwnerError() {
+        assertThrows(InternalServerException.class, () -> {
+            final CustomerDto customerDto = buildFullCustomerDto();
 
-        prepareServices();
-        when(ownerRepository.save(any())).thenThrow(new InternalServerException("Owner Creation error"));
+            prepareServices();
+            when(ownerRepository.save(any())).thenThrow(new InternalServerException("Owner Creation error"));
 
-        customerController.create(buildCustomerData(customerDto));
-        fail("should fail");
+            customerController.create(buildCustomerData(customerDto));
+            fail("should fail");
+        });
     }
 
-    @Test(expected = InternalServerException.class)
-    public void testRollbackOnTenantError() throws InvalidParseOperationException, PreconditionFailedException {
-        final CustomerDto customerDto = buildFullCustomerDto();
+    @Test
+    public void testRollbackOnTenantError() {
+        assertThrows(InternalServerException.class, () -> {
+            final CustomerDto customerDto = buildFullCustomerDto();
 
-        prepareServices();
-        when(tenantRepository.save(any())).thenThrow(new InternalServerException("Tenant Creation error"));
+            prepareServices();
+            when(tenantRepository.save(any())).thenThrow(new InternalServerException("Tenant Creation error"));
 
-        customerController.create(buildCustomerData(customerDto));
-        fail("should fail");
+            customerController.create(buildCustomerData(customerDto));
+            fail("should fail");
+        });
     }
 
-    @Test(expected = InternalServerException.class)
-    public void testRollbackOnGroupError() throws InvalidParseOperationException, PreconditionFailedException {
-        final CustomerDto customerDto = buildFullCustomerDto();
+    @Test
+    public void testRollbackOnGroupError() {
+        assertThrows(InternalServerException.class, () -> {
+            final CustomerDto customerDto = buildFullCustomerDto();
 
-        prepareServices();
-        when(groupRepository.save(any())).thenThrow(new InternalServerException("Group Creation error"));
+            prepareServices();
+            when(groupRepository.save(any())).thenThrow(new InternalServerException("Group Creation error"));
 
-        customerController.create(buildCustomerData(customerDto));
-        fail("should fail");
+            customerController.create(buildCustomerData(customerDto));
+            fail("should fail");
+        });
     }
 
-    @Test(expected = InternalServerException.class)
-    public void testRollbackOnProfileError() throws InvalidParseOperationException, PreconditionFailedException {
-        final CustomerDto customerDto = buildFullCustomerDto();
+    @Test
+    public void testRollbackOnProfileError() {
+        assertThrows(InternalServerException.class, () -> {
+            final CustomerDto customerDto = buildFullCustomerDto();
 
-        prepareServices();
-        when(profileRepository.save(any())).thenThrow(new InternalServerException("Profile Creation error"));
+            prepareServices();
+            when(profileRepository.save(any())).thenThrow(new InternalServerException("Profile Creation error"));
 
-        customerController.create(buildCustomerData(customerDto));
-        fail("should fail");
+            customerController.create(buildCustomerData(customerDto));
+            fail("should fail");
+        });
     }
 
-    @Test(expected = InternalServerException.class)
-    public void testRollbackOnUserError() throws InvalidParseOperationException, PreconditionFailedException {
-        when(userInfoService.create(any())).thenReturn(buildUserInfoDto());
-        final CustomerDto customerDto = buildFullCustomerDto();
+    @Test
+    public void testRollbackOnUserError() {
+        assertThrows(InternalServerException.class, () -> {
+            when(userInfoService.create(any())).thenReturn(buildUserInfoDto());
+            final CustomerDto customerDto = buildFullCustomerDto();
 
-        prepareServices();
-        when(userService.create(any())).thenThrow(new InternalServerException("User Creation error"));
+            prepareServices();
+            when(userService.create(any())).thenThrow(new InternalServerException("User Creation error"));
 
-        customerController.create(buildCustomerData(customerDto));
-        fail("should fail");
+            customerController.create(buildCustomerData(customerDto));
+            fail("should fail");
+        });
     }
 
     private CustomerCreationFormData buildCustomerData(final CustomerDto customerDto) {
@@ -459,18 +473,20 @@ public final class CustomerCrudControllerTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
-        prepareServices();
-        customerController.delete("id");
+    @Test
+    public void testCannotDelete() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            prepareServices();
+            customerController.delete("id");
+        });
     }
 
     @Test
     public void testCheckExist() throws Exception {
         prepareServices();
         final ResponseEntity<Void> result = customerController.checkExist(QueryDto.criteria().toJson());
-        Assert.assertNotNull("Customers should be returned.", result);
-        Assert.assertEquals("Status Code should be returned.", HttpStatus.OK, result.getStatusCode());
+        Assertions.assertNotNull(result, "Customers should be returned.");
+        Assertions.assertEquals(HttpStatus.OK, result.getStatusCode(), "Status Code should be returned.");
     }
 
     @Test
@@ -484,8 +500,8 @@ public final class CustomerCrudControllerTest {
         when(customerRepository.findOne(any(Query.class))).thenReturn(Optional.of(customerCreated));
 
         final CustomerDto result = customerController.getOne(customerCreated.getId());
-        Assert.assertNotNull("Customers should be returned.", result);
-        Assert.assertEquals("Customes size should be returned.", customerCreated.getId(), result.getId());
+        Assertions.assertNotNull(result, "Customers should be returned.");
+        Assertions.assertEquals(customerCreated.getId(), result.getId(), "Customes size should be returned.");
     }
 
     @Test
@@ -506,7 +522,7 @@ public final class CustomerCrudControllerTest {
             Optional.empty(),
             Optional.of(DirectionDto.ASC)
         );
-        Assert.assertNotNull("Customer should be created.", result);
+        Assertions.assertNotNull(result, "Customer should be created.");
     }
 
     @Test
@@ -568,5 +584,10 @@ public final class CustomerCrudControllerTest {
 
     private ProfileDto buildProfileDto() {
         return IamServerUtilsTest.buildProfileDto();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

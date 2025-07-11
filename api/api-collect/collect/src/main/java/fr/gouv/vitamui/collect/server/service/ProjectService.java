@@ -54,12 +54,12 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;

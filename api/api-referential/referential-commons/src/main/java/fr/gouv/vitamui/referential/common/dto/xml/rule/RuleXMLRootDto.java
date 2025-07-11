@@ -37,10 +37,10 @@
 package fr.gouv.vitamui.referential.common.dto.xml.rule;
 
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.InternalSignatureCollection;
+import jakarta.xml.bind.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.xml.bind.annotation.*;
 import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)

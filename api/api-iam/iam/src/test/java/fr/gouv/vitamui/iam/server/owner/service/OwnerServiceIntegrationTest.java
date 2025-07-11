@@ -27,23 +27,22 @@ import fr.gouv.vitamui.iam.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
+import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,10 +57,11 @@ import static org.mockito.ArgumentMatchers.eq;
  * Tests the {@link OwnerService}.
  */
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
 public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest {
+
+    private AutoCloseable mocks;
 
     private OwnerService ownerService;
 
@@ -77,18 +77,18 @@ public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     @Mock
     private HttpContext httpContext;
 
-    @MockBean
+    @MockitoBean
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @MockBean
+    @MockitoBean
     private TenantRepository tenantRepository;
 
-    @MockBean
+    @MockitoBean
     private LogbookService logbookService;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         ownerService = new OwnerService(
             sequenceGeneratorService,
             ownerRepository,
@@ -223,5 +223,10 @@ public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest 
 
     private OwnerDto buildOwnerDto() {
         return IamServerUtilsTest.buildOwnerDto();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

@@ -3,7 +3,7 @@ package fr.gouv.vitamui.iam.server.externalparamprofile.converter;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -6,21 +6,21 @@ import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.security.WebSecurityConfig;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import(value = { WebSecurityConfig.class })
 public abstract class ApiIamControllerTest<T extends IdDto> extends ApiCrudControllerTest<T> {
 
-    @MockBean
+    @MockitoBean
     private ApiAuthenticationProvider apiAuthenticationProvider;
 
-    @MockBean
+    @MockitoBean
     private RestExceptionHandler restExceptionHandler;
 
-    @MockBean
+    @MockitoBean
     private CustomerRepository repository;
 
-    @MockBean
+    @MockitoBean
     private SecurityService securityService;
 }

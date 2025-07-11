@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serial;
 
 public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
 
@@ -61,6 +62,7 @@ public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
         super(vc);
     }
 
+    @Serial
     private static final long serialVersionUID = 1052745550909875288L;
 
     @Override

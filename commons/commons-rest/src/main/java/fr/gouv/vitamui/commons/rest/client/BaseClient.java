@@ -41,7 +41,7 @@ import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -111,7 +111,7 @@ public abstract class BaseClient<C extends HttpContext> implements RestClient {
     // TODO(refacto): commonize with VitamRestUtils.checkResponse
     protected void checkResponse(final ResponseEntity response, final Integer... acceptedStatus) {
         Assert.notNull(response, "The server response cannot be null");
-        final int responseStatus = response.getStatusCodeValue();
+        final int responseStatus = response.getStatusCode().value();
         final List<Integer> status;
         if (acceptedStatus == null || acceptedStatus.length == 0) {
             status = Arrays.asList(200);

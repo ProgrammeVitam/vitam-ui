@@ -51,11 +51,10 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.server.service.IngestService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -75,9 +74,9 @@ import java.util.Optional;
 /**
  * UI Ingest External controller
  */
-@Api(tags = "ingest")
 @RequestMapping(RestApi.V1_INGEST)
 @RestController
+@Tag(name = "ingest")
 @ResponseBody
 public class IngestController {
 
@@ -85,7 +84,6 @@ public class IngestController {
 
     private final IngestService ingestService;
 
-    @Autowired
     public IngestController(IngestService ingestService) {
         this.ingestService = ingestService;
     }
@@ -118,7 +116,7 @@ public class IngestController {
 
     @Secured(ServicesData.ROLE_GET_INGEST)
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getOne(@PathVariable("id") final String id)
+    public LogbookOperationDto getOne(@PathVariable final String id)
         throws PreconditionFailedException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
@@ -137,7 +135,7 @@ public class IngestController {
     }
 
     @Secured(ServicesData.ROLE_CREATE_INGEST)
-    @ApiOperation(value = "Upload an streaming SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(summary = "Upload an streaming SIP")
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Void> streamingUpload(
         InputStream inputStream,

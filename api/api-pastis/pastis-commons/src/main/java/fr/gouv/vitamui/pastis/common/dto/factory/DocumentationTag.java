@@ -38,9 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
+import jakarta.xml.bind.annotation.XmlElement;
 import lombok.Setter;
-
-import javax.xml.bind.annotation.XmlElement;
 
 @Setter
 public class DocumentationTag extends RngTag {

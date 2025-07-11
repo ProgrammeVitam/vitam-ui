@@ -58,7 +58,6 @@ import fr.gouv.vitamui.referential.server.service.AbstractService;
 import fr.gouv.vitamui.referential.server.service.service.ExternalParametersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -90,7 +89,6 @@ public class UnitService extends AbstractService {
     };
     private final ExternalParametersService externalParametersService;
 
-    @Autowired
     public UnitService(
         final UnitCommonService unitCommonService,
         final ObjectMapper objectMapper,

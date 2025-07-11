@@ -29,6 +29,7 @@ package fr.gouv.vitamui.commons.api.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class PaginatedValuesDto<T> implements Serializable {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 2571743723625499910L;
 
     private transient Collection<T> values;

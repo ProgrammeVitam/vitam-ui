@@ -40,6 +40,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
+
 /**
  * Class allowing to describe a Vitam operation.
  *
@@ -49,6 +51,7 @@ import lombok.ToString;
 @ToString
 public class TriggeredVitamOperationDto extends OperationDto {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String vitamRequestId;

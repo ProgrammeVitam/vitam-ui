@@ -32,7 +32,7 @@ server:
 
   error:
     path: /error
-  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
+  max-http-request-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     accesslog:
       enabled: {{ vitamui_struct.accesslogs | default(accesslogs) | lower }}

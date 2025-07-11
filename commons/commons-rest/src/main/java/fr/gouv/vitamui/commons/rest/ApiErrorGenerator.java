@@ -302,7 +302,7 @@ public final class ApiErrorGenerator {
      */
     private static String getMessage(final String key, final Object... args) {
         try {
-            return String.format(apiErrorsMessages.get(key), args);
+            return apiErrorsMessages.get(key).formatted(args);
         } catch (final MissingFormatArgumentException exception) {
             throw getInternalServerException();
         }

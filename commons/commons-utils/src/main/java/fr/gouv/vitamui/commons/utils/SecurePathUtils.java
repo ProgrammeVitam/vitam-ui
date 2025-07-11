@@ -3,7 +3,7 @@ package fr.gouv.vitamui.commons.utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 public class SecurePathUtils {
@@ -54,9 +54,9 @@ public class SecurePathUtils {
         if (!Pattern.matches(FILENAME_VALIDATION_REGEX, untrustedFilename)) {
             throw new SecurityException("not valid filename");
         }
-        final var trustedFilename = Paths.get(untrustedFilename).getFileName().toString();
+        final var trustedFilename = Path.of(untrustedFilename).getFileName().toString();
         //return FilenameUtils.concat(trustedBasePath, trustedFilename);
-        return Paths.get(trustedBasePath, trustedFilename).toString();
+        return Path.of(trustedBasePath, trustedFilename).toString();
     }
 
     /**
@@ -74,7 +74,7 @@ public class SecurePathUtils {
     ) throws SecurityException {
         String untrustedFullBasePath;
         try {
-            untrustedFullBasePath = Paths.get(trustedPartialBasePath, untrustedPartialBasePath).toString();
+            untrustedFullBasePath = Path.of(trustedPartialBasePath, untrustedPartialBasePath).toString();
         } catch (InvalidPathException e) {
             throw new SecurityException(DIRECTORY_TRAVERSAL_ATTEMPT + untrustedPartialBasePath, e);
         }

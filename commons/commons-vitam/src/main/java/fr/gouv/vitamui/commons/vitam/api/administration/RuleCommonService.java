@@ -53,7 +53,6 @@ import fr.gouv.vitam.common.model.administration.FileRulesModel;
 import fr.gouv.vitam.common.model.administration.RuleMeasurementEnum;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.InputStream;
 import java.util.Optional;
@@ -64,7 +63,6 @@ public class RuleCommonService {
 
     private ObjectMapper objectMapper;
 
-    @Autowired
     public RuleCommonService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
         objectMapper = new ObjectMapper();

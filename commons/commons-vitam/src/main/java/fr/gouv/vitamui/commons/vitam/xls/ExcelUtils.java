@@ -166,10 +166,7 @@ public final class ExcelUtils {
                         cell.setCellStyle(cellStyle);
                     } catch (final DateTimeParseException dateTimeParseException) {
                         LOGGER.warn(
-                            String.format(
-                                "Cannot parse date %s. The raw value has been exported instead",
-                                val.getValue()
-                            ),
+                            "Cannot parse date %s. The raw value has been exported instead".formatted(val.getValue()),
                             dateTimeParseException
                         );
                         cell.setCellValue(String.valueOf(val.getValue()));

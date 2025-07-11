@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.commons.rest;
 
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.time.OffsetDateTime;
 
 public class TestUri {
@@ -39,10 +39,10 @@ public class TestUri {
         );
 
         String fileName = "test.json";
-        LOGGER.info("Check content type " + Files.probeContentType(Paths.get(fileName)));
+        LOGGER.info("Check content type " + Files.probeContentType(Path.of(fileName)));
         fileName = "test.pdf";
-        LOGGER.info("Check content type " + Files.probeContentType(Paths.get(fileName)));
+        LOGGER.info("Check content type " + Files.probeContentType(Path.of(fileName)));
         fileName = "test.xls";
-        LOGGER.info("Check content type " + Files.probeContentType(Paths.get(fileName)));
+        LOGGER.info("Check content type " + Files.probeContentType(Path.of(fileName)));
     }
 }

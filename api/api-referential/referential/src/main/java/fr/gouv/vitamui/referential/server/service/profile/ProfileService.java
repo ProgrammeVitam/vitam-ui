@@ -64,10 +64,11 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.dto.ProfileResponseDto;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
+import jakarta.ws.rs.core.Response;
+import jakarta.xml.bind.JAXBException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -75,8 +76,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -96,7 +95,6 @@ public class ProfileService extends AbstractService {
 
     private final VitamProfileCommonService vitamProfileCommonService;
 
-    @Autowired
     public ProfileService(
         ObjectMapper objectMapper,
         ProfileConverter converter,
@@ -393,8 +391,8 @@ public class ProfileService extends AbstractService {
         Response response = this.download(vitamContext, id);
 
         Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
+        if (entity instanceof InputStream stream) {
+            Resource resource = new InputStreamResource(stream);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;

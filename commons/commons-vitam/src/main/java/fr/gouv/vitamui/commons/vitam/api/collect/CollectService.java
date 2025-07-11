@@ -43,11 +43,11 @@ import fr.gouv.vitam.common.model.elimination.DeletionRequestBody;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import org.apache.http.HttpStatus;
+import jakarta.ws.rs.core.Response;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.Response;
 import java.io.InputStream;
 
 public class CollectService {

@@ -50,7 +50,6 @@ import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.accessionregister.AccessionRegisterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,7 +70,6 @@ public class AccessionRegisterController {
 
     private final AccessionRegisterService accessionRegisterService;
 
-    @Autowired
     public AccessionRegisterController(AccessionRegisterService accessionRegisterService) {
         this.accessionRegisterService = accessionRegisterService;
     }

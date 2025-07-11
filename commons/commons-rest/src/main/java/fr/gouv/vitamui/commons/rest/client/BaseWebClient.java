@@ -524,14 +524,13 @@ public abstract class BaseWebClient<C extends HttpContext> extends BaseClient<C>
      * @return
      */
     protected String buildContentDisposition(final String paramName, final String fileName) {
-        return String.format(
-            "%s; %s=%s; %s=%s",
-            RestUtils.FORM_DATA,
-            RestUtils.NAME,
-            paramName,
-            RestUtils.FILENAME,
-            fileName
-        );
+        return "%s; %s=%s; %s=%s".formatted(
+                RestUtils.FORM_DATA,
+                RestUtils.NAME,
+                paramName,
+                RestUtils.FILENAME,
+                fileName
+            );
     }
 
     /**
@@ -595,12 +594,7 @@ public abstract class BaseWebClient<C extends HttpContext> extends BaseClient<C>
     protected void checkHttpMethod(final HttpMethod httpMethod) {
         if (httpMethod == null || (HttpMethod.POST != httpMethod && HttpMethod.PATCH != httpMethod)) {
             throw new ParseOperationException(
-                String.format(
-                    "%s not supported. Only %s and %s are allowed.",
-                    httpMethod,
-                    HttpMethod.POST,
-                    HttpMethod.PATCH
-                )
+                "%s not supported. Only %s and %s are allowed.".formatted(httpMethod, HttpMethod.POST, HttpMethod.PATCH)
             );
         }
     }

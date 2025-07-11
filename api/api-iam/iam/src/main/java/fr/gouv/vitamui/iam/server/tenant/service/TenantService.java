@@ -490,7 +490,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         if (isProof) {
             final Optional<Tenant> optTenant = tenantRepository.findByCustomerIdAndProofIsTrue(customerId);
             Assert.isTrue(
-                !optTenant.isPresent(),
+                optTenant.isEmpty(),
                 message + ": a proof tenant already exists for customerId: " + customerId
             );
         }
@@ -582,7 +582,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
                 .orElseThrow(
                     () ->
                         new ApplicationServerException(
-                            String.format("Profile not found for app %s and customer %s.", app, customerId)
+                            "Profile not found for app %s and customer %s.".formatted(app, customerId)
                         )
                 );
             adminGroupDto.getProfileIds().add(profile.getId());
@@ -599,7 +599,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
             .setApplicationSessionId(securityService.getApplicationId());
 
         final Optional<Tenant> tenant = getRepository().findById(id);
-        tenant.orElseThrow(() -> new NotFoundException(String.format("No tenant found with id : %s", id)));
+        tenant.orElseThrow(() -> new NotFoundException("No tenant found with id : %s".formatted(id)));
 
         LOGGER.info(
             "Tenant History EvIdAppSession : {} ",
@@ -795,9 +795,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         }
         final List<Integer> wrongIdentifiers = identifiers.stream().filter(this::canAccessToTenant).toList();
         if (!wrongIdentifiers.isEmpty()) {
-            throw new NoRightsException(
-                String.format(TENANT_INSUFFICIENT_PERMISSION_MESSAGE, wrongIdentifiers.toString())
-            );
+            throw new NoRightsException(TENANT_INSUFFICIENT_PERMISSION_MESSAGE.formatted(wrongIdentifiers.toString()));
         }
     }
 

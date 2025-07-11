@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -71,9 +72,11 @@ public abstract class BaseStatusRestClient implements RestClient {
         LOGGER.debug("checkStatus");
 
         final ResponseEntity<String> response = restTemplate.exchange(getUrl(), HttpMethod.GET, null, String.class);
-        final HttpStatus status = response.getStatusCode();
-        if (status != HttpStatus.OK && status != HttpStatus.NO_CONTENT) {
-            throw new ApplicationServerException("Internal Server Error : " + status.getReasonPhrase());
+        final HttpStatusCode statusCode = response.getStatusCode();
+        if (!statusCode.is2xxSuccessful()) {
+            throw new ApplicationServerException(
+                "Internal Server Error : " + HttpStatus.valueOf(statusCode.value()).getReasonPhrase()
+            );
         }
         // TODO: consume entity and close
     }

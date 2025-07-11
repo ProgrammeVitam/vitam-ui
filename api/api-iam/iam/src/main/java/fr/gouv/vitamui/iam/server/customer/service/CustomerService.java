@@ -586,14 +586,11 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
      */
     protected void checkCode(final Optional<String> customerId, final String customerCode) {
         final Optional<Customer> optCustomer = customerRepository.findByCode(customerCode);
-        if (
-            optCustomer.isPresent() && (!customerId.isPresent() || !optCustomer.get().getId().equals(customerId.get()))
-        ) {
+        if (optCustomer.isPresent() && (customerId.isEmpty() || !optCustomer.get().getId().equals(customerId.get()))) {
             throw new IllegalArgumentException(
-                String.format(
-                    "Integrity constraint error on the customer %s : the new code is already used by another customer.",
-                    customerId.orElse("[Undefined]")
-                )
+                "Integrity constraint error on the customer %s : the new code is already used by another customer.".formatted(
+                        customerId.orElse("[Undefined]")
+                    )
             );
         }
     }
@@ -670,7 +667,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
             .setApplicationSessionId(securityService.getApplicationId());
 
         final Optional<Customer> customer = getRepository().findById(id);
-        customer.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
+        customer.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
         final JsonNode body = logbookService
             .findEventsByIdentifierAndCollectionNames(
                 customer.get().getIdentifier(),

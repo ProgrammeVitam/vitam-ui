@@ -31,22 +31,19 @@ import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.managementcontract.service.ManagementContractService;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ManagementContractController.class })
 public class ManagementContractControllerTest extends ApiReferentialControllerTest<ManagementContractDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractControllerTest.class);
 
-    @MockBean
+    @MockitoBean
     private ManagementContractService managementContractService;
 
     @Override
@@ -89,6 +86,6 @@ public class ManagementContractControllerTest extends ApiReferentialControllerTe
 
     @Test
     public void testManagementContract() {
-        Assert.assertNotNull(managementContractService);
+        Assertions.assertNotNull(managementContractService);
     }
 }

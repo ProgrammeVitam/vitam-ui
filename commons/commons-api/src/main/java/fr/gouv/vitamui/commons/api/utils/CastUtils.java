@@ -90,7 +90,7 @@ public final class CastUtils {
             return null;
         }
         try {
-            return value instanceof Number ? ((Number) value).intValue() : (Integer) value;
+            return value instanceof Number n ? n.intValue() : (Integer) value;
         } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
@@ -109,7 +109,7 @@ public final class CastUtils {
             return null;
         }
         try {
-            return (value != null && value instanceof Number) ? ((Number) value).longValue() : (Long) value;
+            return (value != null && value instanceof Number n) ? n.longValue() : (Long) value;
         } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
@@ -144,7 +144,7 @@ public final class CastUtils {
      */
     public static Double toDouble(final Object value) {
         try {
-            return value instanceof Number ? ((Number) value).doubleValue() : (Double) value;
+            return value instanceof Number n ? n.doubleValue() : (Double) value;
         } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }

@@ -23,7 +23,7 @@ public class RandomObjectFiller {
      */
     @Deprecated
     public static <T> T createAndFill(final Class<T> clazz) throws Exception {
-        final T instance = clazz.newInstance();
+        final T instance = clazz.getDeclaredConstructor().newInstance();
         for (final Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
             final Object value = getRandomValueForField(field);

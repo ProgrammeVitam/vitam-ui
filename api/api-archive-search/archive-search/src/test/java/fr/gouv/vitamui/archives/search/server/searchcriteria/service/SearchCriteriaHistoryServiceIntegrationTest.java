@@ -50,25 +50,24 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @Import({ ConverterConfig.class, VitamClientTestConfig.class })
 @ActiveProfiles("test")
 public class SearchCriteriaHistoryServiceIntegrationTest extends AbstractMongoTests {
+
+    private AutoCloseable mocks;
 
     private SearchCriteriaHistoryService service;
 
@@ -83,12 +82,12 @@ public class SearchCriteriaHistoryServiceIntegrationTest extends AbstractMongoTe
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @MockBean
+    @MockitoBean
     protected SecurityService securityService;
 
     @BeforeEach
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
 
         service = new SearchCriteriaHistoryService(
             sequenceGeneratorService,
@@ -104,8 +103,9 @@ public class SearchCriteriaHistoryServiceIntegrationTest extends AbstractMongoTe
     }
 
     @AfterEach
-    public void cleanUp() {
+    public void cleanUp() throws Exception {
         repository.deleteAll();
+        mocks.close();
     }
 
     @Test

@@ -18,14 +18,14 @@ import fr.gouv.vitamui.commons.vitam.api.dto.IngestContractResponseDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.tenant.converter.TenantConverter;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InitVitamTenantServiceTest {
 
     @InjectMocks
@@ -76,7 +76,7 @@ public class InitVitamTenantServiceTest {
     @Mock
     private ObjectMapper objectMapper;
 
-    @Before
+    @BeforeEach
     public void setup() throws InvalidParseOperationException, IOException {
         initVitamTenantService.setHoldingIngestContract(ingestContractHolding);
         initVitamTenantService.setFullAccessAccessContract(fullAccessAccessContract);
@@ -84,8 +84,6 @@ public class InitVitamTenantServiceTest {
         initVitamTenantService.setHoldingAccessContract(holdingAccessContract);
         initVitamTenantService.setObjectMapper(objectMapper);
         initVitamTenantService.setMandatory(true);
-        Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
-        Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         fullAccessAccessContractDto = JsonHandler.getFromInputStream(
             fullAccessAccessContract.getInputStream(),
             AccessContractModel.class

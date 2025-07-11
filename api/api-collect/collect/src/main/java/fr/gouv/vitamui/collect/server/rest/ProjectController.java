@@ -40,8 +40,8 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,9 +69,9 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 /**
  * Project External controller
  */
-@Api(tags = "Collect")
 @RequestMapping(RestApi.COLLECT_PROJECT_PATH)
 @RestController
+@Tag(name = "Collect")
 @ResponseBody
 @RequiredArgsConstructor
 public class ProjectController {
@@ -113,7 +113,7 @@ public class ProjectController {
         );
     }
 
-    @ApiOperation(value = "Get transactions by project paginated")
+    @Operation(summary = "Get transactions by project paginated")
     @GetMapping(value = "/{id}" + TRANSACTIONS + "/paginated", params = { "page", "size" })
     @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
     public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
@@ -179,7 +179,7 @@ public class ProjectController {
     }
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
-    @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(summary = "Upload and stream collect zip file")
     @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void streamingUpload(
         InputStream inputStream,

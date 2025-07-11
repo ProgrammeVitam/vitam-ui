@@ -41,6 +41,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,6 +52,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class TenantInformationDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2154855739544645824L;
 
     @EqualsAndHashCode.Include

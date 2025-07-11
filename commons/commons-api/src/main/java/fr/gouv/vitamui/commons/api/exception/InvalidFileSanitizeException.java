@@ -39,12 +39,15 @@ package fr.gouv.vitamui.commons.api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.Serial;
+
 /**
  * Invalid sanitizing file
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class InvalidFileSanitizeException extends VitamUIException {
 
+    @Serial
     private static final long serialVersionUID = 2453818866974343655L;
 
     public InvalidFileSanitizeException(final String message) {

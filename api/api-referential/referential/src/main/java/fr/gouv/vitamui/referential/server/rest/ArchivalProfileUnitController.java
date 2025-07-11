@@ -53,6 +53,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.archivalprofileunit.ArchivalProfileUnitService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -75,7 +76,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -170,8 +170,8 @@ public class ArchivalProfileUnitController {
     @Secured(ServicesData.ROLE_IMPORT_ARCHIVE_PROFILES_UNIT)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public ResponseEntity<JsonNode> importArchivalUnitProfiles(
-        @RequestParam("fileName") String fileName,
-        @RequestParam("file") MultipartFile file
+        @RequestParam String fileName,
+        @RequestParam MultipartFile file
     ) throws InvalidParseOperationException {
         LOGGER.debug("Import Archival Unit Profile file {}", fileName);
         ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);

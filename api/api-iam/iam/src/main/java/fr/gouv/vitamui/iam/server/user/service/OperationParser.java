@@ -70,7 +70,7 @@ public class OperationParser {
                 )
                 .collect(Collectors.joining(","));
         } catch (JsonProcessingException | IllegalArgumentException e) {
-            throw new InternalServerException(String.format("cannot parse operation %s", json), e);
+            throw new InternalServerException("cannot parse operation %s".formatted(json), e);
         }
     }
 

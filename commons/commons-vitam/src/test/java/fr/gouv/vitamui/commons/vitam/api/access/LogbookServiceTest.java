@@ -13,22 +13,23 @@ import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClientFactory;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.spy;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LogbookServiceTest {
 
     public static final String MASTER_DATA = "MASTERDATA";
@@ -47,7 +48,7 @@ public class LogbookServiceTest {
 
     private AdminExternalClient adminExternalClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         accessExternalClient = AccessExternalClientFactory.getInstance()
             .setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK)
@@ -91,39 +92,45 @@ public class LogbookServiceTest {
         VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testDownloadAtr_whenNotIngestOperation() throws VitamClientException {
-        logbookService = spy(logbookService);
-        final LogbookOperation operation = new LogbookOperation();
-        operation.setEvTypeProc(OTHER);
-        final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
-        operationResponse.addResult(operation);
-        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
-            operationResponse
-        );
+    @Test
+    public void testDownloadAtr_whenNotIngestOperation() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            logbookService = spy(logbookService);
+            final LogbookOperation operation = new LogbookOperation();
+            operation.setEvTypeProc(OTHER);
+            final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
+            operationResponse.addResult(operation);
+            Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+                operationResponse
+            );
 
-        logbookService.downloadAtr("vitamId", new VitamContext(10));
+            logbookService.downloadAtr("vitamId", new VitamContext(10));
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testDownloadAtr_whenNoOperation() throws VitamClientException {
-        logbookService = spy(logbookService);
-        final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
-        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
-            operationResponse
-        );
+    @Test
+    public void testDownloadAtr_whenNoOperation() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            logbookService = spy(logbookService);
+            final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
+            Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+                operationResponse
+            );
 
-        logbookService.downloadAtr("vitamId", new VitamContext(10));
+            logbookService.downloadAtr("vitamId", new VitamContext(10));
+        });
     }
 
-    @Test(expected = ApplicationServerException.class)
-    public void testDownloadAtr_whenVitamException() throws VitamClientException {
-        logbookService = spy(logbookService);
-        Mockito.doThrow(new VitamClientException("error"))
-            .when(logbookService)
-            .selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any());
+    @Test
+    public void testDownloadAtr_whenVitamException() {
+        assertThrows(ApplicationServerException.class, () -> {
+            logbookService = spy(logbookService);
+            Mockito.doThrow(new VitamClientException("error"))
+                .when(logbookService)
+                .selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any());
 
-        logbookService.downloadAtr("vitamId", new VitamContext(10));
+            logbookService.downloadAtr("vitamId", new VitamContext(10));
+        });
     }
 
     @Test

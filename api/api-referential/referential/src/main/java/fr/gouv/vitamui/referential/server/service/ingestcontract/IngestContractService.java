@@ -77,18 +77,17 @@ import fr.gouv.vitamui.referential.common.service.IngestContractCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import fr.gouv.vitamui.referential.server.service.utils.ExportCSVUtils;
 import fr.gouv.vitamui.referential.server.service.utils.ImportCSVUtils;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -122,7 +121,6 @@ public class IngestContractService extends AbstractService {
     private final ApplicationsApi applicationsApi;
     private final SecurityService securityService;
 
-    @Autowired
     public IngestContractService(
         IngestContractCommonService ingestContractCommonService,
         ObjectMapper objectMapper,

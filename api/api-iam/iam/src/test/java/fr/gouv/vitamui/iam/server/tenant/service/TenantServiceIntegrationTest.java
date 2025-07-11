@@ -48,17 +48,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +72,6 @@ import static org.mockito.Mockito.when;
  * Class for test TenantService with a real repository
  */
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
 public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest {
@@ -124,37 +121,37 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
     @Mock
     private CustomerRepository customerRepository;
 
-    @MockBean
+    @MockitoBean
     private GroupRepository groupRepository;
 
-    @MockBean
+    @MockitoBean
     private ProfileRepository profileRepository;
 
     @Mock
     private UserService userService;
 
-    @MockBean
+    @MockitoBean
     private OwnerRepository ownerRepository;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
-    @MockBean
+    @MockitoBean
     private InitVitamTenantService initVitamTenantService;
 
-    @MockBean
+    @MockitoBean
     private LogbookService logbookService;
 
-    @MockBean
+    @MockitoBean
     private CustomerInitConfig customerInitConfig;
 
-    @MockBean
+    @MockitoBean
     private ExternalParametersRepository externalParametersRepository;
 
-    @MockBean
+    @MockitoBean
     private ExternalParametersService externalParametersService;
 
-    @MockBean
+    @MockitoBean
     private ConfigurationService configurationService;
 
     @BeforeEach

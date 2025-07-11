@@ -7,17 +7,17 @@ import fr.gouv.vitamui.commons.test.rest.AbstractRestControllerMockMvcTest;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
 
 public abstract class ControllerTest extends AbstractRestControllerMockMvcTest {
 
-    @MockBean
+    @MockitoBean
     private ApiAuthenticationProvider apiAuthenticationProvider;
 
-    @MockBean
+    @MockitoBean
     protected SecurityService securityService;
 
     @Override

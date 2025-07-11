@@ -32,11 +32,11 @@ import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -51,7 +51,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.FileNotFoundException;
 import java.time.OffsetDateTime;
@@ -62,10 +61,11 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import({ ConverterConfig.class, LogbookConfiguration.class, VitamClientTestConfig.class })
 public class CasServiceIntegrationTest extends AbstractMongoTests {
+
+    private AutoCloseable mocks;
 
     private static final String CREDENTIALS_DETAILS_FILE = "credentialsRepository/userCredentials.json";
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -113,7 +113,7 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
     @BeforeEach
     public void setup() throws FileNotFoundException, InvalidParseOperationException {
         jsonNode = JsonHandler.getFromFile(PropertiesUtils.findFile(CREDENTIALS_DETAILS_FILE));
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         casService.setTokenRepository(tokenRepository);
         casService.setIamLogbookService(iamLogbookService);
         casService.setMongoTemplate(mongoTemplate);
@@ -358,5 +358,10 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
         assertThat(event.getEvDetData()).isEqualTo(
             "{\"diff\":{\"-Statut\":\"ENABLED\"," + "\"+Statut\":\"BLOCKED\"},\"Durée du blocage\":\"PT20M\"}"
         );
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

@@ -7,8 +7,8 @@ import com.nimbusds.oauth2.sdk.id.Issuer;
 import com.nimbusds.openid.connect.sdk.Nonce;
 import com.nimbusds.openid.connect.sdk.claims.IDTokenClaimsSet;
 import com.nimbusds.openid.connect.sdk.op.OIDCProviderMetadata;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.profile.JwtGenerator;
 import org.pac4j.oidc.config.OidcConfiguration;
@@ -18,9 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +38,7 @@ public class CustomTokenValidatorTest {
     private Nonce nonce;
     private CustomTokenValidator validator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         configuration = mock(OidcConfiguration.class);
         final OIDCProviderMetadata metadata = mock(OIDCProviderMetadata.class);

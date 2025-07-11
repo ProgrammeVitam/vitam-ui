@@ -7,12 +7,13 @@ import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
+import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,10 +54,7 @@ public class PastisGetJsonTree {
         );
         Marshaller marshallerObj = contextObj.createMarshaller();
         marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerObj.setProperty(
-            "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-            new PastisCustomCharacterEscapeHandler()
-        );
+        marshallerObj.setProperty(PastisMarshaller.CHAR_ESCAPE_HANDLER, new PastisCustomCharacterEscapeHandler());
 
         marshallerObj.marshal(eparentRng, new FileOutputStream("generated_test.xml"));
 

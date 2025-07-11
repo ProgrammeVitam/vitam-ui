@@ -55,7 +55,7 @@
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>bom</artifactId>
-                <version>${project.version}</version>
+                <version>8.1.1</version> <!-- TODO: Force dependencies to 8.1.x until CAS is upgraded -->
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -66,7 +66,7 @@
         <!-- VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-client-legacy</artifactId>
+            <artifactId>iam-client</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -520,6 +520,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.38</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>

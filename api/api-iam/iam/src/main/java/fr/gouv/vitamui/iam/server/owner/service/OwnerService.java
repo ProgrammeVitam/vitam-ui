@@ -276,7 +276,7 @@ public class OwnerService extends AbstractResourceClientService<OwnerDto, Owner>
 
     private void checkCode(final String code, final String message) {
         final Optional<Owner> optOwner = getRepository().findByCode(code);
-        Assert.isTrue(!optOwner.isPresent(), message + ": a owner with code: " + code + " already exists.");
+        Assert.isTrue(optOwner.isEmpty(), message + ": a owner with code: " + code + " already exists.");
     }
 
     private void checkCode(final String id, final String code, final String message) {
@@ -298,7 +298,7 @@ public class OwnerService extends AbstractResourceClientService<OwnerDto, Owner>
             .setApplicationSessionId(securityService.getApplicationId());
 
         final Optional<Owner> owner = getRepository().findById(id);
-        owner.orElseThrow(() -> new NotFoundException(String.format("No owner found with id : %s", id)));
+        owner.orElseThrow(() -> new NotFoundException("No owner found with id : %s".formatted(id)));
 
         LOGGER.info("Find History EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 

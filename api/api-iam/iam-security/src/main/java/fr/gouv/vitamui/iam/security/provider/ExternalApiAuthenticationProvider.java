@@ -186,7 +186,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
         } catch (final NotFoundException e) {
             LOGGER.error(
                 "Certificate not found [IssuerDN={}, certificateBase64={}, credential={}]",
-                certificate.getIssuerDN(),
+                certificate.getIssuerX500Principal(),
                 certificateBase64,
                 certificate
             );

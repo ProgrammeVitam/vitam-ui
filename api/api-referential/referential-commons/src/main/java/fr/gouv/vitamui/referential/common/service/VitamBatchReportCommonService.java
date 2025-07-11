@@ -40,12 +40,11 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import org.apache.http.HttpStatus;
+import jakarta.ws.rs.core.Response;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.core.Response;
 import java.io.InputStream;
 
 /**
@@ -58,7 +57,6 @@ public class VitamBatchReportCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public VitamBatchReportCommonService(AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

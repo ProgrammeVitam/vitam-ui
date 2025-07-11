@@ -43,12 +43,10 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import org.apache.http.HttpStatus;
+import jakarta.ws.rs.core.Response;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.ws.rs.core.Response;
 
 public class ExportDipService {
 
@@ -57,7 +55,6 @@ public class ExportDipService {
 
     private final AccessExternalClient accessExternalClient;
 
-    @Autowired
     public ExportDipService(final AccessExternalClient accessExternalClient) {
         this.accessExternalClient = accessExternalClient;
     }

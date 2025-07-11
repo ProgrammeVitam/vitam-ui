@@ -46,43 +46,40 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.referential.server.service.accesscontract.AccessContractService;
 import fr.gouv.vitamui.referential.server.service.agency.AgencyService;
 import fr.gouv.vitamui.referential.server.service.logbookmanagement.LogbookManagementOperationService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
 public class ApiReferentialServerConfigTest extends AbstractContextConfiguration {
 
-    @MockBean(name = "adminExternalClient")
+    @MockitoBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
 
-    @MockBean(name = "accessExternalClient")
+    @MockitoBean(name = "accessExternalClient")
     private AccessExternalClient accessExternalClient;
 
-    @MockBean(name = "ingestExternalClient")
+    @MockitoBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
 
-    @MockBean(name = "accessExternalClientV2")
+    @MockitoBean(name = "accessExternalClientV2")
     private AccessExternalClientV2 accessExternalClientV2;
 
     @Autowired
     private AccessContractService accessContractService;
 
-    @MockBean
+    @MockitoBean
     private AccessContractCommonService accessContractCommonService;
 
     @Autowired
     private AgencyService agencyService;
 
-    @MockBean
+    @MockitoBean
     private AgencyCommonService agencyCommonService;
 
     @Autowired

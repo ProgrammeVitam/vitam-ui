@@ -38,8 +38,8 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,9 +66,9 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 /**
  * Transaction External controller
  */
-@Api(tags = "Collect")
 @RequestMapping(RestApi.COLLECT_TRANSACTION_PATH)
 @RestController
+@Tag(name = "Collect")
 @ResponseBody
 @RequiredArgsConstructor
 public class TransactionController {
@@ -122,7 +122,7 @@ public class TransactionController {
         transactionService.validateTransaction(id, externalParametersService.buildVitamContextFromExternalParam());
     }
 
-    @ApiOperation(value = "Get transaction by id")
+    @Operation(summary = "Get transaction by id")
     @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
     @GetMapping(CommonConstants.PATH_ID)
     public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
@@ -151,10 +151,7 @@ public class TransactionController {
     }
 
     @Secured(ServicesData.COLLECT_UPDATE_BULK_ARCHIVE_UNIT_ROLE)
-    @ApiOperation(
-        value = "Upload on streaming metadata file and update archive units",
-        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
-    )
+    @Operation(summary = "Upload on streaming metadata file and update archive units")
     @PutMapping(
         value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
         consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE

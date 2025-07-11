@@ -64,7 +64,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -82,28 +82,28 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("unchecked")
 public class ArchiveSearchMgtRulesServiceTest {
 
-    @MockBean(name = "objectMapper")
+    @MockitoBean(name = "objectMapper")
     private ObjectMapper objectMapper;
 
-    @MockBean(name = "archiveSearchService")
+    @MockitoBean(name = "archiveSearchService")
     private ArchiveSearchService archiveSearchService;
 
-    @MockBean(name = "ruleOperationsConverter")
+    @MockitoBean(name = "ruleOperationsConverter")
     private RuleOperationsConverter ruleOperationsConverter;
 
-    @MockBean(name = "unitCommonService")
+    @MockitoBean(name = "unitCommonService")
     private UnitCommonService unitCommonService;
 
     @InjectMocks
     private ArchiveSearchMgtRulesService archiveSearchMgtRulesService;
 
-    @MockBean(name = "accessContractCommonService")
+    @MockitoBean(name = "accessContractCommonService")
     private AccessContractCommonService accessContractCommonService;
 
-    @MockBean(name = "externalParametersService")
+    @MockitoBean(name = "externalParametersService")
     private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
 
-    @MockBean(name = "archiveSearchThresholdService")
+    @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";

@@ -12,16 +12,17 @@ import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.api.exception.RouteNotFoundException;
 import fr.gouv.vitamui.commons.api.exception.ValidationException;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jakarta.ws.rs.HttpMethod;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.ws.rs.HttpMethod;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @Import(ApiErrorGenerator.class)
 public class ApiErrorTest {
 
@@ -30,71 +31,97 @@ public class ApiErrorTest {
 
     @Test
     public void testApiErrorGenerator() {
-        Assert.assertNotNull("ApiErrorGenerator is null.", apiErrorGenerator);
+        Assertions.assertNotNull(apiErrorGenerator, "ApiErrorGenerator is null.");
     }
 
-    @Test(expected = InvalidAuthenticationException.class)
+    @Test
     public void testInvalidAuthentificationException() {
-        throw ApiErrorGenerator.getInvalidAuthentificationException();
+        assertThrows(InvalidAuthenticationException.class, () -> {
+            throw ApiErrorGenerator.getInvalidAuthentificationException();
+        });
     }
 
-    @Test(expected = NoRightsException.class)
+    @Test
     public void testNoRightsException() {
-        throw ApiErrorGenerator.getNoRightsException();
+        assertThrows(NoRightsException.class, () -> {
+            throw ApiErrorGenerator.getNoRightsException();
+        });
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test
     public void testBadRequestException() {
-        throw ApiErrorGenerator.getBadRequestException("bad request");
+        assertThrows(BadRequestException.class, () -> {
+            throw ApiErrorGenerator.getBadRequestException("bad request");
+        });
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testBadRequestExceptionWithoutArguments() {
-        throw ApiErrorGenerator.getBadRequestException();
+        assertThrows(InternalServerException.class, () -> {
+            throw ApiErrorGenerator.getBadRequestException();
+        });
     }
 
-    @Test(expected = InvalidFormatException.class)
+    @Test
     public void testInvalidFormatException() {
-        throw ApiErrorGenerator.getInvalidFormatException();
+        assertThrows(InvalidFormatException.class, () -> {
+            throw ApiErrorGenerator.getInvalidFormatException();
+        });
     }
 
-    @Test(expected = ForbiddenException.class)
+    @Test
     public void testForbiddenException() {
-        throw ApiErrorGenerator.getForbiddenException();
+        assertThrows(ForbiddenException.class, () -> {
+            throw ApiErrorGenerator.getForbiddenException();
+        });
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testNotFoundException() {
-        throw ApiErrorGenerator.getNotFoundException();
+        assertThrows(NotFoundException.class, () -> {
+            throw ApiErrorGenerator.getNotFoundException();
+        });
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testRouteNotFoundExceptionWithoutArguments() {
-        throw ApiErrorGenerator.getRouteNotFoundException();
+        assertThrows(InternalServerException.class, () -> {
+            throw ApiErrorGenerator.getRouteNotFoundException();
+        });
     }
 
-    @Test(expected = RouteNotFoundException.class)
+    @Test
     public void testRouteNotFoundException() {
-        throw ApiErrorGenerator.getRouteNotFoundException(HttpMethod.POST, "/path");
+        assertThrows(RouteNotFoundException.class, () -> {
+            throw ApiErrorGenerator.getRouteNotFoundException(HttpMethod.POST, "/path");
+        });
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void testValidationException() {
-        throw ApiErrorGenerator.getValidationException();
+        assertThrows(ValidationException.class, () -> {
+            throw ApiErrorGenerator.getValidationException();
+        });
     }
 
-    @Test(expected = InternalServerException.class)
+    @Test
     public void testInternalServerException() {
-        throw ApiErrorGenerator.getInternalServerException();
+        assertThrows(InternalServerException.class, () -> {
+            throw ApiErrorGenerator.getInternalServerException();
+        });
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test
     public void testNotImplementedException() {
-        throw ApiErrorGenerator.getNotImplementedException();
+        assertThrows(NotImplementedException.class, () -> {
+            throw ApiErrorGenerator.getNotImplementedException();
+        });
     }
 
-    @Test(expected = RequestTimeOutException.class)
+    @Test
     public void testRequestTimeOutException() {
-        throw ApiErrorGenerator.getRequestTimeOutException();
+        assertThrows(RequestTimeOutException.class, () -> {
+            throw ApiErrorGenerator.getRequestTimeOutException();
+        });
     }
 }

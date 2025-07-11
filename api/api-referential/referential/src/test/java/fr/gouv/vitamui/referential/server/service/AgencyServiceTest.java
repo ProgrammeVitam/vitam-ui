@@ -59,6 +59,7 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyCommonService;
 import fr.gouv.vitamui.referential.server.service.agency.AgencyService;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -3,14 +3,13 @@ package fr.gouv.vitamui.iam.common.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fr.gouv.vitamui.commons.api.deserializer.ToLowerCaseConverter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter

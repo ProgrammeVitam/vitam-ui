@@ -76,11 +76,12 @@ import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.slf4j.Logger;
@@ -95,7 +96,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -447,14 +447,13 @@ public class CasService {
 
         if (Objects.isNull(userProvidedInfo)) {
             throw new NotFoundException(
-                String.format(
-                    "The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s",
-                    email,
-                    userIdentifier,
-                    groupId,
-                    idp,
-                    loginCustomerId
-                )
+                "The following provided user does not exist: Email:%s, technicalId:%s, groupId:%s, idp:%s, customerId:%s".formatted(
+                        email,
+                        userIdentifier,
+                        groupId,
+                        idp,
+                        loginCustomerId
+                    )
             );
         }
 
@@ -479,7 +478,7 @@ public class CasService {
 
         final Customer customer = customerRepository
             .findById(user.getCustomerId())
-            .orElseThrow(() -> new NotFoundException(String.format("Cannot find customer : %s", user.getCustomerId())));
+            .orElseThrow(() -> new NotFoundException("Cannot find customer : %s".formatted(user.getCustomerId())));
         user.setUserInfoId(createUserInfo(customer.getLanguage()).getId());
 
         userService.create(user);
@@ -494,7 +493,7 @@ public class CasService {
     private GroupDto getGroupByUnit(final String unit) {
         QueryDto criteria = QueryDto.criteria("units", List.of(unit), CriterionOperator.IN);
         final List<GroupDto> groups = groupService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.notEmpty(groups, String.format("No group found for the given unit : %s", unit));
+        Assert.notEmpty(groups, "No group found for the given unit : %s".formatted(unit));
         return groups.get(0);
     }
 
@@ -547,7 +546,7 @@ public class CasService {
     ) {
         QueryDto criteria = QueryDto.criteria("units", List.of(userInfo.getUnit()), CriterionOperator.IN);
         final List<GroupDto> groups = groupService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.notEmpty(groups, String.format("No group found for the given unit : %s", userInfo.getUnit()));
+        Assert.notEmpty(groups, "No group found for the given unit : %s".formatted(userInfo.getUnit()));
         if (!StringUtils.equals(userDto.getGroupId(), groups.get(0).getId())) {
             userUpdate.put("groupId", groups.get(0).getId());
         }

@@ -38,7 +38,7 @@ public class NettyServerCustomizer implements WebServerFactoryCustomizer<NettyRe
     private final int maxHttpHeaderSize;
 
     public NettyServerCustomizer(ServerProperties serverProperties) {
-        maxHttpHeaderSize = Math.toIntExact(serverProperties.getMaxHttpHeaderSize().toBytes());
+        maxHttpHeaderSize = Math.toIntExact(serverProperties.getMaxHttpRequestHeaderSize().toBytes());
     }
 
     @Override

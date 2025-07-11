@@ -44,12 +44,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class AccountDto extends UserDto {
 
+    @Serial
     private static final long serialVersionUID = -6394298503123660320L;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

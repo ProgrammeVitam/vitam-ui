@@ -61,7 +61,7 @@ public class SafeFileChecker {
             checkNullParameter(path);
             doCanonicalPathCheck(path);
         } catch (Exception ex) {
-            throw new InvalidFileSanitizeException(String.format("Security check error : Invalid name (%s)", path));
+            throw new InvalidFileSanitizeException("Security check error : Invalid name (%s)".formatted(path));
         }
     }
 
@@ -103,7 +103,7 @@ public class SafeFileChecker {
 
         if (!path.equals(canonicalPath)) {
             LOGGER.error("Invalid path {} did not match canonical : {}", path, canonicalPath);
-            throw new IOException(String.format("Invalid path (%s) did not match canonical : %s", path, canonicalPath));
+            throw new IOException("Invalid path (%s) did not match canonical : %s".formatted(path, canonicalPath));
         }
     }
 
@@ -125,12 +125,11 @@ public class SafeFileChecker {
                     component
                 );
                 throw new InvalidFileSanitizeException(
-                    String.format(
-                        "Invalid path (%s) (has unauthorized characters in component[%d] : %s",
-                        pathParent,
-                        index,
-                        component
-                    )
+                    "Invalid path (%s) (has unauthorized characters in component[%d] : %s".formatted(
+                            pathParent,
+                            index,
+                            component
+                        )
                 );
             }
         }
@@ -146,7 +145,7 @@ public class SafeFileChecker {
             if (!pathName.matches(FILENAME_PATTERN)) {
                 LOGGER.error("Invalid pathName {} ", pathName);
                 throw new InvalidFileSanitizeException(
-                    String.format("Invalid filename (%s) : has unauthorized characters", pathName)
+                    "Invalid filename (%s) : has unauthorized characters".formatted(pathName)
                 );
             }
         }

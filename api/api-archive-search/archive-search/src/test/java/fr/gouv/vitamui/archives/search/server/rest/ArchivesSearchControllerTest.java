@@ -58,9 +58,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -89,22 +89,22 @@ class ArchivesSearchControllerTest extends ApiArchiveSearchControllerTest<IdDto>
 
     public final String EXPECTED_RESPONSE = "expected_response";
 
-    @MockBean
+    @MockitoBean
     private ArchiveSearchService archiveSearchService;
 
-    @MockBean
+    @MockitoBean
     private TransferVitamOperationsService transferVitamOperationsService;
 
-    @MockBean
+    @MockitoBean
     private ExportDipService exportDipService;
 
-    @MockBean
+    @MockitoBean
     private ArchiveSearchEliminationService archiveSearchEliminationService;
 
-    @MockBean
+    @MockitoBean
     private ArchiveSearchMgtRulesService archiveSearchMgtRulesService;
 
-    @MockBean
+    @MockitoBean
     private ArchiveSearchUnitExportCsvService archiveSearchUnitExportCsvService;
 
     @Test

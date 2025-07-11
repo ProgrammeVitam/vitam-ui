@@ -76,18 +76,17 @@ import fr.gouv.vitamui.referential.common.service.OperationCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import fr.gouv.vitamui.referential.server.service.probativevalue.ProbativeValueService;
 import fr.gouv.vitamui.referential.server.service.service.ExternalParametersService;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -141,7 +140,6 @@ public class OperationService extends AbstractService {
     private final String START_TIME = "T00:00:00.000";
     private final String END_TIME = "T23:59:59.999";
 
-    @Autowired
     public OperationService(
         OperationCommonService operationCommonService,
         LogbookService logbookService,
@@ -434,8 +432,8 @@ public class OperationService extends AbstractService {
 
         Response response = this.export(vitamContext, id, type);
         Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
+        if (entity instanceof InputStream stream) {
+            Resource resource = new InputStreamResource(stream);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;

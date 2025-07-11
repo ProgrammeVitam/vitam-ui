@@ -54,6 +54,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -70,6 +71,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 @ToString(callSuper = true)
 public class AuthUserDto extends UserDto implements UserDetails {
 
+    @Serial
     private static final long serialVersionUID = -8426643003450221520L;
 
     private String superUser;
@@ -275,8 +277,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
     }
 
     private Object parseJson(final Object value, final TypeReference type) {
-        if (value instanceof String) {
-            final String json = (String) value;
+        if (value instanceof String json) {
             try {
                 return JsonUtils.fromJson(json, type);
             } catch (final IOException e) {

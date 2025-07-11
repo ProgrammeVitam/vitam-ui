@@ -35,7 +35,6 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.server.service.schema.SchemaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +52,6 @@ public class SchemaUnitController {
     private final SchemaService schemaService;
     private final SecurityService securityService;
 
-    @Autowired
     public SchemaUnitController(final SchemaService schemaService, final SecurityService securityService) {
         this.schemaService = schemaService;
         this.securityService = securityService;
@@ -61,7 +59,7 @@ public class SchemaUnitController {
 
     @Secured(ServicesData.ROLE_IMPORT_SCHEMAS)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<Void> importUnitSchemas(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> importUnitSchemas(@RequestParam MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("The file cannot be null or empty.");
         }

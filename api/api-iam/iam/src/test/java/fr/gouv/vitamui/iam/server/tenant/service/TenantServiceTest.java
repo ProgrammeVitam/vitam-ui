@@ -30,8 +30,9 @@ import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -51,6 +52,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class TenantServiceTest {
+
+    private AutoCloseable mocks;
 
     @InjectMocks
     private TenantService tenantService;
@@ -112,9 +115,9 @@ public class TenantServiceTest {
     @Mock
     private ExternalParametersService externalParametersService;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
 
@@ -231,5 +234,10 @@ public class TenantServiceTest {
         externalParameters.setIdentifier("identifierdefault_ac_customerId");
         externalParameters.setName("identifierdefault_ac_customerId");
         return externalParameters;
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

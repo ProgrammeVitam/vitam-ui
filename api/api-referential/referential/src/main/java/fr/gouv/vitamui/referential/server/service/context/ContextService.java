@@ -72,7 +72,6 @@ import fr.gouv.vitamui.referential.common.service.VitamContextCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -95,7 +94,6 @@ public class ContextService extends AbstractService {
 
     private LogbookService logbookService;
 
-    @Autowired
     public ContextService(
         VitamContextCommonService vitamContextCommonService,
         ObjectMapper objectMapper,

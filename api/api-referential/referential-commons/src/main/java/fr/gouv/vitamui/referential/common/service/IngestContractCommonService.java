@@ -61,7 +61,6 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.IngestContractResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.io.ByteArrayInputStream;
@@ -79,7 +78,6 @@ public class IngestContractCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public IngestContractCommonService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
     }

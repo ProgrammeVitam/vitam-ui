@@ -8,13 +8,13 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.config.ConverterConfig;
 import fr.gouv.vitamui.iam.server.logbook.config.LogbookConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import({ LogbookAutoConfiguration.class, ConverterConfig.class, LogbookConfiguration.class })
 public class AbstractLogbookIntegrationTest extends AbstractMongoTests {
 
-    @MockBean
+    @MockitoBean
     protected SecurityService securityService;
 
     @Autowired
@@ -23,6 +23,6 @@ public class AbstractLogbookIntegrationTest extends AbstractMongoTests {
     @Autowired
     protected IamLogbookService iamLogbookService;
 
-    @MockBean
+    @MockitoBean
     private AdminExternalClient adminExternalClient;
 }

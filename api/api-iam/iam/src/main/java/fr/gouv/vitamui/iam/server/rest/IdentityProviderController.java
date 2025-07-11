@@ -52,8 +52,10 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.server.domain.dto.ProviderPatchType;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -78,9 +80,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -251,7 +251,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     @Operation(operationId = "identityProviders_patchProviderKeystore", summary = "Patch a keystore provider")
     @ResponseStatus(HttpStatus.OK)
     @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
-    @ApiIgnore
+    @Hidden
     // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
     public IdentityProviderDto patchProviderKeystore(
         final @RequestPart("keystore") MultipartFile keystore,

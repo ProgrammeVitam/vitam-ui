@@ -2,7 +2,7 @@ package fr.gouv.vitamui.iam.server.common.converter;
 
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.iam.server.common.domain.Address;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AddressConverterTest {
 

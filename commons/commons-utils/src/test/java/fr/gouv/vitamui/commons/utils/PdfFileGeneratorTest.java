@@ -3,10 +3,10 @@ package fr.gouv.vitamui.commons.utils;
 import fr.opensagres.xdocreport.document.images.FileImageProvider;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,11 +14,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-@Ignore //Tests sur des fonctionnalités non utilisées de vitamui + erreur librairie interne "fr.opensagres.xdocreport"
+@Disabled //Tests sur des fonctionnalités non utilisées de vitamui + erreur librairie interne "fr.opensagres.xdocreport"
 // => tests + fonctionnalités à supprimer?
 public class PdfFileGeneratorTest {
 
@@ -28,10 +28,10 @@ public class PdfFileGeneratorTest {
 
     private static final String TMP_DIRECTORY = "/tmp/dlab/test/PdfFileGeneratorTest/";
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws IOException {
         if (!new File(TMP_DIRECTORY).exists()) {
-            Files.createDirectories(Paths.get(TMP_DIRECTORY));
+            Files.createDirectories(Path.of(TMP_DIRECTORY));
         }
     }
 
@@ -55,8 +55,8 @@ public class PdfFileGeneratorTest {
         try (final PDDocument document = PDDocument.load(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
             final String content = new PDFTextStripper().getText(document);
             final String[] results = content.split(",");
-            Assert.assertEquals("value1", results[0].trim());
-            Assert.assertEquals("value2", results[1].trim());
+            Assertions.assertEquals("value1", results[0].trim());
+            Assertions.assertEquals("value2", results[1].trim());
         }
     }
 
@@ -80,9 +80,9 @@ public class PdfFileGeneratorTest {
         try (final PDDocument document = PDDocument.load(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
             final String content = new PDFTextStripper().getText(document);
             final String[] results = content.split(",");
-            Assert.assertEquals("value1", results[0].trim());
-            Assert.assertEquals("value2", results[1].trim());
-            Assert.assertEquals("value3", results[2].trim());
+            Assertions.assertEquals("value1", results[0].trim());
+            Assertions.assertEquals("value2", results[1].trim());
+            Assertions.assertEquals("value3", results[2].trim());
         }
     }
 
@@ -101,7 +101,7 @@ public class PdfFileGeneratorTest {
             final String[] htmlFields = { "htmlField" };
             dataMap.put("data", "data");
             dataMap.put("dynamic.field", "dynamic field");
-            dataMap.put("imageField", new FileImageProvider(Paths.get(TEST_DIRECTORY, "image.png").toFile()));
+            dataMap.put("imageField", new FileImageProvider(Path.of(TEST_DIRECTORY, "image.png").toFile()));
 
             dataMap.put("htmlField", "<span><i>html</i> field</span>");
 
@@ -118,10 +118,10 @@ public class PdfFileGeneratorTest {
         try (final PDDocument document = PDDocument.load(new File(TMP_DIRECTORY + GENERATED_PDF_NAME))) {
             final String content = new PDFTextStripper().getText(document);
             final String[] results = content.split(",");
-            Assert.assertEquals("data", results[0].trim());
-            Assert.assertEquals("dynamic field", results[1].trim());
-            Assert.assertEquals("", results[2].trim());
-            Assert.assertEquals("html field", results[3].trim());
+            Assertions.assertEquals("data", results[0].trim());
+            Assertions.assertEquals("dynamic field", results[1].trim());
+            Assertions.assertEquals("", results[2].trim());
+            Assertions.assertEquals("html field", results[3].trim());
         }
     }
 }

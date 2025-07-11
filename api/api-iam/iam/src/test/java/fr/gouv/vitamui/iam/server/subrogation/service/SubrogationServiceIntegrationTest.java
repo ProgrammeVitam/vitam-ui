@@ -25,18 +25,16 @@ import fr.gouv.vitamui.iam.server.user.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Date;
 import java.util.Optional;
@@ -49,23 +47,24 @@ import static org.mockito.Mockito.mock;
  */
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
 public class SubrogationServiceIntegrationTest extends AbstractLogbookIntegrationTest {
+
+    private AutoCloseable mocks;
 
     private SubrogationService service;
 
     @Autowired
     private SubrogationRepository repository;
 
-    @MockBean
+    @MockitoBean
     private GroupRepository groupRepository;
 
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
 
-    @MockBean
+    @MockitoBean
     private SequenceGeneratorService sequenceGeneratorService;
 
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
@@ -75,24 +74,24 @@ public class SubrogationServiceIntegrationTest extends AbstractLogbookIntegratio
     @Autowired
     private IamLogbookService iamLogbookService;
 
-    @MockBean
+    @MockitoBean
     private UserService userService;
 
-    @MockBean
+    @MockitoBean
     private GroupService groupService;
 
-    @MockBean
+    @MockitoBean
     private ProfileRepository profilRepository;
 
     @Autowired
     private SubrogationConverter subrogationConverter;
 
-    @MockBean
+    @MockitoBean
     private TenantRepository tenantRepository;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
 
         service = new SubrogationService(
             sequenceGeneratorService,
@@ -115,8 +114,9 @@ public class SubrogationServiceIntegrationTest extends AbstractLogbookIntegratio
     }
 
     @AfterEach
-    public void cleanUp() {
+    public void cleanUp() throws Exception {
         repository.deleteAll();
+        mocks.close();
     }
 
     @Test

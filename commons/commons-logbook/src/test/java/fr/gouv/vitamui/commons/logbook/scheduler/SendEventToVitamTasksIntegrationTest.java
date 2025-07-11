@@ -5,15 +5,14 @@ import fr.gouv.vitamui.commons.logbook.common.EventStatus;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -23,8 +22,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class SendEventToVitamTasksIntegrationTest extends AbstractMongoTests {
+
+    private AutoCloseable mocks;
 
     private final Long retryErrorEventInMinutes = 60L;
     private SendEventToVitamTasks sendEventToVitamTasks;
@@ -32,12 +32,12 @@ public class SendEventToVitamTasksIntegrationTest extends AbstractMongoTests {
     @Autowired
     private EventRepository eventRepository;
 
-    @MockBean
+    @MockitoBean
     private AdminExternalClient adminExternalClient;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         sendEventToVitamTasks = new SendEventToVitamTasks(eventRepository, adminExternalClient);
         sendEventToVitamTasks = Mockito.spy(sendEventToVitamTasks);
         sendEventToVitamTasks.setRetryErrorEventInMinutes(retryErrorEventInMinutes);
@@ -96,5 +96,10 @@ public class SendEventToVitamTasksIntegrationTest extends AbstractMongoTests {
 
         List<Event> events = sendEventToVitamTasks.getEventsElligibleToBeSentToVitam();
         assertThat(events).isEmpty();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
     }
 }

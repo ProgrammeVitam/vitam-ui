@@ -57,11 +57,10 @@ import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -108,7 +107,6 @@ public class ArchiveSearchUnitExportCsvService {
     private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
     private final ObjectMapper objectMapper;
 
-    @Autowired
     public ArchiveSearchUnitExportCsvService(
         final @Lazy ArchiveSearchService archiveSearchService,
         final ArchiveSearchAgenciesService archiveSearchAgenciesService,
@@ -346,8 +344,7 @@ public class ArchiveSearchUnitExportCsvService {
         }
         return Stream.of("fr", "en")
             .map(lang -> attribute_.entrySet().stream().filter(e -> lang.equalsIgnoreCase(e.getKey())).findFirst())
-            .filter(Optional::isPresent)
-            .map(Optional::get)
+            .flatMap(Optional::stream)
             .findFirst()
             .map(Map.Entry::getValue)
             .or(() -> attribute_.values().stream().findFirst())

@@ -21,24 +21,24 @@ import fr.gouv.vitamui.iam.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ExternalParamProfileServiceTest {
 
     private ExternalParamProfileService externalParamProfileService;
@@ -63,7 +63,7 @@ public class ExternalParamProfileServiceTest {
 
     private final ProfileConverter profileConverter = new ProfileConverter();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         externalParamProfileService = new ExternalParamProfileService(
             externalParametersService,
@@ -148,7 +148,7 @@ public class ExternalParamProfileServiceTest {
             externalParamProfileDto
         );
 
-        assertNotNull("Of course external parameter profile should not be null", CreatedExternalParamProfileDto);
+        assertNotNull(CreatedExternalParamProfileDto, "Of course external parameter profile should not be null");
         // compare all fields except operation dateTime
         assertThat(CreatedExternalParamProfileDto).isEqualToComparingOnlyGivenFields(
             expectedValue,

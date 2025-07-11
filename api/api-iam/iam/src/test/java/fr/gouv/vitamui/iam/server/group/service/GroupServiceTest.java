@@ -27,9 +27,9 @@ import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.bson.Document;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -48,6 +48,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -79,7 +80,7 @@ public class GroupServiceTest {
 
     private final GroupConverter groupConverter = new GroupConverter(profileRepository);
 
-    @Before
+    @BeforeEach
     public void setup() {
         groupService = new GroupService(
             sequenceGeneratorService,
@@ -110,8 +111,8 @@ public class GroupServiceTest {
         final QueryDto criteria = QueryDto.criteria("name", "cont", CriterionOperator.CONTAINSIGNORECASE);
 
         final List<GroupDto> result = groupService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.assertNotNull("Groups should be returned.", result);
-        Assert.assertEquals("Groups size should be returned.", groups.size(), result.size());
+        Assertions.assertNotNull(result, "Groups should be returned.");
+        Assertions.assertEquals(groups.size(), result.size(), "Groups size should be returned.");
     }
 
     @Test
@@ -130,12 +131,12 @@ public class GroupServiceTest {
             Optional.empty(),
             Optional.of(DirectionDto.ASC)
         );
-        Assert.assertNotNull("Groups should be returned.", result);
-        Assert.assertNotNull("Groups should be returned.", result.getValues());
-        Assert.assertEquals("Groups size should be returned.", 1, result.getValues().size());
-        Assert.assertEquals("Groups size should be returned.", 0, result.getPageNum());
-        Assert.assertEquals("Groups size should be returned.", 5, result.getPageSize());
-        Assert.assertEquals("Groups size should be returned.", false, result.isHasMore());
+        Assertions.assertNotNull(result, "Groups should be returned.");
+        Assertions.assertNotNull(result.getValues(), "Groups should be returned.");
+        Assertions.assertEquals(1, result.getValues().size(), "Groups size should be returned.");
+        Assertions.assertEquals(0, result.getPageNum(), "Groups size should be returned.");
+        Assertions.assertEquals(5, result.getPageSize(), "Groups size should be returned.");
+        Assertions.assertEquals(false, result.isHasMore(), "Groups size should be returned.");
     }
 
     private void wireInternalSecurityServerCalls() {
@@ -163,25 +164,27 @@ public class GroupServiceTest {
         assertThat(entity).isEqualToComparingFieldByField(other);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testBeforePatchStatusFailed() {
-        final Map<String, Object> partialDto = new HashMap<>();
-        partialDto.put("id", "id");
-        partialDto.put("customerId", "customerId");
-        partialDto.put("enabled", false);
-        partialDto.put("name", "name");
-        partialDto.put("description", "description");
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Map<String, Object> partialDto = new HashMap<>();
+            partialDto.put("id", "id");
+            partialDto.put("customerId", "customerId");
+            partialDto.put("enabled", false);
+            partialDto.put("name", "name");
+            partialDto.put("description", "description");
 
-        final Group group = IamServerUtilsTest.buildGroup();
+            final Group group = IamServerUtilsTest.buildGroup();
 
-        when(groupRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(group));
-        when(userRepository.countByGroupId(any())).thenReturn(1l);
-        when(securityService.isLevelAllowed(any())).thenReturn(true);
+            when(groupRepository.findByIdAndCustomerId(any(), any())).thenReturn(Optional.of(group));
+            when(userRepository.countByGroupId(any())).thenReturn(1l);
+            when(securityService.isLevelAllowed(any())).thenReturn(true);
 
-        final Group entity = groupService.beforePatch(partialDto);
-        assertThat(entity.getName()).isEqualTo("name");
-        assertThat(entity.getDescription()).isEqualTo("description");
-        assertThat(entity.getProfileIds()).containsExactly("id1", "id2");
+            final Group entity = groupService.beforePatch(partialDto);
+            assertThat(entity.getName()).isEqualTo("name");
+            assertThat(entity.getDescription()).isEqualTo("description");
+            assertThat(entity.getProfileIds()).containsExactly("id1", "id2");
+        });
     }
 
     @Test
@@ -202,14 +205,16 @@ public class GroupServiceTest {
         assertThat(group.getProfileIds()).containsExactly("id1", "id2");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testBeforePatchFailed() {
-        final Map<String, Object> partialDto = new HashMap<>();
-        partialDto.put("name", "name");
-        partialDto.put("description", "description");
-        partialDto.put("profileIds", Arrays.asList("id1", "id2"));
-        when(profileService.getOne(any(), any(), any())).thenThrow(NotFoundException.class);
-        groupService.beforePatch(partialDto);
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Map<String, Object> partialDto = new HashMap<>();
+            partialDto.put("name", "name");
+            partialDto.put("description", "description");
+            partialDto.put("profileIds", Arrays.asList("id1", "id2"));
+            when(profileService.getOne(any(), any(), any())).thenThrow(NotFoundException.class);
+            groupService.beforePatch(partialDto);
+        });
     }
 
     @Test
@@ -365,9 +370,7 @@ public class GroupServiceTest {
 
         List<List<CriteriaDefinition>> criteria = criteriaCaptor.getAllValues();
         assertThat(criteria).hasSize(2);
-        criteria.forEach(crit -> {
-            assertThat(crit).anyMatch(c -> c.getKey().equals("units"));
-        });
+        criteria.forEach(crit -> assertThat(crit).anyMatch(c -> c.getKey().equals("units")));
     }
 
     @Test
@@ -389,8 +392,6 @@ public class GroupServiceTest {
 
         List<List<CriteriaDefinition>> criteria = criteriaCaptor.getAllValues();
         assertThat(criteria).hasSize(1);
-        criteria.forEach(crit -> {
-            assertThat(crit).anyMatch(c -> c.getKey().equals("units"));
-        });
+        criteria.forEach(crit -> assertThat(crit).anyMatch(c -> c.getKey().equals("units")));
     }
 }

@@ -35,7 +35,8 @@ import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
 import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.referential.server.service.schema.SchemaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.NotNull;
+import jakarta.ws.rs.Produces;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.CollectionUtils;
@@ -47,14 +48,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.Set;
 
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_DELETE_SCHEMAS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_GET_SCHEMAS;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @RestController
 @RequestMapping(CommonConstants.SCHEMAS)
@@ -62,7 +61,6 @@ public class SchemaController {
 
     private final SchemaService schemaService;
 
-    @Autowired
     public SchemaController(final SchemaService schemaService) {
         this.schemaService = schemaService;
     }

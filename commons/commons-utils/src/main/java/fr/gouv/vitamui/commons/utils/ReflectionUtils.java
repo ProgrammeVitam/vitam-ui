@@ -63,8 +63,8 @@ public class ReflectionUtils {
      * @throws IllegalArgumentException if type is null
      */
     public static boolean isParametrizedList(final Type type) throws IllegalArgumentException {
-        if (type instanceof ParameterizedType) {
-            final Class<?> clazz = castTypeToClass(((ParameterizedType) type).getRawType());
+        if (type instanceof ParameterizedType parameterizedType) {
+            final Class<?> clazz = castTypeToClass(parameterizedType.getRawType());
             return clazz.isAssignableFrom(List.class);
         }
         return false;
@@ -89,8 +89,8 @@ public class ReflectionUtils {
      * @throws IllegalArgumentException if type is a List.class with out parameterizedTypes
      */
     public static Class<?> getParametrizedClass(final Type type) throws IllegalArgumentException {
-        if (type instanceof ParameterizedType) {
-            final List<Type> parameterizedTypes = Arrays.asList(((ParameterizedType) type).getActualTypeArguments());
+        if (type instanceof ParameterizedType parameterizedType) {
+            final List<Type> parameterizedTypes = Arrays.asList(parameterizedType.getActualTypeArguments());
             final Optional<Type> optParamType = parameterizedTypes.stream().findFirst();
             final Type paramType = optParamType.orElseThrow(
                 () -> new IllegalArgumentException("Missing parameterized types")

@@ -64,14 +64,13 @@ import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
+import jakarta.xml.bind.JAXBException;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -93,7 +92,6 @@ public class FileFormatService extends AbstractService {
 
     private VitamFileFormatCommonService vitamFileFormatCommonService;
 
-    @Autowired
     public FileFormatService(
         ObjectMapper objectMapper,
         FileFormatConverter converter,

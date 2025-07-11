@@ -51,10 +51,9 @@ import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.logbook.scheduler.SendEventToVitamTasks;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -72,7 +71,6 @@ public class EventService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
-    @Autowired
     public EventService(final EventRepository repository, final EventMessages messages) {
         this.repository = repository;
         this.messages = messages;

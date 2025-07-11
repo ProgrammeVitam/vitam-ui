@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.commons.utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ReflectionUtilsTest {
 
@@ -18,10 +18,10 @@ public class ReflectionUtilsTest {
 
     @Test
     public void testBuildPath() {
-        Assert.assertTrue(ReflectionUtils.hasField(MainDto.class, "field"));
-        Assert.assertFalse(ReflectionUtils.hasField(MainDto.class, "unknownField"));
-        Assert.assertFalse(ReflectionUtils.hasField(MainDto.class, "field.unknownSubField"));
-        Assert.assertFalse(ReflectionUtils.hasField(MainDto.class, "field.subField"));
-        Assert.assertTrue(ReflectionUtils.hasField(MainDto.class, "neestedObject.subField"));
+        Assertions.assertTrue(ReflectionUtils.hasField(MainDto.class, "field"));
+        Assertions.assertFalse(ReflectionUtils.hasField(MainDto.class, "unknownField"));
+        Assertions.assertFalse(ReflectionUtils.hasField(MainDto.class, "field.unknownSubField"));
+        Assertions.assertFalse(ReflectionUtils.hasField(MainDto.class, "field.subField"));
+        Assertions.assertTrue(ReflectionUtils.hasField(MainDto.class, "neestedObject.subField"));
     }
 }

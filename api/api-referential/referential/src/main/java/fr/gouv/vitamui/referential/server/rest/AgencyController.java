@@ -53,6 +53,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.agency.AgencyService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -77,7 +78,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -214,10 +214,7 @@ public class AgencyController {
      */
     @Secured(ServicesData.ROLE_IMPORT_AGENCIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importAgencies(
-        @RequestParam(value = "fileName", required = false) String fileName,
-        @RequestParam("file") MultipartFile file
-    ) {
+    public JsonNode importAgencies(@RequestParam(required = false) String fileName, @RequestParam MultipartFile file) {
         if (file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
             SanityChecker.isValidFileName(file.getOriginalFilename());

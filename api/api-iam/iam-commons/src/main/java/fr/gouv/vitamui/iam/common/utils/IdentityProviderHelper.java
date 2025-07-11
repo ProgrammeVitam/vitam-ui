@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.iam.common.utils;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;

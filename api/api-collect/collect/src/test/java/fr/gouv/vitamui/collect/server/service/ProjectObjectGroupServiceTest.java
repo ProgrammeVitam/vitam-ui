@@ -37,6 +37,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,8 +45,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.ws.rs.core.Response;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -69,57 +68,59 @@ class ProjectObjectGroupServiceTest {
     @Test
     void findObjectById() throws VitamClientException, JsonProcessingException {
         String resultStringValue =
-            "{\n" +
-            "  \"httpCode\": 200,\n" +
-            "  \"$hits\": {\n" +
-            "    \"total\": 1,\n" +
-            "    \"offset\": 0,\n" +
-            "    \"limit\": 0,\n" +
-            "    \"size\": 1\n" +
-            "  },\n" +
-            "  \"$results\": [\n" +
-            "    {\n" +
-            "      \"_id\": \"aebaaaaaaehjuynkaa3goamemgtl6wiaaaba\",\n" +
-            "      \"_tenant\": 1,\n" +
-            "      \"FileInfo\": {\n" +
-            "        \"Filename\": \"file1.pem\"\n" +
-            "      },\n" +
-            "      \"_nbc\": 1,\n" +
-            "      \"_opi\": \"aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq\",\n" +
-            "      \"_qualifiers\": [\n" +
-            "        {\n" +
-            "          \"qualifier\": \"BinaryMaster\",\n" +
-            "          \"_nbc\": 1,\n" +
-            "          \"versions\": [\n" +
-            "            {\n" +
-            "              \"_id\": \"aebqaaaaaghjuynkaa3goamemgtl6wiaaaaq\",\n" +
-            "              \"DataObjectVersion\": \"BinaryMaster_1\",\n" +
-            "              \"FormatIdentification\": {\n" +
-            "                \"FormatLitteral\": \"Plain Text File\",\n" +
-            "                \"MimeType\": \"text/plain\",\n" +
-            "                \"FormatId\": \"x-fmt/111\"\n" +
-            "              },\n" +
-            "              \"FileInfo\": {\n" +
-            "                \"Filename\": \"file1.pem\"\n" +
-            "              },\n" +
-            "              \"Size\": 2313,\n" +
-            "              \"Uri\": \"Content/aebqaaaaaghjuynkaa3goamemgtl6wiaaaaq.pem\",\n" +
-            "              \"MessageDigest\": \"5391974484dbd1a3a9c4d3892f4bfc19c4b79fd4b27e8059ce92ca742e7f627b9f6dfa7a9c27484254214615210e796eeb29440da97251388a942a3d581c594e\",\n" +
-            "              \"Algorithm\": \"SHA-512\",\n" +
-            "              \"_opi\": \"aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq\"\n" +
-            "            }\n" +
-            "          ]\n" +
-            "        }\n" +
-            "      ],\n" +
-            "      \"_acd\": \"2022-11-10T13:07:08.784\",\n" +
-            "      \"_aud\": \"2022-11-10T13:07:09.039\",\n" +
-            "      \"_v\": 1,\n" +
-            "      \"_av\": 1\n" +
-            "    }\n" +
-            "  ],\n" +
-            "  \"$facetResults\": [],\n" +
-            "  \"$context\": {}\n" +
-            "}";
+            """
+            {
+              "httpCode": 200,
+              "$hits": {
+                "total": 1,
+                "offset": 0,
+                "limit": 0,
+                "size": 1
+              },
+              "$results": [
+                {
+                  "_id": "aebaaaaaaehjuynkaa3goamemgtl6wiaaaba",
+                  "_tenant": 1,
+                  "FileInfo": {
+                    "Filename": "file1.pem"
+                  },
+                  "_nbc": 1,
+                  "_opi": "aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq",
+                  "_qualifiers": [
+                    {
+                      "qualifier": "BinaryMaster",
+                      "_nbc": 1,
+                      "versions": [
+                        {
+                          "_id": "aebqaaaaaghjuynkaa3goamemgtl6wiaaaaq",
+                          "DataObjectVersion": "BinaryMaster_1",
+                          "FormatIdentification": {
+                            "FormatLitteral": "Plain Text File",
+                            "MimeType": "text/plain",
+                            "FormatId": "x-fmt/111"
+                          },
+                          "FileInfo": {
+                            "Filename": "file1.pem"
+                          },
+                          "Size": 2313,
+                          "Uri": "Content/aebqaaaaaghjuynkaa3goamemgtl6wiaaaaq.pem",
+                          "MessageDigest": "5391974484dbd1a3a9c4d3892f4bfc19c4b79fd4b27e8059ce92ca742e7f627b9f6dfa7a9c27484254214615210e796eeb29440da97251388a942a3d581c594e",
+                          "Algorithm": "SHA-512",
+                          "_opi": "aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq"
+                        }
+                      ]
+                    }
+                  ],
+                  "_acd": "2022-11-10T13:07:08.784",
+                  "_aud": "2022-11-10T13:07:09.039",
+                  "_v": 1,
+                  "_av": 1
+                }
+              ],
+              "$facetResults": [],
+              "$context": {}
+            }\
+            """;
         RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
             Response.ok(resultStringValue).build()
         );

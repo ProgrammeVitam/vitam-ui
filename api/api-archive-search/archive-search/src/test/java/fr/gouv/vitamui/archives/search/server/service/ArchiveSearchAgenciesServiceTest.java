@@ -47,7 +47,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -63,10 +63,10 @@ public class ArchiveSearchAgenciesServiceTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchAgenciesServiceTest.class);
 
-    @MockBean(name = "objectMapper")
+    @MockitoBean(name = "objectMapper")
     private ObjectMapper objectMapper;
 
-    @MockBean(name = "agencyCommonService")
+    @MockitoBean(name = "agencyCommonService")
     private AgencyCommonService agencyCommonService;
 
     @InjectMocks

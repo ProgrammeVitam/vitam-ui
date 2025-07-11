@@ -184,7 +184,7 @@ public class UserInfoService extends AbstractResourceClientService<UserInfoDto, 
             .setApplicationSessionId(securityService.getApplicationId());
 
         final Optional<UserInfo> userInfo = getRepository().findById(id);
-        userInfo.orElseThrow(() -> new NotFoundException(String.format("No user information found with id : %s", id)));
+        userInfo.orElseThrow(() -> new NotFoundException("No user information found with id : %s".formatted(id)));
         final JsonNode body = logbookService
             .findEventsByIdentifierAndCollectionNames(
                 userInfo.get().getIdentifier(),

@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -49,7 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -66,6 +67,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_TENANT_ID_HEADER;
 @EqualsAndHashCode
 public class HttpContext implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 56932902134844917L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpContext.class);
@@ -123,11 +125,7 @@ public class HttpContext implements Serializable {
             }
         } catch (final NumberFormatException e) {
             throw new BadRequestException(
-                String.format(
-                    "%s header : Integer type was expected, instead value was %s. ",
-                    X_TENANT_ID_HEADER,
-                    tenant
-                )
+                "%s header : Integer type was expected, instead value was %s. ".formatted(X_TENANT_ID_HEADER, tenant)
             );
         }
         if (urlNeedsTenantIdHeader(url)) {

@@ -57,9 +57,10 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -74,8 +75,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -103,7 +102,6 @@ public class LogbookController {
 
     private final TenantService tenantService;
 
-    @Autowired
     public LogbookController(
         final LogbookService logbookService,
         final SecurityService securityService,
@@ -129,7 +127,7 @@ public class LogbookController {
             TenantDto requestedTenant = tenantService.findByIdentifier(vitamTenantIdentifier);
             if (Objects.isNull(requestedTenant)) {
                 throw new BadRequestException(
-                    String.format("Tenant not found with identifier : '%d'", vitamTenantIdentifier)
+                    "Tenant not found with identifier : '%d'".formatted(vitamTenantIdentifier)
                 );
             }
             vitamContext = securityService.buildVitamContext(vitamTenantIdentifier);

@@ -39,6 +39,11 @@ package fr.gouv.vitamui.commons.utils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.xml.bind.DatatypeConverter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,11 +52,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -251,20 +251,19 @@ public final class VitamUIUtils {
     ) {
         // Application-Id format: applicationIdExt:requestId:applicationName:userIdentifier:superUserIdentifier:customerIdentifier.
         final String msg = "Missing %s information for construct X-Application-Id header";
-        ParamsUtils.checkParameter(String.format(msg, "applicationName"), applicationName);
-        ParamsUtils.checkParameter(String.format(msg, "userIdentifier"), userIdentifier);
-        ParamsUtils.checkParameter(String.format(msg, "customerIdentifier"), customerIdentifier);
-        ParamsUtils.checkParameter(String.format(msg, "requestId"), requestId);
+        ParamsUtils.checkParameter(msg.formatted("applicationName"), applicationName);
+        ParamsUtils.checkParameter(msg.formatted("userIdentifier"), userIdentifier);
+        ParamsUtils.checkParameter(msg.formatted("customerIdentifier"), customerIdentifier);
+        ParamsUtils.checkParameter(msg.formatted("requestId"), requestId);
 
-        return String.format(
-            "%s:%s:%s:%s:%s:%s",
-            formatOptionalEntriesForApplicationId(StringUtils.remove(applicationIdExt, ":")),
-            requestId,
-            applicationName,
-            userIdentifier,
-            formatOptionalEntriesForApplicationId(superUserIdentifier),
-            customerIdentifier
-        );
+        return "%s:%s:%s:%s:%s:%s".formatted(
+                formatOptionalEntriesForApplicationId(StringUtils.remove(applicationIdExt, ":")),
+                requestId,
+                applicationName,
+                userIdentifier,
+                formatOptionalEntriesForApplicationId(superUserIdentifier),
+                customerIdentifier
+            );
     }
 
     private static String formatOptionalEntriesForApplicationId(final String entry) {

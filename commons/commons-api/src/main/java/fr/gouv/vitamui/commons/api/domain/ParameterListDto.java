@@ -33,6 +33,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -46,6 +47,7 @@ import java.util.List;
 @ToString
 public class ParameterListDto implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3137972847122776634L;
 
     private List<ParameterDto> parameters;

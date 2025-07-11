@@ -59,14 +59,13 @@ import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import org.apache.http.HttpStatus;
+import jakarta.ws.rs.core.Response;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 
-import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -91,7 +90,6 @@ public class LogbookService {
 
     private final AdminExternalClient adminExternalClient;
 
-    @Autowired
     public LogbookService(
         final AccessExternalClient accessExternalClient,
         final IngestExternalClient ingestExternalClient,

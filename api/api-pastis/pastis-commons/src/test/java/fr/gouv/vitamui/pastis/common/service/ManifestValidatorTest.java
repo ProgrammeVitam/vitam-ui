@@ -54,41 +54,41 @@ import fr.gouv.vitamui.pastis.common.dto.jaxb.ValueXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.ZeroOrMoreXML;
 import fr.gouv.vitamui.pastis.common.util.ManifestValidator;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
 public class ManifestValidatorTest {
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir
+    public File tempFolder;
 
     private ManifestValidator manifestValidator;
 
-    @Before
+    @BeforeEach
     public void init() {
         manifestValidator = new ManifestValidator();
     }
 
     @Test
     public void testManifestOK() throws Exception {
-        Assert.assertTrue(
+        Assertions.assertTrue(
             manifestValidator.checkFileRNG(
                 PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"),
                 PropertiesUtils.getResourceFile("manifests/rngProfile.rng")
@@ -98,7 +98,7 @@ public class ManifestValidatorTest {
 
     @Test
     public void testManifestNOK() throws Exception {
-        Assert.assertFalse(
+        Assertions.assertFalse(
             manifestValidator.checkFileRNG(
                 PropertiesUtils.getResourceAsStream("manifests/manifestNOK.xml"),
                 PropertiesUtils.getResourceFile("manifests/rngProfile.rng")
@@ -138,18 +138,21 @@ public class ManifestValidatorTest {
         );
         Marshaller marshallerObj = contextObj.createMarshaller();
         marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerObj.setProperty(
-            "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-            new PastisCustomCharacterEscapeHandler()
-        );
+        marshallerObj.setProperty(PastisMarshaller.CHAR_ESCAPE_HANDLER, new PastisCustomCharacterEscapeHandler());
 
-        File rngProfile = tempFolder.newFile("generatedProfile.rng");
+        File rngProfile = newFile(tempFolder, "generatedProfile.rng");
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(rngProfile), "UTF-8");
         marshallerObj.marshal(eparentRng, writer);
         writer.close();
 
-        Assert.assertTrue(
+        Assertions.assertTrue(
             manifestValidator.checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"), rngProfile)
         );
+    }
+
+    private static File newFile(File parent, String child) throws IOException {
+        File result = new File(parent, child);
+        result.createNewFile();
+        return result;
     }
 }

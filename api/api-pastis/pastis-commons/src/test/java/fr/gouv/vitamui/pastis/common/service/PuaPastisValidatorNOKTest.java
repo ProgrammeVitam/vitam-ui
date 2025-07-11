@@ -38,18 +38,16 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-@RunWith(Parameterized.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class PuaPastisValidatorNOKTest {
 
-    @Parameters
     public static Collection<String> data() {
         return Arrays.asList(
             new String[] {
@@ -60,16 +58,18 @@ public class PuaPastisValidatorNOKTest {
         );
     }
 
-    private final String fileName;
-    private final PuaPastisValidatorTest puaPastisValidatorTest;
+    private String fileName;
+    private PuaPastisValidatorTest puaPastisValidatorTest;
 
-    public PuaPastisValidatorNOKTest(String fileName) {
+    public void initPuaPastisValidatorNOKTest(String fileName) {
         this.fileName = fileName;
         this.puaPastisValidatorTest = new PuaPastisValidatorTest();
     }
 
-    @Test(expected = AssertionError.class)
-    public void testImports() {
-        puaPastisValidatorTest.testImport(fileName, true);
+    @MethodSource("data")
+    @ParameterizedTest
+    public void testImports(String fileName) {
+        initPuaPastisValidatorNOKTest(fileName);
+        assertThrows(AssertionError.class, () -> puaPastisValidatorTest.testImport(fileName, true));
     }
 }

@@ -27,9 +27,8 @@
 
 package fr.gouv.vitamui.iam.security.filter;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 
 @FunctionalInterface
 public interface TokenExtractor {

@@ -38,15 +38,14 @@ package fr.gouv.vitamui.security.server.certificate.domain;
 
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import fr.gouv.vitamui.security.server.common.domain.MongoDbCollections;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * A certificate.

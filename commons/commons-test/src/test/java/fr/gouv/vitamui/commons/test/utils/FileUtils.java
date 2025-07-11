@@ -7,7 +7,6 @@ import java.net.URL;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Optional;
@@ -59,20 +58,20 @@ public class FileUtils {
         final String destinationPath,
         final Optional<String> destinationFilename
     ) throws IOException {
-        final Path destination = Paths.get(destinationPath);
+        final Path destination = Path.of(destinationPath);
         if (!Files.exists(destination)) {
             Files.createDirectories(destination);
         }
         final URL url = FileUtils.class.getClassLoader().getResource(resourceName);
         if (url == null) {
             throw new ApplicationServerException(
-                String.format("No resource file has been found at the following location: %s", resourceName)
+                "No resource file has been found at the following location: %s".formatted(resourceName)
             );
         }
-        final Path sourceFilePath = Paths.get(url.getFile());
+        final Path sourceFilePath = Path.of(url.getFile());
         Files.copy(
             sourceFilePath,
-            Paths.get(destination.toString(), destinationFilename.orElse(sourceFilePath.getFileName().toString()))
+            Path.of(destination.toString(), destinationFilename.orElse(sourceFilePath.getFileName().toString()))
         );
     }
 }

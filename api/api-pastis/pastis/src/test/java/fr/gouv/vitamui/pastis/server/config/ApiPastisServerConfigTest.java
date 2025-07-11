@@ -48,48 +48,45 @@ import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("dev")
 public class ApiPastisServerConfigTest extends AbstractContextConfiguration {
 
-    @MockBean(name = "adminExternalClient")
+    @MockitoBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
 
-    @MockBean(name = "accessExternalClient")
+    @MockitoBean(name = "accessExternalClient")
     private AccessExternalClient accessExternalClient;
 
-    @MockBean(name = "accessExternalClientV2")
+    @MockitoBean(name = "accessExternalClientV2")
     private AccessExternalClientV2 accessExternalClientV2;
 
-    @MockBean(name = "ingestExternalClient")
+    @MockitoBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
 
-    @MockBean(name = "collectExternalClient")
+    @MockitoBean(name = "collectExternalClient")
     private CollectExternalClient collectExternalClient;
 
-    @MockBean
+    @MockitoBean
     private PastisService pastisService;
 
-    @MockBean
+    @MockitoBean
     private JsonFromPUA jsonFromPUA;
 
-    @MockBean
+    @MockitoBean
     private NoticeUtils noticeFromPUA;
 
-    @MockBean
+    @MockitoBean
     private PuaFromJSON puaFromJSON;
 
-    @MockBean
+    @MockitoBean
     private PuaPastisValidator puaPastisValidator;
 
     @Test

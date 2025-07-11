@@ -50,7 +50,7 @@ server:
 
   error:
     path: /error
-  max-http-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
+  max-http-request-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     connection-timeout: {{ vitamui_struct.server_connection_timeout }}
     accesslog:

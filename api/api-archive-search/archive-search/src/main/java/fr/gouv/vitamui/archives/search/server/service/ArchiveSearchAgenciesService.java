@@ -59,7 +59,6 @@ import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -83,7 +82,6 @@ public class ArchiveSearchAgenciesService {
     private final ObjectMapper objectMapper;
     private final AgencyCommonService agencyCommonService;
 
-    @Autowired
     public ArchiveSearchAgenciesService(
         final ObjectMapper objectMapper,
         final AgencyCommonService agencyCommonService

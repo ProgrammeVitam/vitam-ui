@@ -53,13 +53,12 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamResponseHandler;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -76,7 +75,6 @@ public class UnitCommonService {
 
     private final AccessExternalClient accessExternalClient;
 
-    @Autowired
     public UnitCommonService(final AccessExternalClient accessExternalClient) {
         this.accessExternalClient = accessExternalClient;
     }
@@ -308,7 +306,7 @@ public class UnitCommonService {
         try {
             return accessExternalClient.startEliminationAction(vitamContext, eliminationRequest);
         } catch (final VitamClientException exception) {
-            final String message = String.format("Error while calling vitam : %s", exception.getMessage());
+            final String message = "Error while calling vitam : %s".formatted(exception.getMessage());
             throw new InternalServerException(message, exception);
         }
     }

@@ -40,7 +40,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.hc.core5.net.URIBuilder;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

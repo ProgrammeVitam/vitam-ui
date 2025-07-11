@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.iam.common.dto.cas;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Authentication request with username & its customerId, password, surrogate & its customerId and IP.

@@ -6,7 +6,7 @@ import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitam.common.model.administration.RuleType;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;

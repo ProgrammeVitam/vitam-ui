@@ -78,7 +78,12 @@ import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
 import fr.gouv.vitamui.pastis.common.util.PastisGetXmlJsonTree;
+import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
 import fr.gouv.vitamui.pastis.common.util.PastisSAX2Handler;
+import jakarta.ws.rs.core.Response;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
@@ -101,10 +106,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -210,10 +211,7 @@ public class PastisService {
             );
             Marshaller marshallerObj = contextObj.createMarshaller();
             marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshallerObj.setProperty(
-                "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-                new PastisCustomCharacterEscapeHandler()
-            );
+            marshallerObj.setProperty(PastisMarshaller.CHAR_ESCAPE_HANDLER, new PastisCustomCharacterEscapeHandler());
             marshallerObj.marshal(eparentRng, writer);
             response = os.toString(StandardCharsets.UTF_8);
         } catch (JAXBException | IOException e) {
@@ -485,8 +483,8 @@ public class PastisService {
 
             response = vitamProfileCommonService.downloadProfile(vitamContext, id);
             Object entity = response.getEntity();
-            if (entity instanceof InputStream) {
-                Resource resource = new InputStreamResource((InputStream) entity);
+            if (entity instanceof InputStream stream) {
+                Resource resource = new InputStreamResource(stream);
                 return new ResponseEntity<>(resource, HttpStatus.OK);
             }
             return null;

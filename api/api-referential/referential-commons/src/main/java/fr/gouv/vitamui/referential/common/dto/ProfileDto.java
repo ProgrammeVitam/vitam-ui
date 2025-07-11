@@ -41,11 +41,10 @@ import fr.gouv.vitam.common.model.administration.ProfileFormat;
 import fr.gouv.vitam.common.model.administration.ProfileSedaVersion;
 import fr.gouv.vitam.common.model.administration.ProfileStatus;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)

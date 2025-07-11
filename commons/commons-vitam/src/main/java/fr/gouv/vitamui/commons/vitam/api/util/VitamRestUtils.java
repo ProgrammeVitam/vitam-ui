@@ -51,6 +51,9 @@ import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,9 +62,6 @@ import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -169,8 +169,8 @@ public class VitamRestUtils {
             final Object contentDisposition = vitamObjectStreamResponse
                 .getHeaders()
                 .getFirst(HttpHeaders.CONTENT_DISPOSITION);
-            if (contentDisposition instanceof String && StringUtils.isNotBlank((String) contentDisposition)) {
-                return Optional.of((String) contentDisposition);
+            if (contentDisposition instanceof String string && StringUtils.isNotBlank(string)) {
+                return Optional.of(string);
             }
         }
         return Optional.empty();
@@ -211,7 +211,7 @@ public class VitamRestUtils {
                     LOGGER.debug("Vitam response is not in a valid json format");
                 }
             }
-            final String errorMessage = String.format("status: %d, message: %s", responseStatus, vitamMessage);
+            final String errorMessage = "status: %d, message: %s".formatted(responseStatus, vitamMessage);
             throw getException(responseStatus, errorMessage, null);
         }
     }
@@ -231,12 +231,8 @@ public class VitamRestUtils {
         if (!isStatusAccepted(responseStatus, acceptedStatus)) {
             final JsonNode jsonResponse = response.toJsonNode();
             LOGGER.debug("Vitam error: body:\n{}", jsonResponse);
-            final String message = String.format(
-                "status: %d, message: %s",
-                responseStatus,
-                jsonResponse.get("message")
-            );
-            final String description = String.format("description: %s ", jsonResponse.get("description"));
+            final String message = "status: %d, message: %s".formatted(responseStatus, jsonResponse.get("message"));
+            final String description = "description: %s ".formatted(jsonResponse.get("description"));
             throw getException(responseStatus, message, description);
         }
     }

@@ -74,8 +74,9 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import jakarta.ws.rs.core.Response;
 import lombok.Getter;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
 
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;

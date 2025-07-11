@@ -28,15 +28,14 @@ import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitDto;
 import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamArchivalProfileUnitCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
+import jakarta.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +58,6 @@ public class ArchivalProfileUnitService extends AbstractService {
 
     private VitamArchivalProfileUnitCommonService vitamArchivalProfileUnitCommonService;
 
-    @Autowired
     public ArchivalProfileUnitService(
         ObjectMapper objectMapper,
         ArchivalProfileUnitConverter converter,

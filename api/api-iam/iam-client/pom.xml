@@ -53,7 +53,7 @@
                             <removeOperationIdPrefix>true</removeOperationIdPrefix>
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
-                                <useJakartaEe>false</useJakartaEe> <!-- change when migrating to Spring boot 3+ -->
+                                <useJakartaEe>true</useJakartaEe>
                                 <useAbstractionForFiles>true</useAbstractionForFiles>
                             </configOptions>
                         </configuration>

@@ -42,6 +42,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ import java.util.Map;
 @ToString(callSuper = true)
 public class BasicCustomerDto extends IdDto {
 
+    @Serial
     private static final long serialVersionUID = 9166523462095290295L;
 
     private String identifier;

@@ -62,10 +62,11 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.service.VitamRuleCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
+import jakarta.ws.rs.core.Response;
+import jakarta.xml.bind.JAXBException;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -73,8 +74,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -97,7 +96,6 @@ public class RuleService extends AbstractService {
 
     private VitamRuleCommonService ruleService;
 
-    @Autowired
     public RuleService(
         ObjectMapper objectMapper,
         RuleConverter converter,
@@ -356,8 +354,8 @@ public class RuleService extends AbstractService {
 
         Response response = this.export(vitamContext);
         Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
+        if (entity instanceof InputStream stream) {
+            Resource resource = new InputStreamResource(stream);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;

@@ -4,8 +4,8 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.server.owner.converter.OwnerConverter;
 import fr.gouv.vitamui.iam.server.owner.dao.OwnerRepository;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class CustomerConverterTest {
 
     private CustomerConverter customerConverter;
 
-    @Before
+    @BeforeEach
     public void setup() {
         customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
     }
