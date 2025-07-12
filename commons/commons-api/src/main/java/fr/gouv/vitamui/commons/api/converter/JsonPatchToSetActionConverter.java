@@ -34,6 +34,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
 import fr.gouv.vitamui.commons.api.exception.DslQueryCreateException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -56,13 +57,20 @@ public class JsonPatchToSetActionConverter implements Converter<JsonPatch, SetAc
         final Map<String, JsonNode> map = source
             .stream()
             .filter(patchCommand -> List.of(ADD, REPLACE).contains(patchCommand.getOp()))
-            .collect(Collectors.toMap(PatchCommand::getPath, PatchCommand::getValue));
+            .filter(patchCommand -> StringUtils.isNotBlank(patchCommand.getPath()))
+            .filter(patchCommand -> patchCommand.getValue() != null)
+            .collect(
+                Collectors.toMap(PatchCommand::getPath, PatchCommand::getValue, (existing, replacement) -> {
+                    log.warn("Duplicate path found in JSON patch: {}. Using replacement value.", existing);
+                    return replacement;
+                })
+            );
         if (!map.isEmpty()) {
             try {
                 return UpdateActionHelper.set(map);
             } catch (InvalidCreateOperationException e) {
-                log.error("{}", e);
-                throw new DslQueryCreateException(e);
+                log.error("Failed to create set action for paths: {}", map.keySet(), e);
+                throw new DslQueryCreateException("Invalid field paths for set operation: " + e.getMessage());
             }
         }
         return null;

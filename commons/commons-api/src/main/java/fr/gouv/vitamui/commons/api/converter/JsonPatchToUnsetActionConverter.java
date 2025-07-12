@@ -34,6 +34,7 @@ import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
 import fr.gouv.vitamui.commons.api.dtos.PatchOperation;
 import fr.gouv.vitamui.commons.api.exception.DslQueryCreateException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -46,18 +47,20 @@ public class JsonPatchToUnsetActionConverter implements Converter<JsonPatch, Uns
 
     @Override
     public UnsetAction convert(JsonPatch source) {
-        try {
-            final String[] paths = source
-                .stream()
-                .filter(patchCommand -> patchCommand.getOp() == PatchOperation.REMOVE)
-                .map(PatchCommand::getPath)
-                .toArray(String[]::new);
-            if (paths.length > 0) {
+        final String[] paths = source
+            .stream()
+            .filter(patchCommand -> patchCommand.getOp() == PatchOperation.REMOVE)
+            .map(PatchCommand::getPath)
+            .filter(StringUtils::isNotBlank)
+            .toArray(String[]::new);
+
+        if (paths.length > 0) {
+            try {
                 return UpdateActionHelper.unset(paths);
+            } catch (InvalidCreateOperationException e) {
+                log.error("Failed to create unset action for paths: {}", paths, e);
+                throw new DslQueryCreateException("Invalid field paths for unset operation: " + e.getMessage());
             }
-        } catch (InvalidCreateOperationException e) {
-            log.error("{}", e);
-            throw new DslQueryCreateException(e);
         }
         return null;
     }
