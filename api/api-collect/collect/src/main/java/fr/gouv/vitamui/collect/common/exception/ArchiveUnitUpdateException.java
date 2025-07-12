@@ -41,4 +41,8 @@ public class ArchiveUnitUpdateException extends RuntimeException {
     public ArchiveUnitUpdateException(String message) {
         super(message);
     }
+
+    public ArchiveUnitUpdateException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
