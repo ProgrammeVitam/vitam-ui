@@ -1,4 +1,4 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .vitamui-table-head {
   > div {
@@ -38,7 +38,7 @@
   width: 100%;
   height: 60px;
   background: var(--vitamui-white);
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   border-radius: 5px;
 }
 

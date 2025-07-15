@@ -1,5 +1,5 @@
-@import '../../../assets/css/mixins';
-@import '../../../assets/css/layout';
+@use '../../../assets/css/mixins' as mixins;
+@use '../../../assets/css/layout' as layout;
 
 .ico-setting {
   @extend .pastis-ico-svg;

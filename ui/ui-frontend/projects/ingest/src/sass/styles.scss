@@ -1,7 +1,7 @@
-@import 'material-design-icons-iconfont/dist/material-design-icons.css';
+@use 'material-design-icons-iconfont/dist/material-design-icons.css';
 
-@import 'icons/vitamui-icons';
-@import 'theme';
-@import 'fonts/font-styles';
+@use 'icons/vitamui-icons';
+@use 'theme';
+@use 'fonts/font-styles';
 
-@import 'date-filter';
+@use 'date-filter';

@@ -313,7 +313,6 @@
                     <version>${jib-maven-plugin.version}</version>
                     <configuration>
                         <from>
-                            <!--<image>gcr.io/distroless/java11-debian11</image>-->
                             <image>gcr.io/distroless/java21</image>
                         </from>
                         <allowInsecureRegistries>true</allowInsecureRegistries>
@@ -324,7 +323,6 @@
                                 <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
                             </jvmFlags>
                             <labels>
-                                <!--  <git.commit.id>${git.commit.id}</git.commit.id>-->
                                 <mvn.build.version>${project.version}</mvn.build.version>
                             </labels>
                         </container>
@@ -345,7 +343,7 @@
                         <source>${java.version}</source>
                         <target>${java.release}</target>
                         <release>${java.release}</release>
-                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                        <forceLegacyJavacApi>true</forceLegacyJavacApi>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>

@@ -1,4 +1,4 @@
-@import '../add-metadata/add-metadata.component.scss';
+@use '../add-metadata/add-metadata.component.scss' as addMetadata;
 
 .pastis-container-selected-items {
   margin-top: 10px;

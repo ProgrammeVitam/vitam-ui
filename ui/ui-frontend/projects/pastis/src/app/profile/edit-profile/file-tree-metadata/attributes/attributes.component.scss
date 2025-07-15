@@ -1,5 +1,5 @@
-@import '../../../../../assets/css/dropdown';
-@import '../../../../../assets/css/layout';
+@use '../../../../../assets/css/dropdown' as dropdown;
+@use '../../../../../assets/css/layout' as layout;
 
 .col-selection {
   text-align: left;

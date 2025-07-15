@@ -30,7 +30,7 @@
 @forward './base/base';
 @forward './base/utilities';
 
-@import './variables';
-@import './material/material-theme';
+@use './variables' as *;
+@use './material/material-theme';
 
-@import './spacing';
+@use './spacing';

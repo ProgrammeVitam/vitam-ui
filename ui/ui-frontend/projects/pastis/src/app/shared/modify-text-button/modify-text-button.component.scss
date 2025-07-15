@@ -1,4 +1,4 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .ok {
   flex-flow: row;
@@ -26,5 +26,5 @@
   padding: 10px;
   border: 1px solid var(--buttons-border);
   border-radius: 5px;
-  @include shadow-accessible;
+  @include elevation.shadow-accessible;
 }

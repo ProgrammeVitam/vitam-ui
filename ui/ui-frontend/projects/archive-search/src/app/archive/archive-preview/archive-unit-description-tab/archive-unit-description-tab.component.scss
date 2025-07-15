@@ -1,4 +1,4 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 button {
   &.save {
@@ -9,7 +9,7 @@ button {
   &.cancel {
     background-color: transparent;
     color: white;
-    @include shadow-0;
+    @include elevation.shadow-0;
     border: none;
   }
 }

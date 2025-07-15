@@ -1,4 +1,4 @@
-@import '../../../assets/css/mixins';
+@use '../../../assets/css/mixins' as mixins;
 
 .pastis-dialog-config-title {
   bottom: 10px;

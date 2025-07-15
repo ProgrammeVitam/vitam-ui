@@ -1,12 +1,12 @@
-@import '../../../../assets/css/mixins';
-@import '../../../../assets/css/layout';
-@import '../../../../assets/css/font';
-@import '../../../../assets/css/input';
-@import 'mixins/elevation';
-@import 'material/menu';
-@import 'icons/vitamui-icons';
-@import 'editable-field';
-@import '../../../user-actions/add-metadata/add-metadata.component.scss';
+@use 'mixins/elevation' as elevation;
+@use '../../../../assets/css/mixins' as mixins;
+@use '../../../../assets/css/layout' as *;
+@use '../../../../assets/css/font' as *;
+@use '../../../../assets/css/input' as *;
+@use 'material/menu' as *;
+@use 'icons/vitamui-icons' as *;
+@use 'editable-field' as *;
+@use '../../../user-actions/add-metadata/add-metadata.component.scss' as *;
 
 .pastis-container-selected-items {
   margin-left: 50px;
@@ -187,7 +187,7 @@ td {
 
 table {
   width: 100%;
-  @include mat-table-columns(
+  @include mixins.mat-table-columns(
     (
       valeurFixe: (
         width: 140px !important,

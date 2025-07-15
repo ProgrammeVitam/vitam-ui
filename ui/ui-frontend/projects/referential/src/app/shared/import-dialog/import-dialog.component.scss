@@ -1,4 +1,4 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .drag-drop-container {
   input {
@@ -29,7 +29,7 @@
 }
 
 .file-to-upload {
-  @include shadow-4dp-dark;
+  @include elevation.shadow-4dp-dark;
 
   display: flex;
   align-items: center;

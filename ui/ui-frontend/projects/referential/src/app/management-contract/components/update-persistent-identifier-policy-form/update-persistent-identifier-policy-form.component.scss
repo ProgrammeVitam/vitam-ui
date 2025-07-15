@@ -1,4 +1,4 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 h5 {
   font-size: 1rem;
@@ -11,7 +11,7 @@ h5 {
   background-color: white;
   border-radius: 5px;
   font-weight: 700;
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   border-left: 2px solid transparent;
 
   &.opened {

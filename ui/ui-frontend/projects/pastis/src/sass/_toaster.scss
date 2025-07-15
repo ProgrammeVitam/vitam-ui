@@ -1,4 +1,4 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .toast-center-center {
   top: 50%;
@@ -63,7 +63,7 @@ button.toast-close-button {
   box-sizing: border-box;
 }
 .toast-container .ngx-toastr {
-  @include shadow-8dp-dark;
+  @include elevation.shadow-8dp-dark;
   position: relative;
   overflow: hidden;
   //margin: 0 0 6px;
@@ -76,7 +76,7 @@ button.toast-close-button {
   color: var(--vitamui-white);
 }
 .toast-container .ngx-toastr:hover {
-  @include shadow-32dp-dark;
+  @include elevation.shadow-32dp-dark;
   opacity: 1;
   cursor: pointer;
 }

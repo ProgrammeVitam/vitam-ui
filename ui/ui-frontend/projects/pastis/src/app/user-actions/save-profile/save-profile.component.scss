@@ -1,6 +1,6 @@
-@import '../../../assets/css/mixins';
-@import '../../../assets/css/layout';
-@import '../../../assets/css/font';
+@use '../../../assets/css/mixins' as mixins;
+@use '../../../assets/css/layout' as layout;
+@use '../../../assets/css/font' as font;
 
 .pastis-ico-save {
   @extend .pastis-ico-svg;

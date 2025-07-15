@@ -1,9 +1,9 @@
-@import 'icons/vitamui-icons';
-@import 'theme';
+@use 'icons/vitamui-icons';
+@use 'theme';
 
-@import 'fonts/font-styles';
+@use 'fonts/font-styles';
 
-@import 'form';
+@use 'form';
 
 vitamui-slide-toggle {
   padding-bottom: 15px;
