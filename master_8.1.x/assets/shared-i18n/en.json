@@ -5077,7 +5077,7 @@
       "SELECTED_UNIT": "selected archive unit",
       "SELECTED_UNIT_PLURAL": "selected archive units",
       "CHILDS": "Child(s)",
-      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Including {{ nbDocuments }} folders and documents",
+      "INCLUDING_NB_FOLDERS_DOCUMENTS": "Including {{ nbDocuments }} folders or documents",
       "SELECT_ACTION_MESSAGE_1": "Select a reclassification action",
       "SELECT_ACTION_MESSAGE_2": "Reclassification action",
       "CURRENT_PARENT_FOLDERS": "There is 1 current parent folder",
