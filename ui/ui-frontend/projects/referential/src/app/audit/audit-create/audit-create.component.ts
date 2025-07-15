@@ -44,8 +44,6 @@ import {
   AccessContractService,
   AccessionRegisterSummary,
   ConfirmDialogService,
-  CustomValidators,
-  DatePattern,
   ExternalParameters,
   ExternalParametersService,
   FilingPlanMode,
@@ -363,8 +361,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       this.form.get('startDate').clearValidators();
       this.form.get('startDate').markAsUntouched();
     } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_PERIOD) {
-      this.form.get('startDate').setValidators([Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
-      this.form.get('endDate').setValidators([CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
+      this.form.get('startDate').setValidators([Validators.required]);
       this.clearField('originatingAgencyIds');
       this.clearField('attachmentPositionIds');
       this.clearField('ingestOperationIds');
@@ -419,8 +416,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public initPeriodScreen() {
     this.refiningStep = true;
     setTimeout(() => this.stepper.next()); // Go to next step after it's been created (thanks to refiningStep=true)
-    this.form.get('startDate').setValidators([Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
-    this.form.get('endDate').setValidators([CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
+    this.form.get('startDate').setValidators([Validators.required]);
   }
 
   public isDateIntervalInvalid(): boolean {

@@ -45,8 +45,8 @@ import { tap } from 'rxjs/operators';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 interface FormData {
-  startDateMin?: string;
-  startDateMax?: string;
+  startDateMin?: Date;
+  startDateMax?: Date;
   search?: string;
 }
 
@@ -109,14 +109,14 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
         .getQueryParams()
         .pipe(
           tap((queryParams) => {
-            const formData: FormData = {
-              startDateMin: queryParams?.startDateMin || null,
-              startDateMax: queryParams?.startDateMax || null,
-            };
             const hasChanged =
-              Object.entries(this.dateRangeFilterForm.value).filter(([key, value]) => (formData as any)[key] !== value).length > 0;
+              Object.entries(this.dateRangeFilterForm.value).filter(([key, value]) => queryParams[key] !== value).length > 0;
             if (hasChanged) {
-              this.dateRangeFilterForm.setValue(formData);
+              this.dateRangeFilterForm.setValue({
+                startDateMin: queryParams?.startDateMin ? new Date(queryParams.startDateMin) : null,
+                startDateMax: queryParams?.startDateMax ? new Date(queryParams.startDateMax) : null,
+              });
+              if (queryParams?.startDateMax) this.showIntervalDate(true);
             }
             this.searchValue = queryParams.search;
           }),
@@ -184,7 +184,7 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
       .filter(([key]) => key !== field)
       .reduce((acc, [key, value]: [key: string, value: any]) => ({ ...acc, [key]: value }), {});
 
-    this.searchCriteria.next({ [field]: this.dateService.toIsoDate(frenchDate), ...rest });
+    this.searchCriteria.next({ [field]: isoDate, ...rest });
   }
 
   private updateQueryParams(operationSearch: OperationSearch) {

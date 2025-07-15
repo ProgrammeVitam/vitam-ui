@@ -21,32 +21,19 @@
 
     <div class="row justify-content-start">
       <div class="col-5 form-control">
-        <div class="vitamui-input" (click)="pickerBeginDuc.open()">
-          <span
-            *ngIf="!storageRuleCriteriaForm.get('storageRuleStartDate').value; else showBeginDtDuc"
-            (click)="pickerBeginDuc.open()"
-            class="search-date-label"
-            >{{
-              (endDateInterval
-                ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
-                : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
-              ) | translate
-            }}</span
-          >
-          <ng-template #showBeginDtDuc
-            ><span (click)="pickerBeginDuc.open()"
-              >{{ storageRuleCriteriaForm.get('storageRuleStartDate').value | date: 'dd/MM/yyyy' }}
-            </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerBeginDuc"
-            formControlName="storageRuleStartDate"
-            [max]="storageRuleCriteriaForm.get('storageRuleEndDate').value"
-          />
-          <mat-datepicker #pickerBeginDuc></mat-datepicker>
-        </div>
+        <vitamui-datepicker
+          [label]="
+            (endDateInterval
+              ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
+              : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
+            ) | translate
+          "
+          formControlName="storageRuleStartDate"
+          [max]="storageRuleCriteriaForm.get('storageRuleEndDate').value"
+          outputType="Date"
+          format="dd/MM/yyyy"
+          class="w-100"
+        ></vitamui-datepicker>
       </div>
       <div class="col-1 form-control">
         <button
@@ -61,29 +48,20 @@
       </div>
 
       <div class="col-4 form-control">
-        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
-          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.STORAGE_RULE.CREATE_INTERVAL' | translate }}
-        </p>
-
-        <div class="vitamui-input" (click)="pickerEndDuc.open()" *ngIf="endDateInterval">
-          <span
-            *ngIf="!storageRuleCriteriaForm.get('storageRuleEndDate').value; else showEndDtDuc"
-            (click)="pickerEndDuc.open()"
-            class="search-date-label"
-            >{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate }}</span
-          >
-          <ng-template #showEndDtDuc
-            ><span (click)="pickerEndDuc.open()">{{ storageRuleCriteriaForm.get('storageRuleEndDate').value | date: 'dd/MM/yyyy' }} </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerEndDuc"
+        @if (!endDateInterval) {
+          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.STORAGE_RULE.CREATE_INTERVAL' | translate }}
+          </p>
+        } @else {
+          <vitamui-datepicker
+            [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate"
             formControlName="storageRuleEndDate"
             [min]="storageRuleCriteriaForm.get('storageRuleStartDate').value"
-          />
-          <mat-datepicker #pickerEndDuc></mat-datepicker>
-        </div>
+            outputType="Date"
+            format="dd/MM/yyyy"
+            class="w-100"
+          ></vitamui-datepicker>
+        }
       </div>
       <div class="col-1 form-control">
         <button

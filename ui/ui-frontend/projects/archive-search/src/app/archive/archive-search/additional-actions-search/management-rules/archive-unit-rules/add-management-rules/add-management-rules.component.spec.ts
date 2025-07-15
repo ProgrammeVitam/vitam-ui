@@ -269,11 +269,5 @@ describe('AddManagementRulesComponent', () => {
       const elementSubmitBtn = nativeElement.querySelectorAll('button[type=submit]');
       expect(elementSubmitBtn.length).toBe(1);
     });
-
-    it('should have 1 button ', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementBtn = nativeElement.querySelectorAll('button[type=button]');
-      expect(elementBtn.length).toBe(1);
-    });
   });
 });

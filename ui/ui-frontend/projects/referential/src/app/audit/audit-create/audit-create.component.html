@@ -133,6 +133,8 @@
         [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
         [required]="isStartDateRequired()"
         required
+        outputType="String"
+        format="yyyy-MM-dd"
       ></vitamui-datepicker>
     </div>
     <div class="end-date">
@@ -145,6 +147,8 @@
             : ('AUDIT.CREATE_DIALOG.INGEST_OPERATION_DATE_PLACEHOLDER' | translate)
         "
         [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
+        outputType="String"
+        format="yyyy-MM-dd"
       ></vitamui-datepicker>
     </div>
   </div>

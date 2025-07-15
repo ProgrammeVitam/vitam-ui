@@ -49,9 +49,9 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProbativeValueComponent } from './probative-value.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { PipesModule } from '../shared/pipes/pipes.module';
 import { DatePipe } from '@angular/common';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 describe('ProbativeValueComponent', () => {
   let component: ProbativeValueComponent;
@@ -67,7 +67,6 @@ describe('ProbativeValueComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         MatInputModule,
-        MatMomentDateModule,
         MatSelectModule,
         MatSidenavModule,
         DatepickerComponent,
@@ -79,6 +78,7 @@ describe('ProbativeValueComponent', () => {
       ],
       declarations: [ProbativeValueComponent],
       providers: [
+        provideNativeDateAdapter(),
         { provide: BASE_URL, useValue: '/pastis-api' },
         DatePipe,
         FormBuilder,

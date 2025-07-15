@@ -31,32 +31,19 @@
 
     <div class="row justify-content-start">
       <div class="col-5 form-control">
-        <div class="vitamui-input" (click)="pickerBeginDua.open()">
-          <span
-            *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value; else showBeginDtDua"
-            (click)="pickerBeginDua.open()"
-            class="search-date-label"
-            >{{
-              (endDateInterval
-                ? 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
-                : 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
-              ) | translate
-            }}</span
-          >
-          <ng-template #showBeginDtDua
-            ><span (click)="pickerBeginDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
-            </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerBeginDua"
-            formControlName="appraisalRuleStartDate"
-            [max]="appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value"
-          />
-          <mat-datepicker #pickerBeginDua></mat-datepicker>
-        </div>
+        <vitamui-datepicker
+          [label]="
+            (endDateInterval
+              ? 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
+              : 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
+            ) | translate
+          "
+          formControlName="appraisalRuleStartDate"
+          [max]="appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value"
+          outputType="Date"
+          format="dd/MM/yyyy"
+          class="w-100"
+        ></vitamui-datepicker>
       </div>
       <div class="col-1 form-control">
         <button
@@ -71,31 +58,20 @@
       </div>
 
       <div class="col-4 form-control">
-        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
-          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.CREATE_INTERVAL' | translate }}
-        </p>
-
-        <div class="vitamui-input" (click)="pickerEndDua.open()" *ngIf="endDateInterval">
-          <span
-            *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value; else showEndDtDua"
-            (click)="pickerEndDua.open()"
-            class="search-date-label"
-            >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate }}</span
-          >
-          <ng-template #showEndDtDua
-            ><span (click)="pickerEndDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
-            </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerEndDua"
+        @if (!endDateInterval) {
+          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.CREATE_INTERVAL' | translate }}
+          </p>
+        } @else {
+          <vitamui-datepicker
+            [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate"
             formControlName="appraisalRuleEndDate"
             [min]="appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value"
-          />
-          <mat-datepicker #pickerEndDua></mat-datepicker>
-        </div>
+            outputType="Date"
+            format="dd/MM/yyyy"
+            class="w-100"
+          ></vitamui-datepicker>
+        }
       </div>
       <div class="col-1 form-control">
         <button

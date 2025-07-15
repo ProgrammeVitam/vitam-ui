@@ -49,7 +49,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 import { SecurisationListModule } from './securisation-list/securisation-list.module';
@@ -76,7 +75,6 @@ import { SecurisationComponent } from './securisation.component';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    MatMomentDateModule,
   ],
   declarations: [SecurisationComponent],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],

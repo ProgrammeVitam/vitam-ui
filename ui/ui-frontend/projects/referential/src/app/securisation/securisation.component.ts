@@ -39,9 +39,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
-
-import moment from 'moment';
 import { SecurisationListComponent } from './securisation-list/securisation-list.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-securisation',
@@ -72,11 +71,11 @@ export class SecurisationComponent extends SidenavPage<Event> {
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value ? moment(value).startOf('day') : null };
+      this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, endDate: value ? moment(value).endOf('day') : null };
+      this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
     });
 
     this.dateRangeFilterForm.controls.types.valueChanges.subscribe((value) => {

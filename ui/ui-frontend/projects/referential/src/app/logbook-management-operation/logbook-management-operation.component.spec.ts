@@ -42,6 +42,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { InjectorModule, LoggerModule, WINDOW_LOCATION, VitamUICommonModule, BASE_URL, ENVIRONMENT } from 'vitamui-library';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 describe('LogbookManagementOperationComponent', () => {
   let component: LogbookManagementOperationComponent;
@@ -49,9 +51,17 @@ describe('LogbookManagementOperationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, InjectorModule, VitamUICommonModule, TranslateModule.forRoot(), LoggerModule.forRoot()],
+      imports: [
+        ReactiveFormsModule,
+        InjectorModule,
+        VitamUICommonModule,
+        TranslateModule.forRoot(),
+        LoggerModule.forRoot(),
+        MatDatepickerModule,
+      ],
       declarations: [LogbookManagementOperationComponent],
       providers: [
+        provideNativeDateAdapter(),
         {
           provide: ActivatedRoute,
           useValue: {

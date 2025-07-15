@@ -51,7 +51,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditComponent } from './audit.component';
 import { DatePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 describe('AuditComponent', () => {
   let component: AuditComponent;
@@ -69,7 +69,6 @@ describe('AuditComponent', () => {
       imports: [
         InjectorModule,
         LoggerModule.forRoot(),
-        MatMomentDateModule,
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
@@ -82,6 +81,7 @@ describe('AuditComponent', () => {
       ],
       declarations: [AuditComponent],
       providers: [
+        provideNativeDateAdapter(),
         { provide: BASE_URL, useValue: '/pastis-api' },
         DatePipe,
         FormBuilder,

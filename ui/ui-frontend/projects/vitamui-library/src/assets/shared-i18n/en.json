@@ -54,10 +54,17 @@
     "HOURS": "Hours",
     "MINUTES": "Minutes",
     "EXPECTED_FORMAT": "Expected format : {{ format }}",
+    "INVALID": "Invalid date",
     "FORMAT": {
-      "DAY": "YYYY-MM-DD",
-      "MONTH": "YYYY-MM",
-      "YEAR": "YYYY"
+      "dd/MM/yyyy": "DD/MM/YYYY",
+      "MM/yyyy": "MM/YYYY",
+      "dd-MM-yyyy": "DD-MM-YYYY",
+      "MM-yyyy": "MM-YYYY",
+      "yyyy/MM/dd": "YYYY/MM/DD",
+      "yyyy/MM": "YYYY/MM",
+      "yyyy-MM-dd": "YYYY-MM-DD",
+      "yyyy-MM": "YYYY-MM",
+      "yyyy": "YYYY"
     },
     "ERROR": {
       "REQUIRED_FIELD": "This field is required",

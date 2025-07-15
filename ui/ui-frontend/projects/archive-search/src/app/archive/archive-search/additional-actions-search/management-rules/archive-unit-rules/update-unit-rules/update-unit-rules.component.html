@@ -41,40 +41,29 @@
           </vitamui-slide-toggle>
         </div>
         <div class="col">
-          <div class="vitamui-input" [class.disabled]="isStartDateDisabled" (click)="isStartDateDisabled ? null : pickerSatrDate.open()">
-            <span
-              *ngIf="!ruleDetailsForm.get('startDate').value; else showStartDate"
-              (click)="isStartDateDisabled ? null : pickerSatrDate.open()"
-              class="search-date-label"
+          <div class="hgap-2">
+            <vitamui-datepicker
+              [label]="'RULES.APPRAISAL_RULES.START_DATE' | translate"
+              formControlName="startDate"
+              outputType="Date"
+              format="dd/MM/yyyy"
+              class="w-100"
+            ></vitamui-datepicker>
+            <button
+              [ngStyle]="{
+                'background-color': 'var(--vitamui-green)',
+                color: 'var(--vitamui-white)',
+                width: '30',
+                height: '30',
+              }"
+              [style.visibility]="ruleDetailsForm.get('startDate').value && isShowCheckButton ? 'visible' : 'hidden'"
+              type="button"
+              mat-mini-fab
+              (click)="addStartDate()"
             >
-              {{ 'RULES.APPRAISAL_RULES.START_DATE' | translate }}</span
-            >
-
-            <ng-template #showStartDate
-              ><span (click)="isStartDateDisabled ? null : pickerSatrDate.open()"
-                >{{ ruleDetailsForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}
-              </span>
-            </ng-template>
-            <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
-            <mat-datepicker #pickerSatrDate></mat-datepicker>
+              <i class="material-icons">check</i>
+            </button>
           </div>
-          <button
-            [ngStyle]="{
-              'background-color': 'var(--vitamui-green)',
-              color: 'var(--vitamui-white)',
-              width: '30',
-              height: '30',
-              position: 'absolute',
-              right: '20px',
-              top: '10px',
-            }"
-            *ngIf="ruleDetailsForm.get('startDate').value && isShowCheckButton"
-            type="button"
-            mat-mini-fab
-            (click)="addStartDate()"
-          >
-            <i class="material-icons">check</i>
-          </button>
         </div>
 
         <vitamui-input class="col" formControlName="endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate"> </vitamui-input>

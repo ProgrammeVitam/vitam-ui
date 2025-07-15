@@ -238,7 +238,7 @@
     "FILTER_BY_DATE": "Filter by start date of operation between : ",
     "OPERATION_DATE": "Operation date",
     "AND": "and the :",
-    "ADD_INTREVAL": "ADD INTERVAL",
+    "ADD_INTERVAL": "ADD INTERVAL",
     "DELETE_INTERVAL": "DELETE INTERVAL",
     "OPERATION_CATEGORY": {
       "TRACEABILITY": "Securing",

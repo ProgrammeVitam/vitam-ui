@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
+import { FileTypes } from 'vitamui-library';
 
 export interface ImportDialogParam {
   title: string;

@@ -35,67 +35,120 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { CustomValidators, DatePattern, DatepickerComponent } from 'vitamui-library';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { DatepickerComponent, PickerType, SelectComponent } from 'vitamui-library';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule } from '@angular/material/core';
+
+type Row = { default: FormControl; active: FormControl; disabled: FormControl; error: FormControl };
 
 @Component({
   selector: 'design-system-datepicker',
-  imports: [ReactiveFormsModule, DatepickerComponent, NgClass, NgTemplateOutlet, MatFormFieldModule, MatNativeDateModule],
+  imports: [ReactiveFormsModule, DatepickerComponent, MatFormFieldModule, TitleCasePipe, FormsModule, SelectComponent],
   templateUrl: './design-system-datepicker.component.html',
   styleUrl: './design-system-datepicker.component.scss',
 })
 export class DesignSystemDatepickerComponent {
-  datepickerYearEmpty = new FormControl();
-  datepickerMonthEmpty = new FormControl();
-  datepickerDayEmpty = new FormControl();
-  datepickerYear = new FormControl('2022');
-  datepickerMonth = new FormControl('2018-05');
-  datepickerDay = new FormControl('2022-06-16');
-
   startDate = new FormControl();
   endDate = new FormControl();
 
-  datepickerEmptyError = (() => {
-    const fc = new FormControl(null, Validators.required);
-    fc.markAsTouched();
+  formats = {
+    'dd/MM/yyyy': new Map<PickerType, string>([
+      ['day', 'dd/MM/yyyy'],
+      ['month', 'MM/yyyy'],
+      ['year', 'yyyy'],
+    ]),
+    'dd-MM-yyyy': new Map<PickerType, string>([
+      ['day', 'dd-MM-yyyy'],
+      ['month', 'MM-yyyy'],
+      ['year', 'yyyy'],
+    ]),
+    'yyyy/MM/dd': new Map<PickerType, string>([
+      ['day', 'yyyy/MM/dd'],
+      ['month', 'yyyy/MM'],
+      ['year', 'yyyy'],
+    ]),
+    'yyyy-MM-dd': new Map<PickerType, string>([
+      ['day', 'yyyy-MM-dd'],
+      ['month', 'yyyy-MM'],
+      ['year', 'yyyy'],
+    ]),
+  };
+  availableFormats = Object.keys(this.formats);
+  selectedFormat: keyof typeof this.formats = 'dd/MM/yyyy';
+
+  configs: {
+    outputType: string;
+    description: string;
+    items: {
+      pickerType: PickerType;
+      rows: {
+        empty: Row;
+        full: Row;
+      };
+    }[];
+  }[];
+
+  columns: (keyof Row)[] = ['default', 'active', 'disabled', 'error'];
+
+  constructor(private datePipe: DatePipe) {
+    this.generateConfig();
+  }
+
+  generateConfig() {
+    this.configs = [
+      {
+        outputType: 'String',
+        description: 'Those datepickers output a String representing the chosen date.',
+        items: this.getItems(),
+      },
+      {
+        outputType: 'Date',
+        description: 'Those datepickers output a Date representing the chosen date.',
+        items: this.getItems(),
+      },
+    ];
+  }
+
+  private getDate(y: number, m?: number, d?: number): string {
+    return m
+      ? this.datePipe.transform(d ? new Date(y, m - 1, d) : new Date(y, m - 1), this.formats[this.selectedFormat].get(d ? 'day' : 'month'))
+      : String(y);
+  }
+
+  private getItems() {
+    return ['day', 'month', 'year'].map((pickerType: PickerType) => {
+      const value = pickerType === 'year' ? this.getDate(2022) : pickerType === 'month' ? this.getDate(2018, 5) : this.getDate(2022, 6, 16);
+      return {
+        pickerType: pickerType,
+        rows: {
+          empty: {
+            default: this.createControl({ value: '', error: false, disabled: false, pickerType }),
+            active: this.createControl({ value: '', error: false, disabled: false, pickerType }),
+            disabled: this.createControl({ value: '', error: false, disabled: true, pickerType }),
+            error: this.createControl({ value: '', error: true, disabled: false, pickerType }),
+          },
+          full: {
+            default: this.createControl({ value, error: false, disabled: false, pickerType }),
+            active: this.createControl({ value, error: false, disabled: false, pickerType }),
+            disabled: this.createControl({ value, error: false, disabled: true, pickerType }),
+            error: this.createControl({ value, error: true, disabled: false, pickerType }),
+          },
+        },
+      };
+    });
+  }
+
+  private createControl(
+    { value, error, disabled, pickerType } = { value: '', error: false, disabled: false, pickerType: 'day' },
+  ): FormControl {
+    const validators = [Validators.required];
+    const valueOrError = error && value ? (pickerType === 'year' ? '1' : pickerType === 'month' ? '2018-13' : '2024-02-30') : value;
+    const fc = new FormControl(valueOrError, validators);
+    if (error) fc.markAsTouched();
+    if (disabled) fc.disable();
     return fc;
-  })();
-  datepickerErrorYear = (() => {
-    const fc = new FormControl('202255', [Validators.required, CustomValidators.date(DatePattern.YEAR)]);
-    fc.markAsTouched();
-    return fc;
-  })();
-  datepickerErrorMonth = (() => {
-    const fc = new FormControl('2018-13', [Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH)]);
-    fc.markAsTouched();
-    return fc;
-  })();
-  datepickerErrorDay = (() => {
-    const fc = new FormControl('2024-02-30', [Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
-    fc.markAsTouched();
-    return fc;
-  })();
-  datepickerDisabledEmpty = (() => {
-    const fc = new FormControl('');
-    fc.disable();
-    return fc;
-  })();
-  datepickerDisabledYear = (() => {
-    const fc = new FormControl('2022');
-    fc.disable();
-    return fc;
-  })();
-  datepickerDisabledMonth = (() => {
-    const fc = new FormControl('2019-02');
-    fc.disable();
-    return fc;
-  })();
-  datepickerDisabledDay = (() => {
-    const fc = new FormControl('2024-01-01');
-    fc.disable();
-    return fc;
-  })();
+  }
+
+  protected readonly Object = Object;
 }

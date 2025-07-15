@@ -37,7 +37,6 @@
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -56,6 +55,7 @@ import {
   VitamUICommonModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -69,7 +69,6 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule.forRoot(),
     AppRoutingModule,
-    MatNativeDateModule,
     QuicklinkModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -80,6 +79,7 @@ registerLocaleData(localeFr, 'fr');
   ],
   providers: [
     provideI18n(),
+    provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: BASE_URL, useValue: './referential-api' },

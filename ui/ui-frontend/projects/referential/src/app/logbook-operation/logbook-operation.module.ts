@@ -37,8 +37,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -64,7 +62,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     CommonModule,
     MatSidenavModule,
     MatMenuModule,
-    MatDatepickerModule,
     MatDialogModule,
     MatProgressSpinnerModule,
     MatTabsModule,
@@ -72,7 +69,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     ReactiveFormsModule,
     VitamUICommonModule,
     LogbookOperationRoutingModule,
-    MatMomentDateModule,
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,

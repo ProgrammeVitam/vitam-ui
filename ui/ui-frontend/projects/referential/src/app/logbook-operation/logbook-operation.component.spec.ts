@@ -47,7 +47,7 @@ import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 describe('LogbookOperationComponent', () => {
   let component: LogbookOperationComponent;
@@ -61,7 +61,6 @@ describe('LogbookOperationComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         MatMenuModule,
-        MatMomentDateModule,
         DatepickerComponent,
         ReactiveFormsModule,
         SearchBarComponent,
@@ -69,6 +68,7 @@ describe('LogbookOperationComponent', () => {
       ],
       declarations: [LogbookOperationComponent],
       providers: [
+        provideNativeDateAdapter(),
         DatePipe,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },

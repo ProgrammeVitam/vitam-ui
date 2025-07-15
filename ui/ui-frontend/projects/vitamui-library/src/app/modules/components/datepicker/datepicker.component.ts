@@ -34,18 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, ViewChild, OnInit } from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  computed,
+  ElementRef,
+  forwardRef,
+  HostBinding,
+  HostListener,
+  Injector,
+  input,
+  Input,
+  OnInit,
+  Signal,
+  ViewChild,
+} from '@angular/core';
+import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { PickerType } from './datepicker.interface';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
-import { CustomValidators, DatePattern } from '../../object-editor/pattern.validator';
+import { CustomValidators } from '../../object-editor/pattern.validator';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
+import { DateTime } from 'luxon';
 
 export const DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -72,26 +86,28 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
 })
 export class DatepickerComponent extends AbstractFormInputDirective implements OnInit {
   @Input() pickerType: PickerType = 'day';
+  // May be yyyy-MM-dd, dd/MM/yyyy, yyyy or any other date format
+  format = input<string>();
   @Input() startView: MatDatepicker<Date>['startView'];
   @Input() label = 'DATE.DATE';
   @Input() hint: string;
   @Input() min?: Date;
   @Input() max?: Date;
+  @Input() outputType: 'String' | 'Date' = 'String';
 
-  // We store a value specific for the datepicker in order to store a Date object and not a String for datepicker to keep the currently selected value
+  // We store a value specific for the datepicker to store a Date object and not a String for datepicker to keep the currently selected value
   datePickerValue: Date;
+  displayedValue = '';
+  selectedFormat: Signal<string>;
 
   @HostBinding('class.vitamui-float')
   get labelFloat(): boolean {
-    return !!this.control.value;
+    return !!this.displayedValue;
   }
 
   @ViewChild('vitamUIInput') private vitamUIInput: ElementRef;
   @ViewChild('datepicker') private datepicker: MatDatepicker<Date>;
   @ViewChild('hintArea') private hintArea: ElementRef;
-
-  onChange = (_: any) => {};
-  onTouched = () => {};
 
   @HostListener('click', ['$event.target'])
   onClick(target: HTMLElement) {
@@ -106,10 +122,10 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
     ['day', 'month'],
   ]);
 
-  private datePatternMapping = new Map<PickerType, DatePattern>([
-    ['year', DatePattern.YEAR],
-    ['month', DatePattern.YEAR_MONTH],
-    ['day', DatePattern.YEAR_MONTH_DAY],
+  private defaultFormatMapping = new Map<PickerType, string>([
+    ['day', 'yyyy-MM-dd'],
+    ['month', 'yyyy-MM'],
+    ['year', 'yyyy'],
   ]);
 
   constructor(
@@ -122,12 +138,18 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
   ngOnInit() {
     super.ngOnInit();
 
+    this.selectedFormat = computed(() => this.format() || this.defaultFormatMapping.get(this.pickerType));
+
     if (!this.startView) this.startView = this.startViewMapping.get(this.pickerType);
-    this.control.addValidators(CustomValidators.date(this.datePatternMapping.get(this.pickerType)));
+    this.control.addValidators((control: AbstractControl<Date | string>) => {
+      const customControl = this.outputType === 'Date' ? ({ value: this.formatDateToString(control.value) } as AbstractControl) : control;
+      return CustomValidators.date(this.selectedFormat())(customControl);
+    });
   }
 
-  writeValue(value: string) {
-    this.datePickerValue = value ? new Date(value) : null;
+  writeValue(value: string | Date) {
+    this.displayedValue = this.formatDateToString(value);
+    this.datePickerValue = value ? (value instanceof Date ? value : DateTime.fromFormat(value, this.selectedFormat()).toJSDate()) : null;
   }
 
   onFocus() {
@@ -138,38 +160,37 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
 
   onBlur() {
     this.onTouched();
+    if (this.displayedValue !== this.control.value) this.control.setValue(this.displayedValue);
   }
 
   onTextChange(value: string) {
-    this.control.setValue(value);
-    this.onChange(value);
-  }
-
-  setYearMonthAndDay(date: Date) {
-    if (this.pickerType === 'day') {
-      this.datePickerValue = date;
-      this.control.setValue(this.datePipe.transform(date, 'yyyy-MM-dd'));
-      this.onChange(this.control.value);
+    this.displayedValue = value;
+    if (DateTime.fromFormat(value, this.selectedFormat()).isValid) {
+      const valueWithSlash = value.replaceAll('-', '/'); // We must use '/' to take timezone into account ('-' doesn't)
+      const endsWithYear = /\d{4,}$/.test(value);
+      const normalized = endsWithYear ? valueWithSlash.split('/').reverse().join('/') : valueWithSlash;
+      this.changeValue(new Date(normalized));
+    } else {
+      this.changeValue(null);
     }
   }
 
-  setYear(year: Date) {
-    if (this.pickerType === 'year') {
-      this.datePickerValue = year;
-      this.control.setValue(this.datePipe.transform(year, 'yyyy'));
-      this.onChange(this.control.value);
-      this.datepicker.close();
+  onDateChange(type: PickerType, date: Date) {
+    if (this.pickerType === type) {
+      this.changeValue(date);
+      if (this.datepicker.opened) this.datepicker.close();
     }
   }
 
-  setYearAndMonth(monthAndYear: Date) {
-    if (this.pickerType === 'month') {
-      this.datePickerValue = monthAndYear;
-      this.control.setValue(this.datePipe.transform(monthAndYear, 'yyyy-MM'));
-      this.onChange(this.control.value);
-      this.datepicker.close();
-    }
+  private formatDateToString(date: Date | string): string {
+    return date instanceof Date ? this.datePipe.transform(date, this.selectedFormat()) : date;
   }
 
-  protected readonly Validators = Validators;
+  private changeValue(date: Date) {
+    this.datePickerValue = date;
+    if (date) this.displayedValue = this.formatDateToString(date);
+    const typedDate: string | Date = this.outputType === 'Date' ? date : this.displayedValue;
+    this.control.setValue(typedDate);
+    this.onChange(typedDate);
+  }
 }

@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import moment from 'moment';
 import { IEvent, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'vitamui-library';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root',
@@ -92,11 +92,11 @@ export class LogbookSearchService extends SearchService<IEvent> {
     }
 
     if (criteria.evDateTime_Start) {
-      operators.push({ $gte: { evDateTime: moment(criteria.evDateTime_Start).startOf('day') } });
+      operators.push({ $gte: { evDateTime: DateTime.fromJSDate(criteria.evDateTime_Start).startOf('day').toISO() } });
     }
 
     if (criteria.evDateTime_End) {
-      operators.push({ $lte: { evDateTime: moment(criteria.evDateTime_End).endOf('day') } });
+      operators.push({ $lte: { evDateTime: DateTime.fromJSDate(criteria.evDateTime_End).endOf('day').toISO() } });
     }
 
     if (criteria.evId) {

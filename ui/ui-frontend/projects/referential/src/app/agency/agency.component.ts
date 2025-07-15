@@ -38,18 +38,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { FileTypes, QueryParamsService } from 'projects/vitamui-library/src/public-api';
-import { zip } from 'rxjs';
 import {
   Agency,
   AgencyService,
   ApplicationId,
+  FileTypes,
   GlobalEventService,
+  QueryParamsService,
   Role,
   SecurityService,
   SidenavPage,
   VitamUICommonModule,
 } from 'vitamui-library';
+import { zip } from 'rxjs';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';

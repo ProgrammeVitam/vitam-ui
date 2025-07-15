@@ -36,7 +36,7 @@
  */
 import { Component } from '@angular/core';
 import { Route, Router, Routes } from '@angular/router';
-import { VitamuiSelectOptions } from '../../../vitamui-library/src/lib/components/select/select.component';
+import { VitamuiSelectOptions } from 'vitamui-library';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { RouteData } from './app-routing.module';
