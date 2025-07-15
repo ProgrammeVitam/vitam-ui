@@ -127,7 +127,7 @@ export class LogbookDownloadService extends SearchService<Event> {
         if (eventType === 'EXPORT_PROBATIVE_VALUE' || eventType === 'RECTIFICATION_AUDIT') {
           return DOWNLOAD_TYPE_REPORT;
         }
-        if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT') {
+        if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT' || eventType === 'LINKED_CHECK_SECURISATION') {
           return DOWNLOAD_TYPE_BATCH_REPORT;
         }
       // tslint:disable-next-line:no-switch-case-fall-through
