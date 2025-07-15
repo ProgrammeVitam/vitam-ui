@@ -4,33 +4,23 @@
       <div class="row col-1"><i class="vitamui-icon vitamui-icon-ic40-flux vitamui-row-icon"></i></div>
       <div class="col-5">
         <span>{{ 'INGEST_LIST.ID' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="obIdIn.keyword"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
         >
-        </vitamui-common-order-by-button>
+        </vitamui-order-by-button>
       </div>
       <div class="col-2">
         <span>{{ 'INGEST_LIST.START_DATE' | translate }}</span>
-        <vitamui-common-order-by-button
-          orderByKey="evDateTime"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        >
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()">
+        </vitamui-order-by-button>
       </div>
       <div class="col-2">
         <span>{{ 'INGEST_LIST.END_DATE' | translate }}</span>
-        <vitamui-common-order-by-button
-          orderByKey="evDateTime"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        >
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()">
+        </vitamui-order-by-button>
       </div>
       <div class="col-2">{{ 'INGEST_LIST.STATUS' | translate }}</div>
     </div>

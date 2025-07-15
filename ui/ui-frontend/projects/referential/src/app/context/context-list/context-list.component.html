@@ -10,32 +10,32 @@
 
       <div class="col-3 d-flex align-items-center justify-content-between">
         <span>{{ 'CONTEXTS_APP.HOME.ARRAY.IDENTIFIER' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Identifier"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-4 d-flex align-items-center justify-content-between">
         <span>{{ 'CONTEXTS_APP.HOME.ARRAY.NAME' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Name"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-4 d-flex align-items-center justify-content-between">
         <span>{{ 'CONTEXTS_APP.HOME.ARRAY.CREATION_DATE' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="CreationDate"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
     </div>
 

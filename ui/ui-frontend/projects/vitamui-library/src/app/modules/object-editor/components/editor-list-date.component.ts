@@ -39,23 +39,23 @@ import { EditObject } from '../models/edit-object.model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HintComponent } from '../../components/hint/hint.component';
-import { MultipleOptionsDatepickerModule } from '../../components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DatepickerComponent } from '../../components/datepicker/datepicker.component';
 
 @Component({
   selector: 'vitamui-editor-list-date',
   template: `
-    <vitamui-common-multiple-options-datepicker
+    <vitamui-datepicker
       [formControl]="control"
       [label]="editObject.displayRule.ui.label | translate | empty"
       [required]="editObject.required"
       pickerType="day"
     >
       <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
-    </vitamui-common-multiple-options-datepicker>
+    </vitamui-datepicker>
   `,
-  imports: [HintComponent, MultipleOptionsDatepickerModule, PipesModule, TranslatePipe, ReactiveFormsModule],
+  imports: [HintComponent, DatepickerComponent, PipesModule, TranslatePipe, ReactiveFormsModule],
 })
 export class EditorListDateComponent implements OnInit, OnDestroy {
   @Input({ required: true }) editObject!: EditObject;

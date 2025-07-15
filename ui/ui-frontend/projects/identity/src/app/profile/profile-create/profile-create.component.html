@@ -2,10 +2,10 @@
 
 <form [formGroup]="adminProfileForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content class="gap-3 align-items-stretch">
-    <vitamui-common-slide-toggle formControlName="enabled">
+    <vitamui-slide-toggle formControlName="enabled">
       <span *ngIf="!adminProfileForm?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
       <span *ngIf="adminProfileForm?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
 
     <vitamui-input
       formControlName="name"

@@ -5,24 +5,24 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'SECURE.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'SECURE.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
-      </vitamui-common-banner>
+      <vitamui-banner [searchbarPlaceholder]="'SECURE.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      </vitamui-banner>
 
       <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2 hgap-3">
-        <vitamui-common-multiple-options-datepicker
+        <vitamui-datepicker
           formControlName="startDate"
           [label]="'SECURE.HOME.START_DATE' | translate"
           [max]="dateRangeFilterForm.get('endDate')?.value"
-        ></vitamui-common-multiple-options-datepicker>
-        <vitamui-common-multiple-options-datepicker
+        ></vitamui-datepicker>
+        <vitamui-datepicker
           formControlName="endDate"
           [label]="'SECURE.HOME.END_DATE' | translate"
           [min]="dateRangeFilterForm.get('startDate')?.value"
-        ></vitamui-common-multiple-options-datepicker>
+        ></vitamui-datepicker>
       </form>
     </div>
 

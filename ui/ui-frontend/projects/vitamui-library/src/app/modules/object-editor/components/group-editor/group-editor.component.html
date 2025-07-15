@@ -4,7 +4,7 @@
   }}</span>
   <div class="title-extra v-col align-items-center justify-content-end favorite-entry">
     <span *ngIf="favoriteEntry">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</span>
-    <vitamui-common-menu-button
+    <vitamui-menu-button
       *ngIf="actionList.length"
       overlayPos="end"
       icon="vitamui-icon-more-vert"
@@ -15,7 +15,7 @@
       <ng-container *ngFor="let action of actionList">
         <button mat-menu-item (click)="action.handler()">{{ action.label | translate }}</button>
       </ng-container>
-    </vitamui-common-menu-button>
+    </vitamui-menu-button>
   </div>
 
   <div class="content">

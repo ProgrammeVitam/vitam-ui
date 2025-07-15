@@ -43,7 +43,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../injection-tokens';
-import { SlideToggleComponent } from '../slide-toggle/slide-toggle.component';
+import { SlideToggleComponent } from '../../../../lib/components/slide-toggle/slide-toggle.component';
 import { RoleToggleComponent } from './role-toggle.component';
 import { RoleComponent } from './role.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -68,8 +68,8 @@ describe('RoleToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent],
-      imports: [FormsModule, TranslateModule.forRoot()],
+      declarations: [RoleToggleComponent, TesthostComponent, RoleComponent],
+      imports: [SlideToggleComponent, FormsModule, TranslateModule.forRoot()],
       providers: [
         {
           provide: WINDOW_LOCATION,

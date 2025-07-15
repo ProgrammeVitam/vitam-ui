@@ -8,12 +8,12 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="externalParamProfileForm" (ngSubmit)="onSubmit()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-slide-toggle formControlName="enabled"
+        <vitamui-slide-toggle formControlName="enabled"
           >{{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }} <span *ngIf="!externalParamProfileForm.get('enabled').value">in</span
-          >{{ 'COMMON.ACTIVE' | translate }}</vitamui-common-slide-toggle
+          >{{ 'COMMON.ACTIVE' | translate }}</vitamui-slide-toggle
         >
 
         <vitamui-input
@@ -47,9 +47,9 @@
 
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-slide-toggle formControlName="usePlatformThreshold">
+        <vitamui-slide-toggle formControlName="usePlatformThreshold">
           {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
         <div class="select-threshold" *ngIf="!externalParamProfileForm.get('usePlatformThreshold').value">
           <vitamui-select
@@ -81,5 +81,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

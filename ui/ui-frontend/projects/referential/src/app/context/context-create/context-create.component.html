@@ -5,12 +5,12 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-common-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
+        <vitamui-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
           {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.STATUS' | translate }}
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
 
         <vitamui-input
           formControlName="name"
@@ -43,9 +43,9 @@
         ></vitamui-select>
 
         <div>
-          <vitamui-common-slide-toggle formControlName="enableControl">
+          <vitamui-slide-toggle formControlName="enableControl">
             {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE' | translate }}
-          </vitamui-common-slide-toggle>
+          </vitamui-slide-toggle>
           <i
             class="vitamui-icon vitamui-icon-info primary ml-3"
             *ngIf="form?.controls.enableControl?.value === false"
@@ -100,5 +100,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

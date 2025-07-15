@@ -3,18 +3,18 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'APPLICATION.HOLDING_FILLING_SCHEME_APP.NAME' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'FILLING_HOLDING_SCHEME.SEARCH' | translate">
+      <vitamui-banner [searchbarPlaceholder]="'FILLING_HOLDING_SCHEME.SEARCH' | translate">
         <button class="btn primary elt-spaced" (click)="openImportTreePlanPopup(IngestType.HOLDING_SCHEME)">
           <span>{{ 'FILLING_HOLDING_SCHEME.IMPORT_HOLDING' | translate }}</span>
         </button>
         <button class="btn primary elt-spaced" (click)="openImportTreePlanPopup(IngestType.FILING_SCHEME)">
           <span>{{ 'FILLING_HOLDING_SCHEME.IMPORT_FILLING' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
     <div class="vitamui-content">
       <app-upload-tracking></app-upload-tracking>

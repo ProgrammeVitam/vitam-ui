@@ -5,11 +5,11 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'APPLICATION.GROUPS_APP.NAME' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'GROUP.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-banner [searchbarPlaceholder]="'GROUP.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openCreateGroupDialog()">
           <span>{{ 'GROUP.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
@@ -17,7 +17,7 @@
         <button class="btn secondary ml-3" (click)="exportProfilesAsExcel()" [disabled]="exportButtonDisabled">
           <span>{{ 'GROUP.HOME.EXPORT' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

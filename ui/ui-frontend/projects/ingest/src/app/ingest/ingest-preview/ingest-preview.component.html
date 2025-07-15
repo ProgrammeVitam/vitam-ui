@@ -8,7 +8,7 @@
   [toolTipTitleDuration]="300"
   (onclose)="emitClose()"
 >
-  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+  <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button
       mat-menu-item
       (click)="downloadManifest()"
@@ -35,7 +35,7 @@
     >
       {{ 'INGEST_DETAIL.DOWNLOAD_DOCX' | translate }}
     </button>
-  </vitamui-common-menu-button>
+  </vitamui-menu-button>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">

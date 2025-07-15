@@ -35,16 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, ViewChild } from '@angular/core';
-import { MatTabGroup } from '@angular/material/tabs';
-import { Category } from 'vitamui-library';
+import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import { Category, VitamUICommonModule } from 'vitamui-library';
 import { ContentTypeEnum } from './content.enum';
 import { Content } from './content.interface';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
   selector: 'app-content-list',
   templateUrl: './content-list.component.html',
   styleUrls: ['./content-list.component.scss'],
-  standalone: false,
+  imports: [CommonModule, MatTabsModule, TranslateModule, VitamUICommonModule, AngularSvgIconModule],
 })
 export class ContentListComponent {
   @Input() set content(content: Map<Category, Content>) {

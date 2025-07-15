@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="gap-3 align-items-stretch">
   <div class="row align-items-center">
     <div class="col-6">
-      <vitamui-common-slide-toggle formControlName="enabled">{{ 'CUSTOMER.SSO.ACTIVE_SWITCH' | translate }}</vitamui-common-slide-toggle>
+      <vitamui-slide-toggle formControlName="enabled">{{ 'CUSTOMER.SSO.ACTIVE_SWITCH' | translate }}</vitamui-slide-toggle>
     </div>
     <div class="col-6">
       <div class="read-only-field">
@@ -94,9 +94,9 @@
   </div>
 
   <div class="row mt-2">
-    <vitamui-common-slide-toggle class="col-4" formControlName="autoProvisioningEnabled">{{
+    <vitamui-slide-toggle class="col-4" formControlName="autoProvisioningEnabled">{{
       'CUSTOMER.SSO.AUTO_PROVISIONING' | translate
-    }}</vitamui-common-slide-toggle>
+    }}</vitamui-slide-toggle>
   </div>
   @if (form.value.protocoleType === 'SAML' && displayOIDCSAMLBLOCKS) {
     <div class="row">
@@ -145,19 +145,19 @@
     </div>
     <div class="row" *ngIf="!identityProvider.internal">
       <div class="col-5">
-        <vitamui-common-slide-toggle formControlName="wantsAssertionsSigned">
+        <vitamui-slide-toggle formControlName="wantsAssertionsSigned">
           {{ 'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate }}
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
       </div>
       <div class="col-6">
-        <vitamui-common-slide-toggle formControlName="authnRequestSigned">
+        <vitamui-slide-toggle formControlName="authnRequestSigned">
           {{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
       </div>
       <div class="col-6">
-        <vitamui-common-slide-toggle formControlName="propagateLogout">
+        <vitamui-slide-toggle formControlName="propagateLogout">
           {{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}
-        </vitamui-common-slide-toggle>
+        </vitamui-slide-toggle>
       </div>
     </div>
   }
@@ -218,19 +218,19 @@
     </div>
     <div class="row align-items-center">
       <div class="col-4">
-        <vitamui-common-slide-toggle formControlName="useState">{{ 'CUSTOMER.SSO.STATEFUL' | translate }}</vitamui-common-slide-toggle>
+        <vitamui-slide-toggle formControlName="useState">{{ 'CUSTOMER.SSO.STATEFUL' | translate }}</vitamui-slide-toggle>
       </div>
       <div class="col-4">
-        <vitamui-common-slide-toggle formControlName="usePkce">{{ 'CUSTOMER.SSO.USE_NONCE' | translate }} </vitamui-common-slide-toggle>
+        <vitamui-slide-toggle formControlName="usePkce">{{ 'CUSTOMER.SSO.USE_NONCE' | translate }} </vitamui-slide-toggle>
       </div>
       <div class="col-4">
-        <vitamui-common-slide-toggle formControlName="useNonce">{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</vitamui-common-slide-toggle>
+        <vitamui-slide-toggle formControlName="useNonce">{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</vitamui-slide-toggle>
       </div>
     </div>
     <div class="col-6 p-0">
-      <vitamui-common-slide-toggle formControlName="propagateLogout">
+      <vitamui-slide-toggle formControlName="propagateLogout">
         {{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}
-      </vitamui-common-slide-toggle>
+      </vitamui-slide-toggle>
     </div>
   }
 </form>

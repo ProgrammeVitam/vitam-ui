@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -46,7 +46,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { VitamUILibraryModule } from 'vitamui-library';
 import { RuleCreateModule } from './rule-create/rule-create.module';
 import { RuleListComponent } from './rule-list/rule-list.component';
 import { RulePreviewModule } from './rule-preview/rule-preview.module';
@@ -72,7 +71,6 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    TableFilterModule,
   ],
   declarations: [RuleComponent, RuleListComponent],
 })

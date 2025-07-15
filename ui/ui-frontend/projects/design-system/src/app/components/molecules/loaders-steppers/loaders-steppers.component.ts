@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { CommonProgressBarModule } from 'vitamui-library';
+import { CommonProgressBarComponent } from 'vitamui-library';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   templateUrl: './loaders-steppers.component.html',
   styleUrls: ['./loaders-steppers.component.scss'],
-  imports: [CommonProgressBarModule, MatProgressSpinnerModule],
+  imports: [CommonProgressBarComponent, MatProgressSpinnerModule],
 })
 export class LoadersSteppersComponent {
   nbSteps = [2, 3, 4, 5];

@@ -147,7 +147,7 @@ describe('Hierarchy InformationTabComponent', () => {
       expect(element.textContent).toContain('Profile description...');
       expect(element.attributes.maxlength.value).toBe('250');
 
-      element = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
+      element = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=enabled]');
       expect(element).toBeTruthy('enabled toggle');
       expect(element.textContent).toContain('HIERARCHY.INFORMATIONS.ACTIVE_SWITCH');
     });

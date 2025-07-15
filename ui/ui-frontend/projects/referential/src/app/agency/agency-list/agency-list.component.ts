@@ -50,7 +50,6 @@ import {
   PageRequest,
   Role,
   SecurityService,
-  TableFilterModule,
   VitamUICommonModule,
 } from 'vitamui-library';
 import { AgencyCreateModule } from '../agency-create';
@@ -73,7 +72,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatSnackBarModule,
-    TableFilterModule,
     VitamUICommonModule,
   ],
 })

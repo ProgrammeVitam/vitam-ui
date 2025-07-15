@@ -37,12 +37,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Direction } from '../../vitamui-table';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'vitamui-common-order-by-button',
+  selector: 'vitamui-order-by-button',
   templateUrl: './order-by-button.component.html',
   styleUrls: ['./order-by-button.component.scss'],
-  standalone: false,
+  imports: [CommonModule],
 })
 export class OrderByButtonComponent {
   @Input() orderByKey: string;

@@ -6,11 +6,11 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'APPLICATION.MANAGEMENT_CONTRACT_APP.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner
+      <vitamui-banner
         [searchbarPlaceholder]="'CONTRACT_MANAGEMENT.CONTRACT_PAGE.SEARCH_CRITERIA' | translate"
         (search)="onSearchSubmit($event)"
       >
@@ -21,7 +21,7 @@
         >
           <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

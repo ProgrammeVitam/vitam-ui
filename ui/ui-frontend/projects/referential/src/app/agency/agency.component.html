@@ -11,11 +11,11 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'AGENCY.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner
+      <vitamui-banner
         [searchbarPlaceholder]="'AGENCY.HOME.TITLE_PLACEHOLDER' | translate"
         [searchValue]="search"
         (search)="onSearchSubmit($event)"
@@ -24,15 +24,15 @@
           <span>{{ 'AGENCY.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
 
-        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="!hasImportRole && !hasExportRole">
+        <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="!hasImportRole && !hasExportRole">
           <button mat-menu-item [disabled]="!hasImportRole" (click)="openAgencyImportDialog()">
             {{ 'AGENCY.HOME.ACTION_IMPORT' | translate }}
           </button>
           <button mat-menu-item [disabled]="!hasExportRole" (click)="exportAgencies()">
             {{ 'AGENCY.HOME.ACTION_EXPORT' | translate }}
           </button>
-        </vitamui-common-menu-button>
-      </vitamui-common-banner>
+        </vitamui-menu-button>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

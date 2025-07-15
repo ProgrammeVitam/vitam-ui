@@ -35,12 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
-  selector: 'vitamui-common-menu-button',
+  selector: 'vitamui-menu-button',
   templateUrl: './vitamui-menu-button.component.html',
   styleUrls: ['./vitamui-menu-button.component.scss'],
-  standalone: false,
+  imports: [CommonModule, MatButtonModule, MatMenuModule],
 })
 export class VitamuiMenuButtonComponent {
   /** Set the menu overlay display (by defaut at start) */

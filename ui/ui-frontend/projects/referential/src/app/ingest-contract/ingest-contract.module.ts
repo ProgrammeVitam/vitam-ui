@@ -44,7 +44,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from 'vitamui-library';
 
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { IngestContractCreateModule } from './ingest-contract-create/ingest-contract-create.module';
@@ -70,7 +70,6 @@ import { IngestContractComponent } from './ingest-contract.component';
     IngestContractRoutingModule,
     IngestContractPreviewModule,
     IngestContractCreateModule,
-    TableFilterModule,
     ImportDialogModule,
   ],
 })

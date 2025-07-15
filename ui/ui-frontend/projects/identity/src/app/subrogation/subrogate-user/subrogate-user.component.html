@@ -1,15 +1,15 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'SUBROGATION.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'SUBROGATION.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-banner [searchbarPlaceholder]="'SUBROGATION.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openUserSubrogationDialog()">
           {{ 'SUBROGATION.HOME.ACTION_BUTTON' | translate }}
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

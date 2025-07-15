@@ -38,7 +38,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SidenavPage, VitamuiCommonBannerComponent } from 'vitamui-library';
+import { GlobalEventService, SidenavPage, VitamuiBannerComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 import moment from 'moment';
@@ -51,7 +51,7 @@ import moment from 'moment';
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
-  @ViewChild(VitamuiCommonBannerComponent, { static: true }) bannerComponent: VitamuiCommonBannerComponent;
+  @ViewChild(VitamuiBannerComponent, { static: true }) bannerComponent: VitamuiBannerComponent;
 
   public search = '';
   public tenantIdentifier: number;

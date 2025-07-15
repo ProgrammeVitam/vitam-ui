@@ -47,7 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class NextStepComponent {
   @Input() disabled?: boolean;
   /**
-   * A reference to the CdkStepper instance. It is automatically injected by Angular if the component is a child of vitamui-common-stepper. Otherwise, a reference must be provided.
+   * A reference to the CdkStepper instance. It is automatically injected by Angular if the component is a child of vitamui-stepper. Otherwise, a reference must be provided.
    */
   @Input() stepper: CdkStepper = inject(CdkStepper, { optional: true });
 

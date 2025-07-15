@@ -43,10 +43,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonProgressBarModule } from '../components/common-progress-bar/common-progress-bar.module';
 
 import { ConfirmDialogModule } from '../components/confirm-dialog/confirm-dialog.module';
-import { StepperModule } from '../components/stepper/stepper.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
 import { PipesModule } from '../pipes/pipes.module';
 import { NotificationSnackBarComponent } from './notification-snack-bar/notification-snack-bar.component';
@@ -56,6 +54,9 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
 import { DialogHeaderComponent } from '../../../lib/components/dialog/dialog-header/dialog-header.component';
 import { SelectComponent } from '../../../lib/components/select/select.component';
 import { InputComponent } from '../../../lib/components/input/input.component';
+import { CommonProgressBarComponent } from '../components/common-progress-bar/common-progress-bar.component';
+import { StepperComponent } from '../components/stepper/stepper.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @NgModule({
   imports: [
@@ -65,10 +66,11 @@ import { InputComponent } from '../../../lib/components/input/input.component';
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatSelectModule,
-    StepperModule,
+    CdkStepperModule,
+    StepperComponent,
     ReactiveFormsModule,
     ConfirmDialogModule,
-    CommonProgressBarModule,
+    CommonProgressBarComponent,
     TranslateModule,
     PipesModule,
     DialogHeaderComponent,

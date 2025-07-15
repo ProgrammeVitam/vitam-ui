@@ -69,8 +69,8 @@ describe('TableFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPseudoCheckboxModule, FormsModule],
-      declarations: [TestHostComponent, TableFilterComponent, TableFilterOptionComponent],
+      imports: [MatPseudoCheckboxModule, FormsModule, TableFilterComponent, TableFilterOptionComponent],
+      declarations: [TestHostComponent],
     }).compileComponents();
   });
 

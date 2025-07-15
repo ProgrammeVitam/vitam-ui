@@ -30,9 +30,9 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb [data]="breadcrumbData">
+      <vitamui-title-breadcrumb [data]="breadcrumbData">
         <h5>{{ 'APPLICATION.COLLECT_APP.NAME' | translate }} : {{ projectName }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
       <div class="row row justify-content-around">
@@ -51,7 +51,7 @@
       </div>
 
       <div class="row justify-content-around">
-        <div class="col-6 form-control">
+        <div class="col-8 form-control">
           <app-title-and-description-criteria-search-collect></app-title-and-description-criteria-search-collect>
         </div>
         <div class="col-3 form-control text-right">
@@ -65,7 +65,7 @@
           </button>
         </div>
         <div class="col-1 form-control">
-          <vitamui-common-menu-button
+          <vitamui-menu-button
             [overlayPos]="'end'"
             [icon]="'vitamui-icon-more-horiz'"
             [vitamuiTooltip]="'COLLECT.OTHER_ACTION' | translate"
@@ -94,7 +94,7 @@
             >
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
-          </vitamui-common-menu-button>
+          </vitamui-menu-button>
         </div>
       </div>
 
@@ -364,14 +364,14 @@
               <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
             </div>
             <div class="col-1">
-              <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+              <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
                 <button mat-menu-item [disabled]="!hasDeleteArchiveUnitActionRole || itemSelected === 0" (click)="launchDeletionModal()">
                   {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_DELETE' | translate }}
                 </button>
                 <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || itemSelected === 0">
                   {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
                 </button>
-              </vitamui-common-menu-button>
+              </vitamui-menu-button>
             </div>
           </div>
 
@@ -385,13 +385,13 @@
             <div class="col-1 d-flex align-items-center">
               <span>{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}</span>
 
-              <vitamui-common-order-by-button
+              <vitamui-order-by-button
                 orderByKey="DescriptionLevel"
                 [(orderBy)]="orderBy"
                 [(direction)]="direction"
                 (orderChange)="emitOrderChange()"
               >
-              </vitamui-common-order-by-button>
+              </vitamui-order-by-button>
             </div>
 
             <div class="col-4 d-flex align-items-center">
@@ -401,46 +401,41 @@
                 }}</span
               >
 
-              <vitamui-common-order-by-button
-                orderByKey="Title"
-                [(orderBy)]="orderBy"
-                [(direction)]="direction"
-                (orderChange)="emitOrderChange()"
-              >
-              </vitamui-common-order-by-button>
+              <vitamui-order-by-button orderByKey="Title" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()">
+              </vitamui-order-by-button>
             </div>
 
             <div class="col-2 d-flex align-items-center">
               <span>{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.START_DATE' | translate }} </span>
-              <vitamui-common-order-by-button
+              <vitamui-order-by-button
                 orderByKey="StartDate"
                 [(orderBy)]="orderBy"
                 [(direction)]="direction"
                 (orderChange)="emitOrderChange()"
               >
-              </vitamui-common-order-by-button>
+              </vitamui-order-by-button>
             </div>
 
             <div class="col-2 d-flex align-items-center">
               <span>{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.END_DATE' | translate }} </span>
-              <vitamui-common-order-by-button
+              <vitamui-order-by-button
                 orderByKey="EndDate"
                 [(orderBy)]="orderBy"
                 [(direction)]="direction"
                 (orderChange)="emitOrderChange()"
               >
-              </vitamui-common-order-by-button>
+              </vitamui-order-by-button>
             </div>
 
             <div class="col-2 d-flex align-items-center">
               <span>{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.SP' | translate }}</span>
-              <vitamui-common-order-by-button
+              <vitamui-order-by-button
                 orderByKey="#originating_agencies"
                 [(orderBy)]="orderBy"
                 [(direction)]="direction"
                 (orderChange)="emitOrderChange()"
               >
-              </vitamui-common-order-by-button>
+              </vitamui-order-by-button>
             </div>
           </div>
 

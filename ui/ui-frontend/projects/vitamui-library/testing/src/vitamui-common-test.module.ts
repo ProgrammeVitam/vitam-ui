@@ -35,27 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable max-classes-per-file */
-import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform } from '@angular/core';
+import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform, TemplateRef } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 import { CdkStepper } from '@angular/cdk/stepper';
-
-@Component({
-  selector: 'vitamui-common-application-select-content',
-  template: '<ng-content></ng-content>',
-  standalone: false,
-})
-export class ApplicationSelectContentStubComponent {
-  @Input() applications: any[];
-  @Input() categories: any;
-  @Input() isModalMenu: boolean;
-}
-
-@Component({
-  selector: 'vitamui-common-customer-select',
-  template: '<ng-content></ng-content>',
-  standalone: false,
-})
-export class VitamUICustomerSelectStubComponent {}
 
 @Component({
   selector: 'vitamui-common-tenant-select',
@@ -65,7 +47,7 @@ export class VitamUICustomerSelectStubComponent {}
 export class VitamUITenantSelectStubComponent {}
 
 @Component({
-  selector: 'vitamui-common-stepper',
+  selector: 'vitamui-stepper',
   template: '<ng-content></ng-content>',
   providers: [{ provide: CdkStepper, useExisting: StepperStubComponent }],
   standalone: false,
@@ -98,7 +80,9 @@ export class VitamUIInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
 
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -119,7 +103,9 @@ export class InputStubComponent implements ControlValueAccessor {
   @Input() textarea: boolean;
 
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -139,27 +125,9 @@ export class VitamUIInputPositiveNumberStubComponent implements ControlValueAcce
   @Input() placeholder: any;
 
   writeValue() {}
-  registerOnChange() {}
-  registerOnTouched() {}
-}
 
-@Component({
-  selector: 'vitamui-common-list-input',
-  template: '',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => VitamUIListInputStubComponent),
-      multi: true,
-    },
-  ],
-  standalone: false,
-})
-export class VitamUIListInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: any;
-
-  writeValue() {}
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -179,12 +147,14 @@ export class VitamUITextareaStubComponent implements ControlValueAccessor {
   @Input() placeholder: any;
 
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
 @Component({
-  selector: 'vitamui-common-slide-toggle',
+  selector: 'vitamui-slide-toggle',
   template: '<ng-content></ng-content>',
   providers: [
     {
@@ -199,10 +169,13 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
   @Input() disabled: boolean;
   @Input() checked: any;
   value: boolean;
+
   writeValue(value: boolean) {
     this.value = value;
   }
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -214,10 +187,13 @@ export class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
   @Input() asyncValidator: AsyncValidatorFn;
   value: string;
+
   writeValue(value: string) {
     this.value = value;
   }
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -365,8 +341,11 @@ export class EditableLevelInputStubComponent implements ControlValueAccessor {
   @Input() asyncValidator: any;
   @Input() prefix: any;
   @Input() disabled: boolean;
+
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -421,6 +400,16 @@ export class InfiniteScrollStubDirective {
 }
 
 @Directive({
+  selector: '[vitamuiCommonTableFilter]',
+  exportAs: 'vitamuiCommonTableFilter',
+  standalone: false,
+})
+export class TableFilterStubDirective {
+  @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;
+  @Output() readonly filterClosed = new EventEmitter();
+}
+
+@Directive({
   selector: '[vitamuiCommonRowCollapse]',
   exportAs: 'vitamuiRowCollapse',
   standalone: false,
@@ -438,7 +427,6 @@ export class RowCollapseTriggerForStubDirective {
 }
 
 const components = [
-  ApplicationSelectContentStubComponent,
   DateTimeStubPipe,
   EditableLevelInputStubComponent,
   InfiniteScrollStubDirective,
@@ -447,10 +435,10 @@ const components = [
   RowCollapseTriggerForStubDirective,
   StepperStubComponent,
   StrongifyStubPipe,
+  TableFilterStubDirective,
   TranslateStubPipe,
   TruncateStubPipe,
   VitamUIAutocompleteMultiSelectStubComponent,
-  VitamUICustomerSelectStubComponent,
   VitamUIEditableButtonToggleStubComponent,
   VitamUIEditableEmailInputStubComponent,
   VitamUIEditableFileStubComponent,
@@ -463,7 +451,6 @@ const components = [
   VitamUIInputErrorStubComponent,
   VitamUIInputPositiveNumberStubComponent,
   VitamUIInputStubComponent,
-  VitamUIListInputStubComponent,
   VitamUISlideToggleStubComponent,
   VitamUITenantSelectStubComponent,
   VitamUITextareaStubComponent,

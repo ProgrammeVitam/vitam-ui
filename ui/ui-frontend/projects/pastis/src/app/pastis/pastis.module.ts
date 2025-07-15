@@ -52,7 +52,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { MainComponent } from '../main/main.component';
 import { FileTreeModule } from '../profile/edit-profile/file-tree/file-tree.module';
@@ -90,7 +90,6 @@ import { PastisRoutingModule } from './pastis-routing.module';
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
     VitamUILibraryModule,
     MatIconModule,
     MatTabsModule,

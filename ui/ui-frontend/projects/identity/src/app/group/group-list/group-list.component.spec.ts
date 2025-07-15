@@ -43,7 +43,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
-import { Group, OrderByButtonModule, TableFilterModule } from 'vitamui-library';
+import { Group, OrderByButtonComponent } from 'vitamui-library';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
@@ -145,7 +145,7 @@ describe('GroupListComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, TableFilterModule, OrderByButtonModule],
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, OrderByButtonComponent],
       declarations: [GroupListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
         { provide: GroupService, useValue: groupListServiceSpy },

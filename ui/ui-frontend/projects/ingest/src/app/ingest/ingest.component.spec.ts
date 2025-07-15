@@ -48,7 +48,7 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { InjectorModule, LoggerModule, SearchBarModule } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { IngestType } from '../core/common/ingest-type.enum';
@@ -91,7 +91,7 @@ describe('IngestComponent test:', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule,
+        SearchBarComponent,
       ],
       declarations: [IngestComponent, IngestListStubComponent],
       providers: [

@@ -17,9 +17,9 @@
       <label class="text bold normal primary uppercase"> {{ 'RULES.TARGET_MANAGEMENT_RULE' | translate }}</label>
       <div class="row">
         <div class="mr-2">
-          <vitamui-common-slide-toggle class="toggle-design" formControlName="ruleUpdated"
+          <vitamui-slide-toggle class="toggle-design" formControlName="ruleUpdated"
             >{{ 'RULES.UPDATED' | translate }}
-          </vitamui-common-slide-toggle>
+          </vitamui-slide-toggle>
         </div>
 
         <vitamui-select
@@ -36,9 +36,9 @@
       <label class="text bold normal primary uppercase"> {{ 'RULES.APPRAISAL_RULES.TARGET_START_DATE' | translate }}</label>
       <div class="row hgap-4">
         <div class="mr-2">
-          <vitamui-common-slide-toggle class="toggle-design" formControlName="startDateUpdated"
+          <vitamui-slide-toggle class="toggle-design" formControlName="startDateUpdated"
             >{{ 'RULES.APPRAISAL_RULES.UPDATED' | translate }}
-          </vitamui-common-slide-toggle>
+          </vitamui-slide-toggle>
         </div>
         <div class="col">
           <div class="vitamui-input" [class.disabled]="isStartDateDisabled" (click)="isStartDateDisabled ? null : pickerSatrDate.open()">

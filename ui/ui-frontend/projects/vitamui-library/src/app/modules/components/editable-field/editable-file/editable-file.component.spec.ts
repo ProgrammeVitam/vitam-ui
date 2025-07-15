@@ -86,8 +86,16 @@ describe('EditableFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TesthostComponent, EditableFileComponent, VitamUIFieldErrorComponent],
-      imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, NoopAnimationsModule, TranslateModule.forRoot()],
+      declarations: [TesthostComponent, EditableFileComponent],
+      imports: [
+        FormsModule,
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        OverlayModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUIFieldErrorComponent,
+      ],
       providers: [
         {
           provide: WINDOW_LOCATION,

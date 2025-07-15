@@ -34,63 +34,142 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, ViewChild, OnInit } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import { PickerType } from './datepicker.interface';
+import { CommonModule, DatePipe } from '@angular/common';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { CustomValidators, DatePattern } from '../../object-editor/pattern.validator';
+import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
+
+export const DATEPICKER_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => DatepickerComponent),
+  multi: true,
+};
 
 @Component({
-  selector: 'vitamui-common-datepicker',
-  template: `
-    <div class="vitamui-input" [ngClass]="{ filled: !!value }" (click)="picker.open()">
-      <span class="search-date-label">{{ label }}</span>
-      <input matInput [matDatepicker]="picker" [ngModel]="value" (ngModelChange)="onChange($event)" [disabled]="disabled" />
-      <i class="vitamui-icon vitamui-icon-calendar primary"></i>
-      <mat-datepicker #picker></mat-datepicker>
-    </div>
-    <div class="vitamui-input-errors">
-      <ng-content select="vitamui-common-field-error"></ng-content>
-    </div>
-  `,
-  styleUrls: ['./datepicker.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DatepickerComponent),
-      multi: true,
-    },
+  selector: 'vitamui-datepicker',
+  templateUrl: './datepicker.component.html',
+  styleUrl: './datepicker.component.scss',
+  providers: [DATEPICKER_VALUE_ACCESSOR],
+  imports: [
+    CommonModule,
+    FormErrorsComponent,
+    FormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    TranslateModule,
   ],
-  standalone: false,
 })
-export class DatepickerComponent implements ControlValueAccessor {
-  @Input() label!: string;
-  @Input() value: string;
-  disabled = false;
+export class DatepickerComponent extends AbstractFormInputDirective implements OnInit {
+  @Input() pickerType: PickerType = 'day';
+  @Input() startView: MatDatepicker<Date>['startView'];
+  @Input() label = 'DATE.DATE';
+  @Input() hint: string;
+  @Input() min?: Date;
+  @Input() max?: Date;
 
-  propagateChange = (_: any) => {};
+  // We store a value specific for the datepicker in order to store a Date object and not a String for datepicker to keep the currently selected value
+  datePickerValue: Date;
 
-  propagateTouched = (_: any) => {};
+  @HostBinding('class.vitamui-float')
+  get labelFloat(): boolean {
+    return !!this.control.value;
+  }
 
-  writeValue(value: any): void {
-    if (value instanceof Date) {
-      this.value = value.toISOString();
-    } else {
-      this.value = value;
+  @ViewChild('vitamUIInput') private vitamUIInput: ElementRef;
+  @ViewChild('datepicker') private datepicker: MatDatepicker<Date>;
+  @ViewChild('hintArea') private hintArea: ElementRef;
+
+  onChange = (_: any) => {};
+  onTouched = () => {};
+
+  @HostListener('click', ['$event.target'])
+  onClick(target: HTMLElement) {
+    if (!this.hintArea.nativeElement.contains(target)) {
+      this.vitamUIInput.nativeElement.focus();
     }
   }
 
-  registerOnChange(fn: any): void {
-    this.propagateChange = fn;
+  private startViewMapping: Map<PickerType, MatDatepicker<Date>['startView']> = new Map([
+    ['year', 'multi-year'],
+    ['month', 'year'],
+    ['day', 'month'],
+  ]);
+
+  private datePatternMapping = new Map<PickerType, DatePattern>([
+    ['year', DatePattern.YEAR],
+    ['month', DatePattern.YEAR_MONTH],
+    ['day', DatePattern.YEAR_MONTH_DAY],
+  ]);
+
+  constructor(
+    injector: Injector,
+    private datePipe: DatePipe,
+  ) {
+    super(injector);
   }
 
-  registerOnTouched(fn: any): void {
-    this.propagateTouched = fn;
+  ngOnInit() {
+    super.ngOnInit();
+
+    if (!this.startView) this.startView = this.startViewMapping.get(this.pickerType);
+    this.control.addValidators(CustomValidators.date(this.datePatternMapping.get(this.pickerType)));
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  writeValue(value: string) {
+    this.datePickerValue = value ? new Date(value) : null;
   }
 
-  onChange(date: Date): void {
-    this.value = date?.toISOString();
-    this.propagateChange(date);
+  onFocus() {
+    if (!this.control.disabled) {
+      this.onTouched();
+    }
   }
+
+  onBlur() {
+    this.onTouched();
+  }
+
+  onTextChange(value: string) {
+    this.control.setValue(value);
+    this.onChange(value);
+  }
+
+  setYearMonthAndDay(date: Date) {
+    if (this.pickerType === 'day') {
+      this.datePickerValue = date;
+      this.control.setValue(this.datePipe.transform(date, 'yyyy-MM-dd'));
+      this.onChange(this.control.value);
+    }
+  }
+
+  setYear(year: Date) {
+    if (this.pickerType === 'year') {
+      this.datePickerValue = year;
+      this.control.setValue(this.datePipe.transform(year, 'yyyy'));
+      this.onChange(this.control.value);
+      this.datepicker.close();
+    }
+  }
+
+  setYearAndMonth(monthAndYear: Date) {
+    if (this.pickerType === 'month') {
+      this.datePickerValue = monthAndYear;
+      this.control.setValue(this.datePipe.transform(monthAndYear, 'yyyy-MM'));
+      this.onChange(this.control.value);
+      this.datepicker.close();
+    }
+  }
+
+  protected readonly Validators = Validators;
 }

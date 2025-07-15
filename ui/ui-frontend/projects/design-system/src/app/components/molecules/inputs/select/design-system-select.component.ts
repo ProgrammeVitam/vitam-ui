@@ -42,7 +42,7 @@ import {
   FormFieldValueWrapperComponent,
   Option,
   SelectComponent,
-  SlideToggleModule,
+  SlideToggleComponent,
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -59,7 +59,7 @@ import { delay, map } from 'rxjs/operators';
     JsonPipe,
     ReactiveFormsModule,
     SelectComponent,
-    SlideToggleModule,
+    SlideToggleComponent,
     TranslatePipe,
   ],
   templateUrl: './design-system-select.component.html',

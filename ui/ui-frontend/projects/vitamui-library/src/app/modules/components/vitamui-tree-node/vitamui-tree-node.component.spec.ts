@@ -34,20 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilingHoldingSchemeNode, UnitType } from '../../models';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
-
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
-class MockTruncatePipe implements PipeTransform {
-  transform(value: number): number {
-    return value;
-  }
-}
 
 describe('VitamuiTreeNodeComponent', () => {
   let component: VitamuiTreeNodeComponent;
@@ -67,10 +56,7 @@ describe('VitamuiTreeNodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [VitamuiTreeNodeComponent, MockTruncatePipe],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [VitamuiTreeNodeComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(VitamuiTreeNodeComponent);
@@ -103,7 +89,7 @@ describe('VitamuiTreeNodeComponent', () => {
   it('should emit labelClick event when label is clicked', () => {
     // When click on the checkbox
     const nativeElement = fixture.nativeElement;
-    const label = nativeElement.querySelector('label');
+    const label = nativeElement.querySelector('.node-label');
     label.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
@@ -120,7 +106,7 @@ describe('VitamuiTreeNodeComponent', () => {
 
     // When click on the checkbox
     const nativeElement = fixture.nativeElement;
-    const label = nativeElement.querySelector('label');
+    const label = nativeElement.querySelector('.node-label');
     label.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 

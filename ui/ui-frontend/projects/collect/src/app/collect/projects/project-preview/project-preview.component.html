@@ -6,14 +6,14 @@
     [icon]="getProjectIcon(selectedProject)"
     (onclose)="emitClose()"
   >
-    <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+    <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
       <button mat-menu-item (click)="showEditProject()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.EDIT_PROJECT' | translate }}
       </button>
       <button mat-menu-item (click)="searchArchiveUnitsByProject()">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
       </button>
-    </vitamui-common-menu-button>
+    </vitamui-menu-button>
   </vitamui-common-sidenav-header>
 
   <form [formGroup]="form" class="vitamui-sidepanel-body">

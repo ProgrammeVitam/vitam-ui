@@ -201,7 +201,7 @@ describe('IdentityProviderCreateComponent', () => {
 
   describe('DOM', () => {
     it('should have all the inputs', () => {
-      const elEnabled = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
+      const elEnabled = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=enabled]');
       expect(elEnabled).toBeTruthy();
       expect(elEnabled.textContent).toContain('CUSTOMER.SSO.ACTIVE_SWITCH');
 
@@ -214,7 +214,7 @@ describe('IdentityProviderCreateComponent', () => {
       const elPatterns = fixture.nativeElement.querySelector('app-pattern[formControlName=patterns]');
       expect(elPatterns).toBeTruthy();
 
-      const elAutoProvision = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=autoProvisioningEnabled]');
+      const elAutoProvision = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=autoProvisioningEnabled]');
       expect(elAutoProvision).toBeTruthy();
       expect(elAutoProvision.textContent).toContain('CUSTOMER.SSO.AUTO_PROVISIONING');
     });

@@ -55,8 +55,8 @@ describe('TableFilterDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule],
-      declarations: [TesthostComponent, TableFilterDirective],
+      imports: [TableFilterDirective, OverlayModule],
+      declarations: [TesthostComponent],
     }).compileComponents();
   });
 

@@ -97,13 +97,11 @@ export class DesignSystemOldInputsComponent implements OnInit {
   domain = new FormControl('test.fr', [Validators.maxLength(10)]);
   emails = new FormControl(['azerty@test.fr', 'azerty@test2.com'], [Validators.maxLength(30)]);
 
-  list = new FormControl(['azerty1', 'azerty2'], [Validators.maxLength(30)]);
   country = new FormControl('FR', [Validators.maxLength(10)]);
   textarea = new FormControl('name\naddress\ncity', [Validators.maxLength(25)]);
   level = new FormControl('LEVEL', [Validators.maxLength(10)]);
   toggle = new FormControl('Value 3');
 
-  duration = new FormControl({ days: 5, hours: 10, minutes: 5 });
   file = new FormControl(new File(['test'], 'test', { type: 'text/plain' }));
 
   countries: Option[] = [];

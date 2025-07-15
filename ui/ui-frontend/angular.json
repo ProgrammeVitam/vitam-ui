@@ -529,7 +529,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "host": "dev.vitamui.com",
-            "port": 4201,
+            "port": 4242,
             "buildTarget": "design-system:build"
           },
           "configurations": {

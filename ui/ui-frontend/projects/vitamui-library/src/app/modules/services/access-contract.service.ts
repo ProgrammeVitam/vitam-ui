@@ -41,7 +41,7 @@ import { map, shareReplay, tap } from 'rxjs/operators';
 import { AccessContractApiService } from '../api/access-contract-api.service';
 import { AccessContract } from '../../../lib/models/access-contract.interface';
 import { SearchService } from '../vitamui-table';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { ExternalParametersService } from '../externalParameters.service';
 import { ExternalParameters } from '../externalParameters.enum';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';

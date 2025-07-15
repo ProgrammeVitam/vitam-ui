@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
+import { MenuOption } from '../../../models/menu-option.interface';
 import { Option } from '../../autocomplete';
 
 @Component({

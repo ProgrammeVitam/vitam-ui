@@ -240,10 +240,10 @@ describe('ArchiveSearchComponent', () => {
         expect(elementRow.length).toBe(5);
       });
 
-      it('should have 1 vitamui-common-menu-button ', () => {
+      it('should have 1 vitamui-menu-button ', () => {
         // When
         const nativeElement = fixture.nativeElement;
-        const elementRow = nativeElement.querySelectorAll('vitamui-common-menu-button');
+        const elementRow = nativeElement.querySelectorAll('vitamui-menu-button');
 
         // Then
         expect(elementRow.length).toBe(1);

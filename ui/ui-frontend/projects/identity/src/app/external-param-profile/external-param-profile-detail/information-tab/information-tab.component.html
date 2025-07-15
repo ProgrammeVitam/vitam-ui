@@ -1,9 +1,9 @@
 <div>
   <form [formGroup]="form" class="gap-3 align-items-stretch">
-    <vitamui-common-slide-toggle formControlName="enabled">
+    <vitamui-slide-toggle formControlName="enabled">
       {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }} <span *ngIf="!form.get('enabled')?.value">in</span
       >{{ 'COMMON.ACTIVE' | translate }}
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
 
     <div class="row">
       <div class="col-6">

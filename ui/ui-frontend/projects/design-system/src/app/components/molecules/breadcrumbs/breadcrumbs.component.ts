@@ -46,8 +46,4 @@ import { VitamUICommonModule } from 'vitamui-library';
 })
 export class BreadcrumbsComponent {
   public breadCrumbData = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.CUSTOMERS_APP }, { label: 'Client n°1' }];
-
-  public onClick(val: string): void {
-    console.log('[onClick]', val);
-  }
 }

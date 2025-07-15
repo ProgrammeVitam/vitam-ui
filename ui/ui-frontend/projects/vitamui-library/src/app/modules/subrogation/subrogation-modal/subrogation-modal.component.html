@@ -7,7 +7,7 @@
   ]"
 ></vitamui-dialog-header>
 
-<vitamui-common-stepper #stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
+<vitamui-stepper #stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
   <cdk-step>
     <mat-dialog-content>
       <form [formGroup]="form">
@@ -49,4 +49,4 @@
       <button type="button" class="btn cancel link" (click)="cancelSubrogation()">{{ 'COMMON.UNDO' | translate }}</button>
     </mat-dialog-actions>
   </cdk-step>
-</vitamui-common-stepper>
+</vitamui-stepper>

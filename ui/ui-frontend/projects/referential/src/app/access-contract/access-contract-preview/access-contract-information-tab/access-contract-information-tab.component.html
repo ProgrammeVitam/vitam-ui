@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="gap-5">
   <div class="gap-3 w-100">
-    <vitamui-common-slide-toggle class="w-100" [formControl]="statusControl">
+    <vitamui-slide-toggle class="w-100" [formControl]="statusControl">
       <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVE_CONTRACT' | translate }}</span>
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
 
     <vitamui-input
       formControlName="name"
@@ -20,9 +20,9 @@
     >
     </vitamui-input>
 
-    <vitamui-common-slide-toggle class="w-100" [formControl]="accessLogControl">
+    <vitamui-slide-toggle class="w-100" [formControl]="accessLogControl">
       <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACCESS_LOGS' | translate }}</span>
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
 
     <vitamui-input
       class="w-100"

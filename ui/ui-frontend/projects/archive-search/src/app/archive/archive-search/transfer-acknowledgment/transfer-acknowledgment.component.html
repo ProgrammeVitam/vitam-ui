@@ -3,7 +3,7 @@
   [title]="'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TITLE_FIRST_STEP' | translate"
 ></vitamui-dialog-header>
 
-<vitamui-common-stepper #stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
+<vitamui-stepper #stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
   <!-- Step 1 -->
   <cdk-step>
     <mat-dialog-content>
@@ -110,7 +110,7 @@
       <vitamui-previous-step [disabled]="isSubmitBtnDisabled"></vitamui-previous-step>
     </mat-dialog-actions>
   </cdk-step>
-</vitamui-common-stepper>
+</vitamui-stepper>
 
 <ng-template #confirmDeleteTransferAcknowledgmentDialog>
   <vitamui-dialog-header [title]="'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER' | translate"></vitamui-dialog-header>

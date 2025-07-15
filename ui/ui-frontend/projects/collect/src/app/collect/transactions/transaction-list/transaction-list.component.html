@@ -22,30 +22,30 @@
           <div class="col-1"></div>
           <div class="col-3">
             <span>{{ 'COLLECT.FIELD_MESSAGE_IDENTIFIER' | translate }}</span>
-            <vitamui-common-order-by-button
+            <vitamui-order-by-button
               (orderChange)="emitOrderChange($event)"
               [(direction)]="direction"
               [(orderBy)]="orderBy"
               orderByKey="messageIdentifier"
-            ></vitamui-common-order-by-button>
+            ></vitamui-order-by-button>
           </div>
           <div class="col-3">
             <span>{{ 'COLLECT.FIELD_OPERATION_ID' | translate }}</span>
-            <vitamui-common-order-by-button
+            <vitamui-order-by-button
               (orderChange)="emitOrderChange($event)"
               [(direction)]="direction"
               [(orderBy)]="orderBy"
               orderByKey="id"
-            ></vitamui-common-order-by-button>
+            ></vitamui-order-by-button>
           </div>
           <div class="col-4">
             <span>{{ 'COLLECT.FIELD_STATUS_TRANSACTION' | translate }}</span>
-            <vitamui-common-order-by-button
+            <vitamui-order-by-button
               (orderChange)="emitOrderChange($event)"
               [(direction)]="direction"
               [(orderBy)]="orderBy"
               orderByKey="submissionAgencyIdentifier"
-            ></vitamui-common-order-by-button>
+            ></vitamui-order-by-button>
           </div>
           <div class="col-1"></div>
         </div>
@@ -65,7 +65,7 @@
               <div class="col-3">{{ transaction.id }}</div>
               <div class="col-4">{{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}</div>
               <div class="col-1">
-                <vitamui-common-menu-button [icon]="'vitamui-icon-more-horiz'" [overlayPos]="'end'" menuButtonSize="medium">
+                <vitamui-menu-button [icon]="'vitamui-icon-more-horiz'" [overlayPos]="'end'" menuButtonSize="medium">
                   <button mat-menu-item (click)="searchArchiveUnitsByTransaction(transaction)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
                   </button>
@@ -97,7 +97,7 @@
                   >
                     {{ 'COLLECT.ABORT_ACTION' | translate }}
                   </button>
-                </vitamui-common-menu-button>
+                </vitamui-menu-button>
               </div>
             </div>
           </div>

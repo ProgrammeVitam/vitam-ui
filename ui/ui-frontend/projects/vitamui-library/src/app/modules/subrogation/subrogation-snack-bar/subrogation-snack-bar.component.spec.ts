@@ -43,7 +43,7 @@ import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
-import { VitamUISnackBarService } from '../../components/vitamui-snack-bar';
+import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { BASE_URL, WINDOW_LOCATION } from '../../injection-tokens';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

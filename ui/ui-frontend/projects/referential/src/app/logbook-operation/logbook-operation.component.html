@@ -10,28 +10,28 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'LOGBOOK.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'LOGBOOK.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-banner [searchbarPlaceholder]="'LOGBOOK.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary" (click)="refreshList()">
           <span>{{ 'LOGBOOK.HOME.REFRESH' | translate }}</span>
           <i class="vitamui-icon vitamui-icon-refresh"></i>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
 
       <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2 hgap-3">
-        <vitamui-common-multiple-options-datepicker
+        <vitamui-datepicker
           formControlName="startDate"
           [label]="'LOGBOOK.HOME.START_DATE' | translate"
           [max]="dateRangeFilterForm.get('endDate')?.value"
-        ></vitamui-common-multiple-options-datepicker>
-        <vitamui-common-multiple-options-datepicker
+        ></vitamui-datepicker>
+        <vitamui-datepicker
           formControlName="endDate"
           [label]="'LOGBOOK.HOME.END_DATE' | translate"
           [min]="dateRangeFilterForm.get('startDate')?.value"
-        ></vitamui-common-multiple-options-datepicker>
+        ></vitamui-datepicker>
       </form>
     </div>
 

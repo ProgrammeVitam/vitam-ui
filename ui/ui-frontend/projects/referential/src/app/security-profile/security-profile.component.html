@@ -9,18 +9,15 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'SECURITY_PROFILE_APP.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner
-        [searchbarPlaceholder]="'SECURITY_PROFILE_APP.HOME.SEARCH_PLACEHOLDER' | translate"
-        (search)="onSearchSubmit($event)"
-      >
+      <vitamui-banner [searchbarPlaceholder]="'SECURITY_PROFILE_APP.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-3 mr-3" (click)="openCreateSecurityProfileDialog()">
           <span>{{ 'SECURITY_PROFILE_APP.HOME.CREATE' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

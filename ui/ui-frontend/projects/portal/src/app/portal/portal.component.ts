@@ -40,7 +40,6 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
-  AlertAnalytics,
   Application,
   ApplicationId,
   ApplicationService,
@@ -54,11 +53,17 @@ import {
   StartupService,
   ThemeDataType,
   ThemeService,
-  UserAlertsService,
   UserInfo,
 } from 'vitamui-library';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
 import { Content } from '../components/content-list/content.interface';
+import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { WelcomeMessageComponent } from '../components/welcome-message/welcome-message.component';
+import { ContentListComponent } from '../components/content-list/content-list.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
@@ -66,7 +71,15 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   selector: 'app-portal',
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    ReactiveFormsModule,
+    RouterModule,
+    WelcomeMessageComponent,
+    ContentListComponent,
+    MatProgressSpinnerModule,
+  ],
 })
 export class PortalComponent implements OnInit, OnDestroy {
   public content: Map<Category, Content> = new Map();
@@ -74,7 +87,6 @@ export class PortalComponent implements OnInit, OnDestroy {
   public welcomeMessage: string;
   public portalLogoUrl: SafeResourceUrl;
   public loading = true;
-  public showAlerts = false;
 
   private destroyer$ = new Subject<void>();
 
@@ -84,10 +96,9 @@ export class PortalComponent implements OnInit, OnDestroy {
     private startupService: StartupService,
     private authService: AuthService,
     private themeService: ThemeService,
-    private langagueService: LanguageService,
+    private languageService: LanguageService,
     private titleService: Title,
     private globalEventService: GlobalEventService,
-    private userAlertsService: UserAlertsService,
   ) {}
 
   ngOnInit() {
@@ -106,7 +117,7 @@ export class PortalComponent implements OnInit, OnDestroy {
     this.authService.getUserInfo$().subscribe((userInfo: UserInfo) => this.initPortalTitleAndMessage(userInfo.language as FullLangString));
 
     this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe((event: LangChangeEvent) => {
-      this.initPortalTitleAndMessage(this.langagueService.getFullLangString(event.lang as MinLangString));
+      this.initPortalTitleAndMessage(this.languageService.getFullLangString(event.lang as MinLangString));
     });
 
     this.globalEventService.pageEvent.next(ApplicationId.PORTAL_APP);
@@ -115,14 +126,6 @@ export class PortalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroyer$.next();
     this.destroyer$.complete();
-  }
-
-  public openAlert(alert: AlertAnalytics): void {
-    this.userAlertsService.openAlert(alert).subscribe();
-  }
-
-  public removeAlert(alert: AlertAnalytics): void {
-    this.userAlertsService.removeUserAlertById(alert.id).subscribe();
   }
 
   private convertAppMapToContentMap(appMap: Map<Category, Application[]>): Map<Category, Content> {
@@ -134,33 +137,8 @@ export class PortalComponent implements OnInit, OnDestroy {
       contentMap.set(category, content);
     }
 
-    // // Set alerts
-    // this.userAlertsService.getUserAlerts$().pipe(takeUntil(this.destroyer$)).subscribe((alerts: AlertAnalytics[]) => {
-    //   const existingAlertContent = this.retreiveAlertContent();
-    //
-    //   if (existingAlertContent) {
-    //     existingAlertContent.data = alerts;
-    //   } else {
-    //     const content: Content = { type: ContentTypeEnum.ALERT, data: alerts };
-    //     const category: Category = { displayTitle: true, identifier: 'USER_ALERTS', title: 'USER_ALERTS', order: 9999 };
-    //     contentMap.set(category, content);
-    //   }
-    // })
-
     return contentMap;
   }
-
-  // private retreiveAlertContent(): Content {
-  //   let alertContent;
-  //
-  //   this.content.forEach((content: Content) => {
-  //     if (content.type === ContentTypeEnum.ALERT) {
-  //       alertContent = content;
-  //     }
-  //   });
-  //
-  //   return alertContent;
-  // }
 
   private initPortalTitleAndMessage(lang: FullLangString): void {
     const translatedAppName = this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + ApplicationId.PORTAL_APP + '.NAME');

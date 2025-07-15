@@ -80,27 +80,29 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
-    CommonModule,
     ArchiveSearchCollectRoutingModule,
-    MatSidenavModule,
-    VitamUICommonModule,
-    MatProgressSpinnerModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatTabsModule,
+    CommonModule,
+    ConfirmActionModule,
     MatDatepickerModule,
     MatDialogModule,
-    ConfirmActionModule,
+    MatFormFieldModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatTabsModule,
     MatTreeModule,
-    VitamUISnackBarModule,
-    VitamUILibraryModule,
-    TranslateModule,
+    ReactiveFormsModule,
     SelectComponent,
     SelectWithTreeComponent,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    VitamUISnackBarModule,
   ],
   declarations: [
     AccessRuleSearchComponent,

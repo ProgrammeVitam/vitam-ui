@@ -7,13 +7,8 @@
 
       <div class="col-3 d-flex align-items-center justify-content-between">
         <span>{{ 'AGENCY.HOME.ARRAY.IDENTIFIER' | translate }}</span>
-        <vitamui-common-order-by-button
-          orderByKey="Identifier"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="orderChange.next()"
-        >
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="orderChange.next()">
+        </vitamui-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">

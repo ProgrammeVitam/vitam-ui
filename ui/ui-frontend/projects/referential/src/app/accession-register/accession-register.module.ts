@@ -52,8 +52,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 // eslint-disable-next-line max-len
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
@@ -75,7 +74,6 @@ import { AccessionRegisterComponent } from './accession-register.component';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
     VitamUILibraryModule,
     AccessionRegisterRoutingModule,
     MatButtonToggleModule,

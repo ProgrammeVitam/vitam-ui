@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../shared/pipes/pipes.module';
 import { AuditPreviewModule } from './audit-preview/audit-preview.module';
 import { AuditRoutingModule } from './audit-routing.module';
@@ -77,7 +77,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatFormFieldModule,
     MatInputModule,
     PipesModule,
-    TableFilterModule,
     MatMomentDateModule,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],

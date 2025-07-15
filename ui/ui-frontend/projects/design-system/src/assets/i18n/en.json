@@ -22,6 +22,7 @@
       "chips.TITLE": "Chips",
       "badges.TITLE": "Badges",
       "icons.TITLE": "Icons",
+      "slide-toggle.TITLE": "Slide toggle / Switch",
       "tooltip.TITLE": "Tooltip"
     },
     "molecules": {
@@ -33,7 +34,7 @@
         "select.TITLE": "Select",
         "select-with-tree.TITLE": "Select with tree",
         "checkboxes.TITLE": "Checkboxes",
-        "multiple-options-datepicker.TITLE": "Multiple options datepicker",
+        "datepicker.TITLE": "Datepicker",
         "old-input.TITLE": "OLD input",
         "input.TITLE": "Input",
         "search-with-type-selector.TITLE": "Search with type selector"

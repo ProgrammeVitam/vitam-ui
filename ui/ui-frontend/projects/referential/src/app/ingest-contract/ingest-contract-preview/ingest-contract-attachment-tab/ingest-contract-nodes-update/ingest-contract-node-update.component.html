@@ -5,7 +5,7 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="selectNodesForm" (ngSubmit)="updateIngestContractNodes()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content>
         <vitamui-library-filing-plan
@@ -65,5 +65,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

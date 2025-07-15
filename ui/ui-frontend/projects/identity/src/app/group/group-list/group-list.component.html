@@ -22,42 +22,42 @@
         </ng-template>
 
         <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="status"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
         <span>{{ 'GROUP.HOME.RESULTS_TABLE.NAME' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="name"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
         <span>{{ 'COMMON.ID' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="identifier"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
         <span>{{ 'GROUP.HOME.RESULTS_TABLE.DESCRIPTION' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="description"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
@@ -82,12 +82,12 @@
         </ng-template>
 
         <span>{{ 'GROUP.HOME.RESULTS_TABLE.LEVEL' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="level"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
     </div>
 

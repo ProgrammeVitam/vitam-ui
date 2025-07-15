@@ -5,7 +5,7 @@
   [icon]="'vitamui-icon-user'"
   (onclose)="emitClose()"
 >
-  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+  <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button mat-menu-item (click)="updateStatus('ENABLED')" [disabled]="user?.status === 'ENABLED'">
       {{ 'USER.OTHER_ACTION.ACTIVATE' | translate }}
     </button>
@@ -19,7 +19,7 @@
     >
       {{ 'USER.OTHER_ACTION.DELETE_PERSONAL_DATA' | translate }}
     </button>
-  </vitamui-common-menu-button>
+  </vitamui-menu-button>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">

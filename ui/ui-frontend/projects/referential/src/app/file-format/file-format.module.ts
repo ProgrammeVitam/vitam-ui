@@ -42,8 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { FileFormatCreateModule } from './file-format-create';
 import { FileFormatListComponent } from './file-format-list/file-format-list.component';
 import { FileFormatPreviewModule } from './file-format-preview/file-format-preview.module';
@@ -66,7 +65,6 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
   ],
   declarations: [FileFormatComponent, FileFormatListComponent],
 })

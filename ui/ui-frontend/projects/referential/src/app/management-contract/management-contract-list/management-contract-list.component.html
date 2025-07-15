@@ -28,50 +28,45 @@
         </ng-template>
 
         <i class="vitamui-icon vitamui-icon-document-layers vitamui-row-icon"></i>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Status"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
       <div class="col-2">
         <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.IDENTIFIER' | translate }}</span>
-        <vitamui-common-order-by-button
-          orderByKey="Identifier"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        >
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()">
+        </vitamui-order-by-button>
       </div>
       <div class="col-4">
         <span>{{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.NAME' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Name"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
       <div class="col-2">
         <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.CREATION_DATE' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="CreationDate"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-2">
         <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.LAST_UPDATE_DATE' | translate }}</span>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="LastUpdate"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
     </div>
 

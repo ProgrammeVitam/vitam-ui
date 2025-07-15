@@ -70,8 +70,8 @@ describe('TableFilterSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPseudoCheckboxModule, FormsModule],
-      declarations: [TestHostComponent, TableFilterSearchComponent, TableFilterComponent, TableFilterOptionComponent],
+      imports: [MatPseudoCheckboxModule, FormsModule, TableFilterSearchComponent, TableFilterComponent, TableFilterOptionComponent],
+      declarations: [TestHostComponent],
     }).compileComponents();
   });
 

@@ -1,9 +1,9 @@
 <div>
   <form [formGroup]="form" class="gap-5">
     <div class="gap-3 w-100 align-items-stretch">
-      <vitamui-common-slide-toggle formControlName="usePlatformThreshold">
+      <vitamui-slide-toggle formControlName="usePlatformThreshold">
         {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
-      </vitamui-common-slide-toggle>
+      </vitamui-slide-toggle>
 
       <div class="select-threshold" *ngIf="!form.get('usePlatformThreshold').value">
         <vitamui-select

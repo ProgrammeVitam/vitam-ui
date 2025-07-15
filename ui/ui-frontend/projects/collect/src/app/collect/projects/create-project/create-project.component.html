@@ -25,7 +25,7 @@
 <!-- workflow 3 projet de versement de flux + parametrage des regles de rattachement -->
 
 <form [formGroup]="projectForm">
-  <vitamui-common-stepper #stepper [(selectedIndex)]="stepIndex">
+  <vitamui-stepper #stepper [(selectedIndex)]="stepIndex">
     <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/6 : Choix du type de projet ########## -->
     <cdk-step>
       <mat-dialog-content>
@@ -71,9 +71,9 @@
               <div class="text medium light">{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</div>
             </div>
             <div class="col toggle-right">
-              <vitamui-common-slide-toggle class="fields-padding d-flex" [checked]="false" [disabled]="true">
+              <vitamui-slide-toggle class="fields-padding d-flex" [checked]="false" [disabled]="true">
                 {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
-              </vitamui-common-slide-toggle>
+              </vitamui-slide-toggle>
             </div>
           </div>
 
@@ -116,9 +116,9 @@
         <div class="row">
           <div class="col"></div>
           <div class="col toggle-right">
-            <vitamui-common-slide-toggle class="fields-padding" [checked]="false" [disabled]="true">
+            <vitamui-slide-toggle class="fields-padding" [checked]="false" [disabled]="true">
               {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
-            </vitamui-common-slide-toggle>
+            </vitamui-slide-toggle>
           </div>
         </div>
         <div class="gap-3 align-items-stretch">
@@ -343,10 +343,10 @@
                               >
                               </vitamui-input>
                             } @else if (['DATE'].includes(ruleParamForm.value.ontologyList?.Type)) {
-                              <vitamui-common-datepicker
+                              <vitamui-datepicker
                                 [label]="getName(ruleParamForm.value.ontologyList)"
                                 [formControlName]="ruleParamForm.value.ontologyList?.Path"
-                              ></vitamui-common-datepicker>
+                              ></vitamui-datepicker>
                             }
                           </div>
                         </div>
@@ -465,5 +465,5 @@
         </button>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

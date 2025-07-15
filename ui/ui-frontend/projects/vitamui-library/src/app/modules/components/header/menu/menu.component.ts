@@ -60,7 +60,7 @@ import { TenantSelectionService } from '../../../tenant-selection.service';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { MenuOverlayRef } from './menu-overlay-ref';
-import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
+import { MenuOption } from '../../../models/menu-option.interface';
 import { normalizeString } from '../../../../../lib/utils/string.util';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';

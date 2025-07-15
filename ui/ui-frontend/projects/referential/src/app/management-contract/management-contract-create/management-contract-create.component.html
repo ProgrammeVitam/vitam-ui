@@ -5,14 +5,14 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <!-- Step 1 -->
     <cdk-step>
       <mat-dialog-content>
         <div class="gap-4">
-          <vitamui-common-slide-toggle class="w-100" formControlName="status">{{
+          <vitamui-slide-toggle class="w-100" formControlName="status">{{
             'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.CONTRACT_STATUS' | translate
-          }}</vitamui-common-slide-toggle>
+          }}</vitamui-slide-toggle>
           <vitamui-input
             *ngIf="isSlaveMode"
             class="w-100"
@@ -133,5 +133,5 @@
         <vitamui-previous-step></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>

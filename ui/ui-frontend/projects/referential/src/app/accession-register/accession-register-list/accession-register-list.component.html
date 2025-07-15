@@ -18,12 +18,12 @@
             <th>
               <span>
                 {{ 'ACCESSION_REGISTER.LIST.DATE' | translate }}
-                <vitamui-common-order-by-button
+                <vitamui-order-by-button
                   orderByKey="EndDate"
                   [(orderBy)]="orderBy"
                   [(direction)]="direction"
                   (orderChange)="emitOrderChange($event)"
-                ></vitamui-common-order-by-button>
+                ></vitamui-order-by-button>
               </span>
             </th>
             <th>
@@ -32,23 +32,23 @@
             <th>
               <span
                 >{{ 'ACCESSION_REGISTER.LIST.ORIGINATING_AGENCY' | translate }}
-                <vitamui-common-order-by-button
+                <vitamui-order-by-button
                   orderByKey="OriginatingAgency"
                   [(orderBy)]="orderBy"
                   [(direction)]="direction"
                   (orderChange)="emitOrderChange($event)"
-                ></vitamui-common-order-by-button>
+                ></vitamui-order-by-button>
               </span>
             </th>
             <th>
               <span
                 >{{ 'ACCESSION_REGISTER.LIST.ARCHIVAL_AGREEMENT' | translate }}
-                <vitamui-common-order-by-button
+                <vitamui-order-by-button
                   orderByKey="ArchivalAgreement"
                   [(orderBy)]="orderBy"
                   [(direction)]="direction"
                   (orderChange)="emitOrderChange($event)"
-                ></vitamui-common-order-by-button>
+                ></vitamui-order-by-button>
               </span>
             </th>
             <th>

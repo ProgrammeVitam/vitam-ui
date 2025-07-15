@@ -41,15 +41,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StepperComponent } from './stepper.component';
-import { StepperModule } from './stepper.module';
 
 @Component({
   template: `
-    <vitamui-common-stepper>
+    <vitamui-stepper>
       <cdk-step></cdk-step>
       <cdk-step></cdk-step>
       <cdk-step></cdk-step>
-    </vitamui-common-stepper>
+    </vitamui-stepper>
   `,
   standalone: false,
 })
@@ -63,7 +62,7 @@ let fixture: ComponentFixture<TesthostComponent>;
 describe('StepperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StepperModule, NoopAnimationsModule],
+      imports: [StepperComponent, NoopAnimationsModule],
       declarations: [TesthostComponent],
     }).compileComponents();
   });

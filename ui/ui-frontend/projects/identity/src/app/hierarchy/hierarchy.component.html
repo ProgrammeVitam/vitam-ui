@@ -5,15 +5,15 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'APPLICATION.HIERARCHY_PROFILE_APP.NAME' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'HIERARCHY.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-banner [searchbarPlaceholder]="'HIERARCHY.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openHierarchyDuplicateDialog()">
           <span>{{ 'HIERARCHY.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

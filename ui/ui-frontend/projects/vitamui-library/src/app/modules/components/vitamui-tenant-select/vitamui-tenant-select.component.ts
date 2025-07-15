@@ -35,29 +35,29 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { ApplicationId } from '../../application-id.enum';
 import { AuthService } from '../../auth.service';
 import { Tenant } from '../../models';
-import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
+import { MenuOption } from '../../models/menu-option.interface';
+import { CommonModule } from '@angular/common';
+import { TenantSelectContentComponent } from './tenant-select-content/tenant-select-content.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-tenant-select',
   templateUrl: './vitamui-tenant-select.component.html',
   styleUrls: ['./vitamui-tenant-select.component.scss'],
-  standalone: false,
+  imports: [CommonModule, RouterModule, TenantSelectContentComponent, TranslateModule],
 })
 export class VitamUITenantSelectComponent implements OnInit {
   appId: ApplicationId;
-  hideTenantMenu = false;
-  hideCustomerMenu = true;
   appTenants: Tenant[];
   tenants: MenuOption[];
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private authService: AuthService,
   ) {
     this.route.data.subscribe((data) => {
@@ -74,9 +74,5 @@ export class VitamUITenantSelectComponent implements OnInit {
 
       this.tenants.sort((t1, t2) => t1.label.localeCompare(t2.label));
     }
-  }
-
-  selectTenantInNavbar(tenantIdentifier: Event) {
-    this.router.navigate(['./' + tenantIdentifier], { relativeTo: this.route });
   }
 }

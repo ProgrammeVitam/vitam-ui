@@ -37,12 +37,15 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { VitamuiSnackBarData } from './vitamui-snack-bar.interface';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @Component({
   selector: 'vitamui-common-vitamui-snack-bar',
   templateUrl: './vitamui-snack-bar.component.html',
   styleUrls: ['./vitamui-snack-bar.component.scss'],
-  standalone: false,
+  imports: [CommonModule, TranslateModule, PipesModule],
 })
 export class VitamUISnackBarComponent {
   constructor(

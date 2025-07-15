@@ -49,7 +49,7 @@ import {
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { ItemFlatNode, ItemNode, SearchBarComponent, SearchBarModule } from '../../../app/modules';
+import { ItemFlatNode, ItemNode, SearchBarComponent } from '../../../app/modules';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -71,7 +71,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AccordionModule } from '../../../app/modules/components/accordion/accordion.module';
 
 const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -84,7 +83,6 @@ const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
   templateUrl: './select-with-tree.component.html',
   styleUrls: ['./select-with-tree.component.scss'],
   imports: [
-    AccordionModule,
     AutocompletePositionDirectiveModule,
     CommonModule,
     CommonTooltipModule,
@@ -105,7 +103,7 @@ const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
     PipesModule,
     ReactiveFormsModule,
     ScrollingModule,
-    SearchBarModule,
+    SearchBarComponent,
     TranslatePipe,
   ],
   providers: [VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR],

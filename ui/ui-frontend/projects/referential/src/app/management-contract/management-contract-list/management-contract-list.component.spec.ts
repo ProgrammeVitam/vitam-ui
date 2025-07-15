@@ -180,7 +180,7 @@ describe('ManagementContractListComponent', () => {
 
     it('should have 5 vitamui order button', () => {
       const nativeElement = fixture.nativeElement;
-      const vitamUiOrderBtn = nativeElement.querySelectorAll('vitamui-common-order-by-button');
+      const vitamUiOrderBtn = nativeElement.querySelectorAll('vitamui-order-by-button');
       expect(vitamUiOrderBtn.length).toBe(5);
     });
   });

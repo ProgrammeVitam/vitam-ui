@@ -6,7 +6,7 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
   <mat-dialog-content>
-    <vitamui-common-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
+    <vitamui-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
       <cdk-step>
         {{ itemSelected }}
         {{ itemSelected | i18nPlural: selectedUnitMap | translate }}
@@ -130,7 +130,7 @@
           }
         }
       </cdk-step>
-    </vitamui-common-stepper>
+    </vitamui-stepper>
   </mat-dialog-content>
 
   <mat-dialog-actions>

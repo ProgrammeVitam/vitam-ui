@@ -1,26 +1,25 @@
 <ng-template #zipName>
   <span>
     Nom du ZIP
-    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="zipName"></vitamui-common-order-by-button>
+    <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="zipName"></vitamui-order-by-button>
   </span>
 </ng-template>
 <ng-template #size>
   <span>
     Poids
-    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="size"></vitamui-common-order-by-button>
+    <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="size"></vitamui-order-by-button>
   </span>
 </ng-template>
 <ng-template #compression>
   <span>
     Compression
-    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="compression">
-    </vitamui-common-order-by-button>
+    <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="compression"> </vitamui-order-by-button>
   </span>
 </ng-template>
 <ng-template #loading>
   <span>
     Chargement
-    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="loading"></vitamui-common-order-by-button>
+    <vitamui-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="loading"></vitamui-order-by-button>
   </span>
 </ng-template>
 
@@ -31,10 +30,10 @@
   <ng-container buttons>
     <button class="btn link pr-2">{{ 'ARRAY.EXPORT_RESULTS' | translate }}</button>
     <button class="btn btn-circle large tertiary"><i class="vitamui-icon vitamui-icon-import-csv"></i></button>
-    <vitamui-common-menu-button class="pl-2" outline="none" menuButtonSize="medium" overlayPos="end" icon="vitamui-icon-more-horiz">
+    <vitamui-menu-button class="pl-2" outline="none" menuButtonSize="medium" overlayPos="end" icon="vitamui-icon-more-horiz">
       <button mat-menu-item>Activer</button>
       <button mat-menu-item>Désactiver</button>
-    </vitamui-common-menu-button>
+    </vitamui-menu-button>
   </ng-container>
 </vitamui-sup-header>
 <h3>{{ 'ARRAY.TABLE' | translate }}</h3>
@@ -202,25 +201,22 @@
         </ng-template>
 
         <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
-        <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction">
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction"> </vitamui-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
         <span>{{ 'ARRAY.COLUMN.GROUP_NAME' | translate }}</span>
-        <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction"></vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction"></vitamui-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
         <span>{{ 'COMMON.ID' | translate }}</span>
-        <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction">
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction"> </vitamui-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
         <span>{{ 'ARRAY.COLUMN.DESCRIPTION' | translate }}</span>
-        <vitamui-common-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction">
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction"> </vitamui-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
@@ -245,8 +241,7 @@
         </ng-template>
 
         <span>{{ 'ARRAY.COLUMN.LEVEL' | translate }}Niveau</span>
-        <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction">
-        </vitamui-common-order-by-button>
+        <vitamui-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"> </vitamui-order-by-button>
       </div>
     </div>
 

@@ -188,9 +188,9 @@
 
   <div class="row">
     <div class="col-12 form-control">
-      <vitamui-common-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus">
+      <vitamui-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus">
         {{ 'CUSTOMER.INFORMATIONS.ALERT_ON_INACTIVE_USERS' | translate }}
-      </vitamui-common-slide-toggle>
+      </vitamui-slide-toggle>
     </div>
   </div>
   <div class="row" *ngIf="form?.get('gdprAlert')?.value">

@@ -16,7 +16,7 @@
   </ng-container>
 </div>
 
-<vitamui-common-stepper #stepper>
+<vitamui-stepper #stepper>
   <cdk-step>
     <form [formGroup]="formGroups[0]">
       <mat-dialog-content class="gap-4 align-items-stretch">
@@ -132,9 +132,9 @@
           <div class="gap-2">
             <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT' | translate }}</div>
             <div class="col-6">
-              <vitamui-common-slide-toggle formControlName="exportWithTree">
+              <vitamui-slide-toggle formControlName="exportWithTree">
                 {{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT_MESSAGE' | translate }}
-              </vitamui-common-slide-toggle>
+              </vitamui-slide-toggle>
             </div>
           </div>
         </div>
@@ -153,4 +153,4 @@
       </mat-dialog-actions>
     </form>
   </cdk-step>
-</vitamui-common-stepper>
+</vitamui-stepper>

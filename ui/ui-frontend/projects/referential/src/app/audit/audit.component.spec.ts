@@ -46,7 +46,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BASE_URL, GlobalEventService, InjectorModule, LoggerModule, MultipleOptionsDatepickerModule } from 'vitamui-library';
+import { BASE_URL, GlobalEventService, InjectorModule, LoggerModule, DatepickerComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditComponent } from './audit.component';
 import { DatePipe } from '@angular/common';
@@ -74,7 +74,7 @@ describe('AuditComponent', () => {
         MatInputModule,
         MatSelectModule,
         MatSidenavModule,
-        MultipleOptionsDatepickerModule,
+        DatepickerComponent,
         NoopAnimationsModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),

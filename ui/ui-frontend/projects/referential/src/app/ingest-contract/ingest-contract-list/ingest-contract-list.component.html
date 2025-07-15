@@ -10,22 +10,22 @@
 
       <div class="col-2 d-flex align-items-center justify-content-between">
         <div>{{ 'INGEST_CONTRACT.HOME.ARRAY.IDENTIFIER' | translate }}</div>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Identifier"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="orderChange.next()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-5 d-flex align-items-center justify-content-between">
         <div>{{ 'INGEST_CONTRACT.HOME.ARRAY.NAME' | translate }}</div>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="Name"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="orderChange.next()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
 
       <div class="col-2">
@@ -34,12 +34,12 @@
 
       <div class="col-2 d-flex align-items-center justify-content-between">
         <div>{{ 'INGEST_CONTRACT.HOME.ARRAY.CREATION_DATE' | translate }}</div>
-        <vitamui-common-order-by-button
+        <vitamui-order-by-button
           orderByKey="CreationDate"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="orderChange.next()"
-        ></vitamui-common-order-by-button>
+        ></vitamui-order-by-button>
       </div>
     </div>
 

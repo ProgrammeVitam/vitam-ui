@@ -203,15 +203,13 @@
 
   <div class="row">
     <div class="col-6">
-      <vitamui-common-slide-toggle formControlName="subrogeable">
-        {{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }}</vitamui-common-slide-toggle
-      >
+      <vitamui-slide-toggle formControlName="subrogeable"> {{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }}</vitamui-slide-toggle>
     </div>
   </div>
 
   <div class="row">
     <div class="col-6">
-      <vitamui-common-slide-toggle formControlName="otp">
+      <vitamui-slide-toggle formControlName="otp">
         <span
           vitamuiTooltip="{{ 'USER.INFORMATIONS.VALIDATIONS_TOOLTIP' | translate }}"
           vitamuiTooltipPosition="TOP"
@@ -219,14 +217,14 @@
         >
           {{ 'USER.INFORMATIONS.VALIDATIONS' | translate }}
         </span>
-      </vitamui-common-slide-toggle>
+      </vitamui-slide-toggle>
     </div>
   </div>
 
   <div class="row">
     <div class="col-6">
-      <vitamui-common-slide-toggle formControlName="autoProvisioningEnabled">
-        {{ 'USER.INFORMATIONS.ACTIVATE_AUTO_PROVISIONING' | translate }}</vitamui-common-slide-toggle
+      <vitamui-slide-toggle formControlName="autoProvisioningEnabled">
+        {{ 'USER.INFORMATIONS.ACTIVATE_AUTO_PROVISIONING' | translate }}</vitamui-slide-toggle
       >
     </div>
   </div>

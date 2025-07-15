@@ -35,18 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @Component({
   selector: 'vitamui-common-accordion',
   templateUrl: './accordion.component.html',
   styleUrls: ['./accordion.component.scss'],
-  standalone: false,
+  imports: [CommonModule, PipesModule],
 })
 export class AccordionComponent {
-  @Input()
-  opened = false;
-
-  constructor() {}
+  @Input() opened = false;
 
   toggle(): void {
     this.opened = !this.opened;

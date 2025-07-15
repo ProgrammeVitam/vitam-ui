@@ -10,18 +10,18 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'APPLICATION.EXTERNAL_PARAM_PROFILE_APP.NAME' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner
+      <vitamui-banner
         [searchbarPlaceholder]="'EXTERNAL_PARAM_PROFILE.EXTERNAL_PARAM_PROFILE_NAME' | translate"
         (search)="onSearchSubmit($event)"
       >
         <button class="btn primary ml-5" (click)="openExternalParamProfilCreateDialog()">
           <span>{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE' | translate }}</span>
         </button>
-      </vitamui-common-banner>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

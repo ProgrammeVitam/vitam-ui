@@ -2,9 +2,9 @@
   <div class="gap-3 w-100 align-items-stretch">
     <vitamui-input formControlName="name" [placeholder]="'SECURITY_PROFILE_APP.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
 
-    <vitamui-common-slide-toggle formControlName="fullAccess">
+    <vitamui-slide-toggle formControlName="fullAccess">
       {{ 'SECURITY_PROFILE_APP.TAB.INFORMATION.ACCESS' | translate }}
-    </vitamui-common-slide-toggle>
+    </vitamui-slide-toggle>
   </div>
 
   <button type="submit" class="btn primary" [disabled]="form.invalid || unchanged() || submitted">

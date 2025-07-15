@@ -10,24 +10,21 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>
+      <vitamui-title-breadcrumb>
         <h5>{{ 'ACCESS_CONTRACT.HOME.TITLE' | translate }}</h5>
-      </vitamui-common-title-breadcrumb>
+      </vitamui-title-breadcrumb>
 
-      <vitamui-common-banner
-        [searchbarPlaceholder]="'ACCESS_CONTRACT.HOME.SEARCH_PLACEHOLDER' | translate"
-        (search)="onSearchSubmit($event)"
-      >
+      <vitamui-banner [searchbarPlaceholder]="'ACCESS_CONTRACT.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary mr-3" (click)="openCreateAccesscontractDialog()">
           <span>{{ 'ACCESS_CONTRACT.HOME.CREATE_ACCESS_CONTRACT' | translate }}</span>
         </button>
 
-        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+        <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
           <button mat-menu-item (click)="openImport()">{{ 'ACCESS_CONTRACT.HOME.IMPORT' | translate }}</button>
           <button mat-menu-item (click)="export()">{{ 'ACCESS_CONTRACT.HOME.EXPORT' | translate }}</button>
           <button mat-menu-item (click)="downloadModel()">{{ 'ACCESS_CONTRACT.HOME.DOWNLOAD_MODEL' | translate }}</button>
-        </vitamui-common-menu-button>
-      </vitamui-common-banner>
+        </vitamui-menu-button>
+      </vitamui-banner>
     </div>
 
     <div class="vitamui-content">

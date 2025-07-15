@@ -4,7 +4,7 @@
   [icon]="'vitamui-icon-agent'"
   (onclose)="emitClose()"
 >
-  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+  <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button
       mat-menu-item
       [vitamuiTooltip]="'AGENCY.ACTION.EDIT' | translate"
@@ -15,7 +15,7 @@
     >
       {{ 'AGENCY.ACTION.EDIT' | translate }}
     </button>
-  </vitamui-common-menu-button>
+  </vitamui-menu-button>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">

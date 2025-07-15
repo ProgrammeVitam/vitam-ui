@@ -42,7 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from 'vitamui-library';
 
 import { ContextCreateModule } from './context-create';
 import { ContextEditModule } from './context-edit/context-edit.module';
@@ -65,7 +65,6 @@ import { ContextComponent } from './context.component';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
   ],
   declarations: [ContextComponent, ContextListComponent],
 })

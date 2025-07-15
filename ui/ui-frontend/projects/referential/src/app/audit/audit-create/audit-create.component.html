@@ -9,7 +9,7 @@
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper #stepper>
+  <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content>
         <mat-button-toggle-group formControlName="auditActions" class="vitamui-button-toggle-group">
@@ -48,9 +48,9 @@
     <cdk-step *ngIf="showAuditPerimeter()">
       <mat-dialog-content>
         @if (chooseOriginatingAgency()) {
-          <vitamui-common-slide-toggle [formControl]="allProducerServices">
+          <vitamui-slide-toggle [formControl]="allProducerServices">
             <span>{{ 'AUDIT.CREATE_DIALOG.SELECT_ALL_PRODUCERS' | translate }}</span>
-          </vitamui-common-slide-toggle>
+          </vitamui-slide-toggle>
 
           <vitamui-select
             [multiple]="true"
@@ -93,7 +93,7 @@
 
       <ng-container *ngTemplateOutlet="actions"></ng-container>
     </cdk-step>
-  </vitamui-common-stepper>
+  </vitamui-stepper>
 </form>
 
 <ng-template #actions>
@@ -123,7 +123,7 @@
   <div class="hgap-2">
     <div class="start-date">
       <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
-      <vitamui-common-multiple-options-datepicker
+      <vitamui-datepicker
         [formControl]="startDateControl"
         [label]="
           refiningStep
@@ -133,11 +133,11 @@
         [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
         [required]="isStartDateRequired()"
         required
-      ></vitamui-common-multiple-options-datepicker>
+      ></vitamui-datepicker>
     </div>
     <div class="end-date">
       <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_TO' | translate }}</p>
-      <vitamui-common-multiple-options-datepicker
+      <vitamui-datepicker
         [formControl]="endDateControl"
         [label]="
           refiningStep
@@ -145,7 +145,7 @@
             : ('AUDIT.CREATE_DIALOG.INGEST_OPERATION_DATE_PLACEHOLDER' | translate)
         "
         [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
-      ></vitamui-common-multiple-options-datepicker>
+      ></vitamui-datepicker>
     </div>
   </div>
   <p *ngIf="canShowPeriodErrorMessage()" class="text-red">

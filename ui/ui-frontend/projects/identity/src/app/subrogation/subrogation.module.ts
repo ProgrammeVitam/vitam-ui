@@ -48,19 +48,21 @@ import { SharedModule } from '../shared/shared.module';
 import { SubrogateUserListComponent } from './subrogate-user/subrogate-user-list/subrogate-user-list.component';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
 import { SubrogationRoutingModule } from './subrogation-routing.module';
+import { CustomerSelectComponent } from './customer-select/customer-select.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    VitamUICommonModule,
-    SharedModule,
+    CustomerSelectComponent,
     MatDialogModule,
-    MatSidenavModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
     ReactiveFormsModule,
+    SharedModule,
     SubrogationRoutingModule,
+    VitamUICommonModule,
   ],
   declarations: [SubrogateUserListComponent, SubrogateUserComponent],
 })

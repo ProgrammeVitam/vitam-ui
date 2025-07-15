@@ -34,19 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CdkStepper } from '@angular/cdk/stepper';
+import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
 import { Component, ElementRef, HostListener, inject, Input } from '@angular/core';
 import { transitionAnimation } from '../../animations/vitamui-common-animations';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'vitamui-common-stepper',
+  selector: 'vitamui-stepper',
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss'],
   // This custom stepper provides itself as CdkStepper so that it can be recognized
   // by other components.
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
   animations: [transitionAnimation],
-  standalone: false,
+  imports: [CommonModule, CdkStepperModule],
 })
 export class StepperComponent extends CdkStepper {
   private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);

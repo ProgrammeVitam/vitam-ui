@@ -36,13 +36,14 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FacetDetails } from '../../models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-logbook-operation-facet',
   templateUrl: './logbook-operation-facet.component.html',
   styleUrls: ['./logbook-operation-facet.component.scss'],
-  standalone: false,
+  imports: [CommonModule],
 })
 export class LogbookOperationFacetComponent {
   /**
