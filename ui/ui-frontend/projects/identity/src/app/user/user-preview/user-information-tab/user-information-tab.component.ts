@@ -150,7 +150,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.form.get('mobile').valueChanges.subscribe(() => {
-      this.updateOtpState(this.form, this.adminUserProfile, this.customer);
+      this.updateOtpState(this.form);
     });
     this.form.get('otp').valueChanges.subscribe(() => {
       this.initMobileValidators(this.form);
@@ -161,12 +161,16 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.form.getRawValue(), this.previousValue)),
         filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.user.id }, formData)),
+        map((formData) => {
+          // centerCodes is used for auto-provisioning (Xelians) and should be an array
+          const centerCodes = formData.centerCodes?.split(',')?.map((v: string) => v.trim());
+          return { ...formData, id: this.user.id, centerCodes };
+        }),
         switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((user: User) => {
         if (user) {
-          this.resetForm(this.form, user, this.customer, this.adminUserProfile, this.readOnly);
+          this.resetForm(user);
         }
       });
 
@@ -178,15 +182,15 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         map((formData) => extend({ id: this.userInfo.id }, formData)),
         switchMap((formData) => this.userInfoService.patch(formData, this.user).pipe(catchError(() => of(null)))),
       )
-      .subscribe((userInfo: UserInfo) => this.resetUserInfoForm(this.form, userInfo));
+      .subscribe((userInfo: UserInfo) => this.resetUserInfoForm(userInfo));
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 
-  private updateOtpState(form: FormGroup, adminUserProfile: AdminUserProfile, customer: Customer): void {
-    if (this.canModifyOtp(adminUserProfile, customer)) {
+  private updateOtpState(form: FormGroup): void {
+    if (this.canModifyOtp()) {
       if (form.get('mobile') && (!form.get('mobile').value || form.get('mobile').value === '')) {
         this.showTooltip = true;
         form.get('otp').disable({ emitEvent: false });
@@ -197,8 +201,8 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
     }
   }
 
-  private canModifyOtp(adminUserProfile: AdminUserProfile, customer: Customer) {
-    return adminUserProfile || !adminUserProfile.multifactorAllowed || (customer && customer.otp !== OtpState.OPTIONAL);
+  private canModifyOtp() {
+    return this.adminUserProfile || !this.adminUserProfile.multifactorAllowed || (this.customer && this.customer.otp !== OtpState.OPTIONAL);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -209,26 +213,26 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
       changes.hasOwnProperty('adminUserProfile')
     ) {
       if (this.user && this.customer && this.adminUserProfile) {
-        this.resetForm(this.form, this.user, this.customer, this.adminUserProfile, this.readOnly);
+        this.resetForm(this.user);
       }
     }
     if (changes.hasOwnProperty('userInfo') && this.userInfo) {
-      this.resetUserInfoForm(this.userInfoForm, this.userInfo);
+      this.resetUserInfoForm(this.userInfo);
     }
   }
 
-  private resetForm(form: FormGroup, user: User, customer: Customer, adminUserProfile: AdminUserProfile, readOnly: boolean) {
-    form.reset(user, { emitEvent: false });
-    this.previousValue = this.form.value;
-    this.initFormValidators(form, user);
-    this.initFormActivationState(form, customer, adminUserProfile, readOnly);
-    form.updateValueAndValidity({ emitEvent: false });
+  private resetForm(user: User) {
+    this.form.reset(user, { emitEvent: false });
+    this.previousValue = this.form.getRawValue();
+    this.initFormValidators(this.form, user);
+    this.initFormActivationState(this.form);
+    this.form.updateValueAndValidity({ emitEvent: false });
   }
-  private resetUserInfoForm(userInfoForm: FormGroup, userInfo: UserInfo) {
+  private resetUserInfoForm(userInfo: UserInfo) {
     if (userInfo) {
-      userInfoForm.reset(userInfo, { emitEvent: false });
-      this.previousUserInfoValue = this.userInfoForm.value;
-      userInfoForm.updateValueAndValidity({ emitEvent: false });
+      this.userInfoForm.reset(userInfo, { emitEvent: false });
+      this.previousUserInfoValue = this.userInfoForm.getRawValue();
+      this.userInfoForm.updateValueAndValidity({ emitEvent: false });
     }
   }
 
@@ -245,11 +249,11 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
     form.get('mobile').setValidators(mobileValidators);
   }
 
-  private initFormActivationState(form: FormGroup, customer: Customer, adminUserProfile: AdminUserProfile, readOnly: boolean) {
+  private initFormActivationState(form: FormGroup) {
     // get customer email domains
     this.customerEmailDomains = [];
-    customer.emailDomains.forEach((domain) => this.customerEmailDomains.push(domain.replace('*.', '')));
-    if (readOnly || !adminUserProfile.standardAttrsAllowed) {
+    this.customer.emailDomains.forEach((domain) => this.customerEmailDomains.push(domain.replace('*.', '')));
+    if (this.readOnly || !this.adminUserProfile.standardAttrsAllowed) {
       form.disable({ emitEvent: false });
 
       return;
@@ -259,10 +263,10 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
 
     form.get('identifier').disable({ emitEvent: false });
     form.get('level').disable({ emitEvent: false });
-    if (!adminUserProfile.genericAllowed) {
+    if (!this.adminUserProfile.genericAllowed) {
       form.get('type').disable({ emitEvent: false });
     }
 
-    this.updateOtpState(form, adminUserProfile, customer);
+    this.updateOtpState(form);
   }
 }
