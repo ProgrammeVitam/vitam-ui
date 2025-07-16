@@ -62,6 +62,12 @@ export interface IngestContract extends Id {
   signaturePolicy: SignaturePolicy;
 }
 
+export interface IngestContractLight {
+  name: string;
+  identifier: string;
+  description: string;
+}
+
 export interface SignaturePolicy {
   signedDocument: SignedDocumentPolicyEnum;
   declaredSignature: boolean;

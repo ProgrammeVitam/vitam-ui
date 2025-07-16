@@ -43,3 +43,9 @@ export interface Agency extends Id {
   identifier: string;
   description: string;
 }
+
+export interface AgencyLight {
+  name: string;
+  identifier: string;
+  description: string;
+}

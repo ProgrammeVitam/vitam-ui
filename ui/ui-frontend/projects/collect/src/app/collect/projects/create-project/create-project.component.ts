@@ -40,7 +40,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize, Observable, of, throwError } from 'rxjs';
+import { finalize, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
@@ -54,13 +54,14 @@ import {
   ItemNode,
   Logger,
   MetadataUnitUp,
-  MiscValidators,
   oneIncludedNodeRequired,
   Option,
   Project,
   ProjectStatus,
   SchemaElement,
   SchemaService,
+  ExternalReferentialService,
+  TenantSelectionService,
   Transaction,
   TransactionStatus,
   Unit,
@@ -73,6 +74,9 @@ export enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
   COMPRESSED = 'COMPRESSED',
 }
+
+const TENANT_SEPARATOR = ' - Tenant - ';
+const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
 
 @Component({
   selector: 'app-create-project',
@@ -95,7 +99,6 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   FlowType = FlowType;
   // http calls
   isLoading: boolean;
-  importType: string;
 
   selectedWorkflow: Workflow = Workflow.MANUAL;
   selectedFlowType: FlowType = FlowType.FIX;
@@ -110,6 +113,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   zipFileStatus$: Observable<ZipFileStatus>;
   units: Unit[];
   compressedZip: Blob;
+  easOptions: Option[] = [];
+  archiveProfileOptions: Option[] = [];
+  archivalAgreementOptions: Option[] = [];
+  agenciesOptions: Option[] = [];
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -140,6 +147,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     private dialogRefToClose: MatDialogRef<CreateProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private projectsService: ProjectsService,
+    private externalReferentialService: ExternalReferentialService,
+    private tenantSelectionService: TenantSelectionService,
     private transactionsService: TransactionsService,
     private archiveCollectService: ArchiveCollectService,
     private snackBar: MatSnackBar,
@@ -160,10 +169,69 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.initForm();
     this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => (this.schemaOptions = schema));
+
+    this.externalReferentialService
+      .getElectronicArchivingSystemList()
+      .pipe(
+        map((list) => (Array.isArray(list) ? list : [])),
+        map((list) =>
+          list.flatMap((system) =>
+            system.tenantIds.map((tenantId: number) => ({
+              key: `${system.archivingSystemId}${TENANT_SEPARATOR}${tenantId}`,
+              label: `${system.name}${TENANT_SEPARATOR}${tenantId}`,
+            })),
+          ),
+        ),
+      )
+      .subscribe((easOptions) => {
+        this.easOptions = easOptions;
+        const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
+        const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
+        this.projectForm.get('archivingSystemId')?.setValue(defaultKey);
+        this.projectForm.get('connectedToArchivingSystem')?.setValue(true);
+        this.onArchivingSystemIdChangeValue();
+      });
   }
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
+  }
+
+  onConnectedToArchivingSystemChangeValue(): void {
+    this.projectForm.get('submissionAgencyIdentifier')?.setValue(null);
+    this.projectForm.get('originatingAgencyIdentifier')?.setValue(null);
+    this.projectForm.get('archivalAgencyIdentifier')?.setValue(null);
+    this.projectForm.get('transferringAgencyIdentifier')?.setValue(null);
+    this.projectForm.get('archivalAgreement')?.setValue(null);
+    this.projectForm.get('archiveProfile')?.setValue(null);
+  }
+
+  onArchivingSystemIdChangeValue(): void {
+    const input: string = this.projectForm.get('archivingSystemId')?.value;
+    if (!input) return;
+
+    const [archivingSystemId, tenantStr] = input.split(TENANT_SEPARATOR);
+    const tenantIdentifier = Number(tenantStr);
+
+    if (!archivingSystemId || isNaN(tenantIdentifier)) return;
+
+    forkJoin({
+      archivalAgreements: this.externalReferentialService.archivalIngestContracts(archivingSystemId, tenantIdentifier),
+      archiveProfiles: this.externalReferentialService.archiveProfiles(archivingSystemId, tenantIdentifier),
+      agencies: this.externalReferentialService.getAgencies(archivingSystemId, tenantIdentifier),
+    })
+      .pipe(
+        map(({ archivalAgreements, archiveProfiles, agencies }) => ({
+          archivalAgreementOptions: this.mapToOptions(archivalAgreements),
+          archiveProfileOptions: this.mapToOptions(archiveProfiles),
+          agenciesOptions: this.mapToOptions(agencies),
+        })),
+      )
+      .subscribe(({ archivalAgreementOptions, archiveProfileOptions, agenciesOptions }) => {
+        this.archivalAgreementOptions = archivalAgreementOptions;
+        this.archiveProfileOptions = archiveProfileOptions;
+        this.agenciesOptions = agenciesOptions;
+      });
   }
 
   onClose() {
@@ -214,6 +282,15 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  /*** Form validator Step : /*** Form validator Step : Description du versement ***/
+  stepConnectingToRefEASIsInvalid() {
+    return this.connectedToArchivingSystem && this.projectForm.controls.archivingSystemId.invalid;
+  }
+
+  importTypeIsInvalid() {
+    return this.projectForm.controls.importType.invalid;
+  }
+
   /*** Form validator Step : Description du versement ***/
   stepDescriptionIsInvalid() {
     return (
@@ -247,13 +324,15 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.projectForm = this.formBuilder.group({
       automaticIngest: [true],
       referentialCheckup: [false],
+      connectedToArchivingSystem: [false],
+      archivingSystemId: [null],
 
-      archivalAgreement: [null, MiscValidators.requiredNotBlank],
-      messageIdentifier: [null, MiscValidators.requiredNotBlank],
-      archivalAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
-      transferringAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
-      originatingAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
-      submissionAgencyIdentifier: [null, MiscValidators.requiredNotBlank],
+      archivalAgreement: [null],
+      messageIdentifier: [null],
+      archivalAgencyIdentifier: [null],
+      transferringAgencyIdentifier: [null],
+      originatingAgencyIdentifier: [null],
+      submissionAgencyIdentifier: [null],
       // add archivalProfile ?
       archiveProfile: [null],
       acquisitionInformation: [null],
@@ -265,6 +344,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       comment: [null],
       status: [null],
       transformationRules: [null],
+      unitUp: [null],
+      importType: [null],
     });
   }
 
@@ -282,12 +363,14 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       acquisitionInformation: this.projectForm.value.acquisitionInformation,
       legalStatus: this.projectForm.value.legalStatus,
       comment: this.projectForm.value.comment,
+      connectedToArchivingSystem: this.projectForm.value.connectedToArchivingSystem,
+      archivingSystemId: this.projectForm.value.archivingSystemId,
       status: ProjectStatus.OPEN,
       transformationRules: this.projectForm.value.transformationRules,
       automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
-      project.unitUp = this.linkParentIdControl.value.included[0];
+      project.unitUp = !this.connectedToArchivingSystem ? this.projectForm.value.unitUp : this.linkParentIdControl.value.included[0];
     } else {
       project.unitUps = this.convertRuleParamsToMetadata();
     }
@@ -299,10 +382,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       const ruleParam = ruleParamControl.value;
       const metadataKey = ruleParam.ontologyList.ApiField;
       const metadataValue = ruleParam.metadataValue[metadataKey];
+      const unitUpValue = ruleParam.unitUpValue?.value;
       return {
         metadataKey: metadataKey,
         metadataValue: metadataValue,
-        unitUp: ruleParam.unitUp.included[0],
+        unitUp: this.connectedToArchivingSystem ? unitUpValue : ruleParam.unitUp.included[0],
       };
     });
   }
@@ -332,6 +416,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       opened: [true],
       ontologyList: ontologyListControl,
       metadataValue: metadataValueGroup,
+      unitUpValue: [null],
       unitUp: [{ included: [], excluded: [] }, oneIncludedNodeRequired()],
     });
 
@@ -442,8 +527,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  getNodeTitle(selectedNodes: { included: string[]; excluded: string[] }): string {
-    const vitamId = selectedNodes?.included[0];
+  getNodeTitle(selectedNodes: any): string {
+    if (!selectedNodes.unitUpValue || selectedNodes?.unitUp?.included.length < 0) return;
+    if (!this.connectedToArchivingSystem) return ' : ' + selectedNodes.unitUpValue;
+    const vitamId = selectedNodes?.unitUp?.included[0];
     if (!vitamId || !this.units) return '';
 
     const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
@@ -458,9 +545,24 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     return `${item.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
 
+  get connectedToArchivingSystem(): boolean {
+    return this.projectForm.get('connectedToArchivingSystem')?.value === true;
+  }
+
+  private mapToOptions<T extends { identifier: string; name: string }>(items: T[]): { label: string; key: string }[] {
+    return items.map((item) => ({
+      label: `${item.identifier} - ${item.name}`,
+      key: item.identifier,
+    }));
+  }
+
   resetFilesToImportList() {
     this.filesToUpload = [];
   }
 
-  protected readonly ImportType = ImportType;
+  get importType(): string {
+    return this.projectForm.get('importType')?.value;
+  }
+
+  protected ImportType = ImportType;
 }
