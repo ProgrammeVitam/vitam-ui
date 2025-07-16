@@ -59,7 +59,7 @@
         <button
           *ngIf="canDelete(data.item)"
           class="btn btn-circle primary"
-          (click)="delete(data)"
+          (click)="$event.stopPropagation(); delete(data)"
           (mouseover)="previewDelete(data.item)"
           (mouseout)="hidePreviewDelete()"
         >
