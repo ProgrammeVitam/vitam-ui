@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-body/scroll-top/scroll-top.component.scss"],
+  "sourcesContent": [".scroll-to-top {\n  position: fixed;\n  bottom: 12%;\n  right: 1%;\n  opacity: 0;\n  display: none;\n  transition: all 0.3s ease-in-out;\n  z-index: 10;\n}\n\n.show-scrollTop {\n  opacity: 1;\n  display: block;\n  transition: all 0.3s ease-in-out;\n}\n\n.mat-mdc-mini-fab {\n  background-color: var(--vitamui-primary);\n  color: var(--vitamui-white);\n}\n"],
+  "mappings": "AAAA,CAAA,cACE,SAAA,MACA,OAAA,IACA,MAAA,GACA,QAAA,EACA,QAAA,KACA,WAAA,IAAA,IAAA,YACA,QAAA,GAGF,CAAA,eACE,QAAA,EACA,QAAA,MACA,WAAA,IAAA,IAAA,YAGF,CAAA,iBACE,iBAAA,IAAA,mBACA,MAAA,IAAA",
+  "names": []
+}

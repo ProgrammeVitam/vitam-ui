@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/editable-field/editable-textarea/editable-textarea.component.scss"],
+  "sourcesContent": [".editable-field-content .editable-field-text-content.display-all {\n  white-space: normal;\n}\n"],
+  "mappings": "AAAA,CAAA,uBAAA,CAAA,2BAAA,CAAA,YACE,YAAA",
+  "names": []
+}

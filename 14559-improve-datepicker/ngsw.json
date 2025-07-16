@@ -1,0 +1,112 @@
+{
+  "configVersion": 1,
+  "timestamp": 1752669825388,
+  "index": "/vitam-ui/14559-improve-datepicker/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/vitam-ui/14559-improve-datepicker/main-QLQHFGAW.js",
+        "/vitam-ui/14559-improve-datepicker/polyfills-QWIB3X6O.js",
+        "/vitam-ui/14559-improve-datepicker/styles-HBA5HZ2E.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/vitam-ui/14559-improve-datepicker/assets/account-header-bg.jpg",
+        "/vitam-ui/14559-improve-datepicker/assets/bg-customer-select.svg",
+        "/vitam-ui/14559-improve-datepicker/assets/bg-tenant-select.svg",
+        "/vitam-ui/14559-improve-datepicker/assets/country/en.svg",
+        "/vitam-ui/14559-improve-datepicker/assets/country/fr.svg",
+        "/vitam-ui/14559-improve-datepicker/assets/footer-logo.svg",
+        "/vitam-ui/14559-improve-datepicker/assets/i18n/en.json",
+        "/vitam-ui/14559-improve-datepicker/assets/i18n/fr.json",
+        "/vitam-ui/14559-improve-datepicker/assets/logo.png",
+        "/vitam-ui/14559-improve-datepicker/assets/logo.svg",
+        "/vitam-ui/14559-improve-datepicker/assets/logo_FOOTER.png",
+        "/vitam-ui/14559-improve-datepicker/assets/logo_HEADER.png",
+        "/vitam-ui/14559-improve-datepicker/assets/logo_PORTAL.png",
+        "/vitam-ui/14559-improve-datepicker/assets/logo_USER.png",
+        "/vitam-ui/14559-improve-datepicker/assets/my-account.svg",
+        "/vitam-ui/14559-improve-datepicker/assets/shared-i18n/README.md",
+        "/vitam-ui/14559-improve-datepicker/assets/shared-i18n/en.json",
+        "/vitam-ui/14559-improve-datepicker/assets/shared-i18n/fr.json",
+        "/vitam-ui/14559-improve-datepicker/assets/user_icon.png",
+        "/vitam-ui/14559-improve-datepicker/assets/vitam-logo.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "assets",
+      "patterns": [
+        "\\/assets\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 100,
+      "maxAge": 1800000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/vitam-ui/14559-improve-datepicker/assets/account-header-bg.jpg": "fdc25ee6846edde0c4d5d6991d970e621f1a0aa0",
+    "/vitam-ui/14559-improve-datepicker/assets/bg-customer-select.svg": "0e9bc0fabae742969014b5fef803eee707922634",
+    "/vitam-ui/14559-improve-datepicker/assets/bg-tenant-select.svg": "da489f784d433747fae9a8d873c7e8d658fbdf20",
+    "/vitam-ui/14559-improve-datepicker/assets/country/en.svg": "2b5148a18b90f933e47bf895c26d61a52d21d9d8",
+    "/vitam-ui/14559-improve-datepicker/assets/country/fr.svg": "e3deb99b897e85df223b6d5d63628ea6d9c762c1",
+    "/vitam-ui/14559-improve-datepicker/assets/footer-logo.svg": "8d54e762125574e92769c3dfe308afc2307cce3b",
+    "/vitam-ui/14559-improve-datepicker/assets/i18n/en.json": "0bea29b804e0b71477f855075d04ee15bb4c665b",
+    "/vitam-ui/14559-improve-datepicker/assets/i18n/fr.json": "9143be7bff82a86a423d653f932b660470d71d27",
+    "/vitam-ui/14559-improve-datepicker/assets/logo.png": "918f4351c803e4440d869b689744c3f77a263461",
+    "/vitam-ui/14559-improve-datepicker/assets/logo.svg": "163806bb7a3e5505d7c2432965564eb8f851dc13",
+    "/vitam-ui/14559-improve-datepicker/assets/logo_FOOTER.png": "5b8fd9e0bdc417b8ecf5d06739a1ef89b1741d1e",
+    "/vitam-ui/14559-improve-datepicker/assets/logo_HEADER.png": "5b8fd9e0bdc417b8ecf5d06739a1ef89b1741d1e",
+    "/vitam-ui/14559-improve-datepicker/assets/logo_PORTAL.png": "918f4351c803e4440d869b689744c3f77a263461",
+    "/vitam-ui/14559-improve-datepicker/assets/logo_USER.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
+    "/vitam-ui/14559-improve-datepicker/assets/my-account.svg": "6fd87f211c8f87de0e73b0e01c138eaf90239869",
+    "/vitam-ui/14559-improve-datepicker/assets/shared-i18n/README.md": "8827078e00e335c7e108ee0a1e9976d6d24fb89f",
+    "/vitam-ui/14559-improve-datepicker/assets/shared-i18n/en.json": "e935ae855abe89dac1738bb0d17e082b600b7b12",
+    "/vitam-ui/14559-improve-datepicker/assets/shared-i18n/fr.json": "de3a150d923a7b0c3ff65e3f89848ba3f1b7b84f",
+    "/vitam-ui/14559-improve-datepicker/assets/user_icon.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
+    "/vitam-ui/14559-improve-datepicker/assets/vitam-logo.png": "0bcb4aaad694b796cf574e4f7aca90b740bcb9f2",
+    "/vitam-ui/14559-improve-datepicker/main-QLQHFGAW.js": "c409035cc969e08994ecc33979c655a5a0fa3f2c",
+    "/vitam-ui/14559-improve-datepicker/polyfills-QWIB3X6O.js": "20e213ba4c052ea028307ccabb759a0c9079c5bb",
+    "/vitam-ui/14559-improve-datepicker/styles-HBA5HZ2E.css": "54885e8f6508cac52b1dd911e024d27371bd7059"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
