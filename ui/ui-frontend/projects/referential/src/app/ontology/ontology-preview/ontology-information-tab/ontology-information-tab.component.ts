@@ -142,7 +142,7 @@ export class OntologyInformationTabComponent {
 
   prepareSubmit(): Observable<Ontology> {
     const payload = {
-      id: this.previousValue().id,
+      id: this._inputOntology.id,
       identifier: this.previousValue().identifier,
       ...this.form.value,
     };
