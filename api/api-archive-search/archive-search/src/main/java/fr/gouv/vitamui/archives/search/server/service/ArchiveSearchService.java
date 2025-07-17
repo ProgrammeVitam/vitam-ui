@@ -74,6 +74,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.core.Response;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -110,6 +111,10 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 @Getter
 @Service
 public class ArchiveSearchService {
+
+    @Value("${tree-nodes-search-facets-size:1000}")
+    @NotNull
+    private Integer treeNodesSearchFacetsSize;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchService.class);
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
@@ -188,7 +193,7 @@ public class ArchiveSearchService {
             archiveSearchAgenciesService.mapAgenciesNameToCodes(searchQuery, vitamContext);
             archiveSearchRulesService.mapManagementRulesTitlesToCodes(searchQuery, vitamContext);
 
-            JsonNode dslQuery = createDslQueryWithFacets(searchQuery).getFinalSelect();
+            JsonNode dslQuery = createDslQueryWithFacets(searchQuery, treeNodesSearchFacetsSize).getFinalSelect();
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
             ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
             Integer totalResults = archiveUnitsDto.getArchives().getHits().getTotal();

@@ -79,7 +79,6 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOper
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_BY_NODE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACET_SIZE_MULTIPLIER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FILING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.HOLDING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ID;
@@ -122,12 +121,12 @@ public final class MetadataSearchCriteriaUtils {
 
     private MetadataSearchCriteriaUtils() {}
 
-    public static SelectMultiQuery createDslQueryWithFacets(SearchCriteriaDto searchQuery)
+    public static SelectMultiQuery createDslQueryWithFacets(SearchCriteriaDto searchQuery, Integer facetsSize)
         throws VitamClientException, InvalidCreateOperationException {
         fillWaitingToComputeCriteria(searchQuery);
 
         SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
-        addPositionsNodesFacet(searchQuery, selectMultiQuery);
+        selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COUNT_BY_NODE, ALL_UNIT_UPS, facetsSize, FacetOrder.ASC));
 
         if (searchQuery.isComputeFacets()) {
             selectMultiQuery.addFacets(
@@ -1697,19 +1696,6 @@ public final class MetadataSearchCriteriaUtils {
             ArchiveSearchConsts.CriteriaOperators.EQ.name().equals(searchCriteria.getOperator()) &&
             searchCriteria.getValues().size() == 1 &&
             StringUtils.isNotEmpty(searchCriteria.getValues().get(0).getValue())
-        );
-    }
-
-    private static void addPositionsNodesFacet(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
-        throws InvalidCreateOperationException {
-        List<String> nodesCriteriaList = searchQuery.extractNodesCriteria();
-        selectMultiQuery.addFacets(
-            FacetHelper.terms(
-                FACETS_COUNT_BY_NODE,
-                ALL_UNIT_UPS,
-                (nodesCriteriaList.size() + 1) * FACET_SIZE_MULTIPLIER,
-                FacetOrder.ASC
-            )
         );
     }
 

@@ -88,9 +88,9 @@ vitamui:
   ui_collect:
     vitamui_component: ui-collect
     port_service: 8010
-#    offline_services: # Disables online search engines in collect
-#      - agencies
-#      - archive-unit-profiles
+  #    offline_services: # Disables online search engines in collect
+  #      - agencies
+  #      - archive-unit-profiles
   ui_pastis:
     vitamui_component: ui-pastis
     port_service: 9015
@@ -143,12 +143,14 @@ vitamui:
     vitamui_component: archive-search
     port_service: 8109
     port_admin: 7109
+    tree_nodes_search_facets_size: 1000
 
   collect:
     host: "vitamui-collect.service.{{ consul_domain }}"
     vitamui_component: collect
     port_service: 8110
     port_admin: 7110
+    tree_nodes_search_facets_size: 1000
 
   pastis:
     host: "vitamui-pastis.service.{{ consul_domain }}"

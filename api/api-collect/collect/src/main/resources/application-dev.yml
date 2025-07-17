@@ -80,3 +80,4 @@ logging:
 
 # ontology fields file path
 ontologies_file_path: "src/main/resources/ontology/external_ontology_fields.json"
+tree-nodes-search-facets-size: 1000
