@@ -50,7 +50,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   typeProfile?: ProfileType;
   modePUA: boolean;
   information: string;
-  presenceNonDeclareMetadonneesPUAControl = new FormControl(false);
+  additionalProperties = new FormControl(false);
   createNotice: boolean;
   profilActif: string;
   profilInactif: string;
@@ -124,7 +124,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions.add(
-      this.presenceNonDeclareMetadonneesPUAControl.valueChanges.subscribe((value) => {
+      this.additionalProperties.valueChanges.subscribe((value) => {
         this.form.controls.autoriserPresenceMetadonnees.setValue(value);
       }),
     );
