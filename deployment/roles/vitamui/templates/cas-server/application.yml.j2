@@ -97,6 +97,8 @@ cas.service-registry.mongo.collection: services
 cas.service-registry.mongo.user-id: {{ mongodb.cas.user }}
 cas.service-registry.mongo.password: {{ mongodb.cas.password }}
 
+cas.ticket.registry.mongo.client-uri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port | default(27017) }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+
 cas.authn.surrogate.separator: ","
 cas.authn.surrogate.sms.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
 
