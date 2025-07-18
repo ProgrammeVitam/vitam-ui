@@ -139,6 +139,14 @@ public class MongoUtilsTest {
         crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALSIGNORECASE);
         assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + ".*toto.*toto.*" + "$");
+
+        val = "test.vitam-ext@culture.gouv.fr";
+        crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALSIGNORECASE);
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
+        assertThat(crit.getCriteriaObject().toJson()).contains("\"options\": \"i\"");
+        assertThat(crit.getCriteriaObject().toJson()).contains(
+            "^" + "test\\\\.vitam-ext@culture\\\\.gouv\\\\.fr" + "$"
+        );
     }
 
     @Test
