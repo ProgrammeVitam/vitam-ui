@@ -85,7 +85,10 @@ public class ArchiveUnitServiceImpl implements ArchiveUnitService {
     public OperationIdDto update(String transactionId, JsonPatchDto jsonPatchDto) {
         final UpdateMultiQuery updateMultiQuery = jsonPatchDtoToUpdateMultiQueryConverter.convert(jsonPatchDto);
         if (updateMultiQuery == null) {
-            throw new ArchiveUnitUpdateException("Fail to convert json patch payload to dsl query");
+            log.error("Failed to convert JSON patch to DSL query for archive unit: {}", jsonPatchDto.getId());
+            throw new ArchiveUnitUpdateException(
+                "Failed to convert JSON patch payload to DSL query. The patch may contain invalid field paths or operations."
+            );
         }
 
         final Set<UpdateMultiQuery> updateMultiQueries = Set.of(updateMultiQuery);
@@ -119,8 +122,8 @@ public class ArchiveUnitServiceImpl implements ArchiveUnitService {
             log.info("Operation started: {}", operationIdDto);
             return operationIdDto;
         } catch (VitamClientException | InvalidParseOperationException e) {
-            log.error("{}", e);
-            throw new ArchiveUnitUpdateException(e);
+            log.error("Failed to update archive units for transaction: {}", transactionId, e);
+            throw new ArchiveUnitUpdateException("Failed to update archive units", e);
         }
     }
 }
