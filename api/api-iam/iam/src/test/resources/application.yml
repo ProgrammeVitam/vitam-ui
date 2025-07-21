@@ -56,10 +56,16 @@ user.connection.tracing.enabled: true
 swagger:
   layer: api-external
 
-cas:
-  internal-url: https://dev.vitamui.com:8080/cas
-  external-url: https://dev.vitamui.com:8080/cas
-  callback-url: identity-api/callback
-  ssl:
-    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
-    trust-store-password: changeme
+cas-client:
+  server-host: dev.vitamui.com
+  server-port: 8080
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+      key-password: changeme
+    keystore:
+      key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam.jks
+      key-password: changeme
+      type: JKS
+    hostname-verification: false

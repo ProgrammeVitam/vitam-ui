@@ -36,10 +36,14 @@
  */
 package fr.gouv.vitamui.commons.rest.client.configuration;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * The RestClientConfiguration stores properties used in the RestClient
@@ -47,10 +51,13 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @EqualsAndHashCode
 @ToString
+@Validated
 public class RestClientConfiguration {
 
+    @NotNull
     private String serverHost;
 
     private int serverPort;
@@ -59,6 +66,7 @@ public class RestClientConfiguration {
 
     private boolean noClientAuthentication = false;
 
+    @Valid
     private SSLConfiguration sslConfiguration;
 
     /**

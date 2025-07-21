@@ -85,6 +85,44 @@ referential:
       hostname-verification: true
 {% endif %}
 
+{% if external_archiving_systems is defined %}
+  # Connection settings for external / third-party Vitam instances (for COLLECT)
+  external-archiving-system-clients:
+  {% if external_archiving_systems.client_configuration | default([]) is iterable %}
+    {% for clientConfig in external_archiving_systems.client_configuration | default([]) %}
+    - archiving-system-id: {{ clientConfig.archiving_system_id }}
+      name: {{ clientConfig.name }}
+      access-external-client:
+        server-host: {{ clientConfig.access_external.host }}
+        server-port: {{ clientConfig.access_external.port }}
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: {{ vitamui_folder_conf }}/keystore_external_archiving_systems_{{ clientConfig.archiving_system_id }}.p12
+            key-password: {{ external_archiving_systems.keystore_password[clientConfig.archiving_system_id] }}
+          truststore:
+            key-path: {{ vitamui_folder_conf }}/truststore_external_archiving_systems_{{ clientConfig.archiving_system_id }}.jks
+            key-password: {{ external_archiving_systems.truststore_password[clientConfig.archiving_system_id] }}
+    {% endfor %}
+  {% endif %}
+
+  # Access to other tenants and/or third party Vitam instances
+  external-archiving-system-tenants:
+  {% if external_archiving_systems.tenant_configuration | default([]) is iterable %}
+    {% for tenantConfig in external_archiving_systems.tenant_configuration | default([]) %}
+    - tenant: {{ tenantConfig.tenant }}
+      external-archiving-system-references:
+      {% if tenantConfig.external_archiving_system_references | default([]) is iterable %}
+        {% for referenceConf in tenantConfig.external_archiving_system_references | default([]) %}
+        - archiving_system_id: {{ referenceConf.archiving_system_id }}
+          tenantIds: {{ referenceConf.tenantIds }}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+{% endif %}
+
 internal_ontology_file_path: {{ vitamui_folder_data }}/internal_ontology_fields.json
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}

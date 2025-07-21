@@ -328,6 +328,12 @@ Attention, à l'heure actuelle il n'y a pas d'API permettant de faire un "update
 
 Pour réaliser un "update" il faut donc faire d'abord une suppression de contexte (playbook `ansible-vitam-exploitation/remove_contexts.yml`) puis de nouveau un ajout de contexte. La suppression de contexte via le playbook `remove_contexts.yml` va prendre comme paramètre les éléments du fichier `postinstall_param.yml`.
 
+# Configuration d'accès à des instances Vitam externes tierces (optionnel)
+
+Il est possible de mettre en place des connexions vers des SAE (Systèmes d'Archivage Électronique) Vitam tiers. i.e. autres instances externes de Vitam. Ceci permet de préparer la collecte d'archives à destination d'un autre SAE en utilisant les référentiels de l'instance cible pour un tenant donné.
+
+La configuration d'accès nécessaire est décrite dans la documentation d'exploitation.
+
 ---
 
 ## Installation de Vitam-UI
