@@ -483,8 +483,14 @@
     }
   },
   "FILE_SELECTOR": {
+    "DRAG_AND_DROP": "Drag and drop",
+    "OR": "or",
+    "BROWSE": "browse",
+    "BROWSE_DIRECTORIES": "browse directories",
+    "BROWSE_FILES": "browse files",
     "DRAG_AND_DROP_OR_BROWSE": "Drag and drop or browse",
-    "ALLOWED_FORMATS": "Allowed formats: {{formats}}",
+    "ALLOWED_FORMATS_SINGULAR": "Allowed format: {{formats}}",
+    "ALLOWED_FORMATS_PLURAL": "Allowed formats: {{formats}}",
     "MAX_SIZE": "Max size: {{size}}"
   },
   "COMMON_SELECT": {
