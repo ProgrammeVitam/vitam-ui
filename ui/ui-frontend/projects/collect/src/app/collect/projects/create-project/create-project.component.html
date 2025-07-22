@@ -193,20 +193,45 @@
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <mat-dialog-content>
         <div class="main-content">
-          <div class="w-100">
-            <vitamui-file-selector
-              [multiple]="true"
-              [maxSizeInBytes]="uploadMaxSizeInBytes"
-              [directoryMode]="true"
-              (filesChanged)="setFilesToUpload($event)"
+          <div class="gap-6">
+            <vitamui-select
+              class="w-100"
+              [placeholder]="'COLLECT.MODAL.IMPORT_TYPE_PLACEHOLDER' | translate"
+              [(ngModel)]="importType"
+              [options]="[
+                { key: 'DIRECTORIES_FILES', label: 'COLLECT.MODAL.IMPORT_TYPE_DIRECTORIES_FILES' | translate },
+                { key: 'COMPRESSED', label: 'COLLECT.MODAL.IMPORT_TYPE_COMPRESSED' | translate },
+              ]"
+              [enableSearch]="false"
+              (change)="resetFilesToImportList()"
+              required
             >
-            </vitamui-file-selector>
+            </vitamui-select>
+            @if (importType === ImportType.DIRECTORIES_FILES) {
+              <vitamui-file-selector
+                class="w-100"
+                [directoryMode]="true"
+                [maxSizeInBytes]="uploadMaxSizeInBytes"
+                [multiple]="true"
+                (filesChanged)="setFilesToUpload($event)"
+              >
+              </vitamui-file-selector>
+            }
+            @if (importType === ImportType.COMPRESSED) {
+              <vitamui-file-selector
+                *ngIf="importType === ImportType.COMPRESSED"
+                class="w-100"
+                [extensions]="['.zip']"
+                (filesChanged)="setFilesToUpload($event)"
+              >
+              </vitamui-file-selector>
+            }
           </div>
         </div>
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <vitamui-next-step [disabled]="filesToUpload.length < 1"></vitamui-next-step>
+          <vitamui-next-step [disabled]="!importType || filesToUpload.length < 1"></vitamui-next-step>
           <button (click)="onClose()" class="btn cancel link" type="button">
             {{ 'COMMON.UNDO' | translate }}
           </button>

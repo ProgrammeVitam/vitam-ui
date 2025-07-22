@@ -78,13 +78,10 @@ export class ZipFile {
   }
 
   generateZip(): Promise<Blob> {
-    return this.zipFile
-      .generateInternalStream({ type: 'blob' })
-      .accumulate((metadata) => this.updateZipFileStatus(metadata.currentFile, metadata.percent));
+    return this.zipFile.generateInternalStream({ type: 'blob' }).accumulate((metadata) => this.updateZipFileStatus(metadata.percent));
   }
 
-  private updateZipFileStatus(metadataCurrentFile: string, metadataPercent: number) {
-    this.zipFileStatus.currentFile = metadataCurrentFile;
+  private updateZipFileStatus(metadataPercent: number) {
     this.zipFileStatus.currentFileUploadedSize = metadataPercent;
     this.zipFileStatus$.next(this.zipFileStatus);
   }

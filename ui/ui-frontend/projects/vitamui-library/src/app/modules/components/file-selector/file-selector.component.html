@@ -1,28 +1,30 @@
 <div
-  class="drag-and-drop-area"
+  class="drag-and-drop-area p-5"
   vitamuiCommonDragAndDrop
   [enableFolderDragAndDrop]="directoryMode"
   (fileToUploadEmitter)="handleFilesSelection($event)"
 >
   <input
-    #inputFiles
+    #fileSelector
     type="file"
     (change)="handleFilesSelection($event.target.files)"
     [accept]="extensions?.join(',')"
     [multiple]="multiple"
-    [attr.webkitdirectory]="directoryMode ? '' : null"
   />
-
-  @if (fileList) {
-    <ng-container *ngTemplateOutlet="fileList"></ng-container>
-  } @else {
-    <ng-container *ngTemplateOutlet="defaultFileList"></ng-container>
+  @if (directoryMode) {
+    <input #directorySelector type="file" (change)="handleFilesSelection($event.target.files)" [multiple]="multiple" webkitdirectory />
   }
 
   @if (content) {
     <ng-container *ngTemplateOutlet="content"></ng-container>
   } @else {
     <ng-container *ngTemplateOutlet="defaultContent"></ng-container>
+  }
+
+  @if (fileList) {
+    <ng-container *ngTemplateOutlet="fileList"></ng-container>
+  } @else {
+    <ng-container *ngTemplateOutlet="defaultFileList"></ng-container>
   }
 </div>
 
@@ -42,13 +44,33 @@
 </ng-template>
 
 <ng-template #defaultContent>
-  <h4 *ngIf="multiple || directoryMode || !displayFiles?.length" (click)="openFileSelectorOSDialog()" class="text-center text primary link">
-    {{ 'FILE_SELECTOR.DRAG_AND_DROP_OR_BROWSE' | translate }}
-  </h4>
-  <div *ngIf="extensions" class="text-center text primary">
-    {{ 'FILE_SELECTOR.ALLOWED_FORMATS' | translate: { formats: extensions.join(', ') } }}
-  </div>
-  <div *ngIf="maxSizeInBytes" class="text-center text primary">
-    {{ 'FILE_SELECTOR.MAX_SIZE' | translate: { size: maxSizeInBytes | bytes: 0 } }}
-  </div>
+  @if (displayMessageAndLinks) {
+    <div class="text large bold text-center primary m-0">{{ 'FILE_SELECTOR.DRAG_AND_DROP' | translate }}</div>
+    @if (directoryMode) {
+      <div class="text large bold text-center primary m-0">{{ 'FILE_SELECTOR.OR' | translate }}</div>
+      <div class="d-flex row justify-content-center">
+        <div class="text large bold text-center primary link m-0" (click)="openDirectorySelectorOSDialog()">
+          {{ 'FILE_SELECTOR.BROWSE_DIRECTORIES' | translate }}
+        </div>
+        <div class="text large bold text-center primary ml-2 mr-2 m-0">/</div>
+        <div class="text large bold text-center primary link m-0" (click)="openFileSelectorOSDialog()">
+          {{ 'FILE_SELECTOR.BROWSE_FILES' | translate }}
+        </div>
+      </div>
+    } @else {
+      <div class="d-flex row justify-content-center mb-2">
+        <div class="text large bold text-center primary mr-2 m-0">{{ 'FILE_SELECTOR.OR' | translate }}</div>
+        <div class="text large bold text-center primary link m-0" (click)="openFileSelectorOSDialog()">
+          {{ 'FILE_SELECTOR.BROWSE' | translate }}
+        </div>
+      </div>
+    }
+
+    <div *ngIf="extensions" class="text-center text normal vitamui-grey-600 mt-2 mb-2">
+      {{ extensions.length | i18nPlural: format | translate: { formats: extensions.join(', ') } }}
+    </div>
+    <div *ngIf="maxSizeInBytes" class="text-center text normal vitamui-grey-600 mt-2 mb-2">
+      {{ 'FILE_SELECTOR.MAX_SIZE' | translate: { size: maxSizeInBytes | bytes: 0 } }}
+    </div>
+  }
 </ng-template>

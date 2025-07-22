@@ -483,8 +483,14 @@
     }
   },
   "FILE_SELECTOR": {
+    "DRAG_AND_DROP": "Glisser - déposer",
+    "OR": "ou",
+    "BROWSE": "parcourir",
+    "BROWSE_DIRECTORIES": "parcourir des dossiers",
+    "BROWSE_FILES": "parcourir des fichiers",
     "DRAG_AND_DROP_OR_BROWSE": "Glisser-déposer ou parcourir",
-    "ALLOWED_FORMATS": "Formats acceptés : {{formats}}",
+    "ALLOWED_FORMATS_SINGULAR": "Format accepté : {{formats}}",
+    "ALLOWED_FORMATS_PLURAL": "Formats acceptés : {{formats}}",
     "MAX_SIZE": "Poids maximal conseillé : {{size}}"
   },
   "COMMON_SELECT": {

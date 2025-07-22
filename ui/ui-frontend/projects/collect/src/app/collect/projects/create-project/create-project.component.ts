@@ -40,7 +40,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize, Observable, throwError } from 'rxjs';
+import { finalize, Observable, of, throwError } from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
@@ -69,6 +69,11 @@ import {
   ZipFileStatus,
 } from 'vitamui-library';
 
+export enum ImportType {
+  DIRECTORIES_FILES = 'DIRECTORIES_FILES',
+  COMPRESSED = 'COMPRESSED',
+}
+
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
@@ -90,6 +95,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   FlowType = FlowType;
   // http calls
   isLoading: boolean;
+  importType: string;
 
   selectedWorkflow: Workflow = Workflow.MANUAL;
   selectedFlowType: FlowType = FlowType.FIX;
@@ -103,6 +109,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   filesToUpload: File[] = [];
   zipFileStatus$: Observable<ZipFileStatus>;
   units: Unit[];
+  compressedZip: Blob;
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -373,6 +380,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.moveToNextStep();
     const zipFile = new ZipFile();
     this.zipFileStatus$ = zipFile.zipFileStatus$;
+    if (this.importType === ImportType.COMPRESSED) {
+      this.compressedZip = new Blob(this.filesToUpload, { type: 'application/zip' });
+    }
     this.projectsService
       .create(project)
       .pipe(
@@ -388,8 +398,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         tap((createdTransactionResponse) => {
           transactionId = createdTransactionResponse.id;
           zipFile.setZipName(transactionId + '.zip');
+          if (this.importType === ImportType.COMPRESSED) {
+            zipFile.zipFileStatus.size = this.compressedZip.size;
+            zipFile.zipFileStatus.currentFileUploadedSize = 100;
+          }
         }),
-        switchMap(() => zipFile.addFiles(this.filesToUpload).generateZip()),
+        switchMap(() =>
+          this.importType === ImportType.DIRECTORIES_FILES
+            ? zipFile.addFiles(this.filesToUpload).generateZip()
+            : of(this.compressedZip).toPromise(),
+        ),
         switchMap((content) => this.archiveCollectService.uploadZip(content, transactionId)),
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
@@ -439,4 +457,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     } as ItemNode<SchemaElement>);
     return `${item.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
+
+  resetFilesToImportList() {
+    this.filesToUpload = [];
+  }
+
+  protected readonly ImportType = ImportType;
 }

@@ -61,10 +61,17 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should reset the input after file selection', () => {
-    component['inputFiles'] = { nativeElement: { value: 'test' } };
+    component['fileSelector'] = { nativeElement: { value: 'test' } };
     const mockFiles = [new File(['content'], 'test.json')];
     component.handleFilesSelection(mockFiles);
-    expect(component['inputFiles'].nativeElement.value).toBe('');
+    expect(component['fileSelector'].nativeElement.value).toBe('');
+  });
+
+  it('should reset the input after directory selection', () => {
+    component['directorySelector'] = { nativeElement: { value: 'test' } };
+    const mockFiles = [new File(['content'], 'test')];
+    component.handleFilesSelection(mockFiles);
+    expect(component['directorySelector'].nativeElement.value).toBe('');
   });
 
   it('should filter files based on allowed extensions', () => {
