@@ -13,5 +13,76 @@
     - update_vitamui_certificates
   notify: restart service
 
+- name: List external Vitam systems
+  set_fact:
+    external_system_ids: "{{ external_vitam.client_configuration | default([]) | map(attribute='archiving_system_id') | list }}"
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+
+- name: List existing external Vitam keystores
+  find:
+    paths: "{{ vitamui_folder_conf }}"
+    patterns: "keystore_external_vitam_*.p12"
+    file_type: file
+  register: found_external_keystores
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+
+- name: List existing external Vitam truststores
+  find:
+    paths: "{{ vitamui_folder_conf }}"
+    patterns: "truststore_external_vitam_*.jks"
+    file_type: file
+  register: found_external_truststores
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+
+- name: Copy external Vitam keystores
+  copy:
+    src: "{{ inventory_dir }}/external_vitam_keystores/keystore_{{ item }}.p12"
+    dest: "{{ vitamui_folder_conf }}/keystore_external_vitam_{{ item }}.p12"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+  with_items: "{{ external_system_ids }}"
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+  notify: restart service
+
+- name: Copy external Vitam truststores
+  copy:
+    src: "{{ inventory_dir }}/external_vitam_keystores/truststore_{{ item }}.jks"
+    dest: "{{ vitamui_folder_conf }}/truststore_external_vitam_{{ item }}.jks"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+  with_items: "{{ external_system_ids }}"
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+  notify: restart service
+
+- name: Delete obsolete external Vitam keystores
+  file:
+    path: "{{ vitamui_folder_conf }}/keystore_external_vitam_{{ item }}.p12"
+    state: absent
+  loop: "{{ found_external_keystores.files | map(attribute='path') | map('basename') | map('regex_replace', '^keystore_external_vitam_(.*)\\.p12$', '\\1') | list | difference(external_system_ids) }}"
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+
+- name: Delete obsolete external Vitam truststores
+  file:
+    path: "{{ vitamui_folder_conf }}/truststore_external_vitam_{{ item }}.jks"
+    state: absent
+  loop: "{{ found_external_truststores.files | map(attribute='path') | map('basename') | map('regex_replace', '^truststore_external_vitam_(.*)\\.jks$', '\\1') | list | difference(external_system_ids) }}"
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+
 - include: copy_internal_ontology_fields.yml
   tags: update_vitamui_configuration

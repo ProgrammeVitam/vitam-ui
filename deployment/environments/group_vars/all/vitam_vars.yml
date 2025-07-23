@@ -48,3 +48,36 @@ vitam_certs:
     password: "{{ keystores_client_vitam_vitamui }}"
     truststore_filename: truststore_vitam.jks
     password_truststore: "{{ truststores_client_vitam }}"
+
+
+# Define connection settings for external / third-party Vitam instances (for COLLECT)
+external_archiving_systems:
+
+  ## Every external archiving system must have a unique id (only used alphanumeric chars, "_" or "-").
+  ## Please ensure corresponding keystore/truststore files are provided :
+  ##  > environments/external_archiving_systems_keystores/keystore_<archiving_system_id>.jks
+  ##  > environments/external_archiving_systems_keystores/truststore_<archiving_system_id>.jks
+  ## Please ensure keystore/truststore passwords are defined (in an ansible vault file):
+  ##  > external_archiving_systems.keystore_password.<archiving_system_id>: <changeme>
+  ##  > external_archiving_systems.truststore_password.<archiving_system_id>: <changeme>
+
+  # client_configuration:
+  #  - archiving_system_id: <ExternalEnvId>
+  #    name: "EXTERNAL ENV NAME"
+  #    access_external:
+  #      host: <host_name>
+  #      port: <port>
+  #  ...
+
+  ## By default, users have only access to referential configuration from the current Vitam instance and only for active tenant
+  ## Access to other tenants and/or third party Vitam instances may be configured bellow.
+  ## Use "local" as archiving_system_id to reference current Vitam instance with other tenants
+
+  # tenant_configuration:
+  # - tenant: 2
+  #   external_archiving_system_references:
+  #     - archiving_system_id: local
+  #       tenantIds: [1, 2, 3]
+  #     - archiving_system_id: <ExternalEnvId>
+  #       tenantIds: [0, 2]
+  # ...

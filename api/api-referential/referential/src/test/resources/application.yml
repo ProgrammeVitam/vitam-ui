@@ -34,6 +34,26 @@ referential:
         type: JKS
       hostname-verification: false
 
+  external-archiving-system-clients:
+  # - archiving-system-id: MyExternalEnv
+  #   name: "MY EXTERNAL ENV NAME"
+  #   access-external-client:
+  #     server-host: <host>
+  #     server-port: <port>
+  #     secure: true
+  #     ssl-configuration:
+  #       keystore:
+  #         key-path: <path/to/keystore.p12>
+  #         key-password: <keystore_password>
+  #       truststore:
+  #         key-path:  <path/to/keystore.jks>
+  #         key-password: <truststore_password>
+  external-archiving-system-tenants:
+    - tenant: 1
+      external-archiving-system-references:
+        - archiving-system-id: local
+          tenantIds: [2, 3, 4]
+
 swagger:
   layer: api-external
 

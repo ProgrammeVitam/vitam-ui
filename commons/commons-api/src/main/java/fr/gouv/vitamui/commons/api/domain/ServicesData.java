@@ -535,6 +535,26 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_MANAGEMENT_CONTRACT = UPDATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
 
+    //------------------------------ EXTERNAL REFERENTIALS --------------------------------------
+
+    public static final String SERVICE_CONFIG = "CONFIG";
+
+    public static final String EXTERNAL_REFERENTIAL_PREFIX = "EXTERNAL_REFERENTIAL_";
+
+    public static final String ROLE_GET_EXTERNAL_REFERENTIAL_PREFIX = GET_ROLE_PREFIX + EXTERNAL_REFERENTIAL_PREFIX;
+
+    public static final String ROLE_GET_EXTERNAL_REFERENTIAL_CONFIG =
+        ROLE_GET_EXTERNAL_REFERENTIAL_PREFIX + SERVICE_CONFIG;
+
+    public static final String ROLE_GET_EXTERNAL_REFERENTIAL_AGENCIES =
+        ROLE_GET_EXTERNAL_REFERENTIAL_PREFIX + SERVICE_AGENCIES;
+
+    public static final String ROLE_GET_EXTERNAL_REFERENTIAL_ARCHIVE_PROFILES =
+        ROLE_GET_EXTERNAL_REFERENTIAL_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    public static final String ROLE_GET_EXTERNAL_REFERENTIAL_INGEST_CONTRACTS =
+        ROLE_GET_EXTERNAL_REFERENTIAL_PREFIX + SERVICE_INGEST_CONTRACT;
+
     //@formatter:off
 
     //------------------------------ PROVISIONING USERS ------------------------------------------------
@@ -854,9 +874,14 @@ public class ServicesData {
         ROLE_UPDATE_MANAGEMENT_CONTRACT,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
-        ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE
+        ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE,
 
-            );
+        ROLE_GET_EXTERNAL_REFERENTIAL_CONFIG,
+        ROLE_GET_EXTERNAL_REFERENTIAL_AGENCIES,
+        ROLE_GET_EXTERNAL_REFERENTIAL_ARCHIVE_PROFILES,
+        ROLE_GET_EXTERNAL_REFERENTIAL_INGEST_CONTRACTS
+
+    );
 
     //@formatter:on
     public static List<Role> getAdminVitamUIRoles() {

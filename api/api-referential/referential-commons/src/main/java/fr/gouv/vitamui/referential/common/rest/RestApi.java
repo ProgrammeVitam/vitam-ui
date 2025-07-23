@@ -77,17 +77,20 @@ public abstract class RestApi {
 
     public static final String PROFILES_URL = PREFIX + PROFILE;
 
-    public static final String SEARCH_PATH = "/search";
+    public static final String EXTERNAL_REFERENTIAL_URL = PREFIX + "/external-referential/";
+
+    public static final String CONFIG_PATH = "/config";
+    public static final String AGENCIES_PATH = "/agencies";
+    public static final String INGEST_CONTRACTS_PATH = "/ingestcontracts";
+    public static final String ARCHIVE_PROFILES_PATH = "/profiles";
+    public static final String ARCHIVING_SYSTEM_ID_PARAM = "archivingSystemId";
+    public static final String TENANT_IDENTIFIER_PARAM = "tenantIdentifier";
 
     public static final String UNITS_PATH = "/units";
 
     public static final String DSL_PATH = "/dsl";
 
-    public static final String OBJECTS_PATH = "/objects";
-
     public static final String FILING_PLAN_PATH = "/filingplan";
-
-    public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
 
     public static final String LOGBOOK_MANAGEMENT_OPERATION_PATH = PREFIX + "/logbook-management-operation";
 

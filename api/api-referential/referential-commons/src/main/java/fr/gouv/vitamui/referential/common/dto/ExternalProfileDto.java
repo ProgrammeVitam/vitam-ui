@@ -34,53 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.rest.client.configuration;
+package fr.gouv.vitamui.referential.common.dto;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.springframework.validation.annotation.Validated;
 
-/**
- * The SSLConfiguration stores SSL properties used in HTTPS connections
- *
- *
- */
-
-@Data
+@ToString
+@Getter
+@Setter
 @Accessors(chain = true)
-@Validated
-public class SSLConfiguration {
+public class ExternalProfileDto {
 
-    @Valid
-    private CertificateStoreConfiguration keystore;
-
-    @Valid
-    private CertificateStoreConfiguration truststore;
-
-    private boolean hostnameVerification;
-
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    @RequiredArgsConstructor
-    @ToString(exclude = "keyPassword")
-    @EqualsAndHashCode
-    @Validated
-    public static class CertificateStoreConfiguration {
-
-        private String type = "PKCS12";
-
-        @NotNull
-        private String keyPath;
-
-        @NotNull
-        private String keyPassword;
-    }
+    private String identifier;
+    private String name;
+    private String description;
 }

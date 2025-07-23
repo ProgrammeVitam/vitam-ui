@@ -37,10 +37,18 @@
 package fr.gouv.vitamui.referential.server.config;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Properties specific to API Iam Application.
@@ -49,11 +57,23 @@ import org.springframework.stereotype.Component;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 @Component
 @ConfigurationProperties(prefix = "referential", ignoreUnknownFields = false)
+@Validated
 public class ApiReferentialApplicationProperties {
 
+    @NonNull
     private RestClientConfiguration iamClient;
 
+    @NotNull
     private RestClientConfiguration securityClient;
+
+    @Valid
+    @NotNull
+    private List<ExternalArchivingSystemClientConfig> externalArchivingSystemClients = new ArrayList<>();
+
+    @Valid
+    @NotNull
+    private List<ExternalArchivingSystemTenantConfig> externalArchivingSystemTenants = new ArrayList<>();
 }
