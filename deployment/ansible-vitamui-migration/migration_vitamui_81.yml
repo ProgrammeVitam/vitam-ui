@@ -20,16 +20,33 @@
 - hosts: hosts_vitamui_*
   gather_facts: false
   tasks:
-    - name: Remove all externals & internals VitamUI services packages
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+
+    - name: Find existing VitamUI packages
+      set_fact:
+        vitamui_packages_to_remove: "{{ ansible_facts.packages.keys() | select('match', '^vitamui-.*-(external|internal)$') | list }}"
+
+    - name: Display packages to be removed
+      debug:
+        msg: "VitamUI packages to remove: {{ vitamui_packages_to_remove }}"
+      when: vitamui_packages_to_remove | length > 0
+
+    - name: Display message when no packages found
+      debug:
+        msg: "No VitamUI packages found to remove"
+      when: vitamui_packages_to_remove | length == 0
+
+    - name: Remove externals & internals VitamUI packages
       package:
-        name:
-          - vitamui-*-external
-          - vitamui-*-internal
+        name: "{{ vitamui_packages_to_remove }}"
         state: absent
       register: result
       retries: "{{ packages_install_retries_number | default(2) }}"
       until: result is succeeded
       delay: "{{ packages_install_retries_delay | default(10) }}"
+      when: vitamui_packages_to_remove | length > 0
 
     - block:
 
