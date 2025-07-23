@@ -759,7 +759,7 @@
       "DESCRIPTION": "Description",
       "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
       "NAME_ALREADY_EXISTS": "Name already in use",
-      "VALIDATE_AND_EDIT": "Finish and enter the notice",
+      "VALIDATE_AND_CREATE": "End and create a new agent service",
       "INVALID_FIELD": "Invalid field"
     },
     "TAB": {
