@@ -200,6 +200,10 @@ export class IngestContractInformationTabComponent implements OnInit {
             formData.deactivationDate = new Date();
           }
         }
+        // Set management contract ID to null if undefined
+        if (formData.managementContractId === undefined) {
+          formData.managementContractId = null;
+        }
         return this.ingestContractService.patch(formData).pipe(catchError(() => of(null)));
       }),
     );
