@@ -51,6 +51,7 @@ import { LogbookManagementOperationInformationTabComponent } from './logbook-man
 import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview/logbook-management-operation-preview.component';
 import { LogbookManagementOperationRoutingModule } from './logbook-management-operation-routing.module';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
+import { MatMenuItem } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { LogbookManagementOperationComponent } from './logbook-management-operat
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    MatMenuItem,
   ],
   exports: [
     LogbookManagementOperationListComponent,
