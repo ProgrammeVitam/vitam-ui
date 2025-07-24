@@ -89,6 +89,7 @@ public class ProjectControllerTest extends ApiCollectControllerTest<IdDto> {
                 eq("projectId"),
                 eq(0),
                 eq(10),
+                eq(Optional.empty()),
                 eq(Optional.of("id")),
                 eq(Optional.of(DirectionDto.ASC)),
                 any(VitamContext.class)
