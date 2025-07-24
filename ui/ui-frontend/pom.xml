@@ -11,7 +11,7 @@
   <parent>
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>ui-parent</artifactId>
-    <version>7.1.3</version>
+    <version>7.1.4-SNAPSHOT</version>
   </parent>
 
   <dependencies>
