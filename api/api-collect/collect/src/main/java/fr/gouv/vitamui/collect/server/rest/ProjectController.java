@@ -127,7 +127,7 @@ public class ProjectController {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, projectId);
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.sanitizeCriteria(direction);
-        SanityChecker.sanitizeCriteria(criteria);
+        criteria.ifPresent(SanityChecker::checkSecureParameter);
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
         LOGGER.debug(
             "getTransactionsByProjectPaginated page={}, size={}, criteria={}, orderBy={}, direction={}",
@@ -141,6 +141,7 @@ public class ProjectController {
             projectId,
             page,
             size,
+            criteria,
             orderBy,
             direction,
             externalParametersService.buildVitamContextFromExternalParam()

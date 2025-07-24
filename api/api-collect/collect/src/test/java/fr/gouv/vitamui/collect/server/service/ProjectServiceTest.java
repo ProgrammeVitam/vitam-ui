@@ -478,6 +478,7 @@ class ProjectServiceTest {
                 1,
                 Optional.empty(),
                 Optional.empty(),
+                Optional.empty(),
                 vitamContext
             );
 
@@ -508,6 +509,7 @@ class ProjectServiceTest {
                     PROJECT_ID,
                     1,
                     1,
+                    Optional.empty(),
                     Optional.empty(),
                     Optional.empty(),
                     vitamContext
