@@ -141,7 +141,10 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       email: [null],
       firstname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      mobile: [null, [Validators.required, Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
+      mobile: [
+        null,
+        [...(this.customer.otp !== OtpState.DEACTIVATED ? [Validators.required] : []), Validators.pattern(/^[+]{1}[0-9]{11,12}$/)],
+      ],
       phone: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
       groupId: [null, Validators.required],
       customerId: this.authService.user.customerId,
