@@ -275,6 +275,7 @@ public class ProjectInternalService {
         String projectId,
         Integer page,
         Integer size,
+        Optional<String> criteria,
         Optional<String> orderBy,
         Optional<DirectionDto> direction,
         VitamContext vitamContext
@@ -282,6 +283,7 @@ public class ProjectInternalService {
         // FIXME: page, size, orderBy and direction are not used!
         LOGGER.debug("Page: {}", page);
         LOGGER.debug("Size: {}", size);
+        LOGGER.debug("Criteria: {}", criteria.orElse(null));
         LOGGER.debug("OrderBy: {}", orderBy.orElse(null));
         LOGGER.debug("Direction: {}", direction.orElse(null));
         try {
@@ -297,7 +299,9 @@ public class ProjectInternalService {
             List<TransactionDto> transactionDtos = new ArrayList<>();
             for (JsonNode result : results) {
                 TransactionDto transactionDto = JsonHandler.getFromString(result.toString(), TransactionDto.class);
-                transactionDtos.add(transactionDto);
+                if (criteria.isEmpty() || transactionDto.getStatus().equals(criteria.orElse(null))) {
+                    transactionDtos.add(transactionDto);
+                }
             }
             List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
 

@@ -50,6 +50,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.eq;
+
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = { ProjectExternalController.class })
 public class ProjectExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
@@ -76,12 +78,12 @@ public class ProjectExternalControllerTest extends ApiCollectExternalControllerT
         listTransactions.setValues(List.of(transactionDto));
         Mockito.when(
             projectExternalService.getTransactionsByProjectPaginated(
-                0,
-                10,
-                Optional.empty(),
-                Optional.of("id"),
-                Optional.of(DirectionDto.ASC),
-                "projectId"
+                eq(0),
+                eq(10),
+                eq(Optional.empty()),
+                eq(Optional.of("id")),
+                eq(Optional.of(DirectionDto.ASC)),
+                eq("projectId")
             )
         ).thenReturn(listTransactions);
 

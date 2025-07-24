@@ -123,7 +123,7 @@ public class ProjectExternalController {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, projectId);
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.sanitizeCriteria(direction);
-        SanityChecker.sanitizeCriteria(criteria);
+        criteria.ifPresent(SanityChecker::checkSecureParameter);
         orderBy.ifPresent(SanityChecker::checkSecureParameter);
 
         LOGGER.debug(

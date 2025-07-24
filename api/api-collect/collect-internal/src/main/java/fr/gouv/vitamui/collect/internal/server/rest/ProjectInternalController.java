@@ -219,6 +219,7 @@ public class ProjectInternalController {
     public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction,
         @PathVariable("id") String projectId
@@ -230,6 +231,7 @@ public class ProjectInternalController {
             projectId,
             page,
             size,
+            criteria,
             orderBy,
             direction,
             externalParametersService.buildVitamContextFromExternalParam()

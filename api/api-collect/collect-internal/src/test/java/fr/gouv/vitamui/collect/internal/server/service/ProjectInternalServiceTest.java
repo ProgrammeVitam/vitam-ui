@@ -483,6 +483,7 @@ class ProjectInternalServiceTest {
                 1,
                 Optional.empty(),
                 Optional.empty(),
+                Optional.empty(),
                 vitamContext
             );
 
@@ -513,6 +514,7 @@ class ProjectInternalServiceTest {
                     PROJECT_ID,
                     1,
                     1,
+                    Optional.empty(),
                     Optional.empty(),
                     Optional.empty(),
                     vitamContext
