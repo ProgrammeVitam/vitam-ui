@@ -134,7 +134,7 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
                 getInternalHttpContext(),
                 page,
                 size,
-                checkAuthorization(criteria),
+                criteria,
                 orderBy,
                 direction,
                 projectId

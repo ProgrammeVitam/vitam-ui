@@ -132,7 +132,7 @@ public class CollectInternalRestClient
         final String projectId
     ) {
         final URIBuilder builder = getUriBuilder(getUrl() + "/" + projectId + TRANSACTIONS);
-        SanityChecker.sanitizeCriteria(criteria);
+        criteria.ifPresent(SanityChecker::checkSecureParameter);
         LOGGER.debug(
             "search page={}, size={}, criteria={}, orderBy={}, direction={}",
             page,
