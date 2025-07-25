@@ -88,7 +88,7 @@ export class ArchiveProfileApiService extends PaginatedHttpClient<Profile> {
   }
 
   create(profile: Profile, headers?: HttpHeaders): Observable<Profile> {
-    return this.http.post<Profile>(this.apiUrl + this.pastisConfig.archiveProfileApiPath + '/', profile, { headers });
+    return this.http.post<Profile>(this.apiUrl + this.pastisConfig.archiveProfileApiPath, profile, { headers });
   }
 
   check(profile: Profile, headers?: HttpHeaders): Observable<boolean> {
