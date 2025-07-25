@@ -15,35 +15,35 @@
 
 - name: List external Vitam systems
   set_fact:
-    external_system_ids: "{{ external_vitam.client_configuration | default([]) | map(attribute='archiving_system_id') | list }}"
+    external_system_ids: "{{ external_archiving_systems.client_configuration | default([]) | map(attribute='archiving_system_id') | list }}"
   tags:
     - update_vitamui_configuration
     - update_vitamui_certificates
 
-- name: List existing external Vitam keystores
+- name: List existing external archiving system keystores
   find:
     paths: "{{ vitamui_folder_conf }}"
-    patterns: "keystore_external_vitam_*.p12"
+    patterns: "keystore_external_archiving_system_*.p12"
     file_type: file
   register: found_external_keystores
   tags:
     - update_vitamui_configuration
     - update_vitamui_certificates
 
-- name: List existing external Vitam truststores
+- name: List existing external archiving system truststores
   find:
     paths: "{{ vitamui_folder_conf }}"
-    patterns: "truststore_external_vitam_*.jks"
+    patterns: "truststore_external_archiving_system_*.jks"
     file_type: file
   register: found_external_truststores
   tags:
     - update_vitamui_configuration
     - update_vitamui_certificates
 
-- name: Copy external Vitam keystores
+- name: Copy external archiving system keystores
   copy:
-    src: "{{ inventory_dir }}/external_vitam_keystores/keystore_{{ item }}.p12"
-    dest: "{{ vitamui_folder_conf }}/keystore_external_vitam_{{ item }}.p12"
+    src: "{{ inventory_dir }}/keystores_external_archiving_systems/keystore_{{ item }}.p12"
+    dest: "{{ vitamui_folder_conf }}/keystore_external_archiving_system_{{ item }}.p12"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
@@ -53,10 +53,10 @@
     - update_vitamui_certificates
   notify: restart service
 
-- name: Copy external Vitam truststores
+- name: Copy external archiving system truststores
   copy:
-    src: "{{ inventory_dir }}/external_vitam_keystores/truststore_{{ item }}.jks"
-    dest: "{{ vitamui_folder_conf }}/truststore_external_vitam_{{ item }}.jks"
+    src: "{{ inventory_dir }}/keystores_external_archiving_systems/truststore_{{ item }}.jks"
+    dest: "{{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ item }}.jks"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
@@ -66,20 +66,20 @@
     - update_vitamui_certificates
   notify: restart service
 
-- name: Delete obsolete external Vitam keystores
+- name: Delete obsolete external archiving system keystores
   file:
-    path: "{{ vitamui_folder_conf }}/keystore_external_vitam_{{ item }}.p12"
+    path: "{{ vitamui_folder_conf }}/keystore_external_archiving_system_{{ item }}.p12"
     state: absent
-  loop: "{{ found_external_keystores.files | map(attribute='path') | map('basename') | map('regex_replace', '^keystore_external_vitam_(.*)\\.p12$', '\\1') | list | difference(external_system_ids) }}"
+  loop: "{{ found_external_keystores.files | map(attribute='path') | map('basename') | map('regex_replace', '^keystore_external_archiving_system_(.*)\\.p12$', '\\1') | list | difference(external_system_ids) }}"
   tags:
     - update_vitamui_configuration
     - update_vitamui_certificates
 
-- name: Delete obsolete external Vitam truststores
+- name: Delete obsolete external archiving system truststores
   file:
-    path: "{{ vitamui_folder_conf }}/truststore_external_vitam_{{ item }}.jks"
+    path: "{{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ item }}.jks"
     state: absent
-  loop: "{{ found_external_truststores.files | map(attribute='path') | map('basename') | map('regex_replace', '^truststore_external_vitam_(.*)\\.jks$', '\\1') | list | difference(external_system_ids) }}"
+  loop: "{{ found_external_truststores.files | map(attribute='path') | map('basename') | map('regex_replace', '^truststore_fexternal_archiving_system_(.*)\\.jks$', '\\1') | list | difference(external_system_ids) }}"
   tags:
     - update_vitamui_configuration
     - update_vitamui_certificates
