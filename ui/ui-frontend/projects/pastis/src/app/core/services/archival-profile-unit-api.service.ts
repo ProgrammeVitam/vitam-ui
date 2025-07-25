@@ -51,7 +51,7 @@ export class ArchivalProfileUnitApiService extends PaginatedHttpClient<ArchivalP
   // @ts-ignore
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, pastisConfiguration: PastisConfiguration) {
     // console.log('passage dans service archival API');
-    super(http, baseUrl + pastisConfiguration.archivalProfileUnitApiPath + '/');
+    super(http, baseUrl + pastisConfiguration.archivalProfileUnitApiPath);
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
@@ -64,7 +64,7 @@ export class ArchivalProfileUnitApiService extends PaginatedHttpClient<ArchivalP
 
   updateProfilePua(archivalUnitProfile: ArchivalProfileUnit, headers: HttpHeaders = new HttpHeaders()): Observable<ArchivalProfileUnit> {
     const allHeaders = headers.set(SKIP_ERROR_NOTIFICATION, '1');
-    return this.http.put<ArchivalProfileUnit>(this.apiUrl + archivalUnitProfile.id, archivalUnitProfile, { headers: allHeaders });
+    return this.http.put<ArchivalProfileUnit>(this.apiUrl + '/' + archivalUnitProfile.id, archivalUnitProfile, { headers: allHeaders });
   }
 
   patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
