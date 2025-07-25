@@ -98,10 +98,10 @@ referential:
         secure: true
         ssl-configuration:
           keystore:
-            key-path: {{ vitamui_folder_conf }}/keystore_external_archiving_systems_{{ clientConfig.archiving_system_id }}.p12
+            key-path: {{ vitamui_folder_conf }}/keystore_external_archiving_system_{{ clientConfig.archiving_system_id }}.p12
             key-password: {{ external_archiving_systems.keystore_password[clientConfig.archiving_system_id] }}
           truststore:
-            key-path: {{ vitamui_folder_conf }}/truststore_external_archiving_systems_{{ clientConfig.archiving_system_id }}.jks
+            key-path: {{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ clientConfig.archiving_system_id }}.jks
             key-password: {{ external_archiving_systems.truststore_password[clientConfig.archiving_system_id] }}
     {% endfor %}
   {% endif %}
