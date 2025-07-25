@@ -43,6 +43,7 @@ import {
   PageRequest,
   PaginatedResponse,
   Project,
+  ProjectAttachments,
   SearchCriteriaHistory,
   Transaction,
   VitamuiHttpHeaders,
@@ -78,6 +79,10 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
 
   public update(data: Project): Observable<Project> {
     return super.update(data);
+  }
+
+  public updateAttachments(data: ProjectAttachments): Observable<Project> {
+    return this.http.put<Project>(`${this.apiUrl}/${data.id}/attachments`, data);
   }
 
   public getById(projectId: string): Observable<Project> {

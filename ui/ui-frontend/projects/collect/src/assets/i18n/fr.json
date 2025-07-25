@@ -32,6 +32,15 @@
       "DIALOGS_CANCEL_TITLE": "Sauvegarder les modifications en cours",
       "DIALOGS_CANCEL_CONTENT": "Vous avez effectué des modifications sur les métadonnées descriptives d'un projet. Souhaitez-vous les enregistrer ou les annuler ?"
     },
+    "UPDATE_PROJECT_ATTACHMENTS": {
+      "SAVE": "Confirmer",
+      "TERMINATED": "Les modifications ont été enregistrées",
+      "POPUP_ACTIONS_TITLE": "Périmètre d’application des modifications",
+      "POPUP_ACTIONS_CONTENT_MAJ": "Les modifications effectuées seront appliquées uniquement sur les fichiers nouvellement importés dans la transaction en cours et sur les nouvelles transactions",
+      "DIALOGS_CANCEL_TITLE": "Sauvegarder les modifications en cours",
+      "DIALOGS_CANCEL_CONTENT": "Vous avez effectué des modifications sur le projet de versement. Souhaitez-vous les enregistrer ?",
+      "DIALOGS_CANCEL_UNDO": "Retour à la saisie"
+    },
     "SEARCH_PLACEHOLDER": "Code et intitulé du versement, service versant",
     "APP_BREADCRUMB": "Collecte et préparation des versements",
     "NB_ENTRIES": "{{nb}} projets",

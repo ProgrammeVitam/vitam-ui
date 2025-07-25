@@ -4382,7 +4382,9 @@
     "ONE_SELECTED": "selected",
     "PROJECT_UNIT_PREVIEW": {
       "ACTIONS": {
-        "EDIT_PROJECT": "Edit project",
+        "EDIT_DESCRIPTION": "Edit description",
+        "EDIT_CONTEXT": "Edit context",
+        "EDIT_ATTACHMENTS": "Edit attachment(s)",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
       },
       "ATTACHMENT": {

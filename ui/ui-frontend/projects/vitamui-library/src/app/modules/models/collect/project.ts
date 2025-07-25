@@ -65,6 +65,8 @@ export interface Project extends Id {
   archivingSystemTenant?: number; // external Electronic Archiving System Tenant
 }
 
+export type ProjectAttachments = Pick<Project, 'id' | 'unitUp' | 'unitUps'>;
+
 export interface MetadataUnitUp {
   metadataKey: string;
   metadataValue: string;

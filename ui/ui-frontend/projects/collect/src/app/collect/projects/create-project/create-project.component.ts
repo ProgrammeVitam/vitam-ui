@@ -36,7 +36,7 @@
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
@@ -47,6 +47,7 @@ import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { HttpEventType } from '@angular/common/http';
 import {
+  ExternalReferentialService,
   fetchTitle,
   FilingPlanMode,
   FilingPlanService,
@@ -60,7 +61,6 @@ import {
   ProjectStatus,
   SchemaElement,
   SchemaService,
-  ExternalReferentialService,
   TenantSelectionService,
   Transaction,
   TransactionStatus,
@@ -384,7 +384,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
-      project.unitUp = !this.connectedToArchivingSystem ? this.projectForm.value.unitUp : this.linkParentIdControl.value.included[0];
+      project.unitUp = this.connectedToArchivingSystem ? this.linkParentIdControl.value.included[0] : this.projectForm.value.unitUp;
     } else {
       project.unitUps = this.convertRuleParamsToMetadata();
     }
@@ -392,21 +392,21 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
-    return this.rulesParams.controls.map((ruleParamControl: FormControl) => {
+    return this.rulesParams.controls.map((ruleParamControl: FormGroup) => {
       const ruleParam = ruleParamControl.value;
       const metadataKey = ruleParam.ontologyList.ApiField;
-      const metadataValue = ruleParam.metadataValue[metadataKey];
-      const unitUpValue = ruleParam.unitUpValue?.value;
+      const metadataValue = ruleParam.metadataValue;
+      const unitUpValue = ruleParam.unitUpValue;
       return {
         metadataKey: metadataKey,
         metadataValue: metadataValue,
-        unitUp: this.connectedToArchivingSystem ? unitUpValue : ruleParam.unitUp.included[0],
+        unitUp: this.connectedToArchivingSystem ? ruleParam.unitUp.included[0] : unitUpValue,
       };
     });
   }
 
-  get rulesParams(): FormArray {
-    return this.projectForm.controls.rulesParams as FormArray;
+  get rulesParams(): FormArray<FormGroup> {
+    return this.projectForm.controls.rulesParams as FormArray<FormGroup>;
   }
 
   openCloseRuleParam(ruleParam: any) {
@@ -419,19 +419,19 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     }
 
     const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
-    const metadataValueGroup = this.formBuilder.group({}, { validators: Validators.required });
-
-    ontologyListControl.valueChanges.subscribe((schemaElement) => {
-      metadataValueGroup.addControl(schemaElement?.Path, this.formBuilder.control(undefined));
+    const metadataValueControl = this.formBuilder.control(undefined, Validators.required);
+    ontologyListControl.valueChanges.subscribe(() => {
+      metadataValueControl.setValidators(Validators.required); // To override Validators that may be added by datepicker if changing from datepicker to input
+      metadataValueControl.markAsTouched(); // To make sure error messages appear after changing the ontology
     });
 
     // rulesParams interface:
     const newRuleParamForm = this.formBuilder.group({
       opened: [true],
       ontologyList: ontologyListControl,
-      metadataValue: metadataValueGroup,
+      metadataValue: metadataValueControl,
       unitUpValue: [null],
-      unitUp: [{ included: [], excluded: [] }, oneIncludedNodeRequired()],
+      unitUp: [{ included: [], excluded: [] }, this.connectedToArchivingSystem ? oneIncludedNodeRequired() : undefined],
     });
 
     this.rulesParams.push(newRuleParamForm);
@@ -522,14 +522,6 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         }),
       )
       .subscribe();
-  }
-
-  asFormGroup(control: AbstractControl) {
-    return control as FormGroup;
-  }
-
-  asFormControl(control: AbstractControl) {
-    return control as FormControl;
   }
 
   private readFileContent(file: File): Promise<string> {

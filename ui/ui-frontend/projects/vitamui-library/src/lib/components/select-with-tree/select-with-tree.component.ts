@@ -367,7 +367,13 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
 
   private updatedSelectedOptions() {
     if (this.matSelect?.options) {
-      this.checklistSelection.selected.forEach((n) => this.matSelect.options.find((option) => option.value === n.item)?.select());
+      this.checklistSelection.selected.forEach((n) =>
+        this.matSelect.options
+          .find((option) => option.value === n.item)
+          ?.select(
+            false, // Do not make form control dirty otherwise it would be dirty when the value is initialized
+          ),
+      );
     }
   }
 

@@ -89,6 +89,22 @@ export class SchemaService {
     return this.getSchema(Collection.ARCHIVE_UNIT).pipe(map(this.buildTree));
   }
 
+  public getMetadataKeysByKeys(keys: string[], schema: ItemNode<SchemaElement>[]) {
+    let res: ItemNode<SchemaElement>[] = [];
+    for (const node of schema) {
+      if (keys.includes(node.item.ApiField)) {
+        res.push(node);
+      }
+      if (node.children) {
+        const child = this.getMetadataKeysByKeys(keys, node.children);
+        if (child) {
+          res = [...res, ...child];
+        }
+      }
+    }
+    return res;
+  }
+
   private buildTree: (schema: Schema) => ItemNode<SchemaElement>[] = (schema: Schema): ItemNode<SchemaElement>[] => {
     const rootNode = schema
       .filter((e) => (e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL') && e.FieldName !== '_sp' && e.FieldName !== '_sps')

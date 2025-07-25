@@ -4382,7 +4382,9 @@
     "ONE_SELECTED": "sélectionné",
     "PROJECT_UNIT_PREVIEW": {
       "ACTIONS": {
-        "EDIT_PROJECT": "Modifier le projet de versement",
+        "EDIT_DESCRIPTION": "Modifier la description",
+        "EDIT_CONTEXT": "Modifier le contexte",
+        "EDIT_ATTACHMENTS": "Modifier le(s) rattachement(s)",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Accéder aux archives"
       },
       "ATTACHMENT": {
