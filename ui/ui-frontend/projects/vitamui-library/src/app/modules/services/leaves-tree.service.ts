@@ -187,6 +187,7 @@ export class LeavesTreeService {
   private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult): void {
     if (pagedResult.results.length === 0) return;
     const realParentId = parentNode.unitType === 'VIRTUAL' ? parentNode.realParentId : parentNode.id;
+
     const vupsList = pagedResult.results
       .filter((unit) => {
         return unit['#unitups']?.includes(realParentId) && this.hasVirtualAttachement(unit);
@@ -231,9 +232,8 @@ export class LeavesTreeService {
   private reattachVirtualUnits(pagedResult: PagedResult): Unit[] {
     const updatedUnits = (pagedResult.results || []).map((unit: Unit) => {
       const vups = unit['#vups'] || [];
-      const filePlanPosition = unit.FilePlanPosition || [];
       if (this.hasVirtualAttachement(unit)) {
-        unit['#unitups'] = filePlanPosition.map((pos) => `/${pos}`);
+        unit['#unitups'] = vups.map((pos) => `${pos}`);
         unit['#allunitups'] = [...(unit['#allunitups'] || []), ...vups];
       }
 
@@ -254,7 +254,6 @@ export class LeavesTreeService {
 
   private hasVirtualAttachement(unit: Unit) {
     const vups = unit['#vups'] || [];
-    const filePlanPosition = unit.FilePlanPosition || [];
-    return vups.length > 0 && filePlanPosition.length > 0;
+    return vups.length > 0;
   }
 }

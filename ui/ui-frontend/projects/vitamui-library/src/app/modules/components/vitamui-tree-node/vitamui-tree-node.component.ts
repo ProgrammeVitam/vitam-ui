@@ -41,13 +41,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 import { UnitType } from '../../models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
-  imports: [FormsModule, MatButtonModule, MatCheckboxModule, CommonTooltipModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, CommonTooltipModule],
+  standalone: true,
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
   @Input() node: FilingHoldingSchemeNode;
