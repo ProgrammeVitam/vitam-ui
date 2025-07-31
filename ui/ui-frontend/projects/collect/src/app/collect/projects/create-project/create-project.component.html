@@ -3,6 +3,7 @@
   [subhead]="'COLLECT.MODAL.TITLE' | translate"
   [title]="[
     'COLLECT.MODAL.WORKFLOW_CHOICE' | translate,
+    'COLLECT.PROJECT_REFERENTIAL_CONNECTION_SUB_TITLE' | translate,
     'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate,
     'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate,
     (selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_SUB_TITLE' : 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE') | translate,
@@ -26,7 +27,7 @@
 
 <form [formGroup]="projectForm">
   <vitamui-stepper #stepper [(selectedIndex)]="stepIndex">
-    <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/6 : Choix du type de projet ########## -->
+    <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/8 : Choix du type de projet ########## -->
     <cdk-step>
       <mat-dialog-content>
         <div class="main-content">
@@ -48,12 +49,58 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- ########## stepIndex 2 : workflow 1-2-3 , step 2/6 : Description du versement ########## -->
+    <!-- ########## stepIndex 2 : workflow 1-2-3 , step 2/8 : Connexion aux référentiels ########## -->
+    <cdk-step>
+      <mat-dialog-content>
+        <div class="main-content">
+          <div class="toggle-right">
+            <vitamui-slide-toggle
+              class="fields-padding d-flex"
+              [checked]="true"
+              formControlName="connectedToArchivingSystem"
+              (change)="onConnectedToArchivingSystemChangeValue()"
+            >
+              {{
+                easOptions.length > 1
+                  ? ('COLLECT.PROJECT_REFERENTIAL_CONNECTION_BUTTON' | translate)
+                  : ('COLLECT.PROJECT_REFERENTIAL_CONNECTION_LOCALLY_BUTTON' | translate)
+              }}
+            </vitamui-slide-toggle>
+          </div>
+          <vitamui-select
+            formControlName="archivingSystemId"
+            [placeholder]="'COLLECT.PROJECT_REFERENTIAL_EAS' | translate"
+            (change)="onArchivingSystemIdChangeValue()"
+            [options]="easOptions"
+            [multiple]="false"
+            [required]="true"
+            [enableSearch]="true"
+            *ngIf="connectedToArchivingSystem && easOptions.length > 1"
+          ></vitamui-select>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [disabled]="stepConnectingToRefEASIsInvalid()"></vitamui-next-step>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+
+    <!-- ########## stepIndex 3 : workflow 1-2-3 , step 3/8 :  Description du versement ########## -->
     <cdk-step>
       <mat-dialog-content>
         <div class="gap-3 align-items-stretch">
           <div class="row">
-            <vitamui-input class="col" formControlName="messageIdentifier" [placeholder]="'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate">
+            <vitamui-input
+              class="col"
+              formControlName="messageIdentifier"
+              [placeholder]="'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate"
+              required
+            >
             </vitamui-input>
           </div>
           <div class="row">
@@ -66,35 +113,42 @@
             </vitamui-input>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <div class="text medium light">{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</div>
-            </div>
-            <div class="col toggle-right">
-              <vitamui-slide-toggle class="fields-padding d-flex" [checked]="false" [disabled]="true">
-                {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
-              </vitamui-slide-toggle>
-            </div>
-          </div>
-
-          <div class="row">
-            <vitamui-input
-              class="col-5"
+          <div class="row" *ngIf="connectedToArchivingSystem">
+            <vitamui-select
+              class="col-6 w-100"
               formControlName="originatingAgencyIdentifier"
               [placeholder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate"
-            >
-            </vitamui-input>
-            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate">
-            </vitamui-input>
-          </div>
-          <div class="row">
-            <vitamui-input
-              class="col-5"
+              [options]="agenciesOptions"
+              [multiple]="false"
+              [required]="true"
+              [enableSearch]="true"
+            ></vitamui-select>
+
+            <vitamui-select
+              class="col-6 w-100"
               formControlName="submissionAgencyIdentifier"
               [placeholder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate"
+              [options]="agenciesOptions"
+              [multiple]="false"
+              [required]="true"
+              [enableSearch]="true"
+            ></vitamui-select>
+          </div>
+
+          <div class="row" *ngIf="!connectedToArchivingSystem">
+            <vitamui-input
+              class="col-6 w-100"
+              formControlName="originatingAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY_ID' | translate }}"
+              required
             >
             </vitamui-input>
-            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate">
+            <vitamui-input
+              class="col-6 w-100"
+              formControlName="submissionAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY_ID' | translate }}"
+              required
+            >
             </vitamui-input>
           </div>
         </div>
@@ -110,72 +164,118 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- ########## stepIndex 3 : workflow 1-2-3 , step 3/6 : Contexte du versement ########## -->
+    <!-- ########## stepIndex 4 : workflow 1-2-4 , step 4/8 : Contexte du versement ########## -->
     <cdk-step>
       <mat-dialog-content>
-        <div class="row">
-          <div class="col"></div>
-          <div class="col toggle-right">
-            <vitamui-slide-toggle class="fields-padding" [checked]="false" [disabled]="true">
-              {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
-            </vitamui-slide-toggle>
-          </div>
-        </div>
-        <div class="gap-3 align-items-stretch">
+        <div class="gap-3 align-items-stretch" *ngIf="connectedToArchivingSystem">
           <div class="row">
-            <vitamui-input
-              class="col-5"
+            <vitamui-select
+              class="col-6 w-100"
               formControlName="archivalAgencyIdentifier"
               [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
-            >
-            </vitamui-input>
-            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate">
-            </vitamui-input>
-          </div>
-          <div class="row">
-            <vitamui-input
-              class="col-5"
+              [options]="agenciesOptions"
+              [multiple]="false"
+              [required]="true"
+              [enableSearch]="true"
+            ></vitamui-select>
+            <vitamui-select
+              class="col-6 w-100"
               formControlName="transferringAgencyIdentifier"
               [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate"
-            >
-            </vitamui-input>
-            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate">
-            </vitamui-input>
+              [options]="agenciesOptions"
+              [multiple]="false"
+              [required]="true"
+              [enableSearch]="true"
+            ></vitamui-select>
           </div>
           <div class="row">
-            <vitamui-input
-              class="col-5"
+            <vitamui-select
+              class="col-6 w-100"
               formControlName="archivalAgreement"
               [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate"
+              [options]="archivalAgreementOptions"
+              [multiple]="false"
+              [required]="true"
+              [enableSearch]="true"
+            ></vitamui-select>
+            <vitamui-select
+              class="col-6 w-100"
+              formControlName="archiveProfile"
+              [placeholder]="'archiveProfile' | translate"
+              [options]="archiveProfileOptions"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </div>
+          <div class="row">
+            <vitamui-select
+              class="col-6 w-100"
+              formControlName="acquisitionInformation"
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+              [options]="acquisitionInformationsList"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+            <vitamui-select
+              class="col-6 w-100"
+              formControlName="legalStatus"
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+              [options]="legalStatusList"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </div>
+        </div>
+        <div class="gap-3 align-items-stretch" *ngIf="!connectedToArchivingSystem">
+          <div class="row">
+            <vitamui-input
+              class="col-6"
+              formControlName="archivalAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY_ID' | translate }}"
+              required
             >
             </vitamui-input>
-            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate">
+            <vitamui-input
+              class="col-6"
+              formControlName="transferringAgencyIdentifier"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY_ID' | translate }}"
+              required
+            >
             </vitamui-input>
           </div>
           <div class="row">
             <vitamui-input
-              class="col-5"
-              formControlName="archiveProfile"
-              [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate"
+              class="col-6"
+              formControlName="archivalAgreement"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT_ID' | translate }}"
+              required
             >
             </vitamui-input>
-            <vitamui-input [disabled]="true" class="col" [placeholder]="'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate">
+            <vitamui-input
+              class="col-6"
+              formControlName="archiveProfile"
+              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE_ID' | translate }}"
+            >
             </vitamui-input>
           </div>
-          <vitamui-select
-            formControlName="acquisitionInformation"
-            [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
-            [options]="acquisitionInformationsList"
-            [multiple]="false"
-            [enableSearch]="false"
-          ></vitamui-select>
-          <vitamui-select
-            formControlName="legalStatus"
-            [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
-            [options]="legalStatusList"
-            [multiple]="false"
-            [enableSearch]="false"
-          ></vitamui-select>
+          <div class="row">
+            <vitamui-select
+              class="col-6 w-100"
+              formControlName="acquisitionInformation"
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+              [options]="acquisitionInformationsList"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+            <vitamui-select
+              class="col-6 w-100"
+              formControlName="legalStatus"
+              [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+              [options]="legalStatusList"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </div>
         </div>
       </mat-dialog-content>
       <mat-dialog-actions>
@@ -189,7 +289,7 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- ########## stepIndex 4 : workflow 1     , step 4/6 : Choix des fichiers à upload ########## -->
+    <!-- ########## stepIndex 5 : workflow 1     , step 5/8 : Choix des fichiers à upload ########## -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <mat-dialog-content>
         <div class="main-content">
@@ -197,7 +297,7 @@
             <vitamui-select
               class="w-100"
               [placeholder]="'COLLECT.MODAL.IMPORT_TYPE_PLACEHOLDER' | translate"
-              [(ngModel)]="importType"
+              formControlName="importType"
               [options]="[
                 { key: 'DIRECTORIES_FILES', label: 'COLLECT.MODAL.IMPORT_TYPE_DIRECTORIES_FILES' | translate },
                 { key: 'COMPRESSED', label: 'COLLECT.MODAL.IMPORT_TYPE_COMPRESSED' | translate },
@@ -231,7 +331,7 @@
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <vitamui-next-step [disabled]="!importType || filesToUpload.length < 1"></vitamui-next-step>
+          <vitamui-next-step [disabled]="importTypeIsInvalid() || filesToUpload.length < 1"></vitamui-next-step>
           <button (click)="onClose()" class="btn cancel link" type="button">
             {{ 'COMMON.UNDO' | translate }}
           </button>
@@ -240,7 +340,7 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- stepIndex 5 : workflow 2-3   , step 4/6 : Choisir le type de rattachement -->
+    <!-- stepIndex 6 : workflow 2-3   , step 6/8 : Choisir le type de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
       <mat-dialog-content>
         <div class="main-content gap-4">
@@ -278,18 +378,26 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- stepIndex 6 : workflow 1-2   , step 5/6 : Définir la position fixe de rattachement -->
+    <!-- stepIndex 7 : workflow 1-2   , step 7/8 : Définir la position fixe de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX">
       <mat-dialog-content>
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
-              *ngIf="units"
+              *ngIf="units && connectedToArchivingSystem"
               [dataSource]="units"
               [formControl]="linkParentIdControl"
               [mode]="FilingPlanMode.SOLO"
             >
             </vitamui-library-filing-plan>
+            <vitamui-input
+              class="w-100"
+              *ngIf="!connectedToArchivingSystem"
+              [required]="connectedToArchivingSystem"
+              [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate"
+              formControlName="unitUp"
+            >
+            </vitamui-input>
           </div>
         </div>
       </mat-dialog-content>
@@ -310,7 +418,7 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- stepIndex 7 : workflow 3     , step 5/6 : Parametrer les regles de rattachement -->
+    <!-- stepIndex 7 : workflow 3     , step 5/8 : Parametrer les regles de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW && selectedFlowType === FlowType.RULES">
       <mat-dialog-content>
         <div class="main-content">
@@ -329,7 +437,7 @@
                       ></i>
                     </div>
                     <div class="d-flex align-items-center shrink object-name">
-                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) + getNodeTitle(ruleParamForm.value.unitUp) }}
+                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) + getNodeTitle(ruleParamForm.value) }}
                     </div>
                   </div>
                   <div class="d-flex align-items-center split">
@@ -382,12 +490,20 @@
                       <div class="col">
                         <label class="medium text bold mb-3">{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
                         <vitamui-library-filing-plan
-                          *ngIf="units"
+                          *ngIf="units && connectedToArchivingSystem"
                           [dataSource]="units"
                           [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
                           [mode]="FilingPlanMode.SOLO"
                         >
                         </vitamui-library-filing-plan>
+                        <vitamui-input
+                          class="w-100"
+                          *ngIf="!connectedToArchivingSystem"
+                          required
+                          [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate"
+                          [formControl]="asFormControl(ruleParamForm.get('unitUpValue'))"
+                        >
+                        </vitamui-input>
                       </div>
                     </div>
                   </div>
@@ -415,7 +531,7 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- ########## stepIndex 6 : workflow 2     , step 6/6 : Choix des fichiers à upload ########## -->
+    <!-- ########## stepIndex 6 : workflow 2     , step 6/8 : Choix des fichiers à upload ########## -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
       <mat-dialog-content>
         <div class="w-100">
@@ -442,7 +558,7 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- stepIndex 8 : workflow 1     , step 6/6     : Zip des fichiers et upload -->
+    <!-- stepIndex 8 : workflow 1     , step 8/8     : Zip des fichiers et upload -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <mat-dialog-content>
         <div class="main-content">
@@ -477,7 +593,7 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    <!-- workflow 2-3 step 6/6   : Projet de versement cree -->
+    <!-- workflow 2-3 step 8/8   : Projet de versement cree -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
       <mat-dialog-content>
         <div class="main-content">

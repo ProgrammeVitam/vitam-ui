@@ -53,3 +53,9 @@ export interface Profile extends Id {
   usersCount?: number;
   photo?: string;
 }
+
+export interface ProfileLight {
+  name: string;
+  identifier: string;
+  description: string;
+}

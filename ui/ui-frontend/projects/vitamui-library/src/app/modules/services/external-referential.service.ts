@@ -34,69 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id } from '../id.interface';
-import { FacetDetails } from '../operation';
-import { ProjectStatus } from './project-status';
+import { Inject, Injectable } from '@angular/core';
+import { PaginatedHttpClient } from '../paginated-http-client';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BASE_URL } from '../injection-tokens';
+import { Observable } from 'rxjs';
+import { ElectronicArchivingSystem, IngestContractLight, ProfileLight } from '../models';
+import { AgencyLight } from '../models/agency/agency.interface';
 
-export interface Project extends Id {
-  name: string;
-  archivalAgreement: string;
-  messageIdentifier: string;
-  archivalAgencyIdentifier: string;
-  transferringAgencyIdentifier: string;
-  originatingAgencyIdentifier: string;
-  submissionAgencyIdentifier: string;
-  archivalProfile: string;
-  archiveProfile?: string;
-  acquisitionInformation?: string;
-  legalStatus?: string;
-  unitUp: string;
-  unitUps: Array<MetadataUnitUp>;
-  comment: string;
-  status: ProjectStatus;
-  createdOn?: Date;
-  lastModifyOn?: Date;
-  facets?: FacetDetails[];
-  tenant?: string;
-  automaticIngest?: boolean;
-  transformationRules?: string;
-  connectedToArchivingSystem?: boolean;
-  archivingSystemId?: string; // external Electronic Archiving System Id
-}
+@Injectable({
+  providedIn: 'root',
+})
+export class ExternalReferentialService extends PaginatedHttpClient<any> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/external-referential');
+  }
 
-export interface MetadataUnitUp {
-  metadataKey: string;
-  metadataValue: string;
-  unitUp: string;
-}
+  getAgencies(archivingSystemId: string, tenantIdentifier: number): Observable<AgencyLight[]> {
+    const params = new HttpParams().set('archivingSystemId', archivingSystemId).set('tenantIdentifier', tenantIdentifier);
+    return this.http.get<AgencyLight[]>(`${this.apiUrl}/agencies`, { params });
+  }
 
-export interface ElectronicArchivingSystem {
-  archivingSystemId: string;
-  name: string;
-  tenantIds: number[];
-}
+  archivalIngestContracts(archivingSystemId: string, tenantIdentifier: number): Observable<IngestContractLight[]> {
+    const params = new HttpParams().set('archivingSystemId', archivingSystemId).set('tenantIdentifier', tenantIdentifier);
+    return this.http.get<IngestContractLight[]>(`${this.apiUrl}/ingestcontracts`, { params });
+  }
 
-export enum Workflow {
-  MANUAL = 'MANUAL',
-  FLOW = 'FLOW',
-}
+  archiveProfiles(archivingSystemId: string, tenantIdentifier: number): Observable<ProfileLight[]> {
+    const params = new HttpParams().set('archivingSystemId', archivingSystemId).set('tenantIdentifier', tenantIdentifier);
+    return this.http.get<ProfileLight[]>(`${this.apiUrl}/profiles`, { params });
+  }
 
-export enum FlowType {
-  FIX = 'FIX',
-  RULES = 'RULES',
-}
-
-export function getProjectWorkflow(project: Project): Workflow {
-  // If automaticIngest is not set, this is a MANUAL workflow
-  const isManual = project.automaticIngest === null;
-  return isManual ? Workflow.MANUAL : Workflow.FLOW;
-}
-
-export function getProjectIcon(project: Project): string {
-  switch (getProjectWorkflow(project)) {
-    case Workflow.FLOW:
-      return 'vitamui-icon-ic40-flux-industriel';
-    case Workflow.MANUAL:
-      return 'vitamui-icon-ic40-flux-manuel';
+  getElectronicArchivingSystemList(): Observable<ElectronicArchivingSystem[]> {
+    return this.http.get<ElectronicArchivingSystem[]>(`${this.apiUrl}/config`);
   }
 }

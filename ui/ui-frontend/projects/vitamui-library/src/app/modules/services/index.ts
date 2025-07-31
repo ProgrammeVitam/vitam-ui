@@ -38,4 +38,5 @@ export * from './access-contract.service';
 export * from './leaves-tree-api.service';
 export * from './leaves-tree.service';
 export * from './profile.service';
+export * from './external-referential.service';
 export * from './search-archive-units.interface';
