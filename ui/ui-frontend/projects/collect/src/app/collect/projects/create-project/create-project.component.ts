@@ -75,7 +75,7 @@ export enum ImportType {
   COMPRESSED = 'COMPRESSED',
 }
 
-const TENANT_SEPARATOR = ' - Tenant - ';
+const TENANT_SEPARATOR = ' - Tenant ';
 const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
 
 @Component({
@@ -187,9 +187,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         this.easOptions = easOptions;
         const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
         const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
-        this.projectForm.get('archivingSystemId')?.setValue(defaultKey);
+        this.projectForm.get('archivingSystem')?.setValue(defaultKey);
         this.projectForm.get('connectedToArchivingSystem')?.setValue(true);
-        this.onArchivingSystemIdChangeValue();
+        this.onArchivingSystemChangeValue();
       });
   }
 
@@ -198,6 +198,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   onConnectedToArchivingSystemChangeValue(): void {
+    this.resetExternalReferentialIdentifiers();
+  }
+
+  resetExternalReferentialIdentifiers(): void {
     this.projectForm.get('submissionAgencyIdentifier')?.setValue(null);
     this.projectForm.get('originatingAgencyIdentifier')?.setValue(null);
     this.projectForm.get('archivalAgencyIdentifier')?.setValue(null);
@@ -206,8 +210,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.projectForm.get('archiveProfile')?.setValue(null);
   }
 
-  onArchivingSystemIdChangeValue(): void {
-    const input: string = this.projectForm.get('archivingSystemId')?.value;
+  onArchivingSystemChangeValue(): void {
+    this.resetExternalReferentialIdentifiers();
+
+    const input: string = this.projectForm.get('archivingSystem')?.value;
     if (!input) return;
 
     const [archivingSystemId, tenantStr] = input.split(TENANT_SEPARATOR);
@@ -284,7 +290,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   /*** Form validator Step : /*** Form validator Step : Description du versement ***/
   stepConnectingToRefEASIsInvalid() {
-    return this.connectedToArchivingSystem && this.projectForm.controls.archivingSystemId.invalid;
+    return this.connectedToArchivingSystem && this.projectForm.controls.archivingSystem.invalid;
   }
 
   importTypeIsInvalid() {
@@ -325,8 +331,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       automaticIngest: [true],
       referentialCheckup: [false],
       connectedToArchivingSystem: [false],
-      archivingSystemId: [null],
-
+      archivingSystem: [null],
       archivalAgreement: [null],
       messageIdentifier: [null],
       archivalAgencyIdentifier: [null],
@@ -350,6 +355,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   private formToProject(): Project {
+    const archivingSystemIdAndTenant: string = this.projectForm.get('archivingSystem')?.value;
+
+    const [archivingSystemId, tenantStr] = archivingSystemIdAndTenant ? archivingSystemIdAndTenant.split(TENANT_SEPARATOR) : [null, null];
+    const archivingSystemTenant = tenantStr ? Number(tenantStr) : null;
+
     const project: Project = {
       name: this.projectForm.value.messageIdentifier,
       archivalAgreement: this.projectForm.value.archivalAgreement,
@@ -364,7 +374,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       legalStatus: this.projectForm.value.legalStatus,
       comment: this.projectForm.value.comment,
       connectedToArchivingSystem: this.projectForm.value.connectedToArchivingSystem,
-      archivingSystemId: this.projectForm.value.archivingSystemId,
+      archivingSystemId: archivingSystemId,
+      archivingSystemTenant: archivingSystemTenant,
       status: ProjectStatus.OPEN,
       transformationRules: this.projectForm.value.transformationRules,
       automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,

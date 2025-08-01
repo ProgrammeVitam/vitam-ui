@@ -298,7 +298,10 @@ customer-init:
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
         - ROLE_COLLECT_RECLASSIFICATION
-
+        - ROLE_GET_EXTERNAL_REFERENTIAL_CONFIG
+        - ROLE_GET_EXTERNAL_REFERENTIAL_AGENCIES
+        - ROLE_GET_EXTERNAL_REFERENTIAL_ARCHIVE_PROFILES
+        - ROLE_GET_EXTERNAL_REFERENTIAL_INGEST_CONTRACTS
 
     - name: Archiviste - gestion et collecte
       description: Profil de collecte et préparation des versements avec droit de transmettre les archives au SAE
@@ -328,6 +331,10 @@ customer-init:
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
         - ROLE_COLLECT_RECLASSIFICATION
+        - ROLE_GET_EXTERNAL_REFERENTIAL_CONFIG
+        - ROLE_GET_EXTERNAL_REFERENTIAL_AGENCIES
+        - ROLE_GET_EXTERNAL_REFERENTIAL_ARCHIVE_PROFILES
+        - ROLE_GET_EXTERNAL_REFERENTIAL_INGEST_CONTRACTS
 
     - name: Service producteur
       description: Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE
@@ -351,6 +358,10 @@ customer-init:
         - ROLE_GET_UNITS
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_GET_EXTERNAL_REFERENTIAL_CONFIG
+        - ROLE_GET_EXTERNAL_REFERENTIAL_AGENCIES
+        - ROLE_GET_EXTERNAL_REFERENTIAL_ARCHIVE_PROFILES
+        - ROLE_GET_EXTERNAL_REFERENTIAL_INGEST_CONTRACTS
 
     - name: Pastis-Gestion des profils documentaires
       description: Pastis-Gestion des profils documentaires

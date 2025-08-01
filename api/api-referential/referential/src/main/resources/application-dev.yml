@@ -60,7 +60,7 @@ referential:
     - archiving-system-id: MyExternalEnv
       name: "MY EXTERNAL ENV NAME"
       access-external-client:
-        server-host: itrec.env-api.programmevitam.fr
+        server-host: access-external-host
         server-port: 443
         secure: true
         ssl-configuration:

@@ -80,5 +80,6 @@ public class CollectProjectDto extends IdDto {
     private String lastModifyOn;
     private Boolean automaticIngest;
     private String archivingSystemId;
+    private Integer archivingSystemTenant;
     private Boolean connectedToArchivingSystem;
 }
