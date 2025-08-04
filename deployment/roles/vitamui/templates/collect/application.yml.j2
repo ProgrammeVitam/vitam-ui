@@ -91,6 +91,8 @@ collect:
 
 ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json
 
+tree-nodes-search-facets-size: {{ vitamui_struct.tree_nodes_search_facets_size}}
+
 {% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
   jaeger:

@@ -239,7 +239,6 @@ public class ArchiveSearchConsts {
     public static final String ORIGINATING_AGENCY_ID_FIELD = "SP_CODE";
 
     public static final int DEFAULT_DEPTH = 10;
-    public static final int FACET_SIZE_MULTIPLIER = 100;
 
     /* Query fields */
     public static final String IDENTIFIER = "Identifier";

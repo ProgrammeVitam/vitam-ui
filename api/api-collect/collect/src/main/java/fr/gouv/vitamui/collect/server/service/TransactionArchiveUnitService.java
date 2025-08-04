@@ -179,6 +179,10 @@ public class TransactionArchiveUnitService {
     @Value("${ontologies_file_path}")
     private String ontologiesFilePath;
 
+    @Value("${tree-nodes-search-facets-size:1000}")
+    @NotNull
+    private Integer treeNodesSearchFacetsSiz;
+
     public VitamUIArchiveUnitResponseDto searchArchiveUnitsByCriteria(
         String transactionId,
         SearchCriteriaDto searchQuery,
@@ -189,7 +193,7 @@ public class TransactionArchiveUnitService {
         SanityChecker.sanitizeCriteria(searchQuery);
         SelectMultiQuery searchQuerySelectMultiQuery = isEmpty(searchQuery.getCriteriaList())
             ? getBasicQuery(searchQuery)
-            : createDslQueryWithFacets(searchQuery);
+            : createDslQueryWithFacets(searchQuery, treeNodesSearchFacetsSiz);
         /* Perform query */
         JsonNode searchQueryToDSL = searchQuerySelectMultiQuery.getFinalSelect();
         final RequestResponse<JsonNode> result = collectService.searchUnitsByTransactionId(
