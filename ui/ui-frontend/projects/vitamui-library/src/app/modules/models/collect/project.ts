@@ -61,7 +61,8 @@ export interface Project extends Id {
   automaticIngest?: boolean;
   transformationRules?: string;
   connectedToArchivingSystem?: boolean;
-  archivingSystemId?: string; // external Electronic Archiving System Id
+  archivingSystemId?: string; // External Electronic Archiving System Id
+  archivingSystemTenant?: number; // external Electronic Archiving System Tenant
 }
 
 export interface MetadataUnitUp {

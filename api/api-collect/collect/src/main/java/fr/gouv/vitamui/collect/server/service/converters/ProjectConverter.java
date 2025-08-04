@@ -68,6 +68,7 @@ public class ProjectConverter {
             .automaticIngest(projectDto.getAutomaticIngest())
             .transformationRules(projectDto.getTransformationRules())
             .archivingSystemId(projectDto.getArchivingSystemId())
+            .archivingSystemTenant(projectDto.getArchivingSystemTenant())
             .connectedToArchivingSystem(projectDto.getConnectedToArchivingSystem())
             .build();
     }
@@ -114,6 +115,7 @@ public class ProjectConverter {
         externalDto.setAutomaticIngest(collectProjectDto.getAutomaticIngest());
         externalDto.setTransformationRules(collectProjectDto.getTransformationRules());
         externalDto.setArchivingSystemId(collectProjectDto.getArchivingSystemId());
+        externalDto.setArchivingSystemTenant(collectProjectDto.getArchivingSystemTenant());
         externalDto.setConnectedToArchivingSystem(collectProjectDto.getConnectedToArchivingSystem());
         return externalDto;
     }

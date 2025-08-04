@@ -65,6 +65,9 @@ class ProjectConverterTest {
             .status("status")
             .name("name")
             .automaticIngest(true)
+            .archivingSystemId("archivingSystemId")
+            .archivingSystemTenant(12)
+            .connectedToArchivingSystem(true)
             .build();
     }
 
@@ -97,6 +100,9 @@ class ProjectConverterTest {
         externalDto.setLastUpdate("lastModifyOn_lastUpdate");
         externalDto.setName("name");
         externalDto.setAutomaticIngest(true);
+        externalDto.setArchivingSystemId("archivingSystemId");
+        externalDto.setArchivingSystemTenant(12);
+        externalDto.setConnectedToArchivingSystem(true);
         return externalDto;
     }
 
