@@ -246,6 +246,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
             this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+          } else if (node.isVirtual) {
+            this.removeCriteria('VIRTUAL', { id: node.id, value: node.id }, false);
+            this.removeCriteria('NODE', { id: node.realParentId, value: node.realParentId }, false);
           } else {
             this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
           }
@@ -264,9 +267,25 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             false,
           );
         } else {
+          let id = node.id;
+          if (node.isVirtual) {
+            id = node.realParentId;
+
+            this.addCriteria(
+              'VIRTUAL',
+              { id: node.id, value: node.id },
+              node.title,
+              true,
+              CriteriaOperator.EQ,
+              SearchCriteriaTypeEnum.FIELDS,
+              false,
+              CriteriaDataType.STRING,
+              false,
+            );
+          }
           this.addCriteria(
             'NODE',
-            { id: node.id, value: node.id },
+            { id: id, value: id },
             node.title,
             true,
             CriteriaOperator.EQ,

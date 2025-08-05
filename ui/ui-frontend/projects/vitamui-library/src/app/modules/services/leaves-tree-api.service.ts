@@ -164,6 +164,12 @@ export class LeavesTreeApiService {
     if (!this.prepareSearch(parentNode, false)) {
       return EMPTY;
     }
+    let values;
+    if (parentNode.unitType === UnitType.VIRTUAL) {
+      values = [{ id: parentNode.realParentId, value: parentNode.realParentId }];
+    } else {
+      values = [{ id: parentNode.id, value: parentNode.id }];
+    }
     const searchCriteria: SearchCriteriaDto = {
       pageNumber: Math.floor(parentNode.paginatedChildrenLoaded / DEFAULT_UNIT_PAGE_SIZE),
       size: DEFAULT_UNIT_PAGE_SIZE,
@@ -172,7 +178,7 @@ export class LeavesTreeApiService {
           criteria: '#unitups',
           operator: CriteriaOperator.IN,
           category: SearchCriteriaTypeEnum.FIELDS,
-          values: [{ id: parentNode.id, value: parentNode.id }],
+          values: values,
           dataType: CriteriaDataType.STRING,
         },
       ],
@@ -193,11 +199,25 @@ export class LeavesTreeApiService {
       return EMPTY;
     }
     const newCriteriaList = [...searchCriterias.criteriaList];
+    let values;
+    if (parentNode.unitType === UnitType.VIRTUAL) {
+      newCriteriaList.push({
+        criteria: '#vups',
+        operator: CriteriaOperator.EQ,
+        category: SearchCriteriaTypeEnum.FIELDS,
+        values: [{ id: parentNode.id, value: parentNode.id }],
+        dataType: CriteriaDataType.STRING,
+      });
+      values = [{ id: parentNode.realParentId, value: parentNode.realParentId }];
+    } else {
+      values = [{ id: parentNode.id, value: parentNode.id }];
+    }
+
     newCriteriaList.push({
       criteria: '#unitups',
       operator: CriteriaOperator.IN,
       category: SearchCriteriaTypeEnum.FIELDS,
-      values: [{ id: parentNode.id, value: parentNode.id }],
+      values: values,
       dataType: CriteriaDataType.STRING,
     });
     const searchCriteria: SearchCriteriaDto = {
@@ -221,11 +241,25 @@ export class LeavesTreeApiService {
       return EMPTY;
     }
     const newCriteriaList = [...searchCriterias.criteriaList];
+    let values;
+    if (parentNode.unitType === UnitType.VIRTUAL) {
+      newCriteriaList.push({
+        criteria: '#vups',
+        operator: CriteriaOperator.EQ,
+        category: SearchCriteriaTypeEnum.FIELDS,
+        values: [{ id: parentNode.id, value: parentNode.id }],
+        dataType: CriteriaDataType.STRING,
+      });
+      values = [{ id: parentNode.realParentId, value: parentNode.realParentId }];
+    } else {
+      values = [{ id: parentNode.id, value: parentNode.id }];
+    }
+
     newCriteriaList.push({
       criteria: ALLUNITSUPS,
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
-      values: [{ id: parentNode.id, value: parentNode.id }],
+      values: values,
       dataType: CriteriaDataType.STRING,
     });
     const searchCriteria: SearchCriteriaDto = {

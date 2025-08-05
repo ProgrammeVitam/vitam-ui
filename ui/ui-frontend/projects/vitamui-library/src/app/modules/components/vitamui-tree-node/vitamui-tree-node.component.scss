@@ -38,6 +38,10 @@
   .node-label {
     flex-grow: 1;
     white-space: nowrap;
+
+    &.virtual {
+      color: var(--vitamui-grey);
+    }
   }
 
   .hover-btn {

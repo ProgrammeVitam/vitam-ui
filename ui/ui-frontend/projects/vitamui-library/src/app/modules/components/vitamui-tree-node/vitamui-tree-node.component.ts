@@ -40,13 +40,16 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+import { UnitType } from '../../models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
-  imports: [FormsModule, MatButtonModule, MatCheckboxModule, CommonTooltipModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, CommonTooltipModule],
+  standalone: true,
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
   @Input() node: FilingHoldingSchemeNode;
@@ -71,11 +74,16 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
   }
 
   onLabelClick(event: MouseEvent) {
+    if (this.isVirtualNode()) return;
     this.labelClick.emit();
     if (!this.labelIsLinkedToCheckbox) {
       event.stopPropagation();
     } else {
       this.node.checked = !this.node.checked;
     }
+  }
+
+  isVirtualNode() {
+    return this.node.unitType === UnitType.VIRTUAL;
   }
 }

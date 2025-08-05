@@ -20,8 +20,8 @@
   [vitamuiTooltip]="node?.title"
   [vitamuiTooltipShowDelay]="300"
 >
-  <label class="node-label" (click)="onLabelClick($event)">
-    <i class="mr-1 vitamui-icon {{ icon }}"></i>
+  <label class="node-label" [ngClass]="isVirtualNode() ? 'virtual' : ''" (click)="onLabelClick($event)">
+    <i class="mr-1 vitamui-icon" [ngClass]="isVirtualNode() ? 'vitamui-icon-folder-full' : icon"></i>
     {{ node?.title }}
   </label>
 </mat-checkbox>

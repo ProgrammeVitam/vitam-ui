@@ -37,7 +37,7 @@
 import { isEmpty } from 'lodash-es';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode } from '../models';
+import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode, Unit, UnitType } from '../models';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
 import { FacetsUtils } from '../models/criteria/search-criteria.utils';
 import { LeavesTreeApiService } from './leaves-tree-api.service';
@@ -108,7 +108,9 @@ export class LeavesTreeService {
   public searchUnderNode(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchUnderNode(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results);
+        this.addVirtualUnits(parentNode, pagedResult);
+        const newUnits = this.reattachVirtualUnits(pagedResult);
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
       }),
@@ -118,8 +120,10 @@ export class LeavesTreeService {
   public searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchUnderNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
+        this.addVirtualUnits(parentNode, pagedResult);
+        const newUnits = this.reattachVirtualUnits(pagedResult);
         this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
         const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
         this.compareAddedNodeWithKnownFacets(tocheck);
         return pagedResult;
@@ -130,8 +134,10 @@ export class LeavesTreeService {
   public searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     return this.leavesTreeApiService.searchAtNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
       map((pagedResult) => {
+        this.addVirtualUnits(parentNode, pagedResult);
+        const newUnits = this.reattachVirtualUnits(pagedResult);
         this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, pagedResult.results, true);
+        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
         this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
         return pagedResult;
       }),
@@ -176,5 +182,78 @@ export class LeavesTreeService {
   // Specific to collect
   setTransactionId(transactionId: string) {
     this.leavesTreeApiService.setTransactionId(transactionId);
+  }
+
+  private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult): void {
+    if (pagedResult.results.length === 0) return;
+    const realParentId = parentNode.unitType === 'VIRTUAL' ? parentNode.realParentId : parentNode.id;
+
+    const vupsList = pagedResult.results
+      .filter((unit) => {
+        return unit['#unitups']?.includes(realParentId) && this.hasVirtualAttachement(unit);
+      })
+      .flatMap((unit) => unit['#vups']);
+
+    if (vupsList.length === 0) return;
+
+    const allPaths = vupsList.flatMap((vup) => {
+      const segments = vup.split('/').filter(Boolean);
+      return segments.map((_: any, i: number) => '/' + segments.slice(0, i + 1).join('/')).filter((path: string) => path !== realParentId);
+    });
+
+    const uniquePaths = Array.from(new Set(allPaths));
+    const pathToUnitIdMap = new Map<string, string>();
+
+    uniquePaths.forEach((path) => {
+      if (pathToUnitIdMap.has(path)) return;
+
+      const segments = path.split('/').filter(Boolean);
+      const title = segments.at(-1) ?? '';
+      const parentPath = segments.length > 1 ? '/' + segments.slice(0, -1).join('/') : null;
+
+      const unitUps = parentPath ? [pathToUnitIdMap.get(parentPath)!] : [realParentId];
+
+      const opi = pagedResult.results[0]['#opi'];
+      const virtualUnit: Unit = {
+        '#id': path,
+        Title: title,
+        '#unitups': unitUps,
+        realParentId,
+        '#allunitups': [...unitUps, realParentId],
+        '#unitType': UnitType.VIRTUAL,
+        '#opi': opi,
+      };
+
+      pagedResult.results.push(virtualUnit);
+      pathToUnitIdMap.set(path, path);
+    });
+  }
+
+  private reattachVirtualUnits(pagedResult: PagedResult): Unit[] {
+    const updatedUnits = (pagedResult.results || []).map((unit: Unit) => {
+      const vups = unit['#vups'] || [];
+      if (this.hasVirtualAttachement(unit)) {
+        unit['#unitups'] = vups.map((pos) => `${pos}`);
+        unit['#allunitups'] = [...(unit['#allunitups'] || []), ...vups];
+      }
+
+      return unit;
+    });
+
+    return updatedUnits.sort((a, b) => {
+      const aIsVirtual = a['#unitType'] === 'VIRTUAL' ? 1 : 0;
+      const bIsVirtual = b['#unitType'] === 'VIRTUAL' ? 1 : 0;
+      if (aIsVirtual !== bIsVirtual) {
+        return aIsVirtual - bIsVirtual; // VIRTUAL à la fin
+      }
+      const aTitle = a.Title || '';
+      const bTitle = b.Title || '';
+      return aTitle.localeCompare(bTitle); // Tri secondaire : par titre alphabétique
+    });
+  }
+
+  private hasVirtualAttachement(unit: Unit) {
+    const vups = unit['#vups'] || [];
+    return vups.length > 0;
   }
 }

@@ -128,6 +128,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCate
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.STORAGE_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaDataType.STRING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.EQ;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_FACET_RULES_SIZE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED;
@@ -502,7 +503,7 @@ public class TransactionArchiveUnitService {
                 FacetHelper.terms(
                     FACETS_RULES_COMPUTED_NUMBER + "_" + category.name(),
                     computedRulesIdentifierMapping,
-                    100,
+                    DEFAULT_FACET_RULES_SIZE,
                     FacetOrder.ASC
                 )
             );

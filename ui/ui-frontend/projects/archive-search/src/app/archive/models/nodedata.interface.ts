@@ -39,4 +39,6 @@ export class NodeData {
   title: string;
   checked: boolean;
   count?: number;
+  isVirtual?: boolean;
+  realParentId?: string;
 }
