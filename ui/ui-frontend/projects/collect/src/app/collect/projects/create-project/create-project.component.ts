@@ -199,6 +199,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   onConnectedToArchivingSystemChangeValue(): void {
     this.resetExternalReferentialIdentifiers();
+    if (!this.connectedToArchivingSystem) {
+      this.projectForm.get('archivingSystem')?.setValue(null);
+    }
   }
 
   resetExternalReferentialIdentifiers(): void {
