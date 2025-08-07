@@ -51,7 +51,7 @@ export interface LoadProfileConfig {
 }
 
 @Component({
-  selector: 'vitamui-load-profile',
+  selector: 'app-load-profile',
   templateUrl: './load-profile.component.html',
   styleUrl: './load-profile.component.scss',
   imports: [FileSelectorComponent, PipesModule, MatDialogModule, VitamUILibraryModule],

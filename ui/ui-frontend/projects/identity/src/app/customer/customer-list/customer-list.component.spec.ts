@@ -52,20 +52,18 @@ import { TenantService } from '../tenant.service';
 import { CustomerListComponent } from './customer-list.component';
 import { CustomerListService } from './customer-list.service';
 
-// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapseTriggerFor]',
-  standalone: false,
 })
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCommonCollapseTriggerFor: any;
 }
 
-// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapse]',
   exportAs: 'vitamuiCommonCollapse',
-  standalone: false,
 })
 class CollapseStubDirective {
   @Input() vitamuiCommonCollapse: any;
@@ -74,7 +72,6 @@ class CollapseStubDirective {
 @Component({
   selector: 'app-owner-list',
   template: '',
-  standalone: false,
 })
 class OwnerListStubComponent {
   @Input() customer: any;
@@ -269,8 +266,15 @@ describe('CustomerListComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
+      imports: [
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        CollapseStubDirective,
+        CollapseTriggerForStubDirective,
+        OwnerListStubComponent,
+      ],
+      declarations: [CustomerListComponent],
       providers: [
         { provide: CustomerListService, useValue: customerListServiceSpy },
         { provide: CustomerService, useValue: { updated: new Subject() } },
