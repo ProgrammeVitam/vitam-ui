@@ -59,20 +59,18 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
   let component: ArchiveUnitRulesInformationsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesInformationsTabComponent>;
 
-  // eslint-disable-next-line @angular-eslint/directive-selector
   @Directive({
+    // eslint-disable-next-line @angular-eslint/directive-selector
     selector: '[app-VitamuiCommonCollapseTriggerFor]',
-    standalone: false,
   })
   class CollapseTriggerForStubDirective {
     @Input() vitamuiCommonCollapseTriggerFor: any;
   }
 
-  // eslint-disable-next-line @angular-eslint/directive-selector
   @Directive({
+    // eslint-disable-next-line @angular-eslint/directive-selector
     selector: '[app-vitamuiCommonCollapse]',
     exportAs: 'vitamuiCommonCollapse',
-    standalone: false,
   })
   class CollapseStubDirective {
     @Input() vitamuiCommonCollapse: any;
@@ -114,8 +112,10 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesInformationsTabComponent, CollapseStubDirective, CollapseTriggerForStubDirective],
+      declarations: [ArchiveUnitRulesInformationsTabComponent],
       imports: [
+        CollapseStubDirective,
+        CollapseTriggerForStubDirective,
         BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),

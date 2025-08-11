@@ -144,7 +144,7 @@
       "root": "projects/portal/",
       "sourceRoot": "projects/portal/src",
       "projectType": "application",
-      "prefix": "portal",
+      "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -581,7 +581,7 @@
       "projectType": "application",
       "root": "projects/ingest/",
       "sourceRoot": "projects/ingest/src",
-      "prefix": "ingest",
+      "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"

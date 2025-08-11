@@ -44,19 +44,17 @@ import { of } from 'rxjs';
 import { AuthService, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
-// eslint-disable-next-line @angular-eslint/component-selector
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'router-outlet',
   template: '',
-  standalone: false,
 })
 class RouterOutletStubComponent {}
 
-// eslint-disable-next-line @angular-eslint/component-selector
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-common-subrogation-banner',
   template: '',
-  standalone: false,
 })
 class SubrogationBannerStubComponent {}
 
@@ -67,8 +65,8 @@ describe('AppComponent', () => {
       printConfiguration: () => {},
     };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, NoopAnimationsModule],
-      declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
+      imports: [MatSidenavModule, NoopAnimationsModule, SubrogationBannerStubComponent, RouterOutletStubComponent],
+      declarations: [AppComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
