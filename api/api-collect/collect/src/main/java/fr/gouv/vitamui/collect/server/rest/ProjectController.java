@@ -28,6 +28,9 @@ package fr.gouv.vitamui.collect.server.rest;
 
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectAttachmentsDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectConfigurationDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectContextDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDescriptionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
@@ -202,25 +205,41 @@ public class ProjectController {
         );
     }
 
-    // TODO: This method will be removed in the future, as it will be split between update for description, context, attachments and configuration.
-    @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
-    @PutMapping(PATH_ID)
-    public CollectProjectDto updateProject(
+    @Secured(ServicesData.ROLE_UPDATE_PROJECTS_DESCRIPTION)
+    @PutMapping(PATH_ID + "/description")
+    public CollectProjectDto updateProjectDescription(
         final @PathVariable("id") String id,
-        @RequestBody CollectProjectDto collectProjectDto
+        @RequestBody CollectProjectDescriptionDto collectProjectDescriptionDto
     ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(collectProjectDto);
-        LOGGER.debug("[External] Project to update : {}", collectProjectDto);
-        return projectService.update(
+        SanityChecker.sanitizeCriteria(collectProjectDescriptionDto);
+        LOGGER.debug("[External] Project description to update : {}", collectProjectDescriptionDto);
+        return projectService.updateDescription(
             id,
-            collectProjectDto,
+            collectProjectDescriptionDto,
             externalParametersService.buildVitamContextFromExternalParam()
         );
     }
 
-    @Secured(ServicesData.ROLE_UPDATE_TRANSACTIONS)
+    @Secured(ServicesData.ROLE_UPDATE_PROJECTS_CONTEXT)
+    @PutMapping(PATH_ID + "/context")
+    public CollectProjectDto updateProjectContext(
+        final @PathVariable("id") String id,
+        @RequestBody CollectProjectContextDto collectProjectContextDto
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectProjectContextDto);
+        LOGGER.debug("[External] Project context to update : {}", collectProjectContextDto);
+        return projectService.updateContext(
+            id,
+            collectProjectContextDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
+    @Secured(ServicesData.ROLE_UPDATE_PROJECTS_ATTACHMENT)
     @PutMapping(PATH_ID + "/attachments")
     public CollectProjectDto updateProjectAttachments(
         final @PathVariable("id") String id,
@@ -233,6 +252,23 @@ public class ProjectController {
         return projectService.updateAttachments(
             id,
             collectProjectAttachmentsDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
+    @Secured(ServicesData.ROLE_UPDATE_PROJECTS_CONFIG)
+    @PutMapping(PATH_ID + "/configuration")
+    public CollectProjectDto updateProjectConfiguration(
+        final @PathVariable("id") String id,
+        @RequestBody CollectProjectConfigurationDto collectProjectConfigurationDto
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectProjectConfigurationDto);
+        LOGGER.debug("[External] Project configuration to update : {}", collectProjectConfigurationDto);
+        return projectService.updateConfiguration(
+            id,
+            collectProjectConfigurationDto,
             externalParametersService.buildVitamContextFromExternalParam()
         );
     }

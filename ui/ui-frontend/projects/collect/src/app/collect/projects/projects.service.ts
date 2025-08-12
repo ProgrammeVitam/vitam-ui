@@ -92,12 +92,21 @@ export class ProjectsService extends SearchService<Project> {
     return this.acquisitionInformationsList;
   }
 
-  public updateProject(project: Project) {
-    return this.projectsApiService.update(project);
+  // FIXME: changer POJO avec moins d'attributs ?
+  public updateProjectDescription(project: Project): Observable<Project> {
+    return this.projectsApiService.updateDescription(project);
   }
 
-  public updateProjectAttachments(project: ProjectAttachments) {
+  public updateProjectContext(project: Project): Observable<Project> {
+    return this.projectsApiService.updateContext(project);
+  }
+
+  public updateProjectAttachments(project: ProjectAttachments): Observable<Project> {
     return this.projectsApiService.updateAttachments(project);
+  }
+
+  public updateProjectConfiguration(project: Project): Observable<Project> {
+    return this.projectsApiService.updateConfiguration(project);
   }
 
   public getProjectById(projectId: string) {

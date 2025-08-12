@@ -45,6 +45,9 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectAttachmentsDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectConfigurationDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectContextDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDescriptionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.ProjectConverter;
@@ -57,11 +60,13 @@ import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,7 +86,10 @@ public class ProjectService {
     public static final String UNABLE_TO_CREATE_TRANSACTION = "Unable to create transaction";
     public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
     public static final String UNABLE_TO_UPDATE_PROJECT = "Unable to update project";
+    public static final String UNABLE_TO_UPDATE_PROJECT_DESCRIPTION = "Unable to update project description";
+    public static final String UNABLE_TO_UPDATE_PROJECT_CONTEXT = "Unable to update project context";
     public static final String UNABLE_TO_UPDATE_PROJECT_ATTACHMENTS = "Unable to update project attachments";
+    public static final String UNABLE_TO_UPDATE_PROJECT_CONFIGURATION = "Unable to update project configuration";
     public static final String UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE = "Unable to upload project zip file";
     public static final String UNABLE_TO_RETRIEVE_PROJECT = "Unable to retrieve project";
 
@@ -224,7 +232,7 @@ public class ProjectService {
         }
     }
 
-    public CollectProjectDto update(String id, CollectProjectDto collectProjectDto, VitamContext vitamContext) {
+    private CollectProjectDto update(String id, CollectProjectDto collectProjectDto, VitamContext vitamContext) {
         LOGGER.debug("Id: {}", id);
         LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
         try {
@@ -247,6 +255,40 @@ public class ProjectService {
         }
     }
 
+    public CollectProjectDto updateDescription(
+        String id,
+        CollectProjectDescriptionDto collectProjectDescriptionDto,
+        VitamContext vitamContext
+    ) {
+        LOGGER.debug("Id: {}", id);
+        LOGGER.debug("CollectProjectDescriptionDto: {}", collectProjectDescriptionDto);
+        try {
+            final CollectProjectDto projectDto = getProjectById(id, vitamContext);
+            BeanUtils.copyProperties(projectDto, collectProjectDescriptionDto);
+            return update(id, projectDto, vitamContext);
+        } catch (VitamClientException | IllegalAccessException | InvocationTargetException e) {
+            LOGGER.debug(UNABLE_TO_UPDATE_PROJECT_DESCRIPTION, e);
+            throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT_DESCRIPTION, e);
+        }
+    }
+
+    public CollectProjectDto updateContext(
+        String id,
+        CollectProjectContextDto collectProjectContextDto,
+        VitamContext vitamContext
+    ) {
+        LOGGER.debug("Id: {}", id);
+        LOGGER.debug("CollectProjectContextDto: {}", collectProjectContextDto);
+        try {
+            final CollectProjectDto projectDto = getProjectById(id, vitamContext);
+            BeanUtils.copyProperties(projectDto, collectProjectContextDto);
+            return update(id, projectDto, vitamContext);
+        } catch (VitamClientException | IllegalAccessException | InvocationTargetException e) {
+            LOGGER.debug(UNABLE_TO_UPDATE_PROJECT_CONTEXT, e);
+            throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT_CONTEXT, e);
+        }
+    }
+
     public CollectProjectDto updateAttachments(
         String id,
         CollectProjectAttachmentsDto collectProjectAttachmentsDto,
@@ -255,13 +297,29 @@ public class ProjectService {
         LOGGER.debug("Id: {}", id);
         LOGGER.debug("CollectProjectAttachmentsDto: {}", collectProjectAttachmentsDto);
         try {
-            CollectProjectDto projectDto = getProjectById(id, vitamContext);
-            projectDto.setUnitUp(collectProjectAttachmentsDto.getUnitUp());
-            projectDto.setUnitUps(collectProjectAttachmentsDto.getUnitUps());
+            final CollectProjectDto projectDto = getProjectById(id, vitamContext);
+            BeanUtils.copyProperties(projectDto, collectProjectAttachmentsDto);
             return update(id, projectDto, vitamContext);
-        } catch (VitamClientException e) {
+        } catch (VitamClientException | IllegalAccessException | InvocationTargetException e) {
             LOGGER.debug(UNABLE_TO_UPDATE_PROJECT_ATTACHMENTS, e);
             throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT_ATTACHMENTS, e);
+        }
+    }
+
+    public CollectProjectDto updateConfiguration(
+        String id,
+        CollectProjectConfigurationDto collectProjectConfigurationDto,
+        VitamContext vitamContext
+    ) {
+        LOGGER.debug("Id: {}", id);
+        LOGGER.debug("CollectProjectConfigurationDto: {}", collectProjectConfigurationDto);
+        try {
+            final CollectProjectDto projectDto = getProjectById(id, vitamContext);
+            BeanUtils.copyProperties(projectDto, collectProjectConfigurationDto);
+            return update(id, projectDto, vitamContext);
+        } catch (VitamClientException | IllegalAccessException | InvocationTargetException e) {
+            LOGGER.debug(UNABLE_TO_UPDATE_PROJECT_CONFIGURATION, e);
+            throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT_CONFIGURATION, e);
         }
     }
 

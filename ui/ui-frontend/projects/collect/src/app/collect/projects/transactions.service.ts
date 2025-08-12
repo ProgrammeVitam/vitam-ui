@@ -48,8 +48,4 @@ export class TransactionsService {
   public create(transaction: Transaction): Observable<any> {
     return this.projectsApiService.createTransaction(transaction);
   }
-
-  public updateTransaction(transaction: Transaction): Observable<any> {
-    return this.projectsApiService.updateTransaction(transaction);
-  }
 }

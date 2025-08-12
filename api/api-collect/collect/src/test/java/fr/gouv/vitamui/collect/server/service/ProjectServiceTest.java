@@ -43,6 +43,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDescriptionDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.ProjectConverter;
@@ -51,6 +52,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -61,6 +63,7 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -331,7 +334,8 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldUpdateProjectWithSuccess() throws VitamClientException, JsonProcessingException {
+    void shouldUpdateProjectDescriptionWithSuccess()
+        throws VitamClientException, JsonProcessingException, InvocationTargetException, IllegalAccessException {
         // GIVEN
         final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
@@ -343,12 +347,17 @@ class ProjectServiceTest {
             Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
         );
 
+        Mockito.when(collectService.getProjectById(vitamContext, PROJECT_ID)).thenReturn(mockResponse);
         Mockito.when(collectService.updateProject(vitamContext, projectDto)).thenReturn(mockResponse);
 
         // WHEN
-        CollectProjectDto updatedProject = projectService.update(
+        final CollectProjectDto vitamuiCollectProjectDto = ProjectConverter.toVitamuiCollectProjectDto(projectDto);
+        final CollectProjectDescriptionDto projectDescriptionDto = new CollectProjectDescriptionDto();
+        BeanUtils.copyProperties(projectDescriptionDto, vitamuiCollectProjectDto);
+
+        CollectProjectDto updatedProject = projectService.updateDescription(
             PROJECT_ID,
-            ProjectConverter.toVitamuiCollectProjectDto(projectDto),
+            projectDescriptionDto,
             vitamContext
         );
 
@@ -362,7 +371,8 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenUpdateProject() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenUpdateProject()
+        throws VitamClientException, JsonProcessingException, InvocationTargetException, IllegalAccessException {
         // GIVEN
         final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
         RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
@@ -375,13 +385,17 @@ class ProjectServiceTest {
             Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
         );
 
+        Mockito.when(collectService.getProjectById(vitamContext, PROJECT_ID)).thenReturn(mockResponse);
         Mockito.when(collectService.updateProject(vitamContext, projectDto)).thenReturn(mockResponse);
+
+        final CollectProjectDto vitamuiCollectProjectDto = ProjectConverter.toVitamuiCollectProjectDto(projectDto);
+        final CollectProjectDescriptionDto projectDescriptionDto = new CollectProjectDescriptionDto();
+        BeanUtils.copyProperties(projectDescriptionDto, vitamuiCollectProjectDto);
 
         // THEN
         assertThrows(
             InternalServerException.class,
-            () ->
-                projectService.update(PROJECT_ID, ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext)
+            () -> projectService.updateDescription(PROJECT_ID, projectDescriptionDto, vitamContext)
         );
     }
 

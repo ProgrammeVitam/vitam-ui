@@ -2,6 +2,10 @@
 
 :host {
   @extend .mb-4;
+
+  &:has(+ mat-dialog-actions) {
+    @extend .mb-6;
+  }
 }
 
 .with-progress-bar {
