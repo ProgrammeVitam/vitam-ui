@@ -111,6 +111,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   selectedValue = 'YES';
 
   transactions$: BehaviorSubject<PaginatedResponse<Transaction>> = new BehaviorSubject<PaginatedResponse<Transaction>>(null);
+  openedTransactions$ = this.transactions$.pipe(map((ts) => ts?.values?.filter((t) => t?.status === 'OPEN')));
 
   constructor(
     private formBuilder: FormBuilder,
