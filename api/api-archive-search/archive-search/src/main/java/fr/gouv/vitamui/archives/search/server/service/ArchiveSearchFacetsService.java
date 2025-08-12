@@ -323,7 +323,7 @@ public class ArchiveSearchFacetsService {
         VitamContext vitamContext
     ) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
         List<FacetResultsDto> facetResults = new ArrayList<>();
-        if (searchQuery.isComputeFacets()) {
+        if (searchQuery.isComputeMgtRulesFacets()) {
             try {
                 LOGGER.debug("Start computing facets for units with computed inheritance rules  ");
                 List<CriteriaCategory> categories = List.of(

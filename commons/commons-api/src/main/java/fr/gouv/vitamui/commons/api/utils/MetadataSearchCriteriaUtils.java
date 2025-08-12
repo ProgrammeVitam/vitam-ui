@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.commons.api.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
@@ -36,12 +35,12 @@ import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.TermsFacet;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidCreateOperationVitamUIException;
 import org.apache.commons.collections4.CollectionUtils;
@@ -137,7 +136,7 @@ public final class MetadataSearchCriteriaUtils {
             FacetHelper.terms(FACETS_VIRTUAL_TREE, ARCHIVE_UNIT_VIRTUAL_PATHS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
         );
 
-        if (searchQuery.isComputeFacets()) {
+        if (searchQuery.isComputeMgtRulesFacets()) {
             selectMultiQuery.addFacets(
                 FacetHelper.terms(
                     FACETS_COMPUTE_RULES_AU_NUMBER,
@@ -174,7 +173,7 @@ public final class MetadataSearchCriteriaUtils {
                 query.add(not().add(exists(UPDATE_OPERATION_FIELD)));
             }
             selectMultiQuery.setQuery(query);
-
+            mapFacets(searchQuery, selectMultiQuery);
             if (searchQuery.getSortingCriteria() != null) {
                 direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
@@ -224,7 +223,8 @@ public final class MetadataSearchCriteriaUtils {
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
             selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
-            addProjection(searchQuery, selectMultiQuery);
+            manageProjections(searchQuery, selectMultiQuery);
+            mapFacets(searchQuery, selectMultiQuery);
             if (orderBy.isPresent()) {
                 if (DirectionDto.DESC.equals(direction.get())) {
                     selectMultiQuery.addOrderByDescFilter(orderBy.get());
@@ -250,22 +250,46 @@ public final class MetadataSearchCriteriaUtils {
         return selectMultiQuery;
     }
 
-    private static void addProjection(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
+    private static void manageProjections(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
         throws InvalidParseOperationException {
         if (
-            CollectionUtils.isNotEmpty(searchQuery.getIncludedFields()) ||
-            CollectionUtils.isNotEmpty(searchQuery.getExcludedFields())
-        ) {
-            ObjectNode projectionNode = JsonHandler.createObjectNode();
-            ObjectNode objectNode = JsonHandler.createObjectNode();
-            for (String projection : searchQuery.getIncludedFields()) {
-                objectNode.put(projection, 1);
-            }
-            for (String projection : searchQuery.getExcludedFields()) {
-                objectNode.put(projection, 0);
-            }
-            projectionNode.set("$fields", objectNode);
-            selectMultiQuery.setProjection(projectionNode);
+            CollectionUtils.isEmpty(searchQuery.getIncludedFields()) &&
+            CollectionUtils.isEmpty(searchQuery.getExcludedFields())
+        ) return;
+
+        for (String fieldToInclude : searchQuery.getIncludedFields()) {
+            selectMultiQuery.addUsedProjection(fieldToInclude);
+        }
+        for (String fieldToExclude : searchQuery.getExcludedFields()) {
+            selectMultiQuery.addUnusedProjection(fieldToExclude);
+        }
+    }
+
+    private static void mapFacets(SearchCriteriaDto searchQuery, SelectMultiQuery selectMultiQuery)
+        throws InvalidCreateOperationException {
+        if (CollectionUtils.isEmpty(searchQuery.getFacets())) return;
+        List<TermsFacet> termsFacet = searchQuery
+            .getFacets()
+            .stream()
+            .filter(TermsFacet.class::isInstance)
+            .map(TermsFacet.class::cast)
+            .toList();
+        if (CollectionUtils.isEmpty(termsFacet)) return;
+        mapTermsFacets(termsFacet, selectMultiQuery);
+        //FIXME add mapping others facets types
+    }
+
+    private static void mapTermsFacets(List<TermsFacet> termsFacet, SelectMultiQuery selectMultiQuery)
+        throws InvalidCreateOperationException {
+        for (TermsFacet facet : termsFacet) {
+            selectMultiQuery.addFacets(
+                new fr.gouv.vitam.common.database.builder.facet.TermsFacet(
+                    facet.getName(),
+                    facet.getField(),
+                    facet.getSize(),
+                    FacetOrder.valueOf(facet.getOrder().name())
+                )
+            );
         }
     }
 

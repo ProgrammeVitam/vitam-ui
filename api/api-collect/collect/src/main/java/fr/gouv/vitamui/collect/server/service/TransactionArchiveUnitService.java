@@ -324,7 +324,7 @@ public class TransactionArchiveUnitService {
         ArchiveUnitsDto archiveUnitsDto,
         VitamContext vitamContext
     ) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
-        if (searchQuery.isComputeFacets()) {
+        if (searchQuery.isComputeMgtRulesFacets()) {
             List<FacetResultsDto> facetResults = archiveUnitsDto.getArchives().getFacetResults();
             if (CollectionUtils.isEmpty(facetResults)) {
                 facetResults = new ArrayList<>();

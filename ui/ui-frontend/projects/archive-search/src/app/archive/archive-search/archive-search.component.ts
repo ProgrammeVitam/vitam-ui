@@ -66,10 +66,13 @@ import {
   Direction,
   FilingHoldingSchemeNode,
   Logger,
+  ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
   ReclassificationDialogComponent,
+  Rule,
+  RuleService,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -80,12 +83,10 @@ import {
   SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
+  TermsFacet,
   Unit,
   UnitType,
   VitamuiRoles,
-  Rule,
-  RuleService,
-  ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
@@ -103,8 +104,23 @@ import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/trans
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
 
 const PAGE_SIZE = 10;
+const FACETS_DEFAULT_SIZE = 1000;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
+
+const VALID_COMPUTED_INHERITED_RULES_FACET: TermsFacet = {
+  name: 'COMPUTE_RULES_AU_NUMBER',
+  field: '#validComputedInheritedRules',
+  size: 3,
+  order: 'ASC',
+};
+
+const ALL_DESCENDANTS_FACET: TermsFacet = {
+  name: 'COUNT_BY_NODE',
+  field: '#allunitups',
+  size: FACETS_DEFAULT_SIZE,
+  order: 'ASC',
+};
 
 @Component({
   selector: 'app-archive-search',
@@ -569,13 +585,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets = true;
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: 0,
       size: 1,
       sortingCriteria,
       trackTotalHits: this.totalResults >= 10000,
-      computeFacets: true,
+      computeMgtRulesFacets: true,
+      facets: facets,
     };
 
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
@@ -600,7 +621,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.showingFacets = false;
     }
     this.pending = true;
-
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    if (includeFacets) {
+      facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+    }
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriterias = {
       criteriaList: this.criteriaSearchList,
@@ -608,7 +633,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       size: PAGE_SIZE,
       sortingCriteria,
       trackTotalHits: false,
-      computeFacets: includeFacets,
+      computeMgtRulesFacets: includeFacets,
+      facets: facets,
     };
     this.archiveSharedDataService.emitSearchCriterias(searchCriterias);
     this.archiveService.searchArchiveUnitsByCriteria(searchCriterias).subscribe(

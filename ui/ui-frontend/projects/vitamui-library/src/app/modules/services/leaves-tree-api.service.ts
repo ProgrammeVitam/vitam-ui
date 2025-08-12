@@ -122,7 +122,7 @@ export class LeavesTreeApiService {
       criteriaList: newCriteriaList,
       sortingCriteria: searchCriterias.sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult) => {
@@ -150,7 +150,7 @@ export class LeavesTreeApiService {
       criteriaList: newCriteriaList,
       sortingCriteria: searchCriterias.sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult) => {
@@ -184,7 +184,7 @@ export class LeavesTreeApiService {
       ],
       sortingCriteria: searchCriterias.sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult) => {
@@ -226,7 +226,7 @@ export class LeavesTreeApiService {
       criteriaList: newCriteriaList,
       sortingCriteria: searchCriterias.sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult) => {
@@ -268,7 +268,7 @@ export class LeavesTreeApiService {
       criteriaList: newCriteriaList,
       sortingCriteria: searchCriterias.sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult) => {
@@ -294,7 +294,7 @@ export class LeavesTreeApiService {
         },
       ],
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     // Can be improve with a projection (only nodes fields are needed)
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe();
@@ -314,7 +314,7 @@ export class LeavesTreeApiService {
       size: 100,
       sortingCriteria: { criteria: 'Title', sorting: Direction.ASCENDANT },
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe();
   }

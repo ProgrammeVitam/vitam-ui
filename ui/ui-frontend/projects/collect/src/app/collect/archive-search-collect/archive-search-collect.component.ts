@@ -61,9 +61,9 @@ import {
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
+  ReclassificationDialogComponent,
   Rule,
   RuleService,
-  ReclassificationDialogComponent,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -75,6 +75,7 @@ import {
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SidenavPage,
+  TermsFacet,
   Transaction,
   TransactionStatus,
   Unit,
@@ -90,12 +91,27 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { AddUnitsComponent } from './add-units/add-units.component';
 
 const PAGE_SIZE = 10;
+const FACETS_DEFAULT_SIZE = 1000;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
+
+const VALID_COMPUTED_INHERITED_RULES_FACET: TermsFacet = {
+  name: 'COMPUTE_RULES_AU_NUMBER',
+  field: '#validComputedInheritedRules',
+  size: 3,
+  order: 'ASC',
+};
+
+const ALL_DESCENDANTS_FACET: TermsFacet = {
+  name: 'COUNT_BY_NODE',
+  field: '#allunitups',
+  size: FACETS_DEFAULT_SIZE,
+  order: 'ASC',
+};
 
 @Component({
   selector: 'app-archive-search-collect',
@@ -604,13 +620,21 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     // Prepare criteria and store them to use for lateral panel
     this.pending = true;
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    if (includeFacets) {
+      facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+    }
+
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
       sortingCriteria,
       trackTotalHits: false,
-      computeFacets: includeFacets,
+      computeMgtRulesFacets: includeFacets,
+      facets: facets,
     };
     this.archiveExchangeDataService.emitSearchCriterias(searchCriteria);
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null).subscribe(
@@ -982,6 +1006,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets = true;
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
@@ -989,7 +1016,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       size: 1,
       sortingCriteria,
       trackTotalHits: this.totalResults >= 10000,
-      computeFacets: true,
+      computeMgtRulesFacets: true,
+      facets: facets,
     };
 
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
@@ -1371,7 +1399,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       pageNumber: 0,
       size: 100,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     this.archiveUnitCollectService
       .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)

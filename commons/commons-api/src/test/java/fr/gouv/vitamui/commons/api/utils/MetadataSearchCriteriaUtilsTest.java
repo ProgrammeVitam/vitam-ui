@@ -26,11 +26,17 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
+import fr.gouv.vitam.common.database.facet.model.FacetOrder;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.TermsFacet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -124,6 +130,31 @@ public class MetadataSearchCriteriaUtilsTest {
             "]}" +
             "]}",
             queryToFill.toString()
+        );
+    }
+
+    @Test
+    void shouldMapQueryWithTermsFacets() throws VitamClientException {
+        SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
+            .setCriteria("Title")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name())
+            .setValues(List.of(new CriteriaValue().setValue("Some title")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.STRING.name());
+
+        TermsFacet termsFacet = new TermsFacet("some_facet", "some_field", 10, FacetOrder.ASC);
+
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        searchQuery.setCriteriaList(List.of(searchCriteria));
+        searchQuery.setFacets(List.of(termsFacet));
+
+        // When
+        SelectMultiQuery selectMultiQuery = MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(searchQuery);
+        JsonNode facetNode = selectMultiQuery.getFinalSelect().get("$facets");
+        // Then
+        Assertions.assertEquals(
+            "[{\"$name\":\"some_facet\",\"$terms\":{\"$field\":\"some_field\",\"$size\":10,\"$order\":\"ASC\"}}]",
+            facetNode.toString()
         );
     }
 }

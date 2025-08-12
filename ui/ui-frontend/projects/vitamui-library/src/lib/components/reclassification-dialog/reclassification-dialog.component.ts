@@ -366,7 +366,7 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       size: 100,
       sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     this.reclassificationService
       .searchArchiveUnitsByCriteria(searchCriteria, this.data.transactionId)

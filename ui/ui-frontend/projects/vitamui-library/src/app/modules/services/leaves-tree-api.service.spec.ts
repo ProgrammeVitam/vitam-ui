@@ -401,7 +401,7 @@ describe('FilingHoldingSchemeNodeService', () => {
           ],
           sortingCriteria: searchCriterias.sortingCriteria,
           trackTotalHits: false,
-          computeFacets: false,
+          computeMgtRulesFacets: false,
         },
         undefined,
       );
@@ -474,7 +474,7 @@ describe('FilingHoldingSchemeNodeService', () => {
           ],
           sortingCriteria: searchCriterias.sortingCriteria,
           trackTotalHits: false,
-          computeFacets: false,
+          computeMgtRulesFacets: false,
         },
         undefined,
       );
@@ -532,7 +532,7 @@ describe('FilingHoldingSchemeNodeService', () => {
           ],
           sortingCriteria: searchCriterias.sortingCriteria,
           trackTotalHits: false,
-          computeFacets: false,
+          computeMgtRulesFacets: false,
         },
         undefined,
       );
@@ -605,7 +605,7 @@ describe('FilingHoldingSchemeNodeService', () => {
           ],
           sortingCriteria: searchCriterias.sortingCriteria,
           trackTotalHits: false,
-          computeFacets: false,
+          computeMgtRulesFacets: false,
         },
         undefined,
       );
@@ -678,7 +678,7 @@ describe('FilingHoldingSchemeNodeService', () => {
           ],
           sortingCriteria: searchCriterias.sortingCriteria,
           trackTotalHits: false,
-          computeFacets: false,
+          computeMgtRulesFacets: false,
         },
         undefined,
       );

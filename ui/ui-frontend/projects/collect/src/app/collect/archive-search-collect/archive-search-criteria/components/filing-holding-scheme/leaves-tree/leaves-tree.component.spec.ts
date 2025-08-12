@@ -82,7 +82,7 @@ describe('LeavesTreeComponent', () => {
     criteriaList: [],
     sortingCriteria: null,
     trackTotalHits: false,
-    computeFacets: false,
+    computeMgtRulesFacets: false,
   };
 
   beforeEach(async () => {
