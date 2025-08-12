@@ -68,12 +68,15 @@ import {
   DEFAULT_PAGE_SIZE,
   Direction,
   download,
+  ExternalReferentialService,
+  fetchTitle,
   FilingPlanMode,
   FilingPlanService,
   getProjectIcon,
   getProjectWorkflow,
   ItemNode,
   MiscValidators,
+  oneIncludedNodeRequired,
   Option,
   PageRequest,
   PaginatedResponse,
@@ -90,6 +93,7 @@ import {
   VitamUISnackBarService,
   Workflow,
 } from 'vitamui-library';
+import { LOCAL_ARCHIVING_SYSTEM_ID, TENANT_SEPARATOR } from '../create-project/create-project.component';
 
 @Component({
   selector: 'app-project-preview',
@@ -183,6 +187,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     private renderer: Renderer2,
     private schemaService: SchemaService,
     filingPlanService: FilingPlanService,
+    private externalReferentialService: ExternalReferentialService,
   ) {
     filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
     this.route.params.subscribe((params) => {
@@ -276,10 +281,13 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
             ontologyList: ontologyListControl,
             metadataValue: metadataValueControl,
             unitUp: this.project.connectedToArchivingSystem
-              ? {
-                  included: metadataUnitUp.unitUp ? [metadataUnitUp.unitUp] : [],
-                  excluded: [],
-                }
+              ? [
+                  {
+                    included: metadataUnitUp.unitUp ? [metadataUnitUp.unitUp] : [],
+                    excluded: [],
+                  },
+                  oneIncludedNodeRequired(),
+                ]
               : this.formBuilder.control(metadataUnitUp.unitUp),
           }),
         );
@@ -300,23 +308,27 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   addRuleParam() {
-    for (const ruleParamForm of this.unitUps.controls) {
-      ruleParamForm.value.opened = false;
-    }
-
     const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
-    const metadataValueGroup = this.formBuilder.group({}, { validators: Validators.required });
+    const metadataValueControl = this.formBuilder.control(undefined, Validators.required);
 
-    ontologyListControl.valueChanges.subscribe((schemaElement) => {
-      metadataValueGroup.addControl(schemaElement?.Path, this.formBuilder.control(undefined));
+    ontologyListControl.valueChanges.subscribe(() => {
+      metadataValueControl.setValidators(Validators.required); // To override Validators that may be added by datepicker if changing from datepicker to input
+      metadataValueControl.markAsTouched(); // To make sure error messages appear after changing the ontology
     });
 
     // rulesParams interface:
     const newRuleParamForm = this.formBuilder.group({
-      opened: [true],
       ontologyList: ontologyListControl,
-      metadataValue: undefined,
-      unitUp: [this.project.connectedToArchivingSystem ? { included: [], excluded: [] } : ''],
+      metadataValue: metadataValueControl,
+      unitUp: this.project.connectedToArchivingSystem
+        ? [
+            {
+              included: [],
+              excluded: [],
+            },
+            oneIncludedNodeRequired(),
+          ]
+        : '',
     });
 
     this.unitUps.push(newRuleParamForm);
@@ -651,9 +663,23 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     return !result;
   };
 
+  getUnitName(unitId: string): string {
+    const foundNode = this.units?.find((unit) => unit['#id'] === unitId);
+    return foundNode ? fetchTitle(foundNode.Title, foundNode.Title_) : '';
+  }
+
   ngOnDestroy() {
     if (this.clickOutSideListener) {
       this.clickOutSideListener();
     }
   }
+
+  getExternalSystemName$(archivingSystemId: string): Observable<string> {
+    return this.externalReferentialService
+      .getElectronicArchivingSystemList()
+      .pipe(map((list) => (list || []).find((system) => system.archivingSystemId === archivingSystemId)?.name || archivingSystemId));
+  }
+
+  protected readonly LOCAL_ARCHIVING_SYSTEM_ID = LOCAL_ARCHIVING_SYSTEM_ID;
+  protected readonly TENANT_SEPARATOR = TENANT_SEPARATOR;
 }

@@ -4390,6 +4390,7 @@
       "ATTACHMENT": {
         "FIX": {
           "TITLE": "Rattachement fixe",
+          "ATTACHMENT_NAME": "Intitulé de la position de rattachement",
           "ATTACHMENT_ID": "Identifiant technique de la position de rattachement"
         },
         "RULES": {
@@ -4398,6 +4399,9 @@
         "NO_EXISTANT_ATTACHMENT": "Aucun rattachement"
       },
       "CONFIGURATION": {
+        "ARCHIVING_SYSTEM_CONNECTION": "Connexion aux référentiels",
+        "ARCHIVING_SYSTEM_CONNECTION_NO": "Non connecté",
+        "ARCHIVING_SYSTEM_CONNECTION_LOCAL": "Connecté au SAE local",
         "AUTO_INGEST": "Gestion automatique des transactions",
         "ENABLED": "Activée",
         "DISABLED": "Non activée",
@@ -4949,7 +4953,8 @@
     "email": "Adresse e-mail invalide.",
     "pattern": "Format attendu : {{ requiredPattern }}.",
     "uniquePreventRuleId": "Code identique à l'action précédente",
-    "uniqueRuleId": "Code identique à l'action précédente"
+    "uniqueRuleId": "Code identique à l'action précédente",
+    "missingIncludedNodes": "Une valeur est requise"
   },
   "ACCESS_CONTRACT": {
     "HOME": {

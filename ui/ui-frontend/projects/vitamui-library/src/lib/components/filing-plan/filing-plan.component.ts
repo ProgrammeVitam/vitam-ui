@@ -35,14 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, Injector, Input, OnInit } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
 
 import { Node } from '../../models/node.interface';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 import { Unit } from '../../../app/modules';
+import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -57,7 +58,7 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   providers: [NODE_SELECT_VALUE_ACCESSOR],
   standalone: false,
 })
-export class FilingPlanComponent implements ControlValueAccessor, OnInit {
+export class FilingPlanComponent extends AbstractFormInputDirective implements OnInit {
   @Input() dataSource: Unit[];
   /** @deprecated should be removed - see VitamUIHttpInterceptor */
   @Input() tenantIdentifier: number;
@@ -74,16 +75,17 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit {
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
 
-  onChange = (_x: { included: string[]; excluded: string[] }) => {};
-
-  onTouched = () => {};
-
-  constructor(public filingPlanService: FilingPlanService) {
+  constructor(
+    injector: Injector,
+    public filingPlanService: FilingPlanService,
+  ) {
+    super(injector);
     this.nestedTreeControl = new NestedTreeControl<Node>((node) => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     if (this.dataSource) {
       const nodes = this.filingPlanService.loadTreeFromDataSource(this.dataSource, this.componentId);
       this.setNodes(nodes);
@@ -223,6 +225,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit {
 
     // FIXME is this really needed ?
     this.onChange(this.selectedNodes);
+    this.onTouched();
   }
 
   private areAllParentsUnchecked(parents: Node[]): boolean {
@@ -285,14 +288,6 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit {
   writeValue(obj: { included: string[]; excluded: string[] }): void {
     this.initCheckedNodes(obj, this.nestedDataSource.data);
     this.selectedNodes = obj;
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
   }
 
   setDisabledState?(isDisabled: boolean): void {

@@ -75,8 +75,8 @@ export enum ImportType {
   COMPRESSED = 'COMPRESSED',
 }
 
-const TENANT_SEPARATOR = ' - Tenant ';
-const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
+export const TENANT_SEPARATOR = ' - Tenant ';
+export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
 
 @Component({
   selector: 'app-create-project',
@@ -391,16 +391,15 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     return project as Project;
   }
 
-  convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
+  private convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
     return this.rulesParams.controls.map((ruleParamControl: FormGroup) => {
       const ruleParam = ruleParamControl.value;
       const metadataKey = ruleParam.ontologyList.ApiField;
       const metadataValue = ruleParam.metadataValue;
-      const unitUpValue = ruleParam.unitUpValue;
       return {
         metadataKey: metadataKey,
         metadataValue: metadataValue,
-        unitUp: this.connectedToArchivingSystem ? ruleParam.unitUp.included[0] : unitUpValue,
+        unitUp: this.connectedToArchivingSystem ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
       };
     });
   }
@@ -409,15 +408,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     return this.projectForm.controls.rulesParams as FormArray<FormGroup>;
   }
 
-  openCloseRuleParam(ruleParam: any) {
-    ruleParam.opened = !ruleParam.opened;
-  }
-
   addRuleParam() {
-    for (const ruleParamForm of this.rulesParams.controls) {
-      ruleParamForm.value.opened = false;
-    }
-
     const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
     const metadataValueControl = this.formBuilder.control(undefined, Validators.required);
     ontologyListControl.valueChanges.subscribe(() => {
@@ -427,11 +418,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
     // rulesParams interface:
     const newRuleParamForm = this.formBuilder.group({
-      opened: [true],
       ontologyList: ontologyListControl,
       metadataValue: metadataValueControl,
-      unitUpValue: [null],
-      unitUp: [{ included: [], excluded: [] }, this.connectedToArchivingSystem ? oneIncludedNodeRequired() : undefined],
+      unitUp: this.connectedToArchivingSystem ? [{ included: [], excluded: [] }, oneIncludedNodeRequired()] : [''],
     });
 
     this.rulesParams.push(newRuleParamForm);
@@ -533,14 +522,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  getNodeTitle(selectedNodes: any): string {
-    if (!selectedNodes.unitUpValue || selectedNodes?.unitUp?.included.length < 0) return;
-    if (!this.connectedToArchivingSystem) return ' : ' + selectedNodes.unitUpValue;
-    const vitamId = selectedNodes?.unitUp?.included[0];
-    if (!vitamId || !this.units) return '';
-
-    const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
-    return foundNode ? ' : ' + fetchTitle(foundNode.Title, foundNode.Title_) : '';
+  getNodeTitle(selectedNode?: any): string {
+    if (this.connectedToArchivingSystem) {
+      if (!selectedNode?.unitUp?.included?.length) return '';
+      const vitamId = selectedNode?.unitUp?.included[0];
+      if (!vitamId || !this.units) return '';
+      const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
+      return foundNode ? ` : ${fetchTitle(foundNode.Title, foundNode.Title_)}` : '';
+    } else {
+      return selectedNode?.unitUp ? ` : ${selectedNode.unitUp}` : '';
+    }
   }
 
   getName(item: SchemaElement): string {

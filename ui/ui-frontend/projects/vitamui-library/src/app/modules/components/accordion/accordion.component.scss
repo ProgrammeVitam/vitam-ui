@@ -4,20 +4,6 @@
   width: 100%;
 }
 
-.v-col {
-  display: flex;
-  flex: 1;
-  align-items: center;
-}
-
-.v-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: 10px;
-}
-
 :host ::ng-deep .content {
   background-color: white;
   display: flex;

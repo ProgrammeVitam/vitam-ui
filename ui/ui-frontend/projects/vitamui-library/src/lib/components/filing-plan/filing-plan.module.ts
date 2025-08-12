@@ -44,9 +44,10 @@ import { MatTreeModule } from '@angular/material/tree';
 
 import { FilingPlanComponent } from './filing-plan.component';
 import { NodeComponent } from './node.component';
+import { FormErrorsComponent } from '../form-errors/form-errors.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MatTreeModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule],
+  imports: [CommonModule, FormsModule, MatTreeModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, FormErrorsComponent],
   declarations: [FilingPlanComponent, NodeComponent],
   exports: [FilingPlanComponent],
 })
