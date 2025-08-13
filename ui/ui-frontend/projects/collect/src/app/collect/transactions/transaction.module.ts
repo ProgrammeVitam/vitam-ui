@@ -48,9 +48,18 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 import { TransactionResolver } from './transaction-resolver.service';
 import { TransactionRoutingModule } from './transaction-routing.module';
 import { TransactionsComponent } from './transactions.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, TransactionRoutingModule, MatMenuModule, MatSidenavModule, VitamUICommonModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    TransactionRoutingModule,
+    MatMenuModule,
+    MatSidenavModule,
+    VitamUICommonModule,
+    MatProgressSpinnerModule,
+    TranslatePipe,
+  ],
   providers: [TransactionResolver, { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [TransactionsComponent, TransactionListComponent],
 })

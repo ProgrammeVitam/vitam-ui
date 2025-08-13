@@ -1057,6 +1057,7 @@ La liste de profils crées par défaut pour chaque tenant :
             - ROLE_GET_ACCESS_CONTRACTS
             - ROLE_GET_RULES
             - ROLE_SEND_TRANSACTIONS
+            - ROLE_DOWNLOAD_SIP_TRANSACTIONS
             - ROLE_CLOSE_TRANSACTIONS
             - ROLE_UPDATE_UNITS_METADATA
             - ROLE_REOPEN_TRANSACTIONS

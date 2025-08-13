@@ -173,13 +173,16 @@
         "OPEN": "Open in edition",
         "ABORTED": "Aborted",
         "READY": "Ready",
+        "VALIDATED": "Validated",
         "SENDING": "Preparation and sending of the SIP",
         "SENT": "Sent, processing SAE",
         "ACK_OK": "Successfully ingested",
         "ACK_WARNING": "Ingested",
         "ACK_KO": "Ingest failed",
         "KO": "Technical error"
-      }
+      },
+      "TRANSACTION_SIP_DOWNLOAD_ERROR": "Failed to download SIP transaction.",
+      "TRANSACTION_SIP_DOWNLOAD": "SIP transaction downloaded successfully."
     },
     "DELETION": {
       "DELETION_LAUNCHED": "Your request for deletion has been taken into account"

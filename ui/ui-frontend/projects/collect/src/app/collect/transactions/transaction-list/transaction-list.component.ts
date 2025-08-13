@@ -58,6 +58,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   hasEditTransactionRole = false;
   hasSendTransactionRole = false;
   hasCloseTransactionRole = false;
+  hasDownloadTransactionRole = false;
   disabledSendTransactions = new Set<string>();
 
   constructor(
@@ -153,6 +154,10 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     );
   }
 
+  downloadSipTransaction(transaction: Transaction) {
+    return this.transactionService.downloadSipTransaction(transaction.id);
+  }
+
   transactionIsOpen(transaction: Transaction): boolean {
     return TransactionStatus.OPEN === transaction.status;
   }
@@ -171,6 +176,23 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     );
   }
 
+  transactionIsDownloadable(transaction: Transaction): boolean {
+    return (
+      [
+        TransactionStatus.READY,
+        TransactionStatus.VALIDATED,
+        TransactionStatus.SENDING,
+        TransactionStatus.SENT,
+        TransactionStatus.ACK_KO,
+        TransactionStatus.KO,
+      ].indexOf(transaction.status) !== -1
+    );
+  }
+
+  transactionIsDownloadDisabled(transaction: Transaction): boolean {
+    return transaction.status === TransactionStatus.KO;
+  }
+
   private checkTransactionsPermissions() {
     this.archiveCollectService.hasCollectRole('ROLE_ABORT_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasAbortTransactionRole = result;
@@ -183,6 +205,9 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     });
     this.archiveCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasCloseTransactionRole = result;
+    });
+    this.archiveCollectService.hasCollectRole('ROLE_DOWNLOAD_SIP_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasDownloadTransactionRole = result;
     });
   }
 }

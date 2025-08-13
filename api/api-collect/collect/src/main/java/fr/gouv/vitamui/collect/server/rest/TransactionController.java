@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.InputStream;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.DOWNLOAD_SIP_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
@@ -185,6 +187,20 @@ public class TransactionController {
         return transactionService.reclassification(
             transactionId,
             reclassificationCriteriaDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
+    @Operation(summary = "Download SIP transaction as a zip file")
+    @Secured(ServicesData.ROLE_DOWNLOAD_SIP_TRANSACTIONS)
+    @GetMapping(CommonConstants.PATH_ID + DOWNLOAD_SIP_PATH)
+    public Response downloadSipTransaction(final @PathVariable("id") String id)
+        throws PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Download SIP transaction with id: {}", id);
+        return transactionService.downloadSipTransaction(
+            id,
             externalParametersService.buildVitamContextFromExternalParam()
         );
     }

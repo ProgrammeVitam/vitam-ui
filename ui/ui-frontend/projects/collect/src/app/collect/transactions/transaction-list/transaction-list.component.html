@@ -64,7 +64,16 @@
               <div class="col-3">{{ transaction.messageIdentifier }}</div>
               <div class="col-3">{{ transaction.id }}</div>
               <div class="col-4">{{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}</div>
-              <div class="col-1">
+              <div class="col-1 d-flex align-items-center actions">
+                <button
+                  mat-icon-button
+                  class="action-icon-btn btn btn-circle outline outline-primary large"
+                  *ngIf="transactionIsDownloadable(transaction)"
+                  [disabled]="transactionIsDownloadDisabled(transaction) || !hasDownloadTransactionRole"
+                  (click)="downloadSipTransaction(transaction)"
+                >
+                  <i class="vitamui-icon vitamui-icon-download"></i>
+                </button>
                 <vitamui-menu-button [icon]="'vitamui-icon-more-horiz'" [overlayPos]="'end'" menuButtonSize="medium">
                   <button mat-menu-item (click)="searchArchiveUnitsByTransaction(transaction)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}

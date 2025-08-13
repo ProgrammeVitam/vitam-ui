@@ -203,4 +203,22 @@ public class TransactionService {
         );
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
     }
+
+    /**
+     * Download SIP transaction as a zip file
+     *
+     * @param transactionId transaction id
+     * @param vitamContext security context
+     * @return Response containing the zip file
+     * @throws VitamClientException Thrown exception
+     */
+    public Response downloadSipTransaction(String transactionId, VitamContext vitamContext)
+        throws VitamClientException {
+        try {
+            LOGGER.debug("Download SIP transaction with id: {}", transactionId);
+            return collectService.downloadSipTransaction(vitamContext, transactionId);
+        } catch (VitamClientException e) {
+            throw new VitamClientException("Unable to download SIP transaction: ", e);
+        }
+    }
 }
