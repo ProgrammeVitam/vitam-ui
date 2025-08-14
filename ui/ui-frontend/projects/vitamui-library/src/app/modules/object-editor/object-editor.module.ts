@@ -70,6 +70,7 @@ import { InputComponent } from '../../../lib/components/input/input.component';
 import { AccordionComponent } from '../components/accordion/accordion.component';
 import { DatepickerComponent } from '../components/datepicker/datepicker.component';
 import { VitamuiMenuButtonComponent } from '../components/vitamui-menu-button/vitamui-menu-button.component';
+import { MatMenuItem } from '@angular/material/menu';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
@@ -107,6 +108,7 @@ import { VitamuiMenuButtonComponent } from '../components/vitamui-menu-button/vi
     EditorListDateComponent,
     DatepickerComponent,
     DialogHeaderComponent,
+    MatMenuItem,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })
