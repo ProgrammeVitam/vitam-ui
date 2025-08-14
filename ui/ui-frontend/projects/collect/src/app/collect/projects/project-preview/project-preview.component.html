@@ -306,19 +306,23 @@
 
 <ng-template #confirmEditProject>
   <vitamui-dialog-header [title]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate"></vitamui-dialog-header>
-  <mat-dialog-content *ngIf="transactions$.getValue(); let transactions; else: loadingSpinner" class="row">
-    <div
-      class="text d-flex mt-4"
-      [innerHTML]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ' | translate: { nb: transactions.values?.length }"
-    ></div>
+  @if (openedTransactions$ | async; as openedTransactions) {
+    <mat-dialog-content class="row">
+      <div
+        class="text d-flex mt-4"
+        [innerHTML]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ' | translate: { nb: openedTransactions?.length }"
+      ></div>
 
-    <div class="mt-4">
-      <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="selectedValue" class="vitamui-button-toggle-group">
-        <mat-button-toggle value="YES"> {{ 'COMMON.YES' | translate }}</mat-button-toggle>
-        <mat-button-toggle value="NO">{{ 'COMMON.NO' | translate }} </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-  </mat-dialog-content>
+      <div class="mt-4">
+        <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="selectedValue" class="vitamui-button-toggle-group">
+          <mat-button-toggle value="YES"> {{ 'COMMON.YES' | translate }}</mat-button-toggle>
+          <mat-button-toggle value="NO">{{ 'COMMON.NO' | translate }} </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </mat-dialog-content>
+  } @else {
+    <ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+  }
 
   <mat-dialog-actions>
     <button (click)="onConfirm()" class="btn primary">{{ 'COMMON.CONFIRM' | translate }}</button>
