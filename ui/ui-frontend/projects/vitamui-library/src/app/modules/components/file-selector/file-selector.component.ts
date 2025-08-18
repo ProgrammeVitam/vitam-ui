@@ -37,17 +37,26 @@
 import { Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { I18nPluralPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { I18nPluralPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DisplayFile } from './display-file.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomFile } from '../../../../lib/models/custom-file';
 
+export function readFileContent(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => resolve(event.target?.result as string);
+    reader.onerror = (error) => reject(error);
+    reader.readAsText(file);
+  });
+}
+
 @Component({
   selector: 'vitamui-file-selector',
   templateUrl: './file-selector.component.html',
   styleUrl: './file-selector.component.scss',
-  imports: [DragAndDropDirective, TranslatePipe, NgIf, NgForOf, PipesModule, NgTemplateOutlet, I18nPluralPipe],
+  imports: [DragAndDropDirective, TranslatePipe, NgForOf, PipesModule, NgTemplateOutlet, I18nPluralPipe],
 })
 export class FileSelectorComponent {
   /**
@@ -65,6 +74,10 @@ export class FileSelectorComponent {
   /** Only directories can be selected through OS picker. Drag&Drop allows both directories and files */
   @Input() directoryMode = false;
   @Input() maxSizeInBytes: number; // TODO: do some control on the file size?
+  // Used to display a component filled with files at initialization (before user interaction)
+  @Input() set initialFiles(files: FileList | File[]) {
+    if (files && files.length) this.updateFiles(files);
+  }
 
   @ContentChild('fileList') fileList: TemplateRef<any>;
   @ContentChild('content') content: TemplateRef<any>;
@@ -105,6 +118,13 @@ export class FileSelectorComponent {
       return;
     }
 
+    this.updateFiles(files);
+
+    this.filesChanged.emit(this.files);
+    this.resetInput();
+  }
+
+  private updateFiles(files: FileList | File[]) {
     // Filter to keep only the ones matching extension list (useful for drag & drop and to make sure no other type has been selected)
     const filteredFiles = Array.from(files)
       .filter((file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())))
@@ -122,8 +142,6 @@ export class FileSelectorComponent {
       );
       this.displayFiles.push(...displayFiles);
     }
-    this.filesChanged.emit(this.files);
-    this.resetInput();
   }
 
   openFileSelectorOSDialog() {

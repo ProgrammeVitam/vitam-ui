@@ -1,32 +1,24 @@
-<ng-template #formButtons>
-  @if (editMode) {
-    <div class="mt-5 hgap-3">
-      <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="update()">
-        {{ 'UNIT_UPDATE.SAVE' | translate }}
-      </button>
-      <button class="btn link cancel" type="button" (click)="openCancelDialog()">{{ 'COMMON.UNDO' | translate }}</button>
-    </div>
-  }
-</ng-template>
-
-@if (project) {
+@if (project()) {
   <vitamui-common-sidenav-header
     [extended]="isPanelExtended"
-    [title]="project.messageIdentifier"
-    [subtitle]="'COLLECT.PROJECT_UNIT_PREVIEW.WORKFLOW.' + getProjectWorkflow(project) | translate"
-    [icon]="getProjectIcon(project)"
+    [title]="project().messageIdentifier"
+    [subtitle]="'COLLECT.PROJECT_UNIT_PREVIEW.WORKFLOW.' + getProjectWorkflow(project()) | translate"
+    [icon]="getProjectIcon(project())"
     (onclose)="emitClose()"
   >
     <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-      <button mat-menu-item (click)="showEdit(description)" [disabled]="editMode || (checkEditDescriptionRole | async) !== true">
+      <button mat-menu-item (click)="showEdit(description)" [disabled]="editMode() || (checkEditDescriptionRole | async) !== true">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.EDIT_DESCRIPTION' | translate }}
       </button>
-      <button mat-menu-item (click)="showEdit(context)" [disabled]="editMode || (checkEditContextRole | async) !== true">
+      <button mat-menu-item (click)="showEdit(context)" [disabled]="editMode() || (checkEditContextRole | async) !== true">
         {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.EDIT_CONTEXT' | translate }}
       </button>
-      @if (project.automaticIngest === true) {
-        <button mat-menu-item (click)="showEdit(attachments)" [disabled]="editMode || (checkEditAttachmentRole | async) !== true">
+      @if (getProjectWorkflow(project()) === Workflow.FLOW) {
+        <button mat-menu-item (click)="showEdit(attachments)" [disabled]="editMode() || (checkEditAttachmentRole | async) !== true">
           {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.EDIT_ATTACHMENTS' | translate }}
+        </button>
+        <button mat-menu-item (click)="showEdit(configuration)" [disabled]="editMode() || (checkEditConfigurationRole | async) !== true">
+          {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.EDIT_CONFIGURATION' | translate }}
         </button>
       }
       <button mat-menu-item (click)="searchArchiveUnitsByProject()">
@@ -43,10 +35,10 @@
     <!-- DESCRIPTION TAB -->
     <mat-tab #description [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate">
       @if (project) {
-        <div class="align-items-stretch" [class]="editMode ? 'gap-4' : 'gap-2'">
-          @if (editMode) {
+        <div class="align-items-stretch" [class]="editMode() ? 'gap-4' : 'gap-2'">
+          @if (editMode(description)) {
             <vitamui-input
-              [ngModel]="project.id"
+              [ngModel]="project().id"
               [ngModelOptions]="{ standalone: true }"
               [placeholder]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate"
               [disabled]="true"
@@ -64,7 +56,7 @@
             </vitamui-input>
 
             <div class="hgap-4">
-              @if (project.connectedToArchivingSystem) {
+              @if (project().connectedToArchivingSystem) {
                 <vitamui-select
                   class="w-50"
                   formControlName="originatingAgencyIdentifier"
@@ -98,17 +90,18 @@
                 </vitamui-input>
               }
             </div>
-
-            <ng-container *ngTemplateOutlet="formButtons"></ng-container>
           } @else {
-            <vitamui-common-data [label]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate" [value]="project.id"></vitamui-common-data>
+            <vitamui-common-data
+              [label]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate"
+              [value]="project().id"
+            ></vitamui-common-data>
             <vitamui-common-data
               [label]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate"
-              [value]="project.messageIdentifier"
+              [value]="project().messageIdentifier"
             ></vitamui-common-data>
             <vitamui-common-data
               [label]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate"
-              [value]="project.comment"
+              [value]="project().comment"
             ></vitamui-common-data>
             <vitamui-common-data
               [label]="'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
@@ -128,8 +121,8 @@
     <!-- CONTEXT TAB -->
     <mat-tab #context [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONTEXT' | translate">
       @if (project) {
-        <div class="align-items-stretch" [class]="editMode ? 'gap-4' : 'gap-2'">
-          @if (!editMode) {
+        <div class="align-items-stretch" [class]="editMode() ? 'gap-4' : 'gap-2'">
+          @if (!editMode(context)) {
             <vitamui-common-data
               [label]="'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate"
               [value]="getLabel$('archivalAgencyIdentifier') | async"
@@ -148,15 +141,15 @@
             ></vitamui-common-data>
             <vitamui-common-data
               [label]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
-              [value]="project.acquisitionInformation"
+              [value]="project().acquisitionInformation"
             ></vitamui-common-data>
             <vitamui-common-data
               [label]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
-              [value]="project.legalStatus"
+              [value]="project().legalStatus"
             ></vitamui-common-data>
           } @else {
             <div class="hgap-4">
-              @if (project.connectedToArchivingSystem) {
+              @if (project().connectedToArchivingSystem) {
                 <vitamui-select
                   class="w-50"
                   formControlName="archivalAgencyIdentifier"
@@ -192,7 +185,7 @@
             </div>
 
             <div class="hgap-4">
-              @if (project.connectedToArchivingSystem) {
+              @if (project().connectedToArchivingSystem) {
                 <vitamui-select
                   class="w-50"
                   formControlName="archivalAgreement"
@@ -245,8 +238,6 @@
                 [enableSearch]="false"
               ></vitamui-select>
             </div>
-
-            <ng-container *ngTemplateOutlet="formButtons"></ng-container>
           }
         </div>
       } @else {
@@ -259,37 +250,37 @@
       @if (project) {
         <div class="row">
           <div class="col-12">
-            @if (!editMode) {
+            @if (!editMode(attachments)) {
               <div class="gap-4">
-                @if (project.unitUp) {
+                @if (project().unitUp) {
                   <div class="text normal bold primary uppercase">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.TITLE' | translate }}
                   </div>
-                  @if (project.connectedToArchivingSystem) {
+                  @if (project().connectedToArchivingSystem) {
                     <vitamui-common-data
                       [label]="'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.ATTACHMENT_NAME' | translate"
-                      [value]="getUnitName(project.unitUp)"
+                      [value]="getUnitName(project().unitUp)"
                     ></vitamui-common-data>
                   }
                   <vitamui-common-data
                     [label]="'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.ATTACHMENT_ID' | translate"
-                    [value]="project.unitUp"
+                    [value]="project().unitUp"
                   ></vitamui-common-data>
-                } @else if (project.unitUps?.length) {
+                } @else if (project().unitUps?.length) {
                   <div class="text normal bold primary uppercase">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.RULES.TITLE' | translate }}
                   </div>
-                  @for (unitUp of project.unitUps; track unitUp; let i = $index; let isFirst = $first) {
+                  @for (unitUp of project().unitUps; track unitUp; let i = $index; let isFirst = $first) {
                     <vitamui-common-accordion [opened]="isFirst">
                       <div class="title">
                         {{ 'COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate }} {{ i + 1 }}
-                        @if (project.connectedToArchivingSystem && unitUp.unitUp) {
+                        @if (project().connectedToArchivingSystem && unitUp.unitUp) {
                           : {{ getUnitName(unitUp.unitUp) }}
                         }
                       </div>
                       <div class="content">
                         <vitamui-common-data [label]="unitUp.metadataKey" [value]="unitUp.metadataValue"></vitamui-common-data>
-                        @if (project.connectedToArchivingSystem) {
+                        @if (project().connectedToArchivingSystem) {
                           <vitamui-common-data
                             [label]="'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.ATTACHMENT_NAME' | translate"
                             [value]="getUnitName(unitUp.unitUp)"
@@ -309,13 +300,13 @@
                 }
               </div>
             } @else {
-              @if (!project.unitUp && project.unitUps?.length) {
+              @if (!project().unitUp && project().unitUps?.length) {
                 <div class="gap-4 align-items-stretch" formArrayName="unitUps">
                   @for (ruleParamForm of unitUps.controls; track ruleParamForm; let i = $index; let isFirst = $first) {
                     <vitamui-common-accordion [formGroup]="ruleParamForm" [opened]="isFirst">
                       <div class="title">
                         {{ 'COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate }} {{ i + 1 }}
-                        @if (project.connectedToArchivingSystem && ruleParamForm.value.unitUp?.included[0]) {
+                        @if (project().connectedToArchivingSystem && ruleParamForm.value.unitUp?.included[0]) {
                           : {{ getUnitName(ruleParamForm.value.unitUp?.included[0]) }}
                         }
                       </div>
@@ -361,11 +352,11 @@
                           <div class="gap-3 align-items-stretch">
                             <label class="medium text bold primary">
                               {{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}
-                              @if (project.connectedToArchivingSystem) {
+                              @if (project().connectedToArchivingSystem) {
                                 <span class="required-marker">*</span>
                               }
                             </label>
-                            @if (project.connectedToArchivingSystem) {
+                            @if (project().connectedToArchivingSystem) {
                               <vitamui-library-filing-plan
                                 formControlName="unitUp"
                                 [dataSource]="units"
@@ -390,7 +381,7 @@
                   </button>
                 </div>
               } @else {
-                @if (project.connectedToArchivingSystem) {
+                @if (project().connectedToArchivingSystem) {
                   <vitamui-library-filing-plan
                     formControlName="unitUp"
                     [mode]="FilingPlanMode.SOLO"
@@ -403,8 +394,6 @@
                   ></vitamui-input>
                 }
               }
-
-              <ng-container *ngTemplateOutlet="formButtons"></ng-container>
             }
           </div>
         </div>
@@ -414,38 +403,83 @@
     </mat-tab>
 
     <!-- CONFIGURATION TAB -->
-
-    <mat-tab [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONFIGURATION' | translate">
+    <mat-tab #configuration [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONFIGURATION' | translate">
       @if (project) {
-        <div class="align-items-stretch gap-2">
-          <vitamui-common-data
-            [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION' | translate"
-            [value]="
-            project.connectedToArchivingSystem
-              ? project.archivingSystemId === LOCAL_ARCHIVING_SYSTEM_ID
+        <div class="align-items-stretch" [class]="editMode() ? 'gap-4' : 'gap-2'">
+          @if (editMode(configuration)) {
+            <div class="align-items-stretch gap-2">
+              <label class="text caption bold primary">
+                {{ 'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION' | translate }}
+              </label>
+              <vitamui-slide-toggle [disabled]="true" [checked]="project().connectedToArchivingSystem">{{
+                'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION_TOGGLE' | translate
+              }}</vitamui-slide-toggle>
+              @if (project().connectedToArchivingSystem) {
+                <vitamui-select
+                  [disabled]="true"
+                  [placeholder]="'COLLECT.PROJECT_REFERENTIAL_EAS' | translate"
+                  [required]="true"
+                  [options]="easOptions$ | async"
+                  [ngModel]="project().archivingSystemId + TENANT_SEPARATOR + project().archivingSystemTenant"
+                  [ngModelOptions]="{ standalone: true }"
+                ></vitamui-select>
+              }
+            </div>
+            <div class="gap-2">
+              <label class="text caption bold primary">
+                {{ 'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.AUTO_INGEST' | translate }}
+              </label>
+              <mat-button-toggle-group formControlName="automaticIngest" class="vitamui-button-toggle-group">
+                <mat-button-toggle [value]="true"> {{ 'COMMON.YES' | translate }}</mat-button-toggle>
+                <mat-button-toggle [value]="false">{{ 'COMMON.NO' | translate }}</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+            <div class="align-items-stretch gap-2">
+              <label class="text caption bold primary">
+                {{ 'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.JSLT_CONFIGURATION_METADATA_TRANSFORM' | translate }}
+              </label>
+              <vitamui-file-selector
+                [multiple]="false"
+                [maxSizeInBytes]="10 * 1024"
+                [directoryMode]="false"
+                [extensions]="['.jslt']"
+                (filesChanged)="handleJsltFile($event)"
+                [initialFiles]="initialFiles()"
+              >
+              </vitamui-file-selector>
+            </div>
+          } @else {
+            <vitamui-common-data
+              [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION' | translate"
+              [value]="
+            project().connectedToArchivingSystem
+              ? project().archivingSystemId === LOCAL_ARCHIVING_SYSTEM_ID
                 ? ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION_LOCAL' | translate)
-                : `${getExternalSystemName$(project.archivingSystemId) | async}${TENANT_SEPARATOR}${project.archivingSystemTenant}`
+                : `${getExternalSystemName$(project().archivingSystemId) | async}${TENANT_SEPARATOR}${project().archivingSystemTenant}`
               : ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION_NO' | translate)
           "
-          ></vitamui-common-data>
-
-          @if (getProjectWorkflow(project) === Workflow.FLOW) {
-            <vitamui-common-data
-              [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.AUTO_INGEST' | translate"
-              [value]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.' + (project.automaticIngest ? 'ENABLED' : 'DISABLED') | translate"
             ></vitamui-common-data>
 
-            <div class="d-flex align-items-center justify-content-between">
+            @if (getProjectWorkflow(project()) === Workflow.FLOW) {
               <vitamui-common-data
-                [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.JSLT_CONFIGURATION_METADATA_TRANSFORM' | translate"
-                [value]="
-                  project.transformationRules ? ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.TRANSFORMATION_RULES_FILE' | translate) : ' '
-                "
+                [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.AUTO_INGEST' | translate"
+                [value]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.' + (project().automaticIngest ? 'ENABLED' : 'DISABLED') | translate"
               ></vitamui-common-data>
-              <button class="btn btn-circle primary medium" [disabled]="!project.transformationRules" (click)="downloadJSLT()">
-                <i class="vitamui-icon vitamui-icon-telecharger"></i>
-              </button>
-            </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <vitamui-common-data
+                  [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.JSLT_CONFIGURATION_METADATA_TRANSFORM' | translate"
+                  [value]="
+                    project().transformationRules
+                      ? ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.TRANSFORMATION_RULES_FILE' | translate)
+                      : ' '
+                  "
+                ></vitamui-common-data>
+                <button class="btn btn-circle primary medium" [disabled]="!project().transformationRules" (click)="downloadJSLT()">
+                  <i class="vitamui-icon vitamui-icon-telecharger"></i>
+                </button>
+              </div>
+            }
           }
         </div>
       } @else {
@@ -453,6 +487,15 @@
       }
     </mat-tab>
   </mat-tab-group>
+
+  @if (editMode()) {
+    <vitamui-save-banner>
+      <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="update()">
+        {{ 'UNIT_UPDATE.SAVE' | translate }}
+      </button>
+      <button class="btn link cancel" type="button" (click)="openCancelDialog()">{{ 'COMMON.UNDO' | translate }}</button>
+    </vitamui-save-banner>
+  }
 </form>
 
 <ng-template #loadingSpinner>

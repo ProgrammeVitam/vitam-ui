@@ -1,10 +1,17 @@
+@use '../mixins/elevation' as elevation;
+
 .mat-drawer {
   border-left: none !important;
+  @include elevation.shadow-64dp-dark('!important');
 }
 
 .preview-tab-group.mat-mdc-tab-group,
 .extended-preview-tab-group.mat-mdc-tab-group {
   height: 100%;
+
+  &:has(+ vitamui-save-banner) {
+    padding-bottom: 70px; // Save space for position-fixed save banner
+  }
 
   .mat-mdc-tab-header {
     border-bottom: none;

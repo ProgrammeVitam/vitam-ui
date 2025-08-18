@@ -59,8 +59,10 @@ import {
   Option,
   Project,
   ProjectStatus,
+  readFileContent,
   SchemaElement,
   SchemaService,
+  TENANT_SEPARATOR,
   TenantSelectionService,
   Transaction,
   TransactionStatus,
@@ -75,7 +77,6 @@ export enum ImportType {
   COMPRESSED = 'COMPRESSED',
 }
 
-export const TENANT_SEPARATOR = ' - Tenant ';
 export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
 
 @Component({
@@ -170,27 +171,14 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.initForm();
     this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => (this.schemaOptions = schema));
 
-    this.externalReferentialService
-      .getElectronicArchivingSystemList()
-      .pipe(
-        map((list) => (Array.isArray(list) ? list : [])),
-        map((list) =>
-          list.flatMap((system) =>
-            system.tenantIds.map((tenantId: number) => ({
-              key: `${system.archivingSystemId}${TENANT_SEPARATOR}${tenantId}`,
-              label: `${system.name}${TENANT_SEPARATOR}${tenantId}`,
-            })),
-          ),
-        ),
-      )
-      .subscribe((easOptions) => {
-        this.easOptions = easOptions;
-        const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
-        const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
-        this.projectForm.get('archivingSystem')?.setValue(defaultKey);
-        this.projectForm.get('connectedToArchivingSystem')?.setValue(true);
-        this.onArchivingSystemChangeValue();
-      });
+    this.externalReferentialService.getElectronicArchivingSystemOptions$().subscribe((easOptions) => {
+      this.easOptions = easOptions;
+      const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
+      const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
+      this.projectForm.get('archivingSystem')?.setValue(defaultKey);
+      this.projectForm.get('connectedToArchivingSystem')?.setValue(true);
+      this.onArchivingSystemChangeValue();
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -277,17 +265,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.filesToUpload = files;
   }
 
-  uploadJsltFile(files: File[]) {
+  async handleJsltFile(files: File[]) {
     const jsltFile = files?.length ? files[0] : undefined;
     if (jsltFile) {
-      this.readFileContent(jsltFile)
-        .then((content: string) => {
-          this.projectForm.get('transformationRules').setValue(content);
-        })
-        .catch((error: any) => {
-          this.logger.error('Error reading JSLT file:', error);
-          this.isLoading = false;
-        });
+      try {
+        const content: string = await readFileContent(jsltFile);
+        this.projectForm.get('transformationRules').setValue(content);
+      } catch (error) {
+        this.logger.error('Error reading JSLT file:', error);
+        this.isLoading = false;
+      }
     }
   }
 
@@ -511,15 +498,6 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         }),
       )
       .subscribe();
-  }
-
-  private readFileContent(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => resolve(event.target?.result as string);
-      reader.onerror = (error) => reject(error);
-      reader.readAsText(file);
-    });
   }
 
   getNodeTitle(selectedNode?: any): string {

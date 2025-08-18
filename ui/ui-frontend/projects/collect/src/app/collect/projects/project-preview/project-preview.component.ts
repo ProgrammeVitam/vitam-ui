@@ -37,6 +37,7 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   EventEmitter,
   Input,
   OnDestroy,
@@ -44,6 +45,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  signal,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -81,9 +83,11 @@ import {
   PageRequest,
   PaginatedResponse,
   Project,
+  readFileContent,
   SchemaElement,
   SchemaService,
   SecurityService,
+  TENANT_SEPARATOR,
   Transaction,
   TransactionStatus,
   Unit,
@@ -92,7 +96,7 @@ import {
   VitamUISnackBarService,
   Workflow,
 } from 'vitamui-library';
-import { LOCAL_ARCHIVING_SYSTEM_ID, TENANT_SEPARATOR } from '../create-project/create-project.component';
+import { LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.component';
 
 @Component({
   selector: 'app-project-preview',
@@ -133,8 +137,13 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   form: FormGroup;
 
-  project: Project;
+  project = signal<Project>({} as Project);
   jsltFilename = 'TransformationRules.jslt';
+  initialFiles = computed(() =>
+    this.project().transformationRules && this.form.get('transformationRules').pristine
+      ? [new File([this.project().transformationRules], this.jsltFilename)]
+      : undefined,
+  );
 
   acquisitionInformationsList: string[];
   legalStatusList: Option[] = [];
@@ -143,6 +152,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   archivalAgreementOptions$: Observable<Option[]>;
   archiveProfileOptions$: Observable<Option[]>;
   agenciesOptions$: Observable<Option[]>;
+  easOptions$: Observable<Option[]> = this.externalReferentialService.getElectronicArchivingSystemOptions$();
 
   protected readonly Workflow = Workflow;
   getProjectIcon = getProjectIcon;
@@ -169,7 +179,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   private clickOutSideListener!: () => void;
   private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog' };
 
-  editMode = false;
+  #editMode = false;
   isPanelExtended = false;
   dialogRefToClose: MatDialogRef<ProjectPreviewComponent>;
   selectedValue = 'YES';
@@ -215,7 +225,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     );
     this.checkEditConfigurationRole = this.securityService.hasRole$(
       ApplicationId.COLLECT_APP,
-      'ROLE_UPDATE_PROJECTS_CONFIGURATION',
+      'ROLE_UPDATE_PROJECTS_CONFIG',
       this.tenantId,
     );
     this.route.params.subscribe((params) => {
@@ -235,15 +245,21 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     // Listen for clicks on the #projectList div (outside the panel)
     const projectList = document.getElementById('projectList');
     if (projectList) {
-      this.clickOutSideListener = this.renderer.listen(projectList, 'click', () => {
-        this.shouldCancelNavigation();
-      });
+      this.clickOutSideListener = this.renderer.listen(
+        projectList,
+        'click',
+        (event: PointerEvent) => {
+          if (this.isModified()) event.stopPropagation();
+          this.shouldCancelNavigation();
+        },
+        { capture: true },
+      );
     }
   }
 
   private async interceptTabChange(_tab: MatTab, _tabHeader: MatTabHeader, idx: number) {
     if (!(this.isModified() && (await this.shouldCancelNavigation()))) {
-      this.editMode = false;
+      this.#editMode = false;
       this.tabGroup.selectedIndex = idx;
     }
   }
@@ -264,7 +280,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       share(),
     );
     project$.subscribe((project) => {
-      this.project = project;
+      this.project.set(project);
       this.showNormalPanel();
       this.configForm();
       this.initForm();
@@ -322,7 +338,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
           this.formBuilder.group({
             ontologyList: ontologyListControl,
             metadataValue: metadataValueControl,
-            unitUp: this.project.connectedToArchivingSystem
+            unitUp: this.project().connectedToArchivingSystem
               ? [
                   {
                     included: metadataUnitUp.unitUp ? [metadataUnitUp.unitUp] : [],
@@ -362,7 +378,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     const newRuleParamForm = this.formBuilder.group({
       ontologyList: ontologyListControl,
       metadataValue: metadataValueControl,
-      unitUp: this.project.connectedToArchivingSystem
+      unitUp: this.project().connectedToArchivingSystem
         ? [
             {
               included: [],
@@ -382,7 +398,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   searchArchiveUnitsByProject() {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', this.project.id]);
+    this.router.navigate([`collect/tenant/${this.tenantIdentifier}/units`, this.project().id]);
   }
 
   emitClose() {
@@ -399,7 +415,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   showNormalPanel() {
     this.isPanelExtended = false;
     this.backToNormalLateralPanel.emit();
-    this.editMode = false;
+    this.#editMode = false;
   }
 
   showExtendedPanel() {
@@ -424,20 +440,22 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       acquisitionInformation: [null],
       legalStatus: [null],
       unitUp: [null],
-      unitUps: this.formBuilder.array([], this.project?.unitUps?.length ? Validators.required : null),
+      unitUps: this.formBuilder.array([], this.project().unitUps?.length ? Validators.required : null),
+      automaticIngest: [],
+      transformationRules: [],
     });
   }
 
   isModified(): boolean {
     // use pristine to check if the form is unchanged.
-    return this.editMode && !this.form.pristine;
+    return this.#editMode && !this.form.pristine;
   }
 
   showEdit(tab: MatTab) {
     const tabIndex = this.tabs.toArray().indexOf(tab);
     if (tabIndex !== -1) {
       this.form.markAsPristine();
-      this.editMode = true;
+      this.#editMode = true;
       this.tabGroup.selectedIndex = tabIndex;
       this.showExtendedPanel();
       this.initForm();
@@ -446,23 +464,25 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   initForm() {
     if (this.form) {
-      this.form.get('messageIdentifier').setValue(this.project.messageIdentifier);
-      this.form.get('comment').setValue(this.project.comment);
-      this.form.get('originatingAgencyIdentifier').setValue(this.project.originatingAgencyIdentifier);
-      this.form.get('submissionAgencyIdentifier').setValue(this.project.submissionAgencyIdentifier);
-      this.form.get('archivalAgencyIdentifier').setValue(this.project.archivalAgencyIdentifier);
-      this.form.get('transferringAgencyIdentifier').setValue(this.project.transferringAgencyIdentifier);
-      this.form.get('archivalAgreement').setValue(this.project.archivalAgreement);
-      this.form.get('archiveProfile').setValue(this.project.archiveProfile);
-      this.form.get('acquisitionInformation').setValue(this.project.acquisitionInformation);
-      this.form.get('legalStatus').setValue(this.project.legalStatus);
+      this.form.get('messageIdentifier').setValue(this.project().messageIdentifier);
+      this.form.get('comment').setValue(this.project().comment);
+      this.form.get('originatingAgencyIdentifier').setValue(this.project().originatingAgencyIdentifier);
+      this.form.get('submissionAgencyIdentifier').setValue(this.project().submissionAgencyIdentifier);
+      this.form.get('archivalAgencyIdentifier').setValue(this.project().archivalAgencyIdentifier);
+      this.form.get('transferringAgencyIdentifier').setValue(this.project().transferringAgencyIdentifier);
+      this.form.get('archivalAgreement').setValue(this.project().archivalAgreement);
+      this.form.get('archiveProfile').setValue(this.project().archiveProfile);
+      this.form.get('acquisitionInformation').setValue(this.project().acquisitionInformation);
+      this.form.get('legalStatus').setValue(this.project().legalStatus);
       this.form
         .get('unitUp')
         .setValue(
-          this.project.connectedToArchivingSystem
-            ? { included: this.project.unitUp ? [this.project.unitUp] : [], excluded: [] }
-            : this.project.unitUp,
+          this.project().connectedToArchivingSystem
+            ? { included: this.project().unitUp ? [this.project().unitUp] : [], excluded: [] }
+            : this.project().unitUp,
         );
+      this.form.get('automaticIngest').setValue(this.project().automaticIngest);
+      this.form.get('transformationRules').setValue(this.project().transformationRules);
     }
   }
 
@@ -471,7 +491,8 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
     if (['description', 'context'].includes(currentTab)) {
       return await this.launchUpdate();
-    } else if (currentTab === 'attachment') {
+    }
+    if (['attachment', 'configuration'].includes(currentTab)) {
       return await this.launchAttachmentsUpdate();
     }
   }
@@ -497,37 +518,36 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   };
 
   private fillTransactionFromProject(transaction: Transaction) {
-    transaction.archivalAgreement = this.project.archivalAgreement;
-    transaction.messageIdentifier = this.project.messageIdentifier;
-    transaction.archivalAgencyIdentifier = this.project.archivalAgencyIdentifier;
-    transaction.transferringAgencyIdentifier = this.project.transferringAgencyIdentifier;
-    transaction.originatingAgencyIdentifier = this.project.originatingAgencyIdentifier;
-    transaction.submissionAgencyIdentifier = this.project.submissionAgencyIdentifier;
-    transaction.archiveProfile = this.project.archiveProfile;
-    transaction.legalStatus = this.project.legalStatus;
-    transaction.comment = this.project.comment;
-    transaction.acquisitionInformation = this.project.acquisitionInformation;
-    // transaction.unitUp = this.project.unitUp;
-    // transaction.unitUps = this.project.unitUps;
+    transaction.archivalAgreement = this.project().archivalAgreement;
+    transaction.messageIdentifier = this.project().messageIdentifier;
+    transaction.archivalAgencyIdentifier = this.project().archivalAgencyIdentifier;
+    transaction.transferringAgencyIdentifier = this.project().transferringAgencyIdentifier;
+    transaction.originatingAgencyIdentifier = this.project().originatingAgencyIdentifier;
+    transaction.submissionAgencyIdentifier = this.project().submissionAgencyIdentifier;
+    transaction.archiveProfile = this.project().archiveProfile;
+    transaction.legalStatus = this.project().legalStatus;
+    transaction.comment = this.project().comment;
+    transaction.acquisitionInformation = this.project().acquisitionInformation;
+    // transaction.unitUp = this.project().unitUp;
+    // transaction.unitUps = this.project().unitUps;
     return transaction;
   }
 
   downloadJSLT() {
-    const blob = new Blob([this.project.transformationRules], { type: 'octet/stream' });
+    const blob = new Blob([this.project().transformationRules], { type: 'octet/stream' });
     download(blob, this.jsltFilename);
   }
 
   async updateProject(updateTransactions: boolean) {
     const projectToUpdate = {
       ...this.form.value,
-      id: this.project.id,
-      createdOn: this.project.createdOn,
-      status: this.project.status,
+      id: this.project().id,
+      createdOn: this.project().createdOn,
+      status: this.project().status,
       name: this.form.value.messageIdentifier,
-      automaticIngest: this.project?.automaticIngest,
-      archivingSystemId: this.project.archivingSystemId,
-      archivingSystemTenant: this.project.archivingSystemTenant,
-      connectedToArchivingSystem: this.project.connectedToArchivingSystem,
+      archivingSystemId: this.project().archivingSystemId,
+      archivingSystemTenant: this.project().archivingSystemTenant,
+      connectedToArchivingSystem: this.project().connectedToArchivingSystem,
       unitUp: this.form.value.unitUp
         ? (this.form.value.unitUp.included ? this.form.value.unitUp.included[0] : this.form.value.unitUp) || ''
         : '',
@@ -542,7 +562,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
           return {
             metadataKey: ruleParam.ontologyList.ApiField,
             metadataValue: ruleParam.metadataValue,
-            unitUp: this.project.connectedToArchivingSystem ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
+            unitUp: this.project().connectedToArchivingSystem ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
           };
         },
       ),
@@ -557,14 +577,13 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     }[this.getCurrentTab()].bind(this.projectService);
 
     const updateProjectOperation$ = updateProjectFunction(projectToUpdate);
-    const previousProject = this.project;
-    this.project = null;
+    const previousProject = this.project();
     try {
       const project = await lastValueFrom(updateProjectOperation$);
       this.dialogRefToClose.close(true);
       this.showNormalPanel();
       if (this.projectId === project.id) {
-        this.project = project;
+        this.project.set(project);
       } else {
         this.projectId$.next(this.projectId);
       }
@@ -596,7 +615,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     } catch (e) {
       console.error(e);
       if (this.projectId === previousProject.id) {
-        this.project = previousProject;
+        this.project.set(previousProject);
       } else {
         this.projectId$.next(this.projectId);
       }
@@ -607,7 +626,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   private async onCancel() {
     this.showNormalPanel();
-    if (this.projectId !== this.project.id) {
+    if (this.projectId !== this.project().id) {
       this.projectId$.next(this.projectId);
     }
     this.dialogRefToClose?.close(true);
@@ -642,13 +661,13 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   getExternalSystemName$(archivingSystemId: string): Observable<string> {
     return this.externalReferentialService
-      .getElectronicArchivingSystemList()
+      .getElectronicArchivingSystemList$()
       .pipe(map((list) => (list || []).find((system) => system.archivingSystemId === archivingSystemId)?.name || archivingSystemId));
   }
 
   getLabel$(attribute: keyof Project): Observable<string> {
-    const key = this.project[attribute];
-    if (this.project.connectedToArchivingSystem) {
+    const key = this.project()[attribute];
+    if (this.project().connectedToArchivingSystem) {
       const options = [
         'originatingAgencyIdentifier',
         'submissionAgencyIdentifier',
@@ -670,6 +689,17 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     return of(key ? String(key) : null);
   }
 
+  editMode(tab?: MatTab): boolean {
+    return this.#editMode && (!tab || this.tabs.toArray()[this.tabGroup.selectedIndex] === tab);
+  }
+
   protected readonly LOCAL_ARCHIVING_SYSTEM_ID = LOCAL_ARCHIVING_SYSTEM_ID;
   protected readonly TENANT_SEPARATOR = TENANT_SEPARATOR;
+
+  async handleJsltFile(files: File[]) {
+    const jsltFile = files?.length ? files[0] : undefined;
+    const content: string = jsltFile ? await readFileContent(jsltFile) : '';
+    this.form.get('transformationRules').setValue(content);
+    this.form.get('transformationRules').markAsDirty();
+  }
 }

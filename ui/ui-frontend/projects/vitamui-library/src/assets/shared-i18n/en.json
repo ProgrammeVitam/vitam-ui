@@ -4387,6 +4387,7 @@
         "EDIT_DESCRIPTION": "Edit description",
         "EDIT_CONTEXT": "Edit context",
         "EDIT_ATTACHMENTS": "Edit attachment(s)",
+        "EDIT_CONFIGURATION": "Edit configuration",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
       },
       "ATTACHMENT": {
@@ -4402,6 +4403,7 @@
       },
       "CONFIGURATION": {
         "ARCHIVING_SYSTEM_CONNECTION": "Archiving system connection",
+        "ARCHIVING_SYSTEM_CONNECTION_TOGGLE": "Use EAS referentials",
         "ARCHIVING_SYSTEM_CONNECTION_NO": "Not connected",
         "ARCHIVING_SYSTEM_CONNECTION_LOCAL": "Connected to local EAS",
         "AUTO_INGEST": "Automatic transaction management",

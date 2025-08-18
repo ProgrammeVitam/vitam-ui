@@ -63,6 +63,7 @@ export * from './lib/components/dialog/error-dialog/error-dialog.component';
 export * from './lib/components/next-step/next-step.component';
 export * from './lib/components/pattern/pattern.component';
 export * from './lib/components/previous-step/previous-step.component';
+export * from './lib/components/save-banner/save-banner.component';
 export * from './lib/components/select/select.component';
 export * from './lib/components/select-with-tree/select-with-tree.component';
 export * from './lib/components/search-with-type-selector/search-with-type-selector.component';
