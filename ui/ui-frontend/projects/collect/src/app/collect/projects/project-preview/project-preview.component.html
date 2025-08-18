@@ -314,10 +314,10 @@
 
 <ng-template #confirmEditProject>
   <vitamui-dialog-header [title]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate"></vitamui-dialog-header>
-  <mat-dialog-content *ngIf="transactions$.getValue(); let transactions; else: loadingSpinner" class="row">
+  <mat-dialog-content *ngIf="openedTransactions$ | async; let openedTransactions; else: loadingSpinner" class="row">
     <div
       class="text d-flex mt-4"
-      [innerHTML]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ' | translate: { nb: transactions.values?.length }"
+      [innerHTML]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ' | translate: { nb: openedTransactions?.length }"
     ></div>
 
     <div class="mt-4">
