@@ -549,8 +549,8 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       archivingSystemTenant: this.project().archivingSystemTenant,
       connectedToArchivingSystem: this.project().connectedToArchivingSystem,
       unitUp: this.form.value.unitUp
-        ? (this.form.value.unitUp.included ? this.form.value.unitUp.included[0] : this.form.value.unitUp) || ''
-        : '',
+        ? (this.form.value.unitUp.included ? this.form.value.unitUp.included[0] : this.form.value.unitUp) || null
+        : null,
       unitUps: this.form.value.unitUps?.map(
         (ruleParam: {
           ontologyList: { ApiField: string };
@@ -698,7 +698,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   async handleJsltFile(files: File[]) {
     const jsltFile = files?.length ? files[0] : undefined;
-    const content: string = jsltFile ? await readFileContent(jsltFile) : '';
+    const content: string = jsltFile ? await readFileContent(jsltFile) : null;
     this.form.get('transformationRules').setValue(content);
     this.form.get('transformationRules').markAsDirty();
   }
