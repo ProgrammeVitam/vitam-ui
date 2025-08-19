@@ -56,6 +56,7 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   @Input() accessContractAllowUpdating: boolean;
   @Input() hasUnitaryUpdateUnitRole: boolean;
   @Input() transactionId: string;
+  @Input() transactionIsNotOpen: boolean;
 
   @Output() backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
