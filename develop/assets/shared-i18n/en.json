@@ -4382,12 +4382,15 @@
     "ONE_SELECTED": "selected",
     "PROJECT_UNIT_PREVIEW": {
       "ACTIONS": {
-        "EDIT_PROJECT": "Edit project",
+        "EDIT_DESCRIPTION": "Edit description",
+        "EDIT_CONTEXT": "Edit context",
+        "EDIT_ATTACHMENTS": "Edit attachment(s)",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
       },
       "ATTACHMENT": {
         "FIX": {
           "TITLE": "Fix attachment",
+          "ATTACHMENT_NAME": "Attachment name",
           "ATTACHMENT_ID": "Attachment technical identifier"
         },
         "RULES": {
@@ -4396,6 +4399,9 @@
         "NO_EXISTANT_ATTACHMENT": "No attachment"
       },
       "CONFIGURATION": {
+        "ARCHIVING_SYSTEM_CONNECTION": "Archiving system connection",
+        "ARCHIVING_SYSTEM_CONNECTION_NO": "Not connected",
+        "ARCHIVING_SYSTEM_CONNECTION_LOCAL": "Connected to local EAS",
         "AUTO_INGEST": "Automatic transaction management",
         "ENABLED": "Enabled",
         "DISABLED": "Disabled",
@@ -4947,7 +4953,8 @@
     "email": "Invalid email address.",
     "pattern": "Expected format : {{ message }}.",
     "uniquePreventRuleId": "Code identical to the previous action",
-    "uniqueRuleId": "Code identical to the previous action"
+    "uniqueRuleId": "Code identical to the previous action",
+    "missingIncludedNodes": "A value is required"
   },
   "ACCESS_CONTRACT": {
     "HOME": {
