@@ -41,7 +41,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false,
 })
 export class EmptyPipe implements PipeTransform {
-  transform(value: any): any {
-    return value ?? '— —';
+  transform(value: string): any {
+    return value?.trim() ? value : '— —';
   }
 }

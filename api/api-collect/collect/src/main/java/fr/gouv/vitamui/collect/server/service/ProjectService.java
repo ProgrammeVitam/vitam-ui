@@ -44,6 +44,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectAttachmentsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.ProjectConverter;
@@ -80,6 +81,7 @@ public class ProjectService {
     public static final String UNABLE_TO_CREATE_TRANSACTION = "Unable to create transaction";
     public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
     public static final String UNABLE_TO_UPDATE_PROJECT = "Unable to update project";
+    public static final String UNABLE_TO_UPDATE_PROJECT_ATTACHMENTS = "Unable to update project attachments";
     public static final String UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE = "Unable to upload project zip file";
     public static final String UNABLE_TO_RETRIEVE_PROJECT = "Unable to retrieve project";
 
@@ -242,6 +244,24 @@ public class ProjectService {
         } catch (InvalidParseOperationException e) {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
+        }
+    }
+
+    public CollectProjectDto updateAttachments(
+        String id,
+        CollectProjectAttachmentsDto collectProjectAttachmentsDto,
+        VitamContext vitamContext
+    ) {
+        LOGGER.debug("Id: {}", id);
+        LOGGER.debug("CollectProjectAttachmentsDto: {}", collectProjectAttachmentsDto);
+        try {
+            CollectProjectDto projectDto = getProjectById(id, vitamContext);
+            projectDto.setUnitUp(collectProjectAttachmentsDto.getUnitUp());
+            projectDto.setUnitUps(collectProjectAttachmentsDto.getUnitUps());
+            return update(id, projectDto, vitamContext);
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_UPDATE_PROJECT_ATTACHMENTS, e);
+            throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT_ATTACHMENTS, e);
         }
     }
 

@@ -45,8 +45,19 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { PaginatedResponse, Project, ProjectStatus, Transaction, TransactionStatus } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import {
+  BASE_URL,
+  FilingPlanService,
+  LoggerModule,
+  PaginatedResponse,
+  Project,
+  ProjectStatus,
+  SchemaService,
+  TenantSelectionService,
+  Transaction,
+  TransactionStatus,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectPreviewComponent } from './project-preview.component';
@@ -127,11 +138,25 @@ describe('ProjectPreviewComponent', () => {
       updateTransaction: () => of(transaction),
     };
 
+    const tenantSelectionServiceMock = {
+      getSelectedTenant: () => of(1),
+    };
+
     await TestBed.configureTestingModule({
-      declarations: [ProjectPreviewComponent],
-      imports: [MatDialogModule, VitamUICommonTestModule, MatSnackBarModule, BrowserModule, BrowserAnimationsModule, MatButtonToggleModule],
+      imports: [
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
+        ProjectPreviewComponent,
+        MatDialogModule,
+        VitamUICommonTestModule,
+        MatSnackBarModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatButtonToggleModule,
+      ],
       providers: [
         FormBuilder,
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ProjectsService, useValue: projectServiceMock },
         {
           provide: MatDialogRef,
@@ -141,7 +166,17 @@ describe('ProjectPreviewComponent', () => {
         },
         { provide: ProjectsApiService, useValue: projectApiServiceMock },
         { provide: ActivatedRoute, useValue: { params: of('11') } },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },
+        { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
+        {
+          provide: FilingPlanService,
+          useValue: {
+            tree$: of([]),
+            expandChange$: EMPTY,
+            loadTree: () => of([]),
+            loadFilingPlan: () => of([]),
+          },
+        },
         { provide: Router, useValue: {} },
       ],
     }).compileComponents();
@@ -165,7 +200,7 @@ describe('ProjectPreviewComponent', () => {
   }));
 
   it('should get project when update', waitForAsync(() => {
-    component.showEditProject();
+    component.showEdit(component.tabs.get(0));
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(component.form.value.messageIdentifier).toEqual(project.messageIdentifier);
@@ -179,10 +214,10 @@ describe('ProjectPreviewComponent', () => {
 
   it('should update project without transactions', waitForAsync(() => {
     spyOn(projectServiceMock, 'updateProject').and.returnValue(of(projectAfterUpdate));
-    component.showEditProject();
+    component.showEdit(component.tabs.get(0));
     fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
-    component.launchUpdate();
+    component.update();
     fixture.detectChanges();
     component.selectedValue = 'NON';
     component.onConfirm();
@@ -194,10 +229,10 @@ describe('ProjectPreviewComponent', () => {
 
   it('should update project with transactions', waitForAsync(() => {
     spyOn(projectServiceMock, 'updateProject').and.returnValue(of(projectAfterUpdate));
-    component.showEditProject();
+    component.showEdit(component.tabs.get(0));
     fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
-    component.launchUpdate();
+    component.update();
     fixture.detectChanges();
     component.selectedValue = 'YES';
     component.onConfirm();

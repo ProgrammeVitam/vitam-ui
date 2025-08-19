@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.collect.server.rest;
 
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectAttachmentsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
@@ -201,6 +202,7 @@ public class ProjectController {
         );
     }
 
+    // TODO: This method will be removed in the future, as it will be split between update for description, context, attachments and configuration.
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
     @PutMapping(PATH_ID)
     public CollectProjectDto updateProject(
@@ -214,6 +216,23 @@ public class ProjectController {
         return projectService.update(
             id,
             collectProjectDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
+    @Secured(ServicesData.ROLE_UPDATE_TRANSACTIONS)
+    @PutMapping(PATH_ID + "/attachments")
+    public CollectProjectDto updateProjectAttachments(
+        final @PathVariable("id") String id,
+        @RequestBody CollectProjectAttachmentsDto collectProjectAttachmentsDto
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectProjectAttachmentsDto);
+        LOGGER.debug("[External] Project attachments to update : {}", collectProjectAttachmentsDto);
+        return projectService.updateAttachments(
+            id,
+            collectProjectAttachmentsDto,
             externalParametersService.buildVitamContextFromExternalParam()
         );
     }

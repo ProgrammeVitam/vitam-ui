@@ -158,77 +158,6 @@
   }
 }
 
-.object-container {
-  width: 100%;
-
-  .object-menu {
-    height: 50px;
-    margin-top: 20px;
-    padding: 0 5px;
-    border-radius: 5px;
-    display: flex;
-    background-color: var(--vitamui-background);
-    flex-direction: row;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 22px;
-    cursor: pointer;
-
-    &.opened {
-      border-left: 5px solid var(--vitamui-primary);
-      padding-left: 0;
-      color: var(--vitamui-primary);
-    }
-
-    .split {
-      padding: 0 10px;
-      width: 50%;
-    }
-
-    .open-close-icon {
-      padding-right: 5px;
-    }
-
-    .object-name {
-    }
-
-    .object-size {
-    }
-
-    .object-type {
-    }
-
-    .delete-button {
-      border: 1px solid var(--vitamui-primary);
-      border-radius: 50%;
-      background-color: var(--vitamui-white);
-      width: 30px;
-      height: 30px;
-      font-size: medium;
-      color: var(--vitamui-primary);
-      cursor: pointer;
-    }
-  }
-
-  .object-details {
-    padding: 15px 15px;
-    margin-top: 5px;
-    background-color: var(--vitamui-background);
-
-    .object-details-group {
-      label {
-        color: var(--vitamui-primary);
-        font-size: 14px;
-        display: block;
-      }
-
-      &.delete-button {
-        padding: 15px 0 15px 20px;
-      }
-    }
-  }
-}
-
 .toggle-right {
   align-items: end;
   justify-content: center;
@@ -240,4 +169,11 @@
   flex-shrink: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+vitamui-common-accordion ::ng-deep {
+  .header,
+  .content {
+    background: var(--vitamui-background);
+  }
 }

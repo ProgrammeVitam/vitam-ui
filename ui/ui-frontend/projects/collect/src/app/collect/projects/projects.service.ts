@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Option, Project, SearchService } from 'vitamui-library';
+import { Option, Project, ProjectAttachments, SearchService } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
@@ -94,6 +94,10 @@ export class ProjectsService extends SearchService<Project> {
 
   public updateProject(project: Project) {
     return this.projectsApiService.update(project);
+  }
+
+  public updateProjectAttachments(project: ProjectAttachments) {
+    return this.projectsApiService.updateAttachments(project);
   }
 
   public getProjectById(projectId: string) {

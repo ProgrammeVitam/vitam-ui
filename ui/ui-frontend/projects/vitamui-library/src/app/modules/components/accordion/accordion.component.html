@@ -1,10 +1,10 @@
 <div class="header text bold" [ngClass]="{ opened: opened }" (click)="toggle()">
   <i class="vitamui-icon icon" [ngClass]="{ 'vitamui-icon-chevron-down': opened, 'vitamui-icon-chevron-right': !opened }"></i>
-  <div class="v-row">
-    <div class="v-col">
+  <div class="d-flex w-100 hgap-2">
+    <div class="flex-grow-1">
       <ng-content select=".title"></ng-content>
     </div>
-    <div class="v-col">
+    <div>
       <ng-content select=".title-extra"></ng-content>
     </div>
   </div>

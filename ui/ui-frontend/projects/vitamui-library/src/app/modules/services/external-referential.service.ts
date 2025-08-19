@@ -41,11 +41,14 @@ import { BASE_URL } from '../injection-tokens';
 import { Observable } from 'rxjs';
 import { ElectronicArchivingSystem, IngestContractLight, ProfileLight } from '../models';
 import { AgencyLight } from '../models/agency/agency.interface';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExternalReferentialService extends PaginatedHttpClient<any> {
+  #electronicArchivingSystemList$ = this.http.get<ElectronicArchivingSystem[]>(`${this.apiUrl}/config`).pipe(shareReplay(1));
+
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/external-referential');
   }
@@ -66,6 +69,6 @@ export class ExternalReferentialService extends PaginatedHttpClient<any> {
   }
 
   getElectronicArchivingSystemList(): Observable<ElectronicArchivingSystem[]> {
-    return this.http.get<ElectronicArchivingSystem[]>(`${this.apiUrl}/config`);
+    return this.#electronicArchivingSystemList$;
   }
 }

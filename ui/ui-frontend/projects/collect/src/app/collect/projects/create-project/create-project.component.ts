@@ -36,7 +36,7 @@
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
@@ -47,6 +47,7 @@ import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { HttpEventType } from '@angular/common/http';
 import {
+  ExternalReferentialService,
   fetchTitle,
   FilingPlanMode,
   FilingPlanService,
@@ -60,7 +61,6 @@ import {
   ProjectStatus,
   SchemaElement,
   SchemaService,
-  ExternalReferentialService,
   TenantSelectionService,
   Transaction,
   TransactionStatus,
@@ -75,8 +75,8 @@ export enum ImportType {
   COMPRESSED = 'COMPRESSED',
 }
 
-const TENANT_SEPARATOR = ' - Tenant ';
-const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
+export const TENANT_SEPARATOR = ' - Tenant ';
+export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
 
 @Component({
   selector: 'app-create-project',
@@ -384,54 +384,43 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
-      project.unitUp = !this.connectedToArchivingSystem ? this.projectForm.value.unitUp : this.linkParentIdControl.value.included[0];
+      project.unitUp = this.connectedToArchivingSystem ? this.linkParentIdControl.value.included[0] : this.projectForm.value.unitUp;
     } else {
       project.unitUps = this.convertRuleParamsToMetadata();
     }
     return project as Project;
   }
 
-  convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
-    return this.rulesParams.controls.map((ruleParamControl: FormControl) => {
+  private convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
+    return this.rulesParams.controls.map((ruleParamControl: FormGroup) => {
       const ruleParam = ruleParamControl.value;
       const metadataKey = ruleParam.ontologyList.ApiField;
-      const metadataValue = ruleParam.metadataValue[metadataKey];
-      const unitUpValue = ruleParam.unitUpValue?.value;
+      const metadataValue = ruleParam.metadataValue;
       return {
         metadataKey: metadataKey,
         metadataValue: metadataValue,
-        unitUp: this.connectedToArchivingSystem ? unitUpValue : ruleParam.unitUp.included[0],
+        unitUp: this.connectedToArchivingSystem ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
       };
     });
   }
 
-  get rulesParams(): FormArray {
-    return this.projectForm.controls.rulesParams as FormArray;
-  }
-
-  openCloseRuleParam(ruleParam: any) {
-    ruleParam.opened = !ruleParam.opened;
+  get rulesParams(): FormArray<FormGroup> {
+    return this.projectForm.controls.rulesParams as FormArray<FormGroup>;
   }
 
   addRuleParam() {
-    for (const ruleParamForm of this.rulesParams.controls) {
-      ruleParamForm.value.opened = false;
-    }
-
     const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
-    const metadataValueGroup = this.formBuilder.group({}, { validators: Validators.required });
-
-    ontologyListControl.valueChanges.subscribe((schemaElement) => {
-      metadataValueGroup.addControl(schemaElement?.Path, this.formBuilder.control(undefined));
+    const metadataValueControl = this.formBuilder.control(undefined, Validators.required);
+    ontologyListControl.valueChanges.subscribe(() => {
+      metadataValueControl.setValidators(Validators.required); // To override Validators that may be added by datepicker if changing from datepicker to input
+      metadataValueControl.markAsTouched(); // To make sure error messages appear after changing the ontology
     });
 
     // rulesParams interface:
     const newRuleParamForm = this.formBuilder.group({
-      opened: [true],
       ontologyList: ontologyListControl,
-      metadataValue: metadataValueGroup,
-      unitUpValue: [null],
-      unitUp: [{ included: [], excluded: [] }, oneIncludedNodeRequired()],
+      metadataValue: metadataValueControl,
+      unitUp: this.connectedToArchivingSystem ? [{ included: [], excluded: [] }, oneIncludedNodeRequired()] : [''],
     });
 
     this.rulesParams.push(newRuleParamForm);
@@ -524,14 +513,6 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       .subscribe();
   }
 
-  asFormGroup(control: AbstractControl) {
-    return control as FormGroup;
-  }
-
-  asFormControl(control: AbstractControl) {
-    return control as FormControl;
-  }
-
   private readFileContent(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -541,14 +522,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  getNodeTitle(selectedNodes: any): string {
-    if (!selectedNodes.unitUpValue || selectedNodes?.unitUp?.included.length < 0) return;
-    if (!this.connectedToArchivingSystem) return ' : ' + selectedNodes.unitUpValue;
-    const vitamId = selectedNodes?.unitUp?.included[0];
-    if (!vitamId || !this.units) return '';
-
-    const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
-    return foundNode ? ' : ' + fetchTitle(foundNode.Title, foundNode.Title_) : '';
+  getNodeTitle(selectedNode?: any): string {
+    if (this.connectedToArchivingSystem) {
+      if (!selectedNode?.unitUp?.included?.length) return '';
+      const vitamId = selectedNode?.unitUp?.included[0];
+      if (!vitamId || !this.units) return '';
+      const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
+      return foundNode ? ` : ${fetchTitle(foundNode.Title, foundNode.Title_)}` : '';
+    } else {
+      return selectedNode?.unitUp ? ` : ${selectedNode.unitUp}` : '';
+    }
   }
 
   getName(item: SchemaElement): string {

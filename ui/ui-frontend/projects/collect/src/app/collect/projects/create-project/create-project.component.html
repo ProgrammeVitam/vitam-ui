@@ -380,7 +380,7 @@
             {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-        <vitamui-previous-step></vitamui-previous-step>
+        <vitamui-previous-step (click)="rulesParams.clear()"></vitamui-previous-step>
       </mat-dialog-actions>
     </cdk-step>
 
@@ -427,42 +427,28 @@
     <!-- stepIndex 7 : workflow 3     , step 5/8 : Parametrer les regles de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW && selectedFlowType === FlowType.RULES">
       <mat-dialog-content>
-        <div class="main-content">
-          <ng-container formArrayName="rulesParams">
-            <div class="object-container" *ngFor="let ruleParamForm of rulesParams.controls; let index = index">
-              <ng-container [formGroup]="asFormGroup(ruleParamForm)">
-                <div
-                  class="object-menu"
-                  [ngClass]="{ opened: ruleParamForm.value.opened }"
-                  (click)="openCloseRuleParam(ruleParamForm.value)"
-                >
-                  <div class="d-flex align-items-center split">
-                    <div class="d-flex align-items-center open-close-icon">
-                      <i
-                        class="vitamui-icon {{ ruleParamForm.value.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"
-                      ></i>
-                    </div>
-                    <div class="d-flex align-items-center shrink object-name">
-                      {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) + getNodeTitle(ruleParamForm.value) }}
-                    </div>
+        <ng-container formArrayName="rulesParams">
+          <div class="gap-4 align-items-stretch">
+            @for (ruleParamForm of rulesParams.controls; track ruleParamForm; let i = $index; let isFirst = $first) {
+              <ng-container [formGroup]="ruleParamForm">
+                <vitamui-common-accordion [opened]="isFirst">
+                  <div class="title">
+                    {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (i + 1) + getNodeTitle(ruleParamForm.value) }}
                   </div>
-                  <div class="d-flex align-items-center split">
-                    <div class="d-flex align-items-center shrink object-type"></div>
+                  <div class="title-extra" style="margin-left: auto">
                     <button
                       class="btn btn-circle outline outline-primary small"
-                      (click)="deleteRuleParam(index)"
+                      (click)="deleteRuleParam(i)"
                       [vitamuiTooltip]="'COLLECT.MODAL.REMOVE_PARAM' | translate"
                     >
                       <i class="vitamui-icon vitamui-icon-delete"></i>
                     </button>
                   </div>
-                </div>
-                <div class="object-details" [hidden]="!ruleParamForm.value.opened">
-                  <div class="object-details-group align-items-stretch">
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label class="medium text bold mb-3">{{ 'COLLECT.MODAL.SELECT_METADATA_LABEL' | translate }}</label>
-                        <div class="hgap-3">
+                  <div class="content">
+                    <div class="gap-5 align-items-stretch">
+                      <div class="gap-3 align-items-stretch">
+                        <label class="medium text bold primary">{{ 'COLLECT.MODAL.SELECT_METADATA_LABEL' | translate }}</label>
+                        <div class="hgap-4 align-items-start">
                           <vitamui-select-with-tree
                             class="w-50"
                             formControlName="ontologyList"
@@ -472,58 +458,49 @@
                             [searchBarPlaceHolder]="'COLLECT.MODAL.SELECT_METADATA_SEARCH_BAR_PLACE_HOLDER' | translate"
                           >
                           </vitamui-select-with-tree>
-
-                          <div class="w-50" formArrayName="metadataValue">
-                            @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(ruleParamForm.value.ontologyList?.Type)) {
-                              <vitamui-input
-                                class="w-100"
-                                [placeholder]="getName(ruleParamForm.value.ontologyList)"
-                                [formControlName]="ruleParamForm.value.ontologyList?.Path"
-                              >
-                              </vitamui-input>
-                            } @else if (['DATE'].includes(ruleParamForm.value.ontologyList?.Type)) {
-                              <vitamui-datepicker
-                                [label]="getName(ruleParamForm.value.ontologyList)"
-                                [formControlName]="ruleParamForm.value.ontologyList?.Path"
-                              ></vitamui-datepicker>
-                            }
-                          </div>
+                          @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(ruleParamForm.value.ontologyList?.Type)) {
+                            <vitamui-input
+                              class="w-50"
+                              formControlName="metadataValue"
+                              [placeholder]="getName(ruleParamForm.value.ontologyList)"
+                            >
+                            </vitamui-input>
+                          } @else if (['DATE'].includes(ruleParamForm.value.ontologyList?.Type)) {
+                            <vitamui-datepicker
+                              class="w-50"
+                              formControlName="metadataValue"
+                              [label]="getName(ruleParamForm.value.ontologyList)"
+                            ></vitamui-datepicker>
+                          }
                         </div>
                       </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col">
-                        <label class="medium text bold mb-3">{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
-                        <vitamui-library-filing-plan
-                          *ngIf="units && connectedToArchivingSystem"
-                          [dataSource]="units"
-                          [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
-                          [mode]="FilingPlanMode.SOLO"
-                        >
-                        </vitamui-library-filing-plan>
-                        <vitamui-input
-                          class="w-100"
-                          *ngIf="!connectedToArchivingSystem"
-                          required
-                          [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate"
-                          [formControl]="asFormControl(ruleParamForm.get('unitUpValue'))"
-                        >
-                        </vitamui-input>
+                      <div class="gap-3 align-items-stretch">
+                        <label class="medium text bold primary">
+                          {{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}
+                          @if (connectedToArchivingSystem) {
+                            <span class="required-marker">*</span>
+                          }
+                        </label>
+                        @if (connectedToArchivingSystem) {
+                          <vitamui-library-filing-plan formControlName="unitUp" [dataSource]="units" [mode]="FilingPlanMode.SOLO">
+                          </vitamui-library-filing-plan>
+                        } @else {
+                          <vitamui-input formControlName="unitUp" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate">
+                          </vitamui-input>
+                        }
                       </div>
                     </div>
                   </div>
-                </div>
+                </vitamui-common-accordion>
               </ng-container>
-            </div>
-          </ng-container>
-
-          <div>
-            <button type="button" class="btn link back" (click)="addRuleParam()">
-              <i class="vitamui-icon vitamui-icon-chevron-right"></i>
-              <span>{{ 'COLLECT.MODAL.RULES_PARAMS_ADD' | translate }}</span>
-            </button>
+            }
           </div>
+        </ng-container>
+        <div>
+          <button type="button" class="btn link back" (click)="addRuleParam()">
+            <i class="vitamui-icon vitamui-icon-chevron-right"></i>
+            <span>{{ 'COLLECT.MODAL.RULES_PARAMS_ADD' | translate }}</span>
+          </button>
         </div>
       </mat-dialog-content>
       <mat-dialog-actions>
