@@ -13,7 +13,7 @@
       vitamuiTooltip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
       [vitamuiTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || !accessContractAllowUpdating || !hasUnitaryUpdateUnitRole"
+      [disabled]="transactionIsNotOpen || updateStarted || !accessContractAllowUpdating || !hasUnitaryUpdateUnitRole"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
