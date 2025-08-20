@@ -345,10 +345,18 @@
             </div>
             <div class="col-1">
               <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-                <button mat-menu-item [disabled]="!hasDeleteArchiveUnitActionRole || itemSelected === 0" (click)="launchDeletionModal()">
+                <button
+                  mat-menu-item
+                  [disabled]="(isNotOpen$ | async) || !hasDeleteArchiveUnitActionRole || itemSelected === 0"
+                  (click)="launchDeletionModal()"
+                >
                   {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_DELETE' | translate }}
                 </button>
-                <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || itemSelected === 0">
+                <button
+                  mat-menu-item
+                  (click)="launchReclassification()"
+                  [disabled]="(isNotOpen$ | async) || !hasReclassificationRole || itemSelected === 0"
+                >
                   {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
                 </button>
               </vitamui-common-menu-button>
