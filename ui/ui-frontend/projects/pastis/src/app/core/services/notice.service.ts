@@ -68,7 +68,8 @@ export class NoticeService {
     profileDescription.name = retour.intitule;
     profileDescription.description = retour.description;
     profileDescription.status = retour.selectedStatus;
-    profileDescription.controlSchema = '{}';
+    profileDescription.controlSchema =
+      '{"$schema":"http://json-schema.org/draft-04/schema","type":"object","additionalProperties":false,"properties":{}}';
 
     return profileDescription;
   }
