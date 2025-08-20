@@ -59,7 +59,8 @@ export class ClickOutsideDirective {
       target.closest('.cdk-overlay-container') ||
       target.closest('.mat-datepicker-content') ||
       target.closest('.mat-select-panel') ||
-      target.closest('.mat-dialog-container')
+      target.closest('.mat-dialog-container') ||
+      target.closest('.mat-mdc-tab-body-content')
     ) {
       return; // Ignore the click if it’s a MatMenu, MatDatepicker, etc.
     }
