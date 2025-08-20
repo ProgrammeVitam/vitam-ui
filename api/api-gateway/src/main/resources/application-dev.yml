@@ -117,7 +117,7 @@ spring:
                 - RewritePath=/referential-api/ui/(?<segment>.*),/iam/v1/$\{segment}
                 - RewritePath=/referential-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
                 - RewritePath=/referential-api/logbooks/operations(?<segment>.*),/v1/logbooks/operations$\{segment},
-                - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
+                - RewritePath=/referential-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
                 - RewritePath=/referential-api/(?<segment>.*),/iam/v1/$\{segment}
 
                 # Archive Search IAM API
@@ -127,7 +127,7 @@ spring:
                 - RewritePath=/archive-search-api/security(?<segment>.*),/iam/v1/security$\{segment},
                 - RewritePath=/archive-search-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
                 - RewritePath=/archive-search-api/users(?<segment>.*),/iam/v1/users$\{segment},
-                - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
+                - RewritePath=/archive-search-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
                 - RewritePath=/archive-search-api/(?<segment>.*),/v1/$\{segment}
 
                 # Pastis IAM API
@@ -135,7 +135,7 @@ spring:
                 - RewritePath=/pastis-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
                 - RewritePath=/pastis-api/ui/(?<segment>.*),/iam/v1/$\{segment}
                 - RewritePath=/pastis-api/users(?<segment>.*),/iam/v1/users$\{segment},
-                - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
+                - RewritePath=/pastis-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
                 - RewritePath=/pastis-api/(?<segment>.*),/v1/$\{segment}
 
                 # Collect IAM API
@@ -144,7 +144,7 @@ spring:
                 - RewritePath=/collect-api/security(?<segment>.*),/iam/v1/security$\{segment},
                 - RewritePath=/collect-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
                 - RewritePath=/collect-api/users(?<segment>.*),/iam/v1/users$\{segment},
-                - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
+                - RewritePath=/collect-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
                 - RewritePath=/collect-api/(?<segment>.*),/v1/$\{segment}
 
                 # Ingest IAM API
