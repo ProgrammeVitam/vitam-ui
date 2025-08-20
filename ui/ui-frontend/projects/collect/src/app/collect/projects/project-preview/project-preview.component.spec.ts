@@ -110,7 +110,10 @@ describe('ProjectPreviewComponent', () => {
   const projectServiceMock = {
     getBaseUrl: () => '/fake-api',
     getProjectById: () => of(project),
-    updateProject: () => of(projectAfterUpdate),
+    updateProjectDescription: () => of(projectAfterUpdate),
+    updateProjectContext: () => of(projectAfterUpdate),
+    updateProjectAttachments: () => of(projectAfterUpdate),
+    updateProjectConfiguration: () => of(projectAfterUpdate),
     getLegalStatusList: () => [
       { id: 'Public Archive', value: 'Public archives' },
       { id: 'Private Archive', value: 'Private archives' },
@@ -213,32 +216,30 @@ describe('ProjectPreviewComponent', () => {
   }));
 
   it('should update project without transactions', waitForAsync(() => {
-    spyOn(projectServiceMock, 'updateProject').and.returnValue(of(projectAfterUpdate));
+    spyOn(projectServiceMock, 'updateProjectDescription').and.returnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
     fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
     fixture.detectChanges();
-    component.selectedValue = 'NON';
-    component.onConfirm();
+    component.updateProject(false);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(projectServiceMock.updateProject).toHaveBeenCalled();
+      expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
     });
   }));
 
   it('should update project with transactions', waitForAsync(() => {
-    spyOn(projectServiceMock, 'updateProject').and.returnValue(of(projectAfterUpdate));
+    spyOn(projectServiceMock, 'updateProjectDescription').and.returnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
     fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
     fixture.detectChanges();
-    component.selectedValue = 'YES';
-    component.onConfirm();
+    component.updateProject(true);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      expect(projectServiceMock.updateProject).toHaveBeenCalled();
+      expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
     });
   }));
 });

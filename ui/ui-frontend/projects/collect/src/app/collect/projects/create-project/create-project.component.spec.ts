@@ -130,7 +130,7 @@ describe('CreateProjectComponent', () => {
   beforeEach(async () => {
     projectsServiceMock = jasmine.createSpyObj<ProjectsService>('ProjectsService', {
       create: of(defaultProject),
-      updateProject: of(defaultProject),
+      updateProjectDescription: of(defaultProject),
     });
 
     transactionServiceMock = jasmine.createSpyObj<TransactionsService>('TransactionsService', {

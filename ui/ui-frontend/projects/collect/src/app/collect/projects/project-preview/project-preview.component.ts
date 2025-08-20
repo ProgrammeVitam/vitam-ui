@@ -53,8 +53,8 @@ import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angu
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, combineLatest, firstValueFrom, Observable, scan } from 'rxjs';
-import { distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, firstValueFrom, lastValueFrom, Observable, of, scan } from 'rxjs';
+import { catchError, distinctUntilChanged, filter, map, mergeMap, share, shareReplay, startWith } from 'rxjs/operators';
 
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
@@ -81,7 +81,6 @@ import {
   PageRequest,
   PaginatedResponse,
   Project,
-  ProjectAttachments,
   SchemaElement,
   SchemaService,
   SecurityService,
@@ -125,8 +124,10 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
 
   tenantId: number;
-  checkEditRole = new Observable<boolean>();
+  checkEditDescriptionRole = new Observable<boolean>();
+  checkEditContextRole = new Observable<boolean>();
   checkEditAttachmentRole = new Observable<boolean>();
+  checkEditConfigurationRole = new Observable<boolean>();
 
   protected readonly FilingPlanMode = FilingPlanMode;
 
@@ -139,6 +140,9 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   legalStatusList: Option[] = [];
   schemaOptions: ItemNode<SchemaElement>[];
   units: Unit[];
+  archivalAgreementOptions$: Observable<Option[]>;
+  archiveProfileOptions$: Observable<Option[]>;
+  agenciesOptions$: Observable<Option[]>;
 
   protected readonly Workflow = Workflow;
   getProjectIcon = getProjectIcon;
@@ -149,7 +153,6 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild('confirmEditProject', { static: true }) confirmEditProject: TemplateRef<ProjectPreviewComponent>;
   @ViewChild('confirmEditAttachments', { static: true }) confirmEditAttachments: TemplateRef<ProjectPreviewComponent>;
   @ViewChild('cancelDialog') cancelDialog: TemplateRef<ProjectPreviewComponent>;
-  @ViewChild('cancelAttachmentsDialog') cancelAttachmentsDialog: TemplateRef<ProjectPreviewComponent>;
 
   @Input()
   get projectId(): string {
@@ -199,8 +202,22 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit(): void {
-    this.checkEditRole = this.securityService.hasRole$(ApplicationId.COLLECT_APP, 'ROLE_UPDATE_PROJECTS', this.tenantId);
-    this.checkEditAttachmentRole = this.securityService.hasRole$(ApplicationId.COLLECT_APP, 'ROLE_UPDATE_TRANSACTIONS', this.tenantId);
+    this.checkEditDescriptionRole = this.securityService.hasRole$(
+      ApplicationId.COLLECT_APP,
+      'ROLE_UPDATE_PROJECTS_DESCRIPTION',
+      this.tenantId,
+    );
+    this.checkEditContextRole = this.securityService.hasRole$(ApplicationId.COLLECT_APP, 'ROLE_UPDATE_PROJECTS_CONTEXT', this.tenantId);
+    this.checkEditAttachmentRole = this.securityService.hasRole$(
+      ApplicationId.COLLECT_APP,
+      'ROLE_UPDATE_PROJECTS_ATTACHMENT',
+      this.tenantId,
+    );
+    this.checkEditConfigurationRole = this.securityService.hasRole$(
+      ApplicationId.COLLECT_APP,
+      'ROLE_UPDATE_PROJECTS_CONFIGURATION',
+      this.tenantId,
+    );
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
@@ -233,32 +250,57 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   private async shouldCancelNavigation(): Promise<boolean> {
     if (this.isModified() && this.dialogRefToClose?.getState() !== 0) {
-      const currentTab = this.getCurrentTab();
-
-      if (['description', 'context'].includes(currentTab)) {
-        return await this.openCancelDialog(); // TODO
-      } else if (currentTab === 'attachment') {
-        return await this.openCancelAttachmentsDialog();
-      }
+      await this.openCancelDialog();
+      return true;
     }
     return false;
   }
 
   loadProject() {
-    this.projectId$
+    const project$ = this.projectId$.pipe(
+      scan((acc, newValue) => (this.isModified() ? acc : newValue), this.projectId$.getValue()), // Keep the old value if we have edited data not yet saved; **isModified()** is true.
+      distinctUntilChanged(), // Avoid calling multiple times with the same value.
+      mergeMap((projectId) => this.projectService.getProjectById(projectId)),
+      share(),
+    );
+    project$.subscribe((project) => {
+      this.project = project;
+      this.showNormalPanel();
+      this.configForm();
+      this.initForm();
+      if (!project.unitUp && project.unitUps) {
+        this.initRuleParams(project);
+      }
+    });
+
+    project$
       .pipe(
-        scan((acc, newValue) => (this.isModified() ? acc : newValue), this.projectId$.getValue()), // Keep the old value if we have edited data not yet saved; **isModified()** is true.
-        distinctUntilChanged(), // Avoid calling multiple times with the same value.
-        mergeMap((projectId) => this.projectService.getProjectById(projectId)),
+        filter((project) => project.archivingSystemId && project.archivingSystemTenant !== undefined),
+        map((project) => ({ archivingSystemId: project.archivingSystemId, archivingSystemTenant: project.archivingSystemTenant })),
+        distinctUntilChanged((p, c) => p.archivingSystemTenant === c.archivingSystemTenant && p.archivingSystemId === c.archivingSystemId),
       )
-      .subscribe((project) => {
-        this.project = project;
-        this.showNormalPanel();
-        this.configForm();
-        this.initForm();
-        if (!project.unitUp && project.unitUps) {
-          this.initRuleParams(project);
-        }
+      .subscribe(({ archivingSystemId, archivingSystemTenant }) => {
+        const toOptions = (obs: Observable<any[]>) =>
+          obs.pipe(
+            map((items: { identifier: string; name: string }[]) =>
+              items
+                .map(
+                  (item) =>
+                    ({
+                      key: item.identifier,
+                      label: `${item.identifier} - ${item.name}`,
+                    }) as Option,
+                )
+                .sort((a1, a2) => a1.label.localeCompare(a2.label)),
+            ),
+            catchError(() => of([])),
+            shareReplay(1),
+          );
+        this.archivalAgreementOptions$ = toOptions(
+          this.externalReferentialService.archivalIngestContracts(archivingSystemId, archivingSystemTenant),
+        );
+        this.archiveProfileOptions$ = toOptions(this.externalReferentialService.archiveProfiles(archivingSystemId, archivingSystemTenant));
+        this.agenciesOptions$ = toOptions(this.externalReferentialService.getAgencies(archivingSystemId, archivingSystemTenant));
       });
   }
 
@@ -344,12 +386,14 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   emitClose() {
-    this.isPanelExtended = false;
-    this.editMode = false;
-    this.previewClose.emit();
-    this.backToNormalLateralPanel.emit();
-    this.tabGroup.selectedIndex = 0;
-    this.projectService.selectedProjectId$.next(null);
+    if (this.isModified()) {
+      this.openCancelDialog();
+    } else {
+      this.showNormalPanel();
+      this.previewClose.emit();
+      this.tabGroup.selectedIndex = 0;
+      this.projectService.selectedProjectId$.next(null);
+    }
   }
 
   showNormalPanel() {
@@ -422,54 +466,37 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  update() {
+  async update(): Promise<boolean> {
     const currentTab = this.getCurrentTab();
 
     if (['description', 'context'].includes(currentTab)) {
-      this.launchUpdate();
+      return await this.launchUpdate();
     } else if (currentTab === 'attachment') {
-      this.launchAttachmentsUpdate();
-    }
-  }
-
-  async cancel() {
-    const currentTab = this.getCurrentTab();
-
-    if (['description', 'context'].includes(currentTab)) {
-      await this.openCancelDialog();
-    } else if (currentTab === 'attachment') {
-      await this.openCancelAttachmentsDialog();
+      return await this.launchAttachmentsUpdate();
     }
   }
 
   private getCurrentTab() {
-    return ['description', 'context', 'attachment'][this.tabGroup.selectedIndex];
+    return ['description', 'context', 'attachment', 'configuration'][this.tabGroup.selectedIndex];
   }
 
-  private launchUpdate = () => {
+  private launchUpdate = (): Promise<boolean> => {
     const dialogToOpen = this.confirmEditProject;
-    this.selectedValue = 'YES';
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
     this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe((transactions) => {
       this.transactions$.next(transactions);
     });
     this.dialogRefToClose = this.dialog.open(dialogToOpen);
+    return lastValueFrom(this.dialogRefToClose.afterClosed());
   };
 
-  private launchAttachmentsUpdate = () => {
+  private launchAttachmentsUpdate = (): Promise<boolean> => {
     const dialogToOpen = this.confirmEditAttachments;
     this.dialogRefToClose = this.dialog.open(dialogToOpen);
+    return lastValueFrom(this.dialogRefToClose.afterClosed());
   };
 
-  mapProjectInternalFields(projectToUpdate: Project) {
-    projectToUpdate.id = this.project.id;
-    projectToUpdate.createdOn = this.project.createdOn;
-    projectToUpdate.status = this.project.status;
-    delete projectToUpdate.unitUp;
-    delete projectToUpdate.unitUps;
-  }
-
-  fillTransactionFromProject(transaction: Transaction) {
+  private fillTransactionFromProject(transaction: Transaction) {
     transaction.archivalAgreement = this.project.archivalAgreement;
     transaction.messageIdentifier = this.project.messageIdentifier;
     transaction.archivalAgencyIdentifier = this.project.archivalAgencyIdentifier;
@@ -482,6 +509,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     transaction.acquisitionInformation = this.project.acquisitionInformation;
     // transaction.unitUp = this.project.unitUp;
     // transaction.unitUps = this.project.unitUps;
+    return transaction;
   }
 
   downloadJSLT() {
@@ -489,96 +517,17 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     download(blob, this.jsltFilename);
   }
 
-  onConfirm() {
+  async updateProject(updateTransactions: boolean) {
     const projectToUpdate = {
       ...this.form.value,
+      id: this.project.id,
+      createdOn: this.project.createdOn,
+      status: this.project.status,
       name: this.form.value.messageIdentifier,
       automaticIngest: this.project?.automaticIngest,
       archivingSystemId: this.project.archivingSystemId,
       archivingSystemTenant: this.project.archivingSystemTenant,
       connectedToArchivingSystem: this.project.connectedToArchivingSystem,
-    };
-    this.mapProjectInternalFields(projectToUpdate);
-
-    const updateProjectOperation$ = this.projectService.updateProject(projectToUpdate);
-    const previousProject = this.project;
-    this.project = null;
-    if (this.selectedValue !== 'NO') {
-      updateProjectOperation$
-        .pipe(
-          mergeMap((project): Observable<PaginatedResponse<Transaction>> => {
-            this.dialogRefToClose.close(true);
-            this.project = project;
-            this.projectService.nextUpdatedProject(project);
-
-            this.showNormalPanel();
-            return this.transactions$;
-          }),
-          map((paginated) => paginated.values),
-          mergeMap((transactions: Transaction[]) => {
-            const updateTransactionOperation$: Observable<Transaction>[] = [];
-            const transactionsKO: Transaction[] = [];
-            transactions.forEach((transaction) => {
-              if (transaction.status === TransactionStatus.OPEN) {
-                this.fillTransactionFromProject(transaction);
-                updateTransactionOperation$.push(this.projectApiService.updateTransaction(transaction));
-              } else if (transaction.status === TransactionStatus.KO) {
-                transactionsKO.push(transaction);
-              }
-            });
-            return combineLatest(updateTransactionOperation$).pipe(map(() => transactionsKO));
-          }),
-        )
-        .subscribe(
-          (transactionsKO: Transaction[]) => {
-            this.showNormalPanel();
-            let transactionMessage = this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED');
-            if (transactionsKO.length > 0) {
-              transactionMessage += ' ' + this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO');
-            }
-            this.snackBarService.open({
-              message: transactionMessage,
-              translate: false,
-              duration: 10000,
-            });
-          },
-          () => {
-            this.project = previousProject;
-            this.showNormalPanel();
-          },
-        );
-    } else {
-      updateProjectOperation$.subscribe(
-        (project) => {
-          this.snackBarService.open({
-            message: 'COLLECT.UPDATE_PROJECT.TERMINATED',
-            duration: 10000,
-          });
-          this.dialogRefToClose?.close(true);
-          this.showNormalPanel();
-          if (this.projectId === project.id) {
-            this.project = project;
-          } else {
-            this.projectId$.next(this.projectId);
-          }
-          this.projectService.nextUpdatedProject(project);
-        },
-        () => {
-          this.projectId$.next(this.projectId);
-          if (this.projectId === previousProject.id) {
-            this.project = previousProject;
-          } else {
-            this.projectId$.next(this.projectId);
-          }
-          this.showNormalPanel();
-        },
-      );
-    }
-  }
-
-  onConfirmAttachments() {
-    const projectToUpdate: ProjectAttachments = {
-      id: this.project.id,
       unitUp: this.form.value.unitUp
         ? (this.form.value.unitUp.included ? this.form.value.unitUp.included[0] : this.form.value.unitUp) || ''
         : '',
@@ -598,35 +547,62 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
         },
       ),
     };
+
+    // Retrieve the correct update function depending on the tab that has been edited
+    const updateProjectFunction: (project: Project) => Observable<Project> = {
+      description: this.projectService.updateProjectDescription,
+      context: this.projectService.updateProjectContext,
+      attachment: this.projectService.updateProjectAttachments,
+      configuration: this.projectService.updateProjectConfiguration,
+    }[this.getCurrentTab()].bind(this.projectService);
+
+    const updateProjectOperation$ = updateProjectFunction(projectToUpdate);
     const previousProject = this.project;
     this.project = null;
-    const updateProjectAttachmentsOperation$ = this.projectService.updateProjectAttachments(projectToUpdate);
-    updateProjectAttachmentsOperation$.subscribe({
-      next: (project) => {
+    try {
+      const project = await lastValueFrom(updateProjectOperation$);
+      this.dialogRefToClose.close(true);
+      this.showNormalPanel();
+      if (this.projectId === project.id) {
+        this.project = project;
+      } else {
+        this.projectId$.next(this.projectId);
+      }
+      this.projectService.nextUpdatedProject(project);
+
+      const transactions: Transaction[] = this.transactions$.value?.values || [];
+
+      // FIXME: shouldn't it be done on server side?!
+      if (updateTransactions) {
+        const updateTransactionOperation$: Observable<Transaction>[] = transactions
+          .filter((transaction) => transaction.status === TransactionStatus.OPEN)
+          .map((transaction) => this.projectApiService.updateTransaction(this.fillTransactionFromProject(transaction)));
+        if (updateTransactionOperation$?.length) await lastValueFrom(combineLatest(updateTransactionOperation$));
+      }
+
+      const hasTransactionsKO = updateTransactions && transactions.some((transaction) => transaction.status === TransactionStatus.KO);
+      if (this.getCurrentTab() === 'attachment') {
         this.snackBarService.open({
           message: 'COLLECT.UPDATE_PROJECT_ATTACHMENTS.TERMINATED',
           duration: 10000,
         });
-        this.dialogRefToClose?.close(true);
-        this.showNormalPanel();
-        if (this.projectId === project.id) {
-          this.project = project;
-        } else {
-          this.projectId$.next(this.projectId);
-        }
-        this.projectService.nextUpdatedProject(project);
-      },
-      error: () => {
-        this.dialogRefToClose?.close(true);
-        this.showNormalPanel();
+      } else {
+        this.snackBarService.open({
+          message: `${this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED')}${hasTransactionsKO ? ` ${this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO')}` : ''}`,
+          translate: false,
+          duration: 10000,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      if (this.projectId === previousProject.id) {
+        this.project = previousProject;
+      } else {
         this.projectId$.next(this.projectId);
-        if (this.projectId === previousProject.id) {
-          this.project = previousProject;
-        } else {
-          this.projectId$.next(this.projectId);
-        }
-      },
-    });
+      }
+    } finally {
+      this.showNormalPanel();
+    }
   }
 
   private async onCancel() {
@@ -637,30 +613,20 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     this.dialogRefToClose?.close(true);
   }
 
-  openCancelDialog = async (): Promise<boolean> => {
+  openCancelDialog = async (): Promise<void> => {
     if (!this.isModified()) {
       await this.onCancel();
       return;
     }
-    const result = await firstValueFrom(this.dialog.open(this.cancelDialog, this.dialogConfig).afterClosed());
-    if (result) {
-      this.selectedValue = 'NO';
-      this.onConfirm();
-    } else {
-      await this.onCancel();
-    }
-  };
 
-  openCancelAttachmentsDialog = async (): Promise<boolean> => {
-    if (!this.isModified()) {
+    const result = await firstValueFrom(this.dialog.open(this.cancelDialog, this.dialogConfig).afterClosed());
+    if (result === true) {
+      await this.update();
+    } else if (result === false) {
       await this.onCancel();
-      return false;
+    } else {
+      // Back to form in edition mode
     }
-    const result = await firstValueFrom(this.dialog.open(this.cancelAttachmentsDialog, this.dialogConfig).afterClosed());
-    if (result) {
-      this.onConfirmAttachments();
-    }
-    return !result;
   };
 
   getUnitName(unitId: string): string {
@@ -678,6 +644,30 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     return this.externalReferentialService
       .getElectronicArchivingSystemList()
       .pipe(map((list) => (list || []).find((system) => system.archivingSystemId === archivingSystemId)?.name || archivingSystemId));
+  }
+
+  getLabel$(attribute: keyof Project): Observable<string> {
+    const key = this.project[attribute];
+    if (this.project.connectedToArchivingSystem) {
+      const options = [
+        'originatingAgencyIdentifier',
+        'submissionAgencyIdentifier',
+        'archivalAgencyIdentifier',
+        'transferringAgencyIdentifier',
+      ].includes(attribute)
+        ? this.agenciesOptions$
+        : attribute === 'archivalAgreement'
+          ? this.archivalAgreementOptions$
+          : attribute === 'archiveProfile'
+            ? this.archiveProfileOptions$
+            : of([]);
+
+      return options.pipe(
+        map((items) => items.find((item) => item.key === key)?.label || key),
+        startWith(key),
+      );
+    }
+    return of(key ? String(key) : null);
   }
 
   protected readonly LOCAL_ARCHIVING_SYSTEM_ID = LOCAL_ARCHIVING_SYSTEM_ID;

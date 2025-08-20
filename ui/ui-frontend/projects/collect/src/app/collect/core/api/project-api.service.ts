@@ -77,12 +77,20 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
     return this.http.post<Transaction>(`${this.apiUrl}/${data.projectId}/transactions`, data);
   }
 
-  public update(data: Project): Observable<Project> {
-    return super.update(data);
+  public updateDescription(data: Project): Observable<Project> {
+    return this.http.put<Project>(`${this.apiUrl}/${data.id}/description`, data);
+  }
+
+  public updateContext(data: Project): Observable<Project> {
+    return this.http.put<Project>(`${this.apiUrl}/${data.id}/context`, data);
   }
 
   public updateAttachments(data: ProjectAttachments): Observable<Project> {
     return this.http.put<Project>(`${this.apiUrl}/${data.id}/attachments`, data);
+  }
+
+  public updateConfiguration(data: Project): Observable<Project> {
+    return this.http.put<Project>(`${this.apiUrl}/${data.id}/configuration`, data);
   }
 
   public getById(projectId: string): Observable<Project> {

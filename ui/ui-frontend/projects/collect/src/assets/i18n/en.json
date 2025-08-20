@@ -25,21 +25,17 @@
     },
     "UPDATE_PROJECT": {
       "SAVE": "Save",
-      "TERMINATED": "The project has been well updated",
+      "TERMINATED": "Modifications have been saved",
       "TRANSACTIONS_KO": "on the other hand there are KO transactions",
-      "POPUP_ACTIONS_TITLE": "Action on a project",
-      "POPUP_ACTIONS_CONTENT_MAJ": "You have {{nb}} ingests in edit. Do you want to update automatically these ingests? If the answer is negative, only the new ingests will include these modifications",
+      "POPUP_ACTIONS_TITLE": "Scope of the changes",
+      "POPUP_ACTIONS_CONTENT_MAJ": "You have {{nb}} transactions in edit. Do you want to apply these changes to them? If the answer is negative, only the new transactions will include these modifications",
       "DIALOGS_CANCEL_TITLE": "Save the current changes",
-      "DIALOGS_CANCEL_CONTENT": "You have made changes to the descriptive metadata of a project. Do you want to save or discard them ?"
+      "DIALOGS_CANCEL_CONTENT": "You have made changes to the project. Do you want to save them?"
     },
     "UPDATE_PROJECT_ATTACHMENTS": {
-      "SAVE": "Save",
       "TERMINATED": "Modifications have been saved",
       "POPUP_ACTIONS_TITLE": "Scope of the changes",
-      "POPUP_ACTIONS_CONTENT_MAJ": "The modifications will only be applied to files newly imported into the current transaction and to any future transactions",
-      "DIALOGS_CANCEL_TITLE": "Save current changes",
-      "DIALOGS_CANCEL_CONTENT": "You have made changes to the project. Do you want to save them?",
-      "DIALOGS_CANCEL_UNDO": "Back to editing"
+      "POPUP_ACTIONS_CONTENT_MAJ": "The modifications will only be applied to files newly imported into the current transaction and to any future transactions"
     },
     "SEARCH_PLACEHOLDER": "Code and message identifier, Submission agency",
     "APP_BREADCRUMB": "Collection and Remittance Preparation",

@@ -10,6 +10,8 @@
     "NO": "NO",
     "VALIDATE": "Validate",
     "BACK": "Back",
+    "CANCEL_CHANGES": "Cancel changes",
+    "BACK_TO_INPUT": "Back to input",
     "SUBMIT": "Submit",
     "UPDATE": "Update",
     "NEXT": "Next",
@@ -4412,8 +4414,10 @@
         "NAME": "Name",
         "ID": "Project technical identifier",
         "DESCRIPTION": "Description",
-        "SP_ID": "Originating agency",
-        "SV_ID": "Submission agency"
+        "SP_ID": "Originating agency identifier",
+        "SV_ID": "Submission agency identifier",
+        "SP_LABEL": "Originating agency",
+        "SV_LABEL": "Submission agency"
       },
       "TABS": {
         "ATTACHEMENT": "Attachement",
