@@ -59,6 +59,7 @@ import { AlertDialogComponent } from './components/dialog/alert-dialog/alert-dia
 import { DialogContentWithStateComponent } from './components/dialog/dialog-content-with-state/dialog-content-with-state.component';
 import { ErrorDialogComponent } from './components/dialog/error-dialog/error-dialog.component';
 import { TranslateWithOptionalTypeSuffixPipe } from '../app/modules/pipes/translate-with-optional-type-suffix.pipe';
+import { SaveBannerComponent } from './components/save-banner/save-banner.component';
 
 const components = [
   AlertDialogComponent,
@@ -72,6 +73,7 @@ const components = [
   PatternComponent,
   PreviousStepComponent,
   ReclassificationDialogComponent,
+  SaveBannerComponent,
   SearchWithTypeSelectorComponent,
   SelectComponent,
   SelectWithTreeComponent,

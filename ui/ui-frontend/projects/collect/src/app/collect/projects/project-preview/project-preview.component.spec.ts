@@ -198,7 +198,7 @@ describe('ProjectPreviewComponent', () => {
   it('should get project', waitForAsync(() => {
     fixture.whenStable().then(() => {
       // Make assertions about the component
-      expect(component.project).toEqual(project);
+      expect(component.project()).toEqual(project);
     });
   }));
 

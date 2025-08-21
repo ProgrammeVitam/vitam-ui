@@ -1,0 +1,15 @@
+@use '../../../sass/mixins/elevation' as elevation;
+@use '../../../sass/bootstrap';
+@use '../../../sass/spacing';
+
+:host {
+  @include elevation.shadow-8dp-dark;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
+  @extend .py-2;
+  @extend .px-6;
+  @extend .hgap-4;
+  background-color: var(--vitamui-background);
+}

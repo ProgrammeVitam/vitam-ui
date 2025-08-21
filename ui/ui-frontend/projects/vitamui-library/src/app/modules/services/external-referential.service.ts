@@ -41,7 +41,10 @@ import { BASE_URL } from '../injection-tokens';
 import { Observable } from 'rxjs';
 import { ElectronicArchivingSystem, IngestContractLight, ProfileLight } from '../models';
 import { AgencyLight } from '../models/agency/agency.interface';
-import { shareReplay } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
+import { Option } from '../components/autocomplete';
+
+export const TENANT_SEPARATOR = ' - Tenant ';
 
 @Injectable({
   providedIn: 'root',
@@ -68,7 +71,21 @@ export class ExternalReferentialService extends PaginatedHttpClient<any> {
     return this.http.get<ProfileLight[]>(`${this.apiUrl}/profiles`, { params });
   }
 
-  getElectronicArchivingSystemList(): Observable<ElectronicArchivingSystem[]> {
+  getElectronicArchivingSystemList$(): Observable<ElectronicArchivingSystem[]> {
     return this.#electronicArchivingSystemList$;
+  }
+
+  getElectronicArchivingSystemOptions$(): Observable<Option[]> {
+    return this.#electronicArchivingSystemList$.pipe(
+      map((list) => (Array.isArray(list) ? list : [])),
+      map((list) =>
+        list.flatMap((system) =>
+          system.tenantIds.map((tenantId: number) => ({
+            key: `${system.archivingSystemId}${TENANT_SEPARATOR}${tenantId}`,
+            label: `${system.name}${TENANT_SEPARATOR}${tenantId}`,
+          })),
+        ),
+      ),
+    );
   }
 }
