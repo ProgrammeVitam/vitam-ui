@@ -4387,6 +4387,7 @@
         "EDIT_DESCRIPTION": "Modifier la description",
         "EDIT_CONTEXT": "Modifier le contexte",
         "EDIT_ATTACHMENTS": "Modifier le(s) rattachement(s)",
+        "EDIT_CONFIGURATION": "Modifier la configuration",
         "SHOW_PROJECT_ARCHIVE_UNITS": "Accéder aux archives"
       },
       "ATTACHMENT": {
@@ -4402,6 +4403,7 @@
       },
       "CONFIGURATION": {
         "ARCHIVING_SYSTEM_CONNECTION": "Connexion aux référentiels",
+        "ARCHIVING_SYSTEM_CONNECTION_TOGGLE": "Utiliser les référentiels d’un SAE",
         "ARCHIVING_SYSTEM_CONNECTION_NO": "Non connecté",
         "ARCHIVING_SYSTEM_CONNECTION_LOCAL": "Connecté au SAE local",
         "AUTO_INGEST": "Gestion automatique des transactions",
