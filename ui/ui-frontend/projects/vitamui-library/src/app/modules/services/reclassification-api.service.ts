@@ -42,6 +42,7 @@ import { SearchCriteriaDto, SearchResponse } from '../models';
 import { Observable } from 'rxjs';
 import { ReclassificationCriteriaDto } from './reclassification.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -60,7 +61,9 @@ export class ReclassificationApiService extends PaginatedHttpClient<any> {
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders) {
     const transactionPath = transactionId ? `/transactions/archive-units/${transactionId}` : '/archive-search';
-    return this.http.post<SearchResponse>(`${this.apiUrl}${transactionPath}/search`, criteriaDto, { headers });
+    return this.http
+      .post<SearchResponse>(`${this.apiUrl}${transactionPath}/search`, criteriaDto, { headers })
+      .pipe(tap(() => console.log('HTTP request sent:')));
   }
 
   reclassification(transactionId: string, criteriaDto: ReclassificationCriteriaDto, headers?: HttpHeaders): Observable<string> {

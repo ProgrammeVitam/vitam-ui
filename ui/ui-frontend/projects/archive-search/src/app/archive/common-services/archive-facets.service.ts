@@ -56,7 +56,7 @@ export class ArchiveFacetsService {
     const nodesFacets: ResultFacet[] = [];
     if (facetResults && facetResults.length > 0) {
       for (const facet of facetResults) {
-        if ([this.COUNT_BY_NODE, this.FACETS_VIRTUAL_TREE].includes(facet.name)) {
+        if ([this.COUNT_BY_NODE].includes(facet.name)) {
           for (const bucket of facet.buckets) {
             nodesFacets.push({ node: bucket.value, count: bucket.count });
           }

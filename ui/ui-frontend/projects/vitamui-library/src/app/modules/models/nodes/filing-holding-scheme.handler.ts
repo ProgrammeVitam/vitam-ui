@@ -41,9 +41,11 @@ import { DescriptionLevel } from '../units/description-level.enum';
 import { Unit } from '../units/unit.interface';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
 import { copyNodeWithoutChildren } from './node.utils';
+import { UnitType } from '../units';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';
 export const KEY_VALUE_NODE_ID = 'KEY_VALUE_NODE';
+export const PATH_SEPARATOR = '/';
 
 export class FilingHoldingSchemeHandler {
   public static foundNode(nodes: FilingHoldingSchemeNode[], value: string, key = 'id'): FilingHoldingSchemeNode {
@@ -236,7 +238,7 @@ export class FilingHoldingSchemeHandler {
       const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
       if (addedCount < node.count) {
         const nodeCopy = copyNodeWithoutChildren(node);
-        nodeCopy.children = childResult;
+        //nodeCopy.children = childResult;
         leaves.push(nodeCopy);
       }
       leaves.push(...childResult);
@@ -407,6 +409,24 @@ export class FilingHoldingSchemeHandler {
     };
   }
 
+  public static convertVirtualFacetToNode(virtualNode: ResultFacet, parentId: string): FilingHoldingSchemeNode {
+    return {
+      id: virtualNode.node,
+      title: virtualNode.node,
+      unitType: UnitType.VIRTUAL,
+      children: [],
+      vitamId: virtualNode.node,
+      virtualPath: virtualNode.node,
+      realParentId: parentId,
+      checked: false,
+      isLoadingChildren: false,
+      canLoadMoreChildren: false,
+      count: virtualNode.count,
+      hasObject: virtualNode.count > 0,
+      hidden: false,
+    };
+  }
+
   public static buildNestedTreeLevels(units: Unit[], locale: string, parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
     const nodes: FilingHoldingSchemeNode[] = [];
     for (let i = 0; i < units.length; i++) {
@@ -449,5 +469,43 @@ export class FilingHoldingSchemeHandler {
       return a.title.localeCompare(b.title, locale, { numeric: true });
     };
     return byTitleFunction;
+  }
+
+  // ================= extract roots from virtual paths =================
+
+  public static extractVirtualPathsRoots(virtualPaths: FilingHoldingSchemeNode[], parentId: string): FilingHoldingSchemeNode[] {
+    // Global roots
+    if (!parentId || parentId === PATH_SEPARATOR) {
+      return virtualPaths
+        .filter((n) => n.id.split(PATH_SEPARATOR).filter(Boolean).length === 1)
+        .map((n) => ({
+          ...n,
+          id: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
+          title: n.title.startsWith(PATH_SEPARATOR) ? n.title.substring(1) : n.title,
+          virtualPath: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
+        }));
+    }
+
+    // Normalize parent
+    const base = parentId.endsWith(PATH_SEPARATOR) ? parentId : parentId + PATH_SEPARATOR;
+    const baseDepth = base.split(PATH_SEPARATOR).filter(Boolean).length;
+
+    return virtualPaths
+      .filter((n) => n.id.startsWith(base) && n.id.split(PATH_SEPARATOR).filter(Boolean).length === baseDepth + 1)
+      .map((n) => ({
+        ...n,
+        id: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
+        title: n.id.replace(base, ''),
+        virtualPath: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
+      }));
+  }
+
+  public static initNode(node: FilingHoldingSchemeNode) {
+    node.realDirectNodeMatchingPage = 0;
+    node.virtualDirectChildrenMatchingPage = 0;
+    node.realDirectNodePage = 0;
+    node.virtualDirectNodePage = 0;
+    node.children = [];
+    node.waitingChildren = [];
   }
 }

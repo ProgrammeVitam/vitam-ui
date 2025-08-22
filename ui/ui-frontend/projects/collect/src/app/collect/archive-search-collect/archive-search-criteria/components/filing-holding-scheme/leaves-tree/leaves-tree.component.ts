@@ -37,7 +37,7 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Subscription, zip } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   DescriptionLevel,
   FilingHoldingSchemeHandler,
@@ -135,50 +135,44 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return this.leavesTreeService.firstToggle(node);
   }
 
-  toggleOrphansNode(node: FilingHoldingSchemeNode) {
+  async toggleOrphansNode(node: FilingHoldingSchemeNode) {
     const isExpanded = this.nestedTreeControlLeaves.isExpanded(node);
     this.nestedTreeControlLeaves.toggle(node);
     if (isExpanded) {
       return;
     }
     if (this.firstToggle(node)) {
-      zip(this.leavesTreeService.searchOrphans(node), this.leavesTreeService.searchOrphansWithSearchCriterias(node)).subscribe(() =>
-        this.refreshTreeNodes(),
-      );
+      await this.leavesTreeService.loadOrphanNodeChildrenOnFirstToggle(node, false);
+      this.refreshTreeNodes();
     }
   }
 
-  toggleLeave(node: FilingHoldingSchemeNode) {
+  async toggleLeave(node: FilingHoldingSchemeNode) {
     const isExpanded = this.nestedTreeControlLeaves.isExpanded(node);
     this.nestedTreeControlLeaves.toggle(node);
     if (isExpanded) {
       return;
     }
     if (this.firstToggle(node)) {
-      zip(
-        this.leavesTreeService.searchUnderNodeWithSearchCriterias(node),
-        this.leavesTreeService.searchUnderNode(node),
-        this.leavesTreeService.searchAtNodeWithSearchCriterias(node),
-      ).subscribe(() => this.refreshTreeNodes());
+      await this.leavesTreeService.loadNodeChildrenOnFirstToggle(node, false);
+      this.refreshTreeNodes();
     }
   }
 
-  toggleLoadMoreOrphans(node: FilingHoldingSchemeNode) {
+  async toggleLoadMoreOrphans(node: FilingHoldingSchemeNode) {
     if (!this.nestedTreeControlLeaves.isExpanded(node)) {
       return;
     }
-    zip(this.leavesTreeService.searchOrphans(node), this.leavesTreeService.searchOrphansWithSearchCriterias(node)).subscribe(() =>
-      this.refreshTreeNodes(),
-    );
+    await this.leavesTreeService.loadMoreFromOrphanNode(node, false);
+    this.refreshTreeNodes();
   }
 
-  toggleLoadMore(node: FilingHoldingSchemeNode) {
+  async toggleLoadMore(node: FilingHoldingSchemeNode) {
     if (!this.nestedTreeControlLeaves.isExpanded(node)) {
       return;
     }
-    zip(this.leavesTreeService.searchUnderNodeWithSearchCriterias(node), this.leavesTreeService.searchUnderNode(node)).subscribe(() =>
-      this.refreshTreeNodes(),
-    );
+    await this.leavesTreeService.loadMoreFromNode(node, false);
+    this.refreshTreeNodes();
   }
 
   canLoadMoreUAForNode(node: FilingHoldingSchemeNode): boolean {

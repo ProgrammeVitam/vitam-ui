@@ -59,4 +59,19 @@ export class FacetsUtils {
     }
     return nodesFacets;
   }
+
+  public static extractFacetsResultsByName(facetResults: ResultFacetList[], facetName: string): ResultFacet[] {
+    const nodesFacets: ResultFacet[] = [];
+
+    if (facetResults && facetResults.length > 0) {
+      for (const facet of facetResults) {
+        if (facet.name === facetName) {
+          for (const bucket of facet.buckets) {
+            nodesFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+      }
+    }
+    return nodesFacets;
+  }
 }

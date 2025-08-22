@@ -35,22 +35,28 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { isEmpty } from 'lodash-es';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, firstValueFrom, forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode, Unit, UnitType } from '../models';
+import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode, UnitType } from '../models';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
-import { FacetsUtils } from '../models/criteria/search-criteria.utils';
-import { LeavesTreeApiService } from './leaves-tree-api.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
+import {
+  DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+  DEFAULT_UNIT_PAGE_SIZE,
+  FACETS_DEFAULT_SIZE,
+  LeavesTreeApiService,
+} from './leaves-tree-api.service';
 
 export class LeavesTreeService {
   private leavesTreeApiService: LeavesTreeApiService;
+  private readonly PATH_SEPARATOR = '/';
 
   constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {
     this.leavesTreeApiService = new LeavesTreeApiService(this.searchArchiveUnitsService);
   }
 
   private searchCriterias: SearchCriteriaDto;
+  private nodesCountMap: Map<string, number> = new Map();
   private searchRequestResultFacets: ResultFacet[] = [];
 
   loadingNodesDetails: boolean;
@@ -59,39 +65,9 @@ export class LeavesTreeService {
     return this.leavesTreeApiService.firstToggle(node);
   }
 
-  // ########## AFTER CALLS ####################################################################################################
-
-  private compareAddedNodeWithKnownFacets(nodes: FilingHoldingSchemeNode[]) {
-    if (isEmpty(this.searchRequestResultFacets)) {
-      return;
-    }
-    for (const node of nodes) {
-      const matchingFacet = this.searchRequestResultFacets.find((resultFacet) => resultFacet.node === node.id);
-      if (!matchingFacet) {
-        continue;
-      }
-      if (node.count < matchingFacet.count) {
-        node.count = matchingFacet.count;
-      }
-    }
-  }
-
-  private extractAndAddNewFacets(pageResult: PagedResult): ResultFacet[] {
-    // Warning: count decrease on top nodes when search is made on a deeper nodes.
-    const resultFacets: ResultFacet[] = FacetsUtils.extractNodesFacetsResults(pageResult.facets);
-    const newFacets: ResultFacet[] = FilingHoldingSchemeHandler.filterUnknownFacets(this.searchRequestResultFacets, resultFacets);
-    if (newFacets.length > 0) {
-      this.searchRequestResultFacets.push(...newFacets);
-    }
-    return newFacets;
-  }
-
-  // ########## SECONDARY CALLS ####################################################################################################
-
   public loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): Observable<PagedResult> {
-    if (isEmpty(facets)) {
-      return EMPTY;
-    }
+    if (isEmpty(facets)) return EMPTY;
+
     this.loadingNodesDetails = true;
     return this.leavesTreeApiService.loadNodesDetailsFromFacetsIds(facets).pipe(
       map((pagedResult) => {
@@ -103,73 +79,9 @@ export class LeavesTreeService {
     );
   }
 
-  // ########## MAIN CALLS ####################################################################################################
-
-  public searchUnderNode(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchUnderNode(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchUnderNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(pagedResult);
-        this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
-        const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
-        this.compareAddedNodeWithKnownFacets(tocheck);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchAtNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(pagedResult);
-        this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchOrphans(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchOrphans(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchOrphansWithSearchCriterias(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results, true);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
   searchAttachementUnit(): Observable<PagedResult> {
     return this.leavesTreeApiService.searchAttachementUnit();
   }
-
-  // ########## UPDATES ####################################################################################################
 
   setSearchCriterias(searchCriterias: SearchCriteriaDto) {
     this.searchCriterias = searchCriterias;
@@ -177,6 +89,11 @@ export class LeavesTreeService {
 
   setSearchRequestResultFacets(searchRequestResultFacets: ResultFacet[]) {
     this.searchRequestResultFacets = [...searchRequestResultFacets];
+    // Update nodesCountMap
+    this.nodesCountMap = new Map<string, number>();
+    for (let nodesCountFacet of searchRequestResultFacets) {
+      this.nodesCountMap.set(nodesCountFacet['node'], nodesCountFacet['count']);
+    }
   }
 
   // Specific to collect
@@ -184,76 +101,349 @@ export class LeavesTreeService {
     this.leavesTreeApiService.setTransactionId(transactionId);
   }
 
-  private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult): void {
-    if (pagedResult.results.length === 0) return;
-    const realParentId = parentNode.unitType === 'VIRTUAL' ? parentNode.realParentId : parentNode.id;
+  //For real node
+  async loadMoreFromNode(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    const ps = DEFAULT_UNIT_PAGE_SIZE;
+    if (node.unitType === UnitType.VIRTUAL) {
+      await this.retrieveVirtualNodeChildren(node.realParentId, node, null, null, ps, ps, ps, showEveryNodes);
+    } else {
+      await this.retrieveNodeChildren(node, null, null, null, ps, ps, ps, showEveryNodes);
+    }
+  }
 
-    const vupsList = pagedResult.results
-      .filter((unit) => {
-        return unit['#unitups']?.includes(realParentId) && this.hasVirtualAttachement(unit);
-      })
-      .flatMap((unit) => unit['#vups']);
+  //For orphan node
+  async loadMoreFromOrphanNode(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    const ps = DEFAULT_UNIT_PAGE_SIZE;
+    await this.retrieveNodeChildren(node, null, null, null, ps, ps, ps, showEveryNodes);
+  }
 
-    if (vupsList.length === 0) return;
+  //For real node
+  public async loadNodeChildrenOnFirstToggle(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    // Standard first page sizes
+    const pageSize = DEFAULT_LEAVES_FIRST_PAGE_SIZE;
 
-    const allPaths = vupsList.flatMap((vup) => {
-      const segments = vup.split('/').filter(Boolean);
-      return segments.map((_: any, i: number) => '/' + segments.slice(0, i + 1).join('/')).filter((path: string) => path !== realParentId);
+    FilingHoldingSchemeHandler.initNode(node);
+
+    const perimeterNodesIds: string[] = Array.from(this.nodesCountMap.keys());
+
+    if (node.unitType === UnitType.VIRTUAL) {
+      // Note: could be optimized later to avoid re-call for already opened virtuals
+      const virtualMatching = await this.extractVirtualChildrenMatching(node.realParentId);
+      const virtualAny = await this.extractAnyVirtualChildrenDecorated(node.realParentId, virtualMatching, showEveryNodes);
+
+      await this.retrieveVirtualNodeChildren(
+        node.realParentId,
+        node,
+        virtualMatching,
+        virtualAny,
+        pageSize,
+        pageSize,
+        pageSize,
+        showEveryNodes,
+      );
+    } else {
+      const directContainers = await this.extractContainersFilteredByMainRoots(node, perimeterNodesIds);
+      const virtualMatching = await this.extractVirtualChildrenMatching(node.id);
+      const virtualAny = await this.extractAnyVirtualChildrenDecorated(node.id, virtualMatching, showEveryNodes);
+
+      await this.retrieveNodeChildren(node, directContainers, virtualMatching, virtualAny, pageSize, pageSize, pageSize, showEveryNodes);
+    }
+  }
+
+  //For orphan node
+  public async loadOrphanNodeChildrenOnFirstToggle(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    FilingHoldingSchemeHandler.initNode(node);
+    const virtualMatching = await this.extractVirtualChildrenMatching(node.id);
+    const virtualAny = await this.extractAnyVirtualChildrenDecorated(node.id, virtualMatching, showEveryNodes);
+
+    await this.retrieveNodeChildren(
+      node,
+      null,
+      virtualMatching,
+      virtualAny,
+      DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+      DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+      DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+      showEveryNodes,
+    );
+  }
+
+  private calculatePageShift(pageSize: number): number {
+    return pageSize > DEFAULT_UNIT_PAGE_SIZE ? pageSize / DEFAULT_UNIT_PAGE_SIZE : 1;
+  }
+
+  private convertUnitToNodeWithCount(unit: any, defaultCount: number): FilingHoldingSchemeNode {
+    const node = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+    node.count = this.nodesCountMap.get(node.id) ?? defaultCount;
+    return node;
+  }
+
+  private mergeChildrenIntoParent(
+    parentNode: FilingHoldingSchemeNode,
+    realChildrenMap: Map<string, FilingHoldingSchemeNode>,
+    nbElementsToAdd: number,
+  ) {
+    // Merge de-duplicated new children into waiting list
+    parentNode.waitingChildren.push(
+      ...[...realChildrenMap.values()].filter(
+        (child) => !parentNode.waitingChildren.some((c) => c.id === child.id) && !parentNode.children.some((c) => c.id === child.id),
+      ),
+    );
+
+    // Sort & move batch to children
+    parentNode.waitingChildren.sort((a, b) => a.title.localeCompare(b.title));
+    parentNode.children.push(...parentNode.waitingChildren.splice(0, nbElementsToAdd));
+
+    // Update flags
+    parentNode.canLoadMoreMatchingChildren = parentNode.waitingChildren.length > 0 && !parentNode.canLoadMoreChildren;
+    parentNode.canLoadMoreChildren = parentNode.canLoadMoreMatchingChildren || parentNode.waitingChildren.length > 0;
+  }
+
+  private addDirectContainers(containers: FilingHoldingSchemeNode[] | null, target: Map<string, FilingHoldingSchemeNode>) {
+    containers?.forEach((n) => target.set(n.id, n));
+  }
+
+  private handleAnyResponse(
+    pageSize: number,
+    pageRef: { value: number },
+    response: PagedResult | null,
+    mapTarget: Map<string, FilingHoldingSchemeNode>,
+    mapper: (u: any) => FilingHoldingSchemeNode,
+  ): { hasMore: boolean } {
+    if (!response) return { hasMore: false };
+    const hasMore = (response.results?.length || 0) >= pageSize;
+    if (hasMore) pageRef.value += this.calculatePageShift(pageSize);
+    response.results?.forEach((u) => mapTarget.set(mapper(u).id, mapper(u)));
+    return { hasMore };
+  }
+
+  private handleMatchingResponse(
+    pageSize: number,
+    pageNumbers: number | undefined,
+    pageRef: { value: number },
+    response: PagedResult | null,
+    mapTarget: Map<string, FilingHoldingSchemeNode>,
+    mapper: (u: any) => FilingHoldingSchemeNode,
+  ): { hasMore: boolean } {
+    if (!response) return { hasMore: false };
+    const hasMore = (response.results?.length || 0) >= pageSize;
+    if (pageRef.value < (pageNumbers ?? 0) && hasMore) {
+      pageRef.value += this.calculatePageShift(pageSize);
+      response.results?.forEach((u) => mapTarget.set(mapper(u).id, mapper(u)));
+    }
+    return { hasMore };
+  }
+
+  private decorateVirtualAny(
+    virtualChildrenAnyNodes: FilingHoldingSchemeNode[] | null | undefined,
+    showEveryNodes: boolean,
+    target: Map<string, FilingHoldingSchemeNode>,
+  ): { hasMore: boolean } {
+    if (!virtualChildrenAnyNodes?.length || !showEveryNodes) return { hasMore: false };
+    const hasMore = virtualChildrenAnyNodes.length >= FACETS_DEFAULT_SIZE;
+    virtualChildrenAnyNodes.forEach((n) => {
+      n.count = 0;
+      target.set(n.id, n);
     });
+    return { hasMore };
+  }
 
-    const uniquePaths = Array.from(new Set(allPaths));
-    const pathToUnitIdMap = new Map<string, string>();
+  private decorateVirtualMatching(
+    parentNode: FilingHoldingSchemeNode,
+    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[] | null | undefined,
+    virtualChildrenMap: Map<string, FilingHoldingSchemeNode>,
+    rootPrefix: string,
+  ): { hasMore: boolean } {
+    if (!virtualChildrenMatchingNodes?.length) return { hasMore: false };
 
-    uniquePaths.forEach((path) => {
-      if (pathToUnitIdMap.has(path)) return;
+    const hasMore = virtualChildrenMatchingNodes.length >= FACETS_DEFAULT_SIZE;
+    virtualChildrenMatchingNodes.forEach((n) => virtualChildrenMap.set(n.id, n));
 
-      const segments = path.split('/').filter(Boolean);
-      const title = segments.at(-1) ?? '';
-      const parentPath = segments.length > 1 ? '/' + segments.slice(0, -1).join('/') : null;
+    const virtualPaths = [...virtualChildrenMap.values()];
+    parentNode.waitingVirtualChildren = virtualPaths;
 
-      const unitUps = parentPath ? [pathToUnitIdMap.get(parentPath)!] : [realParentId];
+    const roots = FilingHoldingSchemeHandler.extractVirtualPathsRoots(virtualPaths, rootPrefix);
+    roots?.forEach((root) => parentNode.waitingChildren.push(root));
 
-      const opi = pagedResult.results[0]['#opi'];
-      const virtualUnit: Unit = {
-        '#id': path,
-        Title: title,
-        '#unitups': unitUps,
-        realParentId,
-        '#allunitups': [...unitUps, realParentId],
-        '#unitType': UnitType.VIRTUAL,
-        '#opi': opi,
-      };
+    return { hasMore };
+  }
 
-      pagedResult.results.push(virtualUnit);
-      pathToUnitIdMap.set(path, path);
+  private async retrieveNodeChildren(
+    parentNode: FilingHoldingSchemeNode,
+    directContainersNodes: FilingHoldingSchemeNode[] | null,
+    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[] | null,
+    virtualChildrenAnyNodes: FilingHoldingSchemeNode[] | null,
+    realDirectNodesPageSize: number,
+    realDirectNodesMatchingPageSize: number,
+    nbElementsToAdd: number,
+    showEveryNodes: boolean,
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      forkJoin({
+        realDirectChildrenAny: showEveryNodes
+          ? this.leavesTreeApiService.retrieveAnyRealChildren(parentNode, parentNode.realDirectNodePage, realDirectNodesPageSize)
+          : of(null),
+        realDirectChildrenMatching: this.leavesTreeApiService.retrieveRealChildrenWithCriteria(
+          parentNode.id,
+          this.searchCriterias,
+          parentNode.realDirectNodeMatchingPage,
+          realDirectNodesMatchingPageSize,
+          true,
+        ),
+      }).subscribe({
+        next: ({ realDirectChildrenAny, realDirectChildrenMatching }) => {
+          const realChildrenMap = new Map<string, FilingHoldingSchemeNode>();
+          const virtualChildrenMap = new Map<string, FilingHoldingSchemeNode>();
+
+          // Initial containers (first toggle only)
+          this.addDirectContainers(directContainersNodes, realChildrenMap);
+
+          // Real ANY
+          this.handleAnyResponse(
+            realDirectNodesPageSize,
+            { value: parentNode.realDirectNodePage },
+            realDirectChildrenAny,
+            realChildrenMap,
+            (u) => this.convertUnitToNodeWithCount(u, 0),
+          );
+
+          // Real MATCHING
+          this.handleMatchingResponse(
+            realDirectNodesMatchingPageSize,
+            realDirectChildrenMatching?.pageNumbers,
+            { value: parentNode.realDirectNodeMatchingPage },
+            realDirectChildrenMatching,
+            realChildrenMap,
+            (u) => this.convertUnitToNodeWithCount(u, 1),
+          );
+
+          // Virtuals
+          this.decorateVirtualAny(virtualChildrenAnyNodes, showEveryNodes, virtualChildrenMap);
+          this.decorateVirtualMatching(parentNode, virtualChildrenMatchingNodes, virtualChildrenMap, '/');
+
+          // Merge
+          this.mergeChildrenIntoParent(parentNode, realChildrenMap, nbElementsToAdd);
+          resolve();
+        },
+        error: (err) => {
+          console.error('Error during retrieving children', err);
+        },
+      });
     });
   }
 
-  private reattachVirtualUnits(pagedResult: PagedResult): Unit[] {
-    const updatedUnits = (pagedResult.results || []).map((unit: Unit) => {
-      const vups = unit['#vups'] || [];
-      if (this.hasVirtualAttachement(unit)) {
-        unit['#unitups'] = vups.map((pos) => `${pos}`);
-        unit['#allunitups'] = [...(unit['#allunitups'] || []), ...vups];
-      }
+  //For virtual node
+  retrieveVirtualNodeChildren(
+    realParentNodeId: string,
+    virtualNode: FilingHoldingSchemeNode,
+    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[] | null,
+    virtualChildrenAnyNodes: FilingHoldingSchemeNode[] | null,
+    virtualDirectNodesPageSize: number,
+    virtualDirectNodesMatchingPageSize: number,
+    nbElementsToAdd: number,
+    showEveryNodes: boolean,
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      forkJoin({
+        virtualDirectChildrenAny: showEveryNodes
+          ? this.leavesTreeApiService.retrieveDirectChildrenUnderVirtual(
+              realParentNodeId,
+              virtualNode.virtualPath,
+              virtualNode.virtualDirectNodePage,
+              virtualDirectNodesPageSize,
+            )
+          : of(null),
+        virtualDirectChildrenMatching: this.leavesTreeApiService.retrieveDirectChildrenUnderVirtualWithCriteria(
+          realParentNodeId,
+          virtualNode.virtualPath,
+          this.searchCriterias,
+          virtualNode.virtualDirectChildrenMatchingPage,
+          virtualDirectNodesMatchingPageSize,
+          true,
+        ),
+      }).subscribe({
+        next: ({ virtualDirectChildrenAny, virtualDirectChildrenMatching }) => {
+          const realChildrenMap = new Map<string, FilingHoldingSchemeNode>();
+          const virtualChildrenMap = new Map<string, FilingHoldingSchemeNode>();
 
-      return unit;
-    });
+          // ANY (virtual direct -> real children list)
+          this.handleAnyResponse(
+            virtualDirectNodesPageSize,
+            { value: virtualNode.virtualDirectNodePage },
+            virtualDirectChildrenAny,
+            realChildrenMap,
+            (u) => FilingHoldingSchemeHandler.convertUnitToNode(u),
+          );
 
-    return updatedUnits.sort((a, b) => {
-      const aIsVirtual = a['#unitType'] === 'VIRTUAL' ? 1 : 0;
-      const bIsVirtual = b['#unitType'] === 'VIRTUAL' ? 1 : 0;
-      if (aIsVirtual !== bIsVirtual) {
-        return aIsVirtual - bIsVirtual; // VIRTUAL à la fin
-      }
-      const aTitle = a.Title || '';
-      const bTitle = b.Title || '';
-      return aTitle.localeCompare(bTitle); // Tri secondaire : par titre alphabétique
+          // MATCHING (virtual direct -> real children list)
+          this.handleMatchingResponse(
+            virtualDirectNodesMatchingPageSize,
+            virtualDirectChildrenMatching?.pageNumbers,
+            { value: virtualNode.virtualDirectChildrenMatchingPage },
+            virtualDirectChildrenMatching,
+            realChildrenMap,
+            (u) => this.convertUnitToNodeWithCount(u, 1),
+          );
+
+          // Virtual facets (ANY + MATCHING)
+          const anyVirtual = this.decorateVirtualAny(virtualChildrenAnyNodes, showEveryNodes, virtualChildrenMap);
+          const matchVirtual = this.decorateVirtualMatching(
+            virtualNode,
+            virtualChildrenMatchingNodes,
+            virtualChildrenMap,
+            this.PATH_SEPARATOR + virtualNode.virtualPath,
+          );
+
+          // Compute flags specific to virtual node
+          virtualNode.canLoadMoreMatchingChildren =
+            !showEveryNodes && (matchVirtual.hasMore || anyVirtual.hasMore || virtualNode.waitingChildren.length > 0);
+
+          virtualNode.canLoadMoreChildren =
+            virtualNode.canLoadMoreMatchingChildren ||
+            (showEveryNodes && (anyVirtual.hasMore || matchVirtual.hasMore || virtualNode.waitingChildren.length > 0));
+
+          // Deduplicate + merge into parent
+          this.mergeChildrenIntoParent(virtualNode, realChildrenMap, nbElementsToAdd);
+          resolve();
+        },
+        error: (err) => {
+          console.error('Error during retrieving virtual children', err);
+        },
+      });
     });
   }
 
-  private hasVirtualAttachement(unit: Unit) {
-    const vups = unit['#vups'] || [];
-    return vups.length > 0;
+  private async extractAnyVirtualChildrenDecorated(
+    nodeId: string,
+    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[] | null,
+    showEveryNodes: boolean,
+  ) {
+    if (!showEveryNodes) return undefined;
+
+    const anyFacets = await firstValueFrom(this.leavesTreeApiService.retrieveAnyDirectVirtualChildren(nodeId));
+    return anyFacets.map((facet) => {
+      const virtualNode = FilingHoldingSchemeHandler.convertVirtualFacetToNode(facet, nodeId);
+      const match = virtualChildrenMatchingNodes?.find((n) => n.id === virtualNode.id);
+      virtualNode.count = match ? match.count : 0;
+      return virtualNode;
+    });
+  }
+
+  private async extractContainersFilteredByMainRoots(node: FilingHoldingSchemeNode, perimeterNodesIds: string[]) {
+    const { results } = await firstValueFrom(this.leavesTreeApiService.retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds, node));
+
+    return results.map((unit) => {
+      const convertedNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      convertedNode.count = this.nodesCountMap.get(convertedNode.id) ?? convertedNode.count;
+      return convertedNode;
+    });
+  }
+
+  private async extractVirtualChildrenMatching(nodeId: string) {
+    const virtualUnits = await firstValueFrom(
+      this.leavesTreeApiService.retrieveVirtualChildrenMatchingHavingResults(nodeId, this.searchCriterias),
+    );
+
+    return virtualUnits.map((u) => FilingHoldingSchemeHandler.convertVirtualFacetToNode(u, nodeId));
   }
 }
