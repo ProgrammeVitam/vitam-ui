@@ -38,7 +38,7 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
-import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
+import { ActionsRules, ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
 import { Rule } from 'vitamui-library';
 
 @Component({
@@ -72,6 +72,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
 
   managementRulesSubscription: Subscription;
   ruleActionsSubscription: Subscription;
+  isRuleDuplicatedSubscription: Subscription;
 
   collapsed = false;
   updateRuleCollapsed = false;
@@ -82,12 +83,14 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
   unlockCategoryInheritanceCollapsed = false;
   blockRuleInheritanceCollapsed = false;
   unlockRuleInheritanceCollapsed = false;
+  isRuleDuplicated = false;
 
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
 
   ngOnDestroy() {
     this.ruleActionsSubscription?.unsubscribe();
     this.managementRulesSubscription?.unsubscribe();
+    this.isRuleDuplicatedSubscription?.unsubscribe();
   }
 
   confirmStep(id: number) {
@@ -150,6 +153,10 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
       this.managementRules = data;
     });
 
+    this.isRuleDuplicatedSubscription = this.managementRulesSharedDataService.getIsRuleDuplicated().subscribe((isDuplicated) => {
+      this.isRuleDuplicated = isDuplicated;
+    });
+
     if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategory) !== -1) {
       if (actionType === RuleActionsEnum.BLOCK_RULE_INHERITANCE) {
         this.ruleCategoryDuaActions = this.managementRules.find(
@@ -180,7 +187,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
           this.ruleCategoryDuaActions.rules?.filter((rule) => rule.rule !== ruleId).length === 0
         ) {
           this.ruleCategoryDuaActions = {
-            rules: [],
+            rules: this.isRuleDuplicated ? this.ruleCategoryDuaActions.rules : [],
             finalAction: this.ruleCategoryDuaActions.finalAction,
             preventRulesIdToAdd: this.ruleCategoryDuaActions.preventRulesIdToAdd,
           };
@@ -193,11 +200,18 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
             finalAction: this.ruleCategoryDuaActions.finalAction,
           };
         } else {
+          let ruleActions: RuleAction[];
+          if (actionType === RuleActionsEnum.UPDATE_RULES) {
+            ruleActions = this.ruleCategoryDuaActions.rules.filter((rule) => rule.oldRule !== ruleId);
+          } else {
+            if (this.isRuleDuplicated) {
+              ruleActions = this.ruleCategoryDuaActions.rules;
+            } else {
+              ruleActions = this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId);
+            }
+          }
           this.ruleCategoryDuaActions = {
-            rules:
-              actionType === RuleActionsEnum.UPDATE_RULES
-                ? this.ruleCategoryDuaActions.rules.filter((rule) => rule.oldRule !== ruleId)
-                : this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId),
+            rules: ruleActions,
             finalAction: this.ruleCategoryDuaActions.finalAction,
           };
         }

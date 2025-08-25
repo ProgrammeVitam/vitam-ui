@@ -53,6 +53,7 @@ export class ManagementRulesSharedDataService {
 
   private managementRules = new BehaviorSubject<ManagementRules[]>([]);
   private hasExactCount = new BehaviorSubject<boolean>(false);
+  private isRuleDuplicated = new BehaviorSubject<boolean>(false);
 
   selectedItem = this.selectedItems.asObservable();
   allCriteriaSearchListToSave = this.criteriaSearchListToSave.asObservable();
@@ -135,5 +136,13 @@ export class ManagementRulesSharedDataService {
 
   getHasExactCount(): Observable<boolean> {
     return this.hasExactCount.asObservable();
+  }
+
+  emitIsRuleDuplicated(isRuleDuplicated: boolean) {
+    this.isRuleDuplicated.next(isRuleDuplicated);
+  }
+
+  getIsRuleDuplicated(): Observable<boolean> {
+    return this.isRuleDuplicated.asObservable();
   }
 }
