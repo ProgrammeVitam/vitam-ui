@@ -188,6 +188,8 @@ describe('ArchiveUnitRulesComponent', () => {
     getRuleActions: () => of(ruleActions),
     emitManagementRules: () => of({}),
     emitRuleActions: () => of({}),
+    emitIsRuleDuplicated: () => of({}),
+    getIsRuleDuplicated: () => of(false),
   };
 
   const updateUnitManagementRuleServiceMock = {

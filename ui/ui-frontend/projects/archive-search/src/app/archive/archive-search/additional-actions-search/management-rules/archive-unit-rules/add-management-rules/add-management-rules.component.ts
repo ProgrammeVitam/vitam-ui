@@ -309,6 +309,9 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   onDelete() {
     const dialogToOpen = this.confirmDeleteAddRuleDialog;
     const dialogRef = this.dialog.open(dialogToOpen);
+    this.managementRulesSharedDataService.emitIsRuleDuplicated(
+      !!(this.ruleDetailsForm.get('rule').errors && this.ruleDetailsForm.get('rule').errors.uniqueRuleId),
+    );
 
     this.showConfirmDeleteAddRuleSuscription = dialogRef
       .afterClosed()
