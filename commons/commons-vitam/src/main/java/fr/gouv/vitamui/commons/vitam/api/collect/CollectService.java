@@ -417,9 +417,7 @@ public class CollectService {
     public Response downloadSipTransaction(final VitamContext vitamContext, final String transactionId)
         throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionId);
-        final Response response = collectExternalClient.downloadSIP(vitamContext, transactionId);
-        VitamRestUtils.checkResponse(response);
-        return Response.ok().build();
+        return collectExternalClient.downloadSIP(vitamContext, transactionId);
     }
 
     public RequestResponse<JsonNode> startDeletionAction(
