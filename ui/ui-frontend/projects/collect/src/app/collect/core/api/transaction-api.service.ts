@@ -86,6 +86,13 @@ export class TransactionApiService extends PaginatedHttpClient<Transaction> {
     return this.http.put<Transaction>(this.apiUrl + '/' + id + '/abort', {});
   }
 
+  downloadSipTransaction(id: string) {
+    return this.http.get(`${this.apiUrl}/${id}/downloadSip`, {
+      observe: 'response',
+      responseType: 'blob',
+    });
+  }
+
   // Manage units metadata
   updateUnitsMetadata(transactionId: string, file: Blob, headers: HttpHeaders): Observable<string> {
     return this.http.put(`${this.apiUrl}/${transactionId}/update-units-metadata`, file, {

@@ -35,7 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { saveAs } from 'file-saver-es';
 import { DEFAULT_PAGE_SIZE, Direction, PageRequest, PaginatedResponse, Project, SearchService, Transaction } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -50,6 +54,8 @@ export class TransactionsService extends SearchService<Transaction> {
   constructor(
     private transactionApiService: TransactionApiService,
     private projectApiService: ProjectsApiService,
+    private snackBar: MatSnackBar,
+    private translateService: TranslateService,
   ) {
     super(transactionApiService, 'ALL');
   }
@@ -88,6 +94,41 @@ export class TransactionsService extends SearchService<Transaction> {
 
   abortTransaction(id: string) {
     return this.transactionApiService.abortTransaction(id);
+  }
+
+  downloadSipTransaction(id: string) {
+    return this.transactionApiService
+      .downloadSipTransaction(id)
+      .pipe(
+        catchError((error) => {
+          const message = this.translateService.instant('COLLECT.PROJECT_TRANSACTION_PREVIEW.TRANSACTION_SIP_DOWNLOAD_ERROR');
+          this.snackBar.open(message, null, {
+            duration: 10000,
+          });
+          throw error;
+        }),
+      )
+      .subscribe((resp) => {
+        let fileName = null;
+        // extract filename from content-disposition header
+        const contentDispositionHeader = resp.headers.get('content-disposition');
+        if (contentDispositionHeader !== null) {
+          const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          const matches = filenameRegex.exec(contentDispositionHeader);
+          if (matches != null && matches[1]) {
+            fileName = matches[1].replace(/['"]/g, '');
+          }
+        }
+        // If no filename is found, use a default name
+        if (!fileName) {
+          fileName = `transaction_${id}.zip`;
+        }
+        saveAs(resp.body, fileName);
+        const message = this.translateService.instant('COLLECT.PROJECT_TRANSACTION_PREVIEW.TRANSACTION_SIP_DOWNLOAD');
+        this.snackBar.open(message, null, {
+          duration: 10000,
+        });
+      });
   }
 
   loadDataForTransactions(transactions: Transaction[], project: Project) {

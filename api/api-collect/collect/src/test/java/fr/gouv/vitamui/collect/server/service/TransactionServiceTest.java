@@ -290,4 +290,44 @@ class TransactionServiceTest {
             transactionService.updateArchiveUnitsFromFile(csvFile, transactionId, new VitamContext(0));
         }).doesNotThrowAnyException();
     }
+
+    @Test
+    void shouldDownloadSipTransactionWithSuccess() throws VitamClientException {
+        // GIVEN
+        Response mockResponse = Response.ok().build();
+        when(collectService.downloadSipTransaction(vitamContext, TRANSACTION_ID)).thenReturn(mockResponse);
+
+        // WHEN
+        Response result = transactionService.downloadSipTransaction(TRANSACTION_ID, vitamContext);
+
+        // THEN
+        assertNotNull(result);
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+    }
+
+    @Test
+    void shouldReturnResponseWhenDownloadSipTransaction() throws VitamClientException {
+        // GIVEN
+        Response mockResponse = Response.status(Response.Status.ACCEPTED).build();
+        when(collectService.downloadSipTransaction(vitamContext, TRANSACTION_ID)).thenReturn(mockResponse);
+
+        // WHEN
+        Response result = transactionService.downloadSipTransaction(TRANSACTION_ID, vitamContext);
+
+        // THEN
+        assertNotNull(result);
+        assertEquals(Response.Status.ACCEPTED.getStatusCode(), result.getStatus());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDownloadSipTransaction() throws VitamClientException {
+        // GIVEN
+        when(collectService.downloadSipTransaction(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
+
+        // THEN
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionService.downloadSipTransaction(TRANSACTION_ID, vitamContext)
+        );
+    }
 }

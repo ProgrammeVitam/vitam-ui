@@ -49,6 +49,7 @@ public class RestApi {
 
     public static final String ABORT_PATH = "/abort";
     public static final String VALIDATE_PATH = "/validate";
+    public static final String DOWNLOAD_SIP_PATH = "/downloadSip";
     public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
     public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
 

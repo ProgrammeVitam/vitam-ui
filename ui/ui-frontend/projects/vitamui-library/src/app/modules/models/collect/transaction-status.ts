@@ -37,6 +37,7 @@
 export enum TransactionStatus {
   OPEN = 'OPEN',
   READY = 'READY',
+  VALIDATED = 'VALIDATED',
   CLOSE = 'CLOSE',
   SENT = 'SENT',
   SENDING = 'SENDING',

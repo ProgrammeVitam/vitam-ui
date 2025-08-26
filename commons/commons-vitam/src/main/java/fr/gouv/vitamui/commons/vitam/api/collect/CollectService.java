@@ -406,6 +406,22 @@ public class CollectService {
         return response.toJsonNode();
     }
 
+    /**
+     * Download SIP transaction as a zip file
+     *
+     * @param vitamContext security context
+     * @param transactionId transaction id
+     * @return Response containing the zip file
+     * @throws VitamClientException Thrown exception
+     */
+    public Response downloadSipTransaction(final VitamContext vitamContext, final String transactionId)
+        throws VitamClientException {
+        LOGGER.debug(TRANSACTION_ID, transactionId);
+        final Response response = collectExternalClient.downloadSIP(vitamContext, transactionId);
+        VitamRestUtils.checkResponse(response);
+        return Response.ok().build();
+    }
+
     public RequestResponse<JsonNode> startDeletionAction(
         VitamContext vitamContext,
         String transactionId,

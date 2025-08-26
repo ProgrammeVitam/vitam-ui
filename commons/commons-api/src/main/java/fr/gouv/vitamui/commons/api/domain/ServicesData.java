@@ -47,6 +47,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CLOSE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.DOWNLOAD_SIP_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
@@ -518,6 +519,7 @@ public class ServicesData {
     public static final String ROLE_CLOSE_TRANSACTIONS = CLOSE_ROLE_PREFIX + TRANSACTIONS;
 
     public static final String ROLE_SEND_TRANSACTIONS = SEND_ROLE_PREFIX + TRANSACTIONS;
+    public static final String ROLE_DOWNLOAD_SIP_TRANSACTIONS = DOWNLOAD_SIP_ROLE_PREFIX + TRANSACTIONS;
     public static final String ROLE_GET_TRANSACTIONS = GET_ROLE_PREFIX + TRANSACTIONS;
     public static final String ROLE_DELETE_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
 
@@ -694,6 +696,7 @@ public class ServicesData {
 
         ROLE_CLOSE_TRANSACTIONS,
         ROLE_SEND_TRANSACTIONS,
+        ROLE_DOWNLOAD_SIP_TRANSACTIONS,
         ROLE_CREATE_TRANSACTIONS,
         ROLE_UPDATE_TRANSACTIONS,
         ROLE_GET_TRANSACTIONS,
@@ -864,6 +867,7 @@ public class ServicesData {
 
         ROLE_CLOSE_TRANSACTIONS,
         ROLE_SEND_TRANSACTIONS,
+        ROLE_DOWNLOAD_SIP_TRANSACTIONS,
         ROLE_UPDATE_UNITS_METADATA,
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,

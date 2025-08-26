@@ -173,13 +173,16 @@
         "OPEN": "Ouvert en édition",
         "ABORTED": "Abandonné",
         "READY": "Validé",
+        "VALIDATED": "Validé",
         "SENDING": "Préparation et envoi du SIP",
         "SENT": "Envoyé, en cours de traitement du SAE",
         "ACK_OK": "Versé en succès",
         "ACK_WARNING": "Versé",
         "ACK_KO": "Échec du versement",
         "KO": "Erreur technique"
-      }
+      },
+      "TRANSACTION_SIP_DOWNLOAD_ERROR": "Échec du téléchargement de SIP de la transaction",
+      "TRANSACTION_SIP_DOWNLOAD": "SIP de la transaction téléchargée avec succès."
     },
     "DELETION": {
       "DELETION_LAUNCHED": "Votre demande de suppression a bien été prise en compte"
