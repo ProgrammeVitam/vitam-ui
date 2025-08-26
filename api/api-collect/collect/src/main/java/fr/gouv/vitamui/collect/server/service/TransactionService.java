@@ -50,7 +50,14 @@ import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -209,16 +216,49 @@ public class TransactionService {
      *
      * @param transactionId transaction id
      * @param vitamContext security context
-     * @return Response containing the zip file
+     * @return Mono<ResponseEntity < Resource>> containing the zip file
      * @throws VitamClientException Thrown exception
      */
-    public Response downloadSipTransaction(String transactionId, VitamContext vitamContext)
+    public Mono<ResponseEntity<Resource>> downloadSipTransaction(String transactionId, VitamContext vitamContext)
         throws VitamClientException {
         try {
             LOGGER.debug("Download SIP transaction with id: {}", transactionId);
-            return collectService.downloadSipTransaction(vitamContext, transactionId);
+            Response response = collectService.downloadSipTransaction(vitamContext, transactionId);
+
+            // Get transaction details to use for filename
+            CollectTransactionDto transaction = getTransactionById(transactionId, vitamContext);
+            String fileName = "transaction_" + transactionId;
+            if (transaction != null && transaction.getName() != null && !transaction.getName().isEmpty()) {
+                fileName = transaction.getName() + ".zip";
+            } else {
+                fileName = "transaction_" + transactionId + ".zip";
+            }
+
+            return convertResponseToMono(response, fileName);
         } catch (VitamClientException e) {
             throw new VitamClientException("Unable to download SIP transaction: ", e);
         }
+    }
+
+    /**
+     * Converts a JAX-RS Response to a Mono<ResponseEntity<Resource>>
+     *
+     * @param jaxRsResponse The JAX-RS Response
+     * @param fileName The filename to use in the Content-Disposition header
+     * @return A Mono<ResponseEntity<Resource>> containing the response
+     */
+    private Mono<ResponseEntity<Resource>> convertResponseToMono(Response jaxRsResponse, String fileName) {
+        return Mono.fromCallable(() -> {
+            // Wrap it in an InputStreamResource
+            Resource resource = new InputStreamResource(jaxRsResponse.readEntity(InputStream.class));
+
+            // Create HTTP headers for downloading
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+
+            // Return the ResponseEntity with status and resource
+            return ResponseEntity.status(HttpStatus.OK).headers(headers).body(resource);
+        });
     }
 }
