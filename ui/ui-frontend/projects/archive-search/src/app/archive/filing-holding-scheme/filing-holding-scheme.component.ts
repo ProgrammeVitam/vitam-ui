@@ -94,6 +94,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     private archiveService: ArchiveService,
     private route: ActivatedRoute,
     private archiveSharedDataService: ArchiveSharedDataService,
+    private filingHoldingSchemeHandler: FilingHoldingSchemeHandler,
   ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
@@ -119,8 +120,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
         if (nodeId == null) {
           this.switchViewAllNodes();
         } else {
-          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
-          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
+          this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
+          this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
         }
       }),
     );
@@ -131,8 +132,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       this.archiveSharedDataService.getFacets().subscribe((facets) => {
         this.requestResultFacets = facets;
         if (facets && facets.length > 0) {
-          FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
-          this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
+          this.filingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
+          this.requestResultsInFilingPlan = this.filingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
         } else {
           for (const node of this.nestedDataSourceFull.data) {
             node.count = 0;
@@ -142,7 +143,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
         }
         // fullNodes is a Graph .
         // keeps last child with result only
-        this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
+        this.nestedDataSourceLeaves.data = this.filingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
         this.addOrRemoveOrphansNode();
         this.showEveryNodes = false;
       }),
@@ -158,13 +159,13 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   addOrRemoveOrphansNode() {
     const orphans = this.requestTotalResults - this.requestResultsInFilingPlan;
     if (orphans > 0) {
-      FilingHoldingSchemeHandler.addOrphansNodeFromTree(
+      this.filingHoldingSchemeHandler.addOrphansNodeFromTree(
         this.nestedDataSourceLeaves.data,
         this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
         orphans,
       );
     } else {
-      FilingHoldingSchemeHandler.removeOrphansNodeFromTree(this.nestedDataSourceLeaves.data);
+      this.filingHoldingSchemeHandler.removeOrphansNodeFromTree(this.nestedDataSourceLeaves.data);
     }
     this.refreshTreeNodes();
   }
@@ -203,8 +204,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       isVirtual: node.unitType === UnitType.VIRTUAL,
       virtualPath: node.virtualPath,
     };
-    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
-    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
+    this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
+    this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
     this.archiveSharedDataService.emitNode(this.nodeData);
   }
 

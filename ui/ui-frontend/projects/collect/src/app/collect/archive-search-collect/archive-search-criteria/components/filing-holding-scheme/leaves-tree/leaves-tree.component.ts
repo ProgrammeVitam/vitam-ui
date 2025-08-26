@@ -89,8 +89,9 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveCollectService: ArchiveCollectService,
     private configurationsService: ConfigurationsApiService,
+    private filingHoldingSchemeHandler: FilingHoldingSchemeHandler,
   ) {
-    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService, this.configurationsService);
+    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService, this.configurationsService, this.filingHoldingSchemeHandler);
   }
 
   ngOnInit(): void {
@@ -192,9 +193,9 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return node.unitType === UnitType.INGEST && node.descriptionLevel === DescriptionLevel.ITEM;
   }
 
-  nodeIsOrphansNode(_: number, node: FilingHoldingSchemeNode): boolean {
-    return FilingHoldingSchemeHandler.isOrphansNode(node);
-  }
+  nodeIsOrphansNode = (_: number, node: FilingHoldingSchemeNode): boolean => {
+    return this.filingHoldingSchemeHandler.isOrphansNode(node);
+  };
 
   nodeHasPositiveCount(node: FilingHoldingSchemeNode): boolean {
     return node.count && node.count > 0;

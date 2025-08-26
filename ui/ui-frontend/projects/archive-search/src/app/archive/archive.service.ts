@@ -82,6 +82,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     private snackBar: MatSnackBar,
     private securityService: SecurityService,
     private accessContractService: AccessContractService,
+    private filingHoldingSchemeHandler: FilingHoldingSchemeHandler,
   ) {
     super(archiveApiService, 'ALL');
   }
@@ -128,7 +129,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
         (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
         (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
       ) {
-        const outNode: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+        const outNode: FilingHoldingSchemeNode = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
       }

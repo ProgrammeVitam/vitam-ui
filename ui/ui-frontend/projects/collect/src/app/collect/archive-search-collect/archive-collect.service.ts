@@ -84,6 +84,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     private snackBar: MatSnackBar,
     private accessContractApiService: AccessContractApiService,
     private securityService: SecurityService,
+    private filingHoldingSchemeHandler: FilingHoldingSchemeHandler,
     public dialog: MatDialog,
   ) {
     super(projectsApiService, 'ALL');
@@ -288,7 +289,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
         (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
         (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
       ) {
-        const outNode: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+        const outNode: FilingHoldingSchemeNode = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
       }

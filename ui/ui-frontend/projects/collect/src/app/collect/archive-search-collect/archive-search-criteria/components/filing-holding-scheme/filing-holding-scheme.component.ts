@@ -99,6 +99,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private archiveService: ArchiveCollectService,
     private archiveSharedDataService: ArchiveSharedDataService,
+    private filingHoldingSchemeHandler: FilingHoldingSchemeHandler,
   ) {}
 
   ngOnInit(): void {
@@ -120,8 +121,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
         if (nodeId == null) {
           this.switchViewAllNodes();
         } else {
-          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
-          FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
+          this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
+          this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
         }
       }),
     );
@@ -143,15 +144,15 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
             // Re-init attachment units to render children by criteria
             this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
 
-            FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceLeaves.data, facets);
+            this.filingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceLeaves.data, facets);
 
             const withKeyValueNodes = this.nestedDataSourceLeaves.data.filter((node) => node.unitType === UnitType.WITH_KEY_VALUE);
             if (!isEmpty(withKeyValueNodes)) {
-              this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
+              this.nestedDataSourceLeaves.data = this.filingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
                 this.nestedDataSourceLeaves.data,
                 withKeyValueNodes,
               );
-              FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
+              this.filingHoldingSchemeHandler.addKeyValueNodeFromTree(
                 this.nestedDataSourceLeaves.data,
                 withKeyValueNodes,
                 this.translateService.instant('COLLECT.FILING_SCHEMA.KEY_VALUE_NODE'),
@@ -159,7 +160,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
               );
             }
             if (numberOfAUsWithoutAttachment > 0) {
-              FilingHoldingSchemeHandler.addOrphansNodeFromTree(
+              this.filingHoldingSchemeHandler.addOrphansNodeFromTree(
                 this.nestedDataSourceLeaves.data,
                 this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE'),
                 this.searchRequestTotalResults,
@@ -173,8 +174,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   addToSearchCriteria(node: FilingHoldingSchemeNode) {
     this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
-    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
-    FilingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
+    this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
+    this.filingHoldingSchemeHandler.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
     this.archiveSharedDataService.emitNode(this.nodeData);
   }
 
@@ -212,8 +213,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       const value = key
         ? unit['#management'].UpdateOperation.ArchiveUnitIdentifierKey?.MetadataValue
         : unit['#management'].UpdateOperation.SystemId;
-      const treeNode = FilingHoldingSchemeHandler.foundNode(this.fullNodes, value, key);
-      const node = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      const treeNode = this.filingHoldingSchemeHandler.foundNode(this.fullNodes, value, key);
+      const node = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
       if (key) {
         node.unitType = UnitType.WITH_KEY_VALUE;
       } else {

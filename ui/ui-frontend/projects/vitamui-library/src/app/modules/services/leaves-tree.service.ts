@@ -52,6 +52,7 @@ export class LeavesTreeService {
   constructor(
     private searchArchiveUnitsService: SearchArchiveUnitsInterface,
     private configurationsService: ConfigurationsApiService,
+    private filingHoldingSchemeHandler: FilingHoldingSchemeHandler,
   ) {
     this.leavesTreeApiService = new LeavesTreeApiService(this.searchArchiveUnitsService);
     this.configurationsService.getVirtualPathsFields().subscribe((fields) => {
@@ -78,8 +79,8 @@ export class LeavesTreeService {
     this.loadingNodesDetails = true;
     return this.leavesTreeApiService.loadNodesDetailsFromFacetsIds(facets).pipe(
       map((pagedResult) => {
-        FilingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pagedResult.results, true);
-        FilingHoldingSchemeHandler.setCountRecursively(parentNodes, this.searchRequestResultFacets);
+        this.filingHoldingSchemeHandler.addChildrenRecursively(parentNodes, pagedResult.results, true);
+        this.filingHoldingSchemeHandler.setCountRecursively(parentNodes, this.searchRequestResultFacets);
         this.loadingNodesDetails = false;
         return pagedResult;
       }),
@@ -130,7 +131,7 @@ export class LeavesTreeService {
   ): boolean {
     if (!realDirectChildrenAny?.results) return false;
     realDirectChildrenAny.results.forEach((unit) => {
-      const node = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      const node = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
       if (this.nodesCountMap.has(node.id)) {
         node.count = this.nodesCountMap.get(node.id)!;
       }
@@ -298,7 +299,7 @@ export class LeavesTreeService {
       virtualChildrenMap.set(virtualUnit.id, virtualUnit);
     });
     let virtualPaths = [...virtualChildrenMap.values()];
-    const virtualPathsRoots = FilingHoldingSchemeHandler.extractVirtualPathsRoots(virtualPaths, parentPath);
+    const virtualPathsRoots = this.filingHoldingSchemeHandler.extractVirtualPathsRoots(virtualPaths, parentPath);
     if (virtualPathsRoots) {
       virtualPathsRoots.forEach((virtualPath) => {
         node.waitingChildren.push(virtualPath);
@@ -323,7 +324,7 @@ export class LeavesTreeService {
   ) {
     if (parentNode.realDirectNodeMatchingPage < realDirectChildrenMatching.pageNumbers) {
       realDirectChildrenMatching.results.forEach((unit) => {
-        let filingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+        let filingHoldingSchemeNode = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
         if (this.nodesCountMap.has(filingHoldingSchemeNode.id)) {
           filingHoldingSchemeNode.count = this.nodesCountMap.get(filingHoldingSchemeNode.id);
         } else {
@@ -369,14 +370,14 @@ export class LeavesTreeService {
 
           if (virtualDirectChildrenAny) {
             virtualDirectChildrenAny.results.forEach((unit) => {
-              let filingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+              let filingHoldingSchemeNode = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
               realChildrenMap.set(filingHoldingSchemeNode.id, filingHoldingSchemeNode);
             });
           }
 
           if (virtualDirectChildrenMatching) {
             virtualDirectChildrenMatching.results.forEach((unit) => {
-              let filingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+              let filingHoldingSchemeNode = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
               if (this.nodesCountMap.has(filingHoldingSchemeNode.id)) {
                 filingHoldingSchemeNode.count = this.nodesCountMap.get(filingHoldingSchemeNode.id);
               } else {
@@ -449,7 +450,7 @@ export class LeavesTreeService {
     // Page sizes
 
     node.isLoadingChildren = true;
-    FilingHoldingSchemeHandler.initNode(node);
+    this.filingHoldingSchemeHandler.initNode(node);
 
     const perimeterNodesIds: string[] = Array.from(this.nodesCountMap.keys());
 
@@ -511,7 +512,7 @@ export class LeavesTreeService {
     //    if (showEveryNodes) {
     virtualChildrenAnyNodes = (await firstValueFrom(this.leavesTreeApiService.retrieveAnyDirectVirtualChildren(nodeId))).map(
       (virtualUnit) => {
-        const virtualNode = FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId);
+        const virtualNode = this.filingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId);
         const matchingVirtualNodeFound = virtualChildrenMatchingNodes.find((n) => n.id === virtualNode.id);
         virtualNode.count = matchingVirtualNodeFound ? matchingVirtualNodeFound.count : 0;
         return virtualNode;
@@ -525,7 +526,7 @@ export class LeavesTreeService {
     const { results } = await firstValueFrom(this.leavesTreeApiService.retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds, node));
 
     return results.map((unit) => {
-      const convertedNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      const convertedNode = this.filingHoldingSchemeHandler.convertUnitToNode(unit);
       convertedNode.count = this.nodesCountMap.get(convertedNode.id) ?? convertedNode.count;
       return convertedNode;
     });
@@ -547,7 +548,7 @@ export class LeavesTreeService {
   }
 
   public async loadOrphanNodeChildrenOnFirstToggle(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
-    FilingHoldingSchemeHandler.initNode(node);
+    this.filingHoldingSchemeHandler.initNode(node);
     node.isLoadingChildren = true;
     const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id);
 
@@ -573,6 +574,6 @@ export class LeavesTreeService {
       this.leavesTreeApiService.retrieveVirtualChildrenMatchingHavingResults(nodeId, this.searchCriterias),
     );
 
-    return virtualUnits.map((virtualUnit) => FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId));
+    return virtualUnits.map((virtualUnit) => this.filingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId));
   }
 }

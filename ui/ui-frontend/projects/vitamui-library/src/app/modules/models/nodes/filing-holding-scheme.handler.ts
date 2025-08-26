@@ -35,20 +35,30 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { isEmpty } from 'lodash-es';
+import { Injectable } from '@angular/core';
 import { getUnitI18nAttribute } from '../../pipes/unitI18n.pipe';
 import { ResultFacet } from '../criteria/search-criteria.interface';
 import { DescriptionLevel } from '../units/description-level.enum';
 import { Unit } from '../units/unit.interface';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
 import { copyNodeWithoutChildren } from './node.utils';
+import { SearchUnitApiService } from '../../../../lib/api/search-unit-api.service';
+import { HttpHeaders } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { UnitType } from '../units';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';
 export const KEY_VALUE_NODE_ID = 'KEY_VALUE_NODE';
 export const PATH_SEPARATOR = '/';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class FilingHoldingSchemeHandler {
-  public static foundNode(nodes: FilingHoldingSchemeNode[], value: string, key = 'id'): FilingHoldingSchemeNode {
+  constructor(private searchUnitApiService: SearchUnitApiService) {}
+
+  public foundNode(nodes: FilingHoldingSchemeNode[], value: string, key = 'id'): FilingHoldingSchemeNode {
     if (isEmpty(nodes)) {
       return null;
     }
@@ -57,7 +67,7 @@ export class FilingHoldingSchemeHandler {
       if (nodeValue === value) {
         return node;
       }
-      const nodeFound = FilingHoldingSchemeHandler.foundNode(node.children, value, key);
+      const nodeFound = this.foundNode(node.children, value, key);
       if (nodeFound) {
         return nodeFound;
       }
@@ -65,8 +75,8 @@ export class FilingHoldingSchemeHandler {
     return null;
   }
 
-  public static foundNodeAndSetCheck(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
-    const node = FilingHoldingSchemeHandler.foundNode(nodes, nodeId);
+  public foundNodeAndSetCheck(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
+    const node = this.foundNode(nodes, nodeId);
     if (node) {
       node.checked = checked;
       return true;
@@ -74,15 +84,15 @@ export class FilingHoldingSchemeHandler {
     return false;
   }
 
-  public static updateCountOnOrphansNode(parentNodes: FilingHoldingSchemeNode[], count: number): boolean {
-    if (isEmpty(parentNodes) || !FilingHoldingSchemeHandler.isOrphansNode(parentNodes[0])) {
+  public updateCountOnOrphansNode(parentNodes: FilingHoldingSchemeNode[], count: number): boolean {
+    if (isEmpty(parentNodes) || !this.isOrphansNode(parentNodes[0])) {
       return false;
     }
     parentNodes[0].count = count;
     return true;
   }
 
-  public static setCountOnNode(node: FilingHoldingSchemeNode, facets: ResultFacet[]): number {
+  public setCountOnNode(node: FilingHoldingSchemeNode, facets: ResultFacet[]): number {
     node.count = 0;
     for (const facet of facets) {
       if (node.id === facet.node) {
@@ -94,28 +104,28 @@ export class FilingHoldingSchemeHandler {
     return 0;
   }
 
-  public static getCountSum(nodes: FilingHoldingSchemeNode[]): number {
+  public getCountSum(nodes: FilingHoldingSchemeNode[]): number {
     const byAddingCounts = (sum: number, node: FilingHoldingSchemeNode) => sum + node.count;
     return nodes ? nodes.reduce(byAddingCounts, 0) : 0;
   }
 
-  public static setCountRecursively(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): number {
+  public setCountRecursively(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): number {
     if (isEmpty(nodes)) {
       return 0;
     }
     let nodesUpdated = 0;
     for (const node of nodes) {
-      if (FilingHoldingSchemeHandler.isOrphansNode(node)) {
+      if (this.isOrphansNode(node)) {
         continue;
       }
-      nodesUpdated += FilingHoldingSchemeHandler.setCountOnNode(node, facets);
-      nodesUpdated += FilingHoldingSchemeHandler.setCountRecursively(node.children, facets);
+      nodesUpdated += this.setCountOnNode(node, facets);
+      nodesUpdated += this.setCountRecursively(node.children, facets);
       node.hidden = nodesUpdated === 0;
     }
     return nodesUpdated;
   }
 
-  public static reCalculateCountRecursively(parentNode: FilingHoldingSchemeNode): void {
+  public reCalculateCountRecursively(parentNode: FilingHoldingSchemeNode): void {
     if (parentNode.count < 1) {
       // not a match
       return;
@@ -125,45 +135,43 @@ export class FilingHoldingSchemeHandler {
     }
     let count = 0;
     for (const node of parentNode.children) {
-      FilingHoldingSchemeHandler.reCalculateCountRecursively(node);
+      this.reCalculateCountRecursively(node);
       count += node.count;
     }
     if (count < parentNode.count) {
       return;
     }
-    if (!FilingHoldingSchemeHandler.isOrphansNode(parentNode)) {
+    if (!this.isOrphansNode(parentNode)) {
       count = count + 1; // self match
     }
     parentNode.count = count;
   }
 
-  public static isOrphansNode(node: FilingHoldingSchemeNode): boolean {
+  public isOrphansNode(node: FilingHoldingSchemeNode): boolean {
     return node.vitamId === ORPHANS_NODE_ID;
   }
 
-  public static addToOrphansNode(nodes: FilingHoldingSchemeNode[], parentNodes: FilingHoldingSchemeNode[], nodeTitle: string) {
-    const orphansNumberFromFacets = FilingHoldingSchemeHandler.getCountSum(nodes) + nodes.length;
+  public addToOrphansNode(nodes: FilingHoldingSchemeNode[], parentNodes: FilingHoldingSchemeNode[], nodeTitle: string) {
+    const orphansNumberFromFacets = this.getCountSum(nodes) + nodes.length;
     const orphansNode = parentNodes[0];
-    FilingHoldingSchemeHandler.addOrphansNodeFromTree(parentNodes, nodeTitle, orphansNumberFromFacets);
+    this.addOrphansNodeFromTree(parentNodes, nodeTitle, orphansNumberFromFacets);
     if (isEmpty(orphansNode.children)) {
       orphansNode.children = nodes;
       orphansNode.count = orphansNumberFromFacets;
       return;
     }
     for (const node of nodes) {
-      const existingNode: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.foundChild(parentNodes[0], node.id);
+      const existingNode: FilingHoldingSchemeNode = this.foundChild(parentNodes[0], node.id);
       if (!existingNode) {
         orphansNode.children.push(node);
       }
     }
   }
 
-  public static addOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[], nodeTitle: string, totalResults: number) {
-    const orphansNumber =
-      totalResults -
-      parentNodes.filter((node) => !FilingHoldingSchemeHandler.isOrphansNode(node)).reduce((sum, node) => sum + node.count, 0);
+  public addOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[], nodeTitle: string, totalResults: number) {
+    const orphansNumber = totalResults - parentNodes.filter((node) => !this.isOrphansNode(node)).reduce((sum, node) => sum + node.count, 0);
 
-    if (isEmpty(parentNodes) || !FilingHoldingSchemeHandler.isOrphansNode(parentNodes[0])) {
+    if (isEmpty(parentNodes) || !this.isOrphansNode(parentNodes[0])) {
       const orphansNode: FilingHoldingSchemeNode = {
         checked: false,
         children: [],
@@ -174,14 +182,14 @@ export class FilingHoldingSchemeHandler {
       };
       parentNodes.unshift(orphansNode);
       return;
-    } else if (FilingHoldingSchemeHandler.isOrphansNode(parentNodes[0])) {
+    } else if (this.isOrphansNode(parentNodes[0])) {
       if (parentNodes[0].count !== orphansNumber) {
         parentNodes[0].count = orphansNumber;
       }
     }
   }
 
-  public static addKeyValueNodeFromTree(
+  public addKeyValueNodeFromTree(
     parentNodes: FilingHoldingSchemeNode[],
     childrenNodes: FilingHoldingSchemeNode[],
     nodeTitle: string,
@@ -204,24 +212,21 @@ export class FilingHoldingSchemeHandler {
     }
   }
 
-  public static removeWithKeyValueNodeFromTree(
-    source: FilingHoldingSchemeNode[],
-    toRemove: FilingHoldingSchemeNode[],
-  ): FilingHoldingSchemeNode[] {
+  public removeWithKeyValueNodeFromTree(source: FilingHoldingSchemeNode[], toRemove: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
     if (!isEmpty(source) && !isEmpty(toRemove)) {
       return source.filter((parent) => !toRemove.some((child) => parent.id === child.id));
     }
     return source;
   }
 
-  public static removeOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[]) {
-    if (isEmpty(parentNodes) || !FilingHoldingSchemeHandler.isOrphansNode(parentNodes[0])) {
+  public removeOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[]) {
+    if (isEmpty(parentNodes) || !this.isOrphansNode(parentNodes[0])) {
       return;
     }
     parentNodes.shift();
   }
 
-  public static keepEndNodesWithResultsOnly(nodes: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
+  public keepEndNodesWithResultsOnly(nodes: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
     if (!nodes) {
       return [];
     }
@@ -234,7 +239,7 @@ export class FilingHoldingSchemeHandler {
         leaves.push(copyNodeWithoutChildren(node));
         continue;
       }
-      const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(node.children);
+      const childResult: FilingHoldingSchemeNode[] = this.keepEndNodesWithResultsOnly(node.children);
       const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
       if (addedCount < node.count) {
         const nodeCopy = copyNodeWithoutChildren(node);
@@ -245,21 +250,21 @@ export class FilingHoldingSchemeHandler {
     return leaves;
   }
 
-  public static getUnitWithUpdateOperationId(id: string, units: Unit[]): Unit {
+  public getUnitWithUpdateOperationId(id: string, units: Unit[]): Unit {
     const lambda = units.find((unit) => unit['#management'].UpdateOperation.SystemId === id);
     return lambda;
   }
 
-  public static oneUnitHasUpdateOperationId(id: string, units: Unit[]): boolean {
+  public oneUnitHasUpdateOperationId(id: string, units: Unit[]): boolean {
     const lambda = units.some((unit) => unit['#management'].UpdateOperation.SystemId === id);
     return lambda;
   }
 
-  public static nodeIsNotAttachmentUnit(nodeId: string, units: Unit[]): boolean {
-    return !FilingHoldingSchemeHandler.oneUnitHasUpdateOperationId(nodeId, units);
+  public nodeIsNotAttachmentUnit(nodeId: string, units: Unit[]): boolean {
+    return !this.oneUnitHasUpdateOperationId(nodeId, units);
   }
 
-  public static keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
+  public keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
     nodes: FilingHoldingSchemeNode[],
     attachmentUnits: Unit[],
   ): FilingHoldingSchemeNode[] {
@@ -278,7 +283,7 @@ export class FilingHoldingSchemeHandler {
         leaves.push(copyNodeWithoutChildren(node));
         continue;
       }
-      const childResult: FilingHoldingSchemeNode[] = FilingHoldingSchemeHandler.keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
+      const childResult: FilingHoldingSchemeNode[] = this.keepEndNodesWithResultsThatAreNOTAttachmentUnitsOnly(
         node.children,
         attachmentUnits,
       );
@@ -295,22 +300,22 @@ export class FilingHoldingSchemeHandler {
     return leaves;
   }
 
-  public static unitHasDirectParent(unit: Unit, parentId: string): boolean {
+  public unitHasDirectParent(unit: Unit, parentId: string): boolean {
     return unit['#unitups'].findIndex((unitupId) => unitupId === parentId) !== -1;
   }
 
-  public static foundChild(parentNode: FilingHoldingSchemeNode, childId: string): FilingHoldingSchemeNode {
+  public foundChild(parentNode: FilingHoldingSchemeNode, childId: string): FilingHoldingSchemeNode {
     if (!parentNode.children) {
       parentNode.children = [];
     }
     return parentNode.children.find((nodeChild) => nodeChild && nodeChild.id === childId);
   }
 
-  public static addOrphans(parentNode: FilingHoldingSchemeNode, units: Unit[], initCount: boolean = false): MatchingNodesNumbers {
-    return FilingHoldingSchemeHandler.addChildren(parentNode, units, initCount, false);
+  public addOrphans(parentNode: FilingHoldingSchemeNode, units: Unit[], initCount: boolean = false): MatchingNodesNumbers {
+    return this.addChildren(parentNode, units, initCount, false);
   }
 
-  public static addChildren(
+  public addChildren(
     parentNode: FilingHoldingSchemeNode,
     units: Unit[],
     initCount: boolean = false,
@@ -325,13 +330,13 @@ export class FilingHoldingSchemeHandler {
       if (!unit) {
         continue;
       }
-      if (checkPaternity && !FilingHoldingSchemeHandler.unitHasDirectParent(unit, parentNode.id)) {
+      if (checkPaternity && !this.unitHasDirectParent(unit, parentNode.id)) {
         continue;
       }
-      let child: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.foundChild(parentNode, unit['#id']);
+      let child: FilingHoldingSchemeNode = this.foundChild(parentNode, unit['#id']);
       if (!child) {
         // adding child only if it didn't exist
-        child = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+        child = this.convertUnitToNode(unit);
         parentNode.children.push(child);
         matchingNodes.addNode(child);
         if (initCount) {
@@ -350,48 +355,53 @@ export class FilingHoldingSchemeHandler {
     return matchingNodes;
   }
 
-  public static addChildrenRecursively(
-    parentNodes: FilingHoldingSchemeNode[],
-    units: Unit[],
-    initCount: boolean = false,
-  ): MatchingNodesNumbers {
+  public addChildrenRecursively(parentNodes: FilingHoldingSchemeNode[], units: Unit[], initCount: boolean = false): MatchingNodesNumbers {
     const matchingNodesNumbers = new MatchingNodesNumbers();
     if (isEmpty(parentNodes)) {
       return matchingNodesNumbers;
     }
     for (const parentNode of parentNodes) {
-      matchingNodesNumbers.mergeWith(FilingHoldingSchemeHandler.addChildren(parentNode, units, initCount));
-      matchingNodesNumbers.mergeWith(FilingHoldingSchemeHandler.addChildrenRecursively(parentNode.children, units, initCount));
+      matchingNodesNumbers.mergeWith(this.addChildren(parentNode, units, initCount));
+      matchingNodesNumbers.mergeWith(this.addChildrenRecursively(parentNode.children, units, initCount));
     }
     return matchingNodesNumbers;
   }
 
-  public static getGraphIds(nodes: FilingHoldingSchemeNode[]): string[] {
+  public getGraphIds(nodes: FilingHoldingSchemeNode[]): string[] {
     if (isEmpty(nodes)) {
       return [];
     }
     const knownIds: string[] = [];
     for (const node of nodes) {
       knownIds.push(node.id);
-      knownIds.push(...FilingHoldingSchemeHandler.getGraphIds(node.children));
+      knownIds.push(...this.getGraphIds(node.children));
     }
     return knownIds;
   }
 
-  public static filterUnknownFacets(knownFacets: ResultFacet[], newFacets: ResultFacet[]): ResultFacet[] {
+  public filterUnknownFacets(knownFacets: ResultFacet[], newFacets: ResultFacet[]): ResultFacet[] {
     const keepOnlyUnknown = (newFacet: ResultFacet) => knownFacets.findIndex((knownFacet) => knownFacet.node === newFacet.node) === -1;
     return newFacets.filter(keepOnlyUnknown);
   }
 
-  public static filterUnknownFacetsIds(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): ResultFacet[] {
-    const knownIds = FilingHoldingSchemeHandler.getGraphIds(nodes);
+  public filterUnknownFacetsIds(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): ResultFacet[] {
+    const knownIds = this.getGraphIds(nodes);
     return facets.filter((facet) => !knownIds.includes(facet.node));
   }
 
-  public static convertUnitToNode(unit: Unit): FilingHoldingSchemeNode {
+  public convertUnitToNode(unit: Unit): FilingHoldingSchemeNode {
+    if (unit['#id'] === 'aeaqaaaaaeec7t6yabntmamy4tma5vqaaaba') console.log('aeaqaaaaaeec7t6yabntmamy4tma5vqaaaba', unit);
+    let title;
+    if (!unit.Title) {
+      title = this.getTitle(unit, 'Title');
+      console.log('!unit.Title == false', title);
+    } else {
+      title = getUnitI18nAttribute(unit, 'Title');
+      console.log('unit.Title == true', title);
+    }
     return {
       id: unit['#id'],
-      title: getUnitI18nAttribute(unit, 'Title'),
+      title: title,
       unitType: unit['#unitType'],
       descriptionLevel: unit.DescriptionLevel,
       children: [],
@@ -408,7 +418,7 @@ export class FilingHoldingSchemeHandler {
     };
   }
 
-  public static convertVirtualFacetToNode(virtualNode: ResultFacet, parentId: string): FilingHoldingSchemeNode {
+  public convertVirtualFacetToNode(virtualNode: ResultFacet, parentId: string): FilingHoldingSchemeNode {
     return {
       id: virtualNode.node,
       title: virtualNode.node,
@@ -426,40 +436,37 @@ export class FilingHoldingSchemeHandler {
     };
   }
 
-  public static buildNestedTreeLevels(units: Unit[], locale: string, parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
+  public buildNestedTreeLevels(units: Unit[], locale: string, parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
     const nodes: FilingHoldingSchemeNode[] = [];
     for (let i = 0; i < units.length; i++) {
       if (units[i] === undefined) {
         continue;
       }
       const unit = units[i];
-      if (
-        FilingHoldingSchemeHandler.isParent(parentNode, unit) ||
-        (!parentNode && FilingHoldingSchemeHandler.isNullIOrUnknowId(unit, units))
-      ) {
-        const outNode: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      if (this.isParent(parentNode, unit) || (!parentNode && this.isNullIOrUnknowId(unit, units))) {
+        const outNode: FilingHoldingSchemeNode = this.convertUnitToNode(unit);
         units[i] = undefined;
-        outNode.children = FilingHoldingSchemeHandler.buildNestedTreeLevels(units, locale, outNode);
+        outNode.children = this.buildNestedTreeLevels(units, locale, outNode);
         nodes.push(outNode);
       }
     }
-    return nodes.sort(FilingHoldingSchemeHandler.byTitle(locale));
+    return nodes.sort(this.byTitle(locale));
   }
 
-  public static isParent(parentNode: FilingHoldingSchemeNode, unit: Unit): boolean {
+  public isParent(parentNode: FilingHoldingSchemeNode, unit: Unit): boolean {
     return parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId;
   }
 
-  public static isNullIOrUnknowId(unit: Unit, units: Unit[]): boolean {
-    return !unit['#unitups'] || !unit['#unitups'].length || !FilingHoldingSchemeHandler.idExists(units, unit['#unitups'][0]);
+  public isNullIOrUnknowId(unit: Unit, units: Unit[]): boolean {
+    return !unit['#unitups'] || !unit['#unitups'].length || !this.idExists(units, unit['#unitups'][0]);
   }
 
-  public static idExists(units: Unit[], id: string): boolean {
+  public idExists(units: Unit[], id: string): boolean {
     const byId = (unit: Unit) => unit && unit['#id'] === id;
     return !!units.find(byId);
   }
 
-  public static byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {
+  public byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {
     // noinspection UnnecessaryLocalVariableJS to avoid Lambda not supported.
     const byTitleFunction = (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => {
       if (!a || !b || !a.title || !b.title) {
@@ -472,7 +479,7 @@ export class FilingHoldingSchemeHandler {
 
   // ================= extract roots from virtual paths =================
 
-  public static extractVirtualPathsRoots(virtualPaths: FilingHoldingSchemeNode[], parentPath: string): FilingHoldingSchemeNode[] {
+  public extractVirtualPathsRoots(virtualPaths: FilingHoldingSchemeNode[], parentPath: string): FilingHoldingSchemeNode[] {
     // Global roots
     if (!parentPath || parentPath === PATH_SEPARATOR) {
       return virtualPaths
@@ -499,12 +506,20 @@ export class FilingHoldingSchemeHandler {
       }));
   }
 
-  public static initNode(node: FilingHoldingSchemeNode) {
+  public initNode(node: FilingHoldingSchemeNode) {
     node.realDirectNodeMatchingPage = 0;
     node.virtualDirectChildrenMatchingPage = 0;
     node.realDirectNodePage = 0;
     node.virtualDirectNodePage = 0;
     node.children = [];
     node.waitingChildren = [];
+  }
+
+  private getTitle(unit: Unit, attribute: 'Title' | 'Description') {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.searchUnitApiService.getById(unit['#id'], headers).pipe(
+      map((unit: Unit) => getUnitI18nAttribute(unit, attribute)),
+      catchError(() => of('')),
+    );
   }
 }
