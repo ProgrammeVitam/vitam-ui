@@ -13,8 +13,13 @@
       </div>
     </div>
 
-    <div *ngIf="isProfilAttached()" class="bouttonMenuModifierLateral">
-      <button (click)="onButtonClicked()" mat-icon-button [matMenuTriggerFor]="menu" class="btn btn-circle secondary mr-3">
+    <div *ngIf="isProfilAttached()">
+      <button
+        (click)="onButtonClicked()"
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        class="btn btn-circle secondary mr-3 bouttonMenuModifierLateral"
+      >
         <mat-icon>
           {{ isClicked ? 'close' : 'more_horiz' }}
         </mat-icon>
