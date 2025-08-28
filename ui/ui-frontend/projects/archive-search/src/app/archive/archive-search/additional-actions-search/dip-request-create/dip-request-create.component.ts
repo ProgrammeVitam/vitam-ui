@@ -130,7 +130,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       }),
       this.fb.group({
         includeLifeCycleLogs: [false],
-        sedaVersion: ['2.2'],
+        sedaVersion: ['2.3'],
         exportWithTree: false,
         includeObjects: [UsageVersionEnum.ALL],
         usages: this.fb.array([

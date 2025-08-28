@@ -116,7 +116,7 @@ describe('TransferRequestModalComponent tests', () => {
 
   it('should have correct default values for toggle buttons', () => {
     expect(component.formGroups[1].get('includeLifeCycleLogs').value).toBe(true);
-    expect(component.formGroups[1].get('sedaVersion').value).toBe('2.2');
+    expect(component.formGroups[1].get('sedaVersion').value).toBe('2.3');
     expect(component.formGroups[1].get('includeObjects').value).toBe(UsageVersionEnum.ALL);
   });
 

@@ -191,9 +191,9 @@ describe('TransferAcknowledgmentComponent', () => {
 
   it('should parseXmlToTransferDetails for valid XML', async () => {
     const xmlOK = `<?xml version="1.0" encoding="UTF-8"?>
-<ArchiveTransferReply xmlns="fr:gouv:culture:archivesdefrance:seda:v2.2"
+<ArchiveTransferReply xmlns="fr:gouv:culture:archivesdefrance:seda:v2.3"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:schemaLocation="fr:gouv:culture:archivesdefrance:seda:v2.2 seda-2.2/seda-2.2-main.xsd">
+                      xsi:schemaLocation="fr:gouv:culture:archivesdefrance:seda:v2.3 seda-2.3/seda-2.3-main.xsd">
     <Date>2024-06-04T12:56:58.824Z</Date>
     <ArchivalAgreement>IC-000001</ArchivalAgreement>
     <ReplyCode>OK</ReplyCode>
