@@ -205,6 +205,23 @@ public class ProjectController {
         );
     }
 
+    @Secured(ServicesData.ROLE_CREATE_PROJECTS)
+    @Operation(summary = "Upload and stream SIP")
+    @PostMapping(value = "/uploadSip", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void streamingUploadSip(
+        InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
+        SanityChecker.checkSecureParameter(transactionId);
+        LOGGER.debug("[External] upload SIP");
+        projectService.streamingUploadSip(
+            inputStream,
+            transactionId,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS_DESCRIPTION)
     @PutMapping(PATH_ID + "/description")
     public CollectProjectDto updateProjectDescription(

@@ -256,6 +256,28 @@ public class CollectService {
         return result;
     }
 
+    /**
+     * Upload an SIP to Collect transaction
+     *
+     * @param vitamContext
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse uploadSipToTransaction(
+        final VitamContext vitamContext,
+        final String transactionId,
+        final InputStream inputStream
+    ) throws VitamClientException {
+        LOGGER.debug("upload SIP by transaction id : {}", transactionId);
+        final RequestResponse result = collectExternalClient.uploadSipToTransaction(
+            vitamContext,
+            transactionId,
+            inputStream
+        );
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
     public RequestResponse<JsonNode> getProjectById(final VitamContext vitamContext, final String projectId)
         throws VitamClientException {
         LOGGER.debug("get project by id : {}", projectId);
