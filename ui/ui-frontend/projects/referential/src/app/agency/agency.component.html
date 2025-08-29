@@ -24,7 +24,7 @@
           <button mat-menu-item [disabled]="!hasImportRole" (click)="openAgencyImportDialog()">
             {{ 'AGENCY.HOME.ACTION_IMPORT' | translate }}
           </button>
-          <button mat-menu-item [disabled]="!hasExportRole" (click)="exportAgencies()">
+          <button mat-menu-item [disabled]="!agencyList?.dataSource?.length || !hasExportRole" (click)="exportAgencies()">
             {{ 'AGENCY.HOME.ACTION_EXPORT' | translate }}
           </button>
         </vitamui-common-menu-button>
@@ -32,7 +32,7 @@
     </div>
 
     <div class="vitamui-content">
-      <app-agency-list (agencyClick)="showAgency($event)" [search]="search"></app-agency-list>
+      <app-agency-list #agencyList (agencyClick)="showAgency($event)" [search]="search"></app-agency-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
