@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,9 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.dto;
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 
-import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import { BASE_URL } from '../injection-tokens';
+import { BaseHttpClient } from '../base-http-client';
+import { Observable } from 'rxjs';
 
-public class VitamConfigurationResponseDto extends AbstractVitamUIResponseDto<VitamConfigurationDto> {}
+@Injectable({
+  providedIn: 'root',
+})
+export class ConfigurationsApiService extends BaseHttpClient<any> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/configurations/virtual-paths-fields');
+  }
+
+  getVirtualPathsFields(params?: HttpParams, headers?: HttpHeaders): Observable<string[]> {
+    return super.getAllByParams(params, headers);
+  }
+}

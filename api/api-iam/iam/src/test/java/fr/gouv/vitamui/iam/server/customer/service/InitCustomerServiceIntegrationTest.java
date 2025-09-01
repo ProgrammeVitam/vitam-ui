@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.server.customer.service;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -14,6 +15,7 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
@@ -21,7 +23,6 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
-import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.group.dao.GroupRepository;
@@ -71,8 +72,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InitCustomerServiceIntegrationTest {
 
     @Configuration
-    @ComponentScan({ "fr.gouv.vitamui.commons.logbook.dao", "fr.gouv.vitamui.commons.mongo.dao" })
-    private static class CommonRepositoriesConfig {}
+    @ComponentScan({"fr.gouv.vitamui.commons.logbook.dao", "fr.gouv.vitamui.commons.mongo.dao"})
+    private static class CommonRepositoriesConfig {
+    }
+
 
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:8.0.8");
@@ -163,6 +166,7 @@ public class InitCustomerServiceIntegrationTest {
 
     @Test
     public void testCreateCustomer() {
+        VitamContext vitamContext = new VitamContext(TENANT_IDENTIFIER);
         Integer someTenantId = 2;
         final CustomerCreationFormData customerDta = new CustomerCreationFormData(buildCustomerDto());
         VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
@@ -171,7 +175,7 @@ public class InitCustomerServiceIntegrationTest {
         tenantDto.setName("Some name");
         tenantDto.setIdentifier(someTenantId);
 
-        Mockito.when(configurationService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+        Mockito.when(configurationService.getVitamPublicConfigurations(vitamContext)).thenReturn(vitamConfigurationDto);
         Mockito.when(securityService.getTenant(ArgumentMatchers.any())).thenReturn(tenantDto);
 
         customerDta.setTenantName("tenantName");

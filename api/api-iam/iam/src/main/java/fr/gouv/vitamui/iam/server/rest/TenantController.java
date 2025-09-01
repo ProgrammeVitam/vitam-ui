@@ -104,7 +104,7 @@ public class TenantController implements CrudController<TenantDto> {
     @Override
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     @Operation(operationId = "tenants_checkExist", summary = "Check if a tenant exists")
-    @Secured({ ServicesData.ROLE_GET_ALL_TENANTS })
+    @Secured({ServicesData.ROLE_GET_ALL_TENANTS})
     public ResponseEntity<Void> checkExist(final @RequestParam String criteria) {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("checkExist criteria={}", criteria);
@@ -114,7 +114,7 @@ public class TenantController implements CrudController<TenantDto> {
 
     @GetMapping(CommonConstants.PATH_ID)
     @Operation(operationId = "tenants_getOne", summary = "Get a tenant by its identifier")
-    @Secured({ ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS })
+    @Secured({ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS})
     @Override
     public TenantDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
@@ -191,7 +191,7 @@ public class TenantController implements CrudController<TenantDto> {
 
     @Operation(operationId = "tenants_getAvailableTenants", summary = "Get available tenants")
     @GetMapping(CommonConstants.PATH_AVAILABLE_TENANTS)
-    @Secured({ ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS })
+    @Secured({ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS})
     public List<Integer> getAvailableTenants() {
         LOGGER.debug("Retrieve Vitam available tenants  ");
         return tenantService.getAvailableTenantsIds();

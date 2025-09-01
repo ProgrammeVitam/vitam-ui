@@ -39,6 +39,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
+  ConfigurationsApiService,
   DescriptionLevel,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
@@ -87,8 +88,9 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveCollectService: ArchiveCollectService,
+    private configurationsService: ConfigurationsApiService,
   ) {
-    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService);
+    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService, this.configurationsService);
   }
 
   ngOnInit(): void {

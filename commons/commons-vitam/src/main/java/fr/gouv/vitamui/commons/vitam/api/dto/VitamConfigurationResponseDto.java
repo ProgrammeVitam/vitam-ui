@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './access-contract.service';
-export * from './configurations-api.service';
-export * from './leaves-tree-api.service';
-export * from './leaves-tree.service';
-export * from './profile.service';
-export * from './external-referential.service';
-export * from './search-archive-units.interface';
+package fr.gouv.vitamui.commons.vitam.api.dto;
+
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
+
+public class VitamConfigurationResponseDto extends AbstractVitamUIResponseDto<VitamConfigurationDto> {
+}

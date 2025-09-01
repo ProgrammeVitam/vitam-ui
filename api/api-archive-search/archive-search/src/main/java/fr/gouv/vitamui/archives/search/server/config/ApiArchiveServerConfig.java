@@ -26,7 +26,9 @@
 
 package fr.gouv.vitamui.archives.search.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitamui.archives.search.common.dto.converter.UpdateArchiveUnitDtoToUpdateMultiQueryConverter;
 import fr.gouv.vitamui.archives.search.common.service.ArchiveUnitService;
@@ -47,6 +49,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
@@ -194,5 +197,13 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
             jsonPatchDtoToUpdateMultiQueryConverter,
             updateMultiQueriesToBulkCommandDto
         );
+    }
+
+    @Bean
+    public ConfigurationService configurationService(
+        final AdminExternalClient adminExternalClient,
+        final ObjectMapper objectMapper
+    ) {
+        return new ConfigurationService(adminExternalClient, objectMapper);
     }
 }

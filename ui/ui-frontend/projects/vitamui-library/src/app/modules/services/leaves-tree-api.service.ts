@@ -63,8 +63,6 @@ const UNIT_TYPE_FIELD = '#unitType';
 const UNIT_DESCRIPTION_LEVEL_FIELD = 'DescriptionLevel';
 const UNIT_OBJECTS_FIELD = '#object';
 
-const ORIGIN_VIRTUAL_PATHS_FIELD = 'FilePlanPosition'; //FIXME to manage as parameter
-
 const ALL_DESCENDANTS_FACET: TermsFacet = {
   name: 'COUNT_BY_NODE',
   field: ALLUNITSUPS,
@@ -442,41 +440,6 @@ export class LeavesTreeApiService {
     );
   }
 
-  /*
-      //Query 2 bis for orphans: //fixme manage pagination
-      retrieveDirectFoldersForOrphan(pageNumber: number, pageSize: number): Observable<PagedResult> {
-        let newCriteriaList: SearchCriteriaEltDto[] = [];
-
-        //folders should not get vups
-        newCriteriaList.push({
-          criteria: VIRTUAL_PATH_FIELD,
-          operator: CriteriaOperator.MISSING,
-          category: SearchCriteriaTypeEnum.FIELDS,
-          values: [],
-          dataType: CriteriaDataType.STRING,
-        });
-        newCriteriaList.push({
-          criteria: UNITSUPS,
-          operator: CriteriaOperator.MISSING,
-          category: SearchCriteriaTypeEnum.FIELDS,
-          values: [],
-          dataType: CriteriaDataType.STRING,
-        });
-        const criteria: SearchCriteriaDto = {
-          pageNumber: pageNumber,
-          size: pageSize,
-          criteriaList: newCriteriaList,
-          includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD],
-          facets: [ALL_DESCENDANTS_FACET],
-        };
-        return this.sendSearchArchiveUnitsByCriteria(criteria).pipe(
-          map((pagedResult) => {
-            return pagedResult;
-          }),
-        );
-      }
-    */
-
   //Query 3 : to extract direct children having results or folder having results to manage paginating ...
   retrieveRealChildrenWithCriteria(
     nodeId: string,
@@ -666,6 +629,7 @@ export class LeavesTreeApiService {
     pageNumber: number,
     pageSize: number,
     includeSearchCriteria: boolean,
+    virtualPathOriginField: string,
   ): Observable<PagedResult> {
     let newCriteriaList: SearchCriteriaEltDto[] = [];
     if (includeSearchCriteria) {
@@ -690,7 +654,7 @@ export class LeavesTreeApiService {
       });
     }
     newCriteriaList.push({
-      criteria: ORIGIN_VIRTUAL_PATHS_FIELD,
+      criteria: virtualPathOriginField,
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       values: [{ id: originVirtualPath, value: originVirtualPath }],
@@ -700,7 +664,7 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, ORIGIN_VIRTUAL_PATHS_FIELD],
+      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, virtualPathOriginField],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };
@@ -717,6 +681,7 @@ export class LeavesTreeApiService {
     originVirtualPath: string,
     pageNumber: number,
     pageSize: number,
+    virtualPathOriginField: string,
   ): Observable<PagedResult> {
     const newCriteriaList = [];
 
@@ -738,7 +703,7 @@ export class LeavesTreeApiService {
       });
     }
     newCriteriaList.push({
-      criteria: ORIGIN_VIRTUAL_PATHS_FIELD,
+      criteria: virtualPathOriginField,
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum.FIELDS,
       values: [{ id: originVirtualPath, value: originVirtualPath }],
@@ -748,7 +713,7 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD],
+      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, virtualPathOriginField],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };

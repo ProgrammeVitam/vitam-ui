@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -11,9 +12,9 @@ import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.rest.CrudControllerTest;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
@@ -47,7 +48,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -68,6 +71,8 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     private static final String LEVEL = "level";
     private static final String APP_NAME = "application";
     private static final String ROLE = "role";
+
+    private static final Integer TENANT_IDENTIFIER = 10;
 
     private TenantController controller;
 
@@ -196,6 +201,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     @Override
     public void testCreationOK() throws Exception {
         final TenantDto dto = buildTenantDto();
+        VitamContext vitamContext = new VitamContext(TENANT_IDENTIFIER);
         dto.setId(null);
         when(customerInitConfig.getTenantProfiles()).thenReturn(
             Arrays.asList(
@@ -205,7 +211,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
                         DESCRIPTION,
                         LEVEL,
                         APP_NAME,
-                        Arrays.asList(new String[] { ROLE })
+                        Arrays.asList(new String[] {ROLE})
                     ),
                 }
             )
@@ -215,7 +221,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
         vitamConfigurationDto.setTenants(List.of(dto.getIdentifier()));
 
         when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
-        Mockito.when(configurationService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+        Mockito.when(configurationService.getVitamPublicConfigurations(vitamContext)).thenReturn(vitamConfigurationDto);
         Mockito.when(securityService.getTenant(ArgumentMatchers.any())).thenReturn(dto);
         prepareServices();
         controller.create(dto);
@@ -311,12 +317,12 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Unable to update tenant " +
-                dto.getId() +
-                ": tenant identifiers " +
-                tenant.getIdentifier() +
-                " and " +
-                dto.getIdentifier() +
-                " are not equals",
+                    dto.getId() +
+                    ": tenant identifiers " +
+                    tenant.getIdentifier() +
+                    " and " +
+                    dto.getIdentifier() +
+                    " are not equals",
                 e.getMessage()
             );
         }

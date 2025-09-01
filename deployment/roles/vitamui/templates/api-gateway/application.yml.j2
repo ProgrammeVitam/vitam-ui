@@ -108,6 +108,7 @@ spring:
                   /archive-search-api/users/analytics,
                   /archive-search-api/logbooks/operations/**,
                   /archive-search-api/accesscontracts/**,
+                  /archive-search-api/configurations/virtual-paths-fields,
 
                   /pastis-api/ui/**,
                   /pastis-api/security,
@@ -277,12 +278,15 @@ spring:
                   Path=
                   /archive-search-api/archive-search/**,
                   /archive-search-api/archive-units/**,
+                  /archive-search-api/configurations/**,
+
               filters:
                 # Archive search API
                 - RewritePath=/archive-search-api/archive-search/searchcriteriahistory,/searchcriteriahistory,
                 - RewritePath=/archive-search-api/archive-search/filingholdingscheme,/archives-search/filling-holding-schema,
                 - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
                 - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archive-units/$\{segment}
+                - RewritePath=/archive-search-api/configurations/(?<segment>.*),/configurations/$\{segment}
 
             - id: pastis-service
               uri: {{ 'https' if vitamui.pastis.secure | default(secure) | bool else 'http' }}://{{ vitamui.pastis.host }}:{{ vitamui.pastis.port_service }}
@@ -305,7 +309,8 @@ spring:
                   /collect-api/transactions$,
                   /collect-api/transactions/**,
                   /collect-api/archive-units$,
-                  /collect-api/archive-units/**
+                  /collect-api/archive-units/**,
+                  /collect-api/configurations/**
 
               filters:
                 # Collect API
@@ -316,6 +321,7 @@ spring:
                 - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/update-units-metadata,/collect-api/v1/transactions/$\{segment}/update-units-metadata,
                 - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
                 - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
+                - RewritePath=/collect-api/configurations(?<segment>.*),/collect-api/v1/configurations$\{segment},
 
             - id: ingest-service
               uri: {{ 'https' if vitamui.ingest.secure | default(secure) | bool else 'http' }}://{{ vitamui.ingest.host }}:{{ vitamui.ingest.port_service }}

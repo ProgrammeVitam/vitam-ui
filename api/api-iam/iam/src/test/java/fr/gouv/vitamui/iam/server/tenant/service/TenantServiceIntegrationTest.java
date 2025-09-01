@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.server.tenant.service;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -15,11 +16,11 @@ import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
-import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
@@ -306,10 +307,13 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
         tenantProof.setProof(true);
         tenantProof.setName("proof tenant");
         repository.save(tenantProof);
-
+        final VitamContext vitamContext =
+            new VitamContext(securityService.getTenantIdentifier()).setApplicationSessionId(
+                securityService.getApplicationId()
+            );
         VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
         vitamConfigurationDto.setTenants(List.of(someTenantId + 1));
-        Mockito.when(configurationService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+        Mockito.when(configurationService.getVitamPublicConfigurations(vitamContext)).thenReturn(vitamConfigurationDto);
 
         TenantDto tenant = IamServerUtilsTest.buildTenantDto();
         tenant.setId(null);
@@ -370,16 +374,16 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
         assertThat(evTenantUpdate).isPresent();
         assertThat(evTenantUpdate.get().getEvDetData()).isEqualTo(
             "{\"diff\":{\"-Nom\":\"tenantName\"," +
-            "\"+Nom\":\"" +
-            NEW_NAME +
-            "\"," +
-            "\"-Identifiant du propriétaire\":\"identifier_ownerId\"," +
-            "\"+Identifiant du propriétaire\":\"identifier_" +
-            NEW_OWNER_ID +
-            "\"," +
-            "\"-Activé\":\"true\"," +
-            "\"+Activé\":\"false\"" +
-            "}}"
+                "\"+Nom\":\"" +
+                NEW_NAME +
+                "\"," +
+                "\"-Identifiant du propriétaire\":\"identifier_ownerId\"," +
+                "\"+Identifiant du propriétaire\":\"identifier_" +
+                NEW_OWNER_ID +
+                "\"," +
+                "\"-Activé\":\"true\"," +
+                "\"+Activé\":\"false\"" +
+                "}}"
         );
     }
 

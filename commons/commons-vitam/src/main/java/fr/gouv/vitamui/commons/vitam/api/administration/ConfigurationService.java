@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.server.configuration;
+package fr.gouv.vitamui.commons.vitam.api.administration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,16 +46,16 @@ import fr.gouv.vitam.common.model.configuration.PublicConfiguration;
 import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.iam.common.dto.VitamConfigurationResponseDto;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamConfigurationResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The service to manage vitam public configuration.
@@ -64,29 +64,21 @@ import java.util.List;
 @Setter
 public class ConfigurationService {
 
-    private final SecurityService securityService;
     private final AdminExternalClient adminExternalClient;
     private final ObjectMapper objectMapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationService.class);
 
-    @Autowired
     public ConfigurationService(
-        final SecurityService securityService,
         final AdminExternalClient adminExternalClient,
         final ObjectMapper objectMapper
     ) {
-        this.securityService = securityService;
         this.adminExternalClient = adminExternalClient;
         this.objectMapper = objectMapper;
     }
 
-    public VitamConfigurationDto getVitamPublicConfigurations() {
+    public VitamConfigurationDto getVitamPublicConfigurations(VitamContext vitamContext) {
         LOGGER.debug("Retrieve public vitam configuration ");
-        final Integer tenantIdentifier = securityService.getTenantIdentifier();
-        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
-            .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
-            .setApplicationSessionId(securityService.getApplicationId());
         try {
             RequestResponse<PublicConfiguration> publicConfigurationResponse =
                 adminExternalClient.getPublicConfiguration(vitamContext);
@@ -103,5 +95,18 @@ public class ConfigurationService {
         } catch (VitamClientException e) {
             throw new InternalServerException("Unable to find vitam public configuration", e);
         }
+    }
+
+    public List<String> getVirtualPathPathAvailableTenantsIds(VitamContext vitamContext) {
+        LOGGER.debug("Retrieve virtual path field for current tenant ");
+        List<String> fields = new ArrayList<>();
+        VitamConfigurationDto vitamConfigurationDto = getVitamPublicConfigurations(vitamContext);
+        Map<Integer, List<String>> virtualPathsConfigurationByTenant =
+            vitamConfigurationDto.getVirtualPathsConfigurationByTenant();
+
+        if (virtualPathsConfigurationByTenant != null) {
+            fields = virtualPathsConfigurationByTenant.getOrDefault(vitamContext.getTenantId(), List.of());
+        }
+        return fields;
     }
 }

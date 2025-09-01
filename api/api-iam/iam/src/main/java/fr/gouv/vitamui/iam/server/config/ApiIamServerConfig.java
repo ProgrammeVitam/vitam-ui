@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfigura
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractCommonService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -61,7 +62,6 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.common.service.AddressService;
-import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -135,7 +135,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
         ConverterConfig.class,
     }
 )
-@EnableConfigurationProperties({ PasswordConfiguration.class })
+@EnableConfigurationProperties({PasswordConfiguration.class})
 public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -577,11 +577,10 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ConfigurationService configurationService(
-        final SecurityService securityService,
         final AdminExternalClient adminExternalClient,
         final ObjectMapper objectMapper
     ) {
-        return new ConfigurationService(securityService, adminExternalClient, objectMapper);
+        return new ConfigurationService(adminExternalClient, objectMapper);
     }
 
     @Bean

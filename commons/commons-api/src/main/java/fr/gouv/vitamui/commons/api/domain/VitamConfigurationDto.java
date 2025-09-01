@@ -87,4 +87,7 @@ public class VitamConfigurationDto implements Serializable {
 
     @JsonProperty("classificationLevel")
     private ClassificationLevel classificationLevel;
+
+    @JsonProperty("virtualPathsConfigurationByTenant")
+    private Map<Integer, List<String>> virtualPathsConfigurationByTenant;
 }

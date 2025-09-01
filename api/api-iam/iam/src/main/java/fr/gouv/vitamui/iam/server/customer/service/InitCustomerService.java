@@ -46,12 +46,12 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.server.common.utils.EntityFactory;
-import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.externalParameters.service.ExternalParametersService;
@@ -417,8 +417,8 @@ public class InitCustomerService {
                     userDto.setCustomerId(customerDto.getId());
                     userDto.setEmail(
                         u.getEmailPrefix() +
-                        CommonConstants.EMAIL_SEPARATOR +
-                        customerDto.getDefaultEmailDomain().replace(".*", "")
+                            CommonConstants.EMAIL_SEPARATOR +
+                            customerDto.getDefaultEmailDomain().replace(".*", "")
                     );
                     users.add(saveUser(userDto));
                 });
@@ -551,8 +551,8 @@ public class InitCustomerService {
         userDto.setCustomerId(customerDto.getId());
         userDto.setEmail(
             ApiIamConstants.ADMIN_CLIENT_PREFIX_EMAIL +
-            CommonConstants.EMAIL_SEPARATOR +
-            customerDto.getDefaultEmailDomain().replace(".*", "")
+                CommonConstants.EMAIL_SEPARATOR +
+                customerDto.getDefaultEmailDomain().replace(".*", "")
         );
         return saveUser(userDto);
     }

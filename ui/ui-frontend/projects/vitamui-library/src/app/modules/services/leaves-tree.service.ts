@@ -46,13 +46,24 @@ import {
   FACETS_DEFAULT_SIZE,
   LeavesTreeApiService,
 } from './leaves-tree-api.service';
+import { ConfigurationsApiService } from './configurations-api.service';
+
+const PATH_SEPARATOR = '/';
 
 export class LeavesTreeService {
   private leavesTreeApiService: LeavesTreeApiService;
-  private readonly PATH_SEPARATOR = '/';
+  private virtualPathOriginField = 'FilePlanPosition'; //Default field
 
-  constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {
+  constructor(
+    private searchArchiveUnitsService: SearchArchiveUnitsInterface,
+    private configurationsService: ConfigurationsApiService,
+  ) {
     this.leavesTreeApiService = new LeavesTreeApiService(this.searchArchiveUnitsService);
+    this.configurationsService.getVirtualPathsFields().subscribe((fields) => {
+      if (fields && fields.length > 0) {
+        this.virtualPathOriginField = fields[0];
+      }
+    });
   }
 
   private searchCriterias: SearchCriteriaDto;
@@ -351,6 +362,7 @@ export class LeavesTreeService {
               virtualNode.virtualPath,
               virtualNode.virtualDirectNodePage,
               virtualDirectNodesPageSize,
+              this.virtualPathOriginField,
             )
           : of(null),
         virtualDirectChildrenMatching: this.leavesTreeApiService.retrieveDirectChildrenUnderVirtualWithCriteria(
@@ -360,6 +372,7 @@ export class LeavesTreeService {
           virtualNode.virtualDirectChildrenMatchingPage,
           virtualDirectNodesMatchingPageSize,
           true,
+          this.virtualPathOriginField,
         ),
       }).subscribe({
         next: ({ virtualDirectChildrenAny, virtualDirectChildrenMatching }) => {
@@ -391,7 +404,7 @@ export class LeavesTreeService {
             virtualNode,
             virtualChildrenMatchingNodes,
             virtualChildrenMap,
-            this.PATH_SEPARATOR + virtualNode.virtualPath,
+            PATH_SEPARATOR + virtualNode.virtualPath,
           );
 
           // Compute flags specific to virtual node
