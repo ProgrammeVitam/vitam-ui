@@ -172,7 +172,7 @@
       "STATUS": {
         "OPEN": "Ouvert en édition",
         "ABORTED": "Abandonné",
-        "READY": "Validé",
+        "READY": "Validation en cours",
         "VALIDATED": "Validé",
         "SENDING": "Préparation et envoi du SIP",
         "SENT": "Envoyé, en cours de traitement du SAE",
