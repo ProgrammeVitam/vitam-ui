@@ -48,8 +48,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule } from 'vitamui-library';
-import { ConfirmActionModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
 import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
 import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
@@ -61,7 +60,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
-    ConfirmActionModule,
     ContextEditPermissionModule,
     RouterModule,
     VitamUICommonModule,

@@ -43,14 +43,11 @@ export * from './lib/api/metadata-api.service';
 export * from './lib/api/search-unit-api.service';
 /* COMPONENTS */
 export * from './lib/components/confirm-action/confirm-action.component';
-export * from './lib/components/confirm-action/confirm-action.module';
 export * from './lib/components/filing-plan/filing-plan.component';
 export * from './lib/components/filing-plan/filing-plan.module';
 export * from './lib/components/filing-plan/filing-plan.service';
 export * from './lib/components/filing-plan/node.component';
 export * from './lib/components/form-errors/form-control-warn';
-export * from './lib/components/vitamui-input/vitamui-input.component';
-export * from './lib/components/vitamui-input/vitamui-input.module';
 export * from './lib/components/vitamui-radio-group/vitamui-radio-group.component';
 export * from './lib/components/vitamui-radio-group/vitamui-radio-group.module';
 export * from './lib/components/vitamui-radio/vitamui-radio.component';

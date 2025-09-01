@@ -73,6 +73,7 @@
  */
 import { Component, Input } from '@angular/core';
 
+// FIXME: should be factorized in vitamui-library ConfirmActionComponent
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
