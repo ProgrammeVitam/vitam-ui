@@ -307,6 +307,7 @@
               [options]="[
                 { key: 'DIRECTORIES_FILES', label: 'COLLECT.MODAL.IMPORT_TYPE_DIRECTORIES_FILES' | translate },
                 { key: 'COMPRESSED', label: 'COLLECT.MODAL.IMPORT_TYPE_COMPRESSED' | translate },
+                { key: 'SIP', label: 'COLLECT.MODAL.IMPORT_SIP_ARCHIVES_PACKAGE' | translate },
               ]"
               [enableSearch]="false"
               (change)="resetFilesToImportList()"
@@ -323,13 +324,8 @@
               >
               </vitamui-file-selector>
             }
-            @if (importType === ImportType.COMPRESSED) {
-              <vitamui-file-selector
-                *ngIf="importType === ImportType.COMPRESSED"
-                class="w-100"
-                [extensions]="['.zip']"
-                (filesChanged)="setFilesToUpload($event)"
-              >
+            @if (importType === ImportType.COMPRESSED || importType === ImportType.SIP) {
+              <vitamui-file-selector class="w-100" [extensions]="['.zip']" (filesChanged)="setFilesToUpload($event)">
               </vitamui-file-selector>
             }
           </div>
@@ -414,7 +410,7 @@
             class="btn primary"
             type="button"
           >
-            {{ 'COMMON.NEXT' | translate }}
+            {{ (selectedWorkflow === Workflow.MANUAL ? 'COMMON.SUBMIT' : 'COMMON.NEXT') | translate }}
           </button>
           <button (click)="onClose()" class="btn cancel link" type="button">
             {{ 'COMMON.UNDO' | translate }}

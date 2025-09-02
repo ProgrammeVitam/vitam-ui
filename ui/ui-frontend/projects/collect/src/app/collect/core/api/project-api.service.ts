@@ -142,6 +142,20 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
     return this.http.request<Transaction>(new HttpRequest('POST', `${this.apiUrl}/upload`, content, options));
   }
 
+  uploadSip(content: Blob, transactionId: string): Observable<HttpEvent<any>> {
+    let headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TRANSACTION_ID, transactionId)
+      .set('Content-Type', 'application/octet-stream')
+      .set('reportProgress', 'true')
+      .set('ngsw-bypass', 'true');
+    const options: Object = {
+      headers: headers,
+      responseType: 'text',
+      reportProgress: true,
+    };
+    return this.http.request<Transaction>(new HttpRequest('POST', `${this.apiUrl}/uploadSip`, content, options));
+  }
+
   deleteSearchCriteriaHistory(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/archive-units/searchcriteriahistory/${id}`);
   }

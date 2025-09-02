@@ -91,6 +91,7 @@ public class ProjectService {
     public static final String UNABLE_TO_UPDATE_PROJECT_ATTACHMENTS = "Unable to update project attachments";
     public static final String UNABLE_TO_UPDATE_PROJECT_CONFIGURATION = "Unable to update project configuration";
     public static final String UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE = "Unable to upload project zip file";
+    public static final String UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION = "Unable to upload SIP to transaction";
     public static final String UNABLE_TO_RETRIEVE_PROJECT = "Unable to retrieve project";
 
     private final CollectService collectService;
@@ -229,6 +230,16 @@ public class ProjectService {
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
             throw new InternalServerException(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
+        }
+    }
+
+    public void streamingUploadSip(InputStream inputStream, String transactionId, VitamContext vitamContext) {
+        LOGGER.debug("TransactionId: {}", transactionId);
+        try {
+            collectService.uploadSipToTransaction(vitamContext, transactionId, inputStream);
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
+            throw new InternalServerException(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
         }
     }
 

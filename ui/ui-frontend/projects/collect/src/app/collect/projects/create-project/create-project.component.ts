@@ -75,6 +75,7 @@ import {
 export enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
   COMPRESSED = 'COMPRESSED',
+  SIP = 'SIP',
 }
 
 export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
@@ -455,7 +456,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.moveToNextStep();
     const zipFile = new ZipFile();
     this.zipFileStatus$ = zipFile.zipFileStatus$;
-    if (this.importType === ImportType.COMPRESSED) {
+    if ([ImportType.COMPRESSED, ImportType.SIP].includes(this.importType as ImportType)) {
       this.compressedZip = new Blob(this.filesToUpload, { type: 'application/zip' });
     }
     this.projectsService
@@ -472,8 +473,12 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         switchMap((transaction) => this.transactionsService.create(transaction)),
         tap((createdTransactionResponse) => {
           transactionId = createdTransactionResponse.id;
-          zipFile.setZipName(transactionId + '.zip');
-          if (this.importType === ImportType.COMPRESSED) {
+          if (this.importType === ImportType.SIP) {
+            zipFile.setZipName(this.filesToUpload[0].name + '.zip');
+          } else {
+            zipFile.setZipName(transactionId + '.zip');
+          }
+          if ([ImportType.COMPRESSED, ImportType.SIP].includes(this.importType as ImportType)) {
             zipFile.zipFileStatus.size = this.compressedZip.size;
             zipFile.zipFileStatus.currentFileUploadedSize = 100;
           }
@@ -483,7 +488,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
             ? zipFile.addFiles(this.filesToUpload).generateZip()
             : of(this.compressedZip).toPromise(),
         ),
-        switchMap((content) => this.archiveCollectService.uploadZip(content, transactionId)),
+        switchMap((content) =>
+          this.importType === ImportType.SIP
+            ? this.archiveCollectService.uploadSip(content, transactionId)
+            : this.archiveCollectService.uploadZip(content, transactionId),
+        ),
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
         finalize(() => {

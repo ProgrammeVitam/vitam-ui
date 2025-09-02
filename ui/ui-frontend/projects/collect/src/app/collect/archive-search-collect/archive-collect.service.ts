@@ -224,6 +224,10 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return this.projectsApiService.uploadZip(content, transactionId, `${transactionId}.zip`, attachmentId);
   }
 
+  uploadSip(content: Blob, transactionId: string): Observable<HttpEvent<any>> {
+    return this.projectsApiService.uploadSip(content, transactionId);
+  }
+
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string) {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
