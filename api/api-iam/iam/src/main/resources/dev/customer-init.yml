@@ -126,6 +126,7 @@ customer-init:
         - ROLE_UPDATE_AGENCIES
         - ROLE_DELETE_AGENCIES
         - ROLE_EXPORT_AGENCIES
+        - ROLE_IMPORT_AGENCIES
 
     - name: Profil consultation des services agents
       description: Profil de consultation du référentiel des services agent sans possibilité de mise à jour
