@@ -166,13 +166,26 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     return TransactionStatus.READY === transaction.status;
   }
 
+  transactionIsValidated(transaction: Transaction): boolean {
+    return TransactionStatus.VALIDATED === transaction.status;
+  }
+
   transactionIsEditable(transaction: Transaction): boolean {
-    return [TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !== -1;
+    return (
+      [TransactionStatus.READY, TransactionStatus.VALIDATED, TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !==
+      -1
+    );
   }
 
   transactionIsAbortable(transaction: Transaction): boolean {
     return (
-      [TransactionStatus.OPEN, TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !== -1
+      [
+        TransactionStatus.OPEN,
+        TransactionStatus.READY,
+        TransactionStatus.VALIDATED,
+        TransactionStatus.ACK_KO,
+        TransactionStatus.KO,
+      ].indexOf(transaction.status) !== -1
     );
   }
 
