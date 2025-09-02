@@ -174,10 +174,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
     this.externalReferentialService.getElectronicArchivingSystemOptions$().subscribe((easOptions) => {
       this.easOptions = easOptions;
-      const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
-      const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
-      this.projectForm.get('archivingSystem')?.setValue(defaultKey);
       this.projectForm.get('connectedToArchivingSystem')?.setValue(true);
+      this.setDefaultArchivingSystemValue();
       this.onArchivingSystemChangeValue();
     });
   }
@@ -190,6 +188,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.resetExternalReferentialIdentifiers();
     if (!this.connectedToArchivingSystem) {
       this.projectForm.get('archivingSystem')?.setValue(null);
+    } else if (this.easOptions.length < 2) {
+      // has single Option
+      this.setDefaultArchivingSystemValue();
     }
   }
 
@@ -542,6 +543,12 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   resetFilesToImportList() {
     this.filesToUpload = [];
+  }
+
+  private setDefaultArchivingSystemValue() {
+    const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
+    const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
+    this.projectForm.get('archivingSystem')?.setValue(defaultKey);
   }
 
   get importType(): string {
