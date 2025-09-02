@@ -180,7 +180,7 @@ public class TenantServiceTest {
         vitamConfigurationDto.setTenants(List.of(someTenantId));
 
         when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
-        Mockito.when(configurationService.getVitamPublicConfigurations(vitamContext)).thenReturn(vitamConfigurationDto);
+        Mockito.when(configurationService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
         Mockito.when(securityService.getTenant(ArgumentMatchers.any())).thenReturn(tenantDto);
         prepareServices();
         tenantService.create(tenantDto);

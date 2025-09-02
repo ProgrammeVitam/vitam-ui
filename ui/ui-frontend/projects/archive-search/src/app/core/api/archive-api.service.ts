@@ -87,12 +87,7 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, { headers }).pipe(
-      tap((reseponse) => {
-        console.log(reseponse);
-        console.log('HTTP request sent:');
-      }),
-    );
+    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, { headers });
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {

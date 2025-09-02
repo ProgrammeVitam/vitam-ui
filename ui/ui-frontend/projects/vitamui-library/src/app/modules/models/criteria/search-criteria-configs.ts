@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { SearchCriteriaAddAction } from './search-criteria.interface';
+import { SearchCriteriaAddAction, TermsFacet } from './search-criteria.interface';
 import { CriteriaDataType, CriteriaOperator } from './criteria.enums';
 
 export function getSearchCriteriaConfig(fragment: string, key: string) {
@@ -264,3 +264,26 @@ export const MAP_KEY_ELT = new Map<string, string>([
   [INTERVAL_DATE_DUC, RULE_END_DATE_PREFIX + STORAGE_RULE],
   [ELIM_TECH_ID_DUA, ELIMINATION_TECHNICAL_ID],
 ]);
+
+export const FACETS_DEFAULT_SIZE = 1_000;
+
+export const VALID_COMPUTED_INHERITED_RULES_FACET: TermsFacet = {
+  name: 'COMPUTE_RULES_AU_NUMBER',
+  field: '#validComputedInheritedRules',
+  size: 3,
+  order: 'ASC',
+};
+
+export const ALL_DESCENDANTS_FACET: TermsFacet = {
+  name: 'COUNT_BY_NODE',
+  field: '#allunitups',
+  size: FACETS_DEFAULT_SIZE,
+  order: 'ASC',
+};
+
+export const VIRTUAL_PATHS_FACET: TermsFacet = {
+  name: 'FACETS_VIRTUAL_TREE',
+  field: '#vups',
+  size: FACETS_DEFAULT_SIZE,
+  order: 'ASC',
+};

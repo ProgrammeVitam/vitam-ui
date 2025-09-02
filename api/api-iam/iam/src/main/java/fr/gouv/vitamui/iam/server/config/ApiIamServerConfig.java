@@ -135,7 +135,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
         ConverterConfig.class,
     }
 )
-@EnableConfigurationProperties({PasswordConfiguration.class})
+@EnableConfigurationProperties({ PasswordConfiguration.class })
 public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean

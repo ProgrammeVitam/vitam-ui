@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.server.rest;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -201,7 +200,6 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     @Override
     public void testCreationOK() throws Exception {
         final TenantDto dto = buildTenantDto();
-        VitamContext vitamContext = new VitamContext(TENANT_IDENTIFIER);
         dto.setId(null);
         when(customerInitConfig.getTenantProfiles()).thenReturn(
             Arrays.asList(
@@ -211,7 +209,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
                         DESCRIPTION,
                         LEVEL,
                         APP_NAME,
-                        Arrays.asList(new String[] {ROLE})
+                        Arrays.asList(new String[] { ROLE })
                     ),
                 }
             )
@@ -221,7 +219,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
         vitamConfigurationDto.setTenants(List.of(dto.getIdentifier()));
 
         when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
-        Mockito.when(configurationService.getVitamPublicConfigurations(vitamContext)).thenReturn(vitamConfigurationDto);
+        Mockito.when(configurationService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
         Mockito.when(securityService.getTenant(ArgumentMatchers.any())).thenReturn(dto);
         prepareServices();
         controller.create(dto);
@@ -317,12 +315,12 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Unable to update tenant " +
-                    dto.getId() +
-                    ": tenant identifiers " +
-                    tenant.getIdentifier() +
-                    " and " +
-                    dto.getIdentifier() +
-                    " are not equals",
+                dto.getId() +
+                ": tenant identifiers " +
+                tenant.getIdentifier() +
+                " and " +
+                dto.getIdentifier() +
+                " are not equals",
                 e.getMessage()
             );
         }

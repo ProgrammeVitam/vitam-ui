@@ -36,7 +36,16 @@
  */
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, FilingHoldingSchemeNode, ORPHANS_NODE_ID, TermsFacet, UnitType } from '../models';
+import {
+  ALL_DESCENDANTS_FACET,
+  CriteriaDataType,
+  CriteriaOperator,
+  FACETS_DEFAULT_SIZE,
+  FilingHoldingSchemeNode,
+  ORPHANS_NODE_ID,
+  UnitType,
+  VIRTUAL_PATHS_FACET,
+} from '../models';
 import {
   PagedResult,
   ResultFacet,
@@ -46,11 +55,10 @@ import {
 } from '../models/criteria/search-criteria.interface';
 import { Direction } from '../vitamui-table';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
-import { FacetsUtils } from '../models/criteria/search-criteria.utils';
+import { FacetsUtils } from '../models/criteria/facets.utils';
 
 export const DEFAULT_UNIT_PAGE_SIZE = 10;
 export const DEFAULT_LEAVES_FIRST_PAGE_SIZE = 30;
-export const FACETS_DEFAULT_SIZE = 1000;
 export const ONE_ELEMENT_COUNT = 1;
 export const FIRST_PAGE_INDEX = 0;
 
@@ -62,20 +70,6 @@ const UNIT_ID_FIELD = '#id';
 const UNIT_TYPE_FIELD = '#unitType';
 const UNIT_DESCRIPTION_LEVEL_FIELD = 'DescriptionLevel';
 const UNIT_OBJECTS_FIELD = '#object';
-
-const ALL_DESCENDANTS_FACET: TermsFacet = {
-  name: 'COUNT_BY_NODE',
-  field: ALLUNITSUPS,
-  size: FACETS_DEFAULT_SIZE,
-  order: 'ASC',
-};
-
-const VIRTUAL_PATHS_FACET: TermsFacet = {
-  name: 'FACETS_VIRTUAL_TREE',
-  field: VIRTUAL_PATH_FIELD,
-  size: FACETS_DEFAULT_SIZE,
-  order: 'ASC',
-};
 
 export class LeavesTreeApiService {
   constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {}
@@ -358,41 +352,6 @@ export class LeavesTreeApiService {
 
   ////////////////////////////////////////////////////////// New queries /////////////////////////
 
-  //Query 1
-  retrieveRealFoldersCounts(
-    parentNode: FilingHoldingSchemeNode,
-    searchCriteria: SearchCriteriaDto,
-    includeSearchCriteria: boolean,
-  ): Observable<ResultFacet[]> {
-    let newCriteriaList: SearchCriteriaEltDto[] = [];
-    if (includeSearchCriteria) {
-      newCriteriaList = [...searchCriteria.criteriaList];
-    }
-    let nodeValuesCriteria = [{ id: parentNode.id, value: parentNode.id }];
-    newCriteriaList.push({
-      criteria: ALLUNITSUPS,
-      operator: CriteriaOperator.EQ,
-      category: SearchCriteriaTypeEnum.FIELDS,
-      values: nodeValuesCriteria,
-      dataType: CriteriaDataType.STRING,
-    });
-
-    let facets: TermsFacet[] = [ALL_DESCENDANTS_FACET];
-
-    const criteria: SearchCriteriaDto = {
-      pageNumber: FIRST_PAGE_INDEX,
-      size: ONE_ELEMENT_COUNT,
-      criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD],
-      facets: facets,
-    };
-    return this.sendSearchArchiveUnitsByCriteria(criteria).pipe(
-      map((pagedResult) => {
-        return FacetsUtils.extractFacetsResultsByName(pagedResult.facets, 'COUNT_BY_NODE');
-      }),
-    );
-  }
-
   //Query 2 :
   retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds: string[], parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
     if (perimeterNodesIds.length === 0) {
@@ -430,7 +389,7 @@ export class LeavesTreeApiService {
       pageNumber: FIRST_PAGE_INDEX,
       size: FACETS_DEFAULT_SIZE,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD],
+      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD, ALLUNITSUPS],
       facets: [ALL_DESCENDANTS_FACET],
     };
     return this.sendSearchArchiveUnitsByCriteria(criteria).pipe(
@@ -446,14 +405,10 @@ export class LeavesTreeApiService {
     searchCriteria: SearchCriteriaDto,
     pageNumber: number,
     pageSize: number,
-    includeSearchCriteria: boolean,
   ): Observable<PagedResult> {
-    let newCriteriaList: SearchCriteriaEltDto[] = [];
-    if (includeSearchCriteria) {
-      newCriteriaList = [...searchCriteria.criteriaList];
-    }
+    let newCriteriaList = [...searchCriteria.criteriaList];
 
-    if (nodeId == ORPHANS_NODE_ID) {
+    if (nodeId === ORPHANS_NODE_ID) {
       newCriteriaList.push({
         criteria: UNITSUPS,
         operator: CriteriaOperator.MISSING,
@@ -481,7 +436,7 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD],
+      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD, ALLUNITSUPS],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };
@@ -495,7 +450,7 @@ export class LeavesTreeApiService {
   //Query 4 : to extract virtual paths for node
   retrieveVirtualChildrenMatchingHavingResults(nodeId: string, searchCriteria: SearchCriteriaDto): Observable<ResultFacet[]> {
     let newCriteriaList: SearchCriteriaEltDto[] = [...searchCriteria.criteriaList];
-    if (nodeId == ORPHANS_NODE_ID) {
+    if (nodeId === ORPHANS_NODE_ID) {
       newCriteriaList.push({
         criteria: UNITSUPS,
         operator: CriteriaOperator.MISSING,
@@ -538,7 +493,7 @@ export class LeavesTreeApiService {
   retrieveAnyRealChildren(parentNode: FilingHoldingSchemeNode, pageNumber: number, pageSize: number): Observable<PagedResult> {
     const newCriteriaList = [];
 
-    if (parentNode.id == ORPHANS_NODE_ID) {
+    if (parentNode.id === ORPHANS_NODE_ID) {
       newCriteriaList.push({
         criteria: UNITSUPS,
         operator: CriteriaOperator.MISSING,
@@ -567,7 +522,7 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD],
+      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD, ALLUNITSUPS],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };
@@ -582,7 +537,7 @@ export class LeavesTreeApiService {
   retrieveAnyDirectVirtualChildren(nodeId: string): Observable<ResultFacet[]> {
     const newCriteriaList = [];
 
-    if (nodeId == ORPHANS_NODE_ID) {
+    if (nodeId === ORPHANS_NODE_ID) {
       newCriteriaList.push({
         criteria: UNITSUPS,
         operator: CriteriaOperator.MISSING,
@@ -628,15 +583,11 @@ export class LeavesTreeApiService {
     searchCriteria: SearchCriteriaDto,
     pageNumber: number,
     pageSize: number,
-    includeSearchCriteria: boolean,
     virtualPathOriginField: string,
   ): Observable<PagedResult> {
-    let newCriteriaList: SearchCriteriaEltDto[] = [];
-    if (includeSearchCriteria) {
-      newCriteriaList = [...searchCriteria.criteriaList];
-    }
+    let newCriteriaList = [...searchCriteria.criteriaList];
 
-    if (parentNodeId == ORPHANS_NODE_ID) {
+    if (parentNodeId === ORPHANS_NODE_ID) {
       newCriteriaList.push({
         criteria: UNITSUPS,
         operator: CriteriaOperator.MISSING,
@@ -664,7 +615,15 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, virtualPathOriginField],
+      includedFields: [
+        UNIT_ID_FIELD,
+        TITLE_FIELD,
+        UNIT_TYPE_FIELD,
+        UNIT_DESCRIPTION_LEVEL_FIELD,
+        UNIT_OBJECTS_FIELD,
+        ALLUNITSUPS,
+        virtualPathOriginField,
+      ],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };
@@ -685,7 +644,7 @@ export class LeavesTreeApiService {
   ): Observable<PagedResult> {
     const newCriteriaList = [];
 
-    if (realParentNodeId == ORPHANS_NODE_ID) {
+    if (realParentNodeId === ORPHANS_NODE_ID) {
       newCriteriaList.push({
         criteria: UNITSUPS,
         operator: CriteriaOperator.MISSING,
@@ -713,7 +672,15 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, virtualPathOriginField],
+      includedFields: [
+        UNIT_ID_FIELD,
+        TITLE_FIELD,
+        UNIT_TYPE_FIELD,
+        UNIT_DESCRIPTION_LEVEL_FIELD,
+        UNIT_OBJECTS_FIELD,
+        ALLUNITSUPS,
+        virtualPathOriginField,
+      ],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };

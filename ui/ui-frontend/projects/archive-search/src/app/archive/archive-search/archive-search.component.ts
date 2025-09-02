@@ -58,6 +58,7 @@ import {
   AccessContract,
   AccessContractService,
   AlertDialogComponent,
+  ALL_DESCENDANTS_FACET,
   ArchiveSearchResultFacets,
   CriteriaDataType,
   CriteriaOperator,
@@ -86,6 +87,7 @@ import {
   TermsFacet,
   Unit,
   UnitType,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamuiRoles,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
@@ -104,23 +106,8 @@ import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/trans
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
 
 const PAGE_SIZE = 10;
-const FACETS_DEFAULT_SIZE = 1000;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
-
-const VALID_COMPUTED_INHERITED_RULES_FACET: TermsFacet = {
-  name: 'COMPUTE_RULES_AU_NUMBER',
-  field: '#validComputedInheritedRules',
-  size: 3,
-  order: 'ASC',
-};
-
-const ALL_DESCENDANTS_FACET: TermsFacet = {
-  name: 'COUNT_BY_NODE',
-  field: '#allunitups',
-  size: FACETS_DEFAULT_SIZE,
-  order: 'ASC',
-};
 
 @Component({
   selector: 'app-archive-search',
@@ -263,8 +250,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           if (node.id === ORPHANS_NODE_ID) {
             this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
           } else if (node.isVirtual) {
-            this.removeCriteria('VIRTUAL', { id: node.id, value: node.id }, false);
-            this.removeCriteria('NODE', { id: node.realParentId, value: node.realParentId }, false);
+            this.removeCriteria('VIRTUAL', { id: node.virtualPath, value: '/' + node.virtualPath }, false);
           } else {
             this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
           }
@@ -283,13 +269,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             false,
           );
         } else {
-          let id = node.id;
           if (node.isVirtual) {
-            id = node.realParentId;
-
             this.addCriteria(
               'VIRTUAL',
-              { id: node.id, value: node.id },
+              { id: node.virtualPath, value: '/' + node.virtualPath },
               node.title,
               true,
               CriteriaOperator.EQ,
@@ -298,18 +281,19 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
               CriteriaDataType.STRING,
               false,
             );
+          } else {
+            this.addCriteria(
+              'NODE',
+              { id: node.id, value: node.id },
+              node.title,
+              true,
+              CriteriaOperator.EQ,
+              SearchCriteriaTypeEnum.NODES,
+              false,
+              CriteriaDataType.STRING,
+              false,
+            );
           }
-          this.addCriteria(
-            'NODE',
-            { id: id, value: id },
-            node.title,
-            true,
-            CriteriaOperator.EQ,
-            SearchCriteriaTypeEnum.NODES,
-            false,
-            CriteriaDataType.STRING,
-            false,
-          );
         }
       }),
     );

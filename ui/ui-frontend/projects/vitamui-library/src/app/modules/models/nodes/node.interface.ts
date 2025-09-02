@@ -66,8 +66,6 @@ export interface FilingHoldingSchemeNode extends Id {
   canLoadMoreMatchingChildren?: boolean;
 
   waitingChildren?: FilingHoldingSchemeNode[];
-  waitingVirtualChildren?: FilingHoldingSchemeNode[];
-
   realDirectNodePage?: number;
   realDirectNodeMatchingPage?: number;
   virtualDirectNodePage?: number;
@@ -109,4 +107,14 @@ export class MatchingNodesNumbers {
     this.nodesUpdated += matchingNodesNumbers.nodesUpdated;
     this.nodesFoundButUnchanged += matchingNodesNumbers.nodesFoundButUnchanged;
   }
+}
+
+export interface LeavesLoadingCriteria {
+  nodeAnyChildrenPageSize: number;
+  nodeMatchingChildrenPageSize: number;
+  nbElementsToShow: number;
+  showEveryNodes: boolean;
+  virtualChildrenMatchingNodes: FilingHoldingSchemeNode[];
+  virtualChildrenNodes: FilingHoldingSchemeNode[];
+  firstPage: boolean;
 }

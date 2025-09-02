@@ -11,7 +11,7 @@
   <mat-tree [dataSource]="nestedDataSourceLeaves" [treeControl]="nestedTreeControlLeaves" class="filing-holding-scheme-tree">
     <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsUAWithChildren">
       <div
-        [ngClass]="[highlightSelectedNodeUnit(node, true), isAncestorMustBeColored(node.id), isExpandedNodeMustBeColored(node)]"
+        [ngClass]="[highlightSelectedNodeUnit(node, true), isAncestorMustBeColored(node), isExpandedNodeMustBeColored(node)]"
         class="mat-tree-node flex-row"
       >
         <vitamui-tree-node
@@ -90,7 +90,7 @@
 
     <mat-nested-tree-node *matTreeNodeDef="let node">
       <div
-        [ngClass]="[highlightSelectedNodeUnit(node), isAncestorMustBeColored(node.id), selectNonOprhanNodeAtTop(node)]"
+        [ngClass]="[highlightSelectedNodeUnit(node), isAncestorMustBeColored(node), selectNonOprhanNodeAtTop(node)]"
         class="mat-tree-node"
       >
         <vitamui-tree-node

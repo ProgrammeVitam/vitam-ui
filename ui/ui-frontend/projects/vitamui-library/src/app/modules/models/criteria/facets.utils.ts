@@ -46,32 +46,13 @@ export class FacetsUtils {
   public static COUNT_BY_NODE = 'COUNT_BY_NODE';
 
   public static extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
-    const nodesFacets: ResultFacet[] = [];
-
-    if (facetResults && facetResults.length > 0) {
-      for (const facet of facetResults) {
-        if (facet.name === FacetsUtils.COUNT_BY_NODE) {
-          for (const bucket of facet.buckets) {
-            nodesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    return nodesFacets;
+    return this.extractFacetsResultsByName(facetResults, FacetsUtils.COUNT_BY_NODE);
   }
 
   public static extractFacetsResultsByName(facetResults: ResultFacetList[], facetName: string): ResultFacet[] {
-    const nodesFacets: ResultFacet[] = [];
-
-    if (facetResults && facetResults.length > 0) {
-      for (const facet of facetResults) {
-        if (facet.name === facetName) {
-          for (const bucket of facet.buckets) {
-            nodesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    return nodesFacets;
+    if (!facetResults?.length) return [];
+    const matchedFacet = facetResults.find((facet) => facet.name === facetName);
+    if (!matchedFacet) return [];
+    return matchedFacet.buckets.map((bucket) => ({ node: bucket.value, count: bucket.count }));
   }
 }

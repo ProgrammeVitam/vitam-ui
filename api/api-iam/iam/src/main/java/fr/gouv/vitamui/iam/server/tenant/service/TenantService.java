@@ -271,17 +271,17 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         final TenantDto createdTenantDto = super.create(tenantDto);
         Optional<ExternalParameters> fullAccessContractOpt = externalParametersRepository.findByIdentifier(
             ExternalParametersService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
-                customer.getIdentifier() +
-                "_" +
-                tenantDto.getName()
+            customer.getIdentifier() +
+            "_" +
+            tenantDto.getName()
         );
         Assert.isTrue(
             fullAccessContractOpt.isPresent(),
             "No external parameter found with id " +
-                ExternalParametersService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
-                customer.getIdentifier() +
-                "_" +
-                tenantDto.getName()
+            ExternalParametersService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
+            customer.getIdentifier() +
+            "_" +
+            tenantDto.getName()
         );
         createExternalParameterProfileForDefaultAccessContract(
             tenantDto.getCustomerId(),
@@ -565,7 +565,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
     }
 
     private void addAdminProfilesToAdminGroup(final String customerId, final List<Profile> profiles) {
-        final String[] apps = {CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME};
+        final String[] apps = { CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME };
 
         final UserDto adminUserDto = userService.getDefaultAdminUser(customerId);
         final GroupDto adminGroupDto = groupService.getOne(
@@ -686,11 +686,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
 
     public List<Integer> getAvailableTenantsIds() {
         LOGGER.debug("Retrieve free tenant list ");
-        final VitamContext vitamContext =
-            new VitamContext(securityService.getTenantIdentifier()).setApplicationSessionId(
-                securityService.getApplicationId()
-            );
-        VitamConfigurationDto vitamConfigurationDto = configurationService.getVitamPublicConfigurations(vitamContext);
+        VitamConfigurationDto vitamConfigurationDto = configurationService.getVitamPublicConfigurations();
         List<Integer> tenantsList = vitamConfigurationDto.getTenants();
         List<TenantDto> currentUsedTenants = this.getAll(Optional.empty());
         List<Integer> tenantCouldNotUse = new ArrayList<>(vitamConfigurationDto.getAdminTenant());
@@ -715,7 +711,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
     protected boolean canAccessToCustomer(final String customerId) {
         return (
             securityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS) ||
-                customerId.equals(securityService.getCustomerId())
+            customerId.equals(securityService.getCustomerId())
         );
     }
 

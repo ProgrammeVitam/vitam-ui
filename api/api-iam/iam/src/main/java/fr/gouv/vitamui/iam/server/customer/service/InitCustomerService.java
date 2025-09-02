@@ -417,8 +417,8 @@ public class InitCustomerService {
                     userDto.setCustomerId(customerDto.getId());
                     userDto.setEmail(
                         u.getEmailPrefix() +
-                            CommonConstants.EMAIL_SEPARATOR +
-                            customerDto.getDefaultEmailDomain().replace(".*", "")
+                        CommonConstants.EMAIL_SEPARATOR +
+                        customerDto.getDefaultEmailDomain().replace(".*", "")
                     );
                     users.add(saveUser(userDto));
                 });
@@ -551,8 +551,8 @@ public class InitCustomerService {
         userDto.setCustomerId(customerDto.getId());
         userDto.setEmail(
             ApiIamConstants.ADMIN_CLIENT_PREFIX_EMAIL +
-                CommonConstants.EMAIL_SEPARATOR +
-                customerDto.getDefaultEmailDomain().replace(".*", "")
+            CommonConstants.EMAIL_SEPARATOR +
+            customerDto.getDefaultEmailDomain().replace(".*", "")
         );
         return saveUser(userDto);
     }

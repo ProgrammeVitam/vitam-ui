@@ -41,4 +41,5 @@ export class NodeData {
   count?: number;
   isVirtual?: boolean;
   realParentId?: string;
+  virtualPath?: string;
 }

@@ -39,11 +39,19 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto, UnitType } from 'vitamui-library';
+import {
+  ConfigurationsApiService,
+  DescriptionLevel,
+  FilingHoldingSchemeNode,
+  ResultFacet,
+  SearchCriteriaDto,
+  UnitType,
+} from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 export function newNode(
   currentId: string,
@@ -75,6 +83,9 @@ describe('LeavesTreeComponent', () => {
 
   let archiveServiceStub: Partial<ArchiveCollectService>;
   let archiveFacetsServicStube: Partial<ArchiveFacetsService>;
+  const configurationsApiServiceStube = {
+    getVirtualPathsFields: () => of(['SomeField']),
+  };
   const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', ['getSearchCriterias']);
   const searchCriteria: SearchCriteriaDto = {
     pageNumber: 0,
@@ -99,6 +110,8 @@ describe('LeavesTreeComponent', () => {
         { provide: ArchiveCollectService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
         { provide: ArchiveFacetsService, useValue: archiveFacetsServicStube },
+        { provide: ConfigurationsApiService, useValue: configurationsApiServiceStube },
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

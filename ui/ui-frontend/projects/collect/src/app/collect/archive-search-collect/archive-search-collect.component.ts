@@ -45,6 +45,7 @@ import { debounceTime, filter, map, mergeMap, share, take, tap } from 'rxjs/oper
 import { isEmpty } from 'underscore';
 import {
   AccessContract,
+  ALL_DESCENDANTS_FACET,
   ApplicationId,
   ArchiveSearchResultFacets,
   BreadCrumbData,
@@ -80,6 +81,7 @@ import {
   TransactionStatus,
   Unit,
   UnitType,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
@@ -91,27 +93,12 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { AddUnitsComponent } from './add-units/add-units.component';
 
 const PAGE_SIZE = 10;
-const FACETS_DEFAULT_SIZE = 1000;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
-
-const VALID_COMPUTED_INHERITED_RULES_FACET: TermsFacet = {
-  name: 'COMPUTE_RULES_AU_NUMBER',
-  field: '#validComputedInheritedRules',
-  size: 3,
-  order: 'ASC',
-};
-
-const ALL_DESCENDANTS_FACET: TermsFacet = {
-  name: 'COUNT_BY_NODE',
-  field: '#allunitups',
-  size: FACETS_DEFAULT_SIZE,
-  order: 'ASC',
-};
 
 @Component({
   selector: 'app-archive-search-collect',
@@ -242,6 +229,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
             this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+          } else if (node.isVirtual) {
+            this.removeCriteria('VIRTUAL', { id: node.virtualPath, value: '/' + node.virtualPath }, false);
           } else {
             this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
           }
@@ -257,6 +246,19 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             node.title,
             true,
             CriteriaOperator.MISSING,
+            SearchCriteriaTypeEnum.FIELDS,
+            false,
+            CriteriaDataType.STRING,
+            false,
+          );
+        }
+        if (node.isVirtual) {
+          this.addCriteria(
+            'VIRTUAL',
+            { id: node.virtualPath, value: '/' + node.virtualPath },
+            node.title,
+            true,
+            CriteriaOperator.EQ,
             SearchCriteriaTypeEnum.FIELDS,
             false,
             CriteriaDataType.STRING,

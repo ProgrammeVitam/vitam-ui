@@ -71,13 +71,12 @@ public class ConfigurationsController {
         this.externalParametersService = externalParametersService;
     }
 
-
     @GetMapping(CommonConstants.PATH_VIRTUAL_PATH_FIELDS)
     @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public List<String> getVirtualPathsFields() {
         LOGGER.debug("Retrieve Vitam virtual paths fields list  ");
         return configurationService.getVirtualPathPathAvailableTenantsIds(
-            externalParametersService.buildVitamContextFromExternalParam());
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
-
 }

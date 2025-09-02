@@ -218,30 +218,43 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return this.unitId && this.unitId === node.id ? cssId : 'filing-holding-scheme-tree-node';
   }
 
-  isAncestorMustBeColored(nodeId: string) {
-    return this.allunitups && this.allunitups.includes(nodeId) ? 'filing-holding-scheme-tree-node-selected' : '';
+  isAncestorMustBeColored(node: FilingHoldingSchemeNode) {
+    return this.allunitups && (this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath))
+      ? 'filing-holding-scheme-tree-node-selected'
+      : '';
   }
 
   isExpandedNodeMustBeColored(node: FilingHoldingSchemeNode) {
-    return this.allunitups && this.allunitups.includes(node.id) && !this.nestedTreeControlLeaves.isExpanded(node) ? 'selected-node' : '';
+    return this.allunitups &&
+      (this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath)) &&
+      !this.nestedTreeControlLeaves.isExpanded(node)
+      ? 'selected-node'
+      : '';
   }
 
   selectNonOprhanNodeAtTop(node: FilingHoldingSchemeNode) {
     return this.unitId === node.id ||
-      (this.allunitups && this.allunitups.includes(node.id) && !this.nestedTreeControlLeaves.isExpanded(node))
+      (this.allunitups &&
+        (this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath)) &&
+        !this.nestedTreeControlLeaves.isExpanded(node))
       ? 'selected-node'
       : '';
   }
 
   isOrphanNodeMustBeColored(node: FilingHoldingSchemeNode) {
-    return node.children && node.children.some((node) => node.id === this.unitId || this.allunitups.includes(node.id))
+    return node.children &&
+      node.children.some(
+        (node) => node.id === this.unitId || this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath),
+      )
       ? 'filing-holding-scheme-tree-node-selected'
       : 'filing-holding-scheme-tree-node';
   }
 
   isOrphanNeedsVisualMarker(node: FilingHoldingSchemeNode) {
     return node.children &&
-      node.children.some((node) => node.id === this.unitId || this.allunitups.includes(node.id)) &&
+      node.children.some(
+        (node) => node.id === this.unitId || this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath),
+      ) &&
       !this.nestedTreeControlLeaves.isExpanded(node)
       ? 'selected-node'
       : '';
@@ -267,7 +280,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       this.archiveSharedDataService.selectedUnit$.subscribe((selectedUnit: Unit) => {
         if (selectedUnit) {
           this.unitId = selectedUnit['#id'];
-          this.allunitups = selectedUnit['#allunitups'] ? selectedUnit['#allunitups'] : [];
+          this.allunitups = [...(selectedUnit['#allunitups'] ?? []), ...(selectedUnit['#vups'] ?? [])];
         } else {
           this.unitId = null;
           this.allunitups = [];

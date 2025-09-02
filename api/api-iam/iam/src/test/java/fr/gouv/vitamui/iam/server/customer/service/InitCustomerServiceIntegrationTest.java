@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.server.customer.service;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -72,10 +71,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InitCustomerServiceIntegrationTest {
 
     @Configuration
-    @ComponentScan({"fr.gouv.vitamui.commons.logbook.dao", "fr.gouv.vitamui.commons.mongo.dao"})
-    private static class CommonRepositoriesConfig {
-    }
-
+    @ComponentScan({ "fr.gouv.vitamui.commons.logbook.dao", "fr.gouv.vitamui.commons.mongo.dao" })
+    private static class CommonRepositoriesConfig {}
 
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:8.0.8");
@@ -166,7 +163,6 @@ public class InitCustomerServiceIntegrationTest {
 
     @Test
     public void testCreateCustomer() {
-        VitamContext vitamContext = new VitamContext(TENANT_IDENTIFIER);
         Integer someTenantId = 2;
         final CustomerCreationFormData customerDta = new CustomerCreationFormData(buildCustomerDto());
         VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
@@ -175,7 +171,7 @@ public class InitCustomerServiceIntegrationTest {
         tenantDto.setName("Some name");
         tenantDto.setIdentifier(someTenantId);
 
-        Mockito.when(configurationService.getVitamPublicConfigurations(vitamContext)).thenReturn(vitamConfigurationDto);
+        Mockito.when(configurationService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
         Mockito.when(securityService.getTenant(ArgumentMatchers.any())).thenReturn(tenantDto);
 
         customerDta.setTenantName("tenantName");

@@ -238,7 +238,6 @@ export class FilingHoldingSchemeHandler {
       const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
       if (addedCount < node.count) {
         const nodeCopy = copyNodeWithoutChildren(node);
-        //nodeCopy.children = childResult;
         leaves.push(nodeCopy);
       }
       leaves.push(...childResult);
@@ -473,9 +472,9 @@ export class FilingHoldingSchemeHandler {
 
   // ================= extract roots from virtual paths =================
 
-  public static extractVirtualPathsRoots(virtualPaths: FilingHoldingSchemeNode[], parentId: string): FilingHoldingSchemeNode[] {
+  public static extractVirtualPathsRoots(virtualPaths: FilingHoldingSchemeNode[], parentPath: string): FilingHoldingSchemeNode[] {
     // Global roots
-    if (!parentId || parentId === PATH_SEPARATOR) {
+    if (!parentPath || parentPath === PATH_SEPARATOR) {
       return virtualPaths
         .filter((n) => n.id.split(PATH_SEPARATOR).filter(Boolean).length === 1)
         .map((n) => ({
@@ -487,7 +486,7 @@ export class FilingHoldingSchemeHandler {
     }
 
     // Normalize parent
-    const base = parentId.endsWith(PATH_SEPARATOR) ? parentId : parentId + PATH_SEPARATOR;
+    const base = parentPath.endsWith(PATH_SEPARATOR) ? parentPath : parentPath + PATH_SEPARATOR;
     const baseDepth = base.split(PATH_SEPARATOR).filter(Boolean).length;
 
     return virtualPaths

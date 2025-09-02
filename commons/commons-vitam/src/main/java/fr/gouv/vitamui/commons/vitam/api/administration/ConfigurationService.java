@@ -64,24 +64,23 @@ import java.util.Map;
 @Setter
 public class ConfigurationService {
 
+    public static final int ADMIN_TENANT_ID = 1;
     private final AdminExternalClient adminExternalClient;
     private final ObjectMapper objectMapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationService.class);
 
-    public ConfigurationService(
-        final AdminExternalClient adminExternalClient,
-        final ObjectMapper objectMapper
-    ) {
+    public ConfigurationService(final AdminExternalClient adminExternalClient, final ObjectMapper objectMapper) {
         this.adminExternalClient = adminExternalClient;
         this.objectMapper = objectMapper;
     }
 
-    public VitamConfigurationDto getVitamPublicConfigurations(VitamContext vitamContext) {
+    public VitamConfigurationDto getVitamPublicConfigurations() {
         LOGGER.debug("Retrieve public vitam configuration ");
         try {
+            VitamContext adminVitamContext = new VitamContext(ADMIN_TENANT_ID);
             RequestResponse<PublicConfiguration> publicConfigurationResponse =
-                adminExternalClient.getPublicConfiguration(vitamContext);
+                adminExternalClient.getPublicConfiguration(adminVitamContext);
 
             List<VitamConfigurationDto> results = objectMapper
                 .treeToValue(publicConfigurationResponse.toJsonNode(), VitamConfigurationResponseDto.class)
@@ -100,7 +99,7 @@ public class ConfigurationService {
     public List<String> getVirtualPathPathAvailableTenantsIds(VitamContext vitamContext) {
         LOGGER.debug("Retrieve virtual path field for current tenant ");
         List<String> fields = new ArrayList<>();
-        VitamConfigurationDto vitamConfigurationDto = getVitamPublicConfigurations(vitamContext);
+        VitamConfigurationDto vitamConfigurationDto = getVitamPublicConfigurations();
         Map<Integer, List<String>> virtualPathsConfigurationByTenant =
             vitamConfigurationDto.getVirtualPathsConfigurationByTenant();
 
