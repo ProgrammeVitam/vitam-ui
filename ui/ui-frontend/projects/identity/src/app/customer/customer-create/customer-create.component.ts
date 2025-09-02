@@ -233,7 +233,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   public getCustomerFromForm(): Customer {
-    let customer = this.form.value;
+    let customer = this.form.getRawValue();
 
     if (this.customerForm && this.customerForm.get('hasCustomGraphicIdentity').value === true) {
       customer = {
