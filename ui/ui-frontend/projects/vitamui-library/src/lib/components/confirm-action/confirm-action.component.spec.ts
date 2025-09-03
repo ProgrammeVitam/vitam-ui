@@ -58,8 +58,8 @@ describe('ConfirmActionComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useValue: FakeLoader },
         }),
+        ConfirmActionComponent,
       ],
-      declarations: [ConfirmActionComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

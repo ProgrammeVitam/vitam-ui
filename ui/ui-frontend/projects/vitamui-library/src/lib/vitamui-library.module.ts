@@ -36,9 +36,7 @@
  */
 import { NgModule } from '@angular/core';
 
-import { ConfirmActionModule } from './components/confirm-action/confirm-action.module';
 import { FilingPlanModule } from './components/filing-plan/filing-plan.module';
-import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
 import { VitamUIRadioGroupModule } from './components/vitamui-radio-group/vitamui-radio-group.module';
 import { VitamUIRadioModule } from './components/vitamui-radio/vitamui-radio.module';
 import { MAT_TABS_CONFIG } from '@angular/material/tabs';
@@ -60,10 +58,11 @@ import { DialogContentWithStateComponent } from './components/dialog/dialog-cont
 import { ErrorDialogComponent } from './components/dialog/error-dialog/error-dialog.component';
 import { TranslateWithOptionalTypeSuffixPipe } from '../app/modules/pipes/translate-with-optional-type-suffix.pipe';
 import { SaveBannerComponent } from './components/save-banner/save-banner.component';
+import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
 
 const components = [
   AlertDialogComponent,
-  ConfirmActionModule,
+  ConfirmActionComponent,
   DialogHeaderComponent,
   DialogContentWithStateComponent,
   ErrorDialogComponent,
@@ -78,7 +77,6 @@ const components = [
   SelectComponent,
   SelectWithTreeComponent,
   TranslateWithOptionalTypeSuffixPipe,
-  VitamUIInputModule,
   VitamUIRadioGroupModule,
   VitamUIRadioModule,
 ];

@@ -46,8 +46,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { ConfirmActionModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { SecurityProfileEditPermissionModule } from '../security-profile-create/security-profile-edit-permission/security-profile-edit-permission.module';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
@@ -57,7 +56,6 @@ import { SecurityProfilePreviewComponent } from './security-profile-preview.comp
 @NgModule({
   imports: [
     CommonModule,
-    ConfirmActionModule,
     RouterModule,
     VitamUICommonModule,
     VitamUILibraryModule,

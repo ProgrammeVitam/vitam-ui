@@ -78,7 +78,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileUploadModule } from 'ng2-file-upload';
-import { VitamUIInputModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { PastisMaterialModule } from '../material.module';
 import { SharedModule } from '../shared/shared.module';
@@ -119,7 +119,6 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     SharedModule,
     TranslateModule,
-    VitamUIInputModule,
     VitamUILibraryModule,
   ],
   exports: [
