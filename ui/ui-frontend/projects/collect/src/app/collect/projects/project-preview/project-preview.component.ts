@@ -346,7 +346,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       .subscribe((result) => {
         if (result) {
           this.selectedValue = 'NO';
-          this.onConfirm();
+          this.launchUpdate();
         } else {
           this.onCancel();
         }
