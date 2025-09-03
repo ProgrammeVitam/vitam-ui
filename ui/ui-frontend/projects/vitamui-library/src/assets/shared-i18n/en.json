@@ -3830,7 +3830,8 @@
       "TREE_TITLE": "Trees and plans",
       "LOAD_MORE": "Load more",
       "ORPHANS_NODE": "Without attachment",
-      "KEY_VALUE_NODE": "With order of attachment"
+      "KEY_VALUE_NODE": "With order of attachment",
+      "SEARCH_LIMIT_REACHED": "The system has reached its limit and cannot display the entire tree.\n Refine your search to continue."
     },
     "HIDE_SEARCH_CRITERIA": "Hide search criteria",
     "LAUNCH_SEARCH_ACTION": "Launch the search",

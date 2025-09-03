@@ -41,6 +41,7 @@ import { Subscription } from 'rxjs';
 import {
   ConfigurationsApiService,
   DescriptionLevel,
+  FACETS_DEFAULT_SIZE,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   LeavesTreeService,
@@ -53,6 +54,7 @@ import {
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
 import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-leaves-tree',
@@ -71,6 +73,8 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
   @Output() showNodeDetail: EventEmitter<Pair> = new EventEmitter();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
+
+  virtualPathLimitReached = false;
 
   unitId: string = '';
   allunitups: string[] = [];
@@ -91,6 +95,11 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     private configurationsService: ConfigurationsApiService,
   ) {
     this.leavesTreeService = new LeavesTreeService(this.archiveCollectService, this.configurationsService);
+    this.subscriptions.add(
+      this.leavesTreeService.virtualPathSearchLimitReached.pipe(first((status) => status === true)).subscribe(() => {
+        this.virtualPathLimitReached = true;
+      }),
+    );
   }
 
   ngOnInit(): void {
@@ -101,6 +110,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
+      this.virtualPathLimitReached = this.searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE;
       this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
       if (this.searchCriterias) {
         this.leavesTreeService
@@ -318,4 +328,6 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       }),
     );
   }
+
+  protected readonly FACETS_DEFAULT_SIZE = FACETS_DEFAULT_SIZE;
 }

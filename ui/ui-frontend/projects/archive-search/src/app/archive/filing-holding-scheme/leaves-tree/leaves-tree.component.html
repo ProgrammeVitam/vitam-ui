@@ -5,6 +5,16 @@
       <mat-spinner diameter="20" color="accent" *ngIf="loadingNodeUnit || leavesTreeService.loadingNodesDetails"></mat-spinner>
     </div>
   </div>
+  @if (virtualPathLimitReached) {
+    <i
+      class="vitamui-icon icon vitamui-icon-anomalie-2 danger icon-container"
+      vitamuiTooltipPosition="BOTTOM"
+      [style.fontSize.px]="25"
+      vitamuiTooltipClass="red"
+      outline="light"
+      [vitamuiTooltip]="'ARCHIVE_SEARCH.FILING_SCHEMA.SEARCH_LIMIT_REACHED' | translate"
+    ></i>
+  }
 </div>
 
 <div class="tree-filing-scheme">

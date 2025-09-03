@@ -41,6 +41,7 @@ import { Subscription } from 'rxjs';
 import {
   ConfigurationsApiService,
   DescriptionLevel,
+  FACETS_DEFAULT_SIZE,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   LeavesTreeService,
@@ -52,6 +53,7 @@ import {
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-leaves-tree',
@@ -68,6 +70,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
   @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
 
+  virtualPathLimitReached = false;
   unitId: string = '';
   allunitups: string[] = [];
   allNonOrphanNodes: FilingHoldingSchemeNode[] = [];
@@ -87,6 +90,11 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     private configurationsService: ConfigurationsApiService,
   ) {
     this.leavesTreeService = new LeavesTreeService(this.archiveService, this.configurationsService);
+    this.subscriptions.add(
+      this.leavesTreeService.virtualPathSearchLimitReached.pipe(first((status) => status === true)).subscribe(() => {
+        this.virtualPathLimitReached = true;
+      }),
+    );
   }
 
   ngOnInit(): void {
@@ -98,6 +106,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.searchRequestResultFacets) {
       this.leavesTreeService.setSearchRequestResultFacets(this.searchRequestResultFacets);
+      this.virtualPathLimitReached = this.searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE;
     } else if (changes.nestedDataSourceLeaves) {
       this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
     }
@@ -237,7 +246,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       return 'filing-holding-scheme-tree-node';
     }
     const hasMatchingChild = node.children.some(
-      (node) =>
+      (node: FilingHoldingSchemeNode) =>
         this.isUnitMatch(node.id) ||
         this.realNodePathIncluded(node.id) ||
         this.virtualNodePathIncluded(node.realParentId, node.virtualPath),

@@ -1,7 +1,16 @@
 .tooltip-custom {
   --color: var(--vitamui-primary);
+
   &.secondary {
     --color: var(--vitamui-secondary);
+  }
+
+  &.orange {
+    --color: var(--vitamui-orange);
+  }
+
+  &.red {
+    --color: var(--vitamui-red);
   }
 
   --background-color: var(--color);

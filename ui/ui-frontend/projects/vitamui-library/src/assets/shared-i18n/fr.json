@@ -3830,7 +3830,8 @@
       "TREE_TITLE": "Arbres et plans",
       "LOAD_MORE": "Charger plus",
       "ORPHANS_NODE": "Sans rattachement",
-      "KEY_VALUE_NODE": "Avec ordre de rattachement"
+      "KEY_VALUE_NODE": "Avec ordre de rattachement",
+      "SEARCH_LIMIT_REACHED": "Le système a atteint la limite.\n Il n'est pas en mesure d'afficher l'arborescence au complet.\n Précisez votre recherche pour vous débloquer"
     },
     "HIDE_SEARCH_CRITERIA": "Masquer les critères de recherche",
     "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
