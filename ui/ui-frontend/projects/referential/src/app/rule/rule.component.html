@@ -23,7 +23,7 @@
           <button mat-menu-item [disabled]="(checkImportRole | async) !== true" (click)="openRuleImportDialog()">
             {{ 'RULES_APP.HOME.IMPORT' | translate }}
           </button>
-          <button mat-menu-item [disabled]="(checkExportRole | async) !== true" (click)="exportRules()">
+          <button mat-menu-item [disabled]="!ruleList?.dataSource?.length || (checkExportRole | async) !== true" (click)="exportRules()">
             {{ 'RULES_APP.HOME.EXPORT' | translate }}
           </button>
         </vitamui-common-menu-button>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="vitamui-content">
-      <app-rule-list (ruleClick)="showRule($event)" [search]="search"></app-rule-list>
+      <app-rule-list #ruleList (ruleClick)="showRule($event)" [search]="search"></app-rule-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
