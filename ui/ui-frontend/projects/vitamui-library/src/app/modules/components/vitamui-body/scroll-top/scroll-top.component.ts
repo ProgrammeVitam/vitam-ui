@@ -48,10 +48,11 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatButtonModule, MatIconModule],
 })
 export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
-  public windowScrolled: boolean;
-  private contentRendered: boolean;
-
+  public windowScrolled = false;
+  private contentRendered = false;
   private routerSubscription: Subscription;
+  private scrollElement: Element;
+  private scrollListener: () => void;
 
   constructor(private router: Router) {}
 
@@ -71,38 +72,45 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
       if (bodyElement?.length > 0) {
         const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
         const windowElement = document.getElementsByTagName('div');
-
         const scrollElement = sideNavElement?.length > 0 ? sideNavElement[0] : windowElement[0];
 
         if (scrollElement) {
           this.contentRendered = true;
-          scrollElement.addEventListener('scroll', () => {
-            if (scrollElement.scrollTop && scrollElement.scrollTop > 250) {
+          this.scrollElement = scrollElement;
+
+          // Définir le listener une fois
+          this.scrollListener = () => {
+            if (this.scrollElement.scrollTop > 250) {
               this.windowScrolled = true;
-            } else if ((this.windowScrolled && window.pageYOffset) || scrollElement.scrollTop || scrollElement.scrollTop < 10) {
+            } else if ((this.windowScrolled && window.pageYOffset) || this.scrollElement.scrollTop < 10) {
               this.windowScrolled = false;
             }
-          });
+          };
+
+          // Ajouter le listener
+          this.scrollElement.addEventListener('scroll', this.scrollListener);
         }
       }
     }
   }
 
   ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
+    if (this.scrollElement && this.scrollListener) {
+      this.scrollElement.removeEventListener('scroll', this.scrollListener);
+    }
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   public scrollToTop() {
-    (function smoothScroll() {
-      const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
-      const windowElement = document.getElementsByTagName('div');
-      const scrollElement =
-        sideNavElement?.length > 0 ? sideNavElement[sideNavElement.length - 1] : windowElement?.length > 0 ? windowElement[0] : null;
-      const currentScroll = scrollElement.scrollTop;
-      if (currentScroll > 0) {
-        window.requestAnimationFrame(smoothScroll);
-        scrollElement.scrollTo(0, currentScroll - currentScroll / 8);
-      }
-    })();
+    const element = document.getElementsByClassName('mat-sidenav-content')[0] || document.getElementsByTagName('div')[0];
+
+    if (!element) return;
+
+    element.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }
