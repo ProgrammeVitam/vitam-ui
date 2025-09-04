@@ -421,6 +421,7 @@
                           formControlName="metadataValue"
                           class="col"
                           placeholder="{{ 'COLLECT.MODAL.VALUE' | translate }}"
+                          (keydown.enter)="$event.stopPropagation(); $event.preventDefault()"
                         >
                         </vitamui-common-input>
                         <div
@@ -440,7 +441,13 @@
                               {{ ruleParamForm.value.metadataValue | dateTime: 'dd/MM/yyyy' }}
                             </span>
                           </ng-template>
-                          <input class="hidden" size="0" [matDatepicker]="pickerOtherCriteria" formControlName="metadataValue" />
+                          <input
+                            class="hidden"
+                            size="0"
+                            [matDatepicker]="pickerOtherCriteria"
+                            formControlName="metadataValue"
+                            (keydown.enter)="$event.stopPropagation(); $event.preventDefault()"
+                          />
                           <mat-datepicker #pickerOtherCriteria></mat-datepicker>
                         </div>
                       </div>
