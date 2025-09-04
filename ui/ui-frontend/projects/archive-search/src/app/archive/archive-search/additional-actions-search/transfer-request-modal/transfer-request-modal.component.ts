@@ -107,7 +107,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       }),
       this.fb.group({
         includeLifeCycleLogs: [true],
-        sedaVersion: ['2.2'],
+        sedaVersion: ['2.3'],
         includeObjects: [UsageVersionEnum.ALL],
         usages: this.fb.array([
           this.fb.group({
