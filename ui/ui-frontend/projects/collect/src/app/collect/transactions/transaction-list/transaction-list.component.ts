@@ -36,12 +36,14 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval, of, takeWhile } from 'rxjs';
 import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
+import { ProjectsService } from '../../projects/projects.service';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-list',
@@ -57,14 +59,16 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   hasEditTransactionRole = false;
   hasSendTransactionRole = false;
   hasCloseTransactionRole = false;
+  isAutomaticIngest = false;
   disabledSendTransactions = new Set<string>();
 
   constructor(
     private snackBar: MatSnackBar,
     private transactionService: TransactionsService,
-    private archiveUnitCollectService: ArchiveCollectService,
     private archiveCollectService: ArchiveCollectService,
     private translateService: TranslateService,
+    private projectService: ProjectsService,
+    private route: ActivatedRoute,
     private router: Router,
     private startupService: StartupService,
   ) {
@@ -75,6 +79,12 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     this.tenantIdentifier = this.startupService.getTenantIdentifier();
     this.checkTransactionsPermissions();
     super.search(null);
+    this.route.params.subscribe((params) => {
+      const projectId = params['projectId'];
+      this.projectService.getProjectById(projectId).subscribe((project) => {
+        this.isAutomaticIngest = project?.automaticIngest;
+      });
+    });
   }
 
   onScroll() {
@@ -111,9 +121,24 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     this.transactionService.validateTransaction(transaction.id).subscribe(
       () => {
         transaction.status = TransactionStatus.READY;
-        this.archiveUnitCollectService.getProjectById(transaction.projectId).subscribe((project) => {
-          if (project.automaticIngest) this.disabledSendTransactions.add(transaction.id);
-        });
+        if (this.isAutomaticIngest) {
+          this.disabledSendTransactions.add(transaction.id);
+          // Lancer un polling pour suivre le statut
+          interval(5000)
+            .pipe(
+              switchMap(() => this.transactionService.getTransactionById(transaction.id).pipe(catchError(() => of(null)))),
+              takeWhile(
+                (updatedTransaction: Transaction | null) =>
+                  updatedTransaction != null && updatedTransaction.status !== TransactionStatus.SENDING,
+                true,
+              ),
+            )
+            .subscribe((updatedTransaction: Transaction | null) => {
+              if (updatedTransaction) {
+                transaction.status = updatedTransaction.status;
+              }
+            });
+        }
         const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
         this.snackBar.open(message, null, {
           duration: 10000,
@@ -166,13 +191,17 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   transactionIsEditable(transaction: Transaction): boolean {
-    return [TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !== -1;
+    if (this.isAutomaticIngest && TransactionStatus.READY === transaction.status) {
+      return false;
+    }
+    return [TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].includes(transaction.status);
   }
 
   transactionIsAbortable(transaction: Transaction): boolean {
-    return (
-      [TransactionStatus.OPEN, TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !== -1
-    );
+    if (this.isAutomaticIngest && TransactionStatus.READY === transaction.status) {
+      return false;
+    }
+    return [TransactionStatus.OPEN, TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].includes(transaction.status);
   }
 
   private checkTransactionsPermissions() {
