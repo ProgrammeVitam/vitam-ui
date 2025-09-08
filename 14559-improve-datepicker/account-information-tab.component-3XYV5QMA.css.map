@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/account/account-information-tab/account-information-tab.component.scss"],
-  "sourcesContent": [".row > div {\n  display: flex;\n  flex-direction: column;\n}\n\nlabel {\n  font-size: 14px;\n\n  color: var(--vitamui-grey-600);\n  font-weight: normal;\n}\n\nspan {\n  font-size: 16px;\n\n  color: var(--vitamui-grey-900);\n}\n"],
-  "mappings": "AAAA,CAAA,GAAA,CAAA,IACE,QAAA,KACA,eAAA,OAGF,MACE,UAAA,KAEA,MAAA,IAAA,oBACA,YAAA,IAGF,KACE,UAAA,KAEA,MAAA,IAAA",
-  "names": []
-}

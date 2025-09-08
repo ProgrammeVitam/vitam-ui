@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/subrogation/notification-snack-bar/notification-snack-bar.component.scss"],
-  "sourcesContent": [".banner-icon {\n  margin-right: 10px;\n  font-size: 22px;\n}\n"],
-  "mappings": "AAAA,CAAA,YACE,aAAA,KACA,UAAA",
-  "names": []
-}

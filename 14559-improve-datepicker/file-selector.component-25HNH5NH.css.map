@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/file-selector/file-selector.component.scss"],
-  "sourcesContent": ["input[type='file'] {\n  display: none;\n}\n\n.drag-and-drop-area {\n  width: 100%;\n  height: 250px;\n  padding: 1rem 0;\n  border: 2px dashed var(--vitamui-primary);\n  border-radius: 6px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n\n  &.on-over {\n    border: 2px solid var(--vitamui-secondary);\n    background: var(--vitamui-grey-400);\n    opacity: 0.9;\n    color: var(--vitamui-white);\n  }\n}\n\n.vitamui-chip-list {\n  overflow-y: auto;\n  text-align: center;\n\n  .vitamui-chip {\n    width: 80%;\n    margin: 5px auto;\n  }\n\n  .file-size {\n    color: var(--vitamui-grey-600);\n    margin-left: 15px;\n  }\n}\n"],
-  "mappings": "AAAA,KAAA,CAAA,WACE,QAAA,KAGF,CAAA,mBACE,MAAA,KACA,OAAA,MANF,QAOE,KAAA,EACA,OAAA,IAAA,OAAA,IAAA,mBARF,cASE,IACA,QAAA,KACA,eAAA,OACA,gBAAA,OAEA,CAVF,kBAUE,CAAA,QACE,OAAA,IAAA,MAAA,IAAA,qBACA,WAAA,IAAA,oBACA,QAAA,GACA,MAAA,IAAA,iBAIJ,CAAA,kBACE,WAAA,KACA,WAAA,OAEA,CAJF,kBAIE,CAAA,aACE,MAAA,IA3BJ,OA4BI,IAAA,KAGF,CATF,kBASE,CAAA,UACE,MAAA,IAAA,oBACA,YAAA",
-  "names": []
-}

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/object-editor/components/primitive-editor/primitive-editor.component.scss"],
-  "sourcesContent": [":host {\n  width: 100%;\n}\n"],
-  "mappings": "AAAA,MACE,MAAA",
-  "names": []
-}
