@@ -7,7 +7,7 @@
           [options]="disseminationRuleOptions"
           [multiple]="true"
           [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_DISSEMINATION' | translate"
-          [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_DUC' | translate"
+          [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_DISSEMINATION' | translate"
         >
         </vitamui-select>
       </div>
@@ -21,32 +21,19 @@
 
     <div class="row justify-content-start">
       <div class="col-5 form-control">
-        <div class="vitamui-input" (click)="pickerBeginDisseminationRule.open()">
-          <span
-            *ngIf="!disseminationRuleCriteriaForm.get('disseminationRuleStartDate').value; else showBeginDtDisseminationRule"
-            (click)="pickerBeginDisseminationRule.open()"
-            class="search-date-label"
-            >{{
-              (endDateInterval
-                ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DISSEMINATION_BEGIN'
-                : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DISSEMINATION_EQUAL'
-              ) | translate
-            }}</span
-          >
-          <ng-template #showBeginDtDisseminationRule
-            ><span (click)="pickerBeginDisseminationRule.open()"
-              >{{ disseminationRuleCriteriaForm.get('disseminationRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
-            </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerBeginDisseminationRule"
-            formControlName="disseminationRuleStartDate"
-            [max]="disseminationRuleCriteriaForm.get('disseminationRuleEndDate').value"
-          />
-          <mat-datepicker #pickerBeginDisseminationRule></mat-datepicker>
-        </div>
+        <vitamui-datepicker
+          [label]="
+            (endDateInterval
+              ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DISSEMINATION_BEGIN'
+              : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DISSEMINATION_EQUAL'
+            ) | translate
+          "
+          formControlName="disseminationRuleStartDate"
+          [max]="disseminationRuleCriteriaForm.get('disseminationRuleEndDate').value"
+          outputType="Date"
+          format="dd/MM/yyyy"
+          class="w-100"
+        ></vitamui-datepicker>
       </div>
       <div class="col-1 form-control">
         <button
@@ -61,31 +48,20 @@
       </div>
 
       <div class="col-4 form-control">
-        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
-          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.DISSEMINATION_RULE.CREATE_INTERVAL' | translate }}
-        </p>
-
-        <div class="vitamui-input" (click)="pickerEndDisseminationRule.open()" *ngIf="endDateInterval">
-          <span
-            *ngIf="!disseminationRuleCriteriaForm.get('disseminationRuleEndDate').value; else showEndDtDisseminationRule"
-            (click)="pickerEndDisseminationRule.open()"
-            class="search-date-label"
-            >{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DISSEMINATION_END' | translate }}</span
-          >
-          <ng-template #showEndDtDisseminationRule
-            ><span (click)="pickerEndDisseminationRule.open()"
-              >{{ disseminationRuleCriteriaForm.get('disseminationRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
-            </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerEndDisseminationRule"
+        @if (!endDateInterval) {
+          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.DISSEMINATION_RULE.CREATE_INTERVAL' | translate }}
+          </p>
+        } @else {
+          <vitamui-datepicker
+            [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DISSEMINATION_END' | translate"
             formControlName="disseminationRuleEndDate"
             [min]="disseminationRuleCriteriaForm.get('disseminationRuleStartDate').value"
-          />
-          <mat-datepicker #pickerEndDisseminationRule></mat-datepicker>
-        </div>
+            outputType="Date"
+            format="dd/MM/yyyy"
+            class="w-100"
+          ></vitamui-datepicker>
+        }
       </div>
       <div class="col-1 form-control">
         <button

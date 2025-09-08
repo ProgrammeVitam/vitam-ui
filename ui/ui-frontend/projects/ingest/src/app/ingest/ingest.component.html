@@ -44,41 +44,21 @@
 
       <div class="actions">
         <form [formGroup]="dateRangeFilterForm">
-          <div class="date-filter-container">
-            <div class="date-filter">
-              <span *ngIf="!dateRangeFilterForm.get('startDate').value; else showStartDate" (click)="pickerStart.open()">{{
-                'INGEST_ACTION.START_DATE' | translate
-              }}</span>
-              <ng-template #showStartDate>
-                <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}</span>
-                <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
-              </ng-template>
-              <input
-                class="hidden"
-                size="0"
-                [matDatepicker]="pickerStart"
-                formControlName="startDate"
-                [max]="dateRangeFilterForm.get('endDate').value"
-              />
-              <mat-datepicker #pickerStart></mat-datepicker>
-            </div>
-            <div class="date-filter">
-              <span *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate" (click)="pickerEnd.open()">{{
-                'INGEST_ACTION.END_DATE' | translate
-              }}</span>
-              <ng-template #showEndDate
-                ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | dateTime: 'dd/MM/yyyy' }} </span>
-                <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i>
-              </ng-template>
-              <input
-                class="hidden"
-                size="0"
-                [matDatepicker]="pickerEnd"
-                formControlName="endDate"
-                [min]="dateRangeFilterForm.get('startDate').value"
-              />
-              <mat-datepicker #pickerEnd></mat-datepicker>
-            </div>
+          <div class="hgap-4">
+            <vitamui-datepicker
+              [label]="'INGEST_ACTION.START_DATE' | translate"
+              formControlName="startDate"
+              [max]="dateRangeFilterForm.get('endDate').value"
+              outputType="Date"
+              format="dd/MM/yyyy"
+            ></vitamui-datepicker>
+            <vitamui-datepicker
+              [label]="'INGEST_ACTION.END_DATE' | translate"
+              formControlName="endDate"
+              [min]="dateRangeFilterForm.get('startDate').value"
+              outputType="Date"
+              format="dd/MM/yyyy"
+            ></vitamui-datepicker>
           </div>
         </form>
       </div>

@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col">
         <vitamui-interval-date-picker
-          label="{{ 'ACCESSION_REGISTER.FACETS.DATE_SEARCH_FILTER_LABEL' | translate }}"
+          [label]="'ACCESSION_REGISTER.FACETS.DATE_SEARCH_FILTER_LABEL' | translate"
           (criteriaChange)="onDateCriteriaChange($event)"
         >
         </vitamui-interval-date-picker>

@@ -93,11 +93,11 @@ export class VitamuiIntervalDatePickerComponent implements OnInit {
           dateMax: null,
         };
 
-        if (value.dateMin != null) {
+        if (value.dateMin) {
           this.searchCriteria.dateMin = VitamuiIntervalDatePickerComponent.fetchDate(value.dateMin);
         }
 
-        if (value.dateMax != null) {
+        if (value.dateMax) {
           this.searchCriteria.dateMax = VitamuiIntervalDatePickerComponent.fetchDate(value.dateMax);
         }
 

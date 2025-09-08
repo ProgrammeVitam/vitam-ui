@@ -215,6 +215,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       .forEach(([key, control]) => {
         control.valueChanges
           .pipe(
+            filter(() => control.valid),
             debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
             filter((value) => Boolean(value)),
           )

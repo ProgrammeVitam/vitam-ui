@@ -40,7 +40,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -80,7 +79,6 @@ import { TranslateModule } from '@ngx-translate/core';
     VitamUICommonModule,
     VitamUILibraryModule,
   ],
-  providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent],
 })
 export class ProjectModule {}

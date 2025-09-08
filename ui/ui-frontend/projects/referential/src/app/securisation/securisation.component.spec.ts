@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -53,6 +52,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SecurisationComponent } from './securisation.component';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 describe('SecurisationComponent', () => {
   let component: SecurisationComponent;
@@ -71,7 +71,6 @@ describe('SecurisationComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         MatDatepickerModule,
-        MatNativeDateModule,
         MatSidenavModule,
         DatepickerComponent,
         NoopAnimationsModule,
@@ -79,6 +78,7 @@ describe('SecurisationComponent', () => {
         VitamUICommonTestModule,
       ],
       providers: [
+        provideNativeDateAdapter(),
         DatePipe,
         FormBuilder,
         GlobalEventService,

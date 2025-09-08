@@ -76,26 +76,20 @@
       <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
     </div>
     <div class="hgap-4 align-items-start pb-4">
-      <div class="vitamui-input" (click)="pickerBegin.open()">
-        <span *ngIf="!beginDt.value; else showBeginDt" (click)="pickerBegin.open()" class="search-date-label">{{
-          'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate
-        }}</span>
-        <ng-template #showBeginDt
-          ><span (click)="pickerBegin.open()">{{ beginDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-        </ng-template>
-        <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" />
-        <mat-datepicker #pickerBegin></mat-datepicker>
-      </div>
-      <div class="vitamui-input" (click)="pickerEnd.open()">
-        <span *ngIf="!endDt.value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
-          'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
-        }}</span>
-        <ng-template #showEndDt
-          ><span (click)="pickerEnd.open()">{{ endDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-        </ng-template>
-        <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" />
-        <mat-datepicker #pickerEnd></mat-datepicker>
-      </div>
+      <vitamui-datepicker
+        [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate"
+        formControlName="beginDt"
+        outputType="Date"
+        format="yyyy-MM-dd"
+        class="w-100"
+      ></vitamui-datepicker>
+      <vitamui-datepicker
+        [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate"
+        formControlName="endDt"
+        outputType="Date"
+        format="yyyy-MM-dd"
+        class="w-100"
+      ></vitamui-datepicker>
     </div>
     <div class="hgap-4 align-items-start">
       <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
@@ -161,6 +155,7 @@
               <vitamui-datepicker
                 [label]="getCriteriaName(otherCriteria)"
                 [formControlName]="otherCriteria.Path"
+                format="yyyy-MM-dd"
                 class="w-100"
               ></vitamui-datepicker>
             } @else {

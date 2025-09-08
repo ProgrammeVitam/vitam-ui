@@ -1,76 +1,52 @@
-<h2>Date</h2>
+<h2>Datepicker</h2>
 
-<ng-template #date let-clazz="clazz" let-disabled="disabled" let-error="error">
-  <div class="row gap-5">
-    <vitamui-datepicker
-      class="col-4"
-      [ngClass]="clazz"
-      [formControl]="error ? datepickerEmptyError : disabled ? datepickerDisabledEmpty : datepickerYearEmpty"
-      pickerType="year"
-      label="Date - AAAA"
-    ></vitamui-datepicker>
-    <vitamui-datepicker
-      class="col-4"
-      [ngClass]="clazz"
-      [formControl]="error ? datepickerEmptyError : disabled ? datepickerDisabledEmpty : datepickerMonthEmpty"
-      pickerType="month"
-      label="Date - AAAA/MM"
-    ></vitamui-datepicker>
-    <vitamui-datepicker
-      class="col-4"
-      [ngClass]="clazz"
-      [formControl]="error ? datepickerEmptyError : disabled ? datepickerDisabledEmpty : datepickerDayEmpty"
-      pickerType="day"
-      label="Date - AAAA/MM/JJ"
-    ></vitamui-datepicker>
+<vitamui-select
+  placeholder="Choix du format de date"
+  [(ngModel)]="selectedFormat"
+  [options]="availableFormats"
+  [enableSearch]="false"
+  (ngModelChange)="generateConfig()"
+></vitamui-select>
 
-    <vitamui-datepicker
-      [formControl]="error ? datepickerErrorYear : disabled ? datepickerDisabledYear : datepickerYear"
-      class="col-4"
-      [ngClass]="clazz"
-      pickerType="year"
-      label="Date - AAAA"
-    ></vitamui-datepicker>
-    <vitamui-datepicker
-      [formControl]="error ? datepickerErrorMonth : disabled ? datepickerDisabledMonth : datepickerMonth"
-      class="col-4"
-      [ngClass]="clazz"
-      pickerType="month"
-      label="Date - AAAA/MM"
-    ></vitamui-datepicker>
-    <vitamui-datepicker
-      [formControl]="error ? datepickerErrorDay : disabled ? datepickerDisabledDay : datepickerDay"
-      class="col-4"
-      [ngClass]="clazz"
-      pickerType="day"
-      label="Date - AAAA/MM/JJ"
-    ></vitamui-datepicker>
-  </div>
-</ng-template>
-
-<div class="row">
-  <div class="col-6">
-    <h3>Default</h3>
-    <ng-container *ngTemplateOutlet="date"></ng-container>
-  </div>
-  <div class="col-6">
-    <h3>Active</h3>
-    <ng-container [ngTemplateOutlet]="date" [ngTemplateOutletContext]="{ clazz: 'focused' }"></ng-container>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-6">
-    <h3>Disabled</h3>
-    <ng-container [ngTemplateOutlet]="date" [ngTemplateOutletContext]="{ disabled: true }"></ng-container>
-  </div>
-  <div class="col-6">
-    <h3>Error</h3>
-    <ng-container [ngTemplateOutlet]="date" [ngTemplateOutletContext]="{ error: true }"></ng-container>
-  </div>
-</div>
+@for (config of configs; track config) {
+  <h3>{{ config.outputType }}</h3>
+  <p>{{ config.description }}</p>
+  @for (item of config.items; track item.pickerType) {
+    <h4>{{ item.pickerType | titlecase }}</h4>
+    <div class="gap-2 align-items-stretch">
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col row">
+          @for (column of columns; track column) {
+            <h5 class="col-3">{{ column | titlecase }}</h5>
+          }
+        </div>
+      </div>
+      @for (entry of Object.entries(item.rows); track entry[0]) {
+        <div class="row">
+          <h5 class="col-1">{{ entry[0] | titlecase }}</h5>
+          <div class="col row">
+            @for (column of columns; track column) {
+              <vitamui-datepicker
+                class="col-3"
+                [class.focused]="column === 'active'"
+                [formControl]="entry[1][column]"
+                [pickerType]="item.pickerType"
+                [outputType]="config.outputType"
+                label="Date"
+                [format]="formats[selectedFormat].get(item.pickerType)"
+              ></vitamui-datepicker>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+  <hr />
+}
 
 <h3>Min/Max</h3>
+<p>Each datepicker date choice is limited by the other.</p>
 <div class="row">
   <vitamui-datepicker
     class="col-3"
@@ -78,6 +54,14 @@
     pickerType="day"
     label="Start date"
     [max]="endDate.value"
+    [format]="formats[selectedFormat].get('day')"
   ></vitamui-datepicker>
-  <vitamui-datepicker class="col-3" [formControl]="endDate" pickerType="day" label="End date" [min]="startDate.value"></vitamui-datepicker>
+  <vitamui-datepicker
+    class="col-3"
+    [formControl]="endDate"
+    pickerType="day"
+    label="End date"
+    [min]="startDate.value"
+    [format]="formats[selectedFormat].get('day')"
+  ></vitamui-datepicker>
 </div>

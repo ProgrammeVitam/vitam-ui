@@ -41,7 +41,6 @@ import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, SidenavPage, VitamuiBannerComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
-import moment from 'moment';
 
 @Component({
   selector: 'app-logbook-operation',
@@ -81,8 +80,8 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
         type: this.filters.type,
         status: this.filters.status,
         dateRange: {
-          startDate: value.startDate ? moment(value.startDate).toDate() : null,
-          endDate: value.endDate ? moment(value.endDate).toDate() : null,
+          startDate: value.startDate ?? null,
+          endDate: value.endDate ?? null,
         },
       };
     });

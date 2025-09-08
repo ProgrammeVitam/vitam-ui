@@ -34,24 +34,14 @@
                 <span>{{ 'LOGBOOK_OPERATION_PAGE.FILTER_BY_DATE' | translate }}</span>
               </div>
 
-              <div class="col-2">
-                <div class="date-filter">
-                  <span *ngIf="!dateRangeFilterForm.get('startDateMin').value; else showStartDateMin" (click)="pickerStart.open()">{{
-                    'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate
-                  }}</span>
-                  <ng-template #showStartDateMin>
-                    <span (click)="pickerStart.open()"> {{ dateRangeFilterForm.get('startDateMin').value | dateTime: 'dd/MM/yyyy' }}</span>
-                    <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDateMin')">clear</i>
-                  </ng-template>
-                  <input
-                    class="hidden"
-                    size="0"
-                    [matDatepicker]="pickerStart"
-                    formControlName="startDateMin"
-                    [max]="dateRangeFilterForm.get('startDateMax').value"
-                  />
-                  <mat-datepicker #pickerStart></mat-datepicker>
-                </div>
+              <div class="col-3">
+                <vitamui-datepicker
+                  [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
+                  formControlName="startDateMin"
+                  [max]="dateRangeFilterForm.get('startDateMax').value"
+                  outputType="Date"
+                  format="dd/MM/yyyy"
+                ></vitamui-datepicker>
               </div>
 
               <div class="col-1 filter-text" *ngIf="showStartDateMax" [ngStyle]="{ flex: '0 5%' }">
@@ -59,27 +49,17 @@
               </div>
 
               <div class="col-2 filter-text" *ngIf="!showStartDateMax" (click)="showIntervalDate(true)">
-                <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.ADD_INTREVAL' | translate }} </span>
+                <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.ADD_INTERVAL' | translate }} </span>
               </div>
 
-              <div class="col-2" *ngIf="showStartDateMax">
-                <div class="date-filter">
-                  <span *ngIf="!dateRangeFilterForm.get('startDateMax').value; else showstartDateMax" (click)="pickerEnd.open()">{{
-                    'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate
-                  }}</span>
-                  <ng-template #showstartDateMax
-                    ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('startDateMax').value | dateTime: 'dd/MM/yyyy' }} </span>
-                    <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDateMax')">clear</i>
-                  </ng-template>
-                  <input
-                    class="hidden"
-                    size="0"
-                    [matDatepicker]="pickerEnd"
-                    formControlName="startDateMax"
-                    [min]="dateRangeFilterForm.get('startDateMin').value"
-                  />
-                  <mat-datepicker #pickerEnd></mat-datepicker>
-                </div>
+              <div class="col-3" *ngIf="showStartDateMax">
+                <vitamui-datepicker
+                  [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
+                  formControlName="startDateMax"
+                  [min]="dateRangeFilterForm.get('startDateMin').value"
+                  outputType="Date"
+                  format="dd/MM/yyyy"
+                ></vitamui-datepicker>
               </div>
 
               <div class="col-2 filter-text" *ngIf="showStartDateMax" (click)="showIntervalDate(false)">

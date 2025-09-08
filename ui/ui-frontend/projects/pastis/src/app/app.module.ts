@@ -63,6 +63,7 @@ import { NoAuthenticationModule } from './standalone/no-authentication.module';
 import { StandaloneStartupService } from './standalone/standalone-startup.service';
 import { StandaloneThemeService } from './standalone/standalone-theme.service';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
   return () => appConfig.initConfiguration();
@@ -130,6 +131,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   ],
   providers: [
     provideI18n(),
+    provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: WINDOW_LOCATION, useValue: window.location },

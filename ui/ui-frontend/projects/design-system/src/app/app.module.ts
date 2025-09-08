@@ -63,6 +63,7 @@ import {
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -90,6 +91,7 @@ registerLocaleData(localeFr, 'fr');
   ],
   providers: [
     provideI18n(),
+    provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },

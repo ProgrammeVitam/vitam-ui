@@ -43,6 +43,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   templateUrl: './table.component.html',
@@ -57,6 +58,7 @@ import { MatTableModule } from '@angular/material/table';
     TranslatePipe,
     MatDialogModule,
     MatTableModule,
+    MatMenuModule,
   ],
 })
 export class TableComponent {

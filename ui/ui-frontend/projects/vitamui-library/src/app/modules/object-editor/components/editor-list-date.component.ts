@@ -51,6 +51,8 @@ import { DatepickerComponent } from '../../components/datepicker/datepicker.comp
       [label]="editObject.displayRule.ui.label | translate | empty"
       [required]="editObject.required"
       pickerType="day"
+      outputType="String"
+      format="yyyy-MM-dd"
     >
       <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
     </vitamui-datepicker>

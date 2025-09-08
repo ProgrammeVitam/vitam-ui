@@ -7,7 +7,7 @@
     class="hidden-input"
     [matDatepicker]="datepicker"
     [value]="datePickerValue"
-    (dateChange)="setYearMonthAndDay($event.value)"
+    (dateChange)="onDateChange('day', $event.value)"
     [min]="min"
     [max]="max"
   />
@@ -17,7 +17,7 @@
     [required]="isRequired()"
     (focus)="onFocus()"
     (blur)="onBlur()"
-    [ngModel]="control.value"
+    [ngModel]="displayedValue"
     (ngModelChange)="onTextChange($event)"
   />
   <mat-datepicker-toggle [for]="datepicker" matSuffix>
@@ -28,8 +28,8 @@
     panelClass="picker"
     [startView]="startView"
     [disabled]="control.disabled"
-    (yearSelected)="setYear($event)"
-    (monthSelected)="setYearAndMonth($event)"
+    (yearSelected)="onDateChange('year', $event)"
+    (monthSelected)="onDateChange('month', $event)"
   ></mat-datepicker>
 </div>
 <div #hintArea class="hint-area">
@@ -41,6 +41,7 @@
 <vitamui-form-errors
   [control]="control"
   [errorMessageMap]="{
-    pattern: 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + pickerType.toUpperCase() | translate },
+    pattern: 'DATE.EXPECTED_FORMAT' | translate: { format: 'DATE.FORMAT.' + selectedFormat() | translate },
+    invalidDate: 'DATE.INVALID' | translate,
   }"
 ></vitamui-form-errors>

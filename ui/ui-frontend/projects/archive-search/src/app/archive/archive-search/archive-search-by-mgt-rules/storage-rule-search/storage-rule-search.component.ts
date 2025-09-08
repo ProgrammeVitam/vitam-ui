@@ -365,7 +365,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addBeginDtDuaCriteria() {
+  addBeginDtDucCriteria() {
     if (this.storageRuleCriteriaForm.value.storageRuleStartDate) {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,
@@ -386,7 +386,7 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addIntervalDtDuaCriteria() {
+  addIntervalDtDucCriteria() {
     if (this.storageRuleCriteriaForm.value.storageRuleStartDate && this.storageRuleCriteriaForm.value.storageRuleEndDate) {
       this.addCriteria(
         RULE_END_DATE + RULE_TYPE_SUFFIX,

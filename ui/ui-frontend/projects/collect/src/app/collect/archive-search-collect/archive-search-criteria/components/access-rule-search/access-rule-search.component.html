@@ -21,32 +21,19 @@
 
     <div class="row justify-content-start">
       <div class="col-5 form-control">
-        <div class="vitamui-input" (click)="pickerBeginAccessRule.open()">
-          <span
-            *ngIf="!accessRuleCriteriaForm.get('accessRuleStartDate').value; else showBeginDtAccessRule"
-            (click)="pickerBeginAccessRule.open()"
-            class="search-date-label"
-            >{{
-              (endDateInterval
-                ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_BEGIN'
-                : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_EQUAL'
-              ) | translate
-            }}</span
-          >
-          <ng-template #showBeginDtAccessRule
-            ><span (click)="pickerBeginAccessRule.open()"
-              >{{ accessRuleCriteriaForm.get('accessRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
-            </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerBeginAccessRule"
-            formControlName="accessRuleStartDate"
-            [max]="accessRuleCriteriaForm.get('accessRuleEndDate').value"
-          />
-          <mat-datepicker #pickerBeginAccessRule></mat-datepicker>
-        </div>
+        <vitamui-datepicker
+          [label]="
+            (endDateInterval
+              ? 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_BEGIN'
+              : 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_EQUAL'
+            ) | translate
+          "
+          formControlName="accessRuleStartDate"
+          [max]="accessRuleCriteriaForm.get('accessRuleEndDate').value"
+          outputType="Date"
+          class="w-100"
+          format="dd/MM/yyyy"
+        ></vitamui-datepicker>
       </div>
       <div class="col-1 form-control">
         <button
@@ -61,31 +48,20 @@
       </div>
 
       <div class="col-4 form-control">
-        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
-          {{ 'COLLECT.SEARCH_CRITERIA_FILTER.ACCESS_RULE.CREATE_INTERVAL' | translate }}
-        </p>
-
-        <div class="vitamui-input" (click)="pickerEndAccessRule.open()" *ngIf="endDateInterval">
-          <span
-            *ngIf="!accessRuleCriteriaForm.get('accessRuleEndDate').value; else showEndDtAccessRule"
-            (click)="pickerEndAccessRule.open()"
-            class="search-date-label"
-            >{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_END' | translate }}</span
-          >
-          <ng-template #showEndDtAccessRule
-            ><span (click)="pickerEndAccessRule.open()"
-              >{{ accessRuleCriteriaForm.get('accessRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
-            </span>
-          </ng-template>
-          <input
-            class="hidden"
-            size="0"
-            [matDatepicker]="pickerEndAccessRule"
+        @if (!endDateInterval) {
+          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+            {{ 'COLLECT.SEARCH_CRITERIA_FILTER.ACCESS_RULE.CREATE_INTERVAL' | translate }}
+          </p>
+        } @else {
+          <vitamui-datepicker
+            [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_ACCESS_END' | translate"
             formControlName="accessRuleEndDate"
             [min]="accessRuleCriteriaForm.get('accessRuleStartDate').value"
-          />
-          <mat-datepicker #pickerEndAccessRule></mat-datepicker>
-        </div>
+            outputType="Date"
+            format="dd/MM/yyyy"
+            class="w-100"
+          ></vitamui-datepicker>
+        }
       </div>
       <div class="col-1 form-control">
         <button

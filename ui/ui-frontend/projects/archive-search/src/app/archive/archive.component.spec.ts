@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -113,7 +112,6 @@ describe('ArchiveComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatDatepickerModule,
-        MatNativeDateModule,
         MatMenuModule,
         MatSidenavModule,
         InjectorModule,

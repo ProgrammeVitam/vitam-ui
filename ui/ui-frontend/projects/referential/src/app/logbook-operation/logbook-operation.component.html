@@ -26,11 +26,15 @@
           formControlName="startDate"
           [label]="'LOGBOOK.HOME.START_DATE' | translate"
           [max]="dateRangeFilterForm.get('endDate')?.value"
+          outputType="Date"
+          format="yyyy-MM-dd"
         ></vitamui-datepicker>
         <vitamui-datepicker
           formControlName="endDate"
           [label]="'LOGBOOK.HOME.END_DATE' | translate"
           [min]="dateRangeFilterForm.get('startDate')?.value"
+          outputType="Date"
+          format="yyyy-MM-dd"
         ></vitamui-datepicker>
       </form>
     </div>

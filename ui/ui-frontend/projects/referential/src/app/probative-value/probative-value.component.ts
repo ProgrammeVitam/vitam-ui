@@ -38,10 +38,10 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import moment from 'moment';
 import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 import { ProbativeValueCreateComponent } from './probative-value-create/probative-value-create.component';
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-probative-value',
@@ -74,11 +74,11 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value ? moment(value).startOf('day') : null };
+      this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
-      this.filters = { ...this.filters, endDate: value ? moment(value).endOf('day') : null };
+      this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
     });
   }
 

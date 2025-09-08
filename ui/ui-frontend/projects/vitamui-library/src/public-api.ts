@@ -129,6 +129,7 @@ export * from './app/modules/components/header/user-photo/user-photo.component';
 export * from './app/modules/components/header/user-photo/user-photo.module';
 export * from './app/modules/components/logbook-operation-facet/logbook-operation-facet.component';
 export * from './app/modules/components/datepicker/datepicker.component';
+export * from './app/modules/components/datepicker/datepicker.interface';
 export * from './app/modules/models/menu-option.interface';
 export * from './app/modules/components/vitamui-body/scroll-top/scroll-top.component';
 export * from './lib/components/slide-toggle/slide-toggle.component';

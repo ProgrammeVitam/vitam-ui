@@ -48,6 +48,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
 import { IngestModule } from './ingest/ingest.module';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -72,6 +73,7 @@ registerLocaleData(localeFr, 'fr');
   ],
   providers: [
     provideI18n(),
+    provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     {

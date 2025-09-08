@@ -46,6 +46,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -68,6 +69,7 @@ registerLocaleData(localeFr, 'fr');
   ],
   providers: [
     provideI18n(),
+    provideNativeDateAdapter(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     {

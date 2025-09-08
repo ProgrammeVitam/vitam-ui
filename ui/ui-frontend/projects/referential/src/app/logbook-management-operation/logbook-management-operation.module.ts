@@ -52,6 +52,7 @@ import { LogbookManagementOperationPreviewComponent } from './logbook-management
 import { LogbookManagementOperationRoutingModule } from './logbook-management-operation-routing.module';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
 import { MatMenuItem } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { MatMenuItem } from '@angular/material/menu';
     VitamUICommonModule,
     VitamUILibraryModule,
     MatMenuItem,
+    TranslatePipe,
   ],
   exports: [
     LogbookManagementOperationListComponent,

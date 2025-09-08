@@ -53,7 +53,6 @@ import { AuditComponent } from './audit.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuditListComponent } from './audit-list/audit-list.component';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
@@ -77,7 +76,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatFormFieldModule,
     MatInputModule,
     PipesModule,
-    MatMomentDateModule,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

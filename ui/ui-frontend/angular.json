@@ -16,10 +16,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "moment",
-              "deepmerge"
-            ],
             "outputPath": "dist/identity",
             "index": "projects/identity/src/index.html",
             "browser": "projects/identity/src/main.ts",
@@ -154,10 +150,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "moment",
-              "deepmerge"
-            ],
             "outputPath": "dist/portal",
             "index": "projects/portal/src/index.html",
             "browser": "projects/portal/src/main.ts",
@@ -286,10 +278,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "moment",
-              "deepmerge"
-            ],
             "outputPath": "dist/referential",
             "index": "projects/referential/src/index.html",
             "browser": "projects/referential/src/main.ts",
@@ -474,10 +462,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "moment",
-              "deepmerge"
-            ],
             "outputPath": "dist/design-system",
             "index": "projects/design-system/src/index.html",
             "browser": "projects/design-system/src/main.ts",
@@ -591,10 +575,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "moment",
-              "deepmerge"
-            ],
             "outputPath": "dist/ingest",
             "index": "projects/ingest/src/index.html",
             "browser": "projects/ingest/src/main.ts",
@@ -713,9 +693,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment",
-              "fast-xml-parser",
-              "deepmerge"
+              "fast-xml-parser"
             ],
             "outputPath": "dist/archive-search",
             "index": "projects/archive-search/src/index.html",
@@ -835,9 +813,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment",
-              "jszip",
-              "deepmerge"
+              "jszip"
             ],
             "outputPath": "dist/collect",
             "index": "projects/collect/src/index.html",
@@ -956,16 +932,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "moment",
-              "dayjs",
-              "dayjs/plugin/customParseFormat",
-              "dayjs/plugin/isBetween",
-              "dayjs/plugin/isSameOrAfter",
-              "dayjs/plugin/isSameOrBefore",
-              "dayjs/plugin/isoWeek",
-              "deepmerge"
-            ],
             "outputPath": "dist/pastis",
             "index": "projects/pastis/src/index.html",
             "browser": "projects/pastis/src/main.ts",
