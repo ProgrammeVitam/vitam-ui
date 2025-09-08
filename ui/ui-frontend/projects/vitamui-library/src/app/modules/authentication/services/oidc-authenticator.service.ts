@@ -130,8 +130,7 @@ export class OidcAuthenticatorService implements AuthenticatorService {
   }
 
   public redirectToLoginPage(): void {
-    this.oAuthService.logOut();
-    this.oAuthService.initCodeFlow();
+    this.oAuthService.revokeTokenAndLogout();
   }
 
   private getUrlSeparator(url: string): string {
