@@ -71,6 +71,9 @@ export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy 
         data?.children.map((node) => {
           if ('Generalities' === node.key) {
             node?.children.map((child) => {
+              if (['Title'].includes(child.key)) {
+                child.required = true;
+              }
               if (['Title_', 'Description_'].includes(child.key))
                 child.displayRule = { ...child.displayRule, ui: { ...child.displayRule.ui, display: false } };
             });
