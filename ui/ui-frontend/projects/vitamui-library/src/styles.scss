@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import 'material-design-icons-iconfont/dist/material-design-icons.css';
+@use 'material-design-icons-iconfont/dist/material-design-icons.css';
 
-@import 'sass/theme';
+@use 'sass/theme';
 
-@import 'sass/icons/vitamui-icons.css';
+@use 'sass/icons/vitamui-icons.css';
 
-@import 'sass/fonts/font-styles.css';
+@use 'sass/fonts/font-styles.css';

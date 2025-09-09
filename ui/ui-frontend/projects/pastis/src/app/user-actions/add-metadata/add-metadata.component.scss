@@ -1,5 +1,5 @@
-@import '../../../assets/css/mixins';
-@import '../../../assets/css/font';
+@use '../../../assets/css/mixins' as mixins;
+@use '../../../assets/css/font' as font;
 
 .paragraph-metadata-subtitle {
   font-family: Mulish;

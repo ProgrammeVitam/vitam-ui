@@ -1,6 +1,6 @@
 @use './mixins/elevation' as elevation;
 @use './mixins/fonts' as fonts;
-@import './base/typography';
+@use './base/typography';
 
 @mixin disabled($background-color: var(--vitamui-grey-300), $color: var(--vitamui-grey-700), $border-color: var(--vitamui-grey-300)) {
   cursor: no-drop;

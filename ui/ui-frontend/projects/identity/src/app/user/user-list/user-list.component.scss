@@ -1,11 +1,11 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .parent {
   position: relative;
 }
 
 .status-badge-anonym {
-  @include shadow-4dp-dark;
+  @include elevation.shadow-4dp-dark;
   font-family: Helvetica, sans-serif;
   font-size: 10px;
   font-weight: 200;

@@ -1,5 +1,4 @@
-@import 'mixins';
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .pastis-content-metadata {
   position: absolute;
@@ -268,16 +267,16 @@
 .pastis-table-row:hover {
   @extend .pastis-table-row;
   background-color: var(--vitamui-primary-light);
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   cursor: pointer;
 }
 
 .pastis-panel-shadow-primary-500 {
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
 }
 
 .pastis-panel-shadow {
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
 }
 
 .pastis-panel-radius-5 {

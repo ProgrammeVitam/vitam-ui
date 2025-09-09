@@ -1,6 +1,6 @@
-@import '../../assets/css/mixins';
-@import '../../assets/css/layout';
-@import 'mixins/elevation';
+@use '../../assets/css/mixins';
+@use '../../assets/css/layout';
+@use 'mixins/elevation' as elevation;
 
 ::ng-deep .vitamui-spinner.mat-mdc-progress-spinner circle,
 .vitamui-spinner .mat-mdc-progress-spinner circle {
@@ -16,7 +16,7 @@
 }
 
 .pastis-btn-show-profile {
-  @include shadow-32dp-primary;
+  @include elevation.shadow-32dp-primary;
   position: absolute;
   width: 70px;
   height: 70px;
@@ -36,7 +36,7 @@
 }
 
 .pastis-side-nav {
-  @include shadow-64dp-dark;
+  @include elevation.shadow-64dp-dark;
 }
 
 .mat-sidenav {

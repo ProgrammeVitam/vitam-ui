@@ -1,8 +1,8 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .pastis-table-input-border {
   border-radius: 5px;
   border: 1px solid var(--vitamui-grey-300);
   box-sizing: border-box;
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
 }

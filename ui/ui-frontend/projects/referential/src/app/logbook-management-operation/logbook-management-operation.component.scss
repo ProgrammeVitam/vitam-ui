@@ -1,4 +1,4 @@
-@import 'mixins/elevation';
+@use 'mixins/elevation' as elevation;
 
 .clickable {
   cursor: pointer;
@@ -33,7 +33,7 @@
 
   background: var(--vitamui-white);
 
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   border-radius: 5px;
 
   flex: none;
@@ -82,7 +82,7 @@
 
   background: var(--vitamui-white);
 
-  @include shadow-2dp-dark;
+  @include elevation.shadow-2dp-dark;
   border-radius: 5px;
 }
 

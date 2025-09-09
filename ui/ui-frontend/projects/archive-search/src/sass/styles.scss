@@ -1,10 +1,10 @@
-@import 'icons/vitamui-icons';
-@import 'theme';
+@use 'icons/vitamui-icons';
+@use 'theme';
 
-@import 'fonts/font-styles';
+@use 'fonts/font-styles';
 
-@import 'sidepanel';
-@import 'common-archive';
+@use 'sidepanel';
+@use 'common-archive';
 
 .mat-drawer-container {
   background-color: var(--vitamui-background);

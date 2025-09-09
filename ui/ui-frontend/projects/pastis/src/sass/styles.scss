@@ -1,8 +1,8 @@
-@import 'icons/vitamui-icons';
-@import 'theme';
-@import 'toaster';
+@use 'icons/vitamui-icons';
+@use 'theme';
+@use 'toaster';
 
-@import 'fonts/font-styles';
+@use 'fonts/font-styles';
 
 .mat-drawer-container {
   height: fit-content !important;

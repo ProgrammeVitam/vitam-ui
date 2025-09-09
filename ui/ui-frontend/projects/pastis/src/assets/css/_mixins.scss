@@ -1,9 +1,10 @@
 //Generate Pastis colors
 /// @author Paulo Pimenta
 
-@import 'dropdown';
-@import 'input';
-@import 'font';
+@use 'dropdown' as dropdown;
+@use 'input';
+@use 'font';
+@use 'sass:map';
 
 /// Generate inputs for PASTIS
 /// @author Paulo Pimenta
@@ -24,13 +25,13 @@
 @mixin mat-table-columns($columns) {
   .mat-column- {
     @each $colName, $props in $columns {
-      $width: map-get($props, 'width');
+      $width: map.get($props, 'width');
       &#{$colName} {
         flex: $width;
         width: $width;
 
-        @if map-has-key($props, 'color') {
-          color: map-get($props, 'color');
+        @if map.has-key($props, 'color') {
+          color: map.get($props, 'color');
         }
       }
     }
@@ -52,5 +53,5 @@ See _buttons.scss */
 
 .pastis-dropdown-text {
   @extend .dropdown-font-text;
-  @include dropdown-text-modifiers('color', $dropdowns-text);
+  @include dropdown-text-modifiers('color', dropdown.$dropdowns-text);
 }

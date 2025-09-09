@@ -1,6 +1,6 @@
-@import '../../../../assets/css/mixins';
-@import '../../../../assets/css/layout';
-@import 'mixins/elevation';
+@use '../../../../assets/css/mixins';
+@use '../../../../assets/css/layout';
+@use 'mixins/elevation' as elevation;
 
 .pastis-btn-container-add-ua {
   height: 70px;
@@ -10,7 +10,7 @@
 .primary {
   @extend .primary;
   background-color: var(--vitamui-primary) !important;
-  @include shadow-0;
+  @include elevation.shadow-0;
 }
 
 .pastis-tree-node-root-name {

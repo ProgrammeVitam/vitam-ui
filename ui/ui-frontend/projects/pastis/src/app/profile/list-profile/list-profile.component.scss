@@ -1,7 +1,7 @@
-@import '../../../assets/css/mixins';
-@import '../../../assets/css/layout';
-@import '../../../assets/css/font';
-@import 'icons/vitamui-icons';
+@use '../../../assets/css/mixins' as mixins;
+@use '../../../assets/css/layout' as layout;
+@use '../../../assets/css/font' as font;
+@use 'icons/vitamui-icons' as icons;
 
 .pastis-vitamui-option-container {
   margin-top: 45px;

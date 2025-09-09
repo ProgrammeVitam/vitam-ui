@@ -1,9 +1,9 @@
 //Generate Pastis colors
 /// @author Paulo Pimenta
 
-@import 'dropdown';
-@import 'input';
-@import 'font';
+@use 'dropdown' as dropdown;
+@use 'input';
+@use 'font';
 
 /// Generate inputs for PASTIS
 /// @author Paulo Pimenta
@@ -47,10 +47,9 @@ See _buttons.scss */
   border-radius: 100px !important;
   border: 0px;
   outline: none;
-  @include button-modifiers('background');
 }
 
 .pastis-dropdown-text {
   @extend .dropdown-font-text;
-  @include dropdown-text-modifiers('color', $dropdowns-text);
+  @include dropdown-text-modifiers('color', dropdown.$dropdowns-text);
 }
