@@ -84,6 +84,7 @@ export interface Unit {
   isDigital?: boolean;
   isPhysical?: boolean;
   '#originating_agency'?: string;
+  '#errors'?: Error[];
 
   [key: string]: any;
 }
@@ -189,4 +190,12 @@ export interface RuleActionDetails {
 export interface InheritanceRuleDto {
   PreventInheritance: boolean;
   PreventRulesId: string[];
+}
+
+export interface Error {
+  evId: string;
+  evTypeProc: string;
+  evDetData: string;
+  outDetail: string;
+  outMessg: string;
 }

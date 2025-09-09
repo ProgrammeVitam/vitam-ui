@@ -77,6 +77,10 @@ export class ArchiveUnitInformationTabComponent implements OnChanges {
     this.fullPath = true;
   }
 
+  get errorMessages(): string[] | undefined {
+    return this.archiveUnit['#errors']?.map((error) => error.outMessg);
+  }
+
   private checkDownloadPermissions() {
     this.archiveService
       .hasCollectRole('ROLE_COLLECT_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)

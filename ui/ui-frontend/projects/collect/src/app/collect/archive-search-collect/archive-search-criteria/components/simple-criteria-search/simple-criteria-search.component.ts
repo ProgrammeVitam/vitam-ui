@@ -70,14 +70,19 @@ const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
+const ERRORS = 'ERRORS';
+const ARCHIVE_UNIT_WITH_ERRORS = 'ARCHIVE_UNIT_WITH_ERRORS';
 
 type ArchiveUnitType =
   | 'ARCHIVE_UNIT_FILING_UNIT'
   | 'ARCHIVE_UNIT_HOLDING_UNIT'
   | 'ARCHIVE_UNIT_WITH_OBJECTS'
-  | 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
+  | 'ARCHIVE_UNIT_WITHOUT_OBJECTS'
+  | 'ARCHIVE_UNIT_WITH_ERRORS';
 
 const COMPLEX_INPUTS = ['otherCriteriaList'];
+
+const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
 
 @Component({
   selector: 'app-simple-criteria-search',
@@ -92,6 +97,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   archiveUnitTypesCriteria: Map<any, boolean> = new Map<any, boolean>([
     [ARCHIVE_UNIT_WITH_OBJECTS, false],
     [ARCHIVE_UNIT_WITHOUT_OBJECTS, false],
+    [ARCHIVE_UNIT_WITH_ERRORS, false],
   ]);
 
   otherCriteriaOptions: ItemNode<SchemaElement>[];
@@ -176,17 +182,15 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     });
 
     // Sync archive unit types with criteria
-    archiveExchangeDataService.searchCriteria$
-      .pipe(
-        filter((searchCriteria) => !!searchCriteria),
-        map((searchCriteria) => searchCriteria.get(ALL_ARCHIVE_UNIT_TYPES)),
-      )
-      .subscribe((archiveUnitTypesCriteria) => {
-        const selectedArchiveUnitTypes = archiveUnitTypesCriteria?.values.map((criteriaValue) => criteriaValue.value.value);
-        this.archiveUnitTypesCriteria.forEach((_value, key) =>
-          this.archiveUnitTypesCriteria.set(key, selectedArchiveUnitTypes?.includes(key)),
-        );
+    this.archiveExchangeDataService.searchCriteria$.pipe(filter((searchCriteria) => !!searchCriteria)).subscribe((searchCriteria) => {
+      const searchCriteriasValues = [...searchCriteria.entries()]
+        .filter(([key]) => keysList.includes(key))
+        .flatMap(([_, value]) => value.values)
+        .map((test) => test.value.value);
+      this.archiveUnitTypesCriteria.forEach((_, key) => {
+        this.archiveUnitTypesCriteria.set(key, searchCriteriasValues.includes(key));
       });
+    });
 
     this.offlineServices$.subscribe((offlineServices) => {
       const isAgenciesOffline = offlineServices?.includes('agencies');
@@ -267,7 +271,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   isValueTranslated(criteria: string) {
-    return criteria === FINAL_ACTION_TYPE || criteria === ALL_ARCHIVE_UNIT_TYPES;
+    return criteria === FINAL_ACTION_TYPE || keysList.includes(criteria);
   }
 
   getCriteriaName(criteria: SchemaElement) {
@@ -279,6 +283,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   toggleArchiveUnitCriteria(archiveUnitType: ArchiveUnitType, event: any) {
+    this.archiveUnitTypesCriteria.set(archiveUnitType, event.target.checked);
     const action = event.target.checked ? 'ADD' : 'REMOVE';
     this.processArchiveUnitTypeCriteriaAction(action, archiveUnitType);
   }
@@ -346,7 +351,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     const criteriaValue = criteria.valueElt;
 
     if (action === 'ADD') this.addCriteria(criteria);
-    if (action === 'REMOVE') this.removeCriteria(ALL_ARCHIVE_UNIT_TYPES, criteriaValue);
+    if (action === 'REMOVE') this.removeCriteria(criteria.keyElt, criteriaValue);
   }
 
   private removeCriteria(keyElt: string, valueElt?: CriteriaValue) {
@@ -365,11 +370,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     };
 
     return {
-      keyElt: ALL_ARCHIVE_UNIT_TYPES,
+      keyElt: archiveUnitType === (ARCHIVE_UNIT_WITH_ERRORS as ArchiveUnitType) ? ERRORS : ALL_ARCHIVE_UNIT_TYPES,
       valueElt: criteriaValue,
       labelElt: this.translateService.instant(translationKey),
       keyTranslated: true,
-      operator: CriteriaOperator.EQ,
+      operator: archiveUnitType === (ARCHIVE_UNIT_WITH_ERRORS as ArchiveUnitType) ? CriteriaOperator.EXISTS : CriteriaOperator.EQ,
       valueTranslated: false,
       dataType: CriteriaDataType.STRING,
       category: SearchCriteriaTypeEnum.FIELDS,

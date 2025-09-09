@@ -47,6 +47,10 @@ export function getSearchCriteriaConfig(fragment: string, key: string) {
       return FINAL_ACTION_PREFIX + key;
     } else if (FINAL_ACTION_TYPES.includes(fragment)) {
       return FINAL_ACTION_TYPE_PREFIX + key;
+    } else if ([ARCHIVE_UNIT_WITH_OBJECTS, ARCHIVE_UNIT_WITHOUT_OBJECTS].includes(fragment)) {
+      return ALL_ARCHIVE_UNIT_TYPES;
+    } else if (fragment === ARCHIVE_UNIT_WITH_ERRORS) {
+      return ERRORS;
     } else {
       return key;
     }
@@ -70,7 +74,6 @@ const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> }
     keyTranslated: true,
   },
   archiveUnitType: {
-    keyElt: 'ALL_ARCHIVE_UNIT_TYPES',
     keyTranslated: true,
   },
   title: {
@@ -139,6 +142,7 @@ searchCriteriaConfigs.EndDate = searchCriteriaConfigs.endDt;
 export const translatedKeys = [
   'FINAL_ACTION_TYPE',
   'ALL_ARCHIVE_UNIT_TYPES',
+  'ERRORS',
   'RULE_ORIGIN_APPRAISAL_RULE',
   'FINAL_ACTION_APPRAISAL_RULE',
   'FINAL_ACTION_TYPE_APPRAISAL_RULE',
@@ -154,6 +158,11 @@ export const ORIGIN_HAS_NO_ONE = 'ORIGIN_HAS_NO_ONE';
 export const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 export const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 export const ORIGIN_INHERITE_AT_LEAST_ONE = 'ORIGIN_INHERITE_AT_LEAST_ONE';
+
+export const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
+export const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
+export const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
+export const ARCHIVE_UNIT_WITH_ERRORS = 'ARCHIVE_UNIT_WITH_ERRORS';
 
 export const APPRAISAL_RULE = 'APPRAISAL_RULE';
 export const ACCESS_RULE = 'ACCESS_RULE';
@@ -216,6 +225,8 @@ export const FINAL_ACTION_TYPE_KEEP = 'FINAL_ACTION_TYPE_KEEP';
 export const FINAL_ACTION_TYPE_COPY = 'FINAL_ACTION_TYPE_COPY';
 export const FINAL_ACTION_TYPE_TRANSFER = 'FINAL_ACTION_TYPE_TRANSFER';
 export const FINAL_ACTION_TYPE_RESTRICT_ACCESS = 'FINAL_ACTION_TYPE_RESTRICT_ACCESS';
+
+export const ERRORS = 'ERRORS';
 
 export const STORAGE_RULE_IDENTIFIER = 'storageRuleIdentifier';
 export const APPRAISAL_RULE_IDENTIFIER = 'appraisalRuleIdentifier';
