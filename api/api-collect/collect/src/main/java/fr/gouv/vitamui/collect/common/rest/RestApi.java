@@ -35,6 +35,7 @@ public class RestApi {
     public static final String COLLECT_PATH = "/collect-api/v1";
     public static final String ARCHIVE_UNITS = "/archive-units";
     public static final String PROJECTS = "/projects";
+    public static final String CONFIGURATIONS = "/configurations";
 
     public static final String TRANSACTIONS = "/transactions";
 
@@ -52,6 +53,7 @@ public class RestApi {
     public static final String DOWNLOAD_SIP_PATH = "/downloadSip";
     public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
     public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
+    public static final String COLLECT_CONFIGURATIONS_PATH = COLLECT_PATH + CONFIGURATIONS;
 
     public static final String COLLECT_ARCHIVE_UNITS = COLLECT_PATH + ARCHIVE_UNITS;
 

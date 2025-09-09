@@ -42,12 +42,14 @@ import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models/criteria/
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { DEFAULT_LEAVES_FIRST_PAGE_SIZE, DEFAULT_UNIT_PAGE_SIZE, LeavesTreeApiService } from './leaves-tree-api.service';
 import { ConfigurationsApiService } from './configurations-api.service';
+import { EventEmitter } from '@angular/core';
 
 const PATH_SEPARATOR = '/';
 
 export class LeavesTreeService {
   private leavesTreeApiService: LeavesTreeApiService;
   private virtualPathOriginField = 'FilePlanPosition'; //Default field
+  virtualPathSearchLimitReached = new EventEmitter<boolean>();
 
   constructor(
     private searchArchiveUnitsService: SearchArchiveUnitsInterface,
@@ -153,18 +155,7 @@ export class LeavesTreeService {
     // Sort waiting list
     parentNode.waitingChildren.sort((a, b) => a.title.localeCompare(b.title));
 
-    const firstResultIndex = parentNode.waitingChildren.findIndex((item) => item.count > 0);
-    let nbElementsToAdd;
-    if (leavesLoadingCriteria.firstPage) {
-      nbElementsToAdd = 30;
-      if (firstResultIndex < 10) {
-        nbElementsToAdd = 10;
-      } else if (firstResultIndex < 20) {
-        nbElementsToAdd = 20;
-      }
-    } else {
-      nbElementsToAdd = 10;
-    }
+    let nbElementsToAdd = this.getElementNbToShow(parentNode, leavesLoadingCriteria, { maxPageCount: 3 });
 
     if (!leavesLoadingCriteria.showEveryNodes) {
       let added = 0;
@@ -180,7 +171,6 @@ export class LeavesTreeService {
           matching++;
         }
       }
-
       parentNode.waitingChildren.splice(0, added);
     } else {
       // Move from waiting → children
@@ -190,13 +180,34 @@ export class LeavesTreeService {
     return nbElementsToAdd;
   }
 
+  private getElementNbToShow(
+    parentNode: FilingHoldingSchemeNode,
+    leavesLoadingCriteria: LeavesLoadingCriteria,
+    options: {
+      maxPageCount: 3;
+    },
+  ): number {
+    if (!leavesLoadingCriteria.firstPage) return DEFAULT_UNIT_PAGE_SIZE;
+
+    const { maxPageCount } = options;
+
+    const maxResultIndex = parentNode.waitingChildren
+      .slice(0, maxPageCount * DEFAULT_UNIT_PAGE_SIZE)
+      .reverse()
+      .findIndex((item) => item.count > 0);
+    if (maxResultIndex === -1) return DEFAULT_UNIT_PAGE_SIZE;
+    const computedPageCount = Math.floor(maxResultIndex / DEFAULT_UNIT_PAGE_SIZE) + 1;
+    const finalPageCount = Math.min(maxPageCount, computedPageCount);
+
+    return finalPageCount * DEFAULT_UNIT_PAGE_SIZE;
+  }
+
   retrieveNodeChildren(
     node: FilingHoldingSchemeNode,
     directContainersNodes: FilingHoldingSchemeNode[],
     leavesLoadingCriteria: LeavesLoadingCriteria,
   ): Promise<void> {
     return new Promise((resolve) => {
-      //fixme improvement manage already loaded elements, if need to do calls???
       forkJoin({
         realDirectChildrenAny: this.leavesTreeApiService.retrieveAnyRealChildren(
           node,
@@ -341,7 +352,6 @@ export class LeavesTreeService {
     leavesLoadingCriteria: LeavesLoadingCriteria,
   ): Promise<void> {
     return new Promise((resolve) => {
-      //fixme manage already loaded elements, if need to do calls???
       forkJoin({
         virtualDirectChildrenAny: this.leavesTreeApiService.retrieveDirectChildrenUnderVirtual(
           realParentNodeId,
@@ -502,13 +512,8 @@ export class LeavesTreeService {
     node.isLoadingChildren = false;
   }
 
-  private async extractAnyVirtualChildrenDecorated(
-    nodeId: string,
-    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[],
-    //  showEveryNodes: boolean,
-  ) {
+  private async extractAnyVirtualChildrenDecorated(nodeId: string, virtualChildrenMatchingNodes: FilingHoldingSchemeNode[]) {
     let virtualChildrenAnyNodes: FilingHoldingSchemeNode[];
-    //    if (showEveryNodes) {
     virtualChildrenAnyNodes = (await firstValueFrom(this.leavesTreeApiService.retrieveAnyDirectVirtualChildren(nodeId))).map(
       (virtualUnit) => {
         const virtualNode = FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId);
@@ -517,7 +522,9 @@ export class LeavesTreeService {
         return virtualNode;
       },
     );
-    // }
+    if (virtualChildrenAnyNodes?.length >= FACETS_DEFAULT_SIZE) {
+      this.setVirtualPathSearchLimitReachedSubject(true);
+    }
     return virtualChildrenAnyNodes;
   }
 
@@ -551,7 +558,7 @@ export class LeavesTreeService {
     node.isLoadingChildren = true;
     const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id);
 
-    let virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(node.id, virtualChildrenMatchingNodes /*, showEveryNodes*/);
+    let virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(node.id, virtualChildrenMatchingNodes);
 
     let leavesLoadingCriteria: LeavesLoadingCriteria = {
       showEveryNodes: showEveryNodes,
@@ -572,7 +579,13 @@ export class LeavesTreeService {
     const virtualUnits = await firstValueFrom(
       this.leavesTreeApiService.retrieveVirtualChildrenMatchingHavingResults(nodeId, this.searchCriterias),
     );
-
+    if (virtualUnits?.length > FACETS_DEFAULT_SIZE) {
+      this.setVirtualPathSearchLimitReachedSubject(true);
+    }
     return virtualUnits.map((virtualUnit) => FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId));
+  }
+
+  setVirtualPathSearchLimitReachedSubject(value: boolean): void {
+    this.virtualPathSearchLimitReached.emit(value);
   }
 }

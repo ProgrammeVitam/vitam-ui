@@ -37,6 +37,7 @@
 
 package fr.gouv.vitamui.collect.server.rest;
 
+import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -55,7 +56,7 @@ import java.util.List;
  * Controller for public configurations.
  */
 @RestController
-@RequestMapping("/configurations")
+@RequestMapping(RestApi.COLLECT_CONFIGURATIONS_PATH)
 @Tag(name = "Configurations", description = "System Configurations")
 public class ConfigurationsController {
 

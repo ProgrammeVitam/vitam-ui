@@ -206,62 +206,63 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   highlightSelectedNodeUnit(node: FilingHoldingSchemeNode, withVisualMarker: boolean = false) {
     let cssId = 'filing-holding-scheme-tree-node-selected';
     if (withVisualMarker) cssId = cssId.concat(' selected-node');
-    return this.unitId && this.unitId === node.id ? cssId : 'filing-holding-scheme-tree-node';
+    return this.isUnitMatch(node.id) ? cssId : 'filing-holding-scheme-tree-node';
   }
 
   isAncestorMustBeColored(node: FilingHoldingSchemeNode) {
-    return this.allunitups &&
-      (this.allunitups.includes(node.id) || this.allunitups.includes(node.realParentId + '-' + '/' + node.virtualPath))
+    return this.allunitups && (this.realNodePathIncluded(node.id) || this.virtualNodePathIncluded(node.realParentId, node.virtualPath))
       ? 'filing-holding-scheme-tree-node-selected'
       : '';
   }
 
   isExpandedNodeMustBeColored(node: FilingHoldingSchemeNode) {
     return this.allunitups &&
-      (this.allunitups.includes(node.id) || this.allunitups.includes(node.realParentId + '-' + '/' + node.virtualPath)) &&
+      (this.realNodePathIncluded(node.id) || this.virtualNodePathIncluded(node.realParentId, node.virtualPath)) &&
       !this.nestedTreeControlLeaves.isExpanded(node)
       ? 'selected-node'
       : '';
   }
 
   selectNonOprhanNodeAtTop(node: FilingHoldingSchemeNode) {
-    return this.unitId === node.id ||
+    return this.isUnitMatch(node.id) ||
       (this.allunitups &&
-        (this.allunitups.includes(node.id) || this.allunitups.includes(node.realParentId + '-' + '/' + node.virtualPath)) &&
+        (this.realNodePathIncluded(node.id) || this.virtualNodePathIncluded(node.realParentId, node.virtualPath)) &&
         !this.nestedTreeControlLeaves.isExpanded(node))
       ? 'selected-node'
       : '';
   }
 
   isOrphanNodeMustBeColored(node: FilingHoldingSchemeNode) {
-    return node.children &&
-      node.children.some(
-        (node) =>
-          node.id === this.unitId ||
-          this.allunitups.includes(node.id) ||
-          this.allunitups.includes(node.realParentId + '-' + '/' + node.virtualPath),
-      )
-      ? 'filing-holding-scheme-tree-node-selected'
-      : 'filing-holding-scheme-tree-node';
+    if (!node.children) {
+      return 'filing-holding-scheme-tree-node';
+    }
+    const hasMatchingChild = node.children.some(
+      (node) =>
+        this.isUnitMatch(node.id) ||
+        this.realNodePathIncluded(node.id) ||
+        this.virtualNodePathIncluded(node.realParentId, node.virtualPath),
+    );
+    return hasMatchingChild ? 'filing-holding-scheme-tree-node-selected' : 'filing-holding-scheme-tree-node';
   }
 
   isOrphanNeedsVisualMarker(node: FilingHoldingSchemeNode) {
-    return node.children &&
-      node.children.some(
-        (node) =>
-          node.id === this.unitId ||
-          this.allunitups.includes(node.id) ||
-          this.allunitups.includes(node.realParentId + '-' + '/' + node.virtualPath),
-      ) &&
-      !this.nestedTreeControlLeaves.isExpanded(node)
-      ? 'selected-node'
-      : '';
+    if (!node.children) {
+      return '';
+    }
+    const hasMatchingChild = node.children.some(
+      (node) =>
+        this.isUnitMatch(node.id) ||
+        this.realNodePathIncluded(node.id) ||
+        this.virtualNodePathIncluded(node.realParentId, node.virtualPath),
+    );
+
+    return hasMatchingChild && !this.nestedTreeControlLeaves.isExpanded(node) ? 'selected-node' : '';
   }
 
   colorOrphanNode(node: FilingHoldingSchemeNode) {
     const expanded = this.nestedTreeControlLeaves.isExpanded(node);
     const cssId = `filing-holding-scheme-tree-node-selected${expanded ? '' : ' selected-node'}`;
-    return this.unitId !== null && !this.nonOrphanNodeSelected && !this.nonOrphanChildNodeSelected ? cssId : '';
+    return this.unitId && !this.nonOrphanNodeSelected && !this.nonOrphanChildNodeSelected ? cssId : '';
   }
 
   private subscribeOnSearchCriteriasUpdate() {
@@ -294,5 +295,17 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
         this.nonOrphanChildNodeSelected = this.allNonOrphanNodes.some((node) => this.allunitups?.includes(node.id));
       }),
     );
+  }
+
+  private realNodePathIncluded(nodeId: string) {
+    return this.allunitups.includes(nodeId);
+  }
+
+  private virtualNodePathIncluded(realParentId: string, virtualPath: string) {
+    return this.allunitups.includes(realParentId + '-' + '/' + virtualPath);
+  }
+
+  private isUnitMatch(nodeId: string): boolean {
+    return this.unitId && nodeId === this.unitId;
   }
 }
