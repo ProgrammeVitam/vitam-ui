@@ -74,6 +74,7 @@ spring:
                   /archive-search-api/logbooks/operations/**,
                   /archive-search-api/accesscontracts/**,
 
+
                   /pastis-api/ui/**,
                   /pastis-api/security,
                   /pastis-api/userinfos/**,
@@ -242,12 +243,14 @@ spring:
                   Path=
                   /archive-search-api/archive-search/**,
                   /archive-search-api/archive-units/**,
+                  /archive-search-api/configurations/**,
               filters:
                 # Archive search API
                 - RewritePath=/archive-search-api/archive-search/searchcriteriahistory,/searchcriteriahistory,
                 - RewritePath=/archive-search-api/archive-search/filingholdingscheme,/archives-search/filling-holding-schema,
                 - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
                 - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archive-units/$\{segment}
+                - RewritePath=/archive-search-api/configurations/(?<segment>.*),/configurations/$\{segment}
 
             - id: pastis-service
               uri: https://localhost:8015 # URL PASTIS
@@ -270,7 +273,8 @@ spring:
                   /collect-api/transactions$,
                   /collect-api/transactions/**,
                   /collect-api/archive-units$,
-                  /collect-api/archive-units/**
+                  /collect-api/archive-units/**,
+                  /collect-api/configurations/**
 
               filters:
                 # Collect API
@@ -281,6 +285,7 @@ spring:
                 - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/update-units-metadata,/collect-api/v1/transactions/$\{segment}/update-units-metadata,
                 - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
                 - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
+                - RewritePath=/collect-api/configurations(?<segment>.*),/collect-api/v1/configurations$\{segment},
 
             - id: ingest-service
               uri: https://localhost:8088 # URL INGEST

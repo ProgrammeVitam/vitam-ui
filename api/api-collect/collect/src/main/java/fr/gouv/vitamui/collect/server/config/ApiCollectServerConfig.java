@@ -27,11 +27,14 @@
 
 package fr.gouv.vitamui.collect.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.collect.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
@@ -118,5 +121,13 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     @Bean
     public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getExternalParametersApi();
+    }
+
+    @Bean
+    public ConfigurationService configurationService(
+        final AdminExternalClient adminExternalClient,
+        final ObjectMapper objectMapper
+    ) {
+        return new ConfigurationService(adminExternalClient, objectMapper);
     }
 }

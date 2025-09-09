@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.server.tenant.service;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -10,8 +11,8 @@ import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
@@ -52,6 +53,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class TenantServiceTest {
+
+    private static final Integer TENANT_IDENTIFIER = 10;
 
     private AutoCloseable mocks;
 
@@ -167,6 +170,7 @@ public class TenantServiceTest {
     @Test
     public void createTenant_searchProfileCreated() {
         final TenantDto tenantDto = buildTenantDto();
+        VitamContext vitamContext = new VitamContext(TENANT_IDENTIFIER);
         Integer someTenantId = 2;
         tenantDto.setId(null);
         tenantDto.setIdentifier(someTenantId);

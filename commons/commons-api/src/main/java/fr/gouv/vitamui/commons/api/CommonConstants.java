@@ -52,6 +52,7 @@ public class CommonConstants {
     public static final String PATH_LOGBOOK = "/{id}/history";
 
     public static final String PATH_ME = "/me";
+    public static final String PATH_VIRTUAL_PATH_FIELDS = "/virtual-paths-fields";
 
     public static final String PATH_OBJECTS = "/objects";
 

@@ -66,8 +66,9 @@ public class SearchCriteriaDto implements Serializable {
     private Integer size = 1;
     private String language = Locale.FRENCH.getLanguage();
     private boolean trackTotalHits;
-    private boolean computeFacets;
+    private boolean computeMgtRulesFacets;
     private Long threshold;
+    private List<Facet> facets = new ArrayList<>();
 
     public List<String> extractNodesCriteria() {
         return this.getCriteriaList()

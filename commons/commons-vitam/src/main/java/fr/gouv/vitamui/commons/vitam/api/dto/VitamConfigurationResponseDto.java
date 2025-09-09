@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,43 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BASE_URL } from '../injection-tokens';
-import { SearchCriteriaDto, SearchResponse } from '../models';
-import { Observable } from 'rxjs';
-import { ReclassificationCriteriaDto } from './reclassification.interface';
-import { PaginatedHttpClient } from '../paginated-http-client';
-import { tap } from 'rxjs/operators';
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ReclassificationApiService extends PaginatedHttpClient<any> {
-  baseUrl: string;
-
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl);
-    this.baseUrl = baseUrl;
-  }
-
-  getBaseUrl() {
-    return this.baseUrl;
-  }
-
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders) {
-    const transactionPath = transactionId ? `/transactions/archive-units/${transactionId}` : '/archive-search';
-    return this.http
-      .post<SearchResponse>(`${this.apiUrl}${transactionPath}/search`, criteriaDto, { headers })
-      .pipe(tap(() => console.log('HTTP request sent:')));
-  }
-
-  reclassification(transactionId: string, criteriaDto: ReclassificationCriteriaDto, headers?: HttpHeaders): Observable<string> {
-    const transactionPath = transactionId ? `/transactions/${transactionId}` : '/archive-search';
-    return this.http.post(`${this.apiUrl}${transactionPath}/reclassification`, criteriaDto, {
-      responseType: 'text',
-      headers,
-    });
-  }
-}
+public class VitamConfigurationResponseDto extends AbstractVitamUIResponseDto<VitamConfigurationDto> {}

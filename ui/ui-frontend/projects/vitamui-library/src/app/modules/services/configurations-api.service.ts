@@ -34,29 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ResultFacet, ResultFacetList } from './search-criteria.interface';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 
-export class FacetsUtils {
-  public static RULES_COMPUTED_NUMBER_PREFIX = 'RULES_COMPUTED_NUMBER_';
-  public static FINAL_ACTION_COMPUTED_PREFIX = 'FINAL_ACTION_COMPUTED_';
-  public static EXPIRED_RULES_COMPUTED_PREFIX = 'EXPIRED_RULES_COMPUTED_';
-  public static UNEXPIRED_RULES_COMPUTED_PREFIX = 'UNEXPIRED_RULES_COMPUTED_';
-  public static COUNT_WITHOUT_RULES_PREFIX = 'COUNT_WITHOUT_RULES_';
-  public static COMPUTE_RULES_AU_NUMBER = 'COMPUTE_RULES_AU_NUMBER';
-  public static COUNT_BY_NODE = 'COUNT_BY_NODE';
+import { BASE_URL } from '../injection-tokens';
+import { BaseHttpClient } from '../base-http-client';
+import { Observable } from 'rxjs';
 
-  public static extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
-    const nodesFacets: ResultFacet[] = [];
+@Injectable({
+  providedIn: 'root',
+})
+export class ConfigurationsApiService extends BaseHttpClient<any> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/configurations/virtual-paths-fields');
+  }
 
-    if (facetResults && facetResults.length > 0) {
-      for (const facet of facetResults) {
-        if (facet.name === FacetsUtils.COUNT_BY_NODE) {
-          for (const bucket of facet.buckets) {
-            nodesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    return nodesFacets;
+  getVirtualPathsFields(params?: HttpParams, headers?: HttpHeaders): Observable<string[]> {
+    return super.getAllByParams(params, headers);
   }
 }

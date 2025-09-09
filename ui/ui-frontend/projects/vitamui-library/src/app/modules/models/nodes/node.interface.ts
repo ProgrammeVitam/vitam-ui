@@ -47,6 +47,7 @@ export interface FilingHoldingSchemeNode extends Id {
   label?: string;
   children: FilingHoldingSchemeNode[];
   vitamId: string;
+  virtualPath?: string;
 
   // DISPLAY
   disabledChild?: boolean; // TODO: try to remove - used in VitamuiTreeNodeComponent to set indeterminate
@@ -63,6 +64,12 @@ export interface FilingHoldingSchemeNode extends Id {
   canLoadMoreChildren?: boolean;
   paginatedMatchingChildrenLoaded?: number;
   canLoadMoreMatchingChildren?: boolean;
+
+  waitingChildren?: FilingHoldingSchemeNode[];
+  realDirectNodePage?: number;
+  realDirectNodeMatchingPage?: number;
+  virtualDirectNodePage?: number;
+  virtualDirectChildrenMatchingPage?: number;
 }
 
 export class MatchingNodesNumbers {
@@ -100,4 +107,14 @@ export class MatchingNodesNumbers {
     this.nodesUpdated += matchingNodesNumbers.nodesUpdated;
     this.nodesFoundButUnchanged += matchingNodesNumbers.nodesFoundButUnchanged;
   }
+}
+
+export interface LeavesLoadingCriteria {
+  nodeAnyChildrenPageSize: number;
+  nodeMatchingChildrenPageSize: number;
+  nbElementsToShow: number;
+  showEveryNodes: boolean;
+  virtualChildrenMatchingNodes: FilingHoldingSchemeNode[];
+  virtualChildrenNodes: FilingHoldingSchemeNode[];
+  firstPage: boolean;
 }

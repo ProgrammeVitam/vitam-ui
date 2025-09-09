@@ -58,6 +58,7 @@ import {
   AccessContract,
   AccessContractService,
   AlertDialogComponent,
+  ALL_DESCENDANTS_FACET,
   ArchiveSearchResultFacets,
   CriteriaDataType,
   CriteriaOperator,
@@ -66,10 +67,13 @@ import {
   Direction,
   FilingHoldingSchemeNode,
   Logger,
+  ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
   ReclassificationDialogComponent,
+  Rule,
+  RuleService,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -80,12 +84,11 @@ import {
   SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
+  TermsFacet,
   Unit,
   UnitType,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamuiRoles,
-  Rule,
-  RuleService,
-  ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
@@ -247,8 +250,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           if (node.id === ORPHANS_NODE_ID) {
             this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
           } else if (node.isVirtual) {
-            this.removeCriteria('VIRTUAL', { id: node.id, value: node.id }, false);
-            this.removeCriteria('NODE', { id: node.realParentId, value: node.realParentId }, false);
+            this.removeCriteria('VIRTUAL', { id: node.virtualPath, value: '/' + node.virtualPath }, false);
           } else {
             this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
           }
@@ -267,13 +269,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             false,
           );
         } else {
-          let id = node.id;
           if (node.isVirtual) {
-            id = node.realParentId;
-
             this.addCriteria(
               'VIRTUAL',
-              { id: node.id, value: node.id },
+              { id: node.virtualPath, value: '/' + node.virtualPath },
               node.title,
               true,
               CriteriaOperator.EQ,
@@ -282,18 +281,19 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
               CriteriaDataType.STRING,
               false,
             );
+          } else {
+            this.addCriteria(
+              'NODE',
+              { id: node.id, value: node.id },
+              node.title,
+              true,
+              CriteriaOperator.EQ,
+              SearchCriteriaTypeEnum.NODES,
+              false,
+              CriteriaDataType.STRING,
+              false,
+            );
           }
-          this.addCriteria(
-            'NODE',
-            { id: id, value: id },
-            node.title,
-            true,
-            CriteriaOperator.EQ,
-            SearchCriteriaTypeEnum.NODES,
-            false,
-            CriteriaDataType.STRING,
-            false,
-          );
         }
       }),
     );
@@ -569,13 +569,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets = true;
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: 0,
       size: 1,
       sortingCriteria,
       trackTotalHits: this.totalResults >= 10000,
-      computeFacets: true,
+      computeMgtRulesFacets: true,
+      facets: facets,
     };
 
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
@@ -600,7 +605,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.showingFacets = false;
     }
     this.pending = true;
-
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    if (includeFacets) {
+      facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+    }
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriterias = {
       criteriaList: this.criteriaSearchList,
@@ -608,7 +617,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       size: PAGE_SIZE,
       sortingCriteria,
       trackTotalHits: false,
-      computeFacets: includeFacets,
+      computeMgtRulesFacets: includeFacets,
+      facets: facets,
     };
     this.archiveSharedDataService.emitSearchCriterias(searchCriterias);
     this.archiveService.searchArchiveUnitsByCriteria(searchCriterias).subscribe(

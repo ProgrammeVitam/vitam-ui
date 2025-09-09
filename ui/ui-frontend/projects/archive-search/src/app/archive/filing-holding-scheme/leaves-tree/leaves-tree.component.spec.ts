@@ -45,6 +45,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import {
+  ConfigurationsApiService,
   DescriptionLevel,
   FilingHoldingSchemeNode,
   InjectorModule,
@@ -110,6 +111,10 @@ describe('LeavesTreeComponent', () => {
     extractNodesFacetsResults: () => of(),
     extractRulesFacetsResults: () => of(),
   };
+
+  const configurationsApiServiceStube = {
+    getVirtualPathsFields: () => of(),
+  };
   const archiveSharedDataServiceStub = {
     getSearchCriterias: () => of(),
     selectedUnit$: of(),
@@ -135,6 +140,7 @@ describe('LeavesTreeComponent', () => {
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
         { provide: ArchiveFacetsService, useValue: archiveFacetsServicStube },
+        { provide: ConfigurationsApiService, useValue: configurationsApiServiceStube },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

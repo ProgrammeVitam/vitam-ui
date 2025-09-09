@@ -113,9 +113,10 @@ export interface SearchCriteriaDto {
   sortingCriteria?: SearchCriteriaSort;
   language?: string;
   trackTotalHits?: boolean;
-  computeFacets?: boolean;
+  computeMgtRulesFacets?: boolean;
   includedFields?: string[];
   excludedFields?: string[];
+  facets?: TermsFacet[]; //Manage other facets types
 }
 
 export interface PagedResult {
@@ -123,6 +124,16 @@ export interface PagedResult {
   pageNumbers: number;
   totalResults: number;
   facets?: ResultFacetList[];
+}
+
+export interface Facet {
+  name: string;
+}
+
+export interface TermsFacet extends Facet {
+  field: string;
+  size: number;
+  order: 'ASC' | 'DESC';
 }
 
 export interface ResultFacetList {

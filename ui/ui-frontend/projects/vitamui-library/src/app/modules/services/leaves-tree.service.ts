@@ -35,22 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { isEmpty } from 'lodash-es';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, firstValueFrom, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilingHoldingSchemeHandler, FilingHoldingSchemeNode, Unit, UnitType } from '../models';
+import { FACETS_DEFAULT_SIZE, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, LeavesLoadingCriteria, UnitType } from '../models';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
-import { FacetsUtils } from '../models/criteria/search-criteria.utils';
-import { LeavesTreeApiService } from './leaves-tree-api.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
+import { DEFAULT_LEAVES_FIRST_PAGE_SIZE, DEFAULT_UNIT_PAGE_SIZE, LeavesTreeApiService } from './leaves-tree-api.service';
+import { ConfigurationsApiService } from './configurations-api.service';
+
+const PATH_SEPARATOR = '/';
 
 export class LeavesTreeService {
   private leavesTreeApiService: LeavesTreeApiService;
+  private virtualPathOriginField = 'FilePlanPosition'; //Default field
 
-  constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {
+  constructor(
+    private searchArchiveUnitsService: SearchArchiveUnitsInterface,
+    private configurationsService: ConfigurationsApiService,
+  ) {
     this.leavesTreeApiService = new LeavesTreeApiService(this.searchArchiveUnitsService);
+    this.configurationsService.getVirtualPathsFields().subscribe((fields) => {
+      if (fields && fields.length > 0) {
+        this.virtualPathOriginField = fields[0];
+      }
+    });
   }
 
   private searchCriterias: SearchCriteriaDto;
+  private nodesCountMap: Map<string, number> = new Map();
   private searchRequestResultFacets: ResultFacet[] = [];
 
   loadingNodesDetails: boolean;
@@ -58,35 +70,6 @@ export class LeavesTreeService {
   public firstToggle(node: FilingHoldingSchemeNode): boolean {
     return this.leavesTreeApiService.firstToggle(node);
   }
-
-  // ########## AFTER CALLS ####################################################################################################
-
-  private compareAddedNodeWithKnownFacets(nodes: FilingHoldingSchemeNode[]) {
-    if (isEmpty(this.searchRequestResultFacets)) {
-      return;
-    }
-    for (const node of nodes) {
-      const matchingFacet = this.searchRequestResultFacets.find((resultFacet) => resultFacet.node === node.id);
-      if (!matchingFacet) {
-        continue;
-      }
-      if (node.count < matchingFacet.count) {
-        node.count = matchingFacet.count;
-      }
-    }
-  }
-
-  private extractAndAddNewFacets(pageResult: PagedResult): ResultFacet[] {
-    // Warning: count decrease on top nodes when search is made on a deeper nodes.
-    const resultFacets: ResultFacet[] = FacetsUtils.extractNodesFacetsResults(pageResult.facets);
-    const newFacets: ResultFacet[] = FilingHoldingSchemeHandler.filterUnknownFacets(this.searchRequestResultFacets, resultFacets);
-    if (newFacets.length > 0) {
-      this.searchRequestResultFacets.push(...newFacets);
-    }
-    return newFacets;
-  }
-
-  // ########## SECONDARY CALLS ####################################################################################################
 
   public loadNodesDetailsFromFacetsIdsAndAddThem(parentNodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): Observable<PagedResult> {
     if (isEmpty(facets)) {
@@ -103,80 +86,17 @@ export class LeavesTreeService {
     );
   }
 
-  // ########## MAIN CALLS ####################################################################################################
-
-  public searchUnderNode(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchUnderNode(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchUnderNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchUnderNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(pagedResult);
-        this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
-        const tocheck = [...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList];
-        this.compareAddedNodeWithKnownFacets(tocheck);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchAtNodeWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchAtNodeWithSearchCriterias(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.addVirtualUnits(parentNode, pagedResult);
-        const newUnits = this.reattachVirtualUnits(pagedResult);
-        this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addChildren(parentNode, newUnits, true);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchOrphans(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchOrphans(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
-  public searchOrphansWithSearchCriterias(parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchOrphansWithSearchCriterias(parentNode, this.searchCriterias).pipe(
-      map((pagedResult) => {
-        this.extractAndAddNewFacets(pagedResult);
-        const matchingNodesNumbers = FilingHoldingSchemeHandler.addOrphans(parentNode, pagedResult.results, true);
-        this.compareAddedNodeWithKnownFacets([...matchingNodesNumbers.nodesAddedList, ...matchingNodesNumbers.nodesUpdatedList]);
-        return pagedResult;
-      }),
-    );
-  }
-
   searchAttachementUnit(): Observable<PagedResult> {
     return this.leavesTreeApiService.searchAttachementUnit();
   }
-
-  // ########## UPDATES ####################################################################################################
 
   setSearchCriterias(searchCriterias: SearchCriteriaDto) {
     this.searchCriterias = searchCriterias;
   }
 
-  setSearchRequestResultFacets(searchRequestResultFacets: ResultFacet[]) {
-    this.searchRequestResultFacets = [...searchRequestResultFacets];
+  setSearchRequestResultFacets(facets: ResultFacet[]) {
+    this.searchRequestResultFacets = [...facets];
+    this.nodesCountMap = new Map(facets.map(({ node, count }) => [node, count] as [string, number]));
   }
 
   // Specific to collect
@@ -184,76 +104,475 @@ export class LeavesTreeService {
     this.leavesTreeApiService.setTransactionId(transactionId);
   }
 
-  private addVirtualUnits(parentNode: FilingHoldingSchemeNode, pagedResult: PagedResult): void {
-    if (pagedResult.results.length === 0) return;
-    const realParentId = parentNode.unitType === 'VIRTUAL' ? parentNode.realParentId : parentNode.id;
+  async loadMoreFromNode(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    node.isLoadingChildren = true;
 
-    const vupsList = pagedResult.results
-      .filter((unit) => {
-        return unit['#unitups']?.includes(realParentId) && this.hasVirtualAttachement(unit);
-      })
-      .flatMap((unit) => unit['#vups']);
+    let leavesLoadingCriteria: LeavesLoadingCriteria = {
+      showEveryNodes: showEveryNodes,
+      nbElementsToShow: DEFAULT_UNIT_PAGE_SIZE,
+      nodeAnyChildrenPageSize: DEFAULT_UNIT_PAGE_SIZE,
+      nodeMatchingChildrenPageSize: DEFAULT_UNIT_PAGE_SIZE,
+      virtualChildrenMatchingNodes: null,
+      virtualChildrenNodes: null,
+      firstPage: false,
+    };
+    if (node.unitType === UnitType.VIRTUAL) {
+      await this.retrieveVirtualNodeChildren(node.realParentId, node, leavesLoadingCriteria);
+    } else {
+      await this.retrieveNodeChildren(node, null, leavesLoadingCriteria);
+    }
+    node.isLoadingChildren = false;
+  }
 
-    if (vupsList.length === 0) return;
-
-    const allPaths = vupsList.flatMap((vup) => {
-      const segments = vup.split('/').filter(Boolean);
-      return segments.map((_: any, i: number) => '/' + segments.slice(0, i + 1).join('/')).filter((path: string) => path !== realParentId);
+  private processRealDirectChildren(
+    realDirectChildrenAny: { results?: any[] },
+    realChildrenMap: Map<string, FilingHoldingSchemeNode>,
+  ): boolean {
+    if (!realDirectChildrenAny?.results) return false;
+    realDirectChildrenAny.results.forEach((unit) => {
+      const node = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      if (this.nodesCountMap.has(node.id)) {
+        node.count = this.nodesCountMap.get(node.id)!;
+      }
+      realChildrenMap.set(node.id, node);
     });
+  }
 
-    const uniquePaths = Array.from(new Set(allPaths));
-    const pathToUnitIdMap = new Map<string, string>();
+  private deduplicateAndMergeChildren(
+    parentNode: FilingHoldingSchemeNode,
+    realChildrenMap: Map<string, FilingHoldingSchemeNode>,
+    leavesLoadingCriteria: LeavesLoadingCriteria,
+  ): number {
+    // Add unique new children
+    const newChildren = [...realChildrenMap.values()].filter(
+      (child) => !parentNode.waitingChildren.some((c) => c.id === child.id) && !parentNode.children.some((c) => c.id === child.id),
+    );
 
-    uniquePaths.forEach((path) => {
-      if (pathToUnitIdMap.has(path)) return;
+    parentNode.waitingChildren.push(...newChildren);
 
-      const segments = path.split('/').filter(Boolean);
-      const title = segments.at(-1) ?? '';
-      const parentPath = segments.length > 1 ? '/' + segments.slice(0, -1).join('/') : null;
+    // Sort waiting list
+    parentNode.waitingChildren.sort((a, b) => a.title.localeCompare(b.title));
 
-      const unitUps = parentPath ? [pathToUnitIdMap.get(parentPath)!] : [realParentId];
+    const firstResultIndex = parentNode.waitingChildren.findIndex((item) => item.count > 0);
+    let nbElementsToAdd;
+    if (leavesLoadingCriteria.firstPage) {
+      nbElementsToAdd = 30;
+      if (firstResultIndex < 10) {
+        nbElementsToAdd = 10;
+      } else if (firstResultIndex < 20) {
+        nbElementsToAdd = 20;
+      }
+    } else {
+      nbElementsToAdd = 10;
+    }
 
-      const opi = pagedResult.results[0]['#opi'];
-      const virtualUnit: Unit = {
-        '#id': path,
-        Title: title,
-        '#unitups': unitUps,
-        realParentId,
-        '#allunitups': [...unitUps, realParentId],
-        '#unitType': UnitType.VIRTUAL,
-        '#opi': opi,
+    if (!leavesLoadingCriteria.showEveryNodes) {
+      let added = 0;
+      let matching = 0;
+
+      for (const child of parentNode.waitingChildren) {
+        if (matching >= nbElementsToAdd) break;
+
+        parentNode.children.push(child);
+        added++;
+
+        if (child.count > 0) {
+          matching++;
+        }
+      }
+
+      parentNode.waitingChildren.splice(0, added);
+    } else {
+      // Move from waiting → children
+      parentNode.children.push(...parentNode.waitingChildren.splice(0, nbElementsToAdd));
+    }
+
+    return nbElementsToAdd;
+  }
+
+  retrieveNodeChildren(
+    node: FilingHoldingSchemeNode,
+    directContainersNodes: FilingHoldingSchemeNode[],
+    leavesLoadingCriteria: LeavesLoadingCriteria,
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      //fixme improvement manage already loaded elements, if need to do calls???
+      forkJoin({
+        realDirectChildrenAny: this.leavesTreeApiService.retrieveAnyRealChildren(
+          node,
+          node.realDirectNodePage,
+          leavesLoadingCriteria.nodeAnyChildrenPageSize,
+        ),
+        realDirectChildrenMatching: this.leavesTreeApiService.retrieveRealChildrenWithCriteria(
+          node.id,
+          this.searchCriterias,
+          node.realDirectNodeMatchingPage,
+          leavesLoadingCriteria.nodeMatchingChildrenPageSize,
+        ),
+      }).subscribe({
+        next: ({ realDirectChildrenAny, realDirectChildrenMatching }) => {
+          let realChildrenMap = new Map<string, FilingHoldingSchemeNode>();
+          let virtualChildrenMap = new Map<string, FilingHoldingSchemeNode>();
+          let hasMoreAnyElts = false;
+          let hasMoreMatchingElts = false;
+          let hasMoreAnyVirtualElts = false;
+          let hasMoreMatchingVirtualElts = false;
+
+          // folders containers, filled in first toggle only
+          if (directContainersNodes) {
+            directContainersNodes.forEach((containerNode) => {
+              realChildrenMap.set(containerNode.id, containerNode);
+            });
+          }
+
+          if (realDirectChildrenAny) {
+            this.processRealDirectChildren(realDirectChildrenAny, realChildrenMap);
+          }
+
+          if (realDirectChildrenMatching) {
+            this.processRealDirectChildrenMatching(realDirectChildrenMatching, node, realChildrenMap);
+          }
+
+          ////////////////// manage Virtual nodes
+
+          if (leavesLoadingCriteria.virtualChildrenNodes?.length > 0) {
+            hasMoreAnyVirtualElts = leavesLoadingCriteria.virtualChildrenNodes?.length >= FACETS_DEFAULT_SIZE;
+            this.processVirtualChildren(leavesLoadingCriteria.virtualChildrenNodes, virtualChildrenMap);
+          }
+          if (leavesLoadingCriteria.virtualChildrenMatchingNodes) {
+            hasMoreMatchingVirtualElts = leavesLoadingCriteria.virtualChildrenMatchingNodes.length >= FACETS_DEFAULT_SIZE;
+            this.processVirtualChildrenMatching(
+              node,
+              leavesLoadingCriteria.virtualChildrenMatchingNodes,
+              virtualChildrenMap,
+              PATH_SEPARATOR,
+            );
+          }
+
+          // Deduplication
+          leavesLoadingCriteria.nbElementsToShow = this.deduplicateAndMergeChildren(node, realChildrenMap, leavesLoadingCriteria);
+
+          if (realDirectChildrenAny) {
+            hasMoreAnyElts = realDirectChildrenAny.results.length >= leavesLoadingCriteria.nodeAnyChildrenPageSize;
+            const shift =
+              leavesLoadingCriteria.nodeAnyChildrenPageSize > DEFAULT_UNIT_PAGE_SIZE
+                ? leavesLoadingCriteria.nodeAnyChildrenPageSize / DEFAULT_UNIT_PAGE_SIZE
+                : 1;
+            node.realDirectNodePage += shift;
+          }
+
+          if (realDirectChildrenMatching) {
+            hasMoreMatchingElts = realDirectChildrenMatching.results?.length >= leavesLoadingCriteria.nodeMatchingChildrenPageSize;
+            if (node.realDirectNodeMatchingPage < realDirectChildrenMatching.pageNumbers) {
+              let shift = 1;
+              if (leavesLoadingCriteria.nodeMatchingChildrenPageSize > DEFAULT_UNIT_PAGE_SIZE) {
+                shift = leavesLoadingCriteria.nodeMatchingChildrenPageSize / DEFAULT_UNIT_PAGE_SIZE;
+              }
+              node.realDirectNodeMatchingPage += shift;
+            }
+          }
+          //fixme manage canLoadMoreChildren using nbElementsToShow ???
+          const hasWaiting = node.waitingChildren.length > 0;
+
+          node.canLoadMoreChildren =
+            (!leavesLoadingCriteria.showEveryNodes && (hasMoreMatchingElts || hasMoreMatchingVirtualElts || hasWaiting)) ||
+            (leavesLoadingCriteria.showEveryNodes && (hasMoreAnyElts || hasMoreAnyVirtualElts || hasWaiting));
+
+          //Finish
+          resolve(); // done
+        },
+        error: (err) => {
+          console.error('Error during retrieving children', err);
+        },
+      });
+    });
+  }
+
+  private processVirtualChildrenMatching(
+    node: FilingHoldingSchemeNode,
+    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[],
+    virtualChildrenMap: Map<string, FilingHoldingSchemeNode>,
+    parentPath: string,
+  ) {
+    virtualChildrenMatchingNodes.forEach((virtualUnit) => {
+      virtualChildrenMap.set(virtualUnit.id, virtualUnit);
+    });
+    let virtualPaths = [...virtualChildrenMap.values()];
+    const virtualPathsRoots = FilingHoldingSchemeHandler.extractVirtualPathsRoots(virtualPaths, parentPath);
+    if (virtualPathsRoots) {
+      virtualPathsRoots.forEach((virtualPath) => {
+        node.waitingChildren.push(virtualPath);
+      });
+    }
+  }
+
+  private processVirtualChildren(
+    virtualChildrenAnyNodes: FilingHoldingSchemeNode[],
+    virtualChildrenMap: Map<string, FilingHoldingSchemeNode>,
+  ) {
+    virtualChildrenAnyNodes.forEach((virtualUnit) => {
+      virtualUnit.count = 0;
+      virtualChildrenMap.set(virtualUnit.id, virtualUnit);
+    });
+  }
+
+  private processRealDirectChildrenMatching(
+    realDirectChildrenMatching: PagedResult,
+    parentNode: FilingHoldingSchemeNode,
+    realChildrenMap: Map<string, FilingHoldingSchemeNode>,
+  ) {
+    if (parentNode.realDirectNodeMatchingPage < realDirectChildrenMatching.pageNumbers) {
+      realDirectChildrenMatching.results.forEach((unit) => {
+        let filingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+        if (this.nodesCountMap.has(filingHoldingSchemeNode.id)) {
+          filingHoldingSchemeNode.count = this.nodesCountMap.get(filingHoldingSchemeNode.id);
+        } else {
+          filingHoldingSchemeNode.count = 1;
+        }
+        realChildrenMap.set(filingHoldingSchemeNode.id, filingHoldingSchemeNode);
+      });
+    }
+  }
+
+  //For virtual node
+  retrieveVirtualNodeChildren(
+    realParentNodeId: string,
+    virtualNode: FilingHoldingSchemeNode,
+    leavesLoadingCriteria: LeavesLoadingCriteria,
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      //fixme manage already loaded elements, if need to do calls???
+      forkJoin({
+        virtualDirectChildrenAny: this.leavesTreeApiService.retrieveDirectChildrenUnderVirtual(
+          realParentNodeId,
+          virtualNode.virtualPath,
+          virtualNode.virtualDirectNodePage,
+          leavesLoadingCriteria.nodeAnyChildrenPageSize,
+          this.virtualPathOriginField,
+        ),
+        virtualDirectChildrenMatching: this.leavesTreeApiService.retrieveDirectChildrenUnderVirtualWithCriteria(
+          realParentNodeId,
+          virtualNode.virtualPath,
+          this.searchCriterias,
+          virtualNode.virtualDirectChildrenMatchingPage,
+          leavesLoadingCriteria.nodeMatchingChildrenPageSize,
+          this.virtualPathOriginField,
+        ),
+      }).subscribe({
+        next: ({ virtualDirectChildrenAny, virtualDirectChildrenMatching }) => {
+          let realChildrenMap = new Map<string, FilingHoldingSchemeNode>();
+          let virtualChildrenMap = new Map<string, FilingHoldingSchemeNode>();
+          let hasMoreAnyElts = false;
+          let hasMoreMatchingElts = false;
+          let hasMoreAnyVirtualElts = false;
+          let hasMoreMatchingVirtualElts = false;
+
+          if (virtualDirectChildrenAny) {
+            virtualDirectChildrenAny.results.forEach((unit) => {
+              let filingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+              realChildrenMap.set(filingHoldingSchemeNode.id, filingHoldingSchemeNode);
+            });
+          }
+
+          if (virtualDirectChildrenMatching) {
+            virtualDirectChildrenMatching.results.forEach((unit) => {
+              let filingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+              if (this.nodesCountMap.has(filingHoldingSchemeNode.id)) {
+                filingHoldingSchemeNode.count = this.nodesCountMap.get(filingHoldingSchemeNode.id);
+              } else {
+                filingHoldingSchemeNode.count = 1;
+              }
+              realChildrenMap.set(filingHoldingSchemeNode.id, filingHoldingSchemeNode);
+            });
+          }
+
+          ////////////////// manage virtual
+
+          if (leavesLoadingCriteria.virtualChildrenNodes?.length > 0) {
+            hasMoreAnyVirtualElts = leavesLoadingCriteria.virtualChildrenNodes?.length >= FACETS_DEFAULT_SIZE;
+            this.processVirtualChildren(leavesLoadingCriteria.virtualChildrenNodes, virtualChildrenMap);
+          }
+          if (leavesLoadingCriteria.virtualChildrenMatchingNodes) {
+            hasMoreMatchingVirtualElts = leavesLoadingCriteria.virtualChildrenMatchingNodes.length >= FACETS_DEFAULT_SIZE;
+            this.processVirtualChildrenMatching(
+              virtualNode,
+              leavesLoadingCriteria.virtualChildrenMatchingNodes,
+              virtualChildrenMap,
+              PATH_SEPARATOR + virtualNode.virtualPath,
+            );
+          }
+
+          // Deduplication
+
+          leavesLoadingCriteria.nbElementsToShow = this.deduplicateAndMergeChildren(virtualNode, realChildrenMap, leavesLoadingCriteria);
+
+          if (virtualDirectChildrenMatching) {
+            hasMoreMatchingElts = virtualDirectChildrenMatching.results?.length >= leavesLoadingCriteria.nodeMatchingChildrenPageSize;
+            if (virtualNode.virtualDirectChildrenMatchingPage < virtualDirectChildrenMatching.pageNumbers) {
+              let shift = 1;
+              if (leavesLoadingCriteria.nodeMatchingChildrenPageSize > DEFAULT_UNIT_PAGE_SIZE) {
+                shift = leavesLoadingCriteria.nodeMatchingChildrenPageSize / DEFAULT_UNIT_PAGE_SIZE;
+              }
+              virtualNode.virtualDirectChildrenMatchingPage += shift;
+            }
+          }
+          if (virtualDirectChildrenAny) {
+            hasMoreAnyElts = virtualDirectChildrenAny.results?.length >= leavesLoadingCriteria.nodeAnyChildrenPageSize;
+
+            let shift = 1;
+            if (leavesLoadingCriteria.nodeAnyChildrenPageSize > DEFAULT_UNIT_PAGE_SIZE) {
+              shift = leavesLoadingCriteria.nodeAnyChildrenPageSize / DEFAULT_UNIT_PAGE_SIZE;
+            }
+            virtualNode.virtualDirectNodePage += shift;
+          }
+          //fixme manage canLoadMoreChildren using nbElementsToShow ???
+
+          virtualNode.canLoadMoreMatchingChildren =
+            !leavesLoadingCriteria.showEveryNodes &&
+            (hasMoreMatchingElts || hasMoreMatchingVirtualElts || virtualNode.waitingChildren.length > 0);
+
+          virtualNode.canLoadMoreChildren =
+            virtualNode.canLoadMoreMatchingChildren ||
+            (leavesLoadingCriteria.showEveryNodes && (hasMoreAnyElts || hasMoreAnyVirtualElts || virtualNode.waitingChildren.length > 0));
+
+          //Finish
+          resolve(); // done
+        },
+        error: (err) => {
+          console.error('Error during retrieving virtual children', err);
+        },
+      });
+    });
+  }
+
+  public async loadNodeChildrenOnFirstToggle(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    // Page sizes
+
+    node.isLoadingChildren = true;
+    FilingHoldingSchemeHandler.initNode(node);
+
+    const perimeterNodesIds: string[] = Array.from(this.nodesCountMap.keys());
+
+    if (node.unitType === UnitType.VIRTUAL) {
+      //Fixme to update in optimised version to not call again for virtual nodes
+      const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.realParentId);
+
+      const virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(
+        node.realParentId,
+        virtualChildrenMatchingNodes,
+        //   showEveryNodes,
+      );
+
+      let leavesLoadingCriteria: LeavesLoadingCriteria = {
+        showEveryNodes: showEveryNodes,
+        nbElementsToShow: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+        nodeAnyChildrenPageSize: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+        nodeMatchingChildrenPageSize: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+        virtualChildrenMatchingNodes: virtualChildrenMatchingNodes,
+        virtualChildrenNodes: virtualChildrenAnyNodes,
+        firstPage: true,
       };
 
-      pagedResult.results.push(virtualUnit);
-      pathToUnitIdMap.set(path, path);
+      // Await children retrieval from virtual node
+      await this.retrieveVirtualNodeChildren(node.realParentId, node, leavesLoadingCriteria);
+    } else {
+      //Build first 1000 direct containers folder
+      const directContainersNodes = await this.extractContainersFilteredByMainRoots(node, perimeterNodesIds);
+
+      const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id);
+
+      const virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(
+        node.id,
+        virtualChildrenMatchingNodes /*, showEveryNodes*/,
+      );
+
+      let leavesLoadingCriteria: LeavesLoadingCriteria = {
+        showEveryNodes: showEveryNodes,
+        nbElementsToShow: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+        nodeAnyChildrenPageSize: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+        nodeMatchingChildrenPageSize: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+        virtualChildrenMatchingNodes: virtualChildrenMatchingNodes,
+        virtualChildrenNodes: virtualChildrenAnyNodes,
+        firstPage: true,
+      };
+
+      // Await children retrieval from real node
+      await this.retrieveNodeChildren(node, directContainersNodes, leavesLoadingCriteria);
+    }
+    node.isLoadingChildren = false;
+  }
+
+  private async extractAnyVirtualChildrenDecorated(
+    nodeId: string,
+    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[],
+    //  showEveryNodes: boolean,
+  ) {
+    let virtualChildrenAnyNodes: FilingHoldingSchemeNode[];
+    //    if (showEveryNodes) {
+    virtualChildrenAnyNodes = (await firstValueFrom(this.leavesTreeApiService.retrieveAnyDirectVirtualChildren(nodeId))).map(
+      (virtualUnit) => {
+        const virtualNode = FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId);
+        const matchingVirtualNodeFound = virtualChildrenMatchingNodes.find((n) => n.id === virtualNode.id);
+        virtualNode.count = matchingVirtualNodeFound ? matchingVirtualNodeFound.count : 0;
+        return virtualNode;
+      },
+    );
+    // }
+    return virtualChildrenAnyNodes;
+  }
+
+  private async extractContainersFilteredByMainRoots(node: FilingHoldingSchemeNode, perimeterNodesIds: string[]) {
+    const { results } = await firstValueFrom(this.leavesTreeApiService.retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds, node));
+
+    return results.map((unit) => {
+      const convertedNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
+      convertedNode.count = this.nodesCountMap.get(convertedNode.id) ?? convertedNode.count;
+      return convertedNode;
     });
   }
 
-  private reattachVirtualUnits(pagedResult: PagedResult): Unit[] {
-    const updatedUnits = (pagedResult.results || []).map((unit: Unit) => {
-      const vups = unit['#vups'] || [];
-      if (this.hasVirtualAttachement(unit)) {
-        unit['#unitups'] = vups.map((pos) => `${pos}`);
-        unit['#allunitups'] = [...(unit['#allunitups'] || []), ...vups];
-      }
-
-      return unit;
-    });
-
-    return updatedUnits.sort((a, b) => {
-      const aIsVirtual = a['#unitType'] === 'VIRTUAL' ? 1 : 0;
-      const bIsVirtual = b['#unitType'] === 'VIRTUAL' ? 1 : 0;
-      if (aIsVirtual !== bIsVirtual) {
-        return aIsVirtual - bIsVirtual; // VIRTUAL à la fin
-      }
-      const aTitle = a.Title || '';
-      const bTitle = b.Title || '';
-      return aTitle.localeCompare(bTitle); // Tri secondaire : par titre alphabétique
-    });
+  async loadMoreFromOrphanNode(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    node.isLoadingChildren = true;
+    let leavesLoadingCriteria: LeavesLoadingCriteria = {
+      showEveryNodes: showEveryNodes,
+      nbElementsToShow: DEFAULT_UNIT_PAGE_SIZE,
+      nodeAnyChildrenPageSize: DEFAULT_UNIT_PAGE_SIZE,
+      nodeMatchingChildrenPageSize: DEFAULT_UNIT_PAGE_SIZE,
+      virtualChildrenNodes: null,
+      virtualChildrenMatchingNodes: null,
+      firstPage: false,
+    };
+    await this.retrieveNodeChildren(node, null, leavesLoadingCriteria);
+    node.isLoadingChildren = false;
   }
 
-  private hasVirtualAttachement(unit: Unit) {
-    const vups = unit['#vups'] || [];
-    return vups.length > 0;
+  public async loadOrphanNodeChildrenOnFirstToggle(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
+    FilingHoldingSchemeHandler.initNode(node);
+    node.isLoadingChildren = true;
+    const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id);
+
+    let virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(node.id, virtualChildrenMatchingNodes /*, showEveryNodes*/);
+
+    let leavesLoadingCriteria: LeavesLoadingCriteria = {
+      showEveryNodes: showEveryNodes,
+      nbElementsToShow: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+      nodeAnyChildrenPageSize: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+      nodeMatchingChildrenPageSize: DEFAULT_LEAVES_FIRST_PAGE_SIZE,
+      virtualChildrenNodes: virtualChildrenAnyNodes,
+      virtualChildrenMatchingNodes: virtualChildrenMatchingNodes,
+      firstPage: true,
+    };
+
+    // Await children retrieval from real node
+    await this.retrieveNodeChildren(node, null, leavesLoadingCriteria);
+    node.isLoadingChildren = false;
+  }
+
+  private async extractVirtualChildrenMatching(nodeId: string) {
+    const virtualUnits = await firstValueFrom(
+      this.leavesTreeApiService.retrieveVirtualChildrenMatchingHavingResults(nodeId, this.searchCriterias),
+    );
+
+    return virtualUnits.map((virtualUnit) => FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId));
   }
 }

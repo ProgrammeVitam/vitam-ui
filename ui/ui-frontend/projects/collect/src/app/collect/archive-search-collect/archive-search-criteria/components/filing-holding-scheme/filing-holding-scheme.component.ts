@@ -193,7 +193,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       size: 100,
       sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).subscribe((pagedResult: PagedResult) => {
       this.attachmentUnits = pagedResult.results;

@@ -103,7 +103,7 @@ export class AddUnitsComponent implements OnInit {
       size: 100,
       sortingCriteria,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     this.archiveCollectService
       .searchArchiveUnitsByCriteria(searchCriteria, this.data.transaction.id)

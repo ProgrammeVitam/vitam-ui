@@ -37,8 +37,9 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Subscription, zip } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
+  ConfigurationsApiService,
   DescriptionLevel,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
@@ -87,8 +88,9 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private archiveSharedDataService: ArchiveSharedDataService,
     private archiveCollectService: ArchiveCollectService,
+    private configurationsService: ConfigurationsApiService,
   ) {
-    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService);
+    this.leavesTreeService = new LeavesTreeService(this.archiveCollectService, this.configurationsService);
   }
 
   ngOnInit(): void {
@@ -135,50 +137,44 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return this.leavesTreeService.firstToggle(node);
   }
 
-  toggleOrphansNode(node: FilingHoldingSchemeNode) {
+  async toggleOrphansNode(node: FilingHoldingSchemeNode) {
     const isExpanded = this.nestedTreeControlLeaves.isExpanded(node);
     this.nestedTreeControlLeaves.toggle(node);
     if (isExpanded) {
       return;
     }
     if (this.firstToggle(node)) {
-      zip(this.leavesTreeService.searchOrphans(node), this.leavesTreeService.searchOrphansWithSearchCriterias(node)).subscribe(() =>
-        this.refreshTreeNodes(),
-      );
+      await this.leavesTreeService.loadOrphanNodeChildrenOnFirstToggle(node, false);
+      this.refreshTreeNodes();
     }
   }
 
-  toggleLeave(node: FilingHoldingSchemeNode) {
+  async toggleLeave(node: FilingHoldingSchemeNode) {
     const isExpanded = this.nestedTreeControlLeaves.isExpanded(node);
     this.nestedTreeControlLeaves.toggle(node);
     if (isExpanded) {
       return;
     }
     if (this.firstToggle(node)) {
-      zip(
-        this.leavesTreeService.searchUnderNodeWithSearchCriterias(node),
-        this.leavesTreeService.searchUnderNode(node),
-        this.leavesTreeService.searchAtNodeWithSearchCriterias(node),
-      ).subscribe(() => this.refreshTreeNodes());
+      await this.leavesTreeService.loadNodeChildrenOnFirstToggle(node, false);
+      this.refreshTreeNodes();
     }
   }
 
-  toggleLoadMoreOrphans(node: FilingHoldingSchemeNode) {
+  async toggleLoadMoreOrphans(node: FilingHoldingSchemeNode) {
     if (!this.nestedTreeControlLeaves.isExpanded(node)) {
       return;
     }
-    zip(this.leavesTreeService.searchOrphans(node), this.leavesTreeService.searchOrphansWithSearchCriterias(node)).subscribe(() =>
-      this.refreshTreeNodes(),
-    );
+    await this.leavesTreeService.loadMoreFromOrphanNode(node, false);
+    this.refreshTreeNodes();
   }
 
-  toggleLoadMore(node: FilingHoldingSchemeNode) {
+  async toggleLoadMore(node: FilingHoldingSchemeNode) {
     if (!this.nestedTreeControlLeaves.isExpanded(node)) {
       return;
     }
-    zip(this.leavesTreeService.searchUnderNodeWithSearchCriterias(node), this.leavesTreeService.searchUnderNode(node)).subscribe(() =>
-      this.refreshTreeNodes(),
-    );
+    await this.leavesTreeService.loadMoreFromNode(node, false);
+    this.refreshTreeNodes();
   }
 
   canLoadMoreUAForNode(node: FilingHoldingSchemeNode): boolean {
@@ -222,30 +218,43 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return this.unitId && this.unitId === node.id ? cssId : 'filing-holding-scheme-tree-node';
   }
 
-  isAncestorMustBeColored(nodeId: string) {
-    return this.allunitups && this.allunitups.includes(nodeId) ? 'filing-holding-scheme-tree-node-selected' : '';
+  isAncestorMustBeColored(node: FilingHoldingSchemeNode) {
+    return this.allunitups && (this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath))
+      ? 'filing-holding-scheme-tree-node-selected'
+      : '';
   }
 
   isExpandedNodeMustBeColored(node: FilingHoldingSchemeNode) {
-    return this.allunitups && this.allunitups.includes(node.id) && !this.nestedTreeControlLeaves.isExpanded(node) ? 'selected-node' : '';
+    return this.allunitups &&
+      (this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath)) &&
+      !this.nestedTreeControlLeaves.isExpanded(node)
+      ? 'selected-node'
+      : '';
   }
 
   selectNonOprhanNodeAtTop(node: FilingHoldingSchemeNode) {
     return this.unitId === node.id ||
-      (this.allunitups && this.allunitups.includes(node.id) && !this.nestedTreeControlLeaves.isExpanded(node))
+      (this.allunitups &&
+        (this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath)) &&
+        !this.nestedTreeControlLeaves.isExpanded(node))
       ? 'selected-node'
       : '';
   }
 
   isOrphanNodeMustBeColored(node: FilingHoldingSchemeNode) {
-    return node.children && node.children.some((node) => node.id === this.unitId || this.allunitups.includes(node.id))
+    return node.children &&
+      node.children.some(
+        (node) => node.id === this.unitId || this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath),
+      )
       ? 'filing-holding-scheme-tree-node-selected'
       : 'filing-holding-scheme-tree-node';
   }
 
   isOrphanNeedsVisualMarker(node: FilingHoldingSchemeNode) {
     return node.children &&
-      node.children.some((node) => node.id === this.unitId || this.allunitups.includes(node.id)) &&
+      node.children.some(
+        (node) => node.id === this.unitId || this.allunitups.includes(node.id) || this.allunitups.includes('/' + node.virtualPath),
+      ) &&
       !this.nestedTreeControlLeaves.isExpanded(node)
       ? 'selected-node'
       : '';
@@ -271,7 +280,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       this.archiveSharedDataService.selectedUnit$.subscribe((selectedUnit: Unit) => {
         if (selectedUnit) {
           this.unitId = selectedUnit['#id'];
-          this.allunitups = selectedUnit['#allunitups'] ? selectedUnit['#allunitups'] : [];
+          this.allunitups = [...(selectedUnit['#allunitups'] ?? []), ...(selectedUnit['#vups'] ?? [])];
         } else {
           this.unitId = null;
           this.allunitups = [];

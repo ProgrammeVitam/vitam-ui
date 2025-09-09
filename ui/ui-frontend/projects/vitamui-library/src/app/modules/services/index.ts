@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './access-contract.service';
+export * from './configurations-api.service';
 export * from './leaves-tree-api.service';
 export * from './leaves-tree.service';
 export * from './profile.service';

@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,9 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.dto;
+import { ResultFacet, ResultFacetList } from './search-criteria.interface';
 
-import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+export class FacetsUtils {
+  public static RULES_COMPUTED_NUMBER_PREFIX = 'RULES_COMPUTED_NUMBER_';
+  public static FINAL_ACTION_COMPUTED_PREFIX = 'FINAL_ACTION_COMPUTED_';
+  public static EXPIRED_RULES_COMPUTED_PREFIX = 'EXPIRED_RULES_COMPUTED_';
+  public static UNEXPIRED_RULES_COMPUTED_PREFIX = 'UNEXPIRED_RULES_COMPUTED_';
+  public static COUNT_WITHOUT_RULES_PREFIX = 'COUNT_WITHOUT_RULES_';
+  public static COMPUTE_RULES_AU_NUMBER = 'COMPUTE_RULES_AU_NUMBER';
+  public static COUNT_BY_NODE = 'COUNT_BY_NODE';
 
-public class VitamConfigurationResponseDto extends AbstractVitamUIResponseDto<VitamConfigurationDto> {}
+  public static extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
+    return this.extractFacetsResultsByName(facetResults, FacetsUtils.COUNT_BY_NODE);
+  }
+
+  public static extractFacetsResultsByName(facetResults: ResultFacetList[], facetName: string): ResultFacet[] {
+    if (!facetResults?.length) return [];
+    const matchedFacet = facetResults.find((facet) => facet.name === facetName);
+    if (!matchedFacet) return [];
+    return matchedFacet.buckets.map((bucket) => ({ node: bucket.value, count: bucket.count }));
+  }
+}

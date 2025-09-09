@@ -45,6 +45,7 @@ import { debounceTime, filter, map, mergeMap, share, take, tap } from 'rxjs/oper
 import { isEmpty } from 'underscore';
 import {
   AccessContract,
+  ALL_DESCENDANTS_FACET,
   ApplicationId,
   ArchiveSearchResultFacets,
   BreadCrumbData,
@@ -61,9 +62,9 @@ import {
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
+  ReclassificationDialogComponent,
   Rule,
   RuleService,
-  ReclassificationDialogComponent,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -75,10 +76,12 @@ import {
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SidenavPage,
+  TermsFacet,
   Transaction,
   TransactionStatus,
   Unit,
   UnitType,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
@@ -226,6 +229,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
             this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+          } else if (node.isVirtual) {
+            this.removeCriteria('VIRTUAL', { id: node.virtualPath, value: '/' + node.virtualPath }, false);
           } else {
             this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
           }
@@ -241,6 +246,19 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             node.title,
             true,
             CriteriaOperator.MISSING,
+            SearchCriteriaTypeEnum.FIELDS,
+            false,
+            CriteriaDataType.STRING,
+            false,
+          );
+        }
+        if (node.isVirtual) {
+          this.addCriteria(
+            'VIRTUAL',
+            { id: node.virtualPath, value: '/' + node.virtualPath },
+            node.title,
+            true,
+            CriteriaOperator.EQ,
             SearchCriteriaTypeEnum.FIELDS,
             false,
             CriteriaDataType.STRING,
@@ -604,13 +622,21 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     // Prepare criteria and store them to use for lateral panel
     this.pending = true;
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    if (includeFacets) {
+      facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
+    }
+
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
       sortingCriteria,
       trackTotalHits: false,
-      computeFacets: includeFacets,
+      computeMgtRulesFacets: includeFacets,
+      facets: facets,
     };
     this.archiveExchangeDataService.emitSearchCriterias(searchCriteria);
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null).subscribe(
@@ -982,6 +1008,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   private launchComputingManagementRulesFacets() {
     this.pendingComputeFacets = true;
+    let facets: TermsFacet[] = [];
+    facets.push(ALL_DESCENDANTS_FACET);
+    facets.push(VALID_COMPUTED_INHERITED_RULES_FACET);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
@@ -989,7 +1018,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       size: 1,
       sortingCriteria,
       trackTotalHits: this.totalResults >= 10000,
-      computeFacets: true,
+      computeMgtRulesFacets: true,
+      facets: facets,
     };
 
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, !!this.transaction ? this.transaction.id : null).subscribe(
@@ -1371,7 +1401,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       pageNumber: 0,
       size: 100,
       trackTotalHits: false,
-      computeFacets: false,
+      computeMgtRulesFacets: false,
     };
     this.archiveUnitCollectService
       .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)

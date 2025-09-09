@@ -11,9 +11,9 @@ import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.rest.CrudControllerTest;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.configuration.ConfigurationService;
 import fr.gouv.vitamui.iam.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
@@ -47,7 +47,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -68,6 +70,8 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     private static final String LEVEL = "level";
     private static final String APP_NAME = "application";
     private static final String ROLE = "role";
+
+    private static final Integer TENANT_IDENTIFIER = 10;
 
     private TenantController controller;
 

@@ -215,7 +215,7 @@ public class ArchiveSearchService {
                     archiveSearchFacetsService.fillManagementRulesFacets(searchQuery, trackTotalHits, vitamContext)
                 );
         } catch (UnexpectedSettingsException e) {
-            if (!searchQuery.isComputeFacets()) {
+            if (!searchQuery.isComputeMgtRulesFacets()) {
                 LOGGER.error(
                     "Could not compute facets,the setting track total hits is not allowed in vitam, we return units without facets"
                 );
