@@ -234,14 +234,18 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    return (
+    const invalid =
       this.form.get('name').invalid ||
       this.form.get('name').pending ||
       this.form.get('description').invalid ||
       this.form.get('description').pending ||
       this.form.get('status').invalid ||
-      this.form.get('status').pending
-    );
+      this.form.get('status').pending;
+    if (this.isSlaveMode) {
+      return invalid || this.form.get('identifier').invalid || this.form.get('identifier').pending;
+    } else {
+      return invalid;
+    }
   }
 
   thirdStepInvalid(): boolean {
