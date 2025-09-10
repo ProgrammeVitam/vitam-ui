@@ -5034,7 +5034,8 @@
       "ALL_POSITIONS_TOOLTIP": "Choice of the positions to which one wishes to give access in consultation",
       "NAME_ALREADY_EXISTS": "Name already in use",
       "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
-      "SELECT_AGENCY_SEARCH": "Type producer service ID or name"
+      "SELECT_AGENCY_SEARCH": "Type producer service ID or name",
+      "SELECT_PRODUCERS": "Select producer services"
     },
     "UPDATE_NODE_DIALOG": {
       "TITLE": "Change of consultation positions",
