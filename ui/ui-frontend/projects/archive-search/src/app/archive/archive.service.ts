@@ -275,10 +275,13 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     });
   }
 
-  buildArchiveUnitPath(archiveUnit: Unit) {
+  buildArchiveUnitPath(archiveUnit: Unit): Observable<{
+    fullPath: string;
+    resumePath: string;
+  }> {
     const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp }));
 
-    if (!allunitups || allunitups.length === 0) {
+    if (!allunitups?.length) {
       return of({
         fullPath: '',
         resumePath: '',
@@ -303,25 +306,12 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
     return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult: PagedResult) => {
-        let resumePath = '';
-        let fullPath = '';
+        const path = (pagedResult.results as Unit[])
+          ?.sort((p1, p2) => (p1['#unitups'].includes(p2['#id']) ? 1 : -1)) // Order hierarchically
+          ?.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_));
 
-        if (pagedResult.results) {
-          resumePath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
-          fullPath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
-
-          if (pagedResult.results.length > 6) {
-            const upperBoundPath = pagedResult.results
-              .slice(0, 3)
-              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
-              .join('/');
-            const lowerBoundPath = pagedResult.results
-              .slice(-3)
-              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
-              .join('/');
-            resumePath = `/${upperBoundPath}/../${lowerBoundPath}`;
-          }
-        }
+        const fullPath = path ? `/${path.join('/')}` : '';
+        const resumePath = path ? `/${(path.length > 6 ? [...path.slice(0, 3), '...', ...path.slice(-3)] : path).join('/')}` : '';
 
         return {
           fullPath,
