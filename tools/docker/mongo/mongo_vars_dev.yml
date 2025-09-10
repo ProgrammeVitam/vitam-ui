@@ -91,29 +91,33 @@ vitam_site_name: "dev"
 vitamui:
   ui_identity:
     clientId: identity
-    serviceId: "^https://dev.vitamui.com:4201/.*"
     name: Identity Access Management Application
     base_url: "https://dev.vitamui.com:4201"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4201/.*|https://localhost:4201/.*"
   ui_identity_admin:
     clientId: identityadmin
-    serviceId: "^https://dev.vitamui.com:4201/.*"
     name: Identity Admin Access Management Application
     base_url: "https://dev.vitamui.com:4201"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4201/.*|https://localhost:4201/.*"
   ui_portal:
     clientId: portal
-    serviceId: "^https://dev.vitamui.com:4200/.*"
     name: Portal Application
     base_url: "https://dev.vitamui.com:4200"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4200/.*|https://localhost:4200/.*"
   ui_referential:
     clientId: referential
-    serviceId: "^https://dev.vitamui.com:4202/.*"
     name: Referential Application
     base_url: "https://dev.vitamui.com:4202"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4202/.*|https://localhost:4202/.*"
   ui_ingest:
     base_url: "https://dev.vitamui.com:4208"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4208/.*|https://localhost:4208/.*"
   ui_archive_search:
     base_url: "https://dev.vitamui.com:4209"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4209/.*|https://localhost:4209/.*"
   ui_pastis:
     base_url: "https://dev.vitamui.com:4251"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4251/.*|https://localhost:4251/.*"
   ui_collect:
     base_url: "https://dev.vitamui.com:4210"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com:4210/.*|https://localhost:4210/.*"
