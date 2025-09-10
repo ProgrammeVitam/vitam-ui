@@ -5034,7 +5034,8 @@
       "ALL_POSITIONS_TOOLTIP": "Choix des positions auxquelles on souhaite donner accès en consultation",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
       "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
-      "SELECT_AGENCY_SEARCH": "Taper l'ID ou le nom de service producteur"
+      "SELECT_AGENCY_SEARCH": "Taper l'ID ou le nom de service producteur",
+      "SELECT_PRODUCERS": "Sélectionner les services producteurs"
     },
     "UPDATE_NODE_DIALOG": {
       "TITLE": "Modification des positions de consultation",
