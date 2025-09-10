@@ -24,10 +24,10 @@
         <commons.compress.version>1.26.1</commons.compress.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
         <commons.io.version>2.16.0</commons.io.version>
-        <commons.lang3.version>3.14.0</commons.lang3.version>
+        <commons.lang3.version>3.18.0</commons.lang3.version>
         <commons.text.version>1.11.0</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
-        <esapi.version>2.5.4.0</esapi.version>
+        <esapi.version>2.7.0.0</esapi.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <fop.version>2.4</fop.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
