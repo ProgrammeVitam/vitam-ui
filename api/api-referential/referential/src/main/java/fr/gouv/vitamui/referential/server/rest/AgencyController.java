@@ -191,12 +191,12 @@ public class AgencyController {
 
     @Secured(ServicesData.ROLE_DELETE_AGENCIES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Boolean> delete(final @PathVariable("id") String id)
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Delete agency with id :{}", id);
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
-        return agencyService.deleteWithResponse(id);
+        return RestUtils.buildBooleanResponse(agencyService.delete(id));
     }
 
     @Secured(ServicesData.ROLE_EXPORT_AGENCIES)
