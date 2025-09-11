@@ -130,13 +130,11 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void delete_should_return_ok_when_agencyInternalRestClient_return_ok() {
-        when(agencyInternalRestClient.deleteWithResponse(any(InternalHttpContext.class), any(String.class))).thenReturn(
-            new ResponseEntity<Boolean>(true, HttpStatus.OK)
-        );
+        when(agencyInternalRestClient.deleteAgency(any(InternalHttpContext.class), any(String.class))).thenReturn(true);
         String id = "1";
 
         assertThatCode(() -> {
-            agencyExternalService.deleteWithResponse(id);
+            agencyExternalService.deleteAgency(id);
         }).doesNotThrowAnyException();
     }
 

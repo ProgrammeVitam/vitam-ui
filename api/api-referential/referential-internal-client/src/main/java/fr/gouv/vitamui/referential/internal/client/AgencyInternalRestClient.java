@@ -96,8 +96,16 @@ public class AgencyInternalRestClient extends BasePaginatingAndSortingRestClient
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Resource.class);
     }
 
-    public ResponseEntity<Boolean> deleteWithResponse(final InternalHttpContext context, final String id) {
+    public boolean deleteAgency(final InternalHttpContext context, final String id) {
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, Boolean.class, id);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            getUrl() + CommonConstants.PATH_ID,
+            HttpMethod.DELETE,
+            request,
+            Boolean.class,
+            id
+        );
+        checkResponse(response, 200, 201, 202, 204);
+        return response.getStatusCode() == HttpStatus.OK;
     }
 }
