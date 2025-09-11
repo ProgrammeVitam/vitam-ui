@@ -77,6 +77,7 @@ describe('AuditPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AuditPreviewComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('audit', { events: [] });
     fixture.detectChanges();
   });
 
