@@ -67,10 +67,14 @@ export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy 
 
     this.subscriptions.add(
       this.archiveUnitEditorService.editObject$.subscribe((data) => {
-        // TODO en attendant que les balises avec attribut ( 'Title_', 'Description_')  seront géré avec l’US story #12147, on les affiche pas en mode edition
+        // FIXME en attendant que les balises avec attribut ( 'Title_', 'Description_')  seront géré avec l’US story #12147, on les affiche pas en mode edition
+        // De même, le champ 'Title' est rendu temporairement obligatoire.
         data?.children.map((node) => {
           if ('Generalities' === node.key) {
             node?.children.map((child) => {
+              if (['Title'].includes(child.key)) {
+                child.required = true;
+              }
               if (['Title_', 'Description_'].includes(child.key))
                 child.displayRule = { ...child.displayRule, ui: { ...child.displayRule.ui, display: false } };
             });
