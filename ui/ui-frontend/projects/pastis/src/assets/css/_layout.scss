@@ -143,42 +143,6 @@
   }
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: var(--vitamui-primary-50);
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  // background:  var(--vitamui-primary-50);
-  // background: #F7F8FB;
-  border-radius: 100px;
-
-  background: var(--vitamui-primary);
-  // background: #C1C1C1
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--vitamui-primary-700);
-}
-
-/*For non webkit browsers, such as Firefox/*
-
-/* (values chosen for visual consistency with Firefox) */
-:root {
-  //Thumb and track colors
-  scrollbar-color: var(--vitamui-primary) !important;
-  scrollbar-width: thin !important;
-  scrollbar-base-color: var(--vitamui-primary-50) !important;
-}
-
 .mat-checkbox .mat-checkbox-ripple {
   display: none !important;
 }
