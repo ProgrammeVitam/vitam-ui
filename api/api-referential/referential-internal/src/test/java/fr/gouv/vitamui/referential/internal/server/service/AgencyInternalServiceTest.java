@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.internal.server.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -343,8 +344,8 @@ public class AgencyInternalServiceTest {
             new AccessExternalClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.delete(vitamContext, identifier)).isInstanceOf(
-            InternalServerException.class
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, identifier)).isInstanceOf(
+            AccessExternalClientException.class
         );
     }
 
