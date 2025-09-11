@@ -212,6 +212,10 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       // For collect deletion or elimination, report may not have been generated if report generation step has not been reached or wasn't OK
       return event.events.find((e) => /REPORT_GENERATION$/i.test(e.type))?.outcome === 'OK';
     }
+    if (['EVIDENCE_AUDIT'].includes(event.type)) {
+      // Evidence audit may not have a report if "data" has "No report generated" in it.
+      return !event.events.some((e) => /No report generated/i.test(e.data));
+    }
     return true;
   }
 }

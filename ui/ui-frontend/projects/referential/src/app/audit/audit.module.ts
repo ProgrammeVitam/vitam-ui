@@ -47,7 +47,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../shared/pipes/pipes.module';
-import { AuditPreviewModule } from './audit-preview/audit-preview.module';
 import { AuditRoutingModule } from './audit-routing.module';
 import { AuditComponent } from './audit.component';
 import { MatInputModule } from '@angular/material/input';
@@ -55,6 +54,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuditListComponent } from './audit-list/audit-list.component';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
+import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
 
 @NgModule({
   declarations: [AuditComponent, AuditListComponent],
@@ -65,7 +65,7 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     ReactiveFormsModule,
     VitamUICommonModule,
     AuditRoutingModule,
-    AuditPreviewModule,
+    AuditPreviewComponent,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,

@@ -37,11 +37,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
+import { EMPTY, of } from 'rxjs';
+import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
 import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
 import { PipesModule } from '../../shared/pipes/pipes.module';
+import { ActivatedRoute } from '@angular/router';
 
 @Pipe({
   name: 'truncate',
@@ -66,13 +67,15 @@ describe('AuditPreviewComponent', () => {
     const snackBarSpy = jasmine.createSpyObj(['open']);
 
     await TestBed.configureTestingModule({
-      declarations: [AuditPreviewComponent, MockTruncatePipe],
+      declarations: [MockTruncatePipe],
       providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: AuditService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
       ],
-      imports: [PipesModule, TranslateModule.forRoot()],
+      imports: [AuditPreviewComponent, LoggerModule.forRoot(), PipesModule, TranslateModule.forRoot()],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -80,6 +83,7 @@ describe('AuditPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AuditPreviewComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('audit', { events: [] });
     fixture.detectChanges();
   });
 
