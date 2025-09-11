@@ -142,12 +142,24 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     // Listen for clicks on the #projectList div (outside the panel)
     const projectList = document.getElementById('projectList');
     if (projectList) {
-      this.clickOutSideListener = this.renderer.listen(projectList, 'click', () => {
-        if (this.isModified() && this.dialogRefToClose?.getState() !== 0) {
-          this.openCancelDialog();
-        }
-      });
+      this.clickOutSideListener = this.renderer.listen(
+        projectList,
+        'click',
+        (event: PointerEvent) => {
+          if (this.isModified()) event.stopPropagation();
+          this.shouldCancelNavigation();
+        },
+        { capture: true },
+      );
     }
+  }
+
+  private async shouldCancelNavigation(): Promise<boolean> {
+    if (this.isModified() && this.dialogRefToClose?.getState() !== 0) {
+      await this.openCancelDialog();
+      return true;
+    }
+    return false;
   }
 
   loadProject() {
