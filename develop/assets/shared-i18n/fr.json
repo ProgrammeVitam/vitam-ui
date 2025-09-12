@@ -4176,6 +4176,7 @@
         "DESCRIPTION": "Description",
         "DESCRIPTION_LEVEL": "Niveau de description",
         "DOWNLOAD_DOC": "Télécharger le document",
+        "ENCOUNTERED_ERRORS": "Erreur(s) rencontrée(s)",
         "END_DATE": "Date de fin",
         "FILE": "FICHIER",
         "FILE_ENCODING": "Encodage du fichier",
@@ -4515,6 +4516,8 @@
         "ARCHIVE_UNIT_HOLDING_UNIT": "Arbre",
         "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
         "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
+        "ERRORS": "Erreurs",
+        "ARCHIVE_UNIT_WITH_ERRORS": "Archive avec erreurs",
         "DESCRIPTION": "Description",
         "DESCRIPTION_LEVEL": "Type d'unité archivistique",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
@@ -4640,7 +4643,9 @@
           "ARCHIVE_UNIT_HOLDING_UNIT": "Arbre",
           "ARCHIVE_UNIT_PLAN": "Plan",
           "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
-          "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets"
+          "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
+          "ERRORS": "Erreurs",
+          "ARCHIVE_UNIT_WITH_ERRORS": "Archive avec erreurs"
         },
         "WAITING_RECALCULATE": "En attente de recalcul"
       },
@@ -4688,7 +4693,8 @@
       },
       "STORAGE_TITLE": "Durée d'utilité courante",
       "TITLE": "Recherche multi-critères",
-      "UA_TYPE": "Type d'unités archivistiques"
+      "UA_TYPE": "Type d'unités archivistiques",
+      "ERRORS": "Erreur(s)"
     },
     "SEARCH_CRITERIA_GTE": "Après le ",
     "SEARCH_CRITERIA_LTE": "Avant le ",
