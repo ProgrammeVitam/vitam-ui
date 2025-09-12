@@ -338,65 +338,49 @@ public class AgencyInternalServiceTest {
     @Test
     public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
-        VitamContext vitamContext = new VitamContext(1);
-        vitamContext.setApplicationSessionId("ASId_1");
         String identifier = "identifier";
 
         when(vitamAgencyCommonService.deleteAgency(any(VitamContext.class), any(String.class))).thenThrow(
             new AccessExternalClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyService.delete(vitamContext, identifier)).isInstanceOf(
-            InternalServerException.class
-        );
+        assertThatCode(() -> agencyService.delete(identifier)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
     public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
-        VitamContext vitamContext = new VitamContext(1);
-        vitamContext.setApplicationSessionId("ASId_1");
         String identifier = "identifier";
 
         when(vitamAgencyCommonService.deleteAgency(any(VitamContext.class), any(String.class))).thenThrow(
             new InvalidParseOperationException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyService.delete(vitamContext, identifier)).isInstanceOf(
-            InternalServerException.class
-        );
+        assertThatCode(() -> agencyService.delete(identifier)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
     public void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
-        VitamContext vitamContext = new VitamContext(1);
-        vitamContext.setApplicationSessionId("ASId_1");
         String identifier = "identifier";
 
         when(vitamAgencyCommonService.deleteAgency(any(VitamContext.class), any(String.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyService.delete(vitamContext, identifier)).isInstanceOf(
-            InternalServerException.class
-        );
+        assertThatCode(() -> agencyService.delete(identifier)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
     public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
-        VitamContext vitamContext = new VitamContext(1);
-        vitamContext.setApplicationSessionId("ASId_1");
         String identifier = "identifier";
 
         when(vitamAgencyCommonService.deleteAgency(any(VitamContext.class), any(String.class))).thenThrow(
             new IOException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyService.delete(vitamContext, identifier)).isInstanceOf(
-            InternalServerException.class
-        );
+        assertThatCode(() -> agencyService.delete(identifier)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
