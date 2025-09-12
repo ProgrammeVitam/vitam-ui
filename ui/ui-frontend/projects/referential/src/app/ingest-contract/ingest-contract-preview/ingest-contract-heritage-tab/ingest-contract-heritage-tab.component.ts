@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -49,15 +49,21 @@ import { IngestContractService } from '../../ingest-contract.service';
   styleUrls: ['./ingest-contract-heritage-tab.component.scss'],
   standalone: false,
 })
-export class IngestContractHeritageTabComponent implements OnInit {
+export class IngestContractHeritageTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
   submited = false;
   private _ingestContract: IngestContract;
 
-  @Input()
-  readOnly: boolean;
+  @Input() set readOnly(readOnly: boolean) {
+    if (readOnly && this.form.enabled) {
+      this.form.disable({ emitEvent: false });
+    } else if (this.form.disabled) {
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
+    }
+  }
 
   previousValue = (): any => {
     return { computeInheritedRulesAtIngest: this._ingestContract.computeInheritedRulesAtIngest };
@@ -77,12 +83,9 @@ export class IngestContractHeritageTabComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService,
-  ) {}
-
-  ngOnInit() {
-    const rule = this.ingestContract !== undefined ? this.ingestContract.computeInheritedRulesAtIngest : false;
+  ) {
     this.form = this.formBuilder.group({
-      computeInheritedRulesAtIngest: [rule, Validators.required],
+      computeInheritedRulesAtIngest: [false, Validators.required],
     });
   }
 
