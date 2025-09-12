@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-slide-toggle [disabled]="readOnly" formControlName="computeInheritedRulesAtIngest">
+  <vitamui-slide-toggle formControlName="computeInheritedRulesAtIngest">
     <span>{{ 'INGEST_CONTRACT.TAB.LEGACY.LEGACY_RULES' | translate }}</span>
   </vitamui-slide-toggle>
 
