@@ -61,7 +61,6 @@ export class IngestContractInformationTabComponent implements OnInit {
   form: FormGroup;
 
   submited = false;
-  isReadOnly = false;
 
   ruleFilter = new FormControl();
   statusControl = new FormControl();
@@ -104,11 +103,12 @@ export class IngestContractInformationTabComponent implements OnInit {
 
   @Input()
   set readOnly(readOnly: boolean) {
-    this.isReadOnly = readOnly;
     if (readOnly && this.form.enabled) {
       this.form.disable({ emitEvent: false });
+      this.statusControl.disable({ emitEvent: false });
     } else if (this.form.disabled) {
       this.form.enable({ emitEvent: false });
+      this.statusControl.enable({ emitEvent: false });
       this.form.get('identifier').disable({ emitEvent: false });
     }
   }
