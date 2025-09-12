@@ -43,6 +43,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -174,10 +175,12 @@ public class AgencyInternalController {
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Boolean> delete(final @PathVariable("id") String id) {
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return new ResponseEntity<>(agencyInternalService.delete(vitamContext, id), HttpStatus.OK);
+        return RestUtils.buildBooleanResponse(agencyInternalService.delete(vitamContext, id));
     }
 
     @GetMapping(CommonConstants.PATH_EXPORT)

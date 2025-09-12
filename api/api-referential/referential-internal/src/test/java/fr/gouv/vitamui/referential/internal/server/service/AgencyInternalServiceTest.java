@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -381,9 +382,9 @@ public class AgencyInternalServiceTest {
         );
         EasyMock.replay(vitamAgencyService);
 
-        assertThatCode(() -> {
-            agencyInternalService.delete(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, identifier)).isInstanceOf(
+            AccessExternalClientException.class
+        );
     }
 
     @Test

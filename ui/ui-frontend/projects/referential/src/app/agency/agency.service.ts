@@ -113,18 +113,9 @@ export class AgencyService extends SearchService<Agency> {
   delete(agency: Agency): Observable<any> {
     return this.agencyApiService.delete(agency.id).pipe(
       tap(
-        (response) => {
-          if (response === false) {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_DELETE_ERROR',
-              icon: 'vitamui-icon-agent',
-            });
-          } else {
-            this.snackBarService.open({
-              message: 'SNACKBAR.AGENCY_CONTRACT_DELETED',
-              icon: 'vitamui-icon-agent',
-            });
-          }
+        (success) => {
+          const message = success ? 'SNACKBAR.AGENCY_CONTRACT_DELETED' : 'SNACKBAR.AGENCY_CONTRACT_DELETE_ERROR';
+          this.snackBarService.open({ message, translateParams: { name: agency.identifier } });
         },
         (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
