@@ -51,6 +51,7 @@ import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
@@ -250,6 +251,8 @@ public class AgencyInternalService {
     public boolean delete(VitamContext context, String id) {
         try {
             return vitamAgencyService.deleteAgency(context, id);
+        } catch (BadRequestException e) {
+            return false; // Unable to delete agency (in use)
         } catch (
             InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
         ) {

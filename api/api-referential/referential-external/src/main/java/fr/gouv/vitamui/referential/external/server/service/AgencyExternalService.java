@@ -138,8 +138,8 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
         return agencyInternalRestClient.check(getInternalHttpContext(), agencyDto);
     }
 
-    public ResponseEntity<Boolean> deleteWithResponse(final String id) {
-        return agencyInternalRestClient.deleteWithResponse(getInternalHttpContext(), id);
+    public boolean deleteAgency(final String id) {
+        return agencyInternalRestClient.deleteAgency(getInternalHttpContext(), id);
     }
 
     public ResponseEntity<Resource> export() {
