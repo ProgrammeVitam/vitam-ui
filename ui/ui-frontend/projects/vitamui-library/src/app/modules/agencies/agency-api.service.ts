@@ -75,8 +75,11 @@ export class AgencyApiService extends PaginatedHttpClient<Agency> {
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, { headers });
+  delete(id: string, headers?: HttpHeaders): Observable<boolean> {
+    return super
+      .getHttp()
+      .delete<any>(super.getApiUrl() + '/' + id, { observe: 'response', headers })
+      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   export(headers?: HttpHeaders): Observable<any> {

@@ -51,6 +51,7 @@ import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
@@ -282,20 +283,17 @@ public class AgencyService extends AbstractService {
         return this.patch(vitamContext, objectMapper.convertValue(partialDto, AgencyDto.class));
     }
 
-    public boolean delete(VitamContext context, String id) {
+    public boolean delete(String id) {
+        final VitamContext vitamContext = this.buildVitamContext();
         try {
-            return vitamAgencyCommonService.deleteAgency(context, id);
+            return vitamAgencyCommonService.deleteAgency(vitamContext, id);
+        } catch (BadRequestException e) {
+            return false; // Unable to delete agency (in use)
         } catch (
             InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
         ) {
             throw new InternalServerException("Unable to delete agency", e);
         }
-    }
-
-    public ResponseEntity<Boolean> deleteWithResponse(final String id) {
-        final VitamContext vitamContext = this.buildVitamContext();
-
-        return new ResponseEntity<Boolean>(this.delete(vitamContext, id), HttpStatus.OK);
     }
 
     public Response export(VitamContext context) {
