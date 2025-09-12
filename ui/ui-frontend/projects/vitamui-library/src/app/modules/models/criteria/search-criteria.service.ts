@@ -41,6 +41,7 @@ import {
   ACCESS_RULE_IDENTIFIER,
   APPRAISAL_RULE,
   APPRAISAL_RULE_IDENTIFIER,
+  ARCHIVE_UNIT_WITH_ERRORS,
   CLASSIFICATION_RULE,
   DISSEMINATION_RULE,
   DISSEMINATION_RULE_IDENTIFIER,
@@ -248,6 +249,8 @@ export class SearchCriteriaService {
       operator = CriteriaOperator.BETWEEN;
     } else if (END_DATE_FIELDS.includes(key)) {
       operator = CriteriaOperator.LTE;
+    } else if (fragment === ARCHIVE_UNIT_WITH_ERRORS) {
+      operator = CriteriaOperator.EXISTS;
     }
 
     return operator;

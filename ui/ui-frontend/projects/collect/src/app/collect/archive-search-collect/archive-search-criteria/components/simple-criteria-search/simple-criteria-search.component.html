@@ -89,8 +89,26 @@
         class="w-100"
       ></vitamui-datepicker>
     </div>
-    <div class="hgap-4">
-      <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
+    <div class="hgap-4 align-items-start">
+      <div class="w-50">
+        <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
+        <div class="hgap-4 pb-4 align-items-stretch">
+          <div class="w-50 gap-2">
+            <ng-container
+              *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_WITH_OBJECTS', icon: 'vitamui-icon-file' }"
+            ></ng-container>
+            <ng-container
+              *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_WITHOUT_OBJECTS', icon: 'vitamui-icon-folder' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="w-50">
+        <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.ERRORS' | translate }}</p>
+        <div class="w-50 gap-2">
+          <ng-container *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_WITH_ERRORS' }"></ng-container>
+        </div>
+      </div>
     </div>
     <ng-template #archiveUnitType let-archiveUnitType let-icon="icon">
       <div class="d-flex align-items-center w-100">
@@ -105,18 +123,6 @@
         <i class="vitamui-icon vitamui-row-icon status-badge icon-large ml-1" [class]="icon"></i>
       </div>
     </ng-template>
-    <div class="hgap-4 align-items-start pb-2">
-      <ng-container
-        *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_WITH_OBJECTS', icon: 'vitamui-icon-file' }"
-      ></ng-container>
-      <div class="w-100"></div>
-    </div>
-    <div class="hgap-4 align-items-start pb-4">
-      <ng-container
-        *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_WITHOUT_OBJECTS', icon: 'vitamui-icon-folder' }"
-      ></ng-container>
-      <div class="w-100"></div>
-    </div>
     <div class="hgap-4">
       <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
     </div>

@@ -1,70 +1,49 @@
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
-      <div>
-        {{ archiveUnit | unitI18n: 'Title' }}
-      </div>
-    </div>
-  </div>
+<div class="read-only-field">
+  <vitamui-common-data
+    [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate"
+    [value]="archiveUnit | unitI18n: 'Title'"
+  ></vitamui-common-data>
 </div>
 
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate }} :</label>
-      <div>
-        {{ archiveUnit['#opi'] }}
-      </div>
-    </div>
-  </div>
+<div class="read-only-field">
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate" [value]="archiveUnit['#opi']"></vitamui-common-data>
 </div>
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate }} :</label>
-      <div>
-        {{ archiveUnit['#id'] }}
-      </div>
-    </div>
-  </div>
+
+<div class="read-only-field">
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate" [value]="archiveUnit['#id']"></vitamui-common-data>
 </div>
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field text-justify">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
-      <div>
-        {{ archiveUnit | unitI18n: 'Description' }}
-      </div>
-    </div>
-  </div>
+
+<div class="read-only-field text-justify">
+  <vitamui-common-data
+    [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate"
+    [value]="archiveUnit | unitI18n: 'Description'"
+  ></vitamui-common-data>
 </div>
 
 <div class="row">
   <div class="col-6">
     <div class="read-only-field">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate }} :</label><br />
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate }} :</label>
-      <div>
-        {{ archiveUnit['#originating_agency'] }}
-      </div>
+      <vitamui-common-data
+        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate"
+        [value]="archiveUnit['#originating_agency']"
+      ></vitamui-common-data>
     </div>
   </div>
   <div class="col-6">
     <div class="read-only-field">
-      <label></label><br />
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate }} :</label>
-      <div>
-        {{ archiveUnit?.originating_agencyName }}
-      </div>
+      <vitamui-common-data
+        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
+        [value]="archiveUnit?.originating_agencyName"
+      ></vitamui-common-data>
     </div>
   </div>
 </div>
+
 <div class="row">
   <div class="col-6">
     <div class="read-only-field">
       <label
-        >{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }} :
+        >{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }}
         <button class="ml-2 btn-show-full-path" type="button" (click)="showArchiveUniteFullPath()">
           {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.BTN_SHOW_COMPLETE_PATH' | translate }}
         </button>
@@ -77,10 +56,10 @@
   </div>
   <div class="col-6">
     <div class="read-only-field">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
-      <div>
-        {{ 'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate }}
-      </div>
+      <vitamui-common-data
+        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate"
+        [value]="'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate"
+      ></vitamui-common-data>
     </div>
   </div>
 </div>
@@ -88,31 +67,33 @@
 <div class="row content vitamui-form margin_right">
   <div class="col-6">
     <div class="read-only-field">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate }} :</label>
-      <div>
-        {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
-      </div>
+      <vitamui-common-data
+        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate"
+        [value]="archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy'"
+      ></vitamui-common-data>
     </div>
   </div>
   <div class="col-6">
     <div class="read-only-field">
-      <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate }} :</label>
-      <div>
-        {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
-      </div>
+      <vitamui-common-data
+        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate"
+        [value]="archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy'"
+      ></vitamui-common-data>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-12">
-    <button
-      class="btn primary download-btn"
-      [disabled]="!archiveUnit['#object'] || !hasDownloadDocumentRole"
-      (click)="onDownloadObjectFromUnit(archiveUnit)"
-    >
-      <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
-      <i class="vitamui-icon vitamui-icon-deposit"></i>
-    </button>
+@if (archiveUnit['#errors']?.length) {
+  <div class="read-only-field">
+    <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate" [value]="errorMessages" />
   </div>
-</div>
+}
+
+<button
+  class="btn primary download-btn"
+  [disabled]="!archiveUnit['#object'] || !hasDownloadDocumentRole"
+  (click)="onDownloadObjectFromUnit(archiveUnit)"
+>
+  <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
+  <i class="vitamui-icon vitamui-icon-deposit"></i>
+</button>

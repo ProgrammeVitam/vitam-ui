@@ -75,6 +75,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCate
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.NODES;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.EQ;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.EXISTS;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.MISSING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_FACET_SIZE;
@@ -1396,6 +1397,9 @@ public final class MetadataSearchCriteriaUtils {
                             )
                         );
                         break;
+                    case ArchiveSearchConsts.ERRORS:
+                        queryToFill.add(buildArchiveWithErrorsQuery());
+                        break;
                     case ArchiveSearchConsts.ORPHANS_NODE_CRITERIA:
                         queryToFill.add(buildOrphansNodeQuery());
                         break;
@@ -1570,6 +1574,11 @@ public final class MetadataSearchCriteriaUtils {
 
     private static Query buildOrphansNodeQuery() throws InvalidCreateOperationException {
         return and().add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.UNIT_UPS, null, MISSING));
+    }
+
+    private static Query buildArchiveWithErrorsQuery() throws InvalidCreateOperationException {
+        return and()
+            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_ERRORS, null, EXISTS));
     }
 
     private static Query buildArchiveUnitTypeQuery(final List<String> searchValues)

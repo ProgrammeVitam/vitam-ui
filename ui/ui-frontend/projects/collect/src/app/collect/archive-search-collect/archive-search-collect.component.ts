@@ -94,11 +94,7 @@ import { AddUnitsComponent } from './add-units/add-units.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
-const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const FILTER_DEBOUNCE_TIME_MS = 400;
-
-const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
-const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 
 @Component({
   selector: 'app-archive-search-collect',
@@ -314,7 +310,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.additionalSearchCriteriaCategories = [];
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
-    this.addInitialCriteriaValues();
 
     this.transaction$ = this.route.params.pipe(
       tap((params) => (this.tenantIdentifier = params.tenantIdentifier)),
@@ -498,38 +493,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   public initArchiveUnitAllunitup(values: string[][]) {
     return [...new Set(values.flat())];
-  }
-
-  private addInitialCriteriaValues() {
-    this.archiveHelperService.addCriteria(
-      this.searchCriterias,
-      this.searchCriteriaKeys,
-      this.nbQueryCriteria,
-      ALL_ARCHIVE_UNIT_TYPES,
-      { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
-      this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
-      true,
-      CriteriaOperator.EQ,
-      SearchCriteriaTypeEnum.FIELDS,
-      false,
-      CriteriaDataType.STRING,
-      false,
-    );
-
-    this.archiveHelperService.addCriteria(
-      this.searchCriterias,
-      this.searchCriteriaKeys,
-      this.nbQueryCriteria,
-      ALL_ARCHIVE_UNIT_TYPES,
-      { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
-      this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
-      true,
-      CriteriaOperator.EQ,
-      SearchCriteriaTypeEnum.FIELDS,
-      false,
-      CriteriaDataType.STRING,
-      false,
-    );
   }
 
   private initializeSelectionParams() {
