@@ -6072,18 +6072,18 @@
       "ARCHIVE_WITH_NO_PARENTS": "Le dossier n'a pas de parents",
       "GUID_ALREADY_EXISTS": "L'identifiant technique n'existe pas",
       "ATTACHMENT_ALREADY_EXISTS": "Le rattachement existe déjà",
-      "RECLASSIFICATION_TOGGLE_TREE_PLAN": "Arbres & Plans",
-      "RECLASSIFICATION_TOGGLE_UA_ID": "Identifiant d'unité archivistique"
+      "FILING_PLAN": "Arbres & Plans",
+      "ARCHIVE_UNIT_ID": "Identifiant d'unité archivistique"
     },
     "FIRST_STEP": {
       "SUBTITLE": "Action de reclassement",
-      "SELECTED_UNIT": "unité archivistique sélectionnée",
-      "SELECTED_UNIT_PLURAL": "unités archivistiques sélectionnées",
+      "SELECTED_UNIT": "{{ count }} unité archivistique sélectionnée",
+      "SELECTED_UNIT_PLURAL": "{{ count }} unités archivistiques sélectionnées",
       "CHILDS": "fils",
       "INCLUDING_NB_FOLDERS_DOCUMENTS": "Comprenant {{ nbDocuments }} dossiers ou documents",
       "SELECT_ACTION_MESSAGE_1": "Sélectionner une action de reclassement",
       "SELECT_ACTION_MESSAGE_2": "Action de reclassement",
-      "CURRENT_PARENT_FOLDERS": "Il y a 1 dossier parent actuel",
+      "CURRENT_PARENT_FOLDERS": "Il y a {{ nbParents }} dossier parent actuel",
       "CURRENT_PARENT_FOLDERS_PLURAL": "Il y a {{ nbParents }} dossiers parents actuels",
       "MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS": "Il y a plus de 5 dossiers parents actuels",
       "ALERT_REMOVED_CURRENT_PARENTS_FOLDERS": "Attention : les dossiers parents actuels seront retirés",
