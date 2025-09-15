@@ -177,6 +177,8 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     return this._required;
   }
 
+  @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
@@ -246,6 +248,11 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   }
 
   public openedChange(opened: boolean): void {
+    // Attend que overlay du select soit rendu
+    setTimeout(() => {
+      this.viewport.checkViewportSize();
+    });
+
     if (opened && this.enableSearch) {
       this.searchBar.onFocus();
     }
