@@ -48,7 +48,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class TooltipComponent implements AfterViewInit {
   outlineValues = [true, false];
-  colors = ['primary', 'secondary'];
+  colors = ['primary', 'secondary', 'red', 'orange'];
   positions = ['TOP', 'BOTTOM', 'LEFT', 'RIGHT'];
   disabled = false;
   tooltipText = '';
