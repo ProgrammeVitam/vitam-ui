@@ -69,6 +69,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
   hasDownloadDocumentRole = false;
   private allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
+  errorMessagesGot: Record<string, string[]>;
 
   constructor(
     private archiveCollectService: ArchiveCollectService,
@@ -110,6 +111,14 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
     this.archiveCollectService.getObjectGroupDetailsById(archiveUnit['#object']).subscribe((unitObject) => {
       this.unitObject = unitObject;
       this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers']);
+      this.errorMessagesGot = this.unitObject['#errors']?.reduce(
+        (acc, err) => {
+          const key = err.obId || 'null';
+          acc[key] = [...(acc[key] || []), err.outMessg];
+          return acc;
+        },
+        {} as Record<string, string[]>,
+      );
       this.setFirstVersionWithQualifierOpen();
     });
   }
