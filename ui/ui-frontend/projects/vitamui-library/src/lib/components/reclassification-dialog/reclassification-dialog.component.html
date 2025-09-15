@@ -1,157 +1,143 @@
 <vitamui-dialog-header
   [stepper]="stepper"
   [subhead]="'RECLASSIFICATION.COMMON.TITLE' | translate"
-  [title]="['RECLASSIFICATION.FIRST_STEP.SUBTITLE' | translate, 'RECLASSIFICATION.' + actionChosen + '_STEP.TITLE' | translate]"
+  [title]="['RECLASSIFICATION.FIRST_STEP.SUBTITLE' | translate, 'RECLASSIFICATION.' + action() + '_STEP.TITLE' | translate]"
 ></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
   <mat-dialog-content>
-    <vitamui-common-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
+    <vitamui-common-stepper #stepper (selectionChange)="stepIndex.set($event.selectedIndex)">
       <cdk-step>
-        {{ itemSelected }}
-        {{ itemSelected | i18nPlural: selectedUnitMap | translate }}
+        {{ data.itemSelected | i18nPlural: selectedUnitMap | translate: { count: data.itemSelected } }}
 
-        <div
-          *ngIf="totalChilds !== null && totalChilds === RECLASSIFICATION_THRESHOLD && !waitingForLoadExactTotalTrackHits && !precided"
-          class="mb-4"
-        >
-          <a class="link-without-underline" (click)="loadExactCount()">
-            <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
-          </a>
-        </div>
-        <mat-spinner
-          *ngIf="waitingForLoadExactTotalTrackHits || pendingGetChilds"
-          diameter="20"
-          color="accent"
-          class="spinner-wrapper"
-        ></mat-spinner>
-
-        <div class="col-8" *ngIf="waitingForLoadExactTotalTrackHits">
-          <ng-container *ngIf="!pendingGetFixedCount" class="mb-4">
-            <a class="link-without-underline" (click)="loadExactCount()">
-              <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
-            </a>
-          </ng-container>
-        </div>
-
-        <div *ngIf="precided || 1000 > totalChilds" class="mb-4">
-          <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageIncluding" color="red" decoration="filled"></vitamui-badge>
-        </div>
-
-        <div class="text medium mb-2">
-          @if (archiveUnitFetchedParents.length >= 1 && archiveUnitFetchedParents.length <= 5) {
-            {{
-              archiveUnitFetchedParents.length
-                | i18nPlural: currentParentFolderMap
-                | translate: { nbParents: archiveUnitFetchedParents.length }
-            }}
-          } @else if (fetchedParents > MAXIMUM_PARENTS) {
-            {{ 'RECLASSIFICATION.FIRST_STEP.MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS' | translate }}
-          } @else if (!hasParents) {
-            <div class="light">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>
-          }
-        </div>
-
-        <div *ngIf="archiveUnitFetchedParents.length <= 5">
-          <div *ngFor="let parent of archiveUnitFetchedParents">
-            <div class="text normal ml-3 mb-2">{{ parent.title }}</div>
+        @if (childrenCountLoaded()) {
+          <div class="mb-4">
+            @if (shouldProposeExactChildrenCount()) {
+              <a class="link-without-underline" (click)="loadExactCount()">
+                <vitamui-badge [text]="badgeMessage()" color="red" decoration="filled"></vitamui-badge>
+              </a>
+            } @else {
+              <vitamui-badge [text]="badgeMessage()" color="red" decoration="filled"></vitamui-badge>
+            }
           </div>
-        </div>
+        } @else {
+          <div class="d-flex align-items-center">
+            <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+          </div>
+        }
+
+        @if (simplifiedParents().length >= 1 && simplifiedParents().length <= MAXIMUM_PARENTS) {
+          <div class="text medium mb-2">
+            {{ simplifiedParents().length | i18nPlural: currentParentFolderMap | translate: { nbParents: simplifiedParents().length } }}
+          </div>
+          @for (parent of simplifiedParents(); track parent.id) {
+            <div class="text normal ml-3 mb-2">{{ parent.title }}</div>
+          }
+        } @else if (simplifiedParents().length > MAXIMUM_PARENTS) {
+          <div class="text medium mb-2">{{ 'RECLASSIFICATION.FIRST_STEP.MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS' | translate }}</div>
+        } @else if (simplifiedParents().length === 0) {
+          <div class="light">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>
+        }
 
         <p class="text bold primary">{{ 'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_1' | translate }}</p>
         <div class="form-group">
-          <vitamui-select
-            [formControl]="actionToFilterSelect"
-            formControlName="actionToFilter"
-            [options]="actionToFilterOptions"
-            [placeholder]="'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_2' | translate"
-            [enableSearch]="false"
-          ></vitamui-select>
-        </div>
-
-        <div *ngIf="actionChosen === 'REPLACE'" class="text danger">
-          {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
-        </div>
-        <div *ngIf="actionChosen === 'PULL'" class="text danger">
-          {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS' | translate }}
-        </div>
-      </cdk-step>
-
-      <cdk-step *ngIf="actionChosen !== 'PULL'">
-        @switch (appName) {
-          @case ('ARCHIVE') {
-            <div *ngIf="actionChosen === 'REPLACE'" class="text danger">
-              {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
-            </div>
-            <mat-button-toggle-group formControlName="toggleOption" class="my-3 vitamui-button-toggle-group">
-              <mat-button-toggle *ngFor="let option of getReclassificationToggleOptions()" [value]="option">
-                <span>{{ 'RECLASSIFICATION.COMMON.' + option | translate }}</span>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
-            @switch (form.get('toggleOption').value) {
-              @case (ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN) {
-                <vitamui-library-filing-plan
-                  [mode]="FilingPlanMode.SOLO"
-                  [tenantIdentifier]="data.tenantIdentifier"
-                  [formControl]="targetGuidFiling"
-                ></vitamui-library-filing-plan>
-              }
-              @case (ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID) {
-                <div class="gap-3 align-items-stretch">
-                  <vitamui-common-input
-                    formControlName="targetGuid"
-                    required
-                    [placeholder]="'RECLASSIFICATION.COMMON.ATTACHMENT_GUID_LABEL' | translate"
-                  >
-                    <ng-container *ngIf="form.get('targetGuid')?.touched">
-                      <vitamui-common-input-error *ngIf="!!form.get('targetGuid')?.errors?.required"
-                        >{{ 'COMMON.REQUIRED' | translate }}
-                      </vitamui-common-input-error>
-                      <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.targetGuid">
-                        {{ 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate }}
-                      </vitamui-common-input-error>
-                      <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.alreadyExistParents"
-                        >{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate }}
-                      </vitamui-common-input-error>
-                    </ng-container>
-                  </vitamui-common-input>
-                  <vitamui-common-input
-                    formControlName="targetAuTitle"
-                    required
-                    [placeholder]="'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate"
-                  ></vitamui-common-input>
-                </div>
-              }
-            }
+          @if (actions().options) {
+            <vitamui-select
+              formControlName="action"
+              [options]="actions().options"
+              [placeholder]="'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_2' | translate"
+              [enableSearch]="false"
+            ></vitamui-select>
           }
-          @case ('COLLECT') {
-            <div *ngIf="actionChosen === 'REPLACE'" class="text danger mb-3">
-              {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
-            </div>
-            <div class="form-group">
-              @if (projectUnits) {
-                <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="selectedTargetUnits" [dataSource]="projectUnits">
-                </vitamui-library-filing-plan>
-              }
-            </div>
+        </div>
+
+        @switch (action()) {
+          @case ('REPLACE') {
+            <div class="text danger">{{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}</div>
+          }
+          @case ('PULL') {
+            <div class="text danger">{{ 'RECLASSIFICATION.FIRST_STEP.ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS' | translate }}</div>
           }
         }
       </cdk-step>
+
+      @if (shouldSelectTarget()) {
+        <cdk-step>
+          @switch (data.appName) {
+            @case ('ARCHIVE') {
+              @if (action() === 'REPLACE') {
+                <div class="text danger">
+                  {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
+                </div>
+              }
+              <mat-button-toggle-group formControlName="reclassificationMode" class="my-3 vitamui-button-toggle-group">
+                @for (mode of reclassificationModes; track mode) {
+                  <mat-button-toggle [value]="mode">
+                    <span>{{ 'RECLASSIFICATION.COMMON.' + mode | translate }}</span>
+                  </mat-button-toggle>
+                }
+              </mat-button-toggle-group>
+              @switch (form.controls.reclassificationMode.value) {
+                @case (ReclassificationMode.FILING_PLAN) {
+                  <vitamui-library-filing-plan
+                    [mode]="FilingPlanMode.SOLO"
+                    [tenantIdentifier]="data.tenantIdentifier"
+                    [formControl]="form.controls.multiSelect.controls.filingPlan"
+                  ></vitamui-library-filing-plan>
+                }
+                @case (ReclassificationMode.ARCHIVE_UNIT_ID) {
+                  <div [formGroup]="form.controls.singleSelect" class="gap-3 align-items-stretch">
+                    <vitamui-common-input formControlName="id" [placeholder]="'RECLASSIFICATION.COMMON.ATTACHMENT_GUID_LABEL' | translate">
+                      @if (!!form?.controls.singleSelect?.controls.id?.errors?.targetGuid) {
+                        <vitamui-common-input-error>
+                          {{ 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate }}
+                        </vitamui-common-input-error>
+                      }
+                      @if (!!form?.controls.singleSelect?.controls.id?.errors?.alreadyExistParents) {
+                        <vitamui-common-input-error>
+                          {{ 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate }}
+                        </vitamui-common-input-error>
+                      }
+                    </vitamui-common-input>
+                    <vitamui-common-input
+                      formControlName="title"
+                      [placeholder]="'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate"
+                    ></vitamui-common-input>
+                  </div>
+                }
+              }
+            }
+            @case ('COLLECT') {
+              @if (action() === 'REPLACE') {
+                <div class="text danger mb-3">
+                  {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
+                </div>
+              }
+              <div class="form-group">
+                @if (projectUnits) {
+                  <vitamui-library-filing-plan
+                    [mode]="FilingPlanMode.SOLO"
+                    [formControl]="form.controls.multiSelect.controls.filingPlan"
+                    [dataSource]="projectUnits"
+                  >
+                  </vitamui-library-filing-plan>
+                }
+              </div>
+            }
+          }
+        </cdk-step>
+      }
     </vitamui-common-stepper>
   </mat-dialog-content>
 
   <mat-dialog-actions>
     <div>
-      <button
-        *ngIf="stepper.selectedIndex === stepper.steps.length - 1"
-        type="submit"
-        class="btn primary"
-        [disabled]="stepInvalid() || isDisabledButton"
-      >
-        {{ 'COMMON.CONFIRM' | translate }}
-      </button>
-      <vitamui-next-step [stepper]="stepper" [disabled]="stepInvalid()"></vitamui-next-step>
-
+      @if (isLastStep()) {
+        <button type="submit" class="btn primary" [disabled]="invalidStep()">
+          {{ 'COMMON.CONFIRM' | translate }}
+        </button>
+      }
+      <vitamui-next-step [stepper]="stepper" [disabled]="invalidStep()"></vitamui-next-step>
       <button type="button" class="btn link cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>
     <vitamui-previous-step [stepper]="stepper"></vitamui-previous-step>
