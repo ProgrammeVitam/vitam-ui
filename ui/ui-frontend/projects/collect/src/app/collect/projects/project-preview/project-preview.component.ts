@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
@@ -122,7 +122,6 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     public dialog: MatDialog,
     private translationService: TranslateService,
     private snackBar: MatSnackBar,
-    private renderer: Renderer2,
   ) {}
 
   ngOnInit(): void {
@@ -147,16 +146,27 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.configForm();
   }
+
   ngAfterViewInit() {
-    // Listen for clicks on the #projectList div (outside the panel)
     const projectList = document.getElementById('projectList');
     if (projectList) {
-      this.clickOutSideListener = this.renderer.listen(projectList, 'click', () => {
-        if (this.isModified() && this.dialogRefToClose?.getState() !== 0) {
-          this.openCancelDialog();
-        }
-      });
+      const listener = (event: PointerEvent) => {
+        if (this.isModified()) event.stopPropagation();
+        this.shouldCancelNavigation();
+      };
+      projectList.addEventListener('click', listener, { capture: true });
+
+      // important: clean up!
+      this.clickOutSideListener = () => projectList.removeEventListener('click', listener, { capture: true });
     }
+  }
+
+  private async shouldCancelNavigation(): Promise<boolean> {
+    if (this.isModified() && this.dialogRefToClose?.getState() !== 0) {
+      await this.openCancelDialog();
+      return true;
+    }
+    return false;
   }
 
   searchArchiveUnitsByProject() {
