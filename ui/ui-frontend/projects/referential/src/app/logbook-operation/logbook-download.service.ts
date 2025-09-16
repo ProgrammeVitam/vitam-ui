@@ -82,39 +82,16 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     super(logbookApiService);
   }
 
-  isOperationInProgress(event: IEvent): boolean {
-    const status = this.getOperationStatus(event);
-    switch (status) {
-      case 'STARTED':
-      case 'En cours':
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  getOperationStatus(event: IEvent): string {
-    const eventsLength = event.events.length;
-
-    if (eventsLength > 0) {
-      if (event.type === event.events[eventsLength - 1].type) {
-        return event.events[eventsLength - 1].outcome;
-      } else {
-        return 'En cours';
-      }
-    } else {
-      return 'KO';
-    }
-  }
-
   logbookOperationReportState(event: IEvent): LogbookOperationReportState {
     const evType = event.type.toUpperCase();
     const evTypeProc = event.typeProc.toUpperCase();
     if (this.evTypeProcAllowed.includes(evTypeProc) || this.evTypeAllowed.includes(evType)) {
       if (this.isOperationInProgress(event)) {
         return LogbookOperationReportState.IN_PROGRESS;
-      } else {
+      } else if (this.hasReport(event)) {
         return LogbookOperationReportState.DOWNLOADABLE;
+      } else {
+        return LogbookOperationReportState.NON_EXISTENT;
       }
     } else {
       return LogbookOperationReportState.NON_EXISTENT;
@@ -193,5 +170,42 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       'X-Access-Contract-Id': accessContractId,
     });
     return this.http.get(url, { headers, observe: 'response', responseType: 'blob' });
+  }
+
+  private isOperationInProgress(event: IEvent): boolean {
+    const status = this.getOperationStatus(event);
+    switch (status) {
+      case 'STARTED':
+      case 'En cours':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  private getOperationStatus(event: IEvent): string {
+    const eventsLength = event.events.length;
+
+    if (eventsLength > 0) {
+      if (event.type === event.events[eventsLength - 1].type) {
+        return event.events[eventsLength - 1].outcome;
+      } else {
+        return 'En cours';
+      }
+    } else {
+      return 'KO';
+    }
+  }
+
+  private hasReport(event: IEvent): boolean {
+    if (['ELIMINATION_ACTION', 'COLLECT_DELETION_ACTION'].includes(event.type)) {
+      // For collect deletion or elimination, report may not have been generated if report generation step has not been reached or wasn't OK
+      return event.events.find((e) => /REPORT_GENERATION$/i.test(e.type))?.outcome === 'OK';
+    }
+    if (['EVIDENCE_AUDIT'].includes(event.type)) {
+      // Evidence audit may not have a report if "data" has "No report generated" in it.
+      return !event.events.some((e) => /No report generated/i.test(e.data));
+    }
+    return true;
   }
 }
