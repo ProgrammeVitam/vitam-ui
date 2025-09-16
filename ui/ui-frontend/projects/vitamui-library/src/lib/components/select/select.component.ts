@@ -222,6 +222,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   @ViewChildren(MatOption) optionKeys: QueryList<MatOption>;
   @ViewChild('matSelect') matSelect: MatSelect;
+  @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -294,6 +295,11 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   protected openedChange(opened: boolean): void {
+    // Attend que overlay du select soit rendu
+    setTimeout(() => {
+      this.viewport.checkViewportSize();
+    });
+
     if (opened && this.enableSearch) {
       this.searchBar.onFocus();
     }
