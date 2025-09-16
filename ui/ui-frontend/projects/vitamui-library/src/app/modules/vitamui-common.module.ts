@@ -46,7 +46,6 @@ import { first, switchMap } from 'rxjs/operators';
 import { AccountModule } from './account/account.module';
 import { ArchiveUnitModule } from './archive-unit/archive-unit.module';
 import { AuthService } from './auth.service';
-import { VitamUIAutocompleteModule } from './components/autocomplete';
 import { ChipComponent } from './components/chip/chip.component';
 import { CollapseModule } from './components/collapse/collapse.module';
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
@@ -179,7 +178,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TableFilterSearchComponent,
     TranslateModule,
     UserPhotoModule,
-    VitamUIAutocompleteModule,
     VitamUIFieldErrorComponent,
     VitamUISnackBarComponent,
     VitamuiBannerComponent,
@@ -242,7 +240,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TableFilterSearchComponent,
     TranslateModule,
     UserPhotoModule,
-    VitamUIAutocompleteModule,
     VitamUIFieldErrorComponent,
     VitamUISnackBarComponent,
     VitamuiBannerComponent,

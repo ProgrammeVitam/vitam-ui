@@ -77,7 +77,7 @@
           (clear)="resetSearchBar()"
           (searchChanged)="onSearch($event)"
           name="element-search"
-          [placeholder]="searchBarPlaceHolder"
+          [placeholder]="searchBarPlaceHolder || placeholder"
           searchButtonColor="primary"
         ></vitamui-common-search-bar>
       </div>

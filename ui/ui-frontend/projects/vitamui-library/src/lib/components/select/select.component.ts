@@ -524,6 +524,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       });
   }
 
+  focus() {
+    this.matSelect.focus();
+  }
+
   protected readonly Validators = Validators;
   protected readonly String = String;
 }
