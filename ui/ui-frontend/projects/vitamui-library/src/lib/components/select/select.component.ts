@@ -389,6 +389,19 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     }
 
     this.updateMatSelectTriggerContent();
+    this.normalizeSelection();
+  }
+
+  protected compareOptions(o1: { key: string } | null, o2: { key: string } | null): boolean {
+    return !!o1 && !!o2 ? o1.key === o2.key : o1 === o2;
+  }
+
+  private normalizeSelection() {
+    if (this.multiple && Array.isArray(this.control.value)) {
+      const set = new Set(this.control.value);
+      const normalized = this.allOptions.map((o) => o.key).filter((k) => set.has(k));
+      this.control.setValue(normalized, { emitEvent: false });
+    }
   }
 
   private overrideControlMethods() {
@@ -439,6 +452,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       this.clearAllSelectedOptions();
     }
     this.resizeContainerHeightInSelectedItemsView();
+    this.normalizeSelection();
   }
 
   private resizeContainerHeightInSearchView(): void {
