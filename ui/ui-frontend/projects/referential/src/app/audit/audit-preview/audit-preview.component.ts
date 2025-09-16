@@ -34,21 +34,50 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Event, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
+import { Component, computed, EventEmitter, input, OnInit, Output, Signal } from '@angular/core';
+import {
+  Event,
+  ExternalParameters,
+  ExternalParametersService,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+  VitamUISnackBarService,
+} from 'vitamui-library';
 import { AuditService } from '../audit.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
+import { PipesModule } from '../../shared/pipes/pipes.module';
+import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-audit-preview',
   templateUrl: './audit-preview.component.html',
   styleUrls: ['./audit-preview.component.scss'],
-  standalone: false,
+  imports: [
+    AuditInformationTabComponent,
+    CommonModule,
+    FormsModule,
+    MatTabsModule,
+    PipesModule,
+    TranslatePipe,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
 export class AuditPreviewComponent implements OnInit {
-  @Input() audit: Event;
+  audit: Signal<Event> = input.required<Event>();
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
   accessContractId: string;
+  hasReport: Signal<boolean> = computed(() => {
+    if (this.audit().type === 'EVIDENCE_AUDIT') {
+      // Evidence audit may not have a report if "data" has "No report generated" in it.
+      return !this.audit().events.some((e) => /No report generated/i.test(e.data));
+    }
+    return true;
+  });
 
   constructor(
     private auditService: AuditService,
@@ -74,7 +103,7 @@ export class AuditPreviewComponent implements OnInit {
   }
 
   downloadReport() {
-    this.auditService.download(this.audit.id, this.audit.type, this.accessContractId);
+    this.auditService.download(this.audit().id, this.audit().type, this.accessContractId);
   }
 
   filterEvents(event: any): boolean {
