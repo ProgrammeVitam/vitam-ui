@@ -37,7 +37,7 @@
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { switchMap, tap } from 'rxjs/operators';
-import { Application, ApplicationApiService, Option, Profile, ProfileService, VitamUIAutocompleteComponent } from 'vitamui-library';
+import { Application, ApplicationApiService, Option, Profile, ProfileService, SelectComponent } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { OptionTree } from './option-tree.interface';
@@ -87,8 +87,8 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   filteredTenants: OptionTree[] = [];
   filteredProfiles: Option[] = [];
 
-  @ViewChild('tenantInput', { static: false }) tenantInput: VitamUIAutocompleteComponent;
-  @ViewChild('profileInput', { static: true }) profileInput: VitamUIAutocompleteComponent;
+  @ViewChild('tenantInput', { static: false }) tenantInput: SelectComponent;
+  @ViewChild('profileInput', { static: true }) profileInput: SelectComponent;
   @ViewChild('addButton', { static: true }) addButton: ElementRef;
 
   constructor(
@@ -196,7 +196,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   }
 
   private updateApplicationTree() {
-    this.applications = [];
+    const applications: OptionTree[] = [];
     const selectedProfiles = this.getSelectedProfiles();
     this.profiles
       .filter((profile) => profile.applicationName)
@@ -210,7 +210,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
       .filter((profile) => !this.profileIds.includes(profile.id))
       .filter((profile) => this.applicationsDetails.some((app) => app.identifier === profile.applicationName))
       .forEach((profile) => {
-        const application = this.applications.find((a) => a.key === profile.applicationName);
+        const application = applications.find((a) => a.key === profile.applicationName);
         if (application) {
           const tenant = application.children.find((t) => t.key === profile.tenantIdentifier.toString());
           if (tenant) {
@@ -221,9 +221,12 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
             application.children.push(this.buildTenantOption(profile));
           }
         } else {
-          this.applications.push(this.buildApplicationOption(profile));
+          applications.push(this.buildApplicationOption(profile));
         }
       });
+
+    this.applications = applications.sort((a1, a2) => a1.label.localeCompare(a2.label));
+
     this.filterTenants();
     this.filterProfiles();
     this.toggleSelects();
@@ -292,7 +295,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   }
 
   resetTree() {
-    this.appSelect.setValue(null);
+    this.appSelect.reset();
   }
 
   private filterProfileIds(profileIds: string[], profiles: Profile[], applicationsDetails: Application[]): string[] {

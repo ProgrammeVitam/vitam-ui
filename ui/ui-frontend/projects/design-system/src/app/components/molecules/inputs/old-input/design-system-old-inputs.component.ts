@@ -72,11 +72,7 @@ export class DesignSystemOldInputsComponent implements OnInit {
   ];
   patternControl = new FormControl();
 
-  datePickerControl = new FormControl();
-
   control = new FormControl();
-  autoCompleteSelect = new FormControl();
-  autoCompleteSelectDisabled = new FormControl();
 
   streetEmpty = new FormControl('', [Validators.maxLength(3)]);
   streetDisable = new FormControl('azerty', [Validators.maxLength(6)]);
@@ -104,10 +100,6 @@ export class DesignSystemOldInputsComponent implements OnInit {
   constructor(private countryService: CountryService) {}
 
   ngOnInit() {
-    this.initMultiselectOptions();
-  }
-
-  private initMultiselectOptions(): void {
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((value) =>
         extend({
@@ -115,8 +107,6 @@ export class DesignSystemOldInputsComponent implements OnInit {
           label: value.name,
         }),
       );
-      this.autoCompleteSelect.setValue('DE');
     });
-    this.autoCompleteSelectDisabled.disable({ emitEvent: false });
   }
 }

@@ -1,23 +1,24 @@
 <div class="d-flex align-items-center">
   <div class="gap-2 align-items-stretch">
-    <vitamui-common-autocomplete [options]="applications" [formControl]="appSelect" [placeholder]="'GROUP.PROFILE.MODAL.APP' | translate">
-    </vitamui-common-autocomplete>
+    <vitamui-select
+      [options]="applications"
+      [formControl]="appSelect"
+      [placeholder]="'GROUP.PROFILE.MODAL.APP' | translate"
+    ></vitamui-select>
     <ng-container *ngIf="!tenantIdentifier">
-      <vitamui-common-autocomplete
+      <vitamui-select
         [options]="filteredTenants"
         [formControl]="tenantSelect"
         #tenantInput
         [placeholder]="'GROUP.PROFILE.MODAL.SAFE' | translate"
-      >
-      </vitamui-common-autocomplete>
+      ></vitamui-select>
     </ng-container>
-    <vitamui-common-autocomplete
+    <vitamui-select
       [options]="filteredProfiles"
       [formControl]="profileSelect"
       [placeholder]="'GROUP.PROFILE.MODAL.PROFILE' | translate"
       #profileInput
-    >
-    </vitamui-common-autocomplete>
+    ></vitamui-select>
   </div>
 
   <div>

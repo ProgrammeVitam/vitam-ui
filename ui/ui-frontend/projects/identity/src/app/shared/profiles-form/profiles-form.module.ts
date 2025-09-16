@@ -40,11 +40,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ProfilesFormComponent } from './profiles-form.component';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatSelectModule, VitamUICommonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatSelectModule, VitamUICommonModule, VitamUILibraryModule],
   declarations: [ProfilesFormComponent],
   exports: [ProfilesFormComponent],
 })

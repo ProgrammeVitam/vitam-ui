@@ -86,26 +86,6 @@
       </div>
     </div>
 
-    <!-- FIXME: remove this component (replace by autocomplete-select) -->
-    <h3>{{ 'INPUT.AUTOCOMPLETE' | translate }}</h3>
-    <div class="d-flex justify-content-around">
-      <vitamui-common-autocomplete
-        [options]="countries"
-        [formControl]="autoCompleteSelect"
-        [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-        required
-      >
-      </vitamui-common-autocomplete>
-
-      <vitamui-common-autocomplete
-        [options]="countries"
-        [formControl]="autoCompleteSelectDisabled"
-        [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-        disable="true"
-      >
-      </vitamui-common-autocomplete>
-    </div>
-
     <h3>{{ 'INPUT.TEXTAREA' | translate }}</h3>
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4">

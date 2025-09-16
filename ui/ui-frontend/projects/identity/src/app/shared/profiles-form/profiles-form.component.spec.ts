@@ -41,7 +41,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { ApplicationApiService, ApplicationService, ProfileService, VitamUIAutocompleteModule } from 'vitamui-library';
+import { ApplicationApiService, ApplicationService, ProfileService, SelectComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProfilesFormComponent } from './profiles-form.component';
@@ -162,9 +162,9 @@ describe('ProfilesFormComponent', () => {
         MatProgressSpinnerModule,
         MatSelectModule,
         NoopAnimationsModule,
-        VitamUIAutocompleteModule,
         VitamUICommonTestModule,
         TranslateModule.forRoot(),
+        SelectComponent,
       ],
       declarations: [ProfilesFormComponent, TesthostComponent],
       providers: [
@@ -188,7 +188,7 @@ describe('ProfilesFormComponent', () => {
 
   describe('DOM', () => {
     it('should have 3 select inputs', () => {
-      const elInputs = fixture.nativeElement.querySelectorAll('vitamui-common-autocomplete');
+      const elInputs = fixture.nativeElement.querySelectorAll('vitamui-select');
       expect(elInputs.length).toBe(3);
     });
 

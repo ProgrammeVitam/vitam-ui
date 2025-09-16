@@ -36,5 +36,3 @@
  */
 export * from './utils/item-node.interface';
 export * from './utils/option.interface';
-export * from './vitamui-autocomplete/vitamui-autocomplete.component';
-export * from './vitamui-autocomplete/vitamui-autocomplete.module';
