@@ -119,7 +119,7 @@
     "ngx-color-picker": "^16.0.0",
     "ngx-filesize": "^3.0.3",
     "ngx-quicklink": "0.4.5",
-    "ngx-toastr": "^19.0.0",
+    "ngx-toastr": "^19.1.0",
     "ngx-translate-multi-http-loader": "^8.0.2",
     "ngx-ui-loader": "^13.0.0",
     "rxjs": "^7.8.1",
