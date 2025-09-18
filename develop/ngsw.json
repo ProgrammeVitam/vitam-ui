@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1758038506679,
+  "timestamp": 1758203050161,
   "index": "/vitam-ui/develop/index.html",
   "assetGroups": [
     {
@@ -82,8 +82,8 @@
     "/vitam-ui/develop/assets/logo_USER.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
     "/vitam-ui/develop/assets/my-account.svg": "6fd87f211c8f87de0e73b0e01c138eaf90239869",
     "/vitam-ui/develop/assets/shared-i18n/README.md": "8827078e00e335c7e108ee0a1e9976d6d24fb89f",
-    "/vitam-ui/develop/assets/shared-i18n/en.json": "0c31c1dd1c11dca3ccf8a04030d22fc13922326c",
-    "/vitam-ui/develop/assets/shared-i18n/fr.json": "944347afe8e85d741aa72e8708ffd6322162245f",
+    "/vitam-ui/develop/assets/shared-i18n/en.json": "0b71f08ca56cca45127386784064b30f5e3bc834",
+    "/vitam-ui/develop/assets/shared-i18n/fr.json": "21ec97980f351a4f8ef83f1d57e02c77737daa78",
     "/vitam-ui/develop/assets/user_icon.png": "e80658984ef4c1a71f3d0eb007251eeb1607ed77",
     "/vitam-ui/develop/assets/vitam-logo.png": "0bcb4aaad694b796cf574e4f7aca90b740bcb9f2",
     "/vitam-ui/develop/main-7SPLBB6R.js": "746b1dc3391b8c4bc6beead577012d3424d14fdc",
