@@ -26,6 +26,19 @@
       </div>
     </div>
   </div>
+
+  @if (errorMessagesGot && errorMessagesGot['null']) {
+    <div class="row-separator"></div>
+    <div class="row">
+      <div class="col title">
+        {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}
+      </div>
+    </div>
+    <vitamui-common-data
+      [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.LABEL' | translate"
+      [value]="errorMessagesGot['null']"
+    ></vitamui-common-data>
+  }
 </div>
 
 <div class="object-container" *ngFor="let versionWithQualifier of versionsWithQualifiersOrdered">
@@ -275,6 +288,18 @@
       </div>
       <div class="row-separator"></div>
     </div>
+
+    @if (errorMessagesGot && errorMessagesGot[versionWithQualifier['#id']]) {
+      <div class="object-details-group">
+        <div class="row title">
+          {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}
+        </div>
+        <vitamui-common-data
+          [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.LABEL' | translate"
+          [value]="errorMessagesGot[versionWithQualifier['#id']]"
+        ></vitamui-common-data>
+      </div>
+    }
 
     <div class="object-details-group download-object">
       <button

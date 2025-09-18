@@ -4186,6 +4186,7 @@
         "FORMAT_NAME": "Name of the format",
         "FORMAT_PUID": "PUID of the format",
         "GUID": "Ingest Technical ID",
+        "LABEL": "Label",
         "LAST_MODIFIED_DATE": "Date of last modification",
         "MIME_TYPE": "MIME type",
         "NAME": "Title",

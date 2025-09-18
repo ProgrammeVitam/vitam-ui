@@ -194,6 +194,7 @@ export interface InheritanceRuleDto {
 
 export interface Error {
   evId: string;
+  obId: string;
   evTypeProc: string;
   evDetData: string;
   outDetail: string;

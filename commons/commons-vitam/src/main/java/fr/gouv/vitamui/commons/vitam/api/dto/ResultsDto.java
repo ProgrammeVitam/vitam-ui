@@ -205,6 +205,10 @@ public class ResultsDto {
     @JsonAlias({ "_aud" })
     private String approximateEndDate;
 
+    @JsonProperty("#errors")
+    @JsonAlias({ "_errors" })
+    private List<ErrorsDto> errors;
+
     private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonAnyGetter
