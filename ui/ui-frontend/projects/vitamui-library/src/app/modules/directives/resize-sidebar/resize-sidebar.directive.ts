@@ -74,7 +74,7 @@ export class ResizeSidebarDirective implements OnInit {
     if (this.status === 1) {
       const space = Number(mouse.x) ? mouse.x : 0;
       if (this.orientation === 'left') {
-        this.width = space;
+        this.width = space >= 5 ? space : 5;
         this.elementRef.nativeElement.style.width = this.width + 'px';
       } else {
         const { left } = this.elementRef.nativeElement.getBoundingClientRect();
