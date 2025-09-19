@@ -207,7 +207,11 @@ public class ResultsDto {
 
     @JsonProperty("#errors")
     @JsonAlias({ "_errors" })
-    private List<ErrorsDto> errors;
+    private List<ValidationErrorsDto> errors;
+
+    @JsonProperty("#ogInfo")
+    @JsonAlias({ "_ogInfo" })
+    private ObjectGroupInfoDto objectGroupInfo;
 
     private Map<String, Object> additionalProperties = new HashMap<>();
 

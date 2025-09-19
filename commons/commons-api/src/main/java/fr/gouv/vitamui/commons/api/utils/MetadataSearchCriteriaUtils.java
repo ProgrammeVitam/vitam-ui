@@ -1577,8 +1577,15 @@ public final class MetadataSearchCriteriaUtils {
     }
 
     private static Query buildArchiveWithErrorsQuery() throws InvalidCreateOperationException {
-        return and()
-            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_ERRORS, null, EXISTS));
+        return or()
+            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_ERRORS, null, EXISTS))
+            .add(
+                VitamQueryHelper.buildSubQueryByOperator(
+                    ArchiveSearchConsts.ARCHIVE_UNIT_OBJECT_GROUP_INFO_ERRORS,
+                    null,
+                    EXISTS
+                )
+            );
     }
 
     private static Query buildArchiveUnitTypeQuery(final List<String> searchValues)

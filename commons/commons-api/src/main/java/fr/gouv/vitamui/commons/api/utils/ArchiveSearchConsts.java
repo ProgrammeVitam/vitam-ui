@@ -260,6 +260,7 @@ public class ArchiveSearchConsts {
     public static final String ARCHIVE_UNIT_OBJECTS = "#object";
     public static final String ARCHIVE_UNIT_VIRTUAL_PATHS = "#vups";
     public static final String ARCHIVE_UNIT_ERRORS = "#errors";
+    public static final String ARCHIVE_UNIT_OBJECT_GROUP_INFO_ERRORS = "#ogInfo.#errors";
 
     /* Query fields */
     public static final String ID = "#id";

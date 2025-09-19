@@ -36,7 +36,7 @@
  */
 // TODO: rename in ObjectGroup
 import { ObjectQualifierType } from './object-qualifier.enums';
-import { Error } from './unit.interface';
+import { ValidationError } from './unit.interface';
 
 /** Object associated to a unit */
 export interface ApiUnitObject {
@@ -56,7 +56,7 @@ export interface ApiUnitObject {
   versionsWithQualifiers?: Array<VersionWithQualifierDto>;
   '#approximate_creation_date': string;
   '#approximate_update_date': string;
-  '#errors'?: Error[];
+  '#errors'?: ValidationError[];
 }
 
 export interface QualifierDto {

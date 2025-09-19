@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ErrorsDto {
+public class ValidationErrorsDto {
 
     @JsonProperty("evId")
     private String evId;

@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { TenantSelectionService, Unit } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
@@ -57,6 +58,7 @@ export class ArchiveUnitInformationTabComponent implements OnChanges {
   constructor(
     private archiveService: ArchiveCollectService,
     private tenantSelectionService: TenantSelectionService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -77,8 +79,24 @@ export class ArchiveUnitInformationTabComponent implements OnChanges {
     this.fullPath = true;
   }
 
+  get hasErrorMessages(): boolean {
+    return this.archiveUnit['#errors']?.length > 0 || this.archiveUnit['#ogInfo']?.['#errors']?.length > 0;
+  }
+
   get errorMessages(): string[] | undefined {
-    return this.archiveUnit['#errors']?.map((error) => error.outMessg);
+    if (!this.hasErrorMessages) return;
+    const unitValidationErrors = this.archiveUnit['#errors']?.map((error) => error.outMessg) ?? [];
+    const nbObjectGroupValidationErrors = this.archiveUnit['#ogInfo']?.['#errors']?.length ?? 0;
+
+    const result = [...unitValidationErrors];
+    if (nbObjectGroupValidationErrors > 0) {
+      result.push(
+        this.translateService.instant('COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_GROUP_VALIDATION_ERRORS', {
+          nbErrors: nbObjectGroupValidationErrors,
+        }),
+      );
+    }
+    return result;
   }
 
   private checkDownloadPermissions() {

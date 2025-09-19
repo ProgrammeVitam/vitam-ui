@@ -28,7 +28,6 @@ package fr.gouv.vitamui.commons.api.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
-import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
@@ -46,7 +45,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.fillQueryFromMgtRulesCriteriaList;
 
 @ExtendWith(SpringExtension.class)
@@ -56,7 +55,7 @@ public class MetadataSearchCriteriaUtilsTest {
     public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
-        BooleanQuery query = or();
+        BooleanQuery query = and();
         fillQueryFromMgtRulesCriteriaList(query, null);
 
         //then
@@ -65,7 +64,7 @@ public class MetadataSearchCriteriaUtilsTest {
 
     @Test
     public void handleSimpleFieldCriteria() throws InvalidCreateOperationException {
-        BooleanQuery queryToFill = new BooleanQuery(BuilderToken.QUERY.OR);
+        BooleanQuery queryToFill = and();
         SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
             .setCriteria("ActivationDate")
             .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
@@ -76,14 +75,14 @@ public class MetadataSearchCriteriaUtilsTest {
         MetadataSearchCriteriaUtils.fillQueryFromCriteriaList(queryToFill, Collections.singletonList(searchCriteria));
 
         Assertions.assertEquals(
-            "{\"$or\":[{\"$and\":[{\"$or\":[{\"$gt\":{\"ActivationDate\":\"2023-03-06\"}}]}]}]}",
+            "{\"$and\":[{\"$or\":[{\"$gt\":{\"ActivationDate\":\"2023-03-06\"}}]}]}",
             queryToFill.toString()
         );
     }
 
     @Test
     public void handleSimpleDateFieldCriteria() throws InvalidCreateOperationException {
-        BooleanQuery queryToFill = new BooleanQuery(BuilderToken.QUERY.AND);
+        BooleanQuery queryToFill = and();
         SearchCriteriaEltDto startSearchCriteria = new SearchCriteriaEltDto()
             .setCriteria("START_DATE")
             .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
@@ -109,8 +108,28 @@ public class MetadataSearchCriteriaUtilsTest {
     }
 
     @Test
+    public void handleValidationErrors() throws InvalidCreateOperationException {
+        BooleanQuery queryToFill = and();
+        SearchCriteriaEltDto searchCriteria1 = new SearchCriteriaEltDto()
+            .setCriteria("ActivationDate")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.GT.name())
+            .setValues(List.of(new CriteriaValue().setValue("2023-03-05T23:00:00.000Z")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.DATE.name());
+
+        SearchCriteriaEltDto searchCriteria2 = new SearchCriteriaEltDto().setCriteria("ERRORS");
+
+        MetadataSearchCriteriaUtils.fillQueryFromCriteriaList(queryToFill, List.of(searchCriteria1, searchCriteria2));
+
+        Assertions.assertEquals(
+            "{\"$and\":[{\"$or\":[{\"$gt\":{\"ActivationDate\":\"2023-03-06\"}}]},{\"$or\":[{\"$exists\":\"#errors\"},{\"$exists\":\"#ogInfo.#errors\"}]}]}",
+            queryToFill.toString()
+        );
+    }
+
+    @Test
     public void handleSimpleFieldCriteria_with_DATE_and_EQ() throws InvalidCreateOperationException {
-        BooleanQuery queryToFill = or();
+        BooleanQuery queryToFill = and();
         SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
             .setCriteria("ontologyFieldDate")
             .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
@@ -123,11 +142,9 @@ public class MetadataSearchCriteriaUtilsTest {
 
         // Then
         Assertions.assertEquals(
-            "{\"$or\":[" +
             "{\"$and\":[" +
             "{\"$gte\":{\"ontologyFieldDate\":\"2023-03-05T23:00:00.000Z\"}}," +
             "{\"$lt\":{\"ontologyFieldDate\":\"2023-03-06T23:00:00.000Z\"}}" +
-            "]}" +
             "]}",
             queryToFill.toString()
         );

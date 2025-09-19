@@ -84,7 +84,8 @@ export interface Unit {
   isDigital?: boolean;
   isPhysical?: boolean;
   '#originating_agency'?: string;
-  '#errors'?: Error[];
+  '#errors'?: ValidationError[];
+  '#ogInfo'?: ObjectGroupInfo;
 
   [key: string]: any;
 }
@@ -192,11 +193,15 @@ export interface InheritanceRuleDto {
   PreventRulesId: string[];
 }
 
-export interface Error {
+export interface ValidationError {
   evId: string;
   obId: string;
   evTypeProc: string;
   evDetData: string;
   outDetail: string;
   outMessg: string;
+}
+
+export interface ObjectGroupInfo {
+  '#errors'?: ValidationError[];
 }
