@@ -3532,7 +3532,19 @@
     "PRESERVATION_PREPARATION_INSERTION_AU_METADATA": "Preparation of the insertion of archival units",
     "STP_PRESERVATION_INSERTION_AU_METADATA.STARTED": "Start of the process of inserting metadata",
     "STP_PRESERVATION_INSERTION_AU_METADATA": "Process of inserting metadata",
-    "PRESERVATION_INSERTION_AU_METADATA": "Indexation of archival units metadata"
+    "PRESERVATION_INSERTION_AU_METADATA": "Indexation of archival units metadata",
+    "DELETE_GOT_VERSIONS": "Technical objects versions removal",
+    "STP_DELETE_GOT_VERSIONS_PREPARATION": "Process of preparing technical objects versions removal",
+    "STP_DELETE_GOT_VERSIONS_PREPARATION.STARTED": "Start of the process of preparing technical objects versions removal",
+    "DELETE_GOT_VERSIONS_PREPARATION": "Preparation of technical objects versions removal",
+    "STP_DELETE_GOT_VERSIONS_ACTION": "Processus of technical objects versions removal",
+    "STP_DELETE_GOT_VERSIONS_ACTION.STARTED": "Start of the process of technical objects versions removal",
+    "STP_DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE": "Process of updating the Register of Funds",
+    "STP_DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE.STARTED": "Start of the process of updating the Register of Funds",
+    "DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE": "Register of Funds update",
+    "STP_DELETE_GOT_VERSIONS_FINALIZATION": "Process of finalization of technical objects versions removal",
+    "STP_DELETE_GOT_VERSIONS_FINALIZATION.STARTED": "Start of the process of finalization of technical objects versions removal",
+    "DELETE_GOT_VERSIONS_FINALIZATION": "End of technical objects versions removal"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
