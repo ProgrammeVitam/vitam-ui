@@ -7,18 +7,16 @@
             <div
               class="button-content right-button"
               [vitamuiTooltip]="
-                isKeyInSchema
-                  ? keyTranslationFromSchema
-                  : criteriaValue.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                    : criteriaVal.key +
-                      ' : ' +
-                      (criteriaVal.dataType === 'DATE'
-                        ? (criteriaValue.value.value | dateTime: 'dd/MM/yyyy')
-                        : criteriaValue.valueTranslated
-                          ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
-                            | translate)
-                          : criteriaValue.label)
+                criteriaValue.keyTranslated
+                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                  : criteriaVal.key +
+                    ' : ' +
+                    (criteriaVal.dataType === 'DATE'
+                      ? (criteriaValue.value.value | dateTime: 'dd/MM/yyyy')
+                      : criteriaValue.valueTranslated
+                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
+                          | translate)
+                        : criteriaValue.label)
               "
               [ngClass]="[
                 isFirst ? 'left-arround' : 'left-not-arround',
@@ -27,12 +25,9 @@
             >
               <ng-container *ngIf="isFirst">
                 {{
-                  (isKeyInSchema
-                    ? keyTranslationFromSchema
-                    : criteriaValue.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
-                        | translate)
-                      : criteriaVal.key) + ' : '
+                  (criteriaValue.keyTranslated
+                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                    : criteriaVal.key) + ' : '
                 }}
               </ng-container>
               {{ criteriaValue.value.value | dateTime: 'dd/MM/yyyy' }}
@@ -76,11 +71,9 @@
             <div
               class="button-content right-button"
               [vitamuiTooltip]="
-                isKeyInSchema
-                  ? keyTranslationFromSchema
-                  : criteriaValue.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                    : criteriaVal.key
+                criteriaValue.keyTranslated
+                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                  : criteriaVal.key
               "
               [vitamuiTooltipShowDelay]="300"
               [ngClass]="[
@@ -90,12 +83,9 @@
             >
               <ng-container *ngIf="isFirst">
                 {{
-                  (isKeyInSchema
-                    ? keyTranslationFromSchema
-                    : criteriaValue.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
-                        | translate)
-                      : criteriaVal.key) + ' : '
+                  (criteriaValue.keyTranslated
+                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
+                    : criteriaVal.key) + ' : '
                 }}
               </ng-container>
               <ng-container *ngIf="criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
@@ -232,12 +222,10 @@
               <div
                 class="button-content right-button"
                 [vitamuiTooltip]="
-                  (isKeyInSchema
-                    ? keyTranslationFromSchema
-                    : criteriaValue.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
-                        | translateWithOptionalTypeSuffix)
-                      : criteriaVal.key) +
+                  (criteriaValue.keyTranslated
+                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
+                      | translateWithOptionalTypeSuffix)
+                    : criteriaVal.key) +
                   ' : ' +
                   (criteriaValue.valueTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
@@ -255,12 +243,10 @@
                 <ng-container *ngIf="isFirst">
                   <i *ngIf="criteriaKey === 'NODE'" class="vitamui-icon vitamui-icon-radio-checked vitamui-row-icon"></i>
                   {{
-                    (isKeyInSchema
-                      ? keyTranslationFromSchema
-                      : criteriaValue.keyTranslated
-                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
-                          | translateWithOptionalTypeSuffix)
-                        : criteriaVal.key) + ' : '
+                    (criteriaValue.keyTranslated
+                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
+                        | translateWithOptionalTypeSuffix)
+                      : criteriaVal.key) + ' : '
                   }}
                 </ng-container>
 

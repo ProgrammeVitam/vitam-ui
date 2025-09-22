@@ -162,7 +162,7 @@ export class SearchCriteriaService {
         const defaultCriteriaConfig: Partial<SearchCriteriaAddAction> = {
           valueElt: { id: key, value: formattedValue, beginInterval: beginDate, endInterval: endDate },
           labelElt: formattedValue,
-          keyTranslated: categoryForKey !== SearchCriteriaTypeEnum.FIELDS,
+          keyTranslated: true,
           operator: operator,
           category: categoryForKey,
           dataType: dataType,
