@@ -4987,7 +4987,8 @@
     "pattern": "Format attendu : {{ requiredPattern }}.",
     "uniquePreventRuleId": "Code identique à l'action précédente",
     "uniqueRuleId": "Code identique à l'action précédente",
-    "missingIncludedNodes": "Une valeur est requise"
+    "missingIncludedNodes": "Une valeur est requise",
+    "incorrectIdentifier": "Cet identifiant contient un ou des caractères non autorisés"
   },
   "ACCESS_CONTRACT": {
     "HOME": {
