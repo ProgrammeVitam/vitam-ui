@@ -45,6 +45,7 @@ import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import { Profile } from '../../../../models/profile';
 import { ProfileDescription } from '../../../../models/profile-description.model';
 import { ProfileType } from '../../../../models/profile-type.enum';
+import { MiscValidators } from 'vitamui-library';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -83,7 +84,7 @@ export class ProfileInformationTabComponent {
     private translateService: TranslateService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
+      identifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(10), MiscValidators.allowedIdentifier]],
       id: [null, Validators.required],
       type: [null],
       description: [null],
