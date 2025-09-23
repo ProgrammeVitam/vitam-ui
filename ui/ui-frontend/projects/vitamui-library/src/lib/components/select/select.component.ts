@@ -244,6 +244,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   ngAfterViewChecked(): void {
+    this.updateCheckboxes();
     this.updateSelectAll();
   }
 
