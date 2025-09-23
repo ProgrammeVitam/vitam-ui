@@ -80,7 +80,6 @@ public class SchemaService extends AbstractService {
     private final ImportSchemaConverter converter;
     private final ApplicationsApi applicationsApi;
     private final AdminExternalClient adminExternalClient;
-    private final SecurityService securityService;
 
     public SchemaService(
         final AdminExternalClient adminExternalClient,
@@ -90,7 +89,6 @@ public class SchemaService extends AbstractService {
         ApplicationsApi applicationsApi
     ) {
         super(securityService);
-        this.securityService = securityService;
         this.adminExternalClient = adminExternalClient;
         this.importSchemaCommonService = importSchemaCommonService;
         this.converter = converter;

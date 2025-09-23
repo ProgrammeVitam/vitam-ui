@@ -81,13 +81,14 @@
     ></vitamui-select>
 
     <vitamui-input
+      *ngIf="!isExternal"
       formControlName="SedaVersions"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SEDA_VERSIONS' | translate"
     ></vitamui-input>
 
     <vitamui-input
       *ngIf="isExternal"
-      [value]="form.get('CreationDate').value | dateTime: 'dd/MM/yyyy'"
+      formControlName="CreationDate"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CREATION_DATE' | translate"
       [disabled]="true"
     >
@@ -95,7 +96,7 @@
 
     <vitamui-input
       *ngIf="isExternal"
-      [value]="form.get('LastUpdate').value | dateTime: 'dd/MM/yyyy'"
+      formControlName="LastUpdate"
       [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.MODIFICATION_DATE' | translate"
       [disabled]="true"
     >
