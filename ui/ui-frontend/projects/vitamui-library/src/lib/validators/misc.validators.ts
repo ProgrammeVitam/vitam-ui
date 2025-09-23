@@ -34,11 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export interface MiscValidators {
   readonly requiredNotBlank: ValidatorFn;
+  readonly allowedIdentifier: ValidatorFn;
 }
 export const MiscValidators: MiscValidators = {
   requiredNotBlank: (control) => (control.value == null || control.value.trim().length === 0 ? { requiredNotBlank: true } : null),
+  allowedIdentifier: (control: AbstractControl): ValidationErrors =>
+    !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true },
 };

@@ -4987,7 +4987,8 @@
     "pattern": "Expected format : {{ message }}.",
     "uniquePreventRuleId": "Code identical to the previous action",
     "uniqueRuleId": "Code identical to the previous action",
-    "missingIncludedNodes": "A value is required"
+    "missingIncludedNodes": "A value is required",
+    "incorrectIdentifier": "This identifier contains one or many unauthorized characters"
   },
   "ACCESS_CONTRACT": {
     "HOME": {
