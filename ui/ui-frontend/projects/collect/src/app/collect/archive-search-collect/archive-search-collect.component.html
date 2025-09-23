@@ -56,12 +56,7 @@
           <app-title-and-description-criteria-search-collect></app-title-and-description-criteria-search-collect>
         </div>
         <div class="col-3 form-control text-right">
-          <button
-            type="button"
-            class="btn primary"
-            [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)"
-            (click)="submit(true)"
-          >
+          <button type="button" class="btn primary" [disabled]="!searchCriteriaKeys?.length" (click)="submit(true)">
             {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}
           </button>
         </div>

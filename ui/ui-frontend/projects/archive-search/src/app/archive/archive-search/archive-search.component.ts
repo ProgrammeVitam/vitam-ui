@@ -416,7 +416,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
     searchCriteriaChange.subscribe(() => {
-      this.submit();
+      this.submit(true);
     });
 
     this.checkUserHasRole(VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
@@ -437,7 +437,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   ngAfterViewInit() {
     // Trigger the search if we land on the page with query params, but only after searchCriteriaService is ready (i.e.: schema has been retrieved) in order to trigger search only after criteria have been set from the URL query params
-    if (this.route.snapshot.queryParamMap.keys.length) this.searchCriteriaService.ready().then(() => setTimeout(() => this.submit()));
+    if (this.route.snapshot.queryParamMap.keys.length) this.searchCriteriaService.ready().then(() => setTimeout(() => this.submit(true)));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -528,7 +528,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     return this.searchCriterias && this.searchCriterias.has(WAITING_RECALCULATE);
   }
 
-  submit() {
+  submit(refreshArchiveUnitsWithoutAttachment?: boolean) {
     this.listOfUAIdToInclude = [];
     this.listOfUAIdToExclude = [];
 
@@ -547,6 +547,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
       this.callVitamApiService(this.rulesFacetsCanBeComputed);
       this.showingFacets = this.rulesFacetsCanBeComputed;
+      if (refreshArchiveUnitsWithoutAttachment) this.existsArchiveUnitWithoutAttachment();
     }
   }
 
@@ -672,9 +673,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
   }
 
-  onArchiveUnitCountChange(event: number) {
-    this.totalResults = event;
-    this.archiveSharedDataService.emitTotalResults(event);
+  onArchiveUnitCountChange(resultCount: number) {
+    this.totalResults = resultCount;
+    this.archiveSharedDataService.emitTotalResults(resultCount);
   }
 
   mapSearchCriteriaHistory() {
@@ -1369,5 +1370,36 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   trackBy(_: number, unit: Unit) {
     return unit['#id'];
+  }
+
+  existsArchiveUnitWithoutAttachment(): void {
+    let orphanCriteriaList = [...this.criteriaSearchList];
+    orphanCriteriaList.push({
+      criteria: '#unitups',
+      values: [
+        {
+          id: 'true',
+          value: 'true',
+        },
+      ],
+      category: 'FIELDS',
+      operator: 'MISSING',
+      dataType: 'STRING',
+    });
+    const searchCriteria = {
+      criteriaList: orphanCriteriaList,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: false,
+      computeMgtRulesFacets: false,
+      includedFields: ['#id'],
+    };
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe((response: PagedResult) => {
+      let resultCount = 0;
+      if (response?.results?.length) {
+        resultCount = response.totalResults;
+      }
+      this.archiveSharedDataService.emitNumberOfAUsWithoutAttachment(resultCount);
+    });
   }
 }
