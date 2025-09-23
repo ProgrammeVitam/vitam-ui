@@ -63,7 +63,9 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
             .setCategory(schemaModel.getCategory())
             .setApiPath(Optional.ofNullable(schemaModel.getApiPath()).orElse(schemaModel.getPath()))
             .setDataType(convertFromIndexationType(schemaModel.getType()))
-            .setCustomSearchTypes(schemaModel.getCustomSearchTypes());
+            .setCustomSearchTypes(schemaModel.getCustomSearchTypes())
+            .setCreationDate(schemaModel.getCreationDate())
+            .setLastUpdate(schemaModel.getLastUpdate());
 
         return schemaElementDto;
     }
