@@ -3532,7 +3532,19 @@
     "PRESERVATION_PREPARATION_INSERTION_AU_METADATA": "Préparation de l'insertion des unités archivistiques",
     "STP_PRESERVATION_INSERTION_AU_METADATA.STARTED": "Début du processus de l'insertion des métadonnées",
     "STP_PRESERVATION_INSERTION_AU_METADATA": "Processus de l'insertion des métadonnées",
-    "PRESERVATION_INSERTION_AU_METADATA": "Indexation des métadonnées des unités archivistiques"
+    "PRESERVATION_INSERTION_AU_METADATA": "Indexation des métadonnées des unités archivistiques",
+    "DELETE_GOT_VERSIONS": "Suppression des versions des groupes d'objets",
+    "STP_DELETE_GOT_VERSIONS_PREPARATION.STARTED": "Début du processus de préparation de la suppression des versions des groupes d'objets",
+    "STP_DELETE_GOT_VERSIONS_PREPARATION": "Processus de préparation de la suppression des versions des groupes d'objets",
+    "DELETE_GOT_VERSIONS_PREPARATION": "Préparation de la suppression des versions des groupes d'objets",
+    "STP_DELETE_GOT_VERSIONS_ACTION.STARTED": "Début du processus de suppression des versions des groupes d'objets",
+    "STP_DELETE_GOT_VERSIONS_ACTION": "Processus de suppression des versions des groupes d'objets",
+    "STP_DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE.STARTED": "Début du processus de l'alimentation du Registre des Fonds",
+    "STP_DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE": "Processus de l'alimentation du Registre des Fonds",
+    "DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE": "Alimentation du Registre des Fonds",
+    "STP_DELETE_GOT_VERSIONS_FINALIZATION.STARTED": "Début du processus de finalisation de la suppression des versions des groupes d'objets",
+    "STP_DELETE_GOT_VERSIONS_FINALIZATION": "Processus de finalisation de la suppression des versions des groupes d'objets",
+    "DELETE_GOT_VERSIONS_FINALIZATION": "Processus de finalisation de la suppression des versions des groupes d'objets"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "Vous n'avez pas les droits nécessaires pour effectuer cette opération.",
