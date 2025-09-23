@@ -40,7 +40,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ApplicationService, Option } from 'vitamui-library';
+import { ApplicationService, Option, MiscValidators } from 'vitamui-library';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
@@ -113,7 +113,10 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
 
     if (this.profileType === ProfileType.PUA) this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
     this.form = this.formBuilder.group({
-      identifier: [{ value: this.notice.identifier, disabled: this.editNotice }, Validators.required],
+      identifier: [
+        { value: this.notice.identifier, disabled: this.editNotice },
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), MiscValidators.allowedIdentifier],
+      ],
       name: [this.notice.name, Validators.required],
       status: [this.notice.status],
       description: [this.notice.description],
