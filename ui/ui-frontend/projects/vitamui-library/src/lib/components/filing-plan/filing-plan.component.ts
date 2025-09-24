@@ -85,6 +85,12 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
     this.filingPlanService.loadTree(this.tenantIdentifier, this.accessContract, this.componentId).subscribe((nodes) => {
       this.nestedDataSource.data = nodes;
       this.nestedTreeControl.dataNodes = nodes;
+      // Ensure that the selectedNodes are included in the nodes (needed when a value is not in the datasource anymore)
+      const nodeIds = nodes.map((node) => node.vitamId);
+      this.selectedNodes = {
+        included: this.selectedNodes.included.filter((id) => nodeIds.includes(id)),
+        excluded: this.selectedNodes.excluded.filter((id) => nodeIds.includes(id)),
+      };
       this.initCheckedNodes(this.selectedNodes, nodes);
     });
   }
