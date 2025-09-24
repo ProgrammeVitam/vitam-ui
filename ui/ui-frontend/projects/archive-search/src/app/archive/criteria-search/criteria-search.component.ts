@@ -34,16 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  CriteriaSearchCriteria,
-  CriteriaValue,
-  QueryParamsService,
-  Schema,
-  SearchCriteriaService,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
-} from 'vitamui-library';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',
@@ -51,31 +43,8 @@ import {
   styleUrls: ['./criteria-search.component.scss'],
   standalone: false,
 })
-export class CriteriaSearchComponent implements OnInit {
-  private schema: Schema;
-  isKeyInSchema = false;
-  keyTranslationFromSchema: string;
-
-  constructor(
-    private queryParamsService: QueryParamsService,
-    private searchCriteriaService: SearchCriteriaService,
-  ) {}
-
-  async ngOnInit() {
-    await this.initialize();
-  }
-
-  async initialize() {
-    if (this.getCategoryName(this.criteriaVal.category) === SearchCriteriaTypeEnum.FIELDS) {
-      await this.searchCriteriaService.ready();
-      this.schema = this.searchCriteriaService.getSchema();
-      const schemaElement = this.schema.find((schemaElement) => schemaElement.Path === this.criteriaKey);
-      if (schemaElement) {
-        this.isKeyInSchema = true;
-        this.keyTranslationFromSchema = schemaElement.ShortName;
-      }
-    }
-  }
+export class CriteriaSearchComponent {
+  constructor(private queryParamsService: QueryParamsService) {}
 
   @Input()
   criteriaKey: string;
