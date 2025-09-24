@@ -62,12 +62,12 @@ import {
   WINDOW_LOCATION,
   Workflow,
 } from 'vitamui-library';
-import { CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import SpyObj = jasmine.SpyObj;
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Pipe({ name: 'fileSize' })
 export class MockFileSizePipe implements PipeTransform {
@@ -138,10 +138,7 @@ describe('CreateProjectComponent', () => {
     });
 
     uploadServiceMock = jasmine.createSpyObj<CollectUploadService>('UploadService', {
-      uploadZip: of(of({})).toPromise(), // FIXME: Maybe change promise of observable chain call...
-      getUploadingFiles: of([]),
-      getZipFile: of({} as CollectZippedUploadFile),
-      reinitializeZip: null,
+      uploadZip: of({ type: HttpEventType.Response } as HttpResponse<any>), // FIXME: Maybe change promise of observable chain call...
     });
 
     await TestBed.configureTestingModule({
@@ -256,12 +253,6 @@ describe('CreateProjectComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have an input file', () => {
-      const nativeElement = fixture.nativeElement;
-      const elInput = nativeElement.querySelector('input[type=file]');
-      expect(elInput).toBeTruthy();
-    });
-
     it('should have 3 cdk steps', () => {
       const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
       expect(elementCdkStep.length).toBe(6);

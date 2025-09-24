@@ -34,36 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import JSZip from 'jszip';
+import { FormControl, ValidationErrors } from '@angular/forms';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class CollectUploadService {
-  private static X_TRANSACTION_ID_KEY = 'X-Transaction-Id';
-  private static X_ORIGINAL_FILENAME_HEADER = 'X-Original-Filename';
-  private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
-  zipFile: JSZip;
-
-  constructor(private httpClient: HttpClient) {
-    this.zipFile = new JSZip();
-  }
-
-  uploadZip(content: Blob, transactionId: string) {
-    let headers = new HttpHeaders()
-      .set(CollectUploadService.X_TRANSACTION_ID_KEY, transactionId)
-      .set(CollectUploadService.X_ORIGINAL_FILENAME_HEADER, `${transactionId}.zip`)
-      .set('Content-Type', 'application/octet-stream')
-      .set('reportProgress', 'true')
-      .set('ngsw-bypass', 'true');
-
-    const options = {
-      headers,
-      responseType: 'text' as 'text',
-      reportProgress: true,
-    };
-    return this.httpClient.request(new HttpRequest('POST', CollectUploadService.COLLECT_UPLOAD_URL, content, options));
-  }
+export class FormControlWarn extends FormControl {
+  warnings?: ValidationErrors | null = null;
 }

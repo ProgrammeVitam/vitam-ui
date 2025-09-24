@@ -34,36 +34,70 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+
 import JSZip from 'jszip';
+import { ZipFileStatus } from './zip-file-status.interface';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
+import { CustomFile } from '../custom-file';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class CollectUploadService {
-  private static X_TRANSACTION_ID_KEY = 'X-Transaction-Id';
-  private static X_ORIGINAL_FILENAME_HEADER = 'X-Original-Filename';
-  private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
-  zipFile: JSZip;
+export class ZipFile {
+  private zipFile: JSZip;
+  zipFileStatus: ZipFileStatus = null;
+  zipFileStatus$: BehaviorSubject<ZipFileStatus> = new BehaviorSubject<ZipFileStatus>(null);
 
-  constructor(private httpClient: HttpClient) {
+  constructor(zipName?: string) {
     this.zipFile = new JSZip();
+    this.zipFileStatus = {
+      name: zipName,
+      size: 0,
+      uploadedSize: 0,
+    };
   }
 
-  uploadZip(content: Blob, transactionId: string) {
-    let headers = new HttpHeaders()
-      .set(CollectUploadService.X_TRANSACTION_ID_KEY, transactionId)
-      .set(CollectUploadService.X_ORIGINAL_FILENAME_HEADER, `${transactionId}.zip`)
-      .set('Content-Type', 'application/octet-stream')
-      .set('reportProgress', 'true')
-      .set('ngsw-bypass', 'true');
+  setZipName(zipName: string): ZipFile {
+    this.zipFileStatus.name = zipName;
+    return this;
+  }
 
-    const options = {
-      headers,
-      responseType: 'text' as 'text',
-      reportProgress: true,
-    };
-    return this.httpClient.request(new HttpRequest('POST', CollectUploadService.COLLECT_UPLOAD_URL, content, options));
+  addFiles(files: FileList | File[]): ZipFile {
+    if (files.length === 0) {
+      return this;
+    }
+    for (let i = 0; i < files.length; i++) {
+      const item: CustomFile = files[i];
+      const filePath = item?.webkitRelativePath || item?.relativePath || item?.name;
+      if (item.isDirectory) {
+        this.zipFile.file(filePath, null, { dir: true });
+      } else {
+        this.zipFile.file(filePath, item);
+        this.zipFileStatus.size += item.size;
+      }
+    }
+    return this;
+  }
+
+  generateZip(): Promise<Blob> {
+    return this.zipFile.generateInternalStream({ type: 'blob' }).accumulate((metadata) => this.updateZipFileStatus(metadata.percent));
+  }
+
+  private updateZipFileStatus(metadataPercent: number) {
+    this.zipFileStatus.currentFileUploadedSize = metadataPercent;
+    this.zipFileStatus$.next(this.zipFileStatus);
+  }
+
+  updateUploadingZipFileStatus(data: HttpEvent<any>) {
+    if (!data) return;
+    let progressPercent = 0;
+    switch (data.type) {
+      case HttpEventType.UploadProgress:
+        progressPercent = Math.round((data.loaded / data.total) * 100);
+        break;
+      case HttpEventType.Response:
+        progressPercent = 100;
+        break;
+    }
+    this.zipFileStatus.uploadedSize = progressPercent;
+    this.zipFileStatus$.next(this.zipFileStatus);
   }
 }

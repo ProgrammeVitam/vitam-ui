@@ -34,36 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import JSZip from 'jszip';
+import { Component, Input } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormControlWarn } from './form-control-warn';
 
-@Injectable({
-  providedIn: 'root',
+@Component({
+  selector: 'vitamui-form-errors',
+  imports: [MatFormFieldModule, TranslateModule],
+  templateUrl: './form-errors.component.html',
+  styleUrl: './form-errors.component.scss',
+  standalone: true,
 })
-export class CollectUploadService {
-  private static X_TRANSACTION_ID_KEY = 'X-Transaction-Id';
-  private static X_ORIGINAL_FILENAME_HEADER = 'X-Original-Filename';
-  private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
-  zipFile: JSZip;
+export class FormErrorsComponent {
+  @Input({ required: true }) control: AbstractControl;
+  /**
+   * By default, the i18n key for the error message is computed as `ERRORS.[errorKey]`.
+   * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
+   */
+  @Input() errorMessageMap: { [key: string]: string } = {};
 
-  constructor(private httpClient: HttpClient) {
-    this.zipFile = new JSZip();
+  get errors() {
+    return { ...((this.control as FormControlWarn).warnings || {}), ...(this.control.errors || {}) };
   }
 
-  uploadZip(content: Blob, transactionId: string) {
-    let headers = new HttpHeaders()
-      .set(CollectUploadService.X_TRANSACTION_ID_KEY, transactionId)
-      .set(CollectUploadService.X_ORIGINAL_FILENAME_HEADER, `${transactionId}.zip`)
-      .set('Content-Type', 'application/octet-stream')
-      .set('reportProgress', 'true')
-      .set('ngsw-bypass', 'true');
-
-    const options = {
-      headers,
-      responseType: 'text' as 'text',
-      reportProgress: true,
-    };
-    return this.httpClient.request(new HttpRequest('POST', CollectUploadService.COLLECT_UPLOAD_URL, content, options));
+  getErrorMessageKey(errorKey: string): string {
+    return (this.errorMessageMap && this.errorMessageMap[errorKey]) || 'ERRORS.' + errorKey;
   }
+
+  protected readonly Object = Object;
 }
