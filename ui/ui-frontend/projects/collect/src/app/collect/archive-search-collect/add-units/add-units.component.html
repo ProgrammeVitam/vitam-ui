@@ -1,10 +1,14 @@
 <vitamui-dialog-header
   [stepper]="stepper"
   [subhead]="'COLLECT.ADD_UNITS.TITLE' | translate"
-  [title]="['COLLECT.ADD_UNITS.UPLOAD_FILES_TITLE' | translate, 'COLLECT.ADD_UNITS.ATTACHMENT_POSITION_TITLE' | translate]"
+  [title]="[
+    'COLLECT.ADD_UNITS.UPLOAD_FILES_TITLE' | translate,
+    'COLLECT.ADD_UNITS.ATTACHMENT_POSITION_TITLE' | translate,
+    'COLLECT.MODAL.UPLOAD_FILES' | translate,
+  ]"
 ></vitamui-dialog-header>
 
-<vitamui-common-stepper #stepper>
+<vitamui-common-stepper #stepper [(selectedIndex)]="stepIndex">
   <!-- stepIndex 1 : upload de fichier -->
   <cdk-step>
     <mat-dialog-content>
@@ -14,17 +18,17 @@
         </div>
       } @else {
         <vitamui-file-selector
-          [multiple]="true"
-          [maxSizeInBytes]="maxSizeInBytes"
           [directoryMode]="true"
-          (filesChanged)="setFilesToUpload($event)"
+          [maxSizeInBytes]="uploadMaxSizeInBytes"
+          [multiple]="true"
+          [formControl]="filesToUploadControl"
         >
         </vitamui-file-selector>
       }
     </mat-dialog-content>
 
     <mat-dialog-actions>
-      <vitamui-next-step [disabled]="filesToUpload.length < 1"></vitamui-next-step>
+      <vitamui-next-step [disabled]="filesToUploadControl.invalid"></vitamui-next-step>
       <button (click)="cancel()" class="btn cancel link" type="button">
         {{ 'COMMON.UNDO' | translate }}
       </button>
@@ -53,6 +57,41 @@
         </button>
       </div>
       <vitamui-previous-step></vitamui-previous-step>
+    </mat-dialog-actions>
+  </cdk-step>
+
+  <!-- stepIndex 3 : Zip des fichiers et upload -->
+  <cdk-step>
+    <mat-dialog-content>
+      <div class="main-content">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ 'COLLECT.UPLOAD.ZIP_NAME' | translate }}</th>
+              <th>{{ 'COLLECT.UPLOAD.WEIGHT' | translate }}</th>
+              <th>{{ 'COLLECT.UPLOAD.ZIP_TRACKING_TITLE' | translate }}</th>
+              <th>{{ 'COLLECT.UPLOAD.STATUS' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="zipFileStatus$ | async as zippedFile">
+              <td>{{ zippedFile?.name }}</td>
+              <td>{{ zippedFile?.size | fileSize }}</td>
+              <td>
+                <vitamui-common-progress-bar [percent]="zippedFile?.currentFileUploadedSize"></vitamui-common-progress-bar>
+              </td>
+              <td>
+                <vitamui-common-progress-bar [percent]="zippedFile?.uploadedSize"></vitamui-common-progress-bar>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button (click)="close(true)" [disabled]="isLoading" class="btn primary" type="button">
+        {{ 'COMMON.CLOSE' | translate }}
+      </button>
     </mat-dialog-actions>
   </cdk-step>
 </vitamui-common-stepper>

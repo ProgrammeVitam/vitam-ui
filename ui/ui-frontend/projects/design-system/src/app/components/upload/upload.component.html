@@ -6,12 +6,12 @@
 
   <h3>Multiple files allowed</h3>
   <p>Drag & dropped directories are spread to individual files.</p>
-  <vitamui-file-selector [multiple]="true"> </vitamui-file-selector>
+  <vitamui-file-selector [multiple]="true" [maxSizeInBytes]="25 * 1024 * 1024"> </vitamui-file-selector>
 
   <h3>Directory mode</h3>
   <p>Drag & dropped directories are treated as single elements.</p>
   <p>Individual files can also be added (through drag & drop only).</p>
-  <vitamui-file-selector [directoryMode]="true"> </vitamui-file-selector>
+  <vitamui-file-selector [directoryMode]="true" [maxSizeInBytes]="25 * 1024 * 1024"> </vitamui-file-selector>
 
   <h3>Only '.json' & '.png' files are allowed</h3>
   <vitamui-file-selector [multiple]="true" [extensions]="['.json', '.png']"> </vitamui-file-selector>

@@ -34,22 +34,54 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { I18nPluralPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DisplayFile } from './display-file.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomFile } from '../../../../lib/models/custom-file';
+import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
+import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
+import { BytesPipe } from '../../pipes';
+import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
+
+export const FILE_SELECTOR_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => FileSelectorComponent),
+  multi: true,
+};
+
+export function readFileContent(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => resolve(event.target?.result as string);
+    reader.onerror = (error) => reject(error);
+    reader.readAsText(file);
+  });
+}
 
 @Component({
   selector: 'vitamui-file-selector',
   templateUrl: './file-selector.component.html',
   styleUrl: './file-selector.component.scss',
-  imports: [DragAndDropDirective, TranslatePipe, NgIf, NgForOf, PipesModule, NgTemplateOutlet],
+  imports: [FormsModule, DragAndDropDirective, TranslatePipe, NgForOf, PipesModule, NgTemplateOutlet, I18nPluralPipe, FormErrorsComponent],
+  providers: [FILE_SELECTOR_VALUE_ACCESSOR, BytesPipe],
 })
-export class FileSelectorComponent {
+export class FileSelectorComponent extends AbstractFormInputDirective implements OnInit {
   /**
    * Allowed extensions. Ex: ['.json', '.rng']
    */
@@ -64,25 +96,54 @@ export class FileSelectorComponent {
   #multiple = false;
   /** Only directories can be selected through OS picker. Drag&Drop allows both directories and files */
   @Input() directoryMode = false;
-  @Input() maxSizeInBytes: number; // TODO: do some control on the file size?
+  @Input() maxSizeInBytes: number;
 
   @ContentChild('fileList') fileList: TemplateRef<any>;
   @ContentChild('content') content: TemplateRef<any>;
 
   @Output() filesChanged = new EventEmitter<File[]>();
 
-  @ViewChild('inputFiles') inputFiles: ElementRef;
+  @ViewChild('fileSelector') fileSelector: ElementRef;
+  @ViewChild('directorySelector') directorySelector: ElementRef;
 
-  files: File[] = [];
   displayFiles: DisplayFile[] = [];
 
+  format: { [k: string]: string } = {
+    '=1': 'FILE_SELECTOR.ALLOWED_FORMATS_SINGULAR',
+    other: 'FILE_SELECTOR.ALLOWED_FORMATS_PLURAL',
+  };
+
   constructor(
+    injector: Injector,
     private translationService: TranslateService,
     public snackBar: MatSnackBar,
-  ) {}
+    private bytesPipe: BytesPipe,
+  ) {
+    super(injector);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+
+    this.control.addValidators([this.maxSizeInBytesValidator(this.maxSizeInBytes)]);
+    this.control.valueChanges.subscribe((files) => this.filesChanged.emit(files));
+  }
+
+  writeValue() {
+    this.updateDisplayFiles();
+  }
+
+  hasErrors(): boolean {
+    return this.control.touched && this.control.invalid;
+  }
+
+  get displayMessageAndLinks() {
+    return this.multiple || this.directoryMode || !this.displayFiles?.length;
+  }
 
   handleFilesSelection(files: FileList | File[]) {
-    if (!this.multiple && (this.files?.length > 0 || files.length > 1)) {
+    this.control.markAsTouched();
+    if (!this.multiple && (this.control.value?.length > 0 || files.length > 1)) {
       this.resetInput();
       return;
     }
@@ -95,51 +156,62 @@ export class FileSelectorComponent {
       return;
     }
 
+    this.updateFiles(files);
+
+    this.resetInput();
+  }
+
+  private updateFiles(files: FileList | File[]) {
     // Filter to keep only the ones matching extension list (useful for drag & drop and to make sure no other type has been selected)
     const filteredFiles = Array.from(files)
       .filter((file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())))
       .slice(0, this.multiple ? undefined : 1);
-    this.files.push(...filteredFiles);
+    this.control.setValue([...(this.control.value || []), ...filteredFiles]);
+    this.updateDisplayFiles();
+  }
+
+  private updateDisplayFiles() {
     if (this.directoryMode) {
-      this.displayFiles.push(...this.getRootElements(files));
+      this.displayFiles = this.getRootElements(this.control.value);
     } else {
-      const displayFiles: DisplayFile[] = Array.from(filteredFiles).map(
+      this.displayFiles = Array.from(this.control.value || []).map(
         (file: File): DisplayFile => ({
           name: file.name,
           size: file.size,
           directory: false,
         }),
       );
-      this.displayFiles.push(...displayFiles);
     }
-    this.filesChanged.emit(this.files);
-    this.resetInput();
   }
 
   openFileSelectorOSDialog() {
-    this.inputFiles.nativeElement.click();
+    this.fileSelector.nativeElement.click();
+  }
+
+  openDirectorySelectorOSDialog() {
+    this.directorySelector.nativeElement.click();
   }
 
   removeFile(displayFile: DisplayFile) {
     if (displayFile.directory) {
-      this.files = this.files.filter((file: CustomFile) => !this.getPath(file).startsWith(displayFile.name));
+      this.control.setValue(this.control.value.filter((file: CustomFile) => !this.getPath(file).startsWith(displayFile.name)));
     } else {
-      this.files.splice(
-        this.files.findIndex((file) => file.name === displayFile.name),
+      let files: DisplayFile[] = this.control.value;
+      files.splice(
+        files.findIndex((file) => file.name === displayFile.name),
         1,
       );
+      this.control.setValue(files);
     }
-    this.filesChanged.emit(this.files);
-    this.displayFiles.splice(this.displayFiles.indexOf(displayFile), 1);
+    this.updateDisplayFiles();
   }
 
   /**
    * Reset the value to allow a new "change" event.
    */
   private resetInput(): void {
-    if (this.inputFiles) {
-      this.inputFiles.nativeElement.value = '';
-    }
+    if (this.fileSelector) this.fileSelector.nativeElement.value = '';
+    if (this.directorySelector) this.directorySelector.nativeElement.value = '';
   }
 
   private getRootElements(files: FileList | File[]): DisplayFile[] {
@@ -147,7 +219,7 @@ export class FileSelectorComponent {
 
     const rootElementsMap = new Map<string, DisplayFile>();
 
-    Array.from(files).forEach((file: CustomFile) => {
+    Array.from(files || []).forEach((file: CustomFile) => {
       const path = this.getPath(file);
       const rootPath = path.split('/')[0];
       rootElementsMap.set(rootPath, {
@@ -172,4 +244,13 @@ export class FileSelectorComponent {
       this.displayFiles.some((displayElement) => displayElement.name?.toLowerCase() === rootElementName?.toLowerCase()),
     );
   }
+
+  maxSizeInBytesValidator =
+    (maxSizeInBytes: number) =>
+    (control: AbstractControl<CustomFile[]>): ValidationErrors => {
+      const size = (control.value || []).reduce((acc: number, file: CustomFile) => acc + (file.size || 0), 0);
+      return size > maxSizeInBytes
+        ? { maxSizeInBytes: { size: this.bytesPipe.transform(size), maxSize: this.bytesPipe.transform(maxSizeInBytes) } }
+        : null;
+    };
 }

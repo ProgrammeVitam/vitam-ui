@@ -61,10 +61,17 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should reset the input after file selection', () => {
-    component['inputFiles'] = { nativeElement: { value: 'test' } };
+    component['fileSelector'] = { nativeElement: { value: 'test' } };
     const mockFiles = [new File(['content'], 'test.json')];
     component.handleFilesSelection(mockFiles);
-    expect(component['inputFiles'].nativeElement.value).toBe('');
+    expect(component['fileSelector'].nativeElement.value).toBe('');
+  });
+
+  it('should reset the input after directory selection', () => {
+    component['directorySelector'] = { nativeElement: { value: 'test' } };
+    const mockFiles = [new File(['content'], 'test')];
+    component.handleFilesSelection(mockFiles);
+    expect(component['directorySelector'].nativeElement.value).toBe('');
   });
 
   it('should filter files based on allowed extensions', () => {
@@ -73,8 +80,8 @@ describe('FileSelectorComponent', () => {
     component.multiple = true;
     component.extensions = ['.json'];
     component.handleFilesSelection([file1, file2]);
-    expect(component.files.length).toBe(1);
-    expect(component.files[0].name).toBe('file1.json');
+    expect((component as any).control.value.length).toBe(1);
+    expect((component as any).control.value[0].name).toBe('file1.json');
   });
 
   it('should prevent dropping multiple files if multipleFiles is false', () => {
@@ -82,7 +89,7 @@ describe('FileSelectorComponent', () => {
     const file2 = new File([''], 'file2.json', { type: 'application/json' });
     component.multiple = false;
     component.handleFilesSelection([file1, file2]);
-    expect(component.files.length).toBe(0);
+    expect((component as any).control.value?.length).toBeFalsy();
   });
 
   it('should emit filesChanged event with updated files', () => {
@@ -96,32 +103,32 @@ describe('FileSelectorComponent', () => {
     const file1 = new File([''], 'file1.json', { type: 'application/json' });
     const file2 = new File([''], 'file2.json', { type: 'application/json' });
     component.multiple = true;
-    component.files = [file1];
+    (component as any).control.setValue([file1]);
 
     spyOn(component.filesChanged, 'emit');
     component.handleFilesSelection([file2]);
 
-    expect(component.files).toEqual([file1, file2]);
+    expect((component as any).control.value).toEqual([file1, file2]);
     expect(component.filesChanged.emit).toHaveBeenCalledWith([file1, file2]);
   });
 
   it('should remove a file from files and displayFiles arrays', () => {
     const file1 = new File([''], 'file1.json', { type: 'application/json' });
-    component.files = [file1];
+    (component as any).control.setValue([file1]);
     component.displayFiles = [{ name: 'file1.json', size: 0, directory: false }];
     component.removeFile(component.displayFiles[0]);
-    expect(component.files.length).toBe(0);
+    expect((component as any).control.value.length).toBe(0);
     expect(component.displayFiles.length).toBe(0);
   });
 
   it('should remove all files within a directory', () => {
     const file1 = new CustomFile([''], 'file1.json', { type: 'application/json' });
     file1.relativePath = 'dir1';
-    component.files = [file1];
+    (component as any).control.setValue([file1]);
     component.displayFiles = [{ name: 'dir1', size: 0, directory: true }];
     component.removeFile(component.displayFiles[0]);
     expect(component.displayFiles.length).toBe(0);
-    expect(component.files.length).toBe(0);
+    expect((component as any).control.value.length).toBe(0);
   });
 
   it('should remove only the specified directory and keep others', () => {
@@ -130,7 +137,8 @@ describe('FileSelectorComponent', () => {
     file1.relativePath = 'dir1';
     file2.relativePath = 'dir2';
 
-    component.files = [file1, file2];
+    component.directoryMode = true;
+    (component as any).control.setValue([file1, file2]);
     component.displayFiles = [
       { name: 'dir1', size: 0, directory: true },
       { name: 'dir2', size: 0, directory: true },
@@ -141,8 +149,8 @@ describe('FileSelectorComponent', () => {
     expect(component.displayFiles.length).toBe(1);
     expect(component.displayFiles[0].name).toBe('dir2');
 
-    expect(component.files.length).toBe(1);
-    expect(component.files[0]).toEqual(file2);
+    expect((component as any).control.value.length).toBe(1);
+    expect((component as any).control.value[0]).toEqual(file2);
   });
 
   it('should skip adding files if directory already exists', () => {
@@ -163,7 +171,7 @@ describe('FileSelectorComponent', () => {
     component.handleFilesSelection(mockFiles);
 
     mockFiles.forEach((file) => {
-      expect(component.files).not.toContain(file);
+      expect((component as any).control.value).not.toContain(file);
     });
 
     expect(component.snackBar.open).toHaveBeenCalledWith(jasmine.any(String), null, { duration: 10000 });
