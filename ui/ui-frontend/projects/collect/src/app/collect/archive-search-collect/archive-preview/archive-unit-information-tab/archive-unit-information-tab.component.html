@@ -1,93 +1,61 @@
-<div class="read-only-field">
-  <vitamui-common-data
-    [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate"
-    [value]="archiveUnit | unitI18n: 'Title'"
-  ></vitamui-common-data>
-</div>
+<div class="gap-2 align-items-stretch">
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate" [value]="archiveUnit | unitI18n: 'Title'" />
 
-<div class="read-only-field">
-  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate" [value]="archiveUnit['#opi']"></vitamui-common-data>
-</div>
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate" [value]="archiveUnit['#opi']" />
 
-<div class="read-only-field">
-  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate" [value]="archiveUnit['#id']"></vitamui-common-data>
-</div>
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate" [value]="archiveUnit['#id']" />
 
-<div class="read-only-field text-justify">
   <vitamui-common-data
     [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate"
     [value]="archiveUnit | unitI18n: 'Description'"
-  ></vitamui-common-data>
-</div>
+  />
 
-<div class="row">
-  <div class="col-6">
-    <div class="read-only-field">
-      <vitamui-common-data
-        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate"
-        [value]="archiveUnit['#originating_agency']"
-      ></vitamui-common-data>
-    </div>
+  <div class="hgap-4 align-items-baseline">
+    <vitamui-common-data
+      class="w-50"
+      [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate"
+      [value]="archiveUnit['#originating_agency']"
+    />
+    <vitamui-common-data
+      class="w-50"
+      [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
+      [value]="archiveUnit?.originating_agencyName"
+    />
   </div>
-  <div class="col-6">
-    <div class="read-only-field">
-      <vitamui-common-data
-        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
-        [value]="archiveUnit?.originating_agencyName"
-      ></vitamui-common-data>
-    </div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-6">
-    <div class="read-only-field">
-      <label
-        >{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }}
+  <div class="hgap-4 align-items-baseline">
+    <vitamui-common-data class="w-50" [value]="fullPath ? (uaPath$ | async)?.fullPath : (uaPath$ | async)?.resumePath">
+      <ng-template #label>
+        {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }}
         <button class="ml-2 btn-show-full-path" type="button" (click)="showArchiveUniteFullPath()">
           {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.BTN_SHOW_COMPLETE_PATH' | translate }}
         </button>
-      </label>
-      <div>
-        <span *ngIf="!fullPath">{{ (uaPath$ | async)?.resumePath }}</span>
-        <span *ngIf="fullPath">{{ (uaPath$ | async)?.fullPath }}</span>
-      </div>
-    </div>
+      </ng-template>
+    </vitamui-common-data>
+    <vitamui-common-data
+      class="w-50"
+      [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate"
+      [value]="'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate"
+    />
   </div>
-  <div class="col-6">
-    <div class="read-only-field">
-      <vitamui-common-data
-        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate"
-        [value]="'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate"
-      ></vitamui-common-data>
-    </div>
-  </div>
-</div>
 
-<div class="row content vitamui-form margin_right">
-  <div class="col-6">
-    <div class="read-only-field">
-      <vitamui-common-data
-        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate"
-        [value]="archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy'"
-      ></vitamui-common-data>
-    </div>
+  <div class="hgap-4 align-items-baseline">
+    <vitamui-common-data
+      class="w-50"
+      [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate"
+      [value]="archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy'"
+    />
+    <vitamui-common-data
+      class="w-50"
+      [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate"
+      [value]="archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy'"
+    />
   </div>
-  <div class="col-6">
-    <div class="read-only-field">
-      <vitamui-common-data
-        [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate"
-        [value]="archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy'"
-      ></vitamui-common-data>
-    </div>
-  </div>
-</div>
 
-@if (hasErrorMessages) {
-  <div class="read-only-field">
+  @if (hasErrorMessages) {
     <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate" [value]="errorMessages" />
-  </div>
-}
+  }
+</div>
 
 <button
   class="btn primary download-btn"

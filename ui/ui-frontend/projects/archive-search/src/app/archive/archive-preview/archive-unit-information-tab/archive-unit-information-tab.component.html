@@ -1,118 +1,63 @@
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
-      <div>
-        {{ archiveUnit | unitI18n: 'Title' }}
-      </div>
-    </div>
-  </div>
-</div>
+<div class="gap-2 align-items-stretch">
+  <vitamui-common-data [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate" [value]="archiveUnit | unitI18n: 'Title'" />
 
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate }} :</label>
-      <div>
-        {{ archiveUnit['#opi'] }}
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate }} :</label>
-      <div>
-        {{ archiveUnit['#id'] }}
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <div class="read-only-field text-justify">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
-      <div>
-        {{ archiveUnit | unitI18n: 'Description' }}
-      </div>
-    </div>
-  </div>
-</div>
+  <vitamui-common-data [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate" [value]="archiveUnit['#opi']" />
 
-<div class="row">
-  <div class="col-6">
-    <div class="read-only-field">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate }} :</label><br />
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate }} :</label>
-      <div>
-        {{ archiveUnit['#originating_agency'] }}
-      </div>
-    </div>
+  <vitamui-common-data [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate" [value]="archiveUnit['#id']" />
+
+  <vitamui-common-data
+    [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate"
+    [value]="archiveUnit | unitI18n: 'Description'"
+  />
+
+  <div class="hgap-4 align-items-baseline">
+    <vitamui-common-data
+      class="w-50"
+      [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate"
+      [value]="archiveUnit['#originating_agency']"
+    />
+    <vitamui-common-data
+      class="w-50"
+      [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
+      [value]="archiveUnit?.originating_agencyName"
+    />
   </div>
-  <div class="col-6">
-    <div class="read-only-field">
-      <label></label><br />
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate }} :</label>
-      <div>
-        {{ archiveUnit?.originating_agencyName }}
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-6">
-    <div class="read-only-field">
-      <label
-        >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }} :
+
+  <div class="hgap-4 align-items-baseline">
+    <vitamui-common-data class="w-50" [value]="fullPath ? (uaPath$ | async)?.fullPath : (uaPath$ | async)?.resumePath">
+      <ng-template #label>
+        {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }}
         <button class="ml-2 btn-show-full-path" type="button" (click)="showArchiveUniteFullPath()">
           {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.BTN_SHOW_COMPLETE_PATH' | translate }}
         </button>
-      </label>
-      <div>
-        <span *ngIf="!fullPath">{{ (uaPath$ | async)?.resumePath }}</span>
-        <span *ngIf="fullPath">{{ (uaPath$ | async)?.fullPath }}</span>
-      </div>
-    </div>
+      </ng-template>
+    </vitamui-common-data>
+    <vitamui-common-data
+      class="w-50"
+      [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate"
+      [value]="'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate"
+    />
   </div>
-  <div class="col-6">
-    <div class="read-only-field">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
-      <div>
-        {{ 'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate }}
-      </div>
-    </div>
+
+  <div class="hgap-4 align-items-baseline">
+    <vitamui-common-data
+      class="w-50"
+      [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate"
+      [value]="archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy'"
+    />
+    <vitamui-common-data
+      class="w-50"
+      [label]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate"
+      [value]="archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy'"
+    />
   </div>
 </div>
 
-<div class="row content vitamui-form margin_right">
-  <div class="col-6">
-    <div class="read-only-field">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate }} :</label>
-      <div>
-        {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
-      </div>
-    </div>
-  </div>
-  <div class="col-6">
-    <div class="read-only-field">
-      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate }} :</label>
-      <div>
-        {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <button
-      class="btn primary download-btn"
-      [disabled]="!hasDownloadDocumentRole || !downloadableVersionWithQualifier"
-      (click)="onDownloadObjectFromUnit()"
-    >
-      <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
-      <i class="vitamui-icon vitamui-icon-deposit"></i>
-    </button>
-  </div>
-</div>
+<button
+  class="btn primary download-btn"
+  [disabled]="!hasDownloadDocumentRole || !downloadableVersionWithQualifier"
+  (click)="onDownloadObjectFromUnit()"
+>
+  <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
+  <i class="vitamui-icon vitamui-icon-deposit"></i>
+</button>
