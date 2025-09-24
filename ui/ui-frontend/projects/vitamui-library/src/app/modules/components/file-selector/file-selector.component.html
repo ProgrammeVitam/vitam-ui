@@ -3,6 +3,7 @@
   vitamuiCommonDragAndDrop
   [enableFolderDragAndDrop]="directoryMode"
   (fileToUploadEmitter)="handleFilesSelection($event)"
+  [class.error]="hasErrors()"
 >
   <input
     #fileSelector
@@ -28,6 +29,8 @@
   }
 </div>
 
+<vitamui-form-errors [control]="control"></vitamui-form-errors>
+
 <ng-template #defaultFileList>
   <div class="vitamui-chip-list">
     <div *ngFor="let file of displayFiles" class="vitamui-chip">
@@ -46,23 +49,23 @@
 <ng-template #defaultContent>
   @if (displayMessageAndLinks) {
     <div class="align-items-stretch gap-2">
-      <div class="text large bold text-center primary">
+      <div class="text large bold text-center primary" [class.danger]="hasErrors()">
         <div>{{ 'FILE_SELECTOR.DRAG_AND_DROP' | translate }}</div>
         @if (directoryMode) {
           <div>{{ 'FILE_SELECTOR.OR' | translate }}</div>
           <div class="d-flex row justify-content-center">
-            <div class="text bold link primary" (click)="openDirectorySelectorOSDialog()">
+            <div class="text bold link primary" [class.danger]="hasErrors()" (click)="openDirectorySelectorOSDialog()">
               {{ 'FILE_SELECTOR.BROWSE_DIRECTORIES' | translate }}
             </div>
             <div class="ml-2 mr-2">/</div>
-            <div class="text bold link primary" (click)="openFileSelectorOSDialog()">
+            <div class="text bold link primary" [class.danger]="hasErrors()" (click)="openFileSelectorOSDialog()">
               {{ 'FILE_SELECTOR.BROWSE_FILES' | translate }}
             </div>
           </div>
         } @else {
           <div class="d-flex row justify-content-center">
             <div class="mr-2">{{ 'FILE_SELECTOR.OR' | translate }}</div>
-            <div class="text bold link primary" (click)="openFileSelectorOSDialog()">
+            <div class="text bold link primary" [class.danger]="hasErrors()" (click)="openFileSelectorOSDialog()">
               {{ 'FILE_SELECTOR.BROWSE' | translate }}
             </div>
           </div>

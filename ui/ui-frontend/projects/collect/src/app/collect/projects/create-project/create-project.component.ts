@@ -111,7 +111,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   hasError = false;
   errorMessage: string;
   schemaOptions: ItemNode<SchemaElement>[];
-  filesToUpload: File[] = [];
+  filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
   zipFileStatus$: Observable<ZipFileStatus>;
   units: Unit[];
   compressedZip: Blob;
@@ -261,10 +261,6 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   backToPreviousStep() {
     this.stepIndex = this.stepIndex - 1;
-  }
-
-  setFilesToUpload(files: File[]) {
-    this.filesToUpload = files;
   }
 
   async handleJsltFile(files: File[]) {
@@ -458,7 +454,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     const zipFile = new ZipFile();
     this.zipFileStatus$ = zipFile.zipFileStatus$;
     if ([ImportType.COMPRESSED, ImportType.SIP].includes(this.importType as ImportType)) {
-      this.compressedZip = new Blob(this.filesToUpload, { type: 'application/zip' });
+      this.compressedZip = new Blob(this.filesToUploadControl.value, { type: 'application/zip' });
     }
     this.projectsService
       .create(project)
@@ -475,7 +471,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         tap((createdTransactionResponse) => {
           transactionId = createdTransactionResponse.id;
           if (this.importType === ImportType.SIP) {
-            zipFile.setZipName(this.filesToUpload[0].name + '.zip');
+            zipFile.setZipName(this.filesToUploadControl.value[0].name + '.zip');
           } else {
             zipFile.setZipName(transactionId + '.zip');
           }
@@ -486,7 +482,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         }),
         switchMap(() =>
           this.importType === ImportType.DIRECTORIES_FILES
-            ? zipFile.addFiles(this.filesToUpload).generateZip()
+            ? zipFile.addFiles(this.filesToUploadControl.value).generateZip()
             : of(this.compressedZip).toPromise(),
         ),
         switchMap((content) =>
@@ -542,7 +538,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   resetFilesToImportList() {
-    this.filesToUpload = [];
+    this.filesToUploadControl.reset();
   }
 
   private setDefaultArchivingSystemValue() {
