@@ -6,30 +6,38 @@
       </button>
     </div>
 
-    <div class="title" *ngIf="!loading; else spinner">
-      <i
-        class="vitamui-icon {{ icon }}"
-        [ngClass]="{
-          'status-badge-red': badge === 'red',
-          'status-badge-green': badge === 'green',
-          'status-badge-grey': badge === 'grey',
-          'status-badge-orange': badge === 'orange',
-          'status-badge-black': badge === 'black',
-        }"
+    <div class="d-flex" *ngIf="!loading; else spinner">
+      <div
+        class="title"
+        [vitamuiTooltip]="hasToolTipOnTitle && toolTipTitleText ? toolTipTitleText : null"
+        [vitamuiTooltipPosition]="hasToolTipOnTitle && toolTipTitleText ? 'BOTTOM' : null"
       >
-      </i>
+        <i
+          class="vitamui-icon {{ icon }} mr-2"
+          [ngClass]="{
+            'status-badge-red': badge === 'red',
+            'status-badge-green': badge === 'green',
+            'status-badge-grey': badge === 'grey',
+            'status-badge-orange': badge === 'orange',
+            'status-badge-black': badge === 'black',
+          }"
+        >
+        </i>
 
-      @if (hasToolTipOnTitle && toolTipTitleText) {
-        <div vitamuiTooltip="{{ toolTipTitleText }}" vitamuiTooltipPosition="BOTTOM">
-          <h5 class="m-0 text-primary">{{ title }}</h5>
-          <p class="text large light m-0">{{ subtitle }}</p>
-        </div>
-      } @else {
-        <div>
-          <h5 class="m-0">{{ title }}</h5>
-          <p class="text medium m-0">{{ subtitle }}</p>
-        </div>
-      }
+        <h5 class="m-0" [ngClass]="{ 'text-primary': hasToolTipOnTitle && toolTipTitleText }">
+          {{ title }}
+        </h5>
+
+        <p
+          class="m-0"
+          [ngClass]="{
+            'text large light': hasToolTipOnTitle && toolTipTitleText,
+            'text medium': !(hasToolTipOnTitle && toolTipTitleText),
+          }"
+        >
+          {{ subtitle }}
+        </p>
+      </div>
 
       <div *ngIf="!actionsBelowTitle" class="d-flex align-items-end justify-content-end actions">
         <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
