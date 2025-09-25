@@ -318,7 +318,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
           let unitUps = selectedUnit['#unitups'];
           if (unitUps) {
             for (const unitUp of unitUps) {
-              for (const vups of selectedUnit['#vups']) {
+              for (const vups of selectedUnit['#vups'] ?? []) {
                 this.allunitups.push(unitUp + '-' + vups);
               }
             }
