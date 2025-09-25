@@ -74,7 +74,7 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
   }
 
   onLabelClick(event: MouseEvent) {
-    if (this.isVirtualNode()) return;
+    if (this.isVirtualNode() || this.node.disableLabelClickCallback) return;
     this.labelClick.emit();
     if (!this.labelIsLinkedToCheckbox) {
       event.stopPropagation();
