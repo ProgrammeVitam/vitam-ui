@@ -83,7 +83,7 @@
   </div>
 </div>
 
-@if (archiveUnit['#errors']?.length) {
+@if (hasErrorMessages) {
   <div class="read-only-field">
     <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate" [value]="errorMessages" />
   </div>
