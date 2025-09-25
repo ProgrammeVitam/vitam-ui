@@ -4653,6 +4653,7 @@
         "DESCRIPTION_LEVEL": "Niveau de description",
         "DOWNLOAD_DOC": "Télécharger le document",
         "ENCOUNTERED_ERRORS": "Erreur(s) rencontrée(s)",
+        "OBJECT_GROUP_VALIDATION_ERRORS": "Il existe une ou plusieurs erreurs sur les métadonnées techniques ou les objets. Voir l'onglet Objets.",
         "END_DATE": "Date de fin",
         "FILE": "FICHIER",
         "FILE_ENCODING": "Encodage du fichier",
