@@ -433,7 +433,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.searchCriteriaKeys = [];
       this.included = false;
     }
-    this.reMapSearchCriteriaFromSearchCriteriaHistory(event);
+    this.applySearchCriteriaHistory(event);
   }
 
   emitOrderChange() {
@@ -710,49 +710,34 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.recursiveCheck(this.nodeArray, show);
   }
 
-  private reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
+  private applySearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
     this.subscribeResetNodesOnFilingHoldingNodesChanges();
     this.recursiveCheck(this.nodeArray, false);
 
     storedSearchCriteriaHistory.searchCriteriaList.forEach((criteria: SearchCriteriaEltements) => {
       this.fillTreeNodeAsSearchCriteriaHistory(criteria);
-      const c = criteria.criteria;
+
+      const category = criteria.category as SearchCriteriaTypeEnum;
+      const isRuleCategory = Object.keys(SearchCriteriaTypeEnum)
+        .filter((key) => key.includes('RULE'))
+        .includes(category);
+
+      if (isRuleCategory) {
+        this.addCriteriaCategory(category);
+      }
+
       criteria.values.forEach((value) => {
-        if (
-          [
-            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE],
-            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES],
-            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE],
-            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE],
-            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.REUSE_RULE],
-            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.DISSEMINATION_RULE],
-          ].includes(criteria.category as SearchCriteriaTypeEnum)
-        ) {
-          this.addCriteriaCategory(criteria.category);
-          this.addCriteria(
-            c,
-            value,
-            value.value,
-            criteria.keyTranslated,
-            criteria.operator,
-            criteria.category as SearchCriteriaTypeEnum,
-            criteria.valueTranslated,
-            criteria.dataType,
-            true,
-          );
-        } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS]) {
-          this.addCriteria(
-            c,
-            value,
-            value.value,
-            criteria.keyTranslated,
-            criteria.operator,
-            SearchCriteriaTypeEnum.FIELDS,
-            criteria.valueTranslated,
-            criteria.dataType,
-            true,
-          );
-        }
+        this.addCriteria(
+          criteria.criteria,
+          value,
+          value.value,
+          criteria.keyTranslated,
+          criteria.operator,
+          category,
+          criteria.valueTranslated,
+          criteria.dataType,
+          true,
+        );
       });
     });
   }
