@@ -5824,7 +5824,11 @@
     "minlength": "Minimum length is {{ requiredLength }} characters.",
     "maxlength": "Maximum length is {{ requiredLength }} characters.",
     "email": "Invalid email address.",
-    "pattern": "Expected format : {{ message }}."
+    "pattern": "Expected format : {{ message }}.",
+    "uniquePreventRuleId": "Code identical to the previous action",
+    "uniqueRuleId": "Code identical to the previous action",
+    "missingIncludedNodes": "A value is required",
+    "incorrectIdentifier": "This identifier contains one or many unauthorized characters"
   },
   "ACCESS_CONTRACT": {
     "HOME": {

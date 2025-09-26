@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -82,7 +82,16 @@ export class ProfileInformationTabComponent {
     private translateService: TranslateService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
+      identifier: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(10),
+          (control: AbstractControl): ValidationErrors =>
+            !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true },
+        ],
+      ],
       id: [null, Validators.required],
       type: [null],
       description: [null],

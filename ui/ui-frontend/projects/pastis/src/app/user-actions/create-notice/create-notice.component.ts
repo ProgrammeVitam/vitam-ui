@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -119,7 +119,16 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
     }
     this.form = this.formBuilder.group({
-      identifier: [{ value: this.notice.identifier, disabled: this.editNotice }, Validators.required],
+      identifier: [
+        { value: this.notice.identifier, disabled: this.editNotice },
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(100),
+          (control: AbstractControl): ValidationErrors =>
+            !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true },
+        ],
+      ],
       name: [this.notice.name, Validators.required],
       status: [this.notice.status],
       description: [this.notice.description],
