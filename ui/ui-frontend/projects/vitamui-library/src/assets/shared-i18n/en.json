@@ -2991,6 +2991,7 @@
     "STP_OG_LFC_TRACEABILITY_FINALIZATION": "Process of finalization of securing the lifecycle logs of objects groups",
     "STP_BACKUP_ONTOLOGY": "Process of backing up the referential of ontologies",
     "STP_BACKUP_MANAGEMENT_CONTRACT": "Management contract backup process",
+    "STP_UPDATE_MANAGEMENT_CONTRACT": "Management Contract Update Process",
     "STP_IMPORT_MANAGEMENT_CONTRACT": "Management contract import process",
     "STP_DELETE_MASTERDATA_MANAGEMENT_CONTRACT": "Management contract deletion process",
     "IMPORT_AGENCIES.CHECK_CONCURRENT_AGENCIES_IMPORT": "Verification process of concurrent processes of agent services referential import",
