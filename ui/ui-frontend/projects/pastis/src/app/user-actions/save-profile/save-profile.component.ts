@@ -77,7 +77,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { filter, mergeMap, Observable, of, Subscription, switchMap } from 'rxjs';
-import { StartupService, VitamUISnackBarComponent } from 'vitamui-library';
+import { StartupService, VitamUISnackBarComponent, VitamuiSnackBarData } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { NoticeService } from '../../core/services/notice.service';
@@ -339,30 +339,38 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         }),
         tap({
           next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
-          error: (error) => this.displaySnackBar(error),
+          error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
         }),
       );
   }
 
-  displaySnackBar(vitamUIException: VitamUIExceptionResponse) {
-    if (!vitamUIException || !vitamUIException.args || vitamUIException.args.length < 1) {
-      return;
+  displayLogbookOperationSnackBar(error: VitamUIExceptionResponse, message: string = null): void {
+    const operationId = error?.args?.at(0) || null;
+    const hasOperationId = Boolean(operationId);
+    const content = message || error?.message || 'raison inconnue';
+
+    if (!hasOperationId) {
+      const { status, exception } = error;
+      const errorMessage = `Erreur ${status || '???'} (${exception || '???'}): ${content}`;
+      return this.notificationService.showError(errorMessage);
     }
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+
+    const prefix: string = this.translateService.instant('SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID');
+    const url = this.operationUrl(operationId);
+    const label: string = this.translateService.instant('SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON');
+    this.snackBar.openFromComponent<VitamUISnackBarComponent, VitamuiSnackBarData>(VitamUISnackBarComponent, {
       data: {
-        type: 'otherType',
-        messageKey: 'SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID',
-        buttonAction: () => this.goToOperation(vitamUIException.args[0]),
-        buttonMessageKey: 'SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON',
+        message: `${prefix}: (${content})`,
+        buttons: [{ url, label }],
       },
     });
   }
 
-  goToOperation(operationId: string) {
+  operationUrl(operationId: string) {
     const baseUrl = this.startupService.getReferentialUrl();
     const tenant = this.startupService.getTenantIdentifier();
 
-    window.location.href = `${baseUrl}/logbook-operation/tenant/${tenant}?guid=${operationId}`;
+    return `${baseUrl}/logbook-operation/tenant/${tenant}?guid=${operationId}`;
   }
 
   saveArchiveProfile(): Observable<Profile> {
@@ -370,9 +378,9 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
       return this.archiveProfileSaverService.update(this.profile, this.profileDescription, this.data).pipe(
         tap({
           next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
-          error: (error) => {
-            const message = error?.error?.message || error?.message || 'raison inconnue';
-            this.notificationService.showError(`La modification du profil a échoué (${message})`);
+          error: ({ error }: { error: VitamUIExceptionResponse }) => {
+            const message = 'La modification du profil a échoué';
+            this.displayLogbookOperationSnackBar(error, message);
           },
         }),
       );
@@ -381,9 +389,9 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     return this.archiveProfileSaverService.create(this.profile, this.profileDescription, this.data).pipe(
       tap({
         next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS')),
-        error: (error) => {
-          const message = error?.error?.message || error?.message || 'raison inconnue';
-          this.notificationService.showError(`La création du profil a échoué (${message})`);
+        error: ({ error }: { error: VitamUIExceptionResponse }) => {
+          const message = 'La création du profil a échoué';
+          this.displayLogbookOperationSnackBar(error, message);
         },
       }),
     );
@@ -394,7 +402,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
       return this.archiveUnitProfileSaverService.update(profileDescription, data).pipe(
         tap({
           next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
-          error: (error) => this.displaySnackBar(error),
+          error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
         }),
       );
     }
@@ -402,7 +410,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     return this.archiveUnitProfileSaverService.create(profileDescription, data).pipe(
       tap({
         next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS')),
-        error: (error) => this.displaySnackBar(error),
+        error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
       }),
     );
   }
