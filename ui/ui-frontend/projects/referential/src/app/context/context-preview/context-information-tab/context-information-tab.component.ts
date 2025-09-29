@@ -64,8 +64,11 @@ export class ContextInformationTabComponent {
 
   rules: Option[] = RULE_TYPES;
 
-  previousValue = (): Context => {
-    return this._context;
+  previousValue = (): any => {
+    return (Object.keys(this.form.controls || {}) as (keyof Context)[]).reduce((acc: any, key) => {
+      acc[key] = this._context[key] ?? null;
+      return acc;
+    }, {} as Partial<Context>);
   };
 
   @Input()
