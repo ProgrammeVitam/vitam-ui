@@ -66,10 +66,12 @@ const ALLUNITSUPS = '#allunitups';
 const UNITSUPS = '#unitups';
 const VIRTUAL_PATH_FIELD = '#vups';
 const TITLE_FIELD = 'Title';
+const TITLE_WITH_LANG_FIELD = 'Title_';
 const UNIT_ID_FIELD = '#id';
 const UNIT_TYPE_FIELD = '#unitType';
 const UNIT_DESCRIPTION_LEVEL_FIELD = 'DescriptionLevel';
 const UNIT_OBJECTS_FIELD = '#object';
+const INGEST_TYPE = 'INGEST';
 
 export class LeavesTreeApiService {
   constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {}
@@ -389,7 +391,15 @@ export class LeavesTreeApiService {
       pageNumber: FIRST_PAGE_INDEX,
       size: FACETS_DEFAULT_SIZE,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD, ALLUNITSUPS],
+      includedFields: [
+        UNIT_ID_FIELD,
+        TITLE_FIELD,
+        TITLE_WITH_LANG_FIELD,
+        UNIT_TYPE_FIELD,
+        UNIT_DESCRIPTION_LEVEL_FIELD,
+        UNIT_OBJECTS_FIELD,
+        ALLUNITSUPS,
+      ],
       facets: [ALL_DESCENDANTS_FACET],
     };
     return this.sendSearchArchiveUnitsByCriteria(criteria).pipe(
@@ -436,7 +446,15 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD, ALLUNITSUPS],
+      includedFields: [
+        UNIT_ID_FIELD,
+        TITLE_FIELD,
+        TITLE_WITH_LANG_FIELD,
+        UNIT_TYPE_FIELD,
+        UNIT_DESCRIPTION_LEVEL_FIELD,
+        UNIT_OBJECTS_FIELD,
+        ALLUNITSUPS,
+      ],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };
@@ -510,7 +528,13 @@ export class LeavesTreeApiService {
         dataType: CriteriaDataType.STRING,
       });
     }
-
+    newCriteriaList.push({
+      criteria: UNIT_TYPE_FIELD,
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      values: [{ id: INGEST_TYPE, value: INGEST_TYPE }],
+      dataType: CriteriaDataType.STRING,
+    });
     newCriteriaList.push({
       criteria: VIRTUAL_PATH_FIELD,
       operator: CriteriaOperator.MISSING,
@@ -522,7 +546,15 @@ export class LeavesTreeApiService {
       pageNumber: pageNumber,
       size: pageSize,
       criteriaList: newCriteriaList,
-      includedFields: [UNIT_ID_FIELD, TITLE_FIELD, UNIT_TYPE_FIELD, UNIT_DESCRIPTION_LEVEL_FIELD, UNIT_OBJECTS_FIELD, ALLUNITSUPS],
+      includedFields: [
+        UNIT_ID_FIELD,
+        TITLE_FIELD,
+        TITLE_WITH_LANG_FIELD,
+        UNIT_TYPE_FIELD,
+        UNIT_DESCRIPTION_LEVEL_FIELD,
+        UNIT_OBJECTS_FIELD,
+        ALLUNITSUPS,
+      ],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
     };
@@ -618,6 +650,7 @@ export class LeavesTreeApiService {
       includedFields: [
         UNIT_ID_FIELD,
         TITLE_FIELD,
+        TITLE_WITH_LANG_FIELD,
         UNIT_TYPE_FIELD,
         UNIT_DESCRIPTION_LEVEL_FIELD,
         UNIT_OBJECTS_FIELD,
@@ -675,6 +708,7 @@ export class LeavesTreeApiService {
       includedFields: [
         UNIT_ID_FIELD,
         TITLE_FIELD,
+        TITLE_WITH_LANG_FIELD,
         UNIT_TYPE_FIELD,
         UNIT_DESCRIPTION_LEVEL_FIELD,
         UNIT_OBJECTS_FIELD,
