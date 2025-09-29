@@ -210,24 +210,36 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     if (isEmpty(this.fullNodes) || isEmpty(this.attachmentUnits)) {
       return;
     }
-    this.attachmentNodes = [];
-    for (const unit of this.attachmentUnits) {
-      const key = unit['#management'].UpdateOperation.ArchiveUnitIdentifierKey?.MetadataName;
-      const value = key
-        ? unit['#management'].UpdateOperation.ArchiveUnitIdentifierKey?.MetadataValue
-        : unit['#management'].UpdateOperation.SystemId;
-      const treeNode = FilingHoldingSchemeHandler.foundNode(this.fullNodes, value, key);
+
+    this.attachmentNodes = this.attachmentUnits.map((unit: Unit) => {
+      const { UpdateOperation } = unit['#management'];
+      const key = UpdateOperation.ArchiveUnitIdentifierKey?.MetadataName || 'id';
+      const value = UpdateOperation.ArchiveUnitIdentifierKey?.MetadataValue || UpdateOperation.SystemId;
+      const inCollectAttachment: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.foundNode(this.fullNodes, value, key);
       const node = FilingHoldingSchemeHandler.convertUnitToNode(unit);
-      if (key) {
-        node.unitType = UnitType.WITH_KEY_VALUE;
-      } else {
-        node.vitamId = treeNode?.id;
-        node.title = treeNode?.title;
-        node.unitType = treeNode?.unitType;
-        node.hasObject = treeNode?.hasObject;
+      const isDefaultKey = key === 'id';
+
+      if (isDefaultKey && inCollectAttachment) {
+        const { title, unitType, hasObject } = inCollectAttachment;
+        return {
+          // internalAttachment
+          ...node,
+          title,
+          unitType,
+          hasObject,
+        };
       }
-      this.attachmentNodes.push(node);
-    }
+
+      return {
+        // externalAttachment
+        ...node,
+        title: `${this.translateService.instant('COLLECT.FILING_SCHEMA.KEY_VALUE_NODE')}: (${key}: ${value})`,
+        vitamId: isDefaultKey ? value : undefined,
+        unitType: isDefaultKey ? unit['#unitType'] : UnitType.WITH_KEY_VALUE,
+        disableLabelClickCallback: true,
+        disabled: true,
+      };
+    });
   }
 
   loadFilingHoldingSchemeTree() {

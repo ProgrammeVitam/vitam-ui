@@ -64,6 +64,7 @@ export interface FilingHoldingSchemeNode extends Id {
   canLoadMoreChildren?: boolean;
   paginatedMatchingChildrenLoaded?: number;
   canLoadMoreMatchingChildren?: boolean;
+  disableLabelClickCallback?: boolean;
 
   waitingChildren?: FilingHoldingSchemeNode[];
   realDirectNodePage?: number;
