@@ -68,7 +68,7 @@ export class ContextInformationTabComponent {
 
   previousValue = (): any => {
     return (Object.keys(this.form.controls || {}) as (keyof Context)[]).reduce((acc: any, key) => {
-      acc[key] = this._context[key] || null;
+      acc[key] = this._context[key] ?? null;
       return acc;
     }, {} as Partial<Context>);
   };
