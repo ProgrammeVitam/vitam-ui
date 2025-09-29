@@ -74,26 +74,20 @@
       <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
     </div>
     <div class="hgap-4 align-items-start pb-4">
-      <div class="vitamui-input" (click)="pickerBegin.open()">
-        <span *ngIf="!beginDt.value; else showBeginDt" (click)="pickerBegin.open()" class="search-date-label">{{
-          'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate
-        }}</span>
-        <ng-template #showBeginDt
-          ><span (click)="pickerBegin.open()">{{ beginDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-        </ng-template>
-        <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" [min]="beginDt.value" />
-        <mat-datepicker #pickerBegin></mat-datepicker>
-      </div>
-      <div class="vitamui-input" (click)="pickerEnd.open()">
-        <span *ngIf="!endDt.value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
-          'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
-        }}</span>
-        <ng-template #showEndDt
-          ><span (click)="pickerEnd.open()">{{ endDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-        </ng-template>
-        <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" [min]="endDt.value" />
-        <mat-datepicker #pickerEnd></mat-datepicker>
-      </div>
+      <vitamui-common-multiple-options-datepicker
+        class="col-6"
+        formControlName="beginDt"
+        pickerType="day"
+        [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate"
+        [min]="beginDt.value"
+      ></vitamui-common-multiple-options-datepicker>
+      <vitamui-common-multiple-options-datepicker
+        class="col-6"
+        formControlName="endDt"
+        pickerType="day"
+        [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate"
+        [min]="endDt.value"
+      ></vitamui-common-multiple-options-datepicker>
     </div>
     <div class="hgap-4">
       <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
@@ -144,11 +138,11 @@
               <vitamui-common-editable-input [label]="getCriteriaName(otherCriteria)" [formControlName]="otherCriteria.Path" class="w-100">
               </vitamui-common-editable-input>
             } @else if (['DATE'].includes(otherCriteria.Type)) {
-              <vitamui-common-datepicker
+              <vitamui-common-multiple-options-datepicker
                 [label]="getCriteriaName(otherCriteria)"
                 [formControlName]="otherCriteria.Path"
                 class="w-100"
-              ></vitamui-common-datepicker>
+              ></vitamui-common-multiple-options-datepicker>
             } @else {
               <!--FIXME: what do we do with OBJECT type?-->
             }
