@@ -76,15 +76,21 @@ export class ArchiveSharedDataService {
   private searchDisseminationCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
   private searchCriteriaRemoveFromChildSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
   private searchCriteriaSubject = new BehaviorSubject<Map<string, CriteriaSearchCriteria>>(null);
-
+  public numberOfAUsWithoutAttachment = new BehaviorSubject<number>(0);
+  public numberOfAUsWithoutAttachment$ = this.numberOfAUsWithoutAttachment.asObservable();
   private auTitleSubject = new BehaviorSubject<string>('');
   private ruleCategory = new BehaviorSubject<string>('');
 
   public selectedUnit$ = this.selectedUnitSubject.asObservable();
 
+  emitNumberOfAUsWithoutAttachment(value: number) {
+    this.numberOfAUsWithoutAttachment.next(value);
+  }
+
   get searchCriteria(): Map<string, CriteriaSearchCriteria> {
     return this.searchCriteriaSubject.getValue();
   }
+
   searchCriteria$ = this.searchCriteriaSubject.asObservable();
 
   unitUpdatedWithComputedObjectGroup = new BehaviorSubject<Unit>(null);
@@ -135,8 +141,8 @@ export class ArchiveSharedDataService {
     return this.facetsSubject.asObservable();
   }
 
-  emitTotalResults(facets: number) {
-    this.totalResultsSubject.next(facets);
+  emitTotalResults(resultCount: number) {
+    this.totalResultsSubject.next(resultCount);
   }
 
   getTotalResults(): Observable<number> {

@@ -39,7 +39,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription, tap } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -127,26 +127,40 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   }
 
   private subscribeOnFacetsChangesToResetCounts(): void {
+    const orphanNodes$ = this.archiveSharedDataService.numberOfAUsWithoutAttachment$;
+    const facets$ = this.archiveSharedDataService.getFacets();
+
     this.subscriptions.add(
-      this.archiveSharedDataService.getFacets().subscribe((facets) => {
-        this.requestResultFacets = facets;
-        if (facets && facets.length > 0) {
-          FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
-          this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
-        } else {
-          for (const node of this.nestedDataSourceFull.data) {
-            node.count = 0;
-            node.hidden = true;
-          }
-          this.requestResultsInFilingPlan = 0;
-        }
-        // fullNodes is a Graph .
-        // keeps last child with result only
-        this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
-        this.addOrRemoveOrphansNode();
-        this.showEveryNodes = false;
-      }),
+      combineLatest([orphanNodes$, facets$])
+        .pipe(
+          tap(([numberOfOrphanNodes, facets]) => {
+            this.requestResultFacets = facets;
+            this.handleFacetsUpdate(facets, numberOfOrphanNodes);
+
+            this.addOrRemoveOrphansNode(numberOfOrphanNodes);
+          }),
+        )
+        .subscribe(),
     );
+  }
+
+  handleFacetsUpdate(facets: ResultFacet[], numberOfOrphanNodes: number) {
+    if (facets?.length > 0) {
+      FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceFull.data, facets);
+      this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
+    } else {
+      this.nestedDataSourceFull.data.forEach((node) => {
+        node.count = 0;
+        node.hidden = true;
+      });
+
+      this.requestResultsInFilingPlan = 0;
+    }
+    // fullNodes is a Graph .
+    // keeps last child with result only
+    this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.keepEndNodesWithResultsOnly(this.fullNodes);
+    this.addOrRemoveOrphansNode(numberOfOrphanNodes);
+    this.showEveryNodes = false;
   }
 
   private refreshTreeNodes() {
@@ -155,16 +169,13 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     this.nestedDataSourceLeaves.data = data;
   }
 
-  addOrRemoveOrphansNode() {
-    const orphans = this.requestTotalResults - this.requestResultsInFilingPlan;
-    if (orphans > 0) {
-      FilingHoldingSchemeHandler.addOrphansNodeFromTree(
-        this.nestedDataSourceLeaves.data,
-        this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
-        orphans,
-      );
+  addOrRemoveOrphansNode(orphansNumber: number) {
+    const label = this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE');
+    const data = this.nestedDataSourceLeaves.data;
+    if (orphansNumber === 0) {
+      FilingHoldingSchemeHandler.addOrphansNodeFromTree(data, label, 0);
     } else {
-      FilingHoldingSchemeHandler.removeOrphansNodeFromTree(this.nestedDataSourceLeaves.data);
+      FilingHoldingSchemeHandler.addOrphansNodeFromTree(data, label, -1);
     }
     this.refreshTreeNodes();
   }
@@ -242,10 +253,9 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   private subscribeOnTotalResultsChange(): void {
     this.subscriptions.add(
-      this.archiveSharedDataService.getTotalResults().subscribe((totalResults) => {
-        this.hasMatchesInSearch = totalResults > 0;
-        this.requestTotalResults = totalResults;
-        this.addOrRemoveOrphansNode();
+      this.archiveSharedDataService.getTotalResults().subscribe((resultCount) => {
+        this.hasMatchesInSearch = resultCount > 0;
+        this.requestTotalResults = resultCount;
       }),
     );
   }

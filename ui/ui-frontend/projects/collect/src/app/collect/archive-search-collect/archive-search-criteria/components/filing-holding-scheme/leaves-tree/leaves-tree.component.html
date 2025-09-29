@@ -81,9 +81,13 @@
           (nodeToggle)="toggleOrphansNode(node)"
         >
         </vitamui-tree-node>
-        <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-primary pad">
-          {{ node.count | number: '1.0' }}
-        </span>
+        @if (nodeHasPositiveCount(node)) {
+          <span class="badge badge-primary pad">
+            {{ node.count | number: '1.0' }}
+          </span>
+        } @else if (nodeHasUnknownCount(node)) {
+          <span class="badge badge-primary orphan-badge pad bold"> --- </span>
+        }
       </div>
       <div class="flex-column childs" [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlLeaves.isExpanded(node)">
         <ng-container matTreeNodeOutlet *ngIf="nestedTreeControlLeaves.isExpanded(node)"></ng-container>

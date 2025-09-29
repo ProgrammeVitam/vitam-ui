@@ -127,6 +127,13 @@
   text-align: center;
 }
 
+.badge.orphan-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: larger;
+}
+
 .badge-primary {
   color: var(--vitamui-primary);
   background-color: var(--vitamui-primary-100);

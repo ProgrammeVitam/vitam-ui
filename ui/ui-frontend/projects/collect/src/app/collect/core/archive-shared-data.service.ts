@@ -85,6 +85,7 @@ export class ArchiveSharedDataService {
   get searchCriteria(): Map<string, CriteriaSearchCriteria> {
     return this.searchCriteriaSubject.getValue();
   }
+
   searchCriteria$ = this.searchCriteriaSubject.asObservable();
 
   appraisalFromMainSearchCriteriaObservable = this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
@@ -143,8 +144,8 @@ export class ArchiveSharedDataService {
     return this.facetsSubject.asObservable();
   }
 
-  emitTotalResults(result: number) {
-    this.totalResultsSubject.next(result);
+  emitTotalResults(resultCount: number) {
+    this.totalResultsSubject.next(resultCount);
   }
 
   getTotalResults(): Observable<number> {

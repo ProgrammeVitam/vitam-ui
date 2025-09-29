@@ -282,7 +282,7 @@ export class LeavesTreeService {
               node.realDirectNodeMatchingPage += shift;
             }
           }
-          //fixme manage canLoadMoreChildren using nbElementsToShow ???
+
           const hasWaiting = node.waitingChildren.length > 0;
 
           node.canLoadMoreChildren =
@@ -435,7 +435,6 @@ export class LeavesTreeService {
             }
             virtualNode.virtualDirectNodePage += shift;
           }
-          //fixme manage canLoadMoreChildren using nbElementsToShow ???
 
           virtualNode.canLoadMoreMatchingChildren =
             !leavesLoadingCriteria.showEveryNodes &&

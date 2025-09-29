@@ -210,6 +210,10 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return node.count && node.count > 0;
   }
 
+  nodeHasUnknownCount(node: FilingHoldingSchemeNode): boolean {
+    return node?.count === -1;
+  }
+
   onLabelClick(selectedUnit: FilingHoldingSchemeNode) {
     if (selectedUnit.id === selectedUnit.vitamId) {
       this.showNodeDetail.emit(new Pair(selectedUnit.vitamId, true));

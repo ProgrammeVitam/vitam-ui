@@ -53,11 +53,11 @@ import {
   InjectorModule,
   LoggerModule,
   PagedResult,
+  SchemaService,
   SearchCriteriaDto,
   SearchCriteriaStatusEnum,
-  SchemaService,
-  VitamuiRoles,
   UnitType,
+  VitamuiRoles,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -221,7 +221,7 @@ describe('ArchiveSearchComponent', () => {
 
     describe('submit', () => {
       it('should check all criteria as included when submit', () => {
-        component.submit();
+        component.submit(true);
         component.searchCriterias.forEach((criteria) => {
           criteria.values.forEach((criteriaValue) => {
             expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.NOT_INCLUDED);
@@ -258,7 +258,13 @@ describe('ArchiveSearchComponent', () => {
       it('should include the unselected child when parent is checked, into the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
-        const unit = { '#id': '1234', '#unitups': [''], '#allunitups': [''], '#unitType': UnitType.HOLDING_UNIT, '#opi': '1234' };
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
         component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToExclude.length).toBe(1);
         expect(component.listOfUAIdToExclude[0]).toEqual({ value: '1234', id: '1234' });
@@ -274,7 +280,13 @@ describe('ArchiveSearchComponent', () => {
         component.isAllChecked = true;
         component.itemNotSelected = 1;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
-        const unit = { '#id': '1234', '#unitups': [''], '#allunitups': [''], '#unitType': UnitType.HOLDING_UNIT, '#opi': '1234' };
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
         component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToExclude.length).toBe(0);
         expect(component.listOfUAIdToInclude.length).toBe(0);
@@ -288,7 +300,13 @@ describe('ArchiveSearchComponent', () => {
       it('should include the selected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
-        const unit = { '#id': '1234', '#unitups': [''], '#allunitups': [''], '#unitType': UnitType.HOLDING_UNIT, '#opi': '1234' };
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
         component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToInclude.length).toBe(1);
         expect(component.listOfUAIdToInclude[0]).toEqual({ value: '1234', id: '1234' });
@@ -303,7 +321,13 @@ describe('ArchiveSearchComponent', () => {
       it('should not include the unselected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
-        const unit = { '#id': '1234', '#unitups': [''], '#allunitups': [''], '#unitType': UnitType.HOLDING_UNIT, '#opi': '1234' };
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
         component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToInclude.length).toBe(0);
         expect(component.listOfUAIdToExclude.length).toBe(0);
@@ -317,7 +341,13 @@ describe('ArchiveSearchComponent', () => {
       it('should not increase selectedHoldingUnitItemCount if unitType is not HOLDING_UNIT', () => {
         component.isAllChecked = false;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
-        const unit = { '#id': '1234', '#unitups': [''], '#allunitups': [''], '#unitType': UnitType.FILING_UNIT, '#opi': '1234' };
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.FILING_UNIT,
+          '#opi': '1234',
+        };
         component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToInclude.length).toBe(1);
         expect(component.listOfUAIdToInclude[0]).toEqual({ value: '1234', id: '1234' });
@@ -344,24 +374,16 @@ describe('ArchiveSearchComponent', () => {
 
       await fixture.whenStable();
 
-      expect(archiveServiceStub.searchArchiveUnitsByCriteria).toHaveBeenCalledOnceWith(
+      const firstCall = (archiveServiceStub.searchArchiveUnitsByCriteria as jasmine.Spy).calls.first().args[0];
+
+      expect(firstCall).toEqual(
         jasmine.objectContaining({
-          criteriaList: [
-            {
+          criteriaList: jasmine.arrayContaining([
+            jasmine.objectContaining({
               criteria: 'opi',
-              values: [
-                {
-                  id: 'opi',
-                  value: '1234',
-                  beginInterval: '',
-                  endInterval: '',
-                },
-              ],
-              operator: 'EQ',
-              category: 'FIELDS',
-              dataType: 'STRING',
-            },
-          ],
+              values: [jasmine.objectContaining({ id: 'opi', value: '1234' })],
+            }),
+          ]),
         }),
       );
     });

@@ -158,11 +158,7 @@ export class FilingHoldingSchemeHandler {
     }
   }
 
-  public static addOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[], nodeTitle: string, totalResults: number) {
-    const orphansNumber =
-      totalResults -
-      parentNodes.filter((node) => !FilingHoldingSchemeHandler.isOrphansNode(node)).reduce((sum, node) => sum + node.count, 0);
-
+  public static addOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[], nodeTitle: string, orphansNumber: number) {
     if (isEmpty(parentNodes) || !FilingHoldingSchemeHandler.isOrphansNode(parentNodes[0])) {
       const orphansNode: FilingHoldingSchemeNode = {
         checked: false,

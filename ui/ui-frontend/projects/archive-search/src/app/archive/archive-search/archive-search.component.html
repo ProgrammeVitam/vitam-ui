@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-3 form-control text-right">
-      <button type="button" class="btn primary" [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)" (click)="submit()">
+      <button type="button" class="btn primary" [disabled]="!searchCriteriaKeys?.length" (click)="submit(true)">
         {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
       </button>
     </div>

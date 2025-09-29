@@ -196,8 +196,12 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return node.count && node.count > 0;
   }
 
+  nodeHasUnknownCount(node: FilingHoldingSchemeNode): boolean {
+    return node?.count === -1;
+  }
+
   nodeHasResultOrShowAll(node: FilingHoldingSchemeNode) {
-    return this.nodeHasPositiveCount(node) || this.showEveryNodes;
+    return this.nodeHasPositiveCount(node) || this.nodeHasUnknownCount(node) || this.showEveryNodes;
   }
 
   onLabelClick(nodeId: string) {

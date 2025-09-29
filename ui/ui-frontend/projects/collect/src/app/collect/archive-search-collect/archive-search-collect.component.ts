@@ -1342,9 +1342,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     const searchCriteria = {
       criteriaList: criteriaList,
       pageNumber: 0,
-      size: 100,
+      size: 1,
       trackTotalHits: false,
       computeMgtRulesFacets: false,
+      includedFields: ['#id'],
     };
     this.archiveUnitCollectService
       .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)

@@ -94,6 +94,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   };
   private filingPlanLoaded = false;
   private attachmentUnitsLoaded = false;
+  requestResultsInFilingPlan: number;
 
   constructor(
     private translateService: TranslateService,
@@ -128,16 +129,25 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   }
 
   private subscribeOnFacetsChanges(): void {
-    const numberOfAUs$ = this.archiveSharedDataService.numberOfAUsWithoutAttachment$;
+    const numberOfOrphanNodes$ = this.archiveSharedDataService.numberOfAUsWithoutAttachment$;
     const facets$ = this.archiveSharedDataService.getFacets();
 
     this.subscriptions.add(
-      combineLatest([numberOfAUs$, facets$])
+      combineLatest([numberOfOrphanNodes$, facets$])
         .pipe(
-          tap(([numberOfAUsWithoutAttachment, facets]) => {
-            this.requestResultFacets = facets;
-            if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
-              return;
+          tap(([numberOfOrphanNodes, facets]) => {
+            if (facets?.length > 0) {
+              this.requestResultFacets = facets;
+              this.requestResultsInFilingPlan = FilingHoldingSchemeHandler.getCountSum(this.nestedDataSourceFull.data);
+              if (!this.filingPlanLoaded || !this.attachmentUnitsLoaded) {
+                return;
+              }
+            } else {
+              this.nestedDataSourceFull.data.forEach((node) => {
+                node.count = 0;
+                node.hidden = true;
+              });
+              this.requestResultsInFilingPlan = 0;
             }
 
             // Re-init attachment units to render children by criteria
@@ -158,13 +168,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
                 withKeyValueNodes.length,
               );
             }
-            if (numberOfAUsWithoutAttachment > 0) {
-              FilingHoldingSchemeHandler.addOrphansNodeFromTree(
-                this.nestedDataSourceLeaves.data,
-                this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE'),
-                this.searchRequestTotalResults,
-              );
-            }
+            this.addOrRemoveOrphansNode(numberOfOrphanNodes);
           }),
         )
         .subscribe(),
@@ -281,12 +285,26 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   private subscribeOnTotalResultsChange(): void {
     this.subscriptions.add(
-      this.archiveSharedDataService.getTotalResults().subscribe((totalResults) => {
-        this.searchRequestTotalResults = totalResults;
-        if (this.nestedDataSourceLeaves.data.length === 1 && this.nestedDataSourceLeaves.data[0].count + 1 !== totalResults) {
-          this.nestedDataSourceLeaves.data[0].count = totalResults;
-        }
+      this.archiveSharedDataService.getTotalResults().subscribe((resultCount) => {
+        this.searchRequestTotalResults = resultCount;
       }),
     );
+  }
+
+  private refreshTreeNodes() {
+    const data = this.nestedDataSourceLeaves.data;
+    this.nestedDataSourceLeaves.data = [];
+    this.nestedDataSourceLeaves.data = data;
+  }
+
+  addOrRemoveOrphansNode(orphansNumber: number) {
+    const label = this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
+    const data = this.nestedDataSourceLeaves.data;
+    if (orphansNumber === 0) {
+      FilingHoldingSchemeHandler.addOrphansNodeFromTree(data, label, 0);
+    } else {
+      FilingHoldingSchemeHandler.addOrphansNodeFromTree(data, label, -1);
+    }
+    this.refreshTreeNodes();
   }
 }
