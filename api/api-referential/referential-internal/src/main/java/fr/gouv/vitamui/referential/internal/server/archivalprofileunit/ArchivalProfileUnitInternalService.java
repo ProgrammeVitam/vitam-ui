@@ -12,6 +12,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.exception.VitamException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileModel;
@@ -204,27 +205,24 @@ public class ArchivalProfileUnitInternalService {
         ObjectNode query = JsonHandler.createObjectNode();
         query.set("$action", actions);
 
+        final String intentionErrorMessage = "Can't update archive unit profile";
+        final RequestResponse<?> requestResponse;
         try {
-            RequestResponse<?> requestResponse = vitamArchivalProfileUnitService.updateArchiveUnitProfile(
-                vitamContext,
-                id,
-                query
-            );
-            LOGGER.info("Request RESPONSE ! {} ", requestResponse);
-            if (requestResponse.getStatus() == 500) {
-                throw new InternalServerException(
-                    "Can't update Archival Unit profile",
-                    ((VitamError<?>) requestResponse).getMessage(),
-                    List.of(requestResponse.getHeaderString("X-Request-Id"))
-                );
-            }
+            requestResponse = vitamArchivalProfileUnitService.updateArchiveUnitProfile(vitamContext, id, query);
+        } catch (VitamException e) {
+            throw new InternalServerException(intentionErrorMessage, e);
+        }
+
+        this.tryToThrowErrors(requestResponse, intentionErrorMessage);
+
+        try {
             final ArchiveUnitProfileModel archivalUnitProfileVitamDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
                 ArchiveUnitProfileModel.class
             );
             return converter.convertVitamToDto(archivalUnitProfileVitamDto);
-        } catch (JsonProcessingException | VitamClientException e) {
-            throw new InternalServerException("Can't update Archival Unit profile", e);
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException(intentionErrorMessage, e);
         }
     }
 
@@ -268,31 +266,29 @@ public class ArchivalProfileUnitInternalService {
 
     public ArchivalProfileUnitDto create(VitamContext context, ArchivalProfileUnitDto archivalProfileUnitDto) {
         LOGGER.debug("Try to create archival unit profile {} {}", archivalProfileUnitDto, context);
+        LOGGER.info("Create Archival Unit Profile EvIdAppSession : {} ", context.getApplicationSessionId());
+        final ArchiveUnitProfileModel archiveUnitProfileModel = converter.convertDtoToVitam(archivalProfileUnitDto);
+        final String intentionErrorMessage = "Can't create archive unit profile";
+        final RequestResponse<?> requestResponse;
+
         try {
-            LOGGER.info("Create Archival Unit Profile EvIdAppSession : {} ", context.getApplicationSessionId());
-            RequestResponse<?> requestResponse = vitamArchivalProfileUnitService.create(
-                context,
-                converter.convertDtoToVitam(archivalProfileUnitDto)
-            );
-            if (requestResponse.isOk()) {
-                final ArchiveUnitProfileModel archivalProfileVitamDto = objectMapper.treeToValue(
-                    requestResponse.toJsonNode().get("$results").get(0),
-                    ArchiveUnitProfileModel.class
-                );
-                return converter.convertVitamToDto(archivalProfileVitamDto);
-            } else {
-                return null;
-            }
-        } catch (
-            InvalidParseOperationException
-            | AccessExternalClientException
-            | VitamClientException
-            | IOException
-            | JAXBException exception
-        ) {
-            LOGGER.error("Error while creating archive Profile", exception);
+            requestResponse = vitamArchivalProfileUnitService.create(context, archiveUnitProfileModel);
+        } catch (VitamException e) {
+            throw new InternalServerException(intentionErrorMessage, e);
+        } catch (JAXBException | IOException e) {
+            throw new RuntimeException(e);
         }
-        return archivalProfileUnitDto;
+
+        this.tryToThrowErrors(requestResponse, intentionErrorMessage);
+
+        final JsonNode firstNode = requestResponse.toJsonNode().get("$results").get(0);
+        final ArchiveUnitProfileModel archivalProfileVitamDto;
+        try {
+            archivalProfileVitamDto = objectMapper.treeToValue(firstNode, ArchiveUnitProfileModel.class);
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException(intentionErrorMessage, e);
+        }
+        return converter.convertVitamToDto(archivalProfileVitamDto);
     }
 
     public ResponseEntity<JsonNode> importProfile(VitamContext vitamContext, String fileName, MultipartFile file) {
@@ -313,5 +309,27 @@ public class ArchivalProfileUnitInternalService {
             LOGGER.error("Unable to import archival unit profile by file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import archival unit profile by file " + fileName + " : ", e);
         }
+    }
+
+    private void tryToThrowErrors(RequestResponse<?> requestResponse, final String intention) {
+        final boolean isValid = requestResponse.getStatus() < 400;
+
+        if (isValid) return;
+
+        final VitamError<?> error = (VitamError<?>) requestResponse;
+
+        LOGGER.error(
+            "intention: {}, code: {}, message: {},  description: {}",
+            intention,
+            error.getCode(),
+            error.getMessage(),
+            error.getDescription()
+        );
+
+        throw new InternalServerException(
+            intention,
+            error.getMessage(),
+            List.of(requestResponse.getHeaderString("X-Request-Id"))
+        );
     }
 }
