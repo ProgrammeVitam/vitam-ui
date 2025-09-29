@@ -70,8 +70,11 @@ export class SecurityProfileInformationTabComponent {
 
   private _securityProfile: SecurityProfile;
 
-  previousValue = (): SecurityProfile => {
-    return this._securityProfile;
+  previousValue = (): any => {
+    return (Object.keys(this.form.controls || {}) as (keyof SecurityProfile)[]).reduce((acc: any, key) => {
+      acc[key] = this._securityProfile[key];
+      return acc;
+    }, {} as Partial<SecurityProfile>);
   };
 
   @Input()
