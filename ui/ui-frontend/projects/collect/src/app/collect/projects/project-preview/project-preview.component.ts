@@ -330,9 +330,6 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       updateProjectOperation$.subscribe(
         (project) => {
-          this.snackBar.open(this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED'), null, {
-            duration: 10000,
-          });
           this.dialogRefToClose?.close(true);
           this.showNormalPanel();
           if (this.projectId === project.id) {
@@ -341,6 +338,9 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
             this.projectId$.next(this.projectId);
           }
           this.projectService.nextUpdatedProject(project);
+          this.snackBar.open(this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED'), null, {
+            duration: 10000,
+          });
         },
         () => {
           this.projectId$.next(this.projectId);
