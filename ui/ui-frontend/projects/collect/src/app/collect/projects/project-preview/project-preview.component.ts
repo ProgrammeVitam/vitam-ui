@@ -325,14 +325,14 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       updateProjectOperation$.subscribe(
         (project) => {
-          this.snackBar.open(this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED'), null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          });
           this.dialogRefToClose?.close(true);
           this.showNormalPanel();
           this.project = project;
           this.projectService.nextUpdatedProject(project);
+          this.snackBar.open(this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED'), null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
         },
         () => {
           this.project = previousProject;
