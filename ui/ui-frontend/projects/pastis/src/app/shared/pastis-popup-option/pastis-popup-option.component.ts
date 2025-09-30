@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { Subscription } from 'rxjs';
 import { NoticeService } from '../../core/services/notice.service';
@@ -46,11 +45,8 @@ import { ProfileService } from '../../core/services/profile.service';
 import { FileNode } from '../../models/file-node';
 import { Profile } from '../../models/profile';
 import { ProfileType } from '../../models/profile-type.enum';
-import { CreateNoticeComponent } from '../../user-actions/create-notice/create-notice.component';
-import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
-import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
-import { CreateProfileComponent, CreateProfileFormResult } from '../../profile/create-profile/create-profile.component';
 import { SnackBarService } from 'vitamui-library';
+import { CreateProfilNoticeComponent } from '../../profile/create-profil-notice/create-profil-notice.component';
 
 function constantToTranslate(edit: boolean) {
   if (edit) {
@@ -115,7 +111,6 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private noticeService: NoticeService,
     private translateService: TranslateService,
-    private loaderService: NgxUiLoaderService,
     private route: ActivatedRoute,
     private snackBarService: SnackBarService,
   ) {}
@@ -161,62 +156,32 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     this.expanded = !this.expanded;
   }
 
-  async createNotice() {
-    this.loaderService.start();
-    const createNoticeDialogConfig: MatDialogConfig<PastisDialogData> = {
-      width: '800px',
-      panelClass: 'pastis-popup-modal-box',
-      data: {
-        titleDialog: this.popupCreationTitleDialog,
-        subTitleDialog: this.popupCreationSubTitleDialog,
-        width: '800px',
-        height: '800px',
-        okLabel: this.popupCreationOkLabel,
-        cancelLabel: this.popupCreationCancelLabel,
-      },
-    };
-    const dialogRef = this.dialog.open(CreateProfileComponent, createNoticeDialogConfig);
-    const subscription1 = dialogRef.afterClosed().subscribe((result: CreateProfileFormResult) => {
-      if (result) {
-        const createNoticeData = {} as PastisDialogDataCreate;
-        createNoticeData.titleDialog = this.popupSaveCreateNoticeTitleDialog;
-        createNoticeData.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
-        createNoticeData.okLabel = this.popupSaveCreateNoticeOkLabel;
-        createNoticeData.cancelLabel = this.popupSaveCreateNoticeCancelLabel;
-        createNoticeData.profileType = result?.profileType;
-        createNoticeData.profileVersion = result?.profileVersion;
-        const createNoticeDialogRef = this.dialog.open(CreateNoticeComponent, {
-          width: '800px',
-          panelClass: 'pastis-popup-modal-box',
-          data: createNoticeData,
-        });
-        const subscription2 = createNoticeDialogRef.afterClosed().subscribe((result) => {
-          let retour;
-          if (result.success) {
-            retour = result.data;
-            if (result.profileType === ProfileType.PUA) {
-              const profileDescription = this.noticeService.puaNotice(retour, result.profileVersion);
-              this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
-                this.changeExpand();
-                this.snackBarService.open({ message: 'PASTIS_POPUP_OPTION.CREATION_SUCCESS', duration: 5000 });
-                this.profileService.refreshListProfiles();
-              });
-            } else if (result.profileType === ProfileType.PA) {
-              const profile: Profile = this.noticeService.paNotice(retour, result.profileVersion, true);
-              // STEP 1 : Create Notice
-              this.profileService.createProfilePa(profile).subscribe(() => {
-                this.changeExpand();
-                this.snackBarService.open({ message: 'PASTIS_POPUP_OPTION.CREATION_SUCCESS', duration: 5000 });
-                this.profileService.refreshListProfiles();
-              });
-            }
-          }
-        });
-        this.subscriptions.add(subscription2);
+  createProfilNotice() {
+    const createNoticeDialogRef = this.dialog.open(CreateProfilNoticeComponent, {
+      disableClose: true,
+    });
+    const subscription2 = createNoticeDialogRef.afterClosed().subscribe((result) => {
+      let retour;
+      if (result?.success) {
+        retour = result.data;
+        if (retour.profileType === ProfileType.PUA) {
+          const profileDescription = this.noticeService.puaNotice(retour, retour.profileVersion);
+          this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
+            this.changeExpand();
+            this.snackBarService.open({ message: 'PASTIS_POPUP_OPTION.CREATION_SUCCESS', duration: 5000 });
+            this.profileService.refreshListProfiles();
+          });
+        } else if (retour.profileType === ProfileType.PA) {
+          const profile: Profile = this.noticeService.paNotice(retour, retour.profileVersion, true);
+          this.profileService.createProfilePa(profile).subscribe(() => {
+            this.changeExpand();
+            this.snackBarService.open({ message: 'PASTIS_POPUP_OPTION.CREATION_SUCCESS', duration: 5000 });
+            this.profileService.refreshListProfiles();
+          });
+        }
       }
     });
-    this.subscriptions.add(subscription1);
-    this.loaderService.stop();
+    this.subscriptions.add(subscription2);
   }
 
   ngOnDestroy(): void {

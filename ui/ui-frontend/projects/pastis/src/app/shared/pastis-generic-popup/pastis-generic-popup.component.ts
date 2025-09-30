@@ -37,13 +37,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataGeneriquePopupService } from '../data-generique-popup.service';
 import { PastisPopupSelectionService } from './pastis-popup-selection.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'pastis-generic-popup',
+  imports: [CommonModule],
+  selector: 'app-pastis-generic-popup',
   templateUrl: './pastis-generic-popup.component.html',
   styleUrls: ['./pastis-generic-popup.component.scss'],
-  standalone: false,
 })
 export class PastisGenericPopupComponent implements OnInit {
   donnees: string[];

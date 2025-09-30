@@ -1,0 +1,171 @@
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_SAVE_SUBTITLE_DIALOG' | translate"
+  [title]="[
+    'PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_SAVE_TITLE_DIALOG' | translate,
+    valueSelected() && gestionNotice()
+      ? ('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_TITLE_DIALOG' | translate)
+      : ('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_SELECT_NOTICE_TITLE_DIALOG' | translate),
+  ]"
+></vitamui-dialog-header>
+
+<form [formGroup]="noticeForm">
+  <vitamui-stepper #stepper [(selectedIndex)]="stepIndex">
+    <cdk-step>
+      <mat-dialog-content>
+        <mat-dialog-content class="gap-5">
+          <app-pastis-generic-popup
+            [firstChoice]="firstChoiceEnregistrement"
+            [secondChoice]="secondChoiceEnregistrement"
+            [title]="'PROFILE.POP_UP_SAVE.CHOICE.TITLE_ENREGISTREMENT' | translate"
+            (changeStatusEvent)="changeStatus($event)"
+          >
+          </app-pastis-generic-popup>
+          @if (valueSelected() && !editProfile) {
+            <app-pastis-generic-popup
+              [secondPopup]="true"
+              [firstChoice]="firstChoiceGestionNotice"
+              [secondChoice]="secondChoiceGestionNotice"
+              [title]="titleGestionNotice"
+              (changeStatusEvent)="changeStatusGestionNoticeProfil($event)"
+            >
+            </app-pastis-generic-popup>
+          }
+        </mat-dialog-content>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <button (click)="valueSelected() ? moveToNextStep() : validate()" class="btn primary" type="button">
+          {{ (valueSelected() ? 'COMMON.NEXT' : 'COMMON.SUBMIT') | translate }}
+        </button>
+        <button (click)="onClose()" class="btn cancel link" type="button">
+          {{ 'COMMON.UNDO' | translate }}
+        </button>
+      </mat-dialog-actions>
+    </cdk-step>
+    @if (valueSelected() && gestionNotice()) {
+      <cdk-step>
+        <mat-dialog-content class="gap-3 align-items-stretch">
+          <div class="row">
+            @if (externalIdentifierEnabled) {
+              <div class="col-10 form-control">
+                <vitamui-input
+                  class="col-9 px-0"
+                  [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate"
+                  formControlName="identifier"
+                  [errorMessageMap]="{
+                    identifierExist: 'ERROR_IDENTIFIER.IDENTIFIER_ALREADY_EXISTS' | translate,
+                  }"
+                >
+                </vitamui-input>
+              </div>
+            }
+          </div>
+
+          <div class="row">
+            <div class="col-10 form-control">
+              <vitamui-input class="col-9 px-0" formControlName="name" [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate">
+              </vitamui-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-10 form-control">
+              <vitamui-input
+                [textarea]="true"
+                formControlName="description"
+                [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate"
+                class="w-100"
+              >
+              </vitamui-input>
+            </div>
+          </div>
+          @if (modePUA) {
+            <div class="row">
+              <div class="col-10 form-control">
+                <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2">
+                  <vitamui-slide-toggle formControlName="additionalProperties">
+                    {{ 'PROFILE.POP_UP_CREATION_NOTICE.ALLOW_METADATA' | translate }}
+                  </vitamui-slide-toggle>
+                </div>
+              </div>
+            </div>
+          }
+
+          <vitamui-select
+            class="d-block"
+            formControlName="status"
+            [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.SAVE_AS_ACTIVE_OR_INACTIVE' | translate"
+            [options]="statusOptions"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
+          <div>
+            <button type="submit" [disabled]="!isFormValid()" (click)="validate()" class="btn primary">
+              {{ 'COMMON.SUBMIT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </cdk-step>
+    }
+    @if (valueSelected() && !gestionNotice()) {
+      <cdk-step>
+        @if (!userValidation()) {
+          <mat-dialog-content>
+            <vitamui-select
+              [(ngModel)]="selectedProfile"
+              [ngModelOptions]="{ standalone: true }"
+              [placeholder]="'PROFILE.POP-UP_SELECT_NOTICE.LIST_NOTICE' | translate"
+              [options]="profileOptions"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </mat-dialog-content>
+
+          @if (selectedProfile && selectedProfile.controlSchema && selectedProfile.controlSchema !== '{}') {
+            <mat-dialog-actions>
+              <div>
+                <button (click)="setUserValidation(true)" class="btn primary" [disabled]="!selectedProfile">
+                  {{ 'PROFILE.POP-UP_SELECT_NOTICE.NEXT_LABEL' | translate }}
+                </button>
+                <button type="button" class="btn cancel link" (click)="onClose()">
+                  {{ 'COMMON.UNDO' | translate }}
+                </button>
+              </div>
+              <vitamui-previous-step></vitamui-previous-step>
+            </mat-dialog-actions>
+          } @else {
+            <mat-dialog-actions>
+              <div>
+                <button (click)="validate()" class="btn primary" [disabled]="!selectedProfile">
+                  {{ 'COMMON.SUBMIT' | translate }}
+                </button>
+                <button type="button" class="btn cancel link" (click)="onClose()">
+                  {{ 'COMMON.UNDO' | translate }}
+                </button>
+              </div>
+              <vitamui-previous-step (click)="setUserValidation(false)"></vitamui-previous-step>
+            </mat-dialog-actions>
+          }
+        } @else {
+          <mat-dialog-content>{{ 'PROFILE.POP-UP_SELECT_NOTICE.VALIDATION_MESSAGE' | translate }}</mat-dialog-content>
+          <mat-dialog-actions>
+            <div>
+              <button (click)="validate()" class="btn primary" [disabled]="!selectedProfile">
+                {{ 'COMMON.SUBMIT' | translate }}
+              </button>
+              <button type="button" class="btn cancel link" (click)="onClose()">
+                {{ 'COMMON.UNDO' | translate }}
+              </button>
+            </div>
+            <vitamui-previous-step (click)="setUserValidation(false)"></vitamui-previous-step>
+          </mat-dialog-actions>
+        }
+      </cdk-step>
+    }
+  </vitamui-stepper>
+</form>
