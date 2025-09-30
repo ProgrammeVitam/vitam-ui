@@ -4996,7 +4996,7 @@
         "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
         "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
         "ERRORS": "Erreurs",
-        "ARCHIVE_UNIT_WITH_ERRORS": "Archive avec erreurs",
+        "ARCHIVE_UNIT_WITH_ERRORS": "Archives avec erreurs",
         "DESCRIPTION": "Description",
         "DESCRIPTION_LEVEL": "Type d'unité archivistique",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
@@ -5124,7 +5124,7 @@
           "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
           "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
           "ERRORS": "Erreurs",
-          "ARCHIVE_UNIT_WITH_ERRORS": "Archive avec erreurs"
+          "ARCHIVE_UNIT_WITH_ERRORS": "Archives avec erreurs"
         },
         "WAITING_RECALCULATE": "En attente de recalcul",
         "AcquiredDate": "Date de numérisation",
