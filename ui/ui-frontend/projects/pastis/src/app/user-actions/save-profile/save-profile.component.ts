@@ -76,7 +76,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { filter, mergeMap, Observable, of, Subscription, switchMap } from 'rxjs';
+import { EMPTY, filter, mergeMap, Observable, of, Subscription } from 'rxjs';
 import { StartupService, VitamUISnackBarComponent, VitamuiSnackBarData } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
@@ -91,14 +91,11 @@ import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileType } from '../../models/profile-type.enum';
 import { VitamUIExceptionResponse } from '../../models/vitam-ui-exception-response.model';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
-import { CreateNoticeComponent } from '../create-notice/create-notice.component';
-import { SaveProfileOptionsComponent } from '../save-profile-options/save-profile-options.component';
-import { SelectNoticeComponent } from '../select-notice/select-notice.component';
 import { ProfileVersion } from '../../models/profile-version.enum';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { ArchiveProfileSaverService } from './archive-profile-saver.service';
 import { ArchiveUnitProfileSaverService } from './archive-unit-profile-saver.service';
-import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { SaveProfilePopupComponent } from '../save-profile-popup/save-profile-popup.component';
 
 export interface PastisDialogDataCreate {
   height: string;
@@ -215,133 +212,82 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     return this.translateService.instant(POPUP_SAVE_PATH + nameOfFieldToTranslate);
   }
 
-  save() {
-    // Retrieve the current file tree data as a JSON
+  saveProfile() {
     this.data = this.fileService.currentTree.getValue();
     if (this.isStandalone) return this.subscriptions.add(this.downloadProfile().subscribe());
 
     const donnees = ['Local', 'SAE', "Où souhaitez-vous l'enregistrer ?"];
     this.dataGeneriquePopupService.changeDonnees(donnees);
+    const saveProfileDialogRef = this.dialog.open(SaveProfilePopupComponent, {
+      disableClose: true,
+    });
 
-    this.subscriptions.add(this.selectSaveOption());
-  }
-
-  private selectSaveOption(): Subscription {
-    return this.dialog
-      .open<SaveProfileOptionsComponent, PastisDialogData>(SaveProfileOptionsComponent, {
-        width: '800px',
-        panelClass: 'pastis-popup-modal-box',
-        data: {
-          titleDialog: this.popupSaveTitleDialog,
-          subTitleDialog: this.popupSaveSubTitleDialog,
-          width: '800px',
-          height: '800px',
-          okLabel: this.popupSaveOkLabel,
-          cancelLabel: this.popupSaveCancelLabel,
-        },
-      })
-      .afterClosed()
-      .pipe(filter((result) => result?.success))
-      .subscribe((result) => {
-        if (result.action === 'local') {
-          this.subscriptions.add(this.downloadProfile().subscribe());
-        } else if (result.action === 'creation') {
-          this.subscriptions.add(this.create());
-        } else if (result.action === 'rattachement') {
-          this.subscriptions.add(this.attach().subscribe());
-        }
-      });
-  }
-
-  private create(): Subscription {
-    return this.dialog
-      .open<CreateNoticeComponent, PastisDialogDataCreate>(CreateNoticeComponent, {
-        width: '800px',
-        panelClass: 'pastis-popup-modal-box',
-        data: {
-          height: 'auto',
-          titleDialog: this.popupSaveCreateNoticeTitleDialog,
-          subTitleDialog: this.popupSaveCreateNoticeSubTitleDialog,
-          okLabel: this.popupSaveCreateNoticeOkLabel,
-          cancelLabel: this.popupSaveCreateNoticeCancelLabel,
-          profileType: this.profileService.profileType,
-          profileVersion: this.profileService.profileVersion,
-          isSlaveMode: this.isSlaveMode,
-        },
-      })
-      .afterClosed()
-      .pipe(filter((result) => result?.success))
-      .subscribe(({ profileVersion, data: createNoticeDialogParams }) => {
-        if (this.profileService.isMode(ProfileType.PUA)) {
-          const profileDescription = this.editProfile
-            ? this.fileService.notice.getValue()
-            : this.noticeService.profileFromNotice(createNoticeDialogParams, profileVersion, this.editProfile, true);
-          this.subscriptions.add(this.saveArchiveUnitProfile(profileDescription, this.data).subscribe());
-        }
-        if (this.profileService.isMode(ProfileType.PA)) {
-          const profile: Profile = this.noticeService.paNotice(createNoticeDialogParams, profileVersion, true);
-          if (!this.editProfile) {
-            // CREER NOTICE PUIS ASSIGNER LE PROFIL A LA NOTICE
-            this.profile = { ...this.profile, ...profile };
-            this.profileDescription = {
-              ...this.noticeService.profileFromNotice(createNoticeDialogParams, profileVersion, this.editProfile, false),
-              ...this.profileDescription,
-            };
-          } else {
-            this.subscriptions.add(
-              this.fileService.notice.subscribe((value: ProfileDescription) => {
-                this.profile = { ...value, ...profile };
-                this.profileDescription = value;
-              }),
-            );
-          }
-          // STEP 1 : Create or update Notice
-          this.subscriptions.add(this.saveArchiveProfile().subscribe());
-        }
-      });
-  }
-
-  private attach(): Observable<any> {
-    return this.dialog
-      .open<SelectNoticeComponent, PastisDialogDataCreate>(SelectNoticeComponent, {
-        width: '800px',
-        panelClass: 'pastis-popup-modal-box',
-        data: {
-          height: 'auto',
-          isSlaveMode: this.isSlaveMode,
-          titleDialog: this.popupSaveSelectNoticeTitleDialog,
-          subTitleDialog: this.popupSaveCreateNoticeSubTitleDialog,
-          okLabel: this.popupSaveCreateNoticeOkLabel,
-          cancelLabel: this.popupSaveCreateNoticeCancelLabel,
-          profileType: this.profileService.profileType,
-          profileVersion: this.profileService.profileVersion,
-        },
-      })
+    const subscription = saveProfileDialogRef
       .afterClosed()
       .pipe(
-        filter((result) => result?.success),
-        switchMap((targetNoticeEvent) => {
-          const profileDescription = targetNoticeEvent.data;
-          const data: FileNode[] = this.data;
-          let action: Observable<any>;
-
-          if (this.profileService.isMode(ProfileType.PUA)) {
-            action = this.archiveUnitProfileSaverService.update(profileDescription, data);
+        filter((result) => result && result.action),
+        switchMap((result) => {
+          switch (result.action) {
+            case 'local':
+              return this.downloadProfile();
+            case 'rattachement':
+              return this.attach(result.data);
+            case 'creation':
+              this.create(result.data);
+              return EMPTY;
           }
-
-          if (this.profileService.isMode(ProfileType.PA)) {
-            const profile = this.noticeService.paNotice(profileDescription, targetNoticeEvent.profileVersion, false);
-
-            action = this.archiveProfileSaverService.attach(profile, profileDescription, data);
-          }
-
-          return action;
         }),
-        tap({
-          next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
-          error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
-        }),
-      );
+      )
+      .subscribe();
+    this.subscriptions.add(subscription);
+  }
+
+  private create(data: any) {
+    if (this.profileService.isMode(ProfileType.PUA)) {
+      const profileDescription = this.editProfile
+        ? this.fileService.notice.getValue()
+        : this.noticeService.profileFromNotice(data, this.profileService.profileVersion, this.editProfile, true);
+      this.subscriptions.add(this.saveArchiveUnitProfile(profileDescription, this.data).subscribe());
+    }
+    if (this.profileService.isMode(ProfileType.PA)) {
+      const profile: Profile = this.noticeService.paNotice(data, this.profileService.profileVersion, true);
+      if (!this.editProfile) {
+        this.profile = { ...this.profile, ...profile };
+        this.profileDescription = {
+          ...this.noticeService.profileFromNotice(data, this.profileService.profileVersion, this.editProfile, false),
+          ...this.profileDescription,
+        };
+      } else {
+        this.subscriptions.add(
+          this.fileService.notice.subscribe((value: ProfileDescription) => {
+            this.profile = { ...value, ...profile };
+            this.profileDescription = value;
+          }),
+        );
+      }
+      this.subscriptions.add(this.saveArchiveProfile().subscribe());
+    }
+  }
+
+  private attach(profileDescription: ProfileDescription): Observable<any> {
+    const data: FileNode[] = this.data;
+    let action: Observable<any>;
+
+    if (this.profileService.isMode(ProfileType.PUA)) {
+      action = this.archiveUnitProfileSaverService.update(profileDescription, data);
+    }
+
+    if (this.profileService.isMode(ProfileType.PA)) {
+      const profile = this.noticeService.paNotice(profileDescription, this.profileService.profileVersion, false);
+      action = this.archiveProfileSaverService.attach(profile, profileDescription, data);
+    }
+
+    return action.pipe(
+      tap({
+        next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
+        error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
+      }),
+    );
   }
 
   displayLogbookOperationSnackBar(error: VitamUIExceptionResponse, message: string = null): void {

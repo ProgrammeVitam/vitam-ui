@@ -71,6 +71,7 @@
         "POPUP_SAVE_OK_LABEL": "VALIDATE",
         "POPUP_CREATE_NOTICE_CANCEL_LABEL": "PREVIOUS",
         "POPUP_CREATE_NOTICE_TITLE_DIALOG": "Write the profile record",
+        "POPUP_CREATE_PROFILE_NOTICE_TITLE_DIALOG": "Create the profile record",
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG": "Registration",
         "POPUP_CREATE_NOTICE_TITLE_DIALOG_EDIT": "Validate the profile record",
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG_EDIT": "Validation",
@@ -255,7 +256,8 @@
         "TITRE_PA": "AP : Archival profile\n",
         "TITRE_PUA": "\nAUP: Archival Unit Profile\n",
         "CONTENT_PA": "The archiving profile imposes a structure on the entire remittance slip. It makes it possible to check the compliance of the slip when entering the SAE.",
-        "CONTENT_PUA": "The archival unit profile is specific to one archival unit only."
+        "CONTENT_PUA": "The archival unit profile is specific to one archival unit only.",
+        "SEDA_VERSION": "Preferred SEDA version"
       }
     }
   },
@@ -469,6 +471,9 @@
   "ERROR_DIALOG": {
     "TITLE": "Internal server error (500)",
     "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
+  },
+  "ERROR_IDENTIFIER": {
+    "IDENTIFIER_ALREADY_EXISTS": "Identifier already exists use another identifier"
   },
   "EVENT_TYPE_LABEL": {
     "AUDIT": "Audit",
