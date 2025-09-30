@@ -34,41 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ProfileService } from '../core/services/profile.service';
+import { ArchivalProfileUnit } from '../models/archival-profile-unit';
+import { Profile } from '../models/profile';
+import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, take } from 'rxjs';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 
-import { SaveProfileOptionsComponent } from './save-profile-options.component';
+@Injectable({
+  providedIn: 'root',
+})
+export class IdentifierExistsValidator {
+  constructor(private profileService: ProfileService) {}
 
-const matDialogData = jasmine.createSpyObj('MAT_DIALOG_DATA', ['open']);
-matDialogData.open.and.returnValue({ afterClosed: () => of(true) });
-const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
-matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  checkIdentifierExists(modePua: boolean | (() => boolean)): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ identifierExist: boolean } | null> => {
+      const mode = typeof modePua === 'function' ? modePua() : modePua;
+      return of(control.value).pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((identifier: string) => this.checkIdentifier(identifier, mode)),
+      );
+    };
+  }
 
-describe('SaveProfileOptionsComponent', () => {
-  let component: SaveProfileOptionsComponent;
-  let fixture: ComponentFixture<SaveProfileOptionsComponent>;
+  private checkIdentifier(identifier: string, modePua: boolean) {
+    if (identifier.length === 0) {
+      return of(null);
+    }
+    const validationObservable = modePua
+      ? this.profileService.checkPuaProfile({ identifier } as ArchivalProfileUnit)
+      : this.profileService.checkPaProfile({ identifier } as Profile);
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SaveProfileOptionsComponent],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: matDialogData },
-      ],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SaveProfileOptionsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    return validationObservable.pipe(
+      take(1),
+      map((response) => (response ? { identifierExist: true } : null)),
+      catchError(() => of(null)),
+    );
+  }
+}
