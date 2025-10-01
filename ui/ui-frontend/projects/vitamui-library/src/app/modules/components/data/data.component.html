@@ -1,4 +1,10 @@
-<label class="text caption bold primary">{{ label | empty }}</label>
+<label class="text caption bold primary">
+  @if (labelRef) {
+    <ng-container *ngTemplateOutlet="labelRef"></ng-container>
+  } @else {
+    {{ label | empty }}
+  }
+</label>
 @if (isArray(value)) {
   <ul>
     <li *ngFor="let item of value" class="text medium">{{ item | empty }}</li>

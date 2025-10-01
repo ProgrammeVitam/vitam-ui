@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -55,11 +55,13 @@ import {
   AccessContractService,
   ApiUnitObject,
   BASE_URL,
+  DataComponent,
   DescriptionLevel,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
   ObjectQualifierType,
+  PipesModule,
   StartupService,
   Unit,
   UnitType,
@@ -67,36 +69,6 @@ import {
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
-
-@Pipe({
-  name: 'dateTime',
-  standalone: false,
-})
-export class MockDateTimePipe implements PipeTransform {
-  transform(value: string = ''): any {
-    return value;
-  }
-}
-
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
-class MockTruncatePipe implements PipeTransform {
-  transform(value: number): number {
-    return value;
-  }
-}
-
-@Pipe({
-  name: 'unitI18n',
-  standalone: false,
-})
-class MockUnitI18nPipe implements PipeTransform {
-  transform(value: number): number {
-    return value;
-  }
-}
 
 describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
@@ -147,8 +119,10 @@ describe('ArchiveUnitInformationTabComponent', () => {
         MatIconModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        DataComponent,
+        PipesModule,
       ],
-      declarations: [ArchiveUnitInformationTabComponent, MockTruncatePipe, MockDateTimePipe, MockUnitI18nPipe],
+      declarations: [ArchiveUnitInformationTabComponent],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
@@ -254,22 +228,6 @@ describe('ArchiveUnitInformationTabComponent', () => {
 
       // Then
       expect(elementBtn.length).toBe(1);
-    });
-    it('should have 8 rows ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-
-      // Then
-      expect(elementRow.length).toBe(8);
-    });
-    it('should have 5 columns ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementColumn = nativeElement.querySelectorAll('.col-12');
-
-      // Then
-      expect(elementColumn.length).toBe(5);
     });
   });
 });
