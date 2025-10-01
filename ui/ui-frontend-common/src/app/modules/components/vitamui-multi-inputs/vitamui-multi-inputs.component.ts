@@ -68,6 +68,12 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
     super(elementRef);
   }
 
+  // Prevents validating an empty value in the multi-inputs
+  get canConfirm(): boolean {
+    const value = this.control.value?.toString()?.trim();
+    return super.canConfirm && !!value;
+  }
+
   enterEditMode() {
     super.enterEditMode();
     setTimeout(() => this.input.nativeElement.focus(), 0);
