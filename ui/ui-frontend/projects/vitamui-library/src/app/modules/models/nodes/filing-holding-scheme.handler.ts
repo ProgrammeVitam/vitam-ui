@@ -404,15 +404,16 @@ export class FilingHoldingSchemeHandler {
     };
   }
 
-  public static convertVirtualFacetToNode(virtualNode: ResultFacet, parentId: string): FilingHoldingSchemeNode {
+  public static convertVirtualFacetToNode(virtualNode: ResultFacet, parentId: string, realParentTitle: string): FilingHoldingSchemeNode {
     return {
-      id: virtualNode.node,
+      id: parentId ? virtualNode.node + '-' + parentId : virtualNode.node,
       title: virtualNode.node,
       unitType: UnitType.VIRTUAL,
       children: [],
       vitamId: virtualNode.node,
       virtualPath: virtualNode.node,
       realParentId: parentId,
+      realParentTitle: realParentTitle,
       checked: false,
       isLoadingChildren: false,
       canLoadMoreChildren: false,
@@ -420,26 +421,6 @@ export class FilingHoldingSchemeHandler {
       hasObject: virtualNode.count > 0,
       hidden: false,
     };
-  }
-
-  public static buildNestedTreeLevels(units: Unit[], locale: string, parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
-    const nodes: FilingHoldingSchemeNode[] = [];
-    for (let i = 0; i < units.length; i++) {
-      if (units[i] === undefined) {
-        continue;
-      }
-      const unit = units[i];
-      if (
-        FilingHoldingSchemeHandler.isParent(parentNode, unit) ||
-        (!parentNode && FilingHoldingSchemeHandler.isNullIOrUnknowId(unit, units))
-      ) {
-        const outNode: FilingHoldingSchemeNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);
-        units[i] = undefined;
-        outNode.children = FilingHoldingSchemeHandler.buildNestedTreeLevels(units, locale, outNode);
-        nodes.push(outNode);
-      }
-    }
-    return nodes.sort(FilingHoldingSchemeHandler.byTitle(locale));
   }
 
   public static isParent(parentNode: FilingHoldingSchemeNode, unit: Unit): boolean {
@@ -469,30 +450,51 @@ export class FilingHoldingSchemeHandler {
   // ================= extract roots from virtual paths =================
 
   public static extractVirtualPathsRoots(virtualPaths: FilingHoldingSchemeNode[], parentPath: string): FilingHoldingSchemeNode[] {
-    // Global roots
+    const result: any[] = [];
+
     if (!parentPath || parentPath === PATH_SEPARATOR) {
-      return virtualPaths
-        .filter((n) => n.id.split(PATH_SEPARATOR).filter(Boolean).length === 1)
-        .map((n) => ({
-          ...n,
-          id: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
-          title: n.title.startsWith(PATH_SEPARATOR) ? n.title.substring(1) : n.title,
-          virtualPath: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
-        }));
+      for (const n of virtualPaths) {
+        const parts = n.title.split(PATH_SEPARATOR).filter(Boolean);
+
+        if (parts.length === 1) {
+          let title = n.title;
+          if (title.startsWith(PATH_SEPARATOR)) {
+            title = title.substring(1);
+          }
+
+          const transformed = {
+            ...n,
+            id: n.id,
+            title: title,
+            virtualPath: title,
+          };
+          result.push(transformed);
+        }
+      }
+      return result;
     }
 
     // Normalize parent
     const base = parentPath.endsWith(PATH_SEPARATOR) ? parentPath : parentPath + PATH_SEPARATOR;
     const baseDepth = base.split(PATH_SEPARATOR).filter(Boolean).length;
 
-    return virtualPaths
-      .filter((n) => n.id.startsWith(base) && n.id.split(PATH_SEPARATOR).filter(Boolean).length === baseDepth + 1)
-      .map((n) => ({
-        ...n,
-        id: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
-        title: n.id.replace(base, ''),
-        virtualPath: n.id.startsWith(PATH_SEPARATOR) ? n.id.substring(1) : n.id,
-      }));
+    for (const n of virtualPaths) {
+      if (n.title.startsWith(base)) {
+        const parts = n.title.split(PATH_SEPARATOR).filter(Boolean);
+
+        if (parts.length === baseDepth + 1) {
+          const transformed = {
+            ...n,
+            id: n.id,
+            title: n.title.replace(base, ''),
+            virtualPath: n.title.startsWith(PATH_SEPARATOR) ? n.title.substring(1) : n.title,
+          };
+          result.push(transformed);
+        }
+      }
+    }
+
+    return result;
   }
 
   public static initNode(node: FilingHoldingSchemeNode) {

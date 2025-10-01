@@ -43,6 +43,7 @@ export interface FilingHoldingSchemeNode extends Id {
   type?: string;
   unitType?: UnitType;
   realParentId?: string;
+  realParentTitle?: string;
   descriptionLevel?: DescriptionLevel;
   label?: string;
   children: FilingHoldingSchemeNode[];

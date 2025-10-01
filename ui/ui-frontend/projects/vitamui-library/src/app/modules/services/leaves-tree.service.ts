@@ -464,12 +464,12 @@ export class LeavesTreeService {
 
     if (node.unitType === UnitType.VIRTUAL) {
       //Fixme to update in optimised version to not call again for virtual nodes
-      const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.realParentId);
+      const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.realParentId, node.realParentTitle);
 
       const virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(
         node.realParentId,
+        node.realParentTitle,
         virtualChildrenMatchingNodes,
-        //   showEveryNodes,
       );
 
       let leavesLoadingCriteria: LeavesLoadingCriteria = {
@@ -488,12 +488,9 @@ export class LeavesTreeService {
       //Build first 1000 direct containers folder
       const directContainersNodes = await this.extractContainersFilteredByMainRoots(node, perimeterNodesIds);
 
-      const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id);
+      const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id, node.title);
 
-      const virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(
-        node.id,
-        virtualChildrenMatchingNodes /*, showEveryNodes*/,
-      );
+      const virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(node.id, node.title, virtualChildrenMatchingNodes);
 
       let leavesLoadingCriteria: LeavesLoadingCriteria = {
         showEveryNodes: showEveryNodes,
@@ -511,11 +508,15 @@ export class LeavesTreeService {
     node.isLoadingChildren = false;
   }
 
-  private async extractAnyVirtualChildrenDecorated(nodeId: string, virtualChildrenMatchingNodes: FilingHoldingSchemeNode[]) {
+  private async extractAnyVirtualChildrenDecorated(
+    nodeId: string,
+    nodeTitle: string,
+    virtualChildrenMatchingNodes: FilingHoldingSchemeNode[],
+  ) {
     let virtualChildrenAnyNodes: FilingHoldingSchemeNode[];
     virtualChildrenAnyNodes = (await firstValueFrom(this.leavesTreeApiService.retrieveAnyDirectVirtualChildren(nodeId))).map(
       (virtualUnit) => {
-        const virtualNode = FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId);
+        const virtualNode = FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId, nodeTitle);
         const matchingVirtualNodeFound = virtualChildrenMatchingNodes.find((n) => n.id === virtualNode.id);
         virtualNode.count = matchingVirtualNodeFound ? matchingVirtualNodeFound.count : 0;
         return virtualNode;
@@ -555,9 +556,9 @@ export class LeavesTreeService {
   public async loadOrphanNodeChildrenOnFirstToggle(node: FilingHoldingSchemeNode, showEveryNodes: boolean): Promise<void> {
     FilingHoldingSchemeHandler.initNode(node);
     node.isLoadingChildren = true;
-    const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id);
+    const virtualChildrenMatchingNodes = await this.extractVirtualChildrenMatching(node.id, node.title);
 
-    let virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(node.id, virtualChildrenMatchingNodes);
+    let virtualChildrenAnyNodes = await this.extractAnyVirtualChildrenDecorated(node.id, node.title, virtualChildrenMatchingNodes);
 
     let leavesLoadingCriteria: LeavesLoadingCriteria = {
       showEveryNodes: showEveryNodes,
@@ -574,14 +575,14 @@ export class LeavesTreeService {
     node.isLoadingChildren = false;
   }
 
-  private async extractVirtualChildrenMatching(nodeId: string) {
+  private async extractVirtualChildrenMatching(nodeId: string, nodeTitle: string) {
     const virtualUnits = await firstValueFrom(
       this.leavesTreeApiService.retrieveVirtualChildrenMatchingHavingResults(nodeId, this.searchCriterias),
     );
     if (virtualUnits?.length > FACETS_DEFAULT_SIZE) {
       this.setVirtualPathSearchLimitReachedSubject(true);
     }
-    return virtualUnits.map((virtualUnit) => FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId));
+    return virtualUnits.map((virtualUnit) => FilingHoldingSchemeHandler.convertVirtualFacetToNode(virtualUnit, nodeId, nodeTitle));
   }
 
   setVirtualPathSearchLimitReachedSubject(value: boolean): void {

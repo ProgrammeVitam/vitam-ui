@@ -211,6 +211,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       checked: node.checked,
       count: node.count,
       realParentId: node.realParentId,
+      realParentTitle: node.realParentTitle,
       isVirtual: node.unitType === UnitType.VIRTUAL,
       virtualPath: node.virtualPath,
     };

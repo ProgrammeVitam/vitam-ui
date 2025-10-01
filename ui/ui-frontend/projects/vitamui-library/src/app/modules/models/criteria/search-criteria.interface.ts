@@ -165,6 +165,8 @@ export interface CriteriaValue {
   id: string;
   value?: string;
   label?: string;
+  virtualNodeRealParentId?: string;
+  virtualNodeRealParentTitle?: string;
   beginInterval?: string;
   endInterval?: string;
 }
