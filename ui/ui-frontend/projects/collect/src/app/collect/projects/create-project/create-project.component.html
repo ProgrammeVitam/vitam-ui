@@ -320,20 +320,19 @@
                 [directoryMode]="true"
                 [maxSizeInBytes]="uploadMaxSizeInBytes"
                 [multiple]="true"
-                (filesChanged)="setFilesToUpload($event)"
+                [formControl]="filesToUploadControl"
               >
               </vitamui-file-selector>
             }
             @if (importType === ImportType.COMPRESSED || importType === ImportType.SIP) {
-              <vitamui-file-selector class="w-100" [extensions]="['.zip']" (filesChanged)="setFilesToUpload($event)">
-              </vitamui-file-selector>
+              <vitamui-file-selector class="w-100" [extensions]="['.zip']" [formControl]="filesToUploadControl"> </vitamui-file-selector>
             }
           </div>
         </div>
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <vitamui-next-step [disabled]="importTypeIsInvalid() || filesToUpload.length < 1"></vitamui-next-step>
+          <vitamui-next-step [disabled]="importTypeIsInvalid() || filesToUploadControl.invalid"></vitamui-next-step>
           <button (click)="onClose()" class="btn cancel link" type="button">
             {{ 'COMMON.UNDO' | translate }}
           </button>

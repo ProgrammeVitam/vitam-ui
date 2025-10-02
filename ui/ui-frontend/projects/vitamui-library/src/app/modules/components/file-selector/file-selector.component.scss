@@ -16,6 +16,10 @@ input[type='file'] {
     opacity: 0.9;
     color: var(--vitamui-white);
   }
+
+  &.error {
+    border: 2px dashed var(--vitamui-red);
+  }
 }
 
 .vitamui-chip-list {

@@ -50,7 +50,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -139,11 +139,13 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   project = signal<Project>({} as Project);
   jsltFilename = 'TransformationRules.jslt';
-  initialFiles = computed(() =>
-    this.project().transformationRules && this.form.get('transformationRules').pristine
-      ? [new File([this.project().transformationRules], this.jsltFilename)]
-      : undefined,
-  );
+  transformationRulesControl = computed(() => {
+    return new FormControl(
+      this.project().transformationRules && this.form.get('transformationRules').pristine
+        ? [new File([this.project().transformationRules], this.jsltFilename)]
+        : undefined,
+    );
+  });
 
   acquisitionInformationsList: string[];
   legalStatusList: Option[] = [];
@@ -699,7 +701,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   async handleJsltFile(files: File[]) {
     const jsltFile = files?.length ? files[0] : undefined;
     const content: string = jsltFile ? await readFileContent(jsltFile) : null;
-    this.form.get('transformationRules').setValue(content);
     this.form.get('transformationRules').markAsDirty();
+    this.form.get('transformationRules').setValue(content);
   }
 }

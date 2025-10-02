@@ -37,7 +37,7 @@
 
 import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { finalize, from, switchMap } from 'rxjs';
+import { finalize, from, Observable, switchMap } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -49,9 +49,10 @@ import {
   Transaction,
   Unit,
   ZipFile,
+  ZipFileStatus,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 
@@ -63,11 +64,13 @@ import { HttpEventType } from '@angular/common/http';
 })
 export class AddUnitsComponent implements OnInit {
   protected readonly FilingPlanMode = FilingPlanMode;
-  protected readonly maxSizeInBytes = 10 * Math.pow(1024, 3); // 10 Gb
+  protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
 
   isLoading = false;
+  stepIndex = 0;
 
-  filesToUpload: File[] = [];
+  filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
+  zipFileStatus$: Observable<ZipFileStatus>;
   linkParentIdControl = new FormControl({ included: [], excluded: [] });
   projectUnits: Unit[];
 
@@ -113,7 +116,7 @@ export class AddUnitsComponent implements OnInit {
   }
 
   cancel() {
-    if (this.filesToUpload.length > 0) {
+    if (this.filesToUploadControl.value.length > 0) {
       this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate);
     } else {
       this.addUnitsDialogRef.close(false);
@@ -129,14 +132,12 @@ export class AddUnitsComponent implements OnInit {
     this.addUnitsDialogRef.close(filesUploaded);
   }
 
-  setFilesToUpload(files: File[]) {
-    this.filesToUpload = files;
-  }
-
   validateAndUpload() {
     this.isLoading = true;
+    this.stepIndex++;
     const zipFile = new ZipFile(this.data.transaction.id);
-    from(zipFile.addFiles(this.filesToUpload).generateZip())
+    this.zipFileStatus$ = zipFile.zipFileStatus$;
+    from(zipFile.addFiles(this.filesToUploadControl.value).generateZip())
       .pipe(
         switchMap((content) =>
           this.archiveCollectService.uploadZip(content, this.data.transaction.id, this.linkParentIdControl.value.included[0]),
@@ -146,9 +147,6 @@ export class AddUnitsComponent implements OnInit {
         finalize(() => (this.isLoading = false)),
       )
       .subscribe({
-        next: (_v) => {
-          this.close(true);
-        },
         error: (e) => {
           console.error(e);
         },
