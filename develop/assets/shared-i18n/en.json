@@ -5917,7 +5917,8 @@
     "uniquePreventRuleId": "Code identical to the previous action",
     "uniqueRuleId": "Code identical to the previous action",
     "missingIncludedNodes": "A value is required",
-    "incorrectIdentifier": "This identifier contains one or many unauthorized characters"
+    "incorrectIdentifier": "This identifier contains one or many unauthorized characters",
+    "maxSizeInBytes": "Maximum size exceeded ({{size}} / {{maxSize}})"
   },
   "ACCESS_CONTRACT": {
     "HOME": {
