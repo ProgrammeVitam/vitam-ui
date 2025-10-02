@@ -4663,7 +4663,7 @@
         "FORMAT_NAME": "Nom du format",
         "FORMAT_PUID": "PUID du format",
         "GUID": "Identifiant technique du versement",
-        "LABEL": "Libellé",
+        "LABEL": "Libellé(s)",
         "LAST_MODIFIED_DATE": "Date de dernière modification",
         "MIME_TYPE": "Type MIME",
         "NAME": "Intitulé",
