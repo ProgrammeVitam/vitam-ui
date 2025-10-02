@@ -90,6 +90,7 @@ import {
   VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamuiRoles,
   WAITING_RECALCULATE,
+  NODES,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -248,7 +249,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         if (!node.checked) {
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
-            this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+            this.removeCriteria(ORPHANS_NODE_ID, { id: 'position', value: ORPHANS_NODE_ID }, true);
           } else if (node.isVirtual) {
             this.removeCriteria(
               'VIRTUAL',
@@ -260,21 +261,21 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
               false,
             );
           } else {
-            this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
+            this.removeCriteria('NODE', { id: NODES, value: node.id }, true);
           }
           return;
         }
         if (node.id === ORPHANS_NODE_ID) {
           this.addCriteria(
             ORPHANS_NODE_ID,
-            { id: ORPHANS_NODE_ID, value: ORPHANS_NODE_ID },
+            { id: 'position', value: ORPHANS_NODE_ID },
             node.title,
             true,
             CriteriaOperator.MISSING,
             SearchCriteriaTypeEnum.FIELDS,
             false,
             CriteriaDataType.STRING,
-            false,
+            true,
           );
         } else {
           if (node.isVirtual) {
@@ -297,14 +298,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           } else {
             this.addCriteria(
               'NODE',
-              { id: node.id, value: node.id },
+              { id: NODES, value: node.id },
               node.title,
               true,
               CriteriaOperator.EQ,
               SearchCriteriaTypeEnum.NODES,
               false,
               CriteriaDataType.STRING,
-              false,
+              true,
             );
           }
         }

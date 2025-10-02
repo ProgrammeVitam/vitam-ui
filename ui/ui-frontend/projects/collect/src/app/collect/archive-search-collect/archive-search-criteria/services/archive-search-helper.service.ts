@@ -57,7 +57,7 @@ const ERRORS = 'ERRORS';
 const WAITING_RECALCULATE = 'WAITING_RECALCULATE';
 const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 
-const fieldKeys = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
+const fieldKeys = [ALL_ARCHIVE_UNIT_TYPES, ERRORS, SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES];
 
 @Injectable({
   providedIn: 'root',
@@ -211,6 +211,18 @@ export class ArchiveSearchHelperService {
         action: 'ADD',
       });
     }
+    if (emit === true && [SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES].includes(category)) {
+      this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
+        keyElt,
+        valueElt,
+        labelElt,
+        keyTranslated,
+        operator,
+        category,
+        valueTranslated,
+        dataType,
+      });
+    }
   }
 
   prepareUAIdList(
@@ -324,7 +336,7 @@ export class ArchiveSearchHelperService {
           }
           this.archiveExchangeDataService.emitSearchCriteriaChange(searchCriterias);
           nbQueryCriteria--;
-          if (emit === true && (key === 'NODE' || key === ORPHANS_NODE_ID)) {
+          if (emit === true && [ORPHANS_NODE_ID, 'NODE'].includes(key)) {
             this.archiveExchangeDataService.emitNodeTarget(valueElt.value);
           }
 
@@ -367,7 +379,7 @@ export class ArchiveSearchHelperService {
               action: 'REMOVE',
             });
           }
-          if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.FIELDS && fieldKeys.includes(searchCriteria.key)) {
+          if (emit === true && fieldKeys.includes(searchCriteria.category)) {
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
               valueElt,
