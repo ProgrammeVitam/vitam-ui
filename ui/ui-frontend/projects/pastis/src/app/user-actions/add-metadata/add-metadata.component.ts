@@ -137,6 +137,14 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
       this.allowedChildren = this.sedaService
         .findSelectableElementList(this.sedaNodeFound, this.fileNode)
         .filter((e) => e.element !== SedaElementConstants.ATTRIBUTE);
+      if (this.fileNode.sedaData.children.filter((e: SedaData) => e.name.endsWith('Rule')).length > 0) {
+        if (this.fileNode.children.filter((e: FileNode) => e.name === 'PreventInheritance').length > 0) {
+          this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== 'RefNonRuleId');
+        }
+        if (this.fileNode.children.filter((e: FileNode) => e.name === 'RefNonRuleId').length > 0) {
+          this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== 'PreventInheritance');
+        }
+      }
     } else if (this.profileService.profileType === ProfileType.PUA) {
       if (this.fileNode.name === 'ArchiveUnit') {
         if (this.fileNode.children.map((nodeChildren: FileNode) => nodeChildren.name).includes('ArchiveUnitProfile')) {
