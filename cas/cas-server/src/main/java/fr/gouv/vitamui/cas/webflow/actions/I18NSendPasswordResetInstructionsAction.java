@@ -204,7 +204,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         if (StringUtils.isAnyBlank(loginEmail, loginCustomerId)) {
             throw new IllegalStateException("Missing loginEmail or loginCustomer");
         }
-        if (!Objects.equals(loginEmail, username)) {
+        if (loginEmail == null || !loginEmail.equalsIgnoreCase(username)) {
             throw new IllegalStateException(
                 "Missing loginCustomerId (" + loginCustomerId + ") " + "mismatches username (" + username + ")"
             );
