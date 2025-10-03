@@ -38,7 +38,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
@@ -62,6 +61,7 @@ import {
   readFileContent,
   SchemaElement,
   SchemaService,
+  SnackBarService,
   TENANT_SEPARATOR,
   TenantSelectionService,
   Transaction,
@@ -153,13 +153,13 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     private tenantSelectionService: TenantSelectionService,
     private transactionsService: TransactionsService,
     private archiveCollectService: ArchiveCollectService,
-    private snackBar: MatSnackBar,
     private logger: Logger,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
     public dialog: MatDialog,
     private schemaService: SchemaService,
     filingPlanService: FilingPlanService,
+    private snackBarService: SnackBarService,
   ) {
     filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
   }
@@ -432,15 +432,17 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (_result) => {
-          this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'COLLECT.MODAL.PROJECT_CREATED',
+            duration: 10_000,
           });
         },
         error: (_error) => {
           this.hasError = true;
           this.errorMessage = _error.error.message;
-          this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'COLLECT.MODAL.PROJECT_CREATION_ERROR',
+            duration: 10_000,
           });
         },
       });
@@ -494,8 +496,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
         finalize(() => {
           this.isLoading = false;
-          this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'COLLECT.UPLOAD.TERMINATED',
+            duration: 10_000,
           });
         }),
         catchError((error) => {

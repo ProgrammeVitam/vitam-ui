@@ -36,14 +36,12 @@
  */
 import { Injectable, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { SearchCriteriaEltDto, StartupService } from 'vitamui-library';
+import { ApplicationId, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
-import { ArchiveSearchHelperService } from './archive-search-helper.service';
 
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
@@ -55,10 +53,8 @@ export class ArchiveUnitEliminationService {
   constructor(
     private archiveService: ArchiveService,
     private translateService: TranslateService,
-    private startupService: StartupService,
-    private archiveHelperService: ArchiveSearchHelperService,
-    public snackBar: MatSnackBar,
     public dialog: MatDialog,
+    private snackBarService: SnackBarService,
   ) {}
 
   launchEliminationAnalysisModal(
@@ -98,9 +94,17 @@ export class ArchiveUnitEliminationService {
       const eliminationAnalysisResponse = data.$results;
       if (eliminationAnalysisResponse && eliminationAnalysisResponse[0].itemId) {
         const guid = eliminationAnalysisResponse[0].itemId;
-        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_ANALYSIS_LAUNCHED');
-        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
-        this.archiveHelperService.openSnackBarForWorkflow(this.snackBar, message, serviceUrl);
+        this.snackBarService.open({
+          message: 'ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_ANALYSIS_LAUNCHED',
+          buttons: [
+            {
+              appId: ApplicationId.LOGBOOK_OPERATION_APP,
+              path: `/tenant/${tenantIdentifier}?guid=${guid}`,
+              label: 'SNACK_BAR.TO_OPERATION_APP',
+            },
+          ],
+          duration: 100_000,
+        });
       }
     });
   }
@@ -141,10 +145,17 @@ export class ArchiveUnitEliminationService {
 
       if (eliminationActionResponse && eliminationActionResponse[0].itemId) {
         const guid = eliminationActionResponse[0].itemId;
-        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
-        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
-
-        this.archiveHelperService.openSnackBarForWorkflow(this.snackBar, message, serviceUrl);
+        this.snackBarService.open({
+          message: 'ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED',
+          buttons: [
+            {
+              appId: ApplicationId.LOGBOOK_OPERATION_APP,
+              path: `/tenant/${tenantIdentifier}?guid=${guid}`,
+              label: 'SNACK_BAR.TO_OPERATION_APP',
+            },
+          ],
+          duration: 100_000,
+        });
       }
     });
   }

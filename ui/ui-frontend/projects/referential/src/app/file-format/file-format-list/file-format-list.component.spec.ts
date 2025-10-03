@@ -39,7 +39,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BASE_URL, StartupService, VitamUISnackBarService } from 'vitamui-library';
+import { AuthService, BASE_URL, StartupService, SnackBarService } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -57,7 +57,7 @@ describe('FileFormatListComponent', () => {
         { provide: BASE_URL, useValue: '' },
         FileFormatService,
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
-        { provide: VitamUISnackBarService, useValue: {} },
+        { provide: SnackBarService, useValue: {} },
         { provide: MatDialog, useValue: {} },
         { provide: StartupService, useValue: { getConfigStringValue: (_param: string) => '' } },
         provideHttpClient(withInterceptorsFromDi()),

@@ -41,7 +41,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import {
@@ -95,7 +94,7 @@ describe('IngestContractCreateComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [IngestContractCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [VitamUICommonTestModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot(), MatButtonToggleModule],
+      imports: [VitamUICommonTestModule, LoggerModule.forRoot(), TranslateModule.forRoot(), MatButtonToggleModule],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

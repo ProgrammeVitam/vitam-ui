@@ -61,7 +61,6 @@ import { CommonModule } from '@angular/common';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuItem } from '@angular/material/menu';
 import { map } from 'rxjs/operators';
 
@@ -78,7 +77,6 @@ import { map } from 'rxjs/operators';
     MatMenuItem,
     MatProgressSpinnerModule,
     MatSidenavModule,
-    MatSnackBarModule,
     TranslatePipe,
     VitamUICommonModule,
   ],

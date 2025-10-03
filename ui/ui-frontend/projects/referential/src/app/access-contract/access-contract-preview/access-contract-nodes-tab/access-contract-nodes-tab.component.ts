@@ -43,7 +43,7 @@ import {
   ExternalParametersService,
   SearchUnitApiService,
   VitamuiHttpHeaders,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
 
@@ -83,7 +83,7 @@ export class AccessContractNodesTabComponent {
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
-    private vitamUISnackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   get isAllRootUnitsSelected(): boolean {
@@ -119,9 +119,7 @@ export class AccessContractNodesTabComponent {
         this.searchAccessContractId = accessContractId;
         this.initTitles();
       } else {
-        this.vitamUISnackBarService.open({
-          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-        });
+        this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       }
     });
   }

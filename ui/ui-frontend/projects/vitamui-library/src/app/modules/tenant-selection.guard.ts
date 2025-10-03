@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Inject, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
-import { TenantSelectionService, TENANT_SELECTION_URL_CONDITION } from './tenant-selection.service';
+import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './tenant-selection.service';
+import { SnackBarService } from './components/snack-bar/snack-bar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,12 +49,11 @@ import { TenantSelectionService, TENANT_SELECTION_URL_CONDITION } from './tenant
 export class TenantSelectionGuard {
   constructor(
     private authService: AuthService,
-    private snackBar: MatSnackBar,
     private appService: ApplicationService,
     private router: Router,
     private tenantSelectionService: TenantSelectionService,
-    private translateService: TranslateService,
     @Inject(WINDOW_LOCATION) private location: any,
+    private snackBarService: SnackBarService,
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
@@ -81,9 +79,7 @@ export class TenantSelectionGuard {
       }
       return true;
     } else {
-      this.snackBar.open(this.translateService.instant('SNACK_BAR.TENANT_NOT_FOUND') + route.data.appId + '.', null, {
-        duration: 4000,
-      });
+      this.snackBarService.open({ message: 'SNACK_BAR.TENANT_NOT_FOUND', translateParams: { appId: route.data.appId } });
     }
     return false;
   }

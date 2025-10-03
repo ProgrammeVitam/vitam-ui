@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
+import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
 import { Event } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
 
@@ -54,7 +54,7 @@ export class SecurisationPreviewComponent implements OnInit {
   constructor(
     private securisationService: SecurisationService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -63,9 +63,7 @@ export class SecurisationPreviewComponent implements OnInit {
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
       } else {
-        this.vitamUISnackBarService.open({
-          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-        });
+        this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       }
     });
   }

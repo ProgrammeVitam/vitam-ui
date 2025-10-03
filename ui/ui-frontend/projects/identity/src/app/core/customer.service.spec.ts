@@ -34,16 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  BASE_URL,
-  CriteriaSearchQuery,
-  Customer,
-  ENVIRONMENT,
-  LoggerModule,
-  Operators,
-  OtpState,
-  VitamUISnackBarService,
-} from 'vitamui-library';
+import { BASE_URL, CriteriaSearchQuery, Customer, ENVIRONMENT, LoggerModule, Operators, OtpState, SnackBarService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -103,7 +94,7 @@ const expectedCustomer: Customer = {
 describe('CustomerService', () => {
   let httpTestingController: HttpTestingController;
   let customerService: CustomerService;
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -113,7 +104,7 @@ describe('CustomerService', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
@@ -128,7 +119,7 @@ describe('CustomerService', () => {
   }));
 
   it('should call /fake-api/customers and display a success message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     customerService.create(expectedCustomer).subscribe((response: Customer) => {
       expect(response).toEqual(expectedCustomer);
       expect(snackBar.open).toHaveBeenCalledWith({
@@ -145,7 +136,7 @@ describe('CustomerService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     customerService.create(expectedCustomer).subscribe(fail, () => {
       expect(snackBar.open).toHaveBeenCalledWith({
         message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',

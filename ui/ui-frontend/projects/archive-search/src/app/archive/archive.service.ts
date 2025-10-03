@@ -36,7 +36,6 @@
  */
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -64,12 +63,12 @@ import {
   SecurityService,
   Unit,
   VitamuiHttpHeaders,
+  SnackBarService,
 } from 'vitamui-library';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
-import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { RuleTypeEnum } from './models/rule-type-enum';
 
 @Injectable({
@@ -79,7 +78,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   constructor(
     private archiveApiService: ArchiveApiService,
     @Inject(LOCALE_ID) private locale: string,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackBarService,
     private securityService: SecurityService,
     private accessContractService: AccessContractService,
   ) {
@@ -157,9 +156,9 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
         if (errors.status === 413) {
           console.log('Please update filter to reduce size of response' + errors.message);
 
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            data: { type: 'exportCsvLimitReached' },
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_CSV_LIMIT_REACHED',
+            duration: 10_000,
           });
         }
       },
@@ -261,17 +260,6 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
     return this.accessContractService.get(accessContract);
-  }
-
-  openSnackBarForWorkflow(message: string, serviceUrl?: string) {
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      data: {
-        type: 'WorkflowSuccessSnackBar',
-        message,
-        serviceUrl,
-      },
-      duration: 100000,
-    });
   }
 
   downloadFile(url: string): Promise<void> {

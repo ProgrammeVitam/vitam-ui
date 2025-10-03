@@ -40,7 +40,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OntologyRoutingModule } from './ontology-routing.module';
@@ -58,7 +57,6 @@ import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.co
     MatMenuModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
-    MatSnackBarModule,
     OntologyGroupComponent,
     OntologyPreviewComponent,
     OntologyRoutingModule,

@@ -41,7 +41,6 @@ import { ProjectsService } from '../projects.service';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -152,7 +151,6 @@ describe('ProjectPreviewComponent', () => {
         ProjectPreviewComponent,
         MatDialogModule,
         VitamUICommonTestModule,
-        MatSnackBarModule,
         BrowserModule,
         BrowserAnimationsModule,
         MatButtonToggleModule,

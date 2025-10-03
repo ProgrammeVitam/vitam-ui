@@ -41,7 +41,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { RouterModule } from '@angular/router';
@@ -62,7 +61,6 @@ import { AccessContractComponent } from './access-contract.component';
     ReactiveFormsModule,
     VitamUICommonModule,
     MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

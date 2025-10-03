@@ -38,7 +38,7 @@ import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@a
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { BytesPipe, Logger, StartupService } from 'vitamui-library';
+import { ApplicationId, BytesPipe, Logger, SnackBarService } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { XMLParser } from 'fast-xml-parser';
 
@@ -90,9 +90,9 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
       tenantIdentifier: string;
     },
     private archiveSearchService: ArchiveService,
-    private startupService: StartupService,
-    private translateService: TranslateService,
+    private translate: TranslateService,
     private bytesPipe: BytesPipe,
+    private snackBarService: SnackBarService,
   ) {}
 
   async parseXmlToTransferDetails(xmlFileContent: string) {
@@ -116,7 +116,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
         this.isLoadingData = false;
       }
     } catch (error: any) {
-      this.message = this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
+      this.message = this.translate.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
       this.hasError = true;
       this.isLoadingData = false;
       this.logger.error('Error with parsing the xml file :', error);
@@ -179,11 +179,11 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     this.fileSizeString = this.bytesPipe.transform(this.fileSize);
 
     if (!this.checkFileExtension(this.fileName)) {
-      this.message = this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
+      this.message = this.translate.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
       this.hasError = true;
     } else {
       if (this.fileSize > FILE_MAX_SIZE) {
-        this.logger.error(this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE'));
+        this.logger.error(this.translate.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE'));
         this.hasFileSizeError = true;
       }
     }
@@ -219,13 +219,18 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
         (operationId) => {
           this.dialogRef.close(true);
           this.isSubmitBtnDisabled = false;
-          const serviceUrl =
-            this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + operationId;
 
-          this.archiveSearchService.openSnackBarForWorkflow(
-            this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.REQUEST_MESSAGE'),
-            serviceUrl,
-          );
+          this.snackBarService.open({
+            message: 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.REQUEST_MESSAGE',
+            buttons: [
+              {
+                appId: ApplicationId.LOGBOOK_OPERATION_APP,
+                path: `/tenant/${this.data.tenantIdentifier}?guid=${operationId}`,
+                label: 'SNACK_BAR.TO_OPERATION_APP',
+              },
+            ],
+            duration: 100_000,
+          });
         },
         (error: any) => {
           this.isSubmitBtnDisabled = false;

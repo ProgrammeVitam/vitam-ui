@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, SnackBarService } from 'vitamui-library';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -44,13 +44,13 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 describe('HierarchyService', () => {
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
     TestBed.configureTestingModule({
       imports: [],
       providers: [
         HierarchyService,
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

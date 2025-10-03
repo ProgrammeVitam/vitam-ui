@@ -41,7 +41,7 @@ import {
   ExternalParametersService,
   VitamUICommonModule,
   VitamUILibraryModule,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 import { CommonModule } from '@angular/common';
@@ -82,7 +82,7 @@ export class AuditPreviewComponent implements OnInit {
   constructor(
     private auditService: AuditService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -91,9 +91,7 @@ export class AuditPreviewComponent implements OnInit {
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
       } else {
-        this.vitamUISnackBarService.open({
-          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-        });
+        this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       }
     });
   }

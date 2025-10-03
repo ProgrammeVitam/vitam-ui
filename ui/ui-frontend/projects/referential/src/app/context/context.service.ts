@@ -38,7 +38,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Context, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
+import { Context, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
 
 import { ContextApiService } from '../core/api/context-api.service';
 
@@ -50,7 +50,7 @@ export class ContextService extends SearchService<Context> {
 
   constructor(
     private contextApiService: ContextApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(contextApiService, 'ALL');
   }

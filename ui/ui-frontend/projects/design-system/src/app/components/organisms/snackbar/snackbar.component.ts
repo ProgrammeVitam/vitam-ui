@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { VitamUICommonModule, VitamUILibraryModule, VitamUISnackBarService } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule, SnackBarService } from 'vitamui-library';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const INFINITE_DURATION = 0;
@@ -52,7 +52,7 @@ export class SnackbarComponent implements OnInit {
   buttons: FormArray = this.fb.array([]);
 
   constructor(
-    private snackbarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private fb: FormBuilder,
   ) {
     this.form = fb.group({
@@ -69,7 +69,7 @@ export class SnackbarComponent implements OnInit {
   }
 
   private openSnackbar() {
-    this.snackbarService.open({ ...this.form.value, duration: INFINITE_DURATION });
+    this.snackBarService.open({ ...this.form.value, duration: INFINITE_DURATION });
   }
 
   addButton() {

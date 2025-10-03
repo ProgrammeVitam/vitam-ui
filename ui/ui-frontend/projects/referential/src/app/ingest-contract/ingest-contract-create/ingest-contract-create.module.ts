@@ -43,7 +43,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
@@ -60,7 +59,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
     SelectComponent,
     SharedModule,

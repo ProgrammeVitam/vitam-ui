@@ -38,7 +38,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { AuthService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
@@ -79,7 +78,6 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent, RouterOutletStubComponent],
       imports: [
-        MatSnackBarModule,
         InjectorModule,
         VitamUICommonTestModule,
         BrowserAnimationsModule,

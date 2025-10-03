@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Event, SearchService, VitamUISnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
+import { Event, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
 import { OperationApiService } from '../core/api/operation-api.service';
 import { Observable } from 'rxjs';
 
@@ -47,7 +47,7 @@ import { Observable } from 'rxjs';
 export class ProbativeValueService extends SearchService<Event> {
   constructor(
     private operationApiService: OperationApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(operationApiService, 'ALL');
   }

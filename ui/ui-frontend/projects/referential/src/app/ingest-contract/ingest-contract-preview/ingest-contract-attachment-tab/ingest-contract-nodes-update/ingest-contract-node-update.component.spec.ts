@@ -39,8 +39,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BASE_URL, ENVIRONMENT, FilingPlanModule, InjectorModule, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, FilingPlanModule, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
@@ -54,11 +53,11 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
 
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
     await TestBed.configureTestingModule({
       declarations: [IngestContractNodeUpdateComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, FilingPlanModule, MatSnackBarModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, FilingPlanModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         {
@@ -66,7 +65,7 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
           useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
         },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

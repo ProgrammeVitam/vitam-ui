@@ -35,7 +35,31 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-export interface VitamuiSnackBarData {
+import { ApplicationId } from '../../application-id.enum';
+
+interface AbstractButton {
+  label: string;
+  outline?: boolean;
+  /**
+   * If true or undefined, label will be considered as a translate key.
+   * Otherwise, will be considered as a simple string & displayed directly.
+   */
+  translate?: boolean;
+  /** Params to provide to ngxtranslate key params */
+  translateParams?: any;
+}
+
+export interface SnackBarUrlButton extends AbstractButton {
+  url: string;
+  target?: '_blank';
+}
+
+export interface SnackBarAppButton extends AbstractButton {
+  appId: ApplicationId;
+  path?: string;
+}
+
+export interface SnackBarData<ButtonTypes extends SnackBarUrlButton | SnackBarAppButton> {
   /**
    * Translate key as string.
    * If translate = false, the string will be displayed directly.
@@ -51,5 +75,5 @@ export interface VitamuiSnackBarData {
   /** Vitamui icon that will be displayed in the snackbar */
   icon?: string;
   duration?: number;
-  buttons?: { url: string; target?: '_blank'; label: string; outline?: boolean }[];
+  buttons?: ButtonTypes[];
 }

@@ -43,11 +43,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
 
@@ -61,7 +59,6 @@ import { ProbativeValuePreviewComponent } from './probative-value-preview.compon
     FormsModule,
     ReactiveFormsModule,
     MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

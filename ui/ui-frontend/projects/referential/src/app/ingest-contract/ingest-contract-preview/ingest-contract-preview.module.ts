@@ -46,7 +46,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
@@ -84,7 +83,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
-    MatSnackBarModule,
     MatTabsModule,
     ReactiveFormsModule,
     RouterModule,

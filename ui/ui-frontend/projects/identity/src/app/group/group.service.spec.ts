@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Direction, Group, Operators, PageRequest, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, CriteriaSearchQuery, Direction, Group, Operators, PageRequest, SnackBarService } from 'vitamui-library';
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
@@ -48,13 +48,13 @@ describe('GroupService', () => {
   let groupService: GroupService;
 
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
     TestBed.configureTestingModule({
       imports: [],
       providers: [
         GroupService,
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         {
           provide: BASE_URL,
           useValue: '/fake-api',
@@ -129,7 +129,7 @@ describe('GroupService', () => {
   });
 
   it('should call /fake-api/groups and display a success message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     const expectedGroup: Group = {
       id: '1',
       customerId: '4242442',
@@ -159,7 +159,7 @@ describe('GroupService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     const expectedProfileGroup: Group = {
       id: '1',
       customerId: '4242442',
@@ -259,7 +259,7 @@ describe('GroupService', () => {
   });
 
   it('should call PATCH /fake-api/groups/42', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     const expectedProfileGroup: Group = {
       id: '1',
       customerId: '4242442',
@@ -291,7 +291,7 @@ describe('GroupService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     const expectedGroup: Group = {
       id: '1',
       customerId: '4242442',

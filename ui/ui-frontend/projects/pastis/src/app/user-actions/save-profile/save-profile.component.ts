@@ -73,15 +73,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { filter, mergeMap, Observable, of, Subscription, switchMap } from 'rxjs';
-import { StartupService, VitamUISnackBarComponent, VitamuiSnackBarData } from 'vitamui-library';
+import { ApplicationId, SnackBarService, StartupService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { NoticeService } from '../../core/services/notice.service';
-import { NotificationService } from '../../core/services/notification.service';
 import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
@@ -158,7 +156,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription = new Subscription();
 
-  archivalProfileUnit: ArchivalProfileUnit;
   profile: Profile;
 
   profileDescription: ProfileDescription;
@@ -172,15 +169,14 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     private popupService: PopupService,
     private fileService: FileService,
     private startupService: StartupService,
-    private snackBar: MatSnackBar,
     private dataGeneriquePopupService: DataGeneriquePopupService,
     private noticeService: NoticeService,
     private translateService: TranslateService,
     public dialog: MatDialog,
     private router: Router,
-    private notificationService: NotificationService,
     private archiveProfileSaverService: ArchiveProfileSaverService,
     private archiveUnitProfileSaverService: ArchiveUnitProfileSaverService,
+    private snackBarService: SnackBarService,
   ) {
     this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   }
@@ -338,7 +334,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           return action;
         }),
         tap({
-          next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
+          next: () => this.success('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'),
           error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
         }),
       );
@@ -352,32 +348,29 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     if (!hasOperationId) {
       const { status, exception } = error;
       const errorMessage = `Erreur ${status || '???'} (${exception || '???'}): ${content}`;
-      return this.notificationService.showError(errorMessage);
+      this.snackBarService.open({ message: errorMessage });
+      return;
     }
 
-    const prefix: string = this.translateService.instant('SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID');
-    const url = this.operationUrl(operationId);
-    const label: string = this.translateService.instant('SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON');
-    this.snackBar.openFromComponent<VitamUISnackBarComponent, VitamuiSnackBarData>(VitamUISnackBarComponent, {
-      data: {
-        message: `${prefix}: (${content})`,
-        buttons: [{ url, label }],
-      },
+    const tenantId = this.startupService.getTenantIdentifier();
+    this.snackBarService.open({
+      message: 'SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID',
+      translateParams: { content },
+      buttons: [
+        {
+          appId: ApplicationId.LOGBOOK_OPERATION_APP,
+          path: `/tenant/${tenantId}?guid=${operationId}`,
+          label: 'SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON',
+        },
+      ],
     });
-  }
-
-  operationUrl(operationId: string) {
-    const baseUrl = this.startupService.getReferentialUrl();
-    const tenant = this.startupService.getTenantIdentifier();
-
-    return `${baseUrl}/logbook-operation/tenant/${tenant}?guid=${operationId}`;
   }
 
   saveArchiveProfile(): Observable<Profile> {
     if (this.editProfile) {
       return this.archiveProfileSaverService.update(this.profile, this.profileDescription, this.data).pipe(
         tap({
-          next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
+          next: () => this.success('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'),
           error: ({ error }: { error: VitamUIExceptionResponse }) => {
             const message = 'La modification du profil a échoué';
             this.displayLogbookOperationSnackBar(error, message);
@@ -388,7 +381,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
     return this.archiveProfileSaverService.create(this.profile, this.profileDescription, this.data).pipe(
       tap({
-        next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS')),
+        next: () => this.success('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS'),
         error: ({ error }: { error: VitamUIExceptionResponse }) => {
           const message = 'La création du profil a échoué';
           this.displayLogbookOperationSnackBar(error, message);
@@ -401,7 +394,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     if (this.editProfile) {
       return this.archiveUnitProfileSaverService.update(profileDescription, data).pipe(
         tap({
-          next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
+          next: () => this.success('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'),
           error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
         }),
       );
@@ -409,14 +402,16 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
     return this.archiveUnitProfileSaverService.create(profileDescription, data).pipe(
       tap({
-        next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS')),
+        next: () => this.success('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS'),
         error: ({ error }: { error: VitamUIExceptionResponse }) => this.displayLogbookOperationSnackBar(error),
       }),
     );
   }
 
   success(msg: string) {
-    this.notificationService.showSuccess(msg);
+    this.snackBarService.open({
+      message: msg,
+    });
     // sleep 3 sec before return pastishome
     setTimeout(() => {
       this.router.navigate(['pastis']);

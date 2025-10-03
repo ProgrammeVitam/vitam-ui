@@ -38,7 +38,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { BASE_URL, BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
@@ -61,7 +60,7 @@ describe('UploadComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UploadComponent],
-      imports: [MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [MatProgressBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

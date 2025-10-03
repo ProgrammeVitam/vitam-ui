@@ -144,9 +144,9 @@ export * from './app/modules/components/vitamui-menu-button/vitamui-menu-button.
 export * from './lib/components/input/input.component';
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.component';
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.module';
-export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.interface';
-export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component';
-export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.service';
+export * from './app/modules/components/snack-bar/snack-bar.interface';
+export * from './app/modules/components/snack-bar/snack-bar.component';
+export * from './app/modules/components/snack-bar/snack-bar.service';
 export * from './app/modules/components/vitamui-sup-header/vitamui-sup-header.component';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive.module';

@@ -65,8 +65,7 @@
     "CONFIRM_BLANK": "Confirm test deposit",
     "ALERTE_MESSAGE": "One or more installment (s) are downloading (Please do not leave this page during the deposit process and open a new tab if necessary)",
     "UPLOAD_COMPLETE_MESSAGE": "Deposit operation has been started",
-    "BLANK_UPLOAD_COMPLETE_MESSAGE": "Blank deposit operation has been started",
-    "TO_OPERATION_APP": "VIEW THE OPERATIONS LOG"
+    "BLANK_UPLOAD_COMPLETE_MESSAGE": "Blank deposit operation has been started"
   },
   "INGEST_DETAIL": {
     "DOWNLOAD_ATR": "Download the ATR",

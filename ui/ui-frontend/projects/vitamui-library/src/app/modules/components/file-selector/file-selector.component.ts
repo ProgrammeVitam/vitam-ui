@@ -48,16 +48,16 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { I18nPluralPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DisplayFile } from './display-file.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
 import { BytesPipe } from '../../pipes';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
+import { SnackBarService } from '../snack-bar/snack-bar.service';
 
 export const FILE_SELECTOR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -115,9 +115,8 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
 
   constructor(
     injector: Injector,
-    private translationService: TranslateService,
-    public snackBar: MatSnackBar,
     private bytesPipe: BytesPipe,
+    private snackBarService: SnackBarService,
   ) {
     super(injector);
   }
@@ -149,9 +148,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     }
 
     if (this.hasDuplicateRootElement(files)) {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, {
-        duration: 10000,
-      });
+      this.snackBarService.open({ message: 'FILE_SELECTOR.UPLOAD_FILE_ALREADY_IMPORTED' });
       this.resetInput();
       return;
     }

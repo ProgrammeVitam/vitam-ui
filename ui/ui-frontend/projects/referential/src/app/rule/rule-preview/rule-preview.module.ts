@@ -43,11 +43,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 import { RulePreviewComponent } from './rule-preview.component';
@@ -61,7 +59,6 @@ import { RulePreviewComponent } from './rule-preview.component';
     FormsModule,
     ReactiveFormsModule,
     MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

@@ -36,21 +36,19 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import {
+  ApplicationId,
   ArchiveUnit,
   ArchiveUnitEditorComponent,
   EditObject,
   JsonPatch,
   Logger,
   SpinnerOverlayService,
-  StartupService,
+  SnackBarService,
 } from 'vitamui-library';
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({
@@ -72,12 +70,6 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
 
   private readonly subscriptions = new Subscription();
   private readonly dialogConfig: MatDialogConfig = { autoFocus: false };
-  private readonly snackBarConfig: MatSnackBarConfig = {
-    data: {
-      type: 'WorkflowSuccessSnackBar',
-    },
-    duration: 100000,
-  };
 
   private notifyFormInvalidityOrContinue: UnaryFunction<Observable<unknown>, Observable<boolean>> = pipe(
     map(() => {
@@ -98,8 +90,11 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
         this.logger.warn(this, 'Current form data contains errors', invalidLeafErrorsMap);
 
         const invalidLeavesMessage = invalidLeafErrorsMap.map((node) => node.path).join(', ');
-        const message = this.translateService.instant('ARCHIVE_UNIT.INVALID_FORM', { invalidLeavesMessage });
-        this.snackBar.open(message, 'close', this.snackBarConfig);
+        this.snackBarService.open({
+          message: 'ARCHIVE_UNIT.INVALID_FORM',
+          translateParams: { invalidLeavesMessage },
+          duration: 100_000,
+        });
       }
 
       return isValid;
@@ -116,12 +111,10 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   constructor(
     private logger: Logger,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private startupService: StartupService,
-    private translateService: TranslateService,
     private route: ActivatedRoute,
     private archiveUnitService: ArchiveUnitService,
     private spinnerOverlayService: SpinnerOverlayService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnDestroy(): void {
@@ -217,17 +210,16 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     if (!operationId) return this.logger.error(this, 'Operation id is mandatory to build logbook operation link');
     if (!tenantId) return this.logger.error(this, 'Tenant id is mandatory to build logbook operation link');
 
-    const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${tenantId}?guid=${operationId}`;
-    const translationKey = 'ARCHIVE_UNIT.DIALOGS.SAVE.MESSAGES.IN_PROGRESS';
-    const message = this.translateService.instant(translationKey);
-
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      ...this.snackBarConfig,
-      data: {
-        ...this.snackBarConfig.data,
-        message,
-        serviceUrl,
-      },
+    this.snackBarService.open({
+      message: 'ARCHIVE_UNIT.DIALOGS.SAVE.MESSAGES.IN_PROGRESS',
+      buttons: [
+        {
+          appId: ApplicationId.LOGBOOK_OPERATION_APP,
+          path: `/tenant/${tenantId}?guid=${operationId}`,
+          label: 'SNACK_BAR.TO_OPERATION_APP',
+        },
+      ],
+      duration: 100_000,
     });
 
     this.patchUnit(this.archiveUnit, this.archiveUnitEditor.getJsonPatch().jsonPatch);

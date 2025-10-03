@@ -1,24 +1,30 @@
-<div *ngIf="!hidden && show" class="subrogation-banner">
-  <div>
-    <i class="vitamui-icon vitamui-icon-repeat mr-4"></i>
-    <span>{{
-      'SUBROGATION.BANNER.MESSAGE'
-        | translate
-          : {
-              email: authService?.user?.email,
-              surrogateCustomerName: surrogateCustomerName,
-              surrogateCustomerCode: surrogateCustomerCode,
-              endDate: endDate | date: 'HH:mm:ss',
-            }
-    }}</span>
-    <button class="btn link ml-5" (click)="onStopSubrogation()">{{ 'SUBROGATION.BANNER.STOP_LABEL' | translate }}</button>
-  </div>
+@if (show) {
+  @if (hidden) {
+    <div class="hidden-banner-div" (click)="hidden = false">
+      <i class="vitamui-icon vitamui-icon-chevron-up"></i>
+    </div>
+  } @else {
+    <div class="subrogation-banner">
+      <div>
+        <i class="vitamui-icon vitamui-icon-repeat mr-4"></i>
+        <span>{{
+          'SUBROGATION.BANNER.MESSAGE'
+            | translate
+              : {
+                  email: authService?.user?.email,
+                  surrogateCustomerName: surrogateCustomerName,
+                  surrogateCustomerCode: surrogateCustomerCode,
+                  endDate: endDate | date: 'HH:mm:ss',
+                }
+        }}</span>
+        <button class="btn contrast contrast-primary ml-4" (click)="onStopSubrogation()">
+          {{ 'SUBROGATION.BANNER.STOP_LABEL' | translate }}
+        </button>
+      </div>
 
-  <div (click)="hidden = true">
-    <i class="vitamui-icon vitamui-icon-close clickable"></i>
-  </div>
-</div>
-
-<div *ngIf="hidden && show" class="hidden-banner-div" (click)="hidden = false">
-  <i class="vitamui-icon vitamui-icon-chevron-up"></i>
-</div>
+      <div (click)="hidden = true">
+        <i class="vitamui-icon vitamui-icon-close clickable"></i>
+      </div>
+    </div>
+  }
+}

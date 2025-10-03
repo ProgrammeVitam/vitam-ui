@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { FileUploader } from 'ng2-file-upload';
@@ -43,7 +43,6 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { Subscription } from 'rxjs';
 import { NoticeService } from '../../core/services/notice.service';
-import { NotificationService } from '../../core/services/notification.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileNode } from '../../models/file-node';
 import { Profile } from '../../models/profile';
@@ -52,7 +51,7 @@ import { CreateNoticeComponent } from '../../user-actions/create-notice/create-n
 import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
 import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
 import { CreateProfileComponent, CreateProfileFormResult } from '../../profile/create-profile/create-profile.component';
-import { MatDialogConfig } from '@angular/material/dialog';
+import { SnackBarService } from 'vitamui-library';
 
 function constantToTranslate(edit: boolean) {
   if (edit) {
@@ -120,8 +119,8 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     private noticeService: NoticeService,
     private translateService: TranslateService,
     private loaderService: NgxUiLoaderService,
-    private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit(): void {
@@ -199,7 +198,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
               const profileDescription = this.noticeService.puaNotice(retour, result.profileVersion);
               this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
                 this.changeExpand();
-                this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
+                this.snackBarService.open({ message: 'PASTIS_POPUP_OPTION.CREATION_SUCCESS', duration: 5000 });
                 this.profileService.refreshListProfiles();
               });
             } else if (result.profileType === ProfileType.PA) {
@@ -207,7 +206,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
               // STEP 1 : Create Notice
               this.profileService.createProfilePa(profile).subscribe(() => {
                 this.changeExpand();
-                this.notificationService.showSuccess(this.translateService.instant('PASTIS_POPUP_OPTION.CREATION_SUCCESS'));
+                this.snackBarService.open({ message: 'PASTIS_POPUP_OPTION.CREATION_SUCCESS', duration: 5000 });
                 this.profileService.refreshListProfiles();
               });
             }

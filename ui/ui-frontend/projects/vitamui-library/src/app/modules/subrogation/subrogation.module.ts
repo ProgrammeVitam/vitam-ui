@@ -47,7 +47,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmDialogModule } from '../components/confirm-dialog/confirm-dialog.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
 import { PipesModule } from '../pipes/pipes.module';
-import { NotificationSnackBarComponent } from './notification-snack-bar/notification-snack-bar.component';
 import { SubrogationBannerComponent } from './subrogation-banner/subrogation-banner.component';
 import { SubrogationModalComponent } from './subrogation-modal/subrogation-modal.component';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
@@ -77,7 +76,7 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
     SelectComponent,
     InputComponent,
   ],
-  declarations: [NotificationSnackBarComponent, SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
+  declarations: [SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
   exports: [SubrogationBannerComponent],
   providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
 })

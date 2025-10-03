@@ -41,7 +41,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../group-attribution/group-attribution.module';
@@ -57,7 +56,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
     SharedModule,
     TranslateModule,

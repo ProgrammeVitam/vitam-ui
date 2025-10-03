@@ -39,16 +39,18 @@ import { FileSelectorComponent } from './file-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 import { LoggerModule } from '../../logger';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomFile } from '../../../../lib/models/custom-file';
+import { SnackBarService } from '../snack-bar/snack-bar.service';
 
 describe('FileSelectorComponent', () => {
   let component: FileSelectorComponent;
   let fixture: ComponentFixture<FileSelectorComponent>;
+  const snackBarServiceSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileSelectorComponent, TranslateModule.forRoot(), PipesModule, LoggerModule.forRoot(), MatSnackBarModule],
+      imports: [FileSelectorComponent, TranslateModule.forRoot(), PipesModule, LoggerModule.forRoot()],
+      providers: [{ provide: SnackBarService, useValue: snackBarServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FileSelectorComponent);
@@ -166,14 +168,12 @@ describe('FileSelectorComponent', () => {
     component.directoryMode = true;
     component.displayFiles = [mockDisplayFile];
 
-    spyOn(component.snackBar, 'open');
-
     component.handleFilesSelection(mockFiles);
 
     mockFiles.forEach((file) => {
       expect((component as any).control.value).not.toContain(file);
     });
 
-    expect(component.snackBar.open).toHaveBeenCalledWith(jasmine.any(String), null, { duration: 10000 });
+    expect(snackBarServiceSpy.open).toHaveBeenCalledWith({ message: 'FILE_SELECTOR.UPLOAD_FILE_ALREADY_IMPORTED' });
   });
 });

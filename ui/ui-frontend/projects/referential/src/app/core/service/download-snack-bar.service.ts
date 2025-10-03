@@ -38,7 +38,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DownloadSnackBarComponent, VitamUISnackBarService } from 'vitamui-library';
+import { DownloadSnackBarComponent, SnackBarService } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +51,7 @@ export class DownloadSnackBarService {
 
   constructor(
     private overlay: Overlay,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     const positionStrategy = this.overlay.position().global();
     positionStrategy.left('0');

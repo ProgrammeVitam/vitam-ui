@@ -76,7 +76,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { FileService } from '../../../core/services/file.service';
-import { NotificationService } from '../../../core/services/notification.service';
 import { ProfileService } from '../../../core/services/profile.service';
 import { SedaService } from '../../../core/services/seda.service';
 import { CardinalityConstants, DataTypeConstants, FileNode, TypeConstants } from '../../../models/file-node';
@@ -89,7 +88,7 @@ import { DuplicateMetadataComponent } from '../../../user-actions/duplicate-meta
 import { UserActionRemoveMetadataComponent } from '../../../user-actions/remove-metadata/remove-metadata.component';
 import { FileTreeMetadataService } from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
-import { Logger } from 'vitamui-library';
+import { Logger, SnackBarService } from 'vitamui-library';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { filter, map, tap } from 'rxjs/operators';
@@ -197,13 +196,13 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     public fileTreeService: FileTreeService,
     public profileService: ProfileService,
     private fileService: FileService,
-    private loggingService: NotificationService,
     private fileMetadataService: FileTreeMetadataService,
     private sedaService: SedaService,
     private sedaLanguageService: PastisPopupMetadataLanguageService,
     private translateService: TranslateService,
     private logger: Logger,
     private cdr: ChangeDetectorRef,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit(): void {
@@ -558,7 +557,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
             if (elementToAddNames.length > 1) {
               notification = `${this.notificationAddMetadonneePOne} ${elementToAddNames.join(', ')} ${this.notificationAddMetadonneePTwo}`;
             }
-            this.loggingService.showSuccess(notification);
+            this.snackBarService.open({ message: notification, duration: 5000 });
           }),
         )
         .subscribe(),
@@ -591,7 +590,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
             const deleteTypeText =
               node.sedaData.element === SedaElementConstants.ATTRIBUTE ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
             const notification = `${nodeType}${node.name}${this.notificationRemoveSuccessOne}${deleteTypeText}${this.notificationRemoveSuccessTwo}`;
-            this.loggingService.showSuccess(notification);
+            this.snackBarService.open({ message: notification, duration: 5000 });
           }),
         )
         .subscribe(),
@@ -626,7 +625,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
               : this.popupDuplicateDeleteTypeTextF;
           const notification = `${nodeType}${node.name}${this.notificationDuplicateSuccessOne}${duplicateTypeText}${this.notificationDuplicateSuccessTwo}`;
 
-          this.loggingService.showSuccess(notification);
+          this.snackBarService.open({ message: notification, duration: 5000 });
         }),
       )
       .subscribe();
@@ -741,7 +740,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     if (node.name === 'DescriptiveMetadata' || node.name === 'ArchiveUnit') {
       this.logger.log(this, 'Clicked seda node : ', node.sedaData);
       this.insertItem(node, ['ArchiveUnit']);
-      this.loggingService.showSuccess(this.notificationAjoutMetadonneeFileTree);
+      this.snackBarService.open({ message: this.notificationAjoutMetadonneeFileTree, duration: 5000 });
     }
   }
 

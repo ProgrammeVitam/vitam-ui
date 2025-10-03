@@ -43,11 +43,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, ExternalParametersService, SearchUnitApiService, VitamUILibraryModule } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  ExternalParametersService,
+  SearchUnitApiService,
+  SnackBarService,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValueCreateComponent } from './probative-value-create.component';
 
@@ -68,7 +73,6 @@ describe('ProbativeValueCreateComponent', () => {
         MatButtonToggleModule,
         NoopAnimationsModule,
         MatProgressBarModule,
-        MatSnackBarModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],
@@ -80,9 +84,9 @@ describe('ProbativeValueCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         { provide: ProbativeValueService, useValue: {} },
         { provide: SearchUnitApiService, useValue: {} },
-        { provide: MatSnackBar, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: TranslateService, useValue: { instant: (key: string) => key } },
+        { provide: SnackBarService, useValue: {} },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

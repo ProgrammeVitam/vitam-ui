@@ -34,13 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {
   AccessContractService,
   Collection,
@@ -49,6 +45,7 @@ import {
   GlobalEventService,
   SchemaService,
   SidenavPage,
+  SnackBarService,
   Unit,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
@@ -61,12 +58,11 @@ import { ArchiveService } from './archive.service';
   styleUrls: ['./archive.component.scss'],
   standalone: false,
 })
-export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDestroy {
+export class ArchiveComponent extends SidenavPage<any> implements OnInit {
   show = true;
   tenantIdentifier: string;
   foundAccessContract = false;
   bulkOperationsThreshold: number;
-  errorMessageSub: Subscription;
   isLPExtended = false;
   hasUpdateDescriptiveUnitMetadataRole = false;
 
@@ -77,12 +73,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     public dialog: MatDialog,
     private archiveSharedDataService: ArchiveSharedDataService,
     private externalParameterService: ExternalParametersService,
-    private translateService: TranslateService,
-    private snackBar: MatSnackBar,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
     private schemaService: SchemaService,
     private accessContractService: AccessContractService,
+    private snackBarService: SnackBarService,
   ) {
     super(route, globalEventService);
     this.schemaService.getSchema(Collection.ARCHIVE_UNIT);
@@ -109,28 +104,16 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       });
   }
 
-  ngOnDestroy() {
-    if (this.errorMessageSub) {
-      this.errorMessageSub.unsubscribe();
-    }
-  }
-
   fetchUserExternalParameters() {
     this.accessContractService.currentAccessContractId$.subscribe((accessContractId) => {
       if (accessContractId && accessContractId.length > 0) {
         this.foundAccessContract = true;
         this.managementRulesSharedDataService.emitAccessContract(accessContractId);
       } else {
-        this.errorMessageSub = this.translateService
-          .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
-          .pipe(
-            map((message) => {
-              this.snackBar.open(message, null, {
-                duration: 10000,
-              });
-            }),
-          )
-          .subscribe();
+        this.snackBarService.open({
+          message: 'ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND',
+          duration: 10_000,
+        });
       }
     });
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

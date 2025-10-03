@@ -38,7 +38,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { Agency, ConfirmActionComponent, AgencyService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { Agency, AgencyService, ConfirmActionComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,7 +47,6 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -65,7 +64,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
-    MatSnackBarModule,
     MatTabsModule,
     ReactiveFormsModule,
     RouterModule,

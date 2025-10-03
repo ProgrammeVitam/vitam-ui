@@ -43,7 +43,7 @@ import {
   ExternalParametersService,
   IEvent,
   LogbookApiService,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 
@@ -65,7 +65,7 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   constructor(
     private readonly securingService: SecurisationService,
     private readonly externalParameterService: ExternalParametersService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -86,13 +86,15 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
     if (this.accessContractId) {
       this.securingService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe(
         (response: { $results: ApiEvent[] }) => {
-          this.snackBarService
-            .openWithAppUrlBtn(
-              { message: 'SNACKBAR.TRACEABILITY_OPERATION_SUCCESS' },
-              ApplicationId.LOGBOOK_OPERATION_APP,
-              'SNACKBAR.OPEN_LOGBOOK',
-            )
-            .subscribe();
+          this.snackBarService.open({
+            message: 'SNACKBAR.TRACEABILITY_OPERATION_SUCCESS',
+            buttons: [
+              {
+                appId: ApplicationId.LOGBOOK_OPERATION_APP,
+                label: 'SNACKBAR.OPEN_LOGBOOK',
+              },
+            ],
+          });
 
           this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
           this.display = true;

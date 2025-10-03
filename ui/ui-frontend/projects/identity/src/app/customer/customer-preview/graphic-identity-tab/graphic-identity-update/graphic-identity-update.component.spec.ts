@@ -39,7 +39,7 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
@@ -120,7 +120,7 @@ describe('GraphicIdentityUpdateComponent', () => {
 
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
     await TestBed.configureTestingModule({
       declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
       imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
@@ -128,7 +128,7 @@ describe('GraphicIdentityUpdateComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

@@ -43,7 +43,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
@@ -58,7 +57,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
     SharedModule,
     TranslateModule,

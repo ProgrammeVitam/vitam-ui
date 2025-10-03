@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -50,7 +49,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 describe('AccessContractListComponent', () => {
   let component: AccessContractListComponent;
   let fixture: ComponentFixture<AccessContractListComponent>;
-  // const accessContractServiceSpy = jasmine.createSpyObj('VitamUISnackBarService', ['getAll', 'search']);
+  // const accessContractServiceSpy = jasmine.createSpyObj('SnackBarService', ['getAll', 'search']);
 
   const accessContractServiceMock = {
     getAll: () => of([]),
@@ -65,7 +64,6 @@ describe('AccessContractListComponent', () => {
       imports: [VitamUICommonTestModule, MatProgressSpinnerModule],
       providers: [
         { provide: BASE_URL, useValue: '' },
-        { provide: MatSnackBar, useValue: {} },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
         provideHttpClient(withInterceptorsFromDi()),

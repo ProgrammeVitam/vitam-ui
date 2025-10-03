@@ -41,13 +41,14 @@ import { MatRadioModule } from '@angular/material/radio';
 import { finalize, Observable } from 'rxjs';
 import { AsyncPipe, I18nPluralPipe } from '@angular/common';
 import {
+  ApplicationId,
   ArchiveUnitProfilesService,
   DialogHeaderComponent,
   Logger,
   SearchCriteriaEltDto,
   SelectComponent,
-  StartupService,
   VitamuiSelectOptions,
+  SnackBarService,
 } from 'vitamui-library';
 import { map } from 'rxjs/operators';
 import { ArchiveService } from '../../archive.service';
@@ -91,9 +92,9 @@ export class PuaUpdateDialogComponent {
     archiveUnitProfilesService: ArchiveUnitProfilesService,
     private dialogRef: MatDialogRef<PuaUpdateDialogComponent>,
     private archiveService: ArchiveService,
-    private startupService: StartupService,
-    private translateService: TranslateService,
+    private translate: TranslateService,
     private logger: Logger,
+    private snackBarService: SnackBarService,
   ) {
     this.puas$ = archiveUnitProfilesService
       .getAll()
@@ -134,7 +135,7 @@ export class PuaUpdateDialogComponent {
       criteriaList: this.data.listOfUACriteriaSearch,
       pageNumber: 0, // Whatever the value, it won't be interpreted by the backend for updating the rules
       size: 0, // Whatever the value, it won't be interpreted by the backend for updating the rules
-      language: this.translateService.currentLang,
+      language: this.translate.currentLang,
     };
 
     if (actions) {
@@ -148,13 +149,18 @@ export class PuaUpdateDialogComponent {
         .pipe(finalize(() => (this.updating = false)))
         .subscribe({
           next: (response) => {
-            const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.data.tenantIdentifier}?guid=${response}`;
-
             this.dialogRef.close();
-            this.archiveService.openSnackBarForWorkflow(
-              this.translateService.instant('ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SUCCESS_MESSAGE'),
-              serviceUrl,
-            );
+            this.snackBarService.open({
+              message: 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SUCCESS_MESSAGE',
+              buttons: [
+                {
+                  appId: ApplicationId.LOGBOOK_OPERATION_APP,
+                  path: `/tenant/${this.data.tenantIdentifier}?guid=${response}`,
+                  label: 'SNACK_BAR.TO_OPERATION_APP',
+                },
+              ],
+              duration: 100_000,
+            });
           },
           error: (error: any) => {
             this.logger.error('Error message :', error);

@@ -38,7 +38,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, Rule, RuleService, VitamUISnackBarService } from 'vitamui-library';
+import { AuthService, BASE_URL, Rule, RuleService, SnackBarService } from 'vitamui-library';
 import { RuleListComponent } from './rule-list.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -59,7 +59,7 @@ describe('RuleListComponent', () => {
         { provide: BASE_URL, useValue: '' },
         { provide: RuleService, useValue: ruleServiceMock },
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
-        { provide: VitamUISnackBarService, useValue: {} },
+        { provide: SnackBarService, useValue: {} },
         { provide: MatDialog, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],

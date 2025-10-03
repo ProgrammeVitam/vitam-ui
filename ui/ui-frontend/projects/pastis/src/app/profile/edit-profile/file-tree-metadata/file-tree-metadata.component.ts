@@ -41,9 +41,8 @@ import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { mergeMap, Subscription } from 'rxjs';
-import { DatePatternConstants, Logger, Option, StartupService } from 'vitamui-library';
+import { DatePatternConstants, Logger, Option, SnackBarService, StartupService } from 'vitamui-library';
 import { FileService } from '../../../core/services/file.service';
-import { NotificationService } from '../../../core/services/notification.service';
 import { ProfileService } from '../../../core/services/profile.service';
 import { SedaService } from '../../../core/services/seda.service';
 import { BreadcrumbDataMetadata, BreadcrumbDataTop } from '../../../models/breadcrumb';
@@ -188,7 +187,6 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     private fileService: FileService,
     private fileMetadataService: FileTreeMetadataService,
     private sedaService: SedaService,
-    private notificationService: NotificationService,
     private router: Router,
     private startupService: StartupService,
     private fileTreeService: FileTreeService,
@@ -196,6 +194,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private logger: Logger,
     private breadcrumbService: BreadcrumbService,
+    private snackBarService: SnackBarService,
   ) {
     this.config = {
       locale: 'fr',
@@ -463,7 +462,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
         elementsToAdd: elements,
       };
       this.insertItem.emit(params);
-      this.notificationService.showSuccess(this.notificationAjoutMetadonnee);
+      this.snackBarService.open({ message: this.notificationAjoutMetadonnee, duration: 5000 });
     } else {
       this.addNode.emit(this.clickedNode);
     }

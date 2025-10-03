@@ -40,7 +40,7 @@ import { from, mergeMap, Observable, of, Subject, toArray } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AgencyApiService } from './agency-api.service';
 import { SearchService } from '../vitamui-table';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { Option } from '../components/autocomplete';
 import { DownloadUtils } from '../utils';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
@@ -54,7 +54,7 @@ export class AgencyService extends SearchService<Agency> {
 
   constructor(
     private agencyApiService: AgencyApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(agencyApiService, 'ALL');
   }

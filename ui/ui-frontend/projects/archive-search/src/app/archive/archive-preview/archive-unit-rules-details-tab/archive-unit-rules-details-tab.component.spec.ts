@@ -37,7 +37,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
@@ -74,7 +73,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitRulesDetailsTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [InjectorModule, MatSnackBarModule, TranslateModule.forRoot()],
+      imports: [InjectorModule, TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },

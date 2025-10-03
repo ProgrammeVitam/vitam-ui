@@ -47,7 +47,7 @@ import {
   Profile,
   SearchService,
   User,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 
 import { UserApiService } from '../core/api/user-api.service';
@@ -61,7 +61,7 @@ export class UserService extends SearchService<User> {
 
   constructor(
     private userApi: UserApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private rngProfileService: ProfileService,
   ) {
     super(userApi, '');

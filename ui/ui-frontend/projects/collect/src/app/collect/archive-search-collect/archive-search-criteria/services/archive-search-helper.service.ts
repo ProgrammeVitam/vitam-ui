@@ -36,7 +36,6 @@
  */
 
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -49,7 +48,6 @@ import {
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
 } from 'vitamui-library';
-import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
@@ -370,17 +368,6 @@ export class ArchiveSearchHelperService {
           elt.status = newStatus;
         }
       });
-    });
-  }
-
-  openSnackBarForWorkflow(snackBar: MatSnackBar, message: string, serviceUrl?: string) {
-    snackBar.openFromComponent(VitamUISnackBarComponent, {
-      data: {
-        type: 'WorkflowSuccessSnackBar',
-        message,
-        serviceUrl,
-      },
-      duration: 100000,
     });
   }
 

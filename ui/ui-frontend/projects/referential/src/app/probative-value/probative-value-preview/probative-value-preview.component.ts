@@ -35,12 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { finalize, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
+import { takeUntil } from 'rxjs/operators';
+import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 
 @Component({
@@ -63,9 +61,8 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   constructor(
     private probativeValueService: ProbativeValueService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private translateService: TranslateService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -86,17 +83,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
           this.accessContract = accessContractId;
           this.hasAccessContract = true;
         } else {
-          this.translateService
-            .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
-            .pipe(takeUntil(this.destroyer$))
-            .pipe(
-              map((message) => {
-                this.snackBar.open(message, null, {
-                  duration: 10000,
-                });
-              }),
-            )
-            .subscribe();
+          this.snackBarService.open({ message: 'ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND' });
         }
       });
   }

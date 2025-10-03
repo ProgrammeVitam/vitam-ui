@@ -72,12 +72,12 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { filter, of, Subscription, switchMap } from 'rxjs';
-import { Direction, GlobalEventService, SidenavPage, StartupService } from 'vitamui-library';
+import { Direction, GlobalEventService, SidenavPage, SnackBarService, StartupService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
@@ -94,8 +94,6 @@ import { LoadProfileComponent, LoadProfileConfig } from './load-profile/load-pro
 import { Profile } from '../../models/profile';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { NoticeService } from '../../core/services/notice.service';
-import { MatDialogConfig } from '@angular/material/dialog';
-import { NotificationService } from '../../core/services/notification.service';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
@@ -180,7 +178,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     private dataGeneriquePopupService: DataGeneriquePopupService,
     private translateService: TranslateService,
     private toggleService: ToggleSidenavService,
-    private notificationService: NotificationService,
+    private snackBarService: SnackBarService,
   ) {
     super(route, globalEventService);
     this.pendingSub = this.toggleService.isPending.subscribe((status) => {
@@ -378,9 +376,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
             this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(
               () => this.refreshListProfiles(),
               () =>
-                this.notificationService.showError(
-                  this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
-                ),
+                this.snackBarService.open({
+                  message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION',
+                  duration: 5000,
+                }),
             );
           }
           if (profileDescription.type === ProfileType.PUA && fileToUpload) {
@@ -389,9 +388,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
             fileReader.onload = () => {
               const jsonObj: ProfileDescription = JSON.parse(fileReader.result.toString());
               if (jsonObj.sedaVersion !== profileDescription.sedaVersion) {
-                this.notificationService.showError(
-                  this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
-                );
+                this.snackBarService.open({
+                  message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION',
+                  duration: 5000,
+                });
               } else {
                 profileDescription.controlSchema = jsonObj.controlSchema;
                 const archivalProfileUnit: ArchivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);

@@ -49,7 +49,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
@@ -70,7 +69,6 @@ import { AccessionRegisterComponent } from './accession-register.component';
     RouterModule,
     VitamUICommonModule,
     MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

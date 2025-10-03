@@ -40,7 +40,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
@@ -61,7 +60,6 @@ import { ContextComponent } from './context.component';
     ContextEditModule,
     ContextPreviewModule,
     MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

@@ -40,14 +40,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
+  ApplicationId,
   ConfirmDialogService,
   Logger,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
-  StartupService,
   UsageVersionEnum,
   VitamuiSelectOptions,
+  SnackBarService,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
@@ -73,7 +74,6 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<TransferRequestModalComponent>,
     private fb: FormBuilder,
     private archiveService: ArchiveService,
-    private startupService: StartupService,
     private confirmDialogService: ConfirmDialogService,
     private logger: Logger,
     @Inject(MAT_DIALOG_DATA)
@@ -84,6 +84,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
     },
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit(): void {
@@ -227,10 +228,17 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     this.archiveService.transferRequestService(transferRequestDto).subscribe(
       (response) => {
         this.dialogRef.close(true);
-        const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${
-          this.data.tenantIdentifier
-        }?guid=${response}`;
-        this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_MESSAGE'), serviceUrl);
+        this.snackBarService.open({
+          message: 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_MESSAGE',
+          buttons: [
+            {
+              appId: ApplicationId.LOGBOOK_OPERATION_APP,
+              path: `/tenant/${this.data.tenantIdentifier}?guid=${response}`,
+              label: 'SNACK_BAR.TO_OPERATION_APP',
+            },
+          ],
+          duration: 100_000,
+        });
         this.formGroups.forEach((fg) => fg.reset());
       },
       (error: any) => {

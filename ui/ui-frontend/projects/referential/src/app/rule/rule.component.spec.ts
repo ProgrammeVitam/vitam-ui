@@ -58,7 +58,7 @@ import {
   LoggerModule,
   Rule,
   SecurityService,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
@@ -95,7 +95,7 @@ describe('RuleComponent', () => {
 
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
     const authServiceMock = {
       user: {
@@ -137,7 +137,7 @@ describe('RuleComponent', () => {
         GlobalEventService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         { provide: AuthService, useValue: authServiceMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SecurityService, useValue: securityServiceMock },

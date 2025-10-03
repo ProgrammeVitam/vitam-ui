@@ -75,7 +75,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { DownloadUtils, GlobalEventService, Group, SidenavPage, VitamUISnackBarService } from 'vitamui-library';
+import { DownloadUtils, GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
@@ -99,7 +99,7 @@ export class GroupComponent extends SidenavPage<Group> {
     public globalEventService: GlobalEventService,
     private dialog: MatDialog,
     private downloadSnackBarService: DownloadSnackBarService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private groupService: GroupService,
   ) {
     super(route, globalEventService);

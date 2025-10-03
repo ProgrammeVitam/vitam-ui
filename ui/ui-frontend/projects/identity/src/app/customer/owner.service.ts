@@ -36,7 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CriteriaSearchQuery, Criterion, Operators, Owner, VitamUISnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Criterion, Operators, Owner, SnackBarService } from 'vitamui-library';
 
 import { Injectable } from '@angular/core';
 import { OwnerApiService } from './owner-api.service';
@@ -49,7 +49,7 @@ export class OwnerService {
 
   constructor(
     private ownerApi: OwnerApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   get(id: string): Observable<Owner> {

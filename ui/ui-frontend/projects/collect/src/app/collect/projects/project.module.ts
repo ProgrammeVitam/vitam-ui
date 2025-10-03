@@ -48,7 +48,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
@@ -69,7 +68,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
-    MatSnackBarModule,
     MatTabsModule,
     PipesModule,
     ProjectPreviewComponent,

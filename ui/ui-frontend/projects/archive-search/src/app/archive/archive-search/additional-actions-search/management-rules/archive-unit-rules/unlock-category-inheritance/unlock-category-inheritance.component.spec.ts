@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -53,8 +52,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
-
-const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -270,7 +267,6 @@ describe('UnlockCategoryInheritanceComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         provideHttpClient(withInterceptorsFromDi()),

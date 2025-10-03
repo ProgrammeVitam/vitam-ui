@@ -41,7 +41,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BASE_URL, WINDOW_LOCATION } from '../../../app/modules/injection-tokens';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoggerModule } from '../../../app/modules/logger';
 import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models';
 import { of } from 'rxjs';
@@ -108,7 +107,7 @@ describe('ReclassificationDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TranslateModule.forRoot(), HttpClientTestingModule, MatSnackBarModule, LoggerModule.forRoot()],
+      imports: [NoopAnimationsModule, TranslateModule.forRoot(), HttpClientTestingModule, LoggerModule.forRoot()],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

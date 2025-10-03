@@ -1,0 +1,28 @@
+<div class="vitamui-snack-bar-container">
+  <div class="vitamui-snack-bar-content">
+    @if (data?.icon) {
+      <i class="vitamui-icon {{ data.icon }} mr-4"></i>
+    }
+    <div class="d-flex align-items-center">
+      <div class="text medium white" [innerHTML]="data.message"></div>
+      @if (data.buttons?.length) {
+        <div class="ml-4 hgap-4">
+          @for (button of data.buttons; track button) {
+            <a
+              class="btn"
+              [class]="button.outline ? 'contrast-outline contrast-primary-outline' : 'contrast contrast-primary'"
+              [href]="button.url"
+              [target]="button.target || '_self'"
+            >
+              {{ button.label }}
+            </a>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <button (click)="close()" class="ml-3 close-btn">
+    <i class="vitamui-icon vitamui-icon-close"></i>
+  </button>
+</div>

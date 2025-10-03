@@ -43,7 +43,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
@@ -63,7 +62,6 @@ import { AdminDslComponent } from './admin-dsl.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
     RouterModule,
     VitamUICommonModule,

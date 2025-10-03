@@ -57,7 +57,6 @@ import { CommonModule } from '@angular/common';
 import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -65,15 +64,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-agency-list',
   templateUrl: './agency-list.component.html',
   styleUrls: ['./agency-list.component.scss'],
-  imports: [
-    AgencyCreateModule,
-    CommonModule,
-    ImportDialogModule,
-    MatProgressSpinnerModule,
-    MatSidenavModule,
-    MatSnackBarModule,
-    VitamUICommonModule,
-  ],
+  imports: [AgencyCreateModule, CommonModule, ImportDialogModule, MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

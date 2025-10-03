@@ -38,7 +38,6 @@ import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
@@ -70,7 +69,6 @@ describe('ErrorResponseModalComponent', () => {
       imports: [
         LoggerModule.forRoot(),
         RouterTestingModule,
-        MatSnackBarModule,
         TranslateModule.forRoot({
           missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
           defaultLanguage: 'fr',

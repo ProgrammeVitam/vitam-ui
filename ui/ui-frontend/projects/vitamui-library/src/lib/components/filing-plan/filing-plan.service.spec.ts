@@ -48,7 +48,7 @@ import {
   InjectorModule,
   UnitType,
   VitamUICommonModule,
-  VitamUISnackBarService,
+  SnackBarService,
 } from '../../../app/modules';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { EMPTY, of } from 'rxjs';
@@ -66,7 +66,7 @@ describe('FilingPlanService', () => {
       providers: [
         FilingPlanService,
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

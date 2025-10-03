@@ -37,10 +37,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
+import { ExternalParametersService, SnackBarService } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
@@ -108,7 +106,7 @@ describe('SecurisationPreviewComponent', () => {
     ],
   };
 
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
   beforeEach(async () => {
     const parameters: Map<string, string> = new Map<string, string>();
@@ -117,12 +115,12 @@ describe('SecurisationPreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, MatSnackBarModule, TranslateModule.forRoot()],
+      imports: [BrowserAnimationsModule, TranslateModule.forRoot()],
       declarations: [SecurisationPreviewComponent, MockTruncatePipe, EventTypeBadgeClassPipe],
       providers: [
         { provide: SecurisationService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

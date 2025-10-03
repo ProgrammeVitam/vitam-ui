@@ -38,7 +38,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   BASE_URL,
@@ -119,7 +118,6 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        MatSnackBarModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
       ],

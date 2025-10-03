@@ -39,16 +39,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../injection-tokens';
-import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
+import { SnackBarComponent } from './snack-bar.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-describe('VitamUISnackbarComponent', () => {
-  let component: VitamUISnackBarComponent;
-  let fixture: ComponentFixture<VitamUISnackBarComponent>;
+describe('SnackbarComponent', () => {
+  let component: SnackBarComponent;
+  let fixture: ComponentFixture<SnackBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUISnackBarComponent, TranslateModule.forRoot()],
+      imports: [SnackBarComponent, TranslateModule.forRoot()],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -65,7 +65,7 @@ describe('VitamUISnackbarComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VitamUISnackBarComponent);
+    fixture = TestBed.createComponent(SnackBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

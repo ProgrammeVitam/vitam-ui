@@ -40,7 +40,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -54,8 +53,8 @@ import {
   LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
+  SnackBarService,
 } from 'vitamui-library';
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { VitamInternalFields } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
@@ -89,8 +88,6 @@ describe('SearchCriteriaSaverComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
-
   const SearchCriteriaSaverServiceStub = {
     getSearchCriteriaHistory: () => of([]),
 
@@ -103,7 +100,6 @@ describe('SearchCriteriaSaverComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        MatSnackBarModule,
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
@@ -118,7 +114,6 @@ describe('SearchCriteriaSaverComponent', () => {
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogRefSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: SearchCriteriaSaverService, useValue: SearchCriteriaSaverServiceStub },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         {
@@ -126,6 +121,7 @@ describe('SearchCriteriaSaverComponent', () => {
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'COLLECT_APP' }) },
         },
         { provide: environment, useValue: environment },
+        { provide: SnackBarService, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

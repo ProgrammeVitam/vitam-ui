@@ -38,7 +38,7 @@ import { HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { CriteriaSearchQuery, Criterion, Group, Operators, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Criterion, Group, Operators, SearchService, SnackBarService } from 'vitamui-library';
 
 import { GroupApiService } from '../core/api/group-api.service';
 
@@ -50,7 +50,7 @@ export class GroupService extends SearchService<Group> {
 
   constructor(
     private groupApi: GroupApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(groupApi);
   }

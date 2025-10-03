@@ -74,10 +74,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { BASE_URL, LoggerModule, StartupService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
@@ -90,7 +88,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 describe('UserActionOpenProfileComponent', () => {
   let component: UserActionSaveProfileComponent;
   let fixture: ComponentFixture<UserActionSaveProfileComponent>;
@@ -112,25 +109,13 @@ describe('UserActionOpenProfileComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserActionSaveProfileComponent],
-      imports: [
-        RouterTestingModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot(),
-        ToastrModule.forRoot({
-          positionClass: 'toast-bottom-full-width',
-          preventDuplicates: false,
-          timeOut: 3000,
-          closeButton: false,
-          easeTime: 0,
-        }),
-      ],
+      imports: [RouterTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         ProfileService,
         FileTreeMetadataService,
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: StartupService, useValue: startUpServiceMock },
         { provide: PopupService, useValue: popupServiceMock },
         provideHttpClient(withInterceptorsFromDi()),

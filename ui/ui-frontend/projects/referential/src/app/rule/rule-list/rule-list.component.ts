@@ -51,7 +51,7 @@ import {
   Role,
   Rule,
   RuleService,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 
@@ -111,7 +111,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     private authService: AuthService,
     private matDialog: MatDialog,
     private translateService: TranslateService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(ruleService);
     this.genericUserRole = {

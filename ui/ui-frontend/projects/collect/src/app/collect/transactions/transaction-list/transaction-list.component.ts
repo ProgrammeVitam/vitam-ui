@@ -35,11 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, interval, of, takeWhile } from 'rxjs';
-import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
+import { Direction, InfiniteScrollTable, SnackBarService, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { ProjectsService } from '../../projects/projects.service';
@@ -65,14 +63,13 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   disabledSendTransactions = new Set<string>();
 
   constructor(
-    private snackBar: MatSnackBar,
     private transactionService: TransactionsService,
     private archiveCollectService: ArchiveCollectService,
-    private translateService: TranslateService,
     private projectService: ProjectsService,
     private route: ActivatedRoute,
     private router: Router,
     private startupService: StartupService,
+    private snackBarService: SnackBarService,
   ) {
     super(transactionService);
   }
@@ -104,10 +101,10 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   sendTransaction(transaction: Transaction) {
     this.transactionService.sendTransaction(transaction.id).subscribe(
       () => {
-        const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
         transaction.status = TransactionStatus.SENDING;
-        this.snackBar.open(message, null, {
-          duration: 10000,
+        this.snackBarService.open({
+          message: 'COLLECT.INGEST_TRANSACTION_LAUNCHED',
+          duration: 10_000,
         });
       },
       () => {
@@ -138,9 +135,9 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
               }
             });
         }
-        const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
-        this.snackBar.open(message, null, {
-          duration: 10000,
+        this.snackBarService.open({
+          message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
+          duration: 10_000,
         });
       },
       () => {
@@ -153,9 +150,9 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     this.transactionService.abortTransaction(transaction.id).subscribe(
       () => {
         transaction.status = TransactionStatus.ABORTED;
-        const message = this.translateService.instant('COLLECT.TRANSACTION_ABORTED');
-        this.snackBar.open(message, null, {
-          duration: 10000,
+        this.snackBarService.open({
+          message: 'COLLECT.TRANSACTION_ABORTED',
+          duration: 10_000,
         });
       },
       () => {
@@ -168,9 +165,9 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     this.transactionService.editTransaction(transaction.id).subscribe(
       () => {
         transaction.status = TransactionStatus.OPEN;
-        const message = this.translateService.instant('COLLECT.TRANSACTION_REOPENED');
-        this.snackBar.open(message, null, {
-          duration: 10000,
+        this.snackBarService.open({
+          message: 'COLLECT.TRANSACTION_REOPENED',
+          duration: 10_000,
         });
       },
       () => {
