@@ -36,6 +36,8 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
+import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-criteria-search',
@@ -44,7 +46,11 @@ import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriter
   standalone: false,
 })
 export class CriteriaSearchComponent {
-  constructor(private queryParamsService: QueryParamsService) {}
+  constructor(
+    private queryParamsService: QueryParamsService,
+    private translateService: TranslateService,
+    private datePipe: DatePipe,
+  ) {}
 
   @Input()
   criteriaKey: string;
