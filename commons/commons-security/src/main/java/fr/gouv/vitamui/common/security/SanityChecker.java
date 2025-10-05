@@ -288,7 +288,8 @@ public class SanityChecker {
                 checkSanityTags(param, getLimitParamSize());
                 checkHtmlPattern(param);
             } catch (InvalidParseOperationException | PreconditionFailedException exception) {
-                throw new ParseOperationException("Error with the parameter ");
+                SysErrLogger.FAKE_LOGGER.log(exception);
+                throw new ParseOperationException("Error with the parameter '" + param + "': " + exception.getMessage());
             }
         } else {
             throw new PreconditionFailedException("the parameter " + param + " is not valid");
@@ -366,11 +367,13 @@ public class SanityChecker {
         if (StringUtils.UNPRINTABLE_PATTERN.matcher(line).find()) {
             throw new InvalidParseOperationException("Invalid input bytes");
         }
-        // ESAPI.getValidPrintable Not OK
-        // Issue with integration of ESAPI
+        // Use isValidInput with HTTPParameterValue instead of getValidSafeHTML
+        // getValidSafeHTML uses AntiSamy which is too strict for simple HTTP parameters
         try {
-            ESAPI.getValidSafeHTML("CheckSafeHtml", line, limit, true);
-        } catch (NoClassDefFoundError | ValidationException | IntrusionException e) {
+            if (!ESAPI.validator().isValidInput("CheckParameter", line, "HTTPParameterValue", limit, true)) {
+                throw new InvalidParseOperationException("Invalid parameter value");
+            }
+        } catch (NoClassDefFoundError e) {
             throw new InvalidParseOperationException("Invalid ESAPI sanity check", e);
         }
     }
