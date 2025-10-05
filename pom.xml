@@ -321,6 +321,7 @@
                                 <jvmFlag>-XX:MaxRAMPercentage=75.0</jvmFlag>
                                 <jvmFlag>-XX:MinRAMPercentage=50.0</jvmFlag>
                                 <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
+                                <jvmFlag>-Dorg.owasp.esapi.resources=/app/resources/esapi</jvmFlag>
                             </jvmFlags>
                             <labels>
                                 <mvn.build.version>${project.version}</mvn.build.version>
