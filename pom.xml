@@ -308,6 +308,33 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack-esapi-resources</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${jib.skip}</skip>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>fr.gouv.vitamui.commons</groupId>
+                                        <artifactId>commons-security</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>jar</type>
+                                        <overWrite>true</overWrite>
+                                        <outputDirectory>${project.build.directory}/esapi-resources</outputDirectory>
+                                        <includes>esapi/**</includes>
+                                    </artifactItem>
+                                </artifactItems>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
                     <version>${jib-maven-plugin.version}</version>
@@ -316,11 +343,20 @@
                             <image>gcr.io/distroless/java21</image>
                         </from>
                         <allowInsecureRegistries>true</allowInsecureRegistries>
+                        <extraDirectories>
+                            <paths>
+                                <path>
+                                    <from>target/esapi-resources</from>
+                                    <into>/app/resources</into>
+                                </path>
+                            </paths>
+                        </extraDirectories>
                         <container>
                             <jvmFlags>
                                 <jvmFlag>-XX:MaxRAMPercentage=75.0</jvmFlag>
                                 <jvmFlag>-XX:MinRAMPercentage=50.0</jvmFlag>
                                 <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
+                                <jvmFlag>-Dorg.owasp.esapi.resources=/app/resources/esapi</jvmFlag>
                             </jvmFlags>
                             <labels>
                                 <mvn.build.version>${project.version}</mvn.build.version>
