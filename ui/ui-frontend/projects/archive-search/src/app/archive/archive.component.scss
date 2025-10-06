@@ -23,3 +23,7 @@
   width: 30px;
   height: 30px;
 }
+
+.color-background-hack {
+  background-color: var(--mat-app-background-color);
+}

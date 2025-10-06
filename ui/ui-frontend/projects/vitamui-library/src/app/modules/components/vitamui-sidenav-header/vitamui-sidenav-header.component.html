@@ -1,60 +1,64 @@
-<div [ngClass]="extended ? 'extended-vitamui-sidepanel' : 'vitamui-sidepanel'">
+<div class="pb-4" [ngClass]="extended ? 'extended-vitamui-sidepanel' : 'vitamui-sidepanel'">
   <div class="vitamui-sidepanel-header">
-    <div class="d-flex justify-content-end pr-4">
+    <div class="toolbar">
       <button class="btn link cancel" (click)="onclose.emit()">
         <i class="vitamui-icon vitamui-icon-close"></i>
       </button>
     </div>
 
-    <div
-      class="title"
-      *ngIf="!loading; else spinner"
-      [vitamuiTooltip]="hasToolTipOnTitle && toolTipTitleText ? toolTipTitleText : null"
-      [vitamuiTooltipPosition]="hasToolTipOnTitle && toolTipTitleText ? 'BOTTOM' : null"
-    >
-      <i
-        class="vitamui-icon {{ icon }} mr-2"
-        [ngClass]="{
-          'status-badge-red': badge === 'red',
-          'status-badge-green': badge === 'green',
-          'status-badge-grey': badge === 'grey',
-          'status-badge-orange': badge === 'orange',
-          'status-badge-black': badge === 'black',
-        }"
+    @if (loading) {
+      <div class="d-flex justify-content-center">
+        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+      </div>
+    } @else {
+      <div
+        class="main-wrapper hgap-2"
+        [vitamuiTooltip]="hasToolTipOnTitle && toolTipTitleText ? toolTipTitleText : null"
+        [vitamuiTooltipPosition]="hasToolTipOnTitle && toolTipTitleText ? TooltipPosition.BOTTOM : null"
       >
-      </i>
-      <div>
-        <h5 class="m-0" [ngClass]="{ 'text-primary': hasToolTipOnTitle && toolTipTitleText }">
-          {{ title }}
-        </h5>
-
-        <p
-          class="m-0"
+        <i
+          class="vitamui-icon {{ icon }}"
           [ngClass]="{
-            'text large light': hasToolTipOnTitle && toolTipTitleText,
-            'text medium': !(hasToolTipOnTitle && toolTipTitleText),
+            'status-badge-red': badge === 'red',
+            'status-badge-green': badge === 'green',
+            'status-badge-grey': badge === 'grey',
+            'status-badge-orange': badge === 'orange',
+            'status-badge-black': badge === 'black',
           }"
         >
-          {{ subtitle }}
-        </p>
+        </i>
+
+        <div class="title-wrapper">
+          <h5 class="title" [ngClass]="{ 'text-primary': hasToolTipOnTitle && toolTipTitleText }">
+            {{ title }}
+          </h5>
+
+          <div
+            class="subtitle"
+            [ngClass]="{
+              'text large light': hasToolTipOnTitle && toolTipTitleText,
+              'text medium': !(hasToolTipOnTitle && toolTipTitleText),
+            }"
+          >
+            {{ subtitle }}
+          </div>
+        </div>
+
+        @if (!actionsBelowTitle) {
+          <div class="title-actions">
+            <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
+          </div>
+        }
       </div>
 
-      <div *ngIf="!actionsBelowTitle" class="d-flex align-items-end justify-content-end actions">
-        <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="actionsBelowTitle" class="title-actions">
-    <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
+      @if (actionsBelowTitle) {
+        <div class="actions-container">
+          <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
+        </div>
+      }
+    }
   </div>
 </div>
-
-<ng-template #spinner>
-  <div class="d-flex justify-content-center">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
 
 <ng-template #actionButtons>
   <ng-content></ng-content>

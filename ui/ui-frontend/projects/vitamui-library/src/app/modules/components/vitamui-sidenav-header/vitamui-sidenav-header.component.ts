@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TooltipPosition } from '../common-tooltip/TooltipPosition.enum';
 
 @Component({
   selector: 'vitamui-common-sidenav-header',
@@ -43,6 +44,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: false,
 })
 export class VitamuiSidenavHeaderComponent {
+  readonly TooltipPosition = TooltipPosition;
+
   @Input() icon: string;
 
   @Input() loading: boolean;

@@ -10,82 +10,13 @@
   width: 100%;
 }
 
-.vitamui-sidepanel-header {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  height: 100%;
-
-  .cancel {
-    > i {
-      color: var(--vitamui-grey-600) !important;
-    }
-  }
-
-  .title {
-    display: flex;
-    align-items: center;
-    padding: 0 30px;
-
-    > i {
-      color: var(--vitamui-grey-600);
-      font-size: 35px;
-    }
-
-    // DEPREACTED : REMOVE THIS H2 CSS AT THE END OF THE REDESIGN
-    > h2 {
-      color: var(--vitamui-grey-900);
-      padding-left: 1.5rem;
-      line-height: 24px;
-      margin: 0;
-      width: 71%;
-    }
-
-    > div:first-of-type {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      min-width: 0;
-      padding-left: 2rem;
-      padding-right: 1rem;
-
-      > h5 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      > p {
-        display: -webkit-box;
-        overflow: hidden;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        text-overflow: ellipsis;
-      }
-    }
-
-    > .actions {
-      width: auto;
-    }
-  }
-
-  .title-actions {
-    display: flex;
-    align-items: center;
-    padding: 0 30px;
-    margin-top: 30px;
-  }
-}
-
 .vitamui-sidepanel-body {
   font-size: 16px;
   background-color: var(--vitamui-background);
   color: var(--vitamui-grey-900);
   position: absolute;
-  bottom: 0;
   right: 0;
   left: 0;
-  top: 246px;
   overflow: auto;
   .mat-mdc-tab-body-wrapper {
     height: 100%;
