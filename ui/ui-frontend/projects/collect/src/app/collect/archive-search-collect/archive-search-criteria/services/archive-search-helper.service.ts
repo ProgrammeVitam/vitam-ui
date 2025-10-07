@@ -110,7 +110,11 @@ export class ArchiveSearchHelperService {
         this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       if (category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
-        this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
+        this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
+          keyElt,
+          valueElt,
+          action: 'ADD',
+        });
       }
       return;
     }
@@ -126,12 +130,22 @@ export class ArchiveSearchHelperService {
         values = [];
       }
       if (valueElt) {
-        const filtredValues = values.filter((elt) =>
-          criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE
-            ? elt.value.value === valueElt?.value
-            : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval,
-        );
-        if (filtredValues.length === 0) {
+        const filteredValues = values.filter((elt) => {
+          if (criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE) {
+            if (keyElt === 'VIRTUAL') {
+              return elt.value.value === valueElt.value && elt.value.virtualNodeRealParentId === valueElt.virtualNodeRealParentId;
+            } else {
+              return elt.value.value === valueElt.value;
+            }
+          }
+
+          if (criteria.dataType === CriteriaDataType.INTERVAL) {
+            return elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval;
+          }
+
+          return false;
+        });
+        if (filteredValues.length === 0) {
           values.push({
             value: valueElt,
             label: labelElt,
@@ -294,7 +308,9 @@ export class ArchiveSearchHelperService {
       searchCriterias.forEach((searchCriteria, key) => {
         if (key === keyElt) {
           let values = searchCriteria.values;
-          values = values.filter((item) => item.value.value !== valueElt.value);
+          values = values.filter(
+            (item) => item.value.value + item.value.virtualNodeRealParentId !== valueElt.value + valueElt.virtualNodeRealParentId,
+          );
           if (values.length === 0) {
             searchCriteriaKeys.forEach((element, index) => {
               if (element === keyElt) {
@@ -310,6 +326,10 @@ export class ArchiveSearchHelperService {
           nbQueryCriteria--;
           if (emit === true && (key === 'NODE' || key === ORPHANS_NODE_ID)) {
             this.archiveExchangeDataService.emitNodeTarget(valueElt.value);
+          }
+
+          if (emit === true && key === 'VIRTUAL') {
+            this.archiveExchangeDataService.emitNodeTarget(valueElt.value + '-' + valueElt.virtualNodeRealParentId);
           }
 
           if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
@@ -479,7 +499,20 @@ export class ArchiveSearchHelperService {
 
   buildNodesListForQUery(searchCriterias: Map<string, CriteriaSearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
     searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
-      if (criteria.category === SearchCriteriaTypeEnum.NODES) {
+      if (criteria.key === 'VIRTUAL') {
+        const virtualNodeRealNodeValues: CriteriaValue[] = criteria.values.map((c) => ({
+          ...c.value,
+          id: c.value.virtualNodeRealParentId,
+          value: c.value.virtualNodeRealParentId,
+        }));
+        criteriaSearchList.push({
+          criteria: 'NODE',
+          values: virtualNodeRealNodeValues,
+          operator: criteria.operator,
+          category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES],
+          dataType: criteria.dataType,
+        });
+      } else if (criteria.category === SearchCriteriaTypeEnum.NODES) {
         const strValues: CriteriaValue[] = [];
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);

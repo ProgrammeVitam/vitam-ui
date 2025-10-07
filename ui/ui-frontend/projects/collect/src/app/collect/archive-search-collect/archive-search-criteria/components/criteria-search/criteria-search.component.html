@@ -250,7 +250,7 @@
                 {{
                   criteriaValue.valueTranslated
                     ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label | translate)
-                    : (criteriaValue.label | truncate: 50)
+                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
                 }}
               </div>
               <div

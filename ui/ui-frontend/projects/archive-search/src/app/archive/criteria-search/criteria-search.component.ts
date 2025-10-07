@@ -61,6 +61,7 @@ export class CriteriaSearchComponent {
   private removeCriteriaList(criteriaValues: CriteriaValue[]) {
     const builder = this.queryParamsService.builder();
     criteriaValues.forEach((criteriaValue) => {
+      //fixme manage navigation
       builder.removeQueryParam(criteriaValue.id, criteriaValue.value);
       this.criteriaRemoveEvent.emit({ keyElt: this.criteriaKey, valueElt: criteriaValue });
     });
@@ -76,6 +77,12 @@ export class CriteriaSearchComponent {
   }
 
   getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
-    return key === 'ALL_ARCHIVE_UNIT_TYPES' ? criteriaValue.label : criteriaValue.value.value;
+    if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
+      return criteriaValue.label;
+    }
+    if (key === 'VIRTUAL') {
+      return criteriaValue.value.value + ' (' + criteriaValue.value.virtualNodeRealParentTitle + ')';
+    }
+    return criteriaValue.value?.value ?? '';
   }
 }
