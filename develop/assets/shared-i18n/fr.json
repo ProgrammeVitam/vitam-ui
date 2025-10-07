@@ -1,6 +1,6 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :",
+    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour : {{appId}}.",
     "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPERATIONS"
   },
   "COMMON": {
@@ -500,7 +500,8 @@
     "DRAG_AND_DROP_OR_BROWSE": "Glisser-déposer ou parcourir",
     "ALLOWED_FORMATS_SINGULAR": "Format accepté : {{formats}}",
     "ALLOWED_FORMATS_PLURAL": "Formats acceptés : {{formats}}",
-    "MAX_SIZE": "Poids maximal : {{size}}"
+    "MAX_SIZE": "Poids maximal : {{size}}",
+    "UPLOAD_FILE_ALREADY_IMPORTED": "Dossier déjà importé !"
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Défaut)"
@@ -3601,7 +3602,6 @@
       "DIP_REQUEST_MESSAGE": "Votre demande d'export DIP a bien été prise en compte",
       "TRANSFER_REQUEST_MESSAGE": "Votre demande de transfert d'archives a bien été prise en compte",
       "TRANSFER_REQUEST_WARNING_MESSAGE": "Attention, vous n'avez pas intégré d'originaux numériques à votre demande de transfert.",
-      "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPÉRATIONS",
       "EXPORT_LIMITS": "Le transfert d'archive ne peut être réalisé. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum.",
       "USAGES": {
         "BinaryMaster": "Original numérique",
@@ -3619,7 +3619,7 @@
       "ADD_USAGE": "Ajouter un usage"
     },
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utilisateur",
-    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam : {{accessContract}}",
     "ARCHIVE_UNIT": {
       "FIELDS": {
         "DESCRIPTION": "Description",
@@ -4575,8 +4575,7 @@
     "SEARCH_CRITERIA_OR": "OU",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Filtres actifs",
-      "DELETED_WITH_SUCCESS_1": "Votre sauvegarde sous le nom",
-      "DELETED_WITH_SUCCESS_2": "a bien été supprimée.",
+      "DELETED_WITH_SUCCESS": "Votre sauvegarde sous le nom <strong>{{name}}</strong> a bien été supprimée.",
       "NAME": "Nom",
       "NEW_SAVE_BUTTON": "CRÉER UNE NOUVELLE SAUVEGARDE",
       "NEW_SAVE_IN_POPUP": "Sauvegarder vos critères de recherche",
@@ -4594,7 +4593,7 @@
       "SAVE_REPLACE_CANCEL_BUTTON": "ANNULER",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRMER",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Etes-vous sûr de vouloir remplacer la sauvegarde suivante ?",
-      "SAVED_WITH_SUCCESS": "Vos critères de recherche ont été correctement sauvegardés sous le nom",
+      "SAVED_WITH_SUCCESS": "Vos critères de recherche ont été correctement sauvegardés sous le nom <strong>{{name}}</strong>",
       "NO_VALUE_FOUND_TO_DISPLAY": "Aucune valeur à afficher"
     },
     "SELECTED": "sélectionnés",
@@ -4621,7 +4620,7 @@
   },
   "COLLECT": {
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utilisateur",
-    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam : {{accessContract}}",
     "ARCHIVE_UNIT": {
       "FIELDS": {
         "DESCRIPTION": "Description",
@@ -5644,8 +5643,7 @@
     "SEARCH_CRITERIA_OR": "OU",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Filtres actifs",
-      "DELETED_WITH_SUCCESS_1": "Votre sauvegarde sous le nom",
-      "DELETED_WITH_SUCCESS_2": "a bien été supprimée.",
+      "DELETED_WITH_SUCCESS": "Votre sauvegarde sous le nom <strong>{{name}}</strong> a bien été supprimée.",
       "NAME": "Nom",
       "NEW_SAVE_BUTTON": "CRÉER UNE NOUVELLE SAUVEGARDE",
       "NEW_SAVE_IN_POPUP": "Sauvegarder vos critères de recherche",
@@ -5663,7 +5661,7 @@
       "SAVE_REPLACE_CANCEL_BUTTON": "ANNULER",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRMER",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Etes-vous sûr de vouloir remplacer la sauvegarde suivante ?",
-      "SAVED_WITH_SUCCESS": "Vos critères de recherche ont été correctement sauvegardés sous le nom",
+      "SAVED_WITH_SUCCESS": "Vos critères de recherche ont été correctement sauvegardés sous le nom <strong>{{name}}</strong>",
       "NO_VALUE_FOUND_TO_DISPLAY": "Aucune valeur à afficher"
     },
     "SELECTED": "sélectionnés",
