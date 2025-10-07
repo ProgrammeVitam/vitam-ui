@@ -43,7 +43,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService } from '@ngx-translate/core';
 
 import { EMPTY } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, LoggerModule, VitamUISnackBarService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, LoggerModule, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { environment } from './../../../environments/environment';
@@ -75,7 +75,7 @@ describe('OwnerPreviewComponent', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

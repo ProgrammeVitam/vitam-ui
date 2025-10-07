@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Ontology, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { Ontology, SearchService, SnackBarService } from 'vitamui-library';
 import { OntologyApiService } from '../core/api/ontology-api.service';
 
 @Injectable({
@@ -49,7 +49,7 @@ export class OntologyService extends SearchService<Ontology> {
 
   constructor(
     private ontologyApiService: OntologyApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(ontologyApiService, 'ALL');
   }

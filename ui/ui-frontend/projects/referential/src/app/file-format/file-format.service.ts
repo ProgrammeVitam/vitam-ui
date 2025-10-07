@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
 
 import { FileFormatApiService } from '../core/api/file-format-api.service';
 
@@ -50,7 +50,7 @@ export class FileFormatService extends SearchService<FileFormat> {
 
   constructor(
     private fileFormatApiService: FileFormatApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(fileFormatApiService, 'ALL');
   }

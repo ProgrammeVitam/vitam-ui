@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BaseUserInfoApiService, SearchService, User, UserInfo, VitamUISnackBarService } from 'vitamui-library';
+import { BaseUserInfoApiService, SearchService, User, UserInfo, SnackBarService } from 'vitamui-library';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {
@@ -45,7 +45,7 @@ export class UserInfoService extends SearchService<UserInfo> {
 
   constructor(
     private userInfoServiceApi: BaseUserInfoApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super({ getAllPaginated: () => EMPTY }, '');
   }

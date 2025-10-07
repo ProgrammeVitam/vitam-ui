@@ -41,7 +41,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -141,7 +140,6 @@ describe('ArchiveSearchComponent', () => {
         MatMenuModule,
         MatProgressSpinnerModule,
         MatSidenavModule,
-        MatSnackBarModule,
         MatTreeModule,
         RouterTestingModule,
         TranslateModule.forRoot({

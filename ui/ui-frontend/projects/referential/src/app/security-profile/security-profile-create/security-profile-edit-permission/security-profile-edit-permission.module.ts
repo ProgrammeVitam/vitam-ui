@@ -42,7 +42,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'vitamui-library';
 import { SecurityProfileEditPermissionComponent } from './security-profile-edit-permission.component';
@@ -55,7 +54,6 @@ import { SecurityProfileEditPermissionComponent } from './security-profile-edit-
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,
   ],

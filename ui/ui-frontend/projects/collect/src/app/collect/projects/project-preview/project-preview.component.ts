@@ -93,7 +93,7 @@ import {
   Unit,
   VitamUICommonModule,
   VitamUILibraryModule,
-  VitamUISnackBarService,
+  SnackBarService,
   Workflow,
 } from 'vitamui-library';
 import { LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.component';
@@ -198,7 +198,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     private router: Router,
     private dialog: MatDialog,
     private translationService: TranslateService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private renderer: Renderer2,
     private schemaService: SchemaService,
     filingPlanService: FilingPlanService,

@@ -40,9 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Direction, SearchCriteriaHistory } from 'vitamui-library';
-import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
+import { Direction, SearchCriteriaHistory, SnackBarService } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
@@ -70,8 +68,8 @@ export class SearchCriteriaListComponent implements OnInit {
     private searchCriteriaSaverService: SearchCriteriaSaverService,
     private archiveSharedDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
-    private snackBar: VitamUISnackBar,
     private translateService: TranslateService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -113,9 +111,10 @@ export class SearchCriteriaListComponent implements OnInit {
       .subscribe(() => {
         this.searchCriteriaSaverService.deleteSearchCriteriaHistory(searchCriteriaHistory.id).subscribe(() => {
           this.clearElement(searchCriteriaHistory.id);
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            data: { type: 'searchCriteriaHistoryDeleted', name: searchCriteriaHistory.name },
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'COLLECT.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS',
+            translateParams: { name: searchCriteriaHistory.name },
+            duration: 10_000,
           });
         });
       });

@@ -40,7 +40,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 
 import { EMPTY } from 'rxjs';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { BASE_URL } from '../injection-tokens';
 import { AccountService } from './account.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -53,7 +53,7 @@ describe('AccountService', () => {
         AccountService,
         { provide: BASE_URL, useValue: {} },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

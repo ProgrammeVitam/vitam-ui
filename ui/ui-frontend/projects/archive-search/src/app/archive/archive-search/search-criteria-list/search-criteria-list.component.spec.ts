@@ -49,10 +49,10 @@ import {
   LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
+  SnackBarService,
 } from 'vitamui-library';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 
@@ -84,8 +84,6 @@ describe('SearchCriteriaListComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const vitamUIsnackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open']);
-
   const SearchCriteriaListServiceStub = {
     getSearchCriteriaHistory: () => of([]),
     deleteSearchCriteriaHistory: () => of(),
@@ -108,12 +106,12 @@ describe('SearchCriteriaListComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogRefSpy },
         { provide: SearchCriteriaListService, useValue: SearchCriteriaListServiceStub },
-        { provide: VitamUISnackBar, useValue: vitamUIsnackBarSpy },
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
         },
         { provide: environment, useValue: environment },
+        { provide: SnackBarService, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

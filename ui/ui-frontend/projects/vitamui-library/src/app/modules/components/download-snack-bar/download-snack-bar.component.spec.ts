@@ -38,7 +38,6 @@
 
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 // import { MatDialog } from '@angular/material/dialog';
-// import { MatSnackBar } from '@angular/material/snackbar';
 // import { MatProgressBarModule } from '@angular/material/progress-bar';
 // import { empty } from 'rxjs';
 
@@ -54,7 +53,6 @@
 //       imports: [MatProgressBarModule],
 //       declarations: [ DownloadSnackBarComponent ],
 //       providers: [
-//         { provide: MatSnackBar, useValue: { openFromComponent: () => {} } },
 //         { provide: MatDialog, useValue: {} },
 //         { provide: DownloadService, useValue: { downloadReady: empty(), startRefreshLoop: () => {}, stopRefreshLoop: () => {} } },
 //       ]

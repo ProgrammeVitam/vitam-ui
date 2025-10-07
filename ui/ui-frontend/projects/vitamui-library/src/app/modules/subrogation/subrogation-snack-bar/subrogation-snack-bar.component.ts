@@ -37,7 +37,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { SubrogationApiService } from '../../api/subrogation-api.service';
-import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
 
 @Component({
   templateUrl: './subrogation-snack-bar.component.html',
@@ -48,7 +48,7 @@ export class SubrogationSnackBarComponent {
     @Inject(MAT_SNACK_BAR_DATA) public data: any,
     private matSnackBarRef: MatSnackBarRef<SubrogationSnackBarComponent>,
     private subrogationApiService: SubrogationApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   close() {

@@ -38,7 +38,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, SecurityProfile, VitamUISnackBarService } from 'vitamui-library';
+import { SearchService, SecurityProfile, SnackBarService } from 'vitamui-library';
 
 import { SecurityProfileApiService } from '../core/api/security-profile-api.service';
 
@@ -50,7 +50,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
 
   constructor(
     private securityProfileApiService: SecurityProfileApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(securityProfileApiService, 'ALL');
   }

@@ -47,7 +47,7 @@ import {
   PageRequest,
   SearchService,
   VitamuiHttpHeaders,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
@@ -62,7 +62,7 @@ export class AuditService extends SearchService<Event> {
     private operationApiService: OperationApiService,
     private logbookApiService: LogbookApiService,
     private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private translateService: TranslateService,
   ) {
     super(operationApiService, 'ALL');

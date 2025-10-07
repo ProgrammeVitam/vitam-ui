@@ -38,7 +38,6 @@ import createSpyObj = jasmine.createSpyObj;
 import { Clipboard } from '@angular/cdk/clipboard';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -113,7 +112,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        MatSnackBarModule,
         RouterTestingModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),

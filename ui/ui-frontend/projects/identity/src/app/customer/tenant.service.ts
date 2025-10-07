@@ -36,7 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CriteriaSearchQuery, Criterion, Operators, Tenant, VitamUISnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Criterion, Operators, Tenant, SnackBarService } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -51,7 +51,7 @@ export class TenantService {
 
   constructor(
     private tenantApi: TenantApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   get(id: string): Observable<Tenant> {

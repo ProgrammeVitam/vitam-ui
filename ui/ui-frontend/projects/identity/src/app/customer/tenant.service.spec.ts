@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Operators, Owner, Tenant, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, CriteriaSearchQuery, Operators, Owner, Tenant, SnackBarService } from 'vitamui-library';
 
 import { EMPTY } from 'rxjs';
 
@@ -127,7 +127,7 @@ const expectedTenants = [
 describe('TenantService', () => {
   let httpTestingController: HttpTestingController;
   let tenantService: TenantService;
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -136,7 +136,7 @@ describe('TenantService', () => {
         TenantService,
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
@@ -168,7 +168,7 @@ describe('TenantService', () => {
   });
 
   it('should call /fake-api/tenants and display a success message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     tenantService.create(expectedTenant, expectedOwner.name).subscribe((response: Tenant) => {
       expect(response).toEqual(expectedTenant);
       expect(snackBar.open).toHaveBeenCalledWith({
@@ -186,7 +186,7 @@ describe('TenantService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.inject(VitamUISnackBarService);
+    const snackBar = TestBed.inject(SnackBarService);
     tenantService.create(expectedTenant, expectedOwner.name).subscribe(fail, () => {
       expect(snackBar.open).toHaveBeenCalledWith({
         message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',

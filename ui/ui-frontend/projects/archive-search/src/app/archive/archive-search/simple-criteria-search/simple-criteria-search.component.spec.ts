@@ -49,12 +49,11 @@ import {
   SchemaElement,
   SchemaService,
   SearchCriteriaAddAction,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ArchiveService } from '../../archive.service';
 import { ActivatedRoute } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -93,7 +92,7 @@ describe('SimpleCriteriaSearchComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [SimpleCriteriaSearchComponent],
-      imports: [InjectorModule, TranslateModule.forRoot(), AgenciesModule, MatSnackBarModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, TranslateModule.forRoot(), AgenciesModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },
@@ -102,7 +101,7 @@ describe('SimpleCriteriaSearchComponent', () => {
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: SchemaService, useValue: schemaServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
-        VitamUISnackBarService,
+        SnackBarService,
         {
           provide: ActivatedRoute,
           useValue: {

@@ -35,12 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { saveAs } from 'file-saver-es';
-import { DEFAULT_PAGE_SIZE, Direction, PageRequest, PaginatedResponse, Project, SearchService, Transaction } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  PageRequest,
+  PaginatedResponse,
+  Project,
+  SearchService,
+  SnackBarService,
+  Transaction,
+} from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 
@@ -54,8 +61,7 @@ export class TransactionsService extends SearchService<Transaction> {
   constructor(
     private transactionApiService: TransactionApiService,
     private projectApiService: ProjectsApiService,
-    private snackBar: MatSnackBar,
-    private translateService: TranslateService,
+    private snackBarService: SnackBarService,
   ) {
     super(transactionApiService, 'ALL');
   }
@@ -101,9 +107,9 @@ export class TransactionsService extends SearchService<Transaction> {
       .downloadSipTransaction(id)
       .pipe(
         catchError((error) => {
-          const message = this.translateService.instant('COLLECT.PROJECT_TRANSACTION_PREVIEW.TRANSACTION_SIP_DOWNLOAD_ERROR');
-          this.snackBar.open(message, null, {
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'COLLECT.PROJECT_TRANSACTION_PREVIEW.TRANSACTION_SIP_DOWNLOAD_ERROR',
+            duration: 10_000,
           });
           throw error;
         }),
@@ -124,9 +130,9 @@ export class TransactionsService extends SearchService<Transaction> {
           fileName = `transaction_${id}.zip`;
         }
         saveAs(resp.body, fileName);
-        const message = this.translateService.instant('COLLECT.PROJECT_TRANSACTION_PREVIEW.TRANSACTION_SIP_DOWNLOAD');
-        this.snackBar.open(message, null, {
-          duration: 10000,
+        this.snackBarService.open({
+          message: 'COLLECT.PROJECT_TRANSACTION_PREVIEW.TRANSACTION_SIP_DOWNLOAD',
+          duration: 10_000,
         });
       });
   }

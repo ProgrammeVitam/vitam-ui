@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, DslQueryType, Option, VitamUISnackBarService, AccessContractService } from 'vitamui-library';
+import { AppRootComponent, DslQueryType, Option, SnackBarService, AccessContractService } from 'vitamui-library';
 import { AdminDslService } from './admin-dsl.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -61,7 +61,7 @@ export class AdminDslComponent extends AppRootComponent {
   constructor(
     private route: ActivatedRoute,
     private adminDslService: AdminDslService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private accessContractService: AccessContractService,
     private formBuilder: FormBuilder,
     private clipboard: Clipboard,

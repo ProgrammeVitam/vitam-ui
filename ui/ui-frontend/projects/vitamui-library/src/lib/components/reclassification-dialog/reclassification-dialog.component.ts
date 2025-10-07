@@ -70,7 +70,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { BadgeComponent } from '../../../app/modules/components/badge/badge.component';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { FilingPlanModule } from '../filing-plan/filing-plan.module';
-import { VitamUISnackBarService } from '../../../app/modules/components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../../../app/modules/components/snack-bar/snack-bar.service';
 import { NextStepComponent } from '../next-step/next-step.component';
 import { PreviousStepComponent } from '../previous-step/previous-step.component';
 import { InputComponent } from '../input/input.component';
@@ -188,7 +188,7 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       transactionId: string;
       tenantIdentifier: number;
     },
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit(): void {
@@ -527,18 +527,16 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     this.reclassificationService.reclassification(this.transactionId, reclassificationQuery).subscribe(
       (response) => {
         this.dialogRef.close(true);
-        const serviceUrl =
-          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
-
+        const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.data.tenantIdentifier}?guid=${response}`;
         this.snackBarService.open({
-          message: this.translateService.instant('RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE'),
+          message: 'RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE',
           buttons: [
             {
               url: serviceUrl,
               label: this.translateService.instant('SNACK_BAR.TO_OPERATION_APP'),
             },
           ],
-          duration: 100000,
+          duration: 100_000,
         });
       },
       (error: any) => {

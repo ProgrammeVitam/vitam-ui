@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { SearchService, SnackBarService } from 'vitamui-library';
 import { LogbookManagementOperationApiService } from '../core/api/logbook-management-operation-api.service';
 import { OperationDetails, OperationResponse, OperationsResults } from '../models/operation-response.interface';
 
@@ -49,7 +49,7 @@ export class LogbookManagementOperationService extends SearchService<any> {
 
   constructor(
     private logbookManagementOperationApiService: LogbookManagementOperationApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(logbookManagementOperationApiService, 'ALL');
   }

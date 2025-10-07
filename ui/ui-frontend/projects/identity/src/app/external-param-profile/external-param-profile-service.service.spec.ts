@@ -36,19 +36,19 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, LoggerModule, SnackBarService } from 'vitamui-library';
 import { ExternalParamProfileService } from './external-param-profile.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExternalParamProfileService', () => {
   let service: ExternalParamProfileService;
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
       providers: [
         ExternalParamProfileService,
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

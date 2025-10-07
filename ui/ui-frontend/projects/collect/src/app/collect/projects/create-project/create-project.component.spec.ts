@@ -40,7 +40,6 @@ import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testi
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
@@ -148,14 +147,7 @@ describe('CreateProjectComponent', () => {
       declarations: [CreateProjectComponent, MockFileSizePipe],
       teardown: { destroyAfterEach: false },
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        TranslateModule.forRoot(),
-        MatButtonToggleModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
-      ],
+      imports: [BrowserAnimationsModule, InjectorModule, TranslateModule.forRoot(), MatButtonToggleModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

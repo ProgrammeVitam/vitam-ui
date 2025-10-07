@@ -34,48 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, Inject, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, Inject } from '@angular/core';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { SnackBarData, SnackBarUrlButton } from './snack-bar.interface';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from '../../pipes/pipes.module';
 
-import { ENVIRONMENT } from './injection-tokens';
-import { StartupService } from './startup.service';
-
-const NOTIFICATION_DELAY_MS = 40000;
-
-@Injectable()
-export class GlobalErrorHandler implements ErrorHandler {
-  displayed = false;
-
+@Component({
+  templateUrl: './snack-bar.component.html',
+  styleUrls: ['./snack-bar.component.scss'],
+  imports: [CommonModule, TranslateModule, PipesModule],
+})
+export class SnackBarComponent {
   constructor(
-    private snackBar: MatSnackBar,
-    private startupService: StartupService,
-    @Inject(ENVIRONMENT) private environment: any,
+    @Inject(MAT_SNACK_BAR_DATA) public data: SnackBarData<SnackBarUrlButton>,
+    private matSnackBarRef: MatSnackBarRef<SnackBarComponent>,
   ) {}
 
-  handleError(error: any) {
-    if (!(error instanceof HttpErrorResponse)) {
-      // open the snackbar only once
-      if (!this.displayed && this.snackBar.open) {
-        this.snackBar.dismiss();
-        this.snackBar.open("Une erreur technique est survenue lors de l'affichage de la page.", null, {
-          duration: NOTIFICATION_DELAY_MS,
-        });
-        this.displayed = true;
-      }
-
-      // reset this property if the snackbar is not opened
-      if (this.displayed && !this.snackBar.open) {
-        this.displayed = false;
-      }
-      console.error('VITAMUI JS issue', error);
-
-      if (this.environment.production) {
-        // redirect in cas for example of an empty page
-        this.startupService.redirect();
-      }
-    } else {
-      // do nothing, error already handled with vitamui-http-interceptor
-    }
+  public close(): void {
+    this.matSnackBarRef.dismiss();
   }
 }

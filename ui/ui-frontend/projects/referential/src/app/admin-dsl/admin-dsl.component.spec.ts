@@ -41,14 +41,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import {
-  AccessContractService,
-  DslQueryType,
-  InjectorModule,
-  LoggerModule,
-  VitamUILibraryModule,
-  VitamUISnackBarService,
-} from 'vitamui-library';
+import { AccessContractService, DslQueryType, InjectorModule, LoggerModule, VitamUILibraryModule, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AdminDslComponent } from './admin-dsl.component';
 import { AdminDslService } from './admin-dsl.service';
@@ -57,7 +50,7 @@ import { TranslateModule } from '@ngx-translate/core';
 describe('AdminDslComponent', () => {
   let component: AdminDslComponent;
   let fixture: ComponentFixture<AdminDslComponent>;
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
   const adminDslValue = {
     id: 'id',
@@ -97,7 +90,7 @@ describe('AdminDslComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: AdminDslService, useValue: adminDslServiceMock },
         { provide: AccessContractService, useValue: accessContractServiceMock },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

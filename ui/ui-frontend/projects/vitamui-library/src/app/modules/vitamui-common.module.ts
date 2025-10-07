@@ -40,7 +40,6 @@ import { inject, ModuleWithProviders, NgModule, provideAppInitializer } from '@a
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { first, switchMap } from 'rxjs/operators';
 import { AccountModule } from './account/account.module';
@@ -101,7 +100,7 @@ import { VitamuiTitleBreadcrumbComponent } from './components/vitamui-title-brea
 import { VitamuiDragDropFileComponent } from './components/vitamui-drag-drop-file/vitamui-drag-drop-file.component';
 import { VitamuiFacetComponent } from './components/vitamui-facet/vitamui-facet.component';
 import { VitamuiMenuButtonComponent } from './components/vitamui-menu-button/vitamui-menu-button.component';
-import { VitamUISnackBarComponent } from './components/vitamui-snack-bar/vitamui-snack-bar.component';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { VitamuiSupHeaderComponent } from './components/vitamui-sup-header/vitamui-sup-header.component';
 import { VitamuiTreeNodeComponent } from './components/vitamui-tree-node/vitamui-tree-node.component';
 import { InputComponent } from '../../lib/components/input/input.component';
@@ -179,7 +178,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TranslateModule,
     UserPhotoModule,
     VitamUIFieldErrorComponent,
-    VitamUISnackBarComponent,
+    SnackBarComponent,
     VitamuiBannerComponent,
     VitamuiBodyComponent,
     VitamuiDragDropFileComponent,
@@ -221,7 +220,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     LoggerModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatSnackBarModule,
     ObjectEditorModule,
     ObjectViewerModule,
     OrderByButtonComponent,
@@ -241,7 +239,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TranslateModule,
     UserPhotoModule,
     VitamUIFieldErrorComponent,
-    VitamUISnackBarComponent,
+    SnackBarComponent,
     VitamuiBannerComponent,
     VitamuiBodyComponent,
     VitamuiDragDropFileComponent,

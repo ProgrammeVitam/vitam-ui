@@ -38,7 +38,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Profile, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, Profile, SnackBarService } from 'vitamui-library';
 import { ProfileService } from './profile.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -47,13 +47,13 @@ describe('ProfileService', () => {
   let rngProfileService: ProfileService;
 
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
     TestBed.configureTestingModule({
       imports: [],
       providers: [
         ProfileService,
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         {
           provide: BASE_URL,
           useValue: '/fake-api',
@@ -98,7 +98,7 @@ describe('ProfileService', () => {
 
   describe('patch', () => {
     it('should call PATCH /fake-api/profiles/42', () => {
-      const snackBar = TestBed.inject(VitamUISnackBarService);
+      const snackBar = TestBed.inject(SnackBarService);
       const expectedRequest = {
         id: '42',
         name: 'Profile Group Name',
@@ -137,7 +137,7 @@ describe('ProfileService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.inject(VitamUISnackBarService);
+      const snackBar = TestBed.inject(SnackBarService);
       const expectedRequest = {
         id: '42',
         name: 'Profile Group Name',

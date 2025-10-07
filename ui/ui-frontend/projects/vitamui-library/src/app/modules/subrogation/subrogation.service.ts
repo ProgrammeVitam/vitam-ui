@@ -43,7 +43,7 @@ import { interval, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, last, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { SubrogationApiService } from '../api/subrogation-api.service';
 import { AuthService } from '../auth.service';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { SUBROGRATION_REFRESH_RATE_MS } from '../injection-tokens';
 import { Logger } from '../logger/logger';
 import { Subrogation } from '../models';
@@ -62,7 +62,7 @@ export class SubrogationService {
   constructor(
     private logger: Logger,
     private subrogationApi: SubrogationApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private authService: AuthService,
     @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number,
     @Inject(LOCALE_ID) private local: string,
@@ -147,7 +147,7 @@ export class SubrogationService {
     this.snackBarService.open({
       message: 'SNACKBAR.ACTIVATED_SUBROGATION',
       translateParams: { duration: '5', hours: formatDate(endTime, 'H', this.local), minutes: formatDate(endTime, 'mm', this.local) },
-      duration: 50000,
+      duration: 50_000,
     });
     this.logger.log(this, callCount);
     const subrogationAccepted = new Subject<void>();

@@ -36,7 +36,7 @@
  */
 import { Observable, Subject, zip } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { CriteriaSearchQuery, Criterion, Customer, Logo, Operators, ThemeService, VitamUISnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Criterion, Customer, Logo, Operators, ThemeService, SnackBarService } from 'vitamui-library';
 
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -55,7 +55,7 @@ export class CustomerService {
 
   constructor(
     private customerApi: CustomerApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private sanitizer: DomSanitizer,
     private themeService: ThemeService,
   ) {}

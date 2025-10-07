@@ -46,7 +46,7 @@ import {
   LogbookOperationReportState,
   LogbookOperationTypeProc,
   LogbookService,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
@@ -91,7 +91,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     private route: ActivatedRoute,
     private logbookDownloadService: LogbookDownloadService,
     private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -127,9 +127,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
       this.accessContractId = accessContratId;
       this.hasAccessContractId = true;
     } else {
-      this.vitamUISnackBarService.open({
-        message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-      });
+      this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
     }
   }
 

@@ -39,7 +39,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
@@ -49,8 +48,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ContextService } from '../../context.service';
 import { ContextPermissionTabComponent } from './context-permission-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
 const permissions: ContextPermission[] = [
   {
@@ -168,7 +165,6 @@ describe('ContextPermissionTabComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ContextService, useValue: { updated: EMPTY } },
-        { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

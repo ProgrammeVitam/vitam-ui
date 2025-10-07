@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule, SnackBarService } from 'vitamui-library';
 import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
 import { PipesModule } from '../../shared/pipes/pipes.module';
@@ -73,7 +73,7 @@ describe('AuditPreviewComponent', () => {
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: AuditService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
       ],
       imports: [AuditPreviewComponent, LoggerModule.forRoot(), PipesModule, TranslateModule.forRoot()],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

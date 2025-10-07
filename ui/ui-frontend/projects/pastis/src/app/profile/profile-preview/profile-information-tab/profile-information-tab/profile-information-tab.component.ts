@@ -36,16 +36,14 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { NotificationService } from '../../../../core/services/notification.service';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import { Profile } from '../../../../models/profile';
 import { ProfileDescription } from '../../../../models/profile-description.model';
 import { ProfileType } from '../../../../models/profile-type.enum';
-import { MiscValidators } from 'vitamui-library';
+import { MiscValidators, SnackBarService } from 'vitamui-library';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -80,8 +78,7 @@ export class ProfileInformationTabComponent {
   constructor(
     private formBuilder: FormBuilder,
     private profileService: ProfileService,
-    private loggingService: NotificationService,
-    private translateService: TranslateService,
+    private snackBarService: SnackBarService,
   ) {
     this.form = this.formBuilder.group({
       identifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(10), MiscValidators.allowedIdentifier]],
@@ -145,14 +142,14 @@ export class ProfileInformationTabComponent {
         this.submited = false;
         this.pending = !this.pending;
         this.inputProfile = this._inputProfile;
-        this.loggingService.showSuccess(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
+        this.snackBarService.open({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS', duration: 5000 });
         this.profileService.refreshListProfiles();
         this.closed.emit(true);
       },
       () => {
         this.submited = false;
         this.pending = !this.pending;
-        this.loggingService.showSuccess('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR');
+        this.snackBarService.open({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR', duration: 5000 });
       },
     );
   }

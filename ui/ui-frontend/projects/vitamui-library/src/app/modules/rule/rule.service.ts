@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { RuleApiService } from '../api/rule-api.service';
 import { Rule } from '../models/rule/rule.interface';
 import { SearchService } from '../vitamui-table';
@@ -55,7 +55,7 @@ export class RuleService extends SearchService<Rule> {
 
   constructor(
     private ruleApiService: RuleApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(ruleApiService, 'ALL');
   }

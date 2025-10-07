@@ -38,7 +38,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
-import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
 import { Subrogation } from '../../models';
 import { SubrogationService } from '../subrogation.service';
 
@@ -63,7 +63,7 @@ export class SubrogationModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public builder: FormBuilder,
     private authService: AuthService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private subrogationService: SubrogationService,
   ) {
     this.form = this.builder.group({

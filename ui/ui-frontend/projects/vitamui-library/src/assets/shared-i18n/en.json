@@ -1,6 +1,6 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "List of tenants not found for :",
+    "TENANT_NOT_FOUND": "List of tenants not found for: {{appId}}.",
     "TO_OPERATION_APP": "VIEW THE OPERATIONS APP"
   },
   "COMMON": {
@@ -500,7 +500,8 @@
     "DRAG_AND_DROP_OR_BROWSE": "Drag and drop or browse",
     "ALLOWED_FORMATS_SINGULAR": "Allowed format: {{formats}}",
     "ALLOWED_FORMATS_PLURAL": "Allowed formats: {{formats}}",
-    "MAX_SIZE": "Max size: {{size}}"
+    "MAX_SIZE": "Max size: {{size}}",
+    "UPLOAD_FILE_ALREADY_IMPORTED": "File already imported!"
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Default)"
@@ -3601,7 +3602,6 @@
       "DIP_REQUEST_MESSAGE": "Your DIP request has been taken into account",
       "TRANSFER_REQUEST_MESSAGE": "Your archive transfer request has been taken into account",
       "TRANSFER_REQUEST_WARNING_MESSAGE": "Warning: You have not included any digital originals in your transfer request.",
-      "TO_OPERATION_APP": "SEE OPERATIONS LOG",
       "EXPORT_LIMITS": "The archive transfer cannot be performed. Please restrict your selection to a maximum of 10,000 archival units",
       "USAGES": {
         "BinaryMaster": "Binary master",
@@ -3619,7 +3619,7 @@
       "ADD_USAGE": "Add usage"
     },
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
-    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam: {{accessContract}}",
     "ARCHIVE_UNIT": {
       "FIELDS": {
         "DESCRIPTION": "Description",
@@ -4575,8 +4575,7 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",
-      "DELETED_WITH_SUCCESS_1": "Your search criteria named ",
-      "DELETED_WITH_SUCCESS_2": " is correctly deleted.",
+      "DELETED_WITH_SUCCESS": "Your search criteria named <strong>{{name}}</strong> is correctly deleted.",
       "NAME": "Name",
       "NEW_SAVE_BUTTON": "CREATE NEW CRITERIA SAVE",
       "NEW_SAVE_IN_POPUP": "Save your search criteria",
@@ -4594,7 +4593,7 @@
       "SAVE_REPLACE_CANCEL_BUTTON": "CANCEL",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRM",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save?",
-      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name ",
+      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name <strong>{{name}}</strong>",
       "NO_VALUE_FOUND_TO_DISPLAY": "No value to display"
     },
     "SELECTED": "sélectionnés",
@@ -4621,7 +4620,7 @@
   },
   "COLLECT": {
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
-    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam: {{accessContract}}",
     "ARCHIVE_UNIT": {
       "FIELDS": {
         "DESCRIPTION": "Description",
@@ -5644,8 +5643,7 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_SAVER": {
       "ACTIVE_FILTERS": "Active filters",
-      "DELETED_WITH_SUCCESS_1": "Your search criteria named",
-      "DELETED_WITH_SUCCESS_2": "is correctly deleted.",
+      "DELETED_WITH_SUCCESS": "Your search criteria named <strong>{{name}}</strong> is correctly deleted.",
       "NAME": "Name",
       "NEW_SAVE_BUTTON": "CREATE NEW CRITERIA SAVE",
       "NEW_SAVE_IN_POPUP": "Save your search criteria",
@@ -5663,7 +5661,7 @@
       "SAVE_REPLACE_CANCEL_BUTTON": "CANCEL",
       "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRM",
       "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save?",
-      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name",
+      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name <strong>{{name}}</strong>",
       "NO_VALUE_FOUND_TO_DISPLAY": "No value to display"
     },
     "SELECTED": "selected",

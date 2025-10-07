@@ -36,15 +36,14 @@
  */
 import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID, TemplateRef } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver-es';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractApiService,
   ApiUnitObject,
+  ApplicationId,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   getUnitI18nAttribute,
@@ -57,10 +56,10 @@ import {
   SearchService,
   SearchUnitApiService,
   SecurityService,
+  SnackBarService,
   Transaction,
   Unit,
   VitamuiHttpHeaders,
-  StartupService,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -79,12 +78,11 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     private transactionApiService: TransactionApiService,
     private translateService: TranslateService,
     private searchUnitApiService: SearchUnitApiService,
-    private startupService: StartupService,
     @Inject(LOCALE_ID) private locale: string,
-    private snackBar: MatSnackBar,
     private accessContractApiService: AccessContractApiService,
     private securityService: SecurityService,
     public dialog: MatDialog,
+    private snackBarService: SnackBarService,
   ) {
     super(projectsApiService, 'ALL');
   }
@@ -170,17 +168,6 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return this.accessContractApiService.getOne(accessContract, headers);
   }
 
-  openSnackBarForWorkflow(message: string, serviceUrl?: string) {
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      data: {
-        type: 'WorkflowSuccessSnackBar',
-        message,
-        serviceUrl,
-      },
-      duration: 100000,
-    });
-  }
-
   downloadObjectFromUnit(unitId: string, objectId: string, qualifier?: string, version?: number) {
     return this.projectsApiService.downloadObjectFromUnit(unitId, objectId, qualifier, version).subscribe((resp: HttpResponse<Blob>) => {
       let fileName = null;
@@ -245,9 +232,9 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
         if (errors.status === 413) {
           console.log('Please update filter to reduce size of response' + errors.message);
 
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            data: { type: 'exportCsvLimitReached' },
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'COLLECT.EXPORT_CSV.EXPORT_CSV_LIMIT_REACHED',
+            duration: 10_000,
           });
         }
       },
@@ -333,10 +320,18 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
 
       if (eliminationActionResponse && eliminationActionResponse[0].itemId) {
         const guid = eliminationActionResponse[0].itemId;
-        const message = this.translateService.instant('COLLECT.DELETION.DELETION_LAUNCHED');
-        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
 
-        this.openSnackBarForWorkflow(message, serviceUrl);
+        this.snackBarService.open({
+          message: 'COLLECT.DELETION.DELETION_LAUNCHED',
+          buttons: [
+            {
+              appId: ApplicationId.LOGBOOK_OPERATION_APP,
+              path: `/tenant/${tenantIdentifier}?guid=${guid}`,
+              label: 'SNACK_BAR.TO_OPERATION_APP',
+            },
+          ],
+          duration: 100_000,
+        });
       }
     });
   }

@@ -94,9 +94,9 @@ import { CriteriaSearchComponent } from './criteria-search/criteria-search.compo
 import { ClassificationTreeComponent } from './filing-holding-scheme/classification-tree/classification-tree.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
-import { SharedModule } from './shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule } from '@angular/material/table';
+import { ConfirmActionModule } from './archive-search/search-criteria-list/confirm-action/confirm-action.module';
 
 @NgModule({
   imports: [
@@ -120,7 +120,7 @@ import { MatTableModule } from '@angular/material/table';
     MatTabsModule,
     MatTreeModule,
     ReactiveFormsModule,
-    SharedModule,
+    ConfirmActionModule,
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,

@@ -41,15 +41,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { finalize, Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
+  AgencyService,
+  ApplicationId,
   ConfirmDialogService,
   Logger,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
-  StartupService,
   UsageVersionEnum,
   VitamuiSelectOptions,
-  AgencyService,
+  SnackBarService,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
@@ -72,7 +73,6 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<DipRequestCreateComponent>,
     private fb: FormBuilder,
     private archiveService: ArchiveService,
-    private startupService: StartupService,
     private confirmDialogService: ConfirmDialogService,
     private logger: Logger,
     private agencyService: AgencyService,
@@ -84,6 +84,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
     },
+    private snackBarService: SnackBarService,
   ) {}
 
   itemSelected: number;
@@ -239,10 +240,17 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.dialogRef.close(true);
-          const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${
-            this.data.tenantIdentifier
-          }?guid=${response}`;
-          this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.DIP_REQUEST_MESSAGE'), serviceUrl);
+          this.snackBarService.open({
+            message: 'ARCHIVE_SEARCH.DIP.DIP_REQUEST_MESSAGE',
+            buttons: [
+              {
+                appId: ApplicationId.LOGBOOK_OPERATION_APP,
+                path: `/tenant/${this.data.tenantIdentifier}?guid=${response}`,
+                label: 'SNACK_BAR.TO_OPERATION_APP',
+              },
+            ],
+            duration: 100_000,
+          });
         },
         error: (error: any) => {
           this.logger.error('Error message :', error);

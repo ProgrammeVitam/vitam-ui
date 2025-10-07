@@ -77,7 +77,6 @@ import { SimpleCriteriaSearchComponent } from './archive-search-criteria/compone
 import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
-import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
@@ -102,7 +101,6 @@ import { MatMenuModule } from '@angular/material/menu';
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
-    VitamUISnackBarModule,
   ],
   declarations: [
     AccessRuleSearchComponent,

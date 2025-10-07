@@ -43,11 +43,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurisationCheckTabComponent } from './securisation-check-tab/securisation-check-tab.component';
 import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
@@ -63,7 +61,6 @@ import { PipesModule } from '../../shared/pipes/pipes.module';
     FormsModule,
     ReactiveFormsModule,
     MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

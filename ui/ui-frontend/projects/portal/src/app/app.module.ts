@@ -39,7 +39,6 @@ import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule, TransferState } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -79,7 +78,6 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
     PortalModule,
     VitamUICommonModule.forRoot(),
     InjectorModule,
-    MatSnackBarModule,
     MatDialogModule,
     AppRoutingModule,
     QuicklinkModule,

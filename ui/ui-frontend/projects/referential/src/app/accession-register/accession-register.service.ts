@@ -49,7 +49,7 @@ import {
   ExternalParametersService,
   FacetDetails,
   SearchService,
-  VitamUISnackBarService,
+  SnackBarService,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
@@ -78,7 +78,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     private translateService: TranslateService,
     private externalParameterService: ExternalParametersService,
     private bytesPipe: BytesPipe,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(accessionRegisterApiService, 'ALL');
   }

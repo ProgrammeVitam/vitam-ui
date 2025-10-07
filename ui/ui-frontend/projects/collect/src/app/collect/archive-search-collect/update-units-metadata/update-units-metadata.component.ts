@@ -36,13 +36,9 @@
  */
 import { Component, Inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { Logger, Transaction } from 'vitamui-library';
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
+import { Logger, SnackBarService, Transaction } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
-
-const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
 
 @Component({
   selector: 'app-update-units-metadata',
@@ -60,8 +56,6 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   @ViewChild('confirmDeleteUpdateUnitsMetadataDialog', { static: true })
   confirmDeleteUpdateUnitsMetadataDialog: TemplateRef<UpdateUnitsMetadataComponent>;
 
-  @ViewChild('updateMetadataCSVFile', { static: false }) updateMetadataCSVFile: any;
-
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -70,10 +64,10 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     },
     private logger: Logger,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<UpdateUnitsMetadataComponent>,
     private dialogRefToClose: MatDialogRef<UpdateUnitsMetadataComponent>,
     private archiveCollectService: ArchiveCollectService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnDestroy(): void {
@@ -82,12 +76,9 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   updateUnitsMetadata() {
     this.isLoadingData = true;
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: VITAMUI_SNACK_BAR,
-      data: {
-        type: 'waitMassUpdateUnitsMetadata',
-      },
-      duration: 100000,
+    this.snackBarService.open({
+      message: 'COLLECT.UPDATE_UNITS_METADATA.WAIT_MESSAGE',
+      duration: 100_000,
     });
 
     this.subscriptions = this.archiveCollectService
@@ -97,12 +88,9 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
           this.isLoadingData = false;
           if (data) {
             this.dialogRef.close(true);
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: VITAMUI_SNACK_BAR,
-              data: {
-                type: 'massUpdateUnitsMetadata',
-              },
-              duration: 100000,
+            this.snackBarService.open({
+              message: 'COLLECT.UPDATE_UNITS_METADATA.SUCCESS_MESSAGE',
+              duration: 100_000,
             });
           }
         },

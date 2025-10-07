@@ -43,7 +43,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, timeoutWith } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
-import { VitamUISnackBarService } from './components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from './components/snack-bar/snack-bar.service';
 import { ErrorDialogComponent } from '../../lib/components/dialog/error-dialog/error-dialog.component';
 import { ENVIRONMENT } from './injection-tokens';
 import { Logger } from './logger/logger';
@@ -83,7 +83,7 @@ const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
 export class VitamUIHttpInterceptor implements HttpInterceptor {
   private errorDialog: MatDialogRef<ErrorDialogComponent>;
   private apiTimeout: number;
-  private snackBarService: VitamUISnackBarService;
+  private snackBarService: SnackBarService;
 
   constructor(
     private logger: Logger,
@@ -163,7 +163,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
   private initSnackBarService(): void {
     if (!this.snackBarService) {
       try {
-        this.snackBarService = this.injector.get(VitamUISnackBarService);
+        this.snackBarService = this.injector.get(SnackBarService);
       } catch (error) {}
     }
   }

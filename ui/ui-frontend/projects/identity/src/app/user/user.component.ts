@@ -52,7 +52,7 @@ import {
   PageRequest,
   SidenavPage,
   User,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { GroupService } from '../group/group.service';
@@ -85,7 +85,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
     public groupService: GroupService,
     private authService: AuthService,
     private downloadSnackBarService: DownloadSnackBarService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(route, globalEventService);
   }

@@ -36,14 +36,14 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_SNACK_BAR_DATA, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
-import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
 import { BASE_URL, WINDOW_LOCATION } from '../../injection-tokens';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -55,7 +55,7 @@ describe('SubrogationSnackBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SubrogationSnackBarComponent],
-      imports: [MatSnackBarModule, VitamUICommonTestModule],
+      imports: [VitamUICommonTestModule],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: BASE_URL, useValue: '/fakeapi' },
@@ -75,7 +75,7 @@ describe('SubrogationSnackBarComponent', () => {
         },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
-        { provide: VitamUISnackBarService, useValue: {} },
+        { provide: SnackBarService, useValue: {} },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

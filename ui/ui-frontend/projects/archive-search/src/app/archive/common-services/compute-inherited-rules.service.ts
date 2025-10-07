@@ -36,20 +36,19 @@
  */
 import { Injectable, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
 import {
+  ApplicationId,
   CriteriaDataType,
   CriteriaOperator,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  StartupService,
+  SnackBarService,
   UnitType,
 } from 'vitamui-library';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
-import { ArchiveSearchHelperService } from './archive-search-helper.service';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const PAGE_SIZE = 10;
@@ -59,12 +58,10 @@ const PAGE_SIZE = 10;
 })
 export class ComputeInheritedRulesService {
   constructor(
-    private archiveSearchHelperService: ArchiveSearchHelperService,
-    private startupService: StartupService,
     private archiveService: ArchiveService,
     private translateService: TranslateService,
-    public snackBar: MatSnackBar,
     public dialog: MatDialog,
+    private snackBarService: SnackBarService,
   ) {}
 
   launchComputedInheritedRulesModal(
@@ -118,12 +115,17 @@ export class ComputeInheritedRulesService {
               language: this.translateService.currentLang,
             };
             this.archiveService.launchComputedInheritedRules(computedInheritedRulesDSLQuery).subscribe((operationId) => {
-              const guid = operationId;
-              const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
-              const serviceUrl =
-                this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + tenantIdentifier + '?guid=' + guid;
-
-              this.archiveSearchHelperService.openSnackBarForWorkflow(this.snackBar, message, serviceUrl);
+              this.snackBarService.open({
+                message: 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE',
+                buttons: [
+                  {
+                    appId: ApplicationId.LOGBOOK_OPERATION_APP,
+                    path: `/tenant/${tenantIdentifier}?guid=${operationId}`,
+                    label: 'SNACK_BAR.TO_OPERATION_APP',
+                  },
+                ],
+                duration: 100_000,
+              });
             });
           });
       }

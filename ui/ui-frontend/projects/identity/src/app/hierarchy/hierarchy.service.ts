@@ -82,7 +82,7 @@ import {
   ProfileApiService,
   SearchService,
   VitamuiHttpHeaders,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 
 @Injectable({
@@ -93,7 +93,7 @@ export class HierarchyService extends SearchService<Profile> {
 
   constructor(
     private profileApi: ProfileApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(profileApi, 'ALL');
   }

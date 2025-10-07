@@ -44,7 +44,7 @@ import {
   LogbookOperationReportState,
   SearchService,
   VitamuiHttpHeaders,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
@@ -87,7 +87,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
 
   constructor(
     private logbookApiService: LogbookApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private http: HttpClient,
   ) {
     super(logbookApiService);

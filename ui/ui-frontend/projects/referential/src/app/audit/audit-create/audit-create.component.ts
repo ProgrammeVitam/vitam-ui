@@ -49,12 +49,12 @@ import {
   FilingPlanMode,
   Option,
   SelectComponent,
+  SnackBarService,
   StartupService,
   VitamUICommonModule,
   VitamuiHttpHeaders,
   VitamUILibraryModule,
   VitamuiSelectOptions,
-  VitamUISnackBarService,
 } from 'vitamui-library';
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
@@ -66,7 +66,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CdkStepper } from '@angular/cdk/stepper';
 
 @Component({
@@ -80,7 +79,6 @@ import { CdkStepper } from '@angular/cdk/stepper';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
     SelectComponent,
     VitamUICommonModule,
@@ -125,7 +123,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     protected accessContractService: AccessContractService,
     private auditCreateValidator: AuditCreateValidators,
     private externalParameterService: ExternalParametersService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     translateService: TranslateService,
   ) {
     this.auditPerimetersOptions = Object.keys(AuditPerimeter).map((key) => ({

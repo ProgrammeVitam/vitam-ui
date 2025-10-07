@@ -38,29 +38,44 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
-import { ApplicationId } from '../../application-id.enum';
+import { firstValueFrom } from 'rxjs';
 import { ApplicationService } from '../../application.service';
 import { Application } from '../../models/application/application.interface';
-import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
-import { VitamuiSnackBarData } from './vitamui-snack-bar.interface';
+import { SnackBarComponent } from './snack-bar.component';
+import { SnackBarAppButton, SnackBarUrlButton, SnackBarData } from './snack-bar.interface';
 
-const DEFAULT_DURATION = 10000;
+const DEFAULT_DURATION = 10_000;
 
 @Injectable({
   providedIn: 'root',
 })
-export class VitamUISnackBarService {
+export class SnackBarService {
   constructor(
     private matSnackBar: MatSnackBar,
     private applicationService: ApplicationService,
     private translateService: TranslateService,
   ) {}
 
-  public open(data: VitamuiSnackBarData): MatSnackBarRef<VitamUISnackBarComponent> {
+  public async open(data: SnackBarData<SnackBarUrlButton | SnackBarAppButton>): Promise<MatSnackBarRef<SnackBarComponent>> {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
-    return this.openFromComponent(VitamUISnackBarComponent, data, data.duration);
+    data.buttons = await Promise.all(
+      (data.buttons || [])?.map(async (button) => {
+        const url = (button as SnackBarAppButton).appId
+          ? await (async () => {
+              const appButton = button as SnackBarAppButton;
+              const application: Application = await firstValueFrom(this.applicationService.getAppById(appButton.appId));
+              return appButton.path ? `${application.url}/${appButton.path.replace(/^\//, '')}` : application.url;
+            })()
+          : (button as SnackBarUrlButton).url;
+
+        return {
+          ...button,
+          label: this.getTranslateValue(button.translate, button.label, button.translateParams),
+          url: url,
+        };
+      }),
+    );
+    return this.openFromComponent(SnackBarComponent, data, data.duration);
   }
 
   public openFromComponent<T>(component: ComponentType<T>, data?: any, duration: number = DEFAULT_DURATION): MatSnackBarRef<T> {
@@ -71,22 +86,8 @@ export class VitamUISnackBarService {
     return this.matSnackBar.openFromComponent(component, { duration, data });
   }
 
-  public openWithAppUrlBtn(
-    data: VitamuiSnackBarData,
-    appId: ApplicationId | any,
-    urlName: string,
-  ): Observable<MatSnackBarRef<VitamUISnackBarComponent>> {
-    return this.applicationService.getAppById(appId).pipe(
-      map((application: Application) => {
-        data.buttons = [{ url: application.url, label: this.getTranslateValue(data.translate, urlName) }];
-        return this.open(data);
-      }),
-      take(1),
-    );
-  }
-
   /**
-   * Retreive translate key value if translate = true, else will return the raw string.
+   * Retrieve translate key value if translate = true, else will return the raw string.
    */
   private getTranslateValue(translate: boolean, message: string, translateParams?: any): string {
     if (translate === undefined || translate) {

@@ -39,7 +39,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Owner, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, Owner, SnackBarService } from 'vitamui-library';
 import { OwnerService } from './owner.service';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -66,14 +66,14 @@ const expectedOwner: Owner = {
 describe('OwnerService', () => {
   let httpTestingController: HttpTestingController;
   let ownerService: OwnerService;
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       providers: [
         OwnerService,
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
@@ -97,7 +97,7 @@ describe('OwnerService', () => {
   });
 
   it('should call /fake-api/owners and display a success message', () => {
-    const snackBarService = TestBed.inject(VitamUISnackBarService);
+    const snackBarService = TestBed.inject(SnackBarService);
     ownerService.create(expectedOwner).subscribe((response: Owner) => {
       expect(response).toEqual(expectedOwner);
       expect(snackBarService.open).toHaveBeenCalledWith({
@@ -113,7 +113,7 @@ describe('OwnerService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBarService = TestBed.inject(VitamUISnackBarService);
+    const snackBarService = TestBed.inject(SnackBarService);
     ownerService.create(expectedOwner).subscribe(fail, () => {
       expect(snackBarService.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
     });

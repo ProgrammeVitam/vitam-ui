@@ -46,7 +46,7 @@ import {
   InjectorModule,
   LoggerModule,
   OtpState,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../../../../environments/environment';
@@ -106,7 +106,7 @@ xdescribe('AccessContractNodeUpdateComponent', () => {
 
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
     await TestBed.configureTestingModule({
       declarations: [AccessContractNodeUpdateComponent],
       imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
@@ -114,7 +114,7 @@ xdescribe('AccessContractNodeUpdateComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBarService, useValue: snackBarSpy },
+        { provide: SnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: AccessContractService, useValue: {} },
         provideHttpClient(withInterceptorsFromDi()),

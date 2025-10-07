@@ -42,7 +42,6 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { ToastrModule } from 'ngx-toastr';
 import {
   AuthenticationModule,
   BASE_URL,
@@ -114,13 +113,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AppRoutingModule,
     MatToolbarModule,
     QuicklinkModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-full-width',
-      preventDuplicates: false,
-      timeOut: 3000,
-      closeButton: false,
-      easeTime: 0,
-    }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

@@ -74,7 +74,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { finalize, Subscription } from 'rxjs';
 import { FileService } from '../core/services/file.service';
 import { ToggleSidenavService } from '../core/services/toggle-sidenav.service';
@@ -96,8 +95,6 @@ import { tap } from 'rxjs/operators';
 export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('treeSelector', { static: true }) tree: any;
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @ViewChild(ToastContainerDirective, { static: true })
-  toastContainer: ToastContainerDirective;
   @ViewChild(EditProfileComponent)
   editProfileComponent: EditProfileComponent;
 
@@ -116,7 +113,6 @@ export class MainComponent implements OnInit, OnDestroy {
     public fileService: FileService,
     private route: ActivatedRoute,
     private sideNavService: ToggleSidenavService,
-    private toastrService: ToastrService,
     private profileService: ProfileService,
     private sedaService: SedaService,
     private loaderService: NgxUiLoaderService,
@@ -135,7 +131,6 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fileService.currentTreeLoaded = false;
-    this.toastrService.overlayContainer = this.toastContainer;
     this._routeParamsSubscription = this.route.params.subscribe((params) => {
       const profileId = params.id;
       // If a profileId has been defined, it is retrieved from backend

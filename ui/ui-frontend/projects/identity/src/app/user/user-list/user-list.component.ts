@@ -51,7 +51,7 @@ import {
   Role,
   rotateAnimation,
   User,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 
 import {
@@ -147,7 +147,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     public userService: UserService,
     @Inject(LOCALE_ID) private locale: string,
     private authService: AuthService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(userService);
     this.genericUserRole = {

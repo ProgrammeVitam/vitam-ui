@@ -41,7 +41,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -49,7 +48,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../../../../archive-search/src/environments/environment';
-import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
 import { TransactionListComponent } from './transaction-list.component';
@@ -87,8 +85,6 @@ describe('TransactionListComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
-
   const TransactionsServiceStub = jasmine.createSpyObj(
     'TransactionsService',
 
@@ -125,7 +121,6 @@ describe('TransactionListComponent', () => {
       imports: [
         InjectorModule,
         MatSidenavModule,
-        MatSnackBarModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
@@ -137,7 +132,6 @@ describe('TransactionListComponent', () => {
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogRefSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: TransactionsService, useValue: TransactionsServiceStub },
         { provide: TransactionResolver, useValue: TransactionResolverStub },
         { provide: StartupService, useValue: startUpServiceMock },

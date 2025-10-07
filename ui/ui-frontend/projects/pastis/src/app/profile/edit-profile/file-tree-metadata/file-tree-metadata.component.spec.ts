@@ -39,10 +39,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToastrModule } from 'ngx-toastr';
 import { BASE_URL, LoggerModule, ProfileService, WINDOW_LOCATION } from 'vitamui-library';
 import { PastisApiService } from '../../../core/api/api.pastis.service';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
@@ -83,15 +81,7 @@ describe('FileTreeMetadataComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FileTreeMetadataComponent],
-      imports: [
-        ToastrModule.forRoot({
-          positionClass: 'toast-bottom-right',
-        }),
-        MatSnackBarModule,
-        RouterModule.forRoot([], {}),
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({}),
-      ],
+      imports: [RouterModule.forRoot([], {}), LoggerModule.forRoot(), TranslateModule.forRoot({})],
       providers: [
         FileTreeMetadataService,
         FileService,

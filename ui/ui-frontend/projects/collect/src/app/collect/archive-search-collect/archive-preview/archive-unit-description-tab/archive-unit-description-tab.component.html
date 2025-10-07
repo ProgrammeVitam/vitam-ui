@@ -12,13 +12,6 @@
   <vitamui-common-archive-unit-editor [data]="archiveUnit"></vitamui-common-archive-unit-editor>
 </div>
 
-<ng-template #savingOK>
-  <div class="vitamui-snack-bar-container">
-    <span class="vitamui-snack-bar-content">{{ 'ARCHIVE_UNIT.DIALOGS.SAVE.MESSAGES.SUCCESS' | translate }}</span>
-    <button class="close-btn" (click)="snackBarRef.dismiss()"><i class="material-icons">clear</i></button>
-  </div>
-</ng-template>
-
 <ng-template #updateDialog>
   <vitamui-dialog-header
     [subhead]="'ARCHIVE_UNIT.DIALOGS.SAVE.TITLE' | translate"

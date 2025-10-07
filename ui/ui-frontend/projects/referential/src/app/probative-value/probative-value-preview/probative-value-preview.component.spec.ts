@@ -36,11 +36,10 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
+import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
@@ -71,11 +70,12 @@ describe('ProbativeValuePreviewComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
-      imports: [MatSnackBarModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: ProbativeValueService, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: SnackBarService, useValue: {} },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

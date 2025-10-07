@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
@@ -51,10 +50,10 @@ import {
   CriteriaOperator,
   InjectorModule,
   LoggerModule,
+  Rule,
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   WINDOW_LOCATION,
-  Rule,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
@@ -201,7 +200,6 @@ describe('UpdateUnitRulesComponent', () => {
         }),
         VitamUICommonTestModule,
         RouterTestingModule,
-        MatSnackBarModule,
       ],
       providers: [
         FormBuilder,

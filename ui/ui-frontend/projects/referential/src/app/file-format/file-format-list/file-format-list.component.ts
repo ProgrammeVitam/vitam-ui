@@ -50,7 +50,7 @@ import {
   PageRequest,
   StartupService,
   User,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 
@@ -102,7 +102,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   constructor(
     public fileFormatService: FileFormatService,
     private matDialog: MatDialog,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private translateService: TranslateService,
     private startupService: StartupService,
   ) {

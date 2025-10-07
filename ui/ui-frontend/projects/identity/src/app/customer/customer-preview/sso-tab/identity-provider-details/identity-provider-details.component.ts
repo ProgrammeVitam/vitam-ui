@@ -40,7 +40,7 @@ import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
-import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'vitamui-library';
+import { AuthnRequestBindingEnum, IdentityProvider, newFile, SnackBarService } from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
 
@@ -145,7 +145,7 @@ export class IdentityProviderDetailsComponent {
   constructor(
     private formBuilder: FormBuilder,
     private identityProviderService: IdentityProviderService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     this.commonsControls = this.initializeCommonControls();
     this.specificSamlControls = this.initializeSamlControls();

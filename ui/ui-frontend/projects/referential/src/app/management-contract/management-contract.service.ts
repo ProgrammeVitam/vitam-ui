@@ -39,7 +39,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ManagementContract, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
+import { ManagementContract, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
 
 import { ManagementContractsApiService } from '../core/api/management-contracts-api.service';
 
@@ -51,7 +51,7 @@ export class ManagementContractService extends SearchService<ManagementContract>
 
   constructor(
     private managementContractApi: ManagementContractsApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private translateService: TranslateService,
   ) {
     super(managementContractApi, 'ALL');

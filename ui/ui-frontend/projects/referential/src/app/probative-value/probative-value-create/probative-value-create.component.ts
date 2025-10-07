@@ -38,8 +38,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -50,6 +48,7 @@ import {
   SearchResponse,
   SearchUnitApiService,
   SigningRoleType,
+  SnackBarService,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
@@ -85,9 +84,8 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private probativeValueService: ProbativeValueService,
     private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar,
-    private translateService: TranslateService,
     private searchUnitApiService: SearchUnitApiService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -96,10 +94,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
       if (accessContractId && accessContractId.length > 0) {
         this.accessContractId = accessContractId;
       } else {
-        const message = this.translateService.instant('PROBATIVE_VALUE.CREATE_DIALOG.ACCESS_CONTACT_NOT_SET');
-        this.snackBar.open(message, null, {
-          duration: 10000,
-        });
+        this.snackBarService.open({ message: 'PROBATIVE_VALUE.CREATE_DIALOG.ACCESS_CONTACT_NOT_SET' });
       }
     });
 
@@ -183,10 +178,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
     if (this.form.get('unitId').valid) {
       this.searchUnitApiService.getById(this.form.get('unitId').value).subscribe((unitIdStatus: SearchResponse) => {
         if (!unitIdStatus.$results[0]) {
-          const message = this.translateService.instant('EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND');
-          this.snackBar.open(message, null, {
-            duration: 10000,
-          });
+          this.snackBarService.open({ message: 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND' });
         } else {
           this.showWarningMessage =
             !unitIdStatus.$results[0].SigningInformation ||

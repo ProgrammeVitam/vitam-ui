@@ -49,7 +49,7 @@ import {
   StartupService,
   Tenant,
   VitamUILibraryModule,
-  VitamUISnackBarService,
+  SnackBarService,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -156,7 +156,7 @@ describe('Owner InformationTabComponent', () => {
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: TenantService, useValue: { patch: () => of(expectedTenant) } },
         { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

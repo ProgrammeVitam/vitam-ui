@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION, AccessContractService } from 'vitamui-library';
+import { AccessContractService, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -47,7 +47,6 @@ import { AccessContractComponent } from './access-contract.component';
 
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-access-contract-preview',
@@ -91,7 +90,6 @@ describe('AccessContractComponent', () => {
         TranslateModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
-        MatSnackBarModule,
         MatDialogModule,
       ],
       providers: [

@@ -47,7 +47,7 @@ import {
   ExternalParamProfileApiService,
   Operators,
   SearchService,
-  VitamUISnackBarService,
+  SnackBarService,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 
@@ -60,7 +60,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
   constructor(
     private externalParamProfileApi: ExternalParamProfileApiService,
     private accessContractApiService: AccessContractApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(externalParamProfileApi);
   }

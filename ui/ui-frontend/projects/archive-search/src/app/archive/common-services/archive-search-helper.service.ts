@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -50,7 +49,6 @@ import {
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const WAITING_RECALCULATE = 'WAITING_RECALCULATE';
@@ -401,17 +399,6 @@ export class ArchiveSearchHelperService {
           elt.status = newStatus;
         }
       });
-    });
-  }
-
-  openSnackBarForWorkflow(snackBar: MatSnackBar, message: string, serviceUrl?: string) {
-    snackBar.openFromComponent(VitamUISnackBarComponent, {
-      data: {
-        type: 'WorkflowSuccessSnackBar',
-        message,
-        serviceUrl,
-      },
-      duration: 100000,
     });
   }
 

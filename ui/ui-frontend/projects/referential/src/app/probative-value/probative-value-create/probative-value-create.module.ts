@@ -42,9 +42,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { ProbativeValueCreateComponent } from './probative-value-create.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -59,7 +57,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,

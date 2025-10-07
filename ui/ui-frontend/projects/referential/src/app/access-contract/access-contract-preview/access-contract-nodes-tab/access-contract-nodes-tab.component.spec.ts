@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
@@ -99,7 +98,7 @@ describe('AccessContractNodesTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AccessContractNodesTabComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [LoggerModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },

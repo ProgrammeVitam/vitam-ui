@@ -36,7 +36,6 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -45,7 +44,7 @@ import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../testing/src';
 
 import { AuthService } from '../auth.service';
-import { VitamUISnackBarService } from '../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { BASE_URL } from '../injection-tokens';
 import { LoggerModule } from '../logger';
 import { environment } from './../../../environments/environment';
@@ -56,7 +55,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 describe('SubrogationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, LoggerModule.forRoot(), VitamUICommonTestModule],
+      imports: [LoggerModule.forRoot(), VitamUICommonTestModule],
       providers: [
         SubrogationService,
         { provide: WINDOW_LOCATION, useValue: {} },
@@ -73,7 +72,7 @@ describe('SubrogationService', () => {
         { provide: AuthService, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
-        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

@@ -46,7 +46,7 @@ import {
   ProfileApiService,
   Role,
   SearchService,
-  VitamUISnackBarService,
+  SnackBarService,
 } from 'vitamui-library';
 
 @Injectable({
@@ -57,7 +57,7 @@ export class ProfileService extends SearchService<Profile> {
 
   constructor(
     private profileApi: ProfileApiService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {
     super(profileApi, 'ALL');
   }

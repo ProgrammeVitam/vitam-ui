@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ApplicationId, FileTypes, VitamUISnackBarService } from 'vitamui-library';
+import { ApplicationId, FileTypes, SnackBarService } from 'vitamui-library';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
@@ -59,7 +59,7 @@ export class ImportDialogComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public dialogParams: ImportDialogParam,
     public dialogRef: MatDialogRef<ImportDialogComponent>,
     private referentialImportService: ReferentialImportService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
   ) {}
 
   public submitFile(): void {
@@ -72,16 +72,16 @@ export class ImportDialogComponent implements OnDestroy {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {
-          this.snackBarService
-            .openWithAppUrlBtn(
+          this.snackBarService.open({
+            message: this.dialogParams.successMessage,
+            icon: this.dialogParams.iconMessage,
+            buttons: [
               {
-                message: this.dialogParams.successMessage,
-                icon: this.dialogParams.iconMessage,
+                appId: ApplicationId.LOGBOOK_OPERATION_APP,
+                label: 'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
               },
-              ApplicationId.LOGBOOK_OPERATION_APP,
-              'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
-            )
-            .subscribe();
+            ],
+          });
 
           this.dialogRef.close({ successfulImport: true });
         },

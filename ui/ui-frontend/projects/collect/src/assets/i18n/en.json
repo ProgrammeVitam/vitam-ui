@@ -58,7 +58,6 @@
     "NO_RESULT": "No result",
     "LOAD_MORE_RESULTS": "Load more results...",
     "NO_ACCESS_CONTRACT": "No access contract is associated with the user",
-    "UPLOAD_FILE_ALREADY_IMPORTED": "File already imported!",
     "PROJECT_DESCRIPTION_SUB_TITLE": "Remittance description",
     "PROJECT_REFERENTIAL_CONNECTION_SUB_TITLE": "Connection to the referentials",
     "PROJECT_REFERENTIAL_CONNECTION_BUTTON": "Use referentials from a SAE",
@@ -187,9 +186,6 @@
     },
     "DELETION": {
       "DELETION_LAUNCHED": "Your request for deletion has been taken into account"
-    },
-    "DIP": {
-      "TO_OPERATION_APP": "VIEW THE OPERATIONS LOG"
     }
   },
   "RULES": {

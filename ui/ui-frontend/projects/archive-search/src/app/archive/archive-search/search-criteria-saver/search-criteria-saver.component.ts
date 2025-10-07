@@ -38,12 +38,17 @@ import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, CriteriaSearchCriteria, Direction, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  CriteriaSearchCriteria,
+  Direction,
+  SearchCriteriaHistory,
+  SearchCriteriaTypeEnum,
+  SnackBarService,
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
 
 @Component({
@@ -81,9 +86,9 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     private searchCriteriaSaverService: SearchCriteriaSaverService,
     private archiveExchangeDataService: ArchiveSharedDataService,
     private confirmDialogService: ConfirmDialogService,
-    private snackBar: MatSnackBar,
     private datePipe: DatePipe,
     private translatePipe: TranslatePipe,
+    private snackBarService: SnackBarService,
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
@@ -125,15 +130,18 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
           this.searchCriteriaHistory.id = response.id;
           this.archiveExchangeDataService.emitSearchCriteriaHistory(this.searchCriteriaHistory);
           this.dialogRef.close(true);
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            data: { type: 'searchCriteriaHistoryCreated', name: response.name },
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVED_WITH_SUCCESS',
+            translateParams: { name: response.name },
+            duration: 10_000,
           });
         },
         (error) => {
           this.dialogRef.close(false);
-          this.snackBar.open(error.error.message, null, {
-            duration: 10000,
+          this.snackBarService.open({
+            message: error.error.message,
+            translate: false,
+            duration: 10_000,
           });
         },
       );
@@ -190,14 +198,17 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.dialogRef.close(true);
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            data: { type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name },
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVED_WITH_SUCCESS',
+            translateParams: { name: this.criteriaToUpdate.name },
+            duration: 10_000,
           });
         },
         (error) => {
-          this.snackBar.open(error.error.message, null, {
-            duration: 10000,
+          this.snackBarService.open({
+            message: error.error.message,
+            translate: false,
+            duration: 10_000,
           });
         },
       );

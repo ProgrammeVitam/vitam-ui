@@ -58,7 +58,6 @@
     "NO_RESULT": "Aucun résultat",
     "LOAD_MORE_RESULTS": "Afficher plus de résultats...",
     "NO_ACCESS_CONTRACT": "Aucun contrat d'accès n'est associé à l'utilisateur",
-    "UPLOAD_FILE_ALREADY_IMPORTED": "Dossier déjà importé !",
     "PROJECT_DESCRIPTION_SUB_TITLE": "Description du versement",
     "PROJECT_REFERENTIAL_CONNECTION_SUB_TITLE": "Connexion aux référentiels",
     "PROJECT_REFERENTIAL_CONNECTION_BUTTON": "Utiliser les référentiels d'un SAE",
@@ -187,9 +186,6 @@
     },
     "DELETION": {
       "DELETION_LAUNCHED": "Votre demande de suppression a bien été prise en compte"
-    },
-    "DIP": {
-      "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPÉRATIONS"
     }
   },
   "RULES": {

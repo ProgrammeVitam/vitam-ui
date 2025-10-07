@@ -37,7 +37,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, merge, Observable, Subject, Subscription, zip } from 'rxjs';
@@ -76,6 +75,7 @@ import {
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SidenavPage,
+  SnackBarService,
   TermsFacet,
   Transaction,
   TransactionStatus,
@@ -212,11 +212,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private archiveHelperService: ArchiveSearchHelperService,
     private archiveExchangeDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
-    private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private queryParamsService: QueryParamsService,
     private searchCriteriaService: SearchCriteriaService,
     private ruleService: RuleService,
+    private snackBarService: SnackBarService,
   ) {
     super(route, globalEventService);
 
@@ -526,24 +526,16 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   fetchUserAccessContractFromExternalParameters() {
     this.subscriptions.add(
       this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-        const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-        if (accessConctractId && accessConctractId.length > 0) {
-          this.accessContract = accessConctractId;
+        const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+        if (accessContractId && accessContractId.length > 0) {
+          this.accessContract = accessContractId;
           this.foundAccessContract = true;
           this.fetchVitamAccessContract();
         } else {
-          this.subscriptions.add(
-            this.translateService
-              .get('COLLECT.ACCESS_CONTRACT_NOT_FOUND')
-              .pipe(
-                map((message) => {
-                  this.snackBar.open(message, null, {
-                    duration: 10000,
-                  });
-                }),
-              )
-              .subscribe(),
-          );
+          this.snackBarService.open({
+            message: 'COLLECT.ACCESS_CONTRACT_NOT_FOUND',
+            duration: 10_000,
+          });
         }
       }),
     );
@@ -558,9 +550,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         },
         (error: any) => {
           this.logger.error('AccessContract not found :', error.message);
-          const message = this.translateService.instant('COLLECT.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
-          this.snackBar.open(message + ': ' + this.accessContract, null, {
-            duration: 10000,
+          this.snackBarService.open({
+            message: 'COLLECT.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM',
+            translateParams: { accessContract: this.accessContract },
+            duration: 10_000,
           });
         },
       ),
@@ -802,18 +795,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     // this.checkAllNodes(false);
 
     this.queryParamsService.setQueryParams({}, {});
-  }
-
-  setFilingHoldingScheme() {
-    this.subscriptions.add(
-      this.archiveExchangeDataService.getFilingHoldingNodes().subscribe((nodes) => {
-        this.nodeArray = nodes;
-      }),
-    );
-  }
-
-  checkAllNodes(show: boolean) {
-    this.archiveHelperService.recursiveCheck(this.nodeArray, show);
   }
 
   selectedCategoryChange(selectedCategoryIndex: number) {
@@ -1249,9 +1230,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.isNotOpen$.next(true);
       this.isNotReady$.next(false);
       this.isAutomaticIngestValidated = true;
-      const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
-      this.snackBar.open(message, null, {
-        duration: 10000,
+      this.snackBarService.open({
+        message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
+        duration: 10_000,
       });
     });
   }
@@ -1259,9 +1240,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   sendTransaction() {
     this.archiveUnitCollectService.sendTransaction(this.transaction.id).subscribe(() => {
       this.isNotReady$.next(true);
-      const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
-      this.snackBar.open(message, null, {
-        duration: 10000,
+      this.snackBarService.open({
+        message: 'COLLECT.INGEST_TRANSACTION_LAUNCHED',
+        duration: 10_000,
       });
     });
   }

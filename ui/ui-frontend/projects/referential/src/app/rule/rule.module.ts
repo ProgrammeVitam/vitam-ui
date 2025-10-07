@@ -45,7 +45,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RuleCreateModule } from './rule-create/rule-create.module';
 import { RuleListComponent } from './rule-list/rule-list.component';
 import { RulePreviewModule } from './rule-preview/rule-preview.module';
@@ -66,7 +65,6 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     RulePreviewModule,
     ImportDialogModule,
     MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,

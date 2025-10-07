@@ -37,7 +37,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BytesPipe, StartupService, VitamUISnackBarService } from 'vitamui-library';
+import { BytesPipe, StartupService, SnackBarService } from 'vitamui-library';
 
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
@@ -75,7 +75,7 @@ export class UploadComponent implements OnInit {
     public dialogRef: MatDialogRef<UploadComponent>,
     private formBuilder: FormBuilder,
     private uploadService: UploadService,
-    private snackBarService: VitamUISnackBarService,
+    private snackBarService: SnackBarService,
     private startupService: StartupService,
     private bytesPipe: BytesPipe,
     private translateService: TranslateService,
@@ -126,14 +126,14 @@ export class UploadComponent implements OnInit {
     }
 
     this.uploadService
-      .uploadIngest(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, (operationId) => {
+      .uploadIngest(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, async (operationId) => {
         this.snackbarRef?.dismiss();
         if (
           this.contextId === IngestType.HOLDING_SCHEME ||
           this.contextId === IngestType.FILING_SCHEME ||
           this.contextId === IngestType.BLANK_TEST
         ) {
-          this.snackbarRef = this.snackBarService.open({
+          this.snackbarRef = await this.snackBarService.open({
             icon: 'vitamui-icon-archive-ingest',
             message:
               this.contextId === IngestType.BLANK_TEST
@@ -143,16 +143,16 @@ export class UploadComponent implements OnInit {
             buttons: [
               {
                 url: `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.tenantIdentifier}?guid=${operationId}`,
-                label: this.translateService.instant('INGEST_UPLOAD.TO_OPERATION_APP'),
+                label: this.translateService.instant('SNACK_BAR.TO_OPERATION_APP'),
               },
             ],
           });
         }
       })
       .subscribe(
-        () => {
+        async () => {
           this.dialogRef.close();
-          this.snackbarRef = this.snackBarService.open({
+          this.snackbarRef = await this.snackBarService.open({
             icon: 'vitamui-icon-archive-ingest',
             message: 'INGEST_UPLOAD.ALERTE_MESSAGE',
             translate: true,
