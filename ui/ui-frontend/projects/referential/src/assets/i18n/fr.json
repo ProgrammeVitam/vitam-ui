@@ -1070,7 +1070,7 @@
       "EVIDENCE_AUDIT_IDENTIFIER": "Identifiant de l'audit de cohérence",
       "CHOOSE_ATTACHMENT_POSITION": "Choisir une position de rattachement",
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS": "Saisir le(s) identifiant(s) d'opération d'entrée",
-      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Identifiant(s) d'opération d'entrée séparés par des virgules",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Identifiant(s) d'opération d'entrée",
       "CHOOSE_ORIGINATING_AGENCY": "Choisir le(s) service(s) producteur(s)",
       "EVIDENCE_AUDIT_NOT_FOUND": "L'identifiant d'audit de cohérence saisi n'existe pas",
       "CHOOSE_INGEST_OPERATIONS_PERIOD": "Choisir une période d'opération d'entrée",

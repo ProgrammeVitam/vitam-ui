@@ -41,7 +41,12 @@ export interface MiscValidators {
   readonly allowedIdentifier: ValidatorFn;
 }
 export const MiscValidators: MiscValidators = {
-  requiredNotBlank: (control) => (control.value == null || control.value.trim().length === 0 ? { requiredNotBlank: true } : null),
+  requiredNotBlank: (control: AbstractControl<string | string[]>) =>
+    control.value == null ||
+    (control.value instanceof Array && !control.value.length) ||
+    (control.value instanceof Array ? control.value : [control.value]).some((v) => v.trim().length === 0)
+      ? { requiredNotBlank: true }
+      : null,
   allowedIdentifier: (control: AbstractControl): ValidationErrors =>
     !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true },
 };

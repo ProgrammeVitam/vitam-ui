@@ -41,6 +41,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import {
   ApplicationId,
   diff,
+  MiscValidators,
   Ontology,
   Option,
   Role,
@@ -119,7 +120,7 @@ export class OntologyInformationTabComponent {
   ) {
     this.form = this.formBuilder.group({
       identifier: [{ value: null, disabled: true }, Validators.required],
-      shortName: [{ value: null, disabled: true }, Validators.required],
+      shortName: [{ value: null, disabled: true }, MiscValidators.requiredNotBlank],
       type: [{ value: null, disabled: true }, Validators.required],
       typeDetail: [{ value: null, disabled: true }],
       stringSize: [{ value: null, disabled: true }],

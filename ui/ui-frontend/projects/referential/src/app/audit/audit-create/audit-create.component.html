@@ -65,8 +65,8 @@
           </vitamui-select>
         } @else if (enterIngestOperationsIdentifiers()) {
           <vitamui-input
+            [multiple]="true"
             class="w-100 mt-4"
-            [formControl]="ingestOperationsEntries"
             formControlName="ingestOperationIds"
             [placeholder]="'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER' | translate"
           >

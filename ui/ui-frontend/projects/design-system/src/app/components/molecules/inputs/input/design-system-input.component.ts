@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { InputComponent } from 'vitamui-library';
+import { InputComponent, MiscValidators } from 'vitamui-library';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -110,7 +110,7 @@ export class DesignSystemInputComponent {
   }
 
   private createControl(config?: { disabled?: boolean; error?: boolean; value?: any }): FormControl {
-    const validators = config?.error ? [Validators.required, Validators.pattern('.*TextContent.*')] : [];
+    const validators = config?.error ? [MiscValidators.requiredNotBlank, Validators.pattern('.*TextContent.*')] : [];
 
     const fc = new FormControl(null, validators);
     if (config?.disabled) fc.disable();

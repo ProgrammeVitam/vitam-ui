@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { ManagementContract, diff } from 'vitamui-library';
+import { diff, ManagementContract, MiscValidators } from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
 
 @Component({
@@ -77,8 +77,8 @@ export class ManagementContractInformationTabComponent {
     private managementContractService: ManagementContractService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      name: [null, Validators.required],
+      identifier: [{ value: null, disabled: true }, MiscValidators.requiredNotBlank],
+      name: [null, MiscValidators.requiredNotBlank],
       description: [''],
       status: [null],
     });

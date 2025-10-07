@@ -39,7 +39,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, AccessContractService, diff, Option } from 'vitamui-library';
+import { AccessContract, AccessContractService, diff, MiscValidators, Option } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 
@@ -152,7 +152,7 @@ export class AccessContractInformationTabComponent {
       status: ['ACTIVE'],
       name: [
         null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
         this.accessContractCreateValidators.uniqueNameWhileEdit(this.previousValue),
       ],
       description: [null],

@@ -104,7 +104,6 @@ describe('AgencyCreateComponent', () => {
     const agencyValidatorSpy = jasmine.createSpyObj('AgencyCreateValidators', {
       uniqueIdentifier: () => of(null),
       uniqueName: () => of(null),
-      onlyWhitespaces: () => {},
     });
     await TestBed.configureTestingModule({
       imports: [

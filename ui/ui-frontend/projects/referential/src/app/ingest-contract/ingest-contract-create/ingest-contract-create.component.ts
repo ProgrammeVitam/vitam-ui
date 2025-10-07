@@ -43,11 +43,12 @@ import {
   ConfirmDialogService,
   FilingPlanMode,
   IngestContract,
+  MiscValidators,
   Option,
   SignaturePolicy,
   SignedDocumentPolicyEnum,
-  VitamuiSelectOptions,
   VitamuiHttpHeaders,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
@@ -108,16 +109,16 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       identifier: [
         null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
         this.ingestContractCreateValidators.uniqueIdentifier(),
       ],
       status: ['INACTIVE'],
       name: [
         null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
         this.ingestContractCreateValidators.uniqueName(),
       ],
-      description: [null, Validators.required],
+      description: [null, MiscValidators.requiredNotBlank],
       /* <- step 2 -> */
       archiveProfiles: [new Array<string>() /* Validators.required */],
       managementContractId: [null],

@@ -1070,7 +1070,7 @@
       "EVIDENCE_AUDIT_IDENTIFIER": "Consistency audit identifier",
       "CHOOSE_ATTACHMENT_POSITION": "Choose attachment position",
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS": "Enter ingest operations identifiers",
-      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Comma-separated ingest operations identifiers",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Ingest operations identifier(s)",
       "CHOOSE_ORIGINATING_AGENCY": "Choose producer services",
       "EVIDENCE_AUDIT_NOT_FOUND": "The consistency audit identifier entered does not exist",
       "CHOOSE_INGEST_OPERATIONS_PERIOD": "Choose ingest operation period",

@@ -50,16 +50,16 @@ describe('MiscValidators', () => {
   });
 
   describe('requiredNotBlank', () => {
-    const expectValid = (str: string) => () => {
+    const expectValid = (value: string | string[]) => () => {
       const formGroup = formBuilder.group({
-        field: [str, MiscValidators.requiredNotBlank],
+        field: [value, MiscValidators.requiredNotBlank],
       });
       expect(formGroup.valid).withContext('Form group must be valid').toBeTruthy();
       expect(formGroup.get('field').errors).withContext('Field control must not have errors').toBeNull();
     };
-    const expectInvalid = (str: string | null) => () => {
+    const expectInvalid = (value: string | string[] | null) => () => {
       const formGroup = formBuilder.group({
-        field: [str, MiscValidators.requiredNotBlank],
+        field: [value, MiscValidators.requiredNotBlank],
       });
       expect(formGroup.invalid).withContext('Form group must be invalid').toBeTruthy();
       expect(formGroup.get('field').errors).withContext('Field control must have errors').toBeTruthy();
@@ -69,5 +69,13 @@ describe('MiscValidators', () => {
     it('should not allow null fields', expectInvalid(null));
     it('should not allow empty fields', expectInvalid(''));
     it('should not allow blank fields', expectInvalid('    '));
+
+    it('should allow non blank fields without spaces', expectValid(['aaa', 'bbb']));
+    it('should allow non blank fields with spaces', expectValid(['a a a', ' b b b ']));
+    it('should not allow only an empty field', expectInvalid(['']));
+    it('should not allow an empty list', expectInvalid([]));
+    it('should not allow an empty field in the list', expectInvalid(['aaa', '']));
+    it('should not allow only a blank field', expectInvalid(['    ']));
+    it('should not allow a blank field in the list', expectInvalid(['aaa', '    ']));
   });
 });

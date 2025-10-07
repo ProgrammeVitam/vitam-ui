@@ -94,7 +94,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public allProducerServices = new FormControl(false);
   public selectedNodes = new FormControl({ included: [], excluded: [] });
   public producerServicesMultiSelect = new FormControl();
-  public ingestOperationsEntries = new FormControl();
   public startDateControl = new FormControl('');
   public endDateControl = new FormControl('');
   public accessContractId: string = null;
@@ -186,10 +185,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     this.producerServicesMultiSelect.valueChanges
       .pipe(takeUntil(this.destroyer$))
       .subscribe((value) => this.updateOriginatingAgencyIdsOnChange(value));
-
-    this.ingestOperationsEntries.valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((value) => this.updateIngestOperationsEntriesOnChange(value));
 
     this.form.controls.evidenceAudit.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
       if (this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION) {
@@ -307,7 +302,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     this.form.get('startDate').markAsUntouched();
 
     this.producerServicesMultiSelect.setValue([]);
-    this.ingestOperationsEntries.setValue([]);
+    this.form.get('ingestOperationIds').setValue([]);
     this.startDateControl.setValue(null);
     this.endDateControl.setValue(null);
     this.allProducerServices.setValue(false);
@@ -365,7 +360,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       this.clearField('ingestOperationIds');
     }
     this.producerServicesMultiSelect.setValue([]);
-    this.ingestOperationsEntries.setValue([]);
+    this.form.get('ingestOperationIds').setValue([]);
     this.allProducerServices.setValue(false);
     this.startDateControl.setValue(null);
     this.endDateControl.setValue(null);
@@ -377,15 +372,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     this.form.get('endDate').updateValueAndValidity();
     this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
-  }
-
-  private updateIngestOperationsEntriesOnChange(value: string) {
-    if (value.length > 0) {
-      const values = value.split(',');
-      this.form.controls.ingestOperationIds.setValue(values);
-    } else {
-      this.form.controls.ingestOperationIds.setValue([]);
-    }
   }
 
   private updateOriginatingAgencyIdsOnChange(values: Array<string>) {
