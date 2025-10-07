@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
@@ -44,8 +44,8 @@ import {
 } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { finalize, Observable, throwError } from 'rxjs';
+import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
 import {
   ExternalParameters,
   ExternalParametersService,
@@ -54,18 +54,20 @@ import {
   IOntology,
   Logger,
   MetadataUnitUp,
+  oneIncludedNodeRequired,
   OntologyService,
   Project,
   ProjectStatus,
   Transaction,
   TransactionStatus,
   Workflow,
-  oneIncludedNodeRequired,
+  ZipFile,
+  ZipFileStatus,
 } from 'vitamui-library';
-import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-project',
@@ -79,13 +81,15 @@ import { TransactionsService } from '../transactions.service';
     ]),
   ],
 })
-export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class CreateProjectComponent implements OnInit, AfterViewChecked {
+  protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
+
   // enums for html
   Workflow = Workflow;
   FilingPlanMode = FilingPlanMode;
   FlowType = FlowType;
   // http calls
-  pending: boolean;
+  isLoading: boolean;
 
   selectedWorkflow: Workflow = Workflow.MANUAL;
   selectedFlowType: FlowType = FlowType.FIX;
@@ -94,12 +98,11 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   projectForm: FormGroup;
 
-  hasDropZoneOver = false;
   hasError = false;
-  uploadFiles$: Observable<CollectUploadFile[]>;
-  zippedFile$: Observable<CollectZippedUploadFile>;
   tenantIdentifier: number;
   ontologies: IOntology[];
+  filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
+  zipFileStatus$: Observable<ZipFileStatus>;
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
@@ -121,8 +124,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
     { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
-
-  uploadZipCompleted = false;
 
   @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
 
@@ -155,8 +156,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.initForm();
     this.accessContract();
-    this.uploadFiles$ = this.uploadService.getUploadingFiles();
-    this.zippedFile$ = this.uploadService.getZipFile();
     this.ontologyService.getInternalOntologyFieldsList().subscribe((data) => {
       this.ontologies = data;
       this.ontologies.sort((a: any, b: any) => {
@@ -165,10 +164,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
         return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
       });
     });
-  }
-
-  ngOnDestroy(): void {
-    this.uploadService.reinitializeZip();
   }
 
   ngAfterViewChecked(): void {
@@ -214,46 +209,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   backToPreviousStep() {
     this.stepIndex = this.stepIndex - 1;
-  }
-
-  // FIXME: use vitamuiCommonDragAndDrop directive?
-
-  onDragOver(event: any) {
-    event.preventDefault();
-    this.hasDropZoneOver = true;
-  }
-
-  onDragLeave(event: any) {
-    event.preventDefault();
-    this.hasDropZoneOver = false;
-  }
-
-  async onDropped(event: DragEvent) {
-    this.hasDropZoneOver = false;
-    event.preventDefault();
-    const items = event.dataTransfer.items;
-    const exists = this.uploadService.directoryExistInZipFile(items, true);
-    if (exists) {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
-      return;
-    }
-    await this.uploadService.handleDragAndDropUpload(items);
-  }
-
-  async handleFile(event: any) {
-    event.preventDefault();
-    const items: FileList = event.target.files;
-    const exists = this.uploadService.directoryExistInZipFile(items, false);
-    if (exists) {
-      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
-      return;
-    }
-    await this.uploadService.handleUpload(items);
-    event.target.value = '';
-  }
-
-  removeFolder(file: CollectUploadFile) {
-    this.uploadService.removeFolder(file);
   }
 
   /*** Form validator Step : Description du versement ***/
@@ -381,19 +336,19 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   private createProject() {
-    this.pending = true;
+    this.isLoading = true;
     const project: Project = this.formToProject();
     this.moveToNextStep();
     this.projectsService.create(project).subscribe(
       (_result) => {
-        this.pending = false;
+        this.isLoading = false;
         this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
       (_error) => {
-        this.pending = false;
+        this.isLoading = false;
         this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
@@ -403,10 +358,12 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   private createProjectAndTransactionAndUpload() {
-    this.uploadZipCompleted = false;
-    this.pending = true;
+    let transactionId: string;
+    this.isLoading = true;
     const project: Project = this.formToProject();
     this.moveToNextStep();
+    const zipFile = new ZipFile();
+    this.zipFileStatus$ = zipFile.zipFileStatus$;
 
     this.projectsService
       .create(project)
@@ -420,12 +377,16 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
             }) as Transaction,
         ),
         switchMap((transaction) => this.transactionsService.create(transaction)),
-        map((createTransactionResponse) => createTransactionResponse.id as string),
-        switchMap((createTransactionId) => this.uploadService.uploadZip(this.tenantIdentifier, createTransactionId)),
-        switchMap((uploadOperation) => uploadOperation),
-        tap(() => {
-          this.uploadZipCompleted = true;
-          this.pending = false;
+        tap((createdTransactionResponse) => {
+          transactionId = createdTransactionResponse.id;
+          zipFile.setZipName(transactionId + '.zip');
+        }),
+        switchMap(() => zipFile.addFiles(this.filesToUploadControl.value).generateZip()),
+        switchMap((content) => this.uploadService.uploadZip(content, transactionId)),
+        tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),
+        last((httpEvent) => httpEvent.type === HttpEventType.Response),
+        finalize(() => {
+          this.isLoading = false;
           this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,

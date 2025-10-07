@@ -2,11 +2,10 @@
   <h2>Drag and drop</h2>
 
   <h3>Default template</h3>
-  <vitamui-file-selector [extensions]="['.json', '.rng']" [multipleFiles]="true" [maxSizeInBytes]="25 * 1024 * 1024">
-  </vitamui-file-selector>
+  <vitamui-file-selector [extensions]="['.json', '.rng']" [multiple]="true" [maxSizeInBytes]="25 * 1024 * 1024"> </vitamui-file-selector>
 
   <h3>Custom template</h3>
-  <vitamui-file-selector #fs [multipleFiles]="true">
+  <vitamui-file-selector #fs [multiple]="true">
     <ng-template #fileList>
       <ul style="margin: 0 auto">
         <li *ngFor="let file of fs.files">{{ file.name }} ({{ file.size | bytes }})</li>

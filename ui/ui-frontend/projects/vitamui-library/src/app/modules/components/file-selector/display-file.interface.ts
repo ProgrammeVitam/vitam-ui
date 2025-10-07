@@ -34,34 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileSelectorComponent } from './file-selector.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { PipesModule } from '../../pipes/pipes.module';
-import { LoggerModule } from '../../logger';
-
-describe('FileSelectorComponent', () => {
-  let component: FileSelectorComponent;
-  let fixture: ComponentFixture<FileSelectorComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [FileSelectorComponent, TranslateModule.forRoot(), PipesModule, LoggerModule.forRoot()],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(FileSelectorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create the component', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should reset the input after file selection', () => {
-    component['inputFiles'] = { nativeElement: { value: 'test' } };
-    const mockFiles = [new File(['content'], 'test.json')];
-    component.handleFiles(mockFiles);
-    expect(component['inputFiles'].nativeElement.value).toBe('');
-  });
-});
+export interface DisplayFile {
+  name: string;
+  size: number;
+  directory: boolean;
+}

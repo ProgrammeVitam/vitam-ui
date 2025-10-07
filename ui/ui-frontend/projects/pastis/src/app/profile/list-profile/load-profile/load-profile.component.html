@@ -5,8 +5,7 @@
       <p class="subtitle text large bold">{{ config.subTitle }}</p>
     </div>
   </div>
-  <vitamui-file-selector #fs class="d-flex" [extensions]="config.extensions" [multipleFiles]="config.multipleFiles">
-  </vitamui-file-selector>
+  <vitamui-file-selector #fs class="d-flex" [extensions]="config.extensions" [multiple]="config.multipleFiles"> </vitamui-file-selector>
   <div class="actions">
     <button type="button" class="btn primary" [disabled]="!fs.files?.length" [matDialogClose]="fs.files">{{ config.okLabel }}</button>
     <button type="button" class="btn cancel link" matDialogClose>{{ config.cancelLabel }}</button>
