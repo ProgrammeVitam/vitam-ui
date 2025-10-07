@@ -47,7 +47,9 @@ export function getSearchCriteriaConfig(fragment: string, key: string) {
       return FINAL_ACTION_PREFIX + key;
     } else if (FINAL_ACTION_TYPES.includes(fragment)) {
       return FINAL_ACTION_TYPE_PREFIX + key;
-    } else if ([ARCHIVE_UNIT_WITH_OBJECTS, ARCHIVE_UNIT_WITHOUT_OBJECTS].includes(fragment)) {
+    } else if (
+      [ARCHIVE_UNIT_WITH_OBJECTS, ARCHIVE_UNIT_WITHOUT_OBJECTS, ARCHIVE_UNIT_HOLDING_UNIT, ARCHIVE_UNIT_FILING_UNIT].includes(fragment)
+    ) {
       return ALL_ARCHIVE_UNIT_TYPES;
     } else if (fragment === ARCHIVE_UNIT_WITH_ERRORS) {
       return ERRORS;
@@ -170,6 +172,8 @@ export const ORIGIN_INHERITE_AT_LEAST_ONE = 'ORIGIN_INHERITE_AT_LEAST_ONE';
 export const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 export const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 export const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
+export const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+export const ARCHIVE_UNIT_FILING_UNIT = 'ARCHIVE_UNIT_FILING_UNIT';
 export const ARCHIVE_UNIT_WITH_ERRORS = 'ARCHIVE_UNIT_WITH_ERRORS';
 
 export const APPRAISAL_RULE = 'APPRAISAL_RULE';
