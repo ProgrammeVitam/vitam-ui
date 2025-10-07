@@ -81,7 +81,7 @@ export class CriteriaSearchComponent {
       return criteriaValue.label;
     }
     if (key === 'VIRTUAL') {
-      return criteriaValue.value.value + '(' + criteriaValue.value.virtualNodeRealParentTitle + ')';
+      return criteriaValue.value.value + ' (' + criteriaValue.value.virtualNodeRealParentTitle + ')';
     }
     return criteriaValue.value?.value ?? '';
   }

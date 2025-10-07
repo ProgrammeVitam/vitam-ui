@@ -36,7 +36,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',
@@ -74,5 +74,15 @@ export class CriteriaSearchComponent {
 
   removeCriteriaAllValues() {
     this.removeCriteriaList(this.criteriaVal.values.map((value) => value.value));
+  }
+
+  getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
+    if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
+      return criteriaValue.label;
+    }
+    if (key === 'VIRTUAL') {
+      return criteriaValue.value.value + ' (' + criteriaValue.value.virtualNodeRealParentTitle + ')';
+    }
+    return criteriaValue.value?.value ?? '';
   }
 }
