@@ -54,6 +54,7 @@ import {
   Option,
   Project,
   ProjectStatus,
+  readFileContent,
   Transaction,
   TransactionStatus,
   Workflow,
@@ -96,7 +97,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   hasError = false;
   errorMessage: string;
   ontologies: Option[];
-  filesToUpload: File[] = [];
+  filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
   zipFileStatus$: Observable<ZipFileStatus>;
 
   acquisitionInformationsList = [
@@ -186,21 +187,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.stepIndex = this.stepIndex - 1;
   }
 
-  setFilesToUpload(files: File[]) {
-    this.filesToUpload = files;
-  }
-
-  uploadJsltFile(files: File[]) {
+  async handleJsltFile(files: File[]) {
     const jsltFile = files?.length ? files[0] : undefined;
     if (jsltFile) {
-      this.readFileContent(jsltFile)
-        .then((content: string) => {
-          this.projectForm.get('transformationRules').setValue(content);
-        })
-        .catch((error: any) => {
-          this.logger.error('Error reading JSLT file:', error);
-          this.isLoading = false;
-        });
+      try {
+        const content: string = await readFileContent(jsltFile);
+        this.projectForm.get('transformationRules').setValue(content);
+      } catch (error) {
+        this.logger.error('Error reading JSLT file:', error);
+        this.isLoading = false;
+      }
     }
   }
 
@@ -375,7 +371,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
           transactionId = createdTransactionResponse.id;
           zipFile.setZipName(transactionId + '.zip');
         }),
-        switchMap(() => zipFile.addFiles(this.filesToUpload).generateZip()),
+        switchMap(() => zipFile.addFiles(this.filesToUploadControl.value).generateZip()),
         switchMap((content) => this.archiveCollectService.uploadZip(content, transactionId)),
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
@@ -395,18 +391,5 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   asFormGroup(control: AbstractControl) {
     return control as FormGroup;
-  }
-
-  asFormControl(control: AbstractControl) {
-    return control as FormControl;
-  }
-
-  private readFileContent(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => resolve(event.target?.result as string);
-      reader.onerror = (error) => reject(error);
-      reader.readAsText(file);
-    });
   }
 }
