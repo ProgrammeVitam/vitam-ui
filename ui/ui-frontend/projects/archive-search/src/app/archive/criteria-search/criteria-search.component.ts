@@ -36,7 +36,6 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
-
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',

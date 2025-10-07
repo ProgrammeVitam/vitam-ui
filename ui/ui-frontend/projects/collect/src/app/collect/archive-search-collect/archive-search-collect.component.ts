@@ -83,6 +83,7 @@ import {
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
   WAITING_RECALCULATE,
+  NODES,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -224,7 +225,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         if (node && node.id && !node.checked) {
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
-            this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+            this.removeCriteria(ORPHANS_NODE_ID, { id: 'position', value: ORPHANS_NODE_ID }, true);
           } else if (node.isVirtual) {
             this.removeCriteria(
               'VIRTUAL',
@@ -236,7 +237,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
               false,
             );
           } else {
-            this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
+            this.removeCriteria('NODE', { id: NODES, value: node.id }, true);
           }
           return;
         }
@@ -246,14 +247,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.searchCriteriaKeys,
             this.nbQueryCriteria,
             ORPHANS_NODE_ID,
-            { id: ORPHANS_NODE_ID, value: ORPHANS_NODE_ID },
+            { id: 'position', value: ORPHANS_NODE_ID },
             node.title,
             true,
             CriteriaOperator.MISSING,
             SearchCriteriaTypeEnum.FIELDS,
             false,
             CriteriaDataType.STRING,
-            false,
+            true,
           );
         } else if (node.isVirtual) {
           this.addCriteria(

@@ -133,6 +133,14 @@ const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> }
     keyElt: 'RULE_IDENTIFIER_REUSE_RULE',
     keyTranslated: true,
   },
+  position: {
+    keyElt: 'ORPHANS_NODE',
+    keyTranslated: true,
+  },
+  NODES: {
+    keyElt: 'NODE',
+    keyTranslated: true,
+  },
 };
 searchCriteriaConfigs.Title = searchCriteriaConfigs.title;
 searchCriteriaConfigs.Description = searchCriteriaConfigs.description;
