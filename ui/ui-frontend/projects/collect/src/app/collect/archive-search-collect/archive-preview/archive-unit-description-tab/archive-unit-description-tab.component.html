@@ -1,7 +1,7 @@
 <vitamui-common-archive-unit-viewer *ngIf="!editMode" [data]="archiveUnit"></vitamui-common-archive-unit-viewer>
 
 <div *ngIf="editMode">
-  <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.2' }" class="editor-banner">
+  <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.3' }" class="editor-banner">
     <button (click)="onSave()" [disabled]="!isModified()" class="btn primary save">
       {{ 'COMMON.SAVE' | translate }}
     </button>
