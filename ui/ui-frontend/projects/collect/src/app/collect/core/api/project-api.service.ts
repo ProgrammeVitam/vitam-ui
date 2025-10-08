@@ -37,7 +37,7 @@
 
 import { HttpClient, HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import {
   BASE_URL,
   PageRequest,
@@ -184,11 +184,11 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
   }
 
   validateTransaction(id: string) {
-    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/validate', {});
+    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/validate', {}).pipe(switchMap(() => this.getTransactionById(id)));
   }
 
   sendTransaction(id: string) {
-    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/send', {});
+    return this.http.put<Transaction>(this.urlTransaction + '/' + id + '/send', {}).pipe(switchMap(() => this.getTransactionById(id)));
   }
 
   updateTransaction(data: Transaction): Observable<Transaction> {

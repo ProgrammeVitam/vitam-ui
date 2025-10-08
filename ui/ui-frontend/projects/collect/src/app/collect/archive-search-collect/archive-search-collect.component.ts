@@ -179,8 +179,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   tenantIdentifier: string;
   projectName: string;
-  isAutomaticIngest: boolean;
-  isAutomaticIngestValidated: boolean;
+  isAutomaticIngest = false;
   breadcrumbData: BreadCrumbData[];
 
   archiveUnitAllunitup: string[];
@@ -357,8 +356,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             const { projectId, transactionId } = params;
             const path$: Observable<BreadCrumbData>[] = [
               this.archiveUnitCollectService.getProjectById(projectId).pipe(
+                tap((project) => (this.isAutomaticIngest = Boolean(project.automaticIngest))),
                 map((project) => {
-                  this.isAutomaticIngest = project.automaticIngest;
                   return {
                     label: project.messageIdentifier,
                     redirectUrl: `collect/transactions/${projectId}`,
@@ -1226,10 +1225,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   validateTransaction() {
-    this.archiveUnitCollectService.validateTransaction(this.transaction.id).subscribe(() => {
-      this.isNotOpen$.next(true);
-      this.isNotReady$.next(false);
-      this.isAutomaticIngestValidated = true;
+    this.archiveUnitCollectService.validateTransaction(this.transaction.id).subscribe((transaction: Transaction) => {
+      this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
+      this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
+      this.transaction = transaction;
       this.snackBarService.open({
         message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
         duration: 10_000,
@@ -1238,8 +1237,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   sendTransaction() {
-    this.archiveUnitCollectService.sendTransaction(this.transaction.id).subscribe(() => {
-      this.isNotReady$.next(true);
+    this.archiveUnitCollectService.sendTransaction(this.transaction.id).subscribe((transaction: Transaction) => {
+      this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
+      this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
+      this.transaction = transaction;
       this.snackBarService.open({
         message: 'COLLECT.INGEST_TRANSACTION_LAUNCHED',
         duration: 10_000,
@@ -1350,4 +1351,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
       });
   }
+
+  protected readonly TransactionStatus = TransactionStatus;
 }
