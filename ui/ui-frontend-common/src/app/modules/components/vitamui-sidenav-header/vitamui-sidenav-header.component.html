@@ -6,10 +6,14 @@
       </button>
     </div>
 
-    <div *ngIf="!loading; else spinner">
-      <div class="title">
+    <div class="d-flex">
+      <div
+        class="title"
+        [vitamuiCommonToolTip]="hasToolTipOnTitle && toolTipTitleText ? toolTipTitleText : null"
+        [vitamuiCommonToolTipPosition]="hasToolTipOnTitle && toolTipTitleText ? 'BOTTOM' : null"
+      >
         <i
-          class="vitamui-icon {{ icon }}"
+          class="vitamui-icon {{ icon }} mr-2"
           [ngClass]="{
             'status-badge-red': badge === 'red',
             'status-badge-green': badge === 'green',
@@ -19,19 +23,22 @@
           }"
         >
         </i>
+        <div>
+          <h5 class="m-0" [ngClass]="{ 'text-primary': hasToolTipOnTitle && toolTipTitleText }">
+            {{ title }}
+          </h5>
 
-        <div
-          *ngIf="hasToolTipOnTitle && toolTipTitleText"
-          vitamuiCommonToolTip="{{ toolTipTitleText }}"
-          vitamuiCommonToolTipPosition="BOTTOM"
-        >
-          <h5 class="m-0 text-primary">{{ title }}</h5>
-          <p class="text large light m-0">{{ subtitle }}</p>
+          <p
+            class="m-0"
+            [ngClass]="{
+              'text large light': hasToolTipOnTitle && toolTipTitleText,
+              'text medium': !(hasToolTipOnTitle && toolTipTitleText)
+            }"
+          >
+            {{ subtitle }}
+          </p>
         </div>
-        <div *ngIf="!hasToolTipOnTitle || !toolTipTitleText">
-          <h5 class="m-0">{{ title }}</h5>
-          <p class="text medium m-0">{{ subtitle }}</p>
-        </div>
+
         <div *ngIf="!actionsBelowTitle" class="d-flex align-items-end justify-content-end actions">
           <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
         </div>
