@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, firstValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   ALL_DESCENDANTS_FACET,
@@ -355,9 +355,9 @@ export class LeavesTreeApiService {
   ////////////////////////////////////////////////////////// New queries /////////////////////////
 
   //Query 2 :
-  retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds: string[], parentNode: FilingHoldingSchemeNode): Observable<PagedResult> {
+  async retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds: string[], parentNode: FilingHoldingSchemeNode): Promise<PagedResult> {
     if (perimeterNodesIds.length === 0) {
-      return EMPTY;
+      return Promise.resolve({ results: [], pageNumbers: 0, totalResults: 0 });
     }
     let newCriteriaList: SearchCriteriaEltDto[] = [];
     let perimeterNodesCriteria = [];
@@ -402,11 +402,7 @@ export class LeavesTreeApiService {
       ],
       facets: [ALL_DESCENDANTS_FACET],
     };
-    return this.sendSearchArchiveUnitsByCriteria(criteria).pipe(
-      map((pagedResult) => {
-        return pagedResult;
-      }),
-    );
+    return firstValueFrom(this.sendSearchArchiveUnitsByCriteria(criteria));
   }
 
   //Query 3 : to extract direct children having results or folder having results to manage paginating ...

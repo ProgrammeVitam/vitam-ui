@@ -529,7 +529,7 @@ export class LeavesTreeService {
   }
 
   private async extractContainersFilteredByMainRoots(node: FilingHoldingSchemeNode, perimeterNodesIds: string[]) {
-    const { results } = await firstValueFrom(this.leavesTreeApiService.retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds, node));
+    const { results } = await this.leavesTreeApiService.retrieveDirectFoldersFilteredByPerimeter(perimeterNodesIds, node);
 
     return results.map((unit) => {
       const convertedNode = FilingHoldingSchemeHandler.convertUnitToNode(unit);

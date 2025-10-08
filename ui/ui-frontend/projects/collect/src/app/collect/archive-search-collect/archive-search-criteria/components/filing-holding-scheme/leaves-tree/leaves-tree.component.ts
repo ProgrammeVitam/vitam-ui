@@ -117,7 +117,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
           .loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets)
           .subscribe(() => this.refreshTreeNodes());
       }
-      if (changes.searchRequestResultFacets && changes.searchRequestResultFacets.currentValue.length > 0) {
+      if (changes.searchRequestResultFacets && changes.searchRequestResultFacets.currentValue?.length > 0) {
         this.leavesTreeService.setSearchRequestResultFacets(changes.searchRequestResultFacets.currentValue);
       }
       this.refreshTreeNodes();
