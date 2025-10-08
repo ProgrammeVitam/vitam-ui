@@ -67,6 +67,8 @@ import { SimpleCriteriaSearchComponent } from './archive-search-criteria/compone
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
+import arrayWithExactContents = jasmine.arrayWithExactContents;
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -80,7 +82,7 @@ describe('ArchiveSearchCollectComponent', () => {
   let component: ArchiveSearchCollectComponent;
   let fixture: ComponentFixture<ArchiveSearchCollectComponent>;
   const pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
-
+  let archiveSharedDataService: ArchiveSharedDataService;
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
@@ -173,6 +175,7 @@ describe('ArchiveSearchCollectComponent', () => {
     fixture = TestBed.createComponent(ArchiveSearchCollectComponent);
     component = fixture.componentInstance;
     component.transaction = transaction;
+    archiveSharedDataService = TestBed.inject(ArchiveSharedDataService);
     fixture.detectChanges();
 
     return { routerSpy };
@@ -285,6 +288,95 @@ describe('ArchiveSearchCollectComponent', () => {
         }),
         transaction.id,
       );
+    });
+
+    it('should update criteria when a virtual node is checked', async () => {
+      await setupTest({ opi: '1234' });
+
+      await fixture.whenStable();
+
+      const virtualNode1: NodeData = {
+        checked: true,
+        virtualPath: 'virtualPath',
+        id: 'virtualPath',
+        realParentId: 'someRealParentId',
+        realParentTitle: 'someRealParentTitle',
+        isVirtual: true,
+        title: 'virtualPath',
+      };
+
+      const virtualNode2: NodeData = {
+        checked: true,
+        virtualPath: 'virtualPath',
+        id: 'virtualPath',
+        realParentId: 'someOtherRealParentId',
+        realParentTitle: 'someOtherRealParentTitle',
+        isVirtual: true,
+        title: 'virtualPath',
+      };
+
+      archiveSharedDataService.emitNode(virtualNode1);
+      archiveSharedDataService.emitNode(virtualNode2);
+      fixture.detectChanges();
+
+      expect(component.searchCriterias.has('VIRTUAL')).toBeTrue();
+
+      const virtualCriteria = component.searchCriterias.get('VIRTUAL');
+      expect(virtualCriteria?.values?.length).toEqual(2);
+
+      const virtualValues = virtualCriteria.values.filter((value) => value?.value?.id === 'virtualPath');
+      expect(virtualValues.map((o) => o.value.virtualNodeRealParentId)).toEqual(
+        arrayWithExactContents(['someRealParentId', 'someOtherRealParentId']),
+      );
+
+      expect(virtualValues.map((o) => o.value.virtualNodeRealParentTitle)).toEqual(
+        arrayWithExactContents(['someRealParentTitle', 'someOtherRealParentTitle']),
+      );
+    });
+
+    it('should update criteria when a virtual node is unchecked', async () => {
+      await setupTest({ opi: '1234' });
+
+      await fixture.whenStable();
+
+      let virtualNode1: NodeData = {
+        checked: true,
+        virtualPath: 'virtualPath',
+        id: 'virtualPath',
+        realParentId: 'someRealParentId',
+        realParentTitle: 'someRealParentTitle',
+        isVirtual: true,
+        title: 'virtualPath',
+      };
+
+      let virtualNode2: NodeData = {
+        checked: true,
+        virtualPath: 'virtualPath',
+        id: 'virtualPath',
+        realParentId: 'someOtherRealParentId',
+        realParentTitle: 'someOtherRealParentTitle',
+        isVirtual: true,
+        title: 'virtualPath',
+      };
+
+      archiveSharedDataService.emitNode(virtualNode1);
+      archiveSharedDataService.emitNode(virtualNode2);
+      fixture.detectChanges();
+
+      expect(component.searchCriterias.has('VIRTUAL')).toBeTrue();
+
+      let virtualCriteria = component.searchCriterias.get('VIRTUAL');
+      expect(virtualCriteria?.values?.length).toEqual(2);
+
+      let virtualValues = virtualCriteria.values.filter((value) => value?.value?.id === 'virtualPath');
+
+      virtualNode1.checked = false;
+      archiveSharedDataService.emitNode(virtualNode1);
+      expect(component.searchCriterias.has('VIRTUAL')).toBeTrue();
+      expect(virtualCriteria?.values?.length).toEqual(1);
+
+      expect('someRealParentId').toEqual(virtualValues[0].value.virtualNodeRealParentId);
+      expect('someRealParentTitle').toEqual(virtualValues[0].value.virtualNodeRealParentTitle);
     });
   });
 });
