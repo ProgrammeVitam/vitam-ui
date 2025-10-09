@@ -24,7 +24,7 @@
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
       [accessContractAllowUpdating]="accessContractAllowUpdating"
       [hasUnitaryUpdateUnitRole]="hasUnitaryUpdateUnitRole"
-      [transactionId]="transaction.id"
+      [transactionId]="transaction?.id"
       [transactionIsNotOpen]="isNotOpen$ | async"
     ></app-archive-preview>
   </mat-sidenav>
@@ -86,7 +86,7 @@
             <button
               mat-menu-item
               (click)="sendTransaction()"
-              [disabled]="!hasSendTransactionRole || transaction.status !== TransactionStatus.VALIDATED || isAutomaticIngest"
+              [disabled]="!hasSendTransactionRole || transaction?.status !== TransactionStatus.VALIDATED || isAutomaticIngest"
             >
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
