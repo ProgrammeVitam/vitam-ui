@@ -62,6 +62,14 @@ public class ParseOperationException extends VitamUIException {
     }
 
     /**
+     * @param message the message
+     * @param e the exception
+     */
+    public ParseOperationException(String message, Throwable e) {
+        super(message, e);
+    }
+
+    /**
      * @param message
      *            the message
      */
