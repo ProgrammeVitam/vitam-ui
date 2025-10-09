@@ -39,6 +39,7 @@ import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/m
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, unitToVitamuiIcon } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
+import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-archive-preview',
@@ -66,7 +67,10 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('descriptionTab', { static: false }) descriptionTab: ArchiveUnitDescriptionTabComponent;
 
-  constructor(private translateService: TranslateService) {}
+  constructor(
+    private translateService: TranslateService,
+    private archiveSharedDataService: ArchiveSharedDataService,
+  ) {}
 
   ngAfterViewInit(): void {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -81,6 +85,7 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.selectedIndex = 0;
+    this.archiveSharedDataService.emitSelectedUnit(null);
   }
 
   async checkBeforeExit() {

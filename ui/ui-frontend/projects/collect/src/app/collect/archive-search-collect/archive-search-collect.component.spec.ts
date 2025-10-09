@@ -57,6 +57,7 @@ import {
   SearchCriteriaDto,
   Transaction,
   TransactionStatus,
+  UnitType,
 } from 'vitamui-library';
 
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
@@ -208,7 +209,14 @@ describe('ArchiveSearchCollectComponent', () => {
       it('should include the unselected child when parent is checked, into the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
-        component.checkChildrenBoxChange('1234', event);
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
+        component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToExclude.length).toBe(1);
         expect(component.listOfUAIdToExclude[0]).toEqual({ value: '1234', id: '1234' });
         expect(component.listOfUAIdToInclude.length).toBe(0);
@@ -222,7 +230,14 @@ describe('ArchiveSearchCollectComponent', () => {
         component.isAllChecked = true;
         component.itemNotSelected = 1;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
-        component.checkChildrenBoxChange('1234', event);
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
+        component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToExclude.length).toBe(0);
         expect(component.listOfUAIdToInclude.length).toBe(0);
         expect(component.isIndeterminate).toBeFalsy();
@@ -234,7 +249,14 @@ describe('ArchiveSearchCollectComponent', () => {
       it('should include the selected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
-        component.checkChildrenBoxChange('1234', event);
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
+        component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToInclude.length).toBe(1);
         expect(component.listOfUAIdToInclude[0]).toEqual({ value: '1234', id: '1234' });
         expect(component.listOfUAIdToExclude.length).toBe(0);
@@ -246,7 +268,14 @@ describe('ArchiveSearchCollectComponent', () => {
       it('should not include the unselected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
         const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
-        component.checkChildrenBoxChange('1234', event);
+        const unit = {
+          '#id': '1234',
+          '#unitups': [''],
+          '#allunitups': [''],
+          '#unitType': UnitType.HOLDING_UNIT,
+          '#opi': '1234',
+        };
+        component.checkChildrenBoxChange(unit, event);
         expect(component.listOfUAIdToInclude.length).toBe(0);
         expect(component.listOfUAIdToExclude.length).toBe(0);
         expect(component.isIndeterminate).toBeFalsy();

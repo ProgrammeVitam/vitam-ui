@@ -189,6 +189,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   search$: Observable<number>;
 
+  displayedColumns = ['checkbox', 'type', 'name_description', 'start_date', 'end_date', 'originating_agency'];
+
   @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
   confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchCollectComponent>;
   @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
@@ -209,7 +211,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private translateService: TranslateService,
     private archiveUnitCollectService: ArchiveCollectService,
     private archiveHelperService: ArchiveSearchHelperService,
-    private archiveExchangeDataService: ArchiveSharedDataService,
+    private archiveSharedDataService: ArchiveSharedDataService,
     private archiveFacetsService: ArchiveFacetsService,
     public dialog: MatDialog,
     private queryParamsService: QueryParamsService,
@@ -220,7 +222,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     super(route, globalEventService);
 
     this.subscriptions.add(
-      this.archiveExchangeDataService.getNodes().subscribe((node) => {
+      this.archiveSharedDataService.getNodes().subscribe((node) => {
         if (node && node.id && !node.checked) {
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
@@ -292,14 +294,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
 
     this.subscriptions.add(
-      this.archiveExchangeDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria)),
+      this.archiveSharedDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria)),
     );
 
-    this.archiveExchangeDataService
+    this.archiveSharedDataService
       .receiveRemoveFromChildSearchCriteriaSubject()
       .subscribe((criteria) => this.searchCriteriaRemoveAction(criteria));
 
-    this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
+    this.archiveSharedDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
       if (criteria) {
         if (criteria.valueElt) {
           this.removeCriteria(criteria.keyElt, criteria.valueElt, false);
@@ -309,7 +311,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       }
     });
 
-    this.selectedArchive$ = archiveExchangeDataService.selectedUnit$;
+    this.selectedArchive$ = archiveSharedDataService.selectedUnit$;
   }
 
   ngOnDestroy() {
@@ -389,7 +391,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         .subscribe(() => this.submit()),
     );
     this.subscriptions.add(
-      this.archiveExchangeDataService.getToggle().subscribe((hidden) => {
+      this.archiveSharedDataService.getToggle().subscribe((hidden) => {
         this.show = hidden;
       }),
     );
@@ -409,7 +411,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   ngAfterViewInit() {
     // Trigger the search after getting the transaction and the view is init. Also making sure that searchCriteriaService is ready (i.e.: schema has been retrieved) in order to trigger search only after criteria have been set from the URL query params
     zip(this.transaction$, this.searchCriteriaService.ready()).subscribe(() => {
-      this.archiveExchangeDataService
+      this.archiveSharedDataService
         .receiveSimpleSearchCriteriaSubject()
         .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS), take(1)) // For some reason, we have to use that complex observable to trigger the submit() at the correct time (i.e.: the criteria have been set from the URL query params, if any)
         .subscribe((_criteria) => setTimeout(() => this.submit()));
@@ -563,7 +565,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.listOfUAIdToInclude = [];
     this.listOfUAIdToExclude = [];
 
-    this.archiveExchangeDataService.emitSelectedUnit(null);
+    this.archiveSharedDataService.emitSelectedUnit(null);
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
@@ -606,7 +608,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       computeMgtRulesFacets: includeFacets,
       facets: facets,
     };
-    this.archiveExchangeDataService.emitSearchCriterias(searchCriteria);
+    this.archiveSharedDataService.emitSearchCriterias(searchCriteria);
     this.archiveUnitCollectService.searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
@@ -620,10 +622,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.searchHasResults = !isEmpty(pagedResult.results);
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
           this.totalResults = pagedResult.totalResults;
-          this.archiveExchangeDataService.emitTotalResults(this.totalResults);
-          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+          this.archiveSharedDataService.emitTotalResults(this.totalResults);
+          this.archiveSharedDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
         } else if (pagedResult.results) {
-          pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
+          this.archiveUnits = [...this.archiveUnits, ...pagedResult.results];
         }
         this.pageNumbers = pagedResult.pageNumbers;
         this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
@@ -645,7 +647,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.pending = false;
         if (includeFacets) {
           this.pendingComputeFacets = false;
-          this.archiveExchangeDataService.emitFacets([]);
+          this.archiveSharedDataService.emitFacets([]);
         }
       },
     );
@@ -653,7 +655,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   onArchiveUnitCountChange(event: number) {
     this.totalResults = event;
-    this.archiveExchangeDataService.emitTotalResults(event);
+    this.archiveSharedDataService.emitTotalResults(event);
   }
 
   // Manage lateral panels
@@ -672,7 +674,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
-    this.archiveExchangeDataService.emitSelectedUnit(item);
+    this.archiveSharedDataService.emitSelectedUnit(item);
   }
 
   // Manage criteria filters methods
@@ -692,8 +694,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.listOfUACriteriaSearch = [];
   }
 
-  checkChildrenBoxChange(id: string, event: any) {
+  checkChildrenBoxChange(archiveUnit: Unit, event: any) {
     event.stopPropagation();
+
+    const id = archiveUnit['#id'];
     const action = event.target.checked;
 
     if (this.isAllChecked && !action) {
@@ -762,7 +766,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.searchCriterias = new Map();
       this.criteriaSearchList = [];
       this.searchArchiveUnits(false);
-      this.archiveExchangeDataService.emitNodeTarget(null);
+      this.archiveSharedDataService.emitNodeTarget(null);
     }
   }
 
@@ -835,7 +839,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   // Manage crietria categories
 
   addCriteriaCategory(categoryName: string) {
-    this.archiveExchangeDataService.emitRuleCategory(categoryName);
+    this.archiveSharedDataService.emitRuleCategory(categoryName);
     const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
     if (indexOfCategory === -1) {
       this.additionalSearchCriteriaCategories.push({
@@ -850,7 +854,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   sendRuleCategorySelected(categoryName: string) {
-    this.archiveExchangeDataService.emitRuleCategory(categoryName);
+    this.archiveSharedDataService.emitRuleCategory(categoryName);
   }
 
   isCategoryAdded(categoryName: string): boolean {
@@ -948,7 +952,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       data: {
         searchCriteriaHistory: searchCriteriaHistory$,
         originalSearchCriteria: this.searchCriterias,
-        nbCriterias: this.archiveExchangeDataService.nbFilters(searchCriteriaHistory$),
+        nbCriterias: this.archiveSharedDataService.nbFilters(searchCriteriaHistory$),
       },
     };
 
@@ -1193,7 +1197,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         );
       });
       this.nodeArray = null;
-      this.archiveExchangeDataService.emitToggle(true);
+      this.archiveSharedDataService.emitToggle(true);
     }
   }
 
@@ -1347,7 +1351,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       .subscribe((response: PagedResult) => {
         const hasAUWithoutAttachment = response.results != null && !isEmpty(response.results);
         if (hasAUWithoutAttachment) {
-          this.archiveExchangeDataService.emitNumberOfAUsWithoutAttachment(response.totalResults);
+          this.archiveSharedDataService.emitNumberOfAUsWithoutAttachment(response.totalResults);
         }
       });
   }
