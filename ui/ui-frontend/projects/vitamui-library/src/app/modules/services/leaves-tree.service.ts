@@ -88,10 +88,6 @@ export class LeavesTreeService {
     );
   }
 
-  searchAttachementUnit(): Observable<PagedResult> {
-    return this.leavesTreeApiService.searchAttachementUnit();
-  }
-
   setSearchCriterias(searchCriterias: SearchCriteriaDto) {
     this.searchCriterias = searchCriterias;
   }
