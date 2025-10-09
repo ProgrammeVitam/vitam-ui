@@ -203,12 +203,6 @@
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
         </dependency>
-        <!-- PDF generation -->
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
             <artifactId>fr.opensagres.odfdom.converter.core</artifactId>

@@ -159,7 +159,7 @@ public class SanityChecker {
         try {
             return JsonSanitizer.sanitize(jsonish);
         } catch (final RuntimeException e) {
-            throw new ParseOperationException(JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK);
+            throw new ParseOperationException(JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK, e);
         }
     }
 
@@ -288,7 +288,7 @@ public class SanityChecker {
                 checkSanityTags(param, getLimitParamSize());
                 checkHtmlPattern(param);
             } catch (InvalidParseOperationException | PreconditionFailedException exception) {
-                throw new ParseOperationException("Error with the parameter ");
+                throw new ParseOperationException("Error with the parameter", exception);
             }
         } else {
             throw new PreconditionFailedException("the parameter " + param + " is not valid");
