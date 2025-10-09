@@ -99,11 +99,14 @@ td .row-expand-btn {
 }
 
 tr {
+  td {
+    overflow-wrap: anywhere;
+  }
+
   td,
   th {
     position: relative;
     height: 60px;
-    overflow-wrap: anywhere;
   }
 }
 
