@@ -105,7 +105,7 @@
           <app-simple-criteria-search></app-simple-criteria-search>
         </div>
       </mat-tab>
-      <mat-tab *ngFor="let category of additionalSearchCriteriaCategories; let index = index">
+      <mat-tab *ngFor="let category of additionalSearchCriteriaCategories">
         <ng-template mat-tab-label>
           <span (click)="sendRuleCategorySelected(category.name)">
             {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.' + category.name | translate }}
@@ -292,7 +292,7 @@
         [(pending)]="pending"
         [allChecked]="isAllChecked"
         class="col-8"
-      ></vitamui-common-archive-unit-count>
+      />
     </ng-container>
     <ng-container buttons>
       <button class="btn btn-circle large tertiary" [disabled]="!(totalResults > 0 && selectedItemCount > 0)">
@@ -371,7 +371,7 @@
       <td mat-cell *matCellDef="let archiveUnit">
         <label class="vitamui-checkbox wide">
           <input
-            id="{{ archiveUnit?.['#id'] }}"
+            [id]="archiveUnit?.['#id']"
             (change)="checkChildrenBoxChange(archiveUnit, $event)"
             type="checkbox"
             [checked]="isAllChecked"
@@ -464,16 +464,14 @@
       class="vitamui-table-rows clickable"
       [class.selected]="(selectedArchive$ | async)?.['#id'] === row['#id']"
     ></tr>
-    <tfoot>
-      <tr mat-footer-row>
-        <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-        <button *ngIf="!pending && canLoadMore" (click)="loadMore()" class="btn">
-          {{ 'ARCHIVE_SEARCH.SHOW_MORE_RESULTS' | translate }}
-        </button>
-        <span *ngIf="!pending && !canLoadMore">{{ 'ARCHIVE_SEARCH.NO_MORE_RESULTS' | translate }}</span>
-      </tr>
-    </tfoot>
   </table>
+  <div class="vitamui-table-footer">
+    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+    <button *ngIf="!pending && canLoadMore" (click)="loadMore()" class="btn">
+      {{ 'ARCHIVE_SEARCH.SHOW_MORE_RESULTS' | translate }}
+    </button>
+    <span *ngIf="!pending && !canLoadMore">{{ 'ARCHIVE_SEARCH.NO_MORE_RESULTS' | translate }}</span>
+  </div>
 </div>
 
 <ng-template #confirmSecondActionBigNumberOfResultsActionDialog>
@@ -643,57 +641,37 @@
   </label>
 </ng-template>
 <ng-template #type>
-  <span
-    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}
-    <vitamui-order-by-button
-      orderByKey="#unitType"
-      [(orderBy)]="orderBy"
-      [(direction)]="direction"
-      (orderChange)="emitOrderChange()"
-    ></vitamui-order-by-button
-  ></span>
+  <span>
+    {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}
+    <vitamui-order-by-button orderByKey="#unitType" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+  </span>
 </ng-template>
 <ng-template #name_description>
-  <span
-    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate }}
-    <vitamui-order-by-button
-      orderByKey="Title"
-      [(orderBy)]="orderBy"
-      [(direction)]="direction"
-      (orderChange)="emitOrderChange()"
-    ></vitamui-order-by-button
-  ></span>
+  <span>
+    {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate }}
+    <vitamui-order-by-button orderByKey="Title" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+  </span>
 </ng-template>
 <ng-template #start_date>
-  <span
-    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.START_DATE' | translate }}
-    <vitamui-order-by-button
-      orderByKey="StartDate"
-      [(orderBy)]="orderBy"
-      [(direction)]="direction"
-      (orderChange)="emitOrderChange()"
-    ></vitamui-order-by-button
-  ></span>
+  <span>
+    {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.START_DATE' | translate }}
+    <vitamui-order-by-button orderByKey="StartDate" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+  </span>
 </ng-template>
 <ng-template #end_date>
-  <span
-    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.END_DATE' | translate }}
-    <vitamui-order-by-button
-      orderByKey="EndDate"
-      [(orderBy)]="orderBy"
-      [(direction)]="direction"
-      (orderChange)="emitOrderChange()"
-    ></vitamui-order-by-button
-  ></span>
+  <span>
+    {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.END_DATE' | translate }}
+    <vitamui-order-by-button orderByKey="EndDate" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+  </span>
 </ng-template>
 <ng-template #originating_agency>
-  <span
-    >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.SP' | translate }}
+  <span>
+    {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.SP' | translate }}
     <vitamui-order-by-button
       orderByKey="#originating_agencies"
       [(orderBy)]="orderBy"
       [(direction)]="direction"
       (orderChange)="emitOrderChange()"
-    ></vitamui-order-by-button
-  ></span>
+    />
+  </span>
 </ng-template>

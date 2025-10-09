@@ -80,6 +80,18 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+} from '@angular/material/table';
 
 @NgModule({
   imports: [
@@ -101,6 +113,16 @@ import { MatMenuModule } from '@angular/material/menu';
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    MatCell,
+    MatCellDef,
+    MatColumnDef,
+    MatHeaderCell,
+    MatTable,
+    MatHeaderCellDef,
+    MatHeaderRow,
+    MatHeaderRowDef,
+    MatRow,
+    MatRowDef,
   ],
   declarations: [
     AccessRuleSearchComponent,
