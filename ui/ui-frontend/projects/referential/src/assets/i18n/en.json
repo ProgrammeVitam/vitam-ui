@@ -384,7 +384,8 @@
           "INGEST": "Ingest",
           "PRESERVATION": "Preservation",
           "TRANSFER_REPLY": "Transfer",
-          "ELIMINATION": "Elimination"
+          "ELIMINATION": "Elimination",
+          "DELETE_GOT_VERSIONS": "Deleting object group versions"
         }
       }
     }
