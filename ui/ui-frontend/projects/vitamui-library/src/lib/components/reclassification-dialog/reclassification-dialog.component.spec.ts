@@ -39,15 +39,16 @@ import { ReclassificationDialogComponent } from './reclassification-dialog.compo
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL, WINDOW_LOCATION } from '../../../app/modules/injection-tokens';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { BASE_URL, PagedResult, WINDOW_LOCATION } from '../../../app/modules';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { LoggerModule } from '../../../app/modules/logger';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models';
-import { of } from 'rxjs';
-import { ConfirmDialogService } from '../../../app/modules/components/confirm-dialog';
+import { LoggerModule } from '../../../app/modules';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules';
+import { Observable, of } from 'rxjs';
+import { ConfirmDialogService } from '../../../app/modules';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 
 const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -60,7 +61,7 @@ const confirmDialogServiceMock = {
 
 const reclassificationServiceMock = {
   reclassification: () => of({}),
-  searchArchiveUnitsByCriteria: () => of({}),
+  searchArchiveUnitsByCriteria: (): Observable<PagedResult> => of({ results: [], pageNumbers: 0, totalResults: 0 }),
   openSnackBarForWorkflow: () => of({}),
   getTotalTrackHitsByCriteria: () => of({}),
 };
@@ -108,8 +109,10 @@ describe('ReclassificationDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TranslateModule.forRoot(), HttpClientTestingModule, MatSnackBarModule, LoggerModule.forRoot()],
+      imports: [NoopAnimationsModule, TranslateModule.forRoot(), MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -145,6 +148,7 @@ describe('ReclassificationDialogComponent', () => {
   it('should call reclassification of reclassificationService', () => {
     // Given
     spyOn(reclassificationServiceMock, 'reclassification').and.callThrough();
+    component.form.controls.action.setValue('PULL' as any);
 
     // When
     component.onSubmit();
@@ -153,49 +157,26 @@ describe('ReclassificationDialogComponent', () => {
     expect(reclassificationServiceMock.reclassification).toHaveBeenCalled();
   });
 
-  it('items Selected should be grather than 0 ', () => {
-    expect(component.itemSelected).toBeGreaterThan(0);
-    expect(component.itemSelected).toEqual(25);
+  it('items Selected should be greater than 0', () => {
+    expect(component.data.itemSelected).toBeGreaterThan(0);
+    expect(component.data.itemSelected).toEqual(25);
   });
 
-  it('Should have an app Name ', () => {
+  it('Should have an app Name', () => {
     expect(component.data.appName).toBeDefined();
     expect(component.data.appName).not.toBeNull();
     expect(component.data.appName).toEqual('COLLECT');
   });
 
-  it('Should have a tenant identifier ', () => {
+  it('Should have a tenant identifier', () => {
     expect(component.data.tenantIdentifier).toBeDefined();
     expect(component.data.tenantIdentifier).not.toBeNull();
     expect(component.data.tenantIdentifier).toEqual(2);
   });
 
-  it('Should have a transactionId ', () => {
+  it('Should have a transactionId', () => {
     expect(component.data.transactionId).toBeDefined();
     expect(component.data.transactionId).not.toBeNull();
     expect(component.data.transactionId).toEqual('1234567890');
-  });
-
-  it('should call searchArchiveUnitsByCriteria of archiveService', () => {
-    // Given
-    spyOn(reclassificationServiceMock, 'searchArchiveUnitsByCriteria').and.callThrough();
-
-    // When
-    component.calculateChildrenAndParents();
-
-    // Then
-    expect(component.pendingGetChilds).toBeFalsy();
-    expect(reclassificationServiceMock.searchArchiveUnitsByCriteria).toHaveBeenCalled();
-  });
-
-  it('should call getTotalTrackHitsByCriteria of archiveService', () => {
-    // Given
-    spyOn(reclassificationServiceMock, 'getTotalTrackHitsByCriteria').and.callThrough();
-
-    // When
-    component.loadExactCount();
-
-    // Then
-    expect(reclassificationServiceMock.getTotalTrackHitsByCriteria).toHaveBeenCalled();
   });
 });

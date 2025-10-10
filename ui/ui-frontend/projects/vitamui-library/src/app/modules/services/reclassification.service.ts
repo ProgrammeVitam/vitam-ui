@@ -54,7 +54,7 @@ export class ReclassificationService extends SearchService<any> implements Searc
     super(reclassificationApiService, 'ALL');
   }
 
-  public fetchTitle(title: string, titleInLanguages: any) {
+  public fetchTitle(title: string, titleInLanguages: any): string {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
   }
 
