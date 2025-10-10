@@ -6075,18 +6075,18 @@
       "ARCHIVE_WITH_NO_PARENTS": "The archival unit has no parents",
       "GUID_ALREADY_EXISTS": "The technical identifier already exists",
       "ATTACHMENT_ALREADY_EXISTS": "The attachment already exists",
-      "RECLASSIFICATION_TOGGLE_TREE_PLAN": "Trees & Plans",
-      "RECLASSIFICATION_TOGGLE_UA_ID": "Archive unit Identifier"
+      "FILING_PLAN": "Trees & Plans",
+      "ARCHIVE_UNIT_ID": "Archive unit Identifier"
     },
     "FIRST_STEP": {
       "SUBTITLE": "Reclassification action",
-      "SELECTED_UNIT": "selected archive unit",
-      "SELECTED_UNIT_PLURAL": "selected archive units",
+      "SELECTED_UNIT": "{{ count }} selected archive unit",
+      "SELECTED_UNIT_PLURAL": "{{ count }} selected archive units",
       "CHILDS": "Child(s)",
       "INCLUDING_NB_FOLDERS_DOCUMENTS": "Including {{ nbDocuments }} folders or documents",
       "SELECT_ACTION_MESSAGE_1": "Select a reclassification action",
       "SELECT_ACTION_MESSAGE_2": "Reclassification action",
-      "CURRENT_PARENT_FOLDERS": "There is 1 current parent folder",
+      "CURRENT_PARENT_FOLDERS": "There is {{ nbParents }} current parent folder",
       "CURRENT_PARENT_FOLDERS_PLURAL": "There are {{ nbParents }} current parent folders",
       "MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS": "There are more than five current parent folders",
       "ALERT_REMOVED_CURRENT_PARENTS_FOLDERS": "Attention: the current parent folders will be removed",

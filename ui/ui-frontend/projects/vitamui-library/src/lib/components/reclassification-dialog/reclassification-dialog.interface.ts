@@ -34,20 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export interface ArchiveUnit extends ManagementMetadata, SystemMetadata, DescriptiveMetadata {
-  [key: string]: any;
-}
+import { Signal, WritableSignal } from '@angular/core';
+import { ArchiveUnit, SearchCriteriaDto } from '../../../app/modules';
 
-export interface ManagementMetadata {
-  ArchiveUnitProfile?: string;
-}
+export interface ReclassificationDialogService {
+  readonly transactionId: WritableSignal<string>;
+  readonly initialQuery: WritableSignal<SearchCriteriaDto>;
 
-export interface SystemMetadata {
-  '#id': string;
-  '#unitups'?: string[];
-}
+  readonly childrenCount: Signal<number>;
+  readonly childrenCountLoaded: Signal<boolean>;
+  readonly exactChildrenCountLoaded: Signal<boolean>;
+  readonly shouldProposeExactChildrenCount: Signal<boolean>;
+  readonly badgeMessage: Signal<string>;
+  triggerLoadChildrenCount(): void;
+  triggerLoadExactChildrenCount(): void;
 
-export interface DescriptiveMetadata {
-  Title?: string;
-  Description?: string;
+  readonly parentIds: Signal<string[]>;
+  readonly parentCount: Signal<number>;
+  readonly hasParent: Signal<boolean>;
+  readonly parents: Signal<ArchiveUnit[]>;
 }

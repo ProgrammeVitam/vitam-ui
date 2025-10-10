@@ -39,14 +39,16 @@ import { SearchCriteriaDto } from '../models';
 
 export interface ReclassificationCriteriaDto {
   searchCriteriaDto: SearchCriteriaDto;
-  $action: ReclassificationAction[];
+  $action: ReclassificationQuery[];
 }
 
-export interface ReclassificationAction {
-  $add?: ReclassificationQueryActionType;
-  $pull?: ReclassificationQueryActionType;
+export interface ReclassificationQuery {
+  $add: {
+    '#unitups': string[];
+  } | null;
+  $pull: {
+    '#unitups': string[];
+  } | null;
 }
 
-export interface ReclassificationQueryActionType {
-  '#unitups': string[];
-}
+export type ReclassificationAction = 'ADD' | 'PULL' | 'REPLACE';
