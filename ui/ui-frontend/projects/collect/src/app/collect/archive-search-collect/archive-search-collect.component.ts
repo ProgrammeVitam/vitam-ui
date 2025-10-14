@@ -280,14 +280,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.searchCriteriaKeys,
             this.nbQueryCriteria,
             'NODE',
-            { id: node.id, value: node.id },
+            { id: NODES, value: node.id },
             node.title,
             true,
             CriteriaOperator.EQ,
             SearchCriteriaTypeEnum.NODES,
             false,
             CriteriaDataType.STRING,
-            false,
+            true,
           );
         }
       }),
