@@ -227,9 +227,7 @@
                       | translateWithOptionalTypeSuffix)
                     : criteriaVal.key) +
                   ' : ' +
-                  (criteriaValue.valueTranslated
-                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label | translate)
-                    : criteriaValue.label)
+                  getCriteriaLabel(criteriaVal.key, criteriaValue)
                 "
                 [vitamuiTooltipShowDelay]="300"
                 [ngClass]="[
