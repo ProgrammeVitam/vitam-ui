@@ -227,12 +227,7 @@
                       | translateWithOptionalTypeSuffix)
                     : criteriaVal.key) +
                   ' : ' +
-                  (criteriaValue.valueTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
-                      | translate)
-                    : criteriaVal.key === 'ALL_ARCHIVE_UNIT_TYPES'
-                      ? criteriaValue.label
-                      : criteriaValue.value.value)
+                  getCriteriaLabel(criteriaVal.key, criteriaValue)
                 "
                 [vitamuiTooltipShowDelay]="300"
                 [ngClass]="[

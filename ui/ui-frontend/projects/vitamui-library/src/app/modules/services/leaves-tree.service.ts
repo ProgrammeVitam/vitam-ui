@@ -187,10 +187,16 @@ export class LeavesTreeService {
 
     const { maxPageCount } = options;
 
-    const maxResultIndex = parentNode.waitingChildren
-      .slice(0, maxPageCount * DEFAULT_UNIT_PAGE_SIZE)
-      .reverse()
-      .findIndex((item) => item.count > 0);
+    const subElements = parentNode.waitingChildren?.slice(0, maxPageCount * DEFAULT_UNIT_PAGE_SIZE);
+
+    let maxResultIndex = -1;
+    for (let i = subElements.length - 1; i >= 0; i--) {
+      if (subElements[i].count > 0) {
+        maxResultIndex = i;
+        break;
+      }
+    }
+
     if (maxResultIndex === -1) return DEFAULT_UNIT_PAGE_SIZE;
     const computedPageCount = Math.floor(maxResultIndex / DEFAULT_UNIT_PAGE_SIZE) + 1;
     const finalPageCount = Math.min(maxPageCount, computedPageCount);
