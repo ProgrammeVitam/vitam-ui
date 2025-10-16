@@ -216,18 +216,9 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   transactionIsDownloadable(transaction: Transaction): boolean {
-    return [
-      TransactionStatus.READY,
-      TransactionStatus.VALIDATED,
-      TransactionStatus.SENDING,
-      TransactionStatus.SENT,
-      TransactionStatus.ACK_KO,
-      TransactionStatus.KO,
-    ].includes(transaction.status);
-  }
-
-  transactionIsDownloadDisabled(transaction: Transaction): boolean {
-    return transaction.status === TransactionStatus.KO;
+    return [TransactionStatus.VALIDATED, TransactionStatus.SENDING, TransactionStatus.SENT, TransactionStatus.ACK_KO].includes(
+      transaction.status,
+    );
   }
 
   private checkTransactionsPermissions() {
