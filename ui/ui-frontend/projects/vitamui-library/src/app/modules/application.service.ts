@@ -149,21 +149,18 @@ export class ApplicationService {
     );
   }
 
-  public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
-    this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
-      if (app.serviceId.includes(uiUrl)) {
-        if (app.hasTenantList) {
-          router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
-        } else {
-          router.navigate([app.url.replace(uiUrl, '')]);
-        }
-      }
-      if (!app.serviceId.includes(uiUrl) || router.url === '/') {
-        if (app.hasTenantList) {
-          window.location.href = app.url + '/tenant/' + identifier;
-        } else {
-          window.location.href = app.url;
-        }
+  public openApplication(app: Application, router: Router, uiUrl: string, tenantId?: number): void {
+    this.tenantService.saveTenantIdentifier(tenantId).subscribe(async (savedTenantId: number) => {
+      const isSameService = app.serviceId.includes(uiUrl);
+      const isHomePage = router.url === '/';
+      const hasTenant = app.hasTenantList;
+      const baseUrl = app.url.replace(uiUrl, '');
+
+      if (isSameService && !isHomePage) {
+        const path = hasTenant ? [baseUrl, 'tenant', savedTenantId] : [baseUrl];
+        await router.navigate(path);
+      } else {
+        window.location.href = hasTenant ? `${app.url}/tenant/${savedTenantId}` : app.url;
       }
     });
   }
