@@ -39,8 +39,18 @@ import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, Option, OtpState, StartupService } from 'vitamui-library';
+import { filter, tap } from 'rxjs/operators';
+import {
+  ConfirmDialogService,
+  CountryOption,
+  CountryService,
+  Customer,
+  Logo,
+  Option,
+  OtpState,
+  StartupService,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
@@ -101,7 +111,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   private _customerForm: FormGroup;
 
   customer: Customer;
-  availableTenants: number[];
+  tenantOptions: VitamuiSelectOptions;
 
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
@@ -165,16 +175,21 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.customerService.getMyCustomer().subscribe((customerDetails) => {
       this.customer = customerDetails;
     });
-    this.tenantService.getAvailableTenants().subscribe((tenantsList) => {
-      this.availableTenants = tenantsList.sort((tenantI1: number, tenantI2: number) => tenantI1 - tenantI2);
+    this.tenantService
+      .getAvailableTenants()
+      .pipe(
+        tap((tenantIds) => {
+          const ascendingSort = (a: number, b: number) => a - b;
+          tenantIds.sort(ascendingSort);
 
-      if (this.availableTenants && this.availableTenants.length > 0) {
-        const tenantIdToSelect =
-          this.availableTenants[0] === 0 && this.availableTenants.length > 1 ? this.availableTenants[1] : this.availableTenants[0];
-        // To select as default tenant the first one other than 0
-        this.form.patchValue({ tenantId: tenantIdToSelect });
-      }
-    });
+          const [first, second, _rest] = tenantIds;
+          const options = tenantIds.map((id) => ({ key: `${id}`, label: `${id}` }));
+          const defaultTenant = `${second ? second : first}`;
+          this.tenantOptions = { options };
+          this.form.patchValue({ tenantId: defaultTenant });
+        }),
+      )
+      .subscribe();
     this.subscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
