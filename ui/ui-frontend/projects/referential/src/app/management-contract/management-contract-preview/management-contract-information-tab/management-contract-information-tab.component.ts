@@ -77,7 +77,7 @@ export class ManagementContractInformationTabComponent {
     private managementContractService: ManagementContractService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [{ value: null, disabled: true }, MiscValidators.requiredNotBlank],
+      identifier: [{ value: null, disabled: true }, MiscValidators.requiredIdentifier],
       name: [null, MiscValidators.requiredNotBlank],
       description: [''],
       status: [null],

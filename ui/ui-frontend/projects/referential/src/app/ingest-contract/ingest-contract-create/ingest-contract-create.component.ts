@@ -107,12 +107,12 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      status: ['INACTIVE'],
       identifier: [
         null,
-        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
+        [MiscValidators.requiredIdentifier, Validators.minLength(2), Validators.maxLength(100)],
         this.ingestContractCreateValidators.uniqueIdentifier(),
       ],
-      status: ['INACTIVE'],
       name: [
         null,
         [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],

@@ -122,7 +122,7 @@ export class IngestContractInformationTabComponent implements OnInit {
     private ingestContractCreateValidators: IngestContractCreateValidators,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [null, MiscValidators.requiredNotBlank],
+      identifier: [null, MiscValidators.requiredIdentifier],
       status: ['ACTIVE'],
       name: [null, MiscValidators.requiredNotBlank, this.ingestContractCreateValidators.uniqueNameWhileEdit(this.previousValue)],
       description: [null, MiscValidators.requiredNotBlank],

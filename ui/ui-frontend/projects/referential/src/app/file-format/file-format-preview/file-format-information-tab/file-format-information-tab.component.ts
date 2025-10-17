@@ -148,7 +148,7 @@ export class FileFormatInformationTabComponent {
     private securityService: SecurityService,
   ) {
     this.form = this.formBuilder.group({
-      puid: [{ value: null, disabled: true }, MiscValidators.requiredNotBlank],
+      puid: [{ value: null, disabled: true }, MiscValidators.requiredIdentifier],
       name: [null, MiscValidators.requiredNotBlank],
       mimeType: [null],
       version: [null, MiscValidators.requiredNotBlank],

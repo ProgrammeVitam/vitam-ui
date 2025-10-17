@@ -43,5 +43,6 @@ export interface Validators {
 export const RULE_ID_PATTERN_ERROR_KEY = 'ruleIdPattern';
 
 export const ManagementRuleValidators: Validators = {
+  // FIXME: ne faut-il pas remplacer toutes les occurrences de ruleIdPattern par requiredIdentifier ??
   ruleIdPattern: (control) => (/[À-ÖØ-öø-ÿ ]/.test(control.value) ? { [RULE_ID_PATTERN_ERROR_KEY]: true } : null),
 };

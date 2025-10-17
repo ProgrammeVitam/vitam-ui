@@ -92,7 +92,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
       ],
       puid: [
         null,
-        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
+        [MiscValidators.requiredIdentifier, Validators.minLength(2), Validators.maxLength(100)],
         this.fileFormatCreateValidators.uniquePuid(),
       ],
       version: [null, MiscValidators.requiredNotBlank],

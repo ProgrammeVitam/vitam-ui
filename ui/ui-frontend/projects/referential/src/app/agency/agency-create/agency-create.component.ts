@@ -62,7 +62,7 @@ export class AgencyCreateComponent implements OnInit {
   ngOnInit() {
     this.form = this.formBuilder.group({
       name: [null, [MiscValidators.requiredNotBlank], this.agencyCreateValidators.uniqueName()],
-      identifier: [null, [MiscValidators.requiredNotBlank], this.agencyCreateValidators.uniqueIdentifier()],
+      identifier: [null, [MiscValidators.requiredIdentifier], this.agencyCreateValidators.uniqueIdentifier()],
       description: [null],
     });
   }

@@ -99,7 +99,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         ? {
             identifier: [
               null,
-              [MiscValidators.requiredNotBlank, Validators.minLength(5), Validators.maxLength(100)],
+              [MiscValidators.requiredIdentifier, Validators.minLength(5), Validators.maxLength(100)],
               this.managementContractCreateValidators.uniqueIdentifier(),
             ],
           }
