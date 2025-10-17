@@ -246,6 +246,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   launchUpdate() {
     const dialogToOpen = this.confirmEditProject;
     this.selectedValue = 'YES';
+    this.transactions$.next(null);
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
     this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe((transactions) => {
       this.transactions$.next(transactions);
