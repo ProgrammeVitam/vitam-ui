@@ -40,10 +40,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff, ManagementRuleValidators, Rule, RuleService, SearchCriteriaDto, VitamuiSelectOptions } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { diff, MiscValidators, Rule, RuleService, SearchCriteriaDto, VitamuiSelectOptions } from 'vitamui-library';
 
 @Component({
   selector: 'app-block-rules-inheritance',
@@ -98,7 +98,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
     this.ruleDetailsForm = this.formBuilder.group({
       rule: [
         null,
-        [Validators.required, ManagementRuleValidators.ruleIdPattern],
+        [Validators.required, MiscValidators.requiredIdentifier],
         [this.managementRulesValidatorService.uniquePreventRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
     });

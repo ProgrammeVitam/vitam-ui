@@ -47,7 +47,7 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   diff,
-  ManagementRuleValidators,
+  MiscValidators,
   Rule,
   RuleService,
   SearchCriteriaDto,
@@ -129,7 +129,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     this.ruleDetailsForm = this.formBuilder.group({
       rule: [
         null,
-        [Validators.required, ManagementRuleValidators.ruleIdPattern],
+        [Validators.required, MiscValidators.requiredIdentifier],
         [this.managementRulesValidatorService.uniquePreventRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
     });

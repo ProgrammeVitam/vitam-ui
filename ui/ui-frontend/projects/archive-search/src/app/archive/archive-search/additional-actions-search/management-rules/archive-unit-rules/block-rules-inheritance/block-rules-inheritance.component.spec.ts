@@ -128,7 +128,6 @@ const managementRulesSharedDataServiceMock = {
 const managementRulesValidatorServiceMock = jasmine.createSpyObj('ManagementRulesValidatorService', {
   uniquePreventRuleId: () => of({}),
   uniqueRuleId: () => of({}),
-  ruleIdPattern: () => of({}),
   checkRuleIdExistence: () => of({}),
 });
 

@@ -181,7 +181,6 @@ const updateUnitManagementRuleServiceMock = jasmine.createSpyObj('UpdateUnitMana
 const managementRulesValidatorServiceMock = jasmine.createSpyObj('ManagementRulesValidatorService', {
   uniquePreventRuleId: () => of({}),
   uniqueRuleId: () => of({}),
-  ruleIdPattern: () => of({}),
   checkRuleIdExistence: () => of({}),
 });
 

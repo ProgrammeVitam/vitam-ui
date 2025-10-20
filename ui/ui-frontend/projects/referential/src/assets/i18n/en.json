@@ -639,8 +639,7 @@
       "IDENTIFIER_TOOLTIP": "The identifier is unique per type of rule. It must not include spaces or accented characters",
       "TYPE_TOOLTIP": "StorageRule : Current useful life - AppraisalRule : Administrative useful life - AccessRule : Communicability delay - ReuseRule: Duration of reuse - DisseminationRule : Broadcast delay - ClassificationRule : Classification duration",
       "NAME_ALREADY_EXISTS": "Name already in use",
-      "IDENTIFIER_ALREADY_EXISTS": "The rule code entered already exists",
-      "IDENTIFIER_NO_COMPLIANT": "Non-compliant identifier"
+      "IDENTIFIER_ALREADY_EXISTS": "The rule code entered already exists"
     },
     "TAB": {
       "INFORMATION": {

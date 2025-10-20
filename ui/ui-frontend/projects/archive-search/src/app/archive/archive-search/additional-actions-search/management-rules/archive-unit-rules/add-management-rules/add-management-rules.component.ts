@@ -45,7 +45,7 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   diff,
-  ManagementRuleValidators,
+  MiscValidators,
   Rule,
   RuleService,
   SearchCriteriaDto,
@@ -136,7 +136,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     this.ruleDetailsForm = this.formBuilder.group({
       rule: [
         null,
-        [Validators.required, ManagementRuleValidators.ruleIdPattern],
+        [Validators.required, MiscValidators.requiredIdentifier],
         [this.managementRulesValidatorService.uniqueRuleId(this.ruleCategory), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
       startDate: [null],

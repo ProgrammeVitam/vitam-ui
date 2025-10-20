@@ -46,7 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, ManagementRuleValidators, RuleService, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, RuleService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateComponent } from './rule-create.component';
@@ -95,7 +95,6 @@ describe('RuleCreateComponent', () => {
     });
     const ruleCreateValidatorsSpy = jasmine.createSpyObj('RuleCreateValidators', {
       uniqueRuleId: () => of(null),
-      ruleIdPattern: ManagementRuleValidators.ruleIdPattern,
     });
 
     await TestBed.configureTestingModule({
@@ -172,29 +171,33 @@ describe('RuleCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('ruleId', '').invalid).toBeTruthy('empty ruleId invalid');
-          expect(setControlValue('ruleId', 'ÀÖØöøÿ ').invalid).toBeTruthy('ruleId pattern invalid');
-          expect(setControlValue('ruleId', 'azerty').valid).toBeTruthy('ruleId valid');
+          expect(setControlValue('ruleId', '').invalid).withContext('empty ruleId invalid').toBeTruthy();
+          expect(setControlValue('ruleId', 'ÀÖØöøÿ ').invalid).withContext('ruleId pattern invalid').toBeTruthy();
+          expect(setControlValue('ruleId', 'azerty').valid).withContext('ruleId valid').toBeTruthy();
 
-          expect(setControlValue('ruleType', '').invalid).toBeTruthy('empty ruleType invalid');
-          expect(setControlValue('ruleType', RULE_TYPES[0].key).valid).toBeTruthy('ruleType valid');
+          expect(setControlValue('ruleType', '').invalid).withContext('empty ruleType invalid').toBeTruthy();
+          expect(setControlValue('ruleType', RULE_TYPES[0].key).valid).withContext('ruleType valid').toBeTruthy();
 
-          expect(setControlValue('ruleValue', '').invalid).toBeTruthy('empty ruleValue invalid');
-          expect(setControlValue('ruleValue', '111').valid).toBeTruthy('ruleValue valid');
+          expect(setControlValue('ruleValue', '').invalid).withContext('empty ruleValue invalid').toBeTruthy();
+          expect(setControlValue('ruleValue', '111').valid).withContext('ruleValue valid').toBeTruthy();
 
-          expect(setControlValue('ruleDuration', '').invalid).toBeTruthy('empty ruleDuration invalid');
-          expect(setControlValue('ruleDuration', '10').valid).toBeTruthy('ruleDuration valid');
+          expect(setControlValue('ruleDuration', '').invalid).withContext('empty ruleDuration invalid').toBeTruthy();
+          expect(setControlValue('ruleDuration', '10').valid).withContext('ruleDuration valid').toBeTruthy();
 
-          expect(setControlValue('ruleDescription', '').invalid).toBeTruthy('empty ruleDescription invalid');
-          expect(setControlValue('ruleDescription', 'azerty').valid).toBeTruthy('ruleDescription valid');
+          expect(setControlValue('ruleDescription', '').invalid).withContext('empty ruleDescription invalid').toBeTruthy();
+          expect(setControlValue('ruleDescription', 'azerty').valid).withContext('ruleDescription valid').toBeTruthy();
 
-          expect(setControlValue('ruleMeasurement', '').invalid).toBeTruthy('empty ruleMeasurement invalid');
-          expect(setControlValue('ruleMeasurement', RULE_MEASUREMENTS[0].key).valid).toBeTruthy('ruleMeasurement valid');
+          expect(setControlValue('ruleMeasurement', '').invalid).withContext('empty ruleMeasurement invalid').toBeTruthy();
+          expect(setControlValue('ruleMeasurement', RULE_MEASUREMENTS[0].key).valid).withContext('ruleMeasurement valid').toBeTruthy();
         });
 
         it('should the requested ruleId be valid', () => {
-          expect(setControlValue('ruleId', '123456789').valid).toBeTruthy('ruleId valid');
-          expect(setControlValue('ruleId', 'APP//??').valid).toBeTruthy('ruleId valid');
+          expect(setControlValue('ruleId', '123456789').valid).withContext('ruleId valid').toBeTruthy();
+          expect(setControlValue('ruleId', 'cafe . - _ 1234').valid).withContext('ruleId valid').toBeTruthy();
+        });
+
+        it('should the requested ruleId be invalid', () => {
+          expect(setControlValue('ruleId', 'APP//??').valid).withContext('ruleId valid').toBeFalsy();
         });
       });
 

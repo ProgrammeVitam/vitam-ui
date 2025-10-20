@@ -639,8 +639,7 @@
       "IDENTIFIER_TOOLTIP": "L'identifiant est unique par type de règle. Il ne doit pas comprendre d'espace ou de caractère accentué",
       "TYPE_TOOLTIP": "StorageRule : Durée d'utilité courante - AppraisalRule : Durée d'utilité administrative - AccessRule : Délai de communicabilité - ReuseRule: Durée de réutilisation - DisseminationRule : Délai de diffusion - ClassificationRule : Durée de classification",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
-      "IDENTIFIER_ALREADY_EXISTS": "Le code de la règle renseigné existe déjà",
-      "IDENTIFIER_NO_COMPLIANT": "Identifiant non conforme"
+      "IDENTIFIER_ALREADY_EXISTS": "Le code de la règle renseigné existe déjà"
     },
     "TAB": {
       "INFORMATION": {

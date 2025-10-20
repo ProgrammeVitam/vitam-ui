@@ -101,7 +101,6 @@ export * from './lib/utils/string.util';
 export * from './lib/vitamui-library.module';
 export * from './lib/vitamui-library.service';
 
-export * from './lib/validators/management-rule.validators';
 export * from './lib/validators/misc.validators';
 
 /* Previous ui-frontend-common */
