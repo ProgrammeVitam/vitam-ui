@@ -533,6 +533,13 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     return this.projectForm.get('connectedToArchivingSystem')?.value === true;
   }
 
+  get connectedToLocalEasWithCurrentTenant(): boolean {
+    const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
+    const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
+    const archivingSystemValue = this.projectForm.get('archivingSystem')?.value;
+    return archivingSystemValue === defaultKey;
+  }
+
   private mapToOptions<T extends { identifier: string; name: string }>(items: T[]): { label: string; key: string }[] {
     return items.map((item) => ({
       label: `${item.identifier} - ${item.name}`,
