@@ -183,7 +183,7 @@ export class LeavesTreeService {
       maxPageCount: 3;
     },
   ): number {
-    if (!leavesLoadingCriteria.firstPage) return DEFAULT_UNIT_PAGE_SIZE;
+    if (!leavesLoadingCriteria.showEveryNodes || !leavesLoadingCriteria.firstPage) return DEFAULT_UNIT_PAGE_SIZE;
 
     const { maxPageCount } = options;
 
