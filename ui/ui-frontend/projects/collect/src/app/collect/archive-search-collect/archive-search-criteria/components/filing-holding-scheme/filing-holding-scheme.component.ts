@@ -322,7 +322,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     const label = this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
     const data = this.nestedDataSourceLeaves.data;
     if (orphansNumber === 0) {
-      FilingHoldingSchemeHandler.addOrphansNodeFromTree(data, label, 0);
+      FilingHoldingSchemeHandler.removeOrphansNodeFromTree(data);
     } else {
       FilingHoldingSchemeHandler.addOrphansNodeFromTree(data, label, -1);
     }
