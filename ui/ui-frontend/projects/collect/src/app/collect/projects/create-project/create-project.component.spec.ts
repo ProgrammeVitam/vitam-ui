@@ -60,6 +60,7 @@ import {
 import { CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
+import { TenantSelectionService } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -122,11 +123,16 @@ describe('CreateProjectComponent', () => {
     lastUpdate: new Date(),
   };
 
+  let tenantSelectionServiceMock: any;
   let projectsServiceMock: SpyObj<ProjectsService>;
   let transactionServiceMock: SpyObj<TransactionsService>;
   let uploadServiceMock: SpyObj<CollectUploadService>;
 
   beforeEach(async () => {
+    tenantSelectionServiceMock = {
+      getSelectedTenant: jasmine.createSpy('getSelectedTenant').and.returnValue({ identifier: 'tenant1' }),
+    };
+
     projectsServiceMock = jasmine.createSpyObj<ProjectsService>('ProjectsService', {
       create: of(defaultProject),
       updateProjectDescription: of(defaultProject),
@@ -157,6 +163,7 @@ describe('CreateProjectComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ProjectsService, useValue: projectsServiceMock },
+        { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },
         { provide: TransactionsService, useValue: transactionServiceMock },
         { provide: CollectUploadService, useValue: uploadServiceMock },
         provideHttpClient(withInterceptorsFromDi()),
