@@ -10,6 +10,9 @@ mongodb:
     mongod_port: 27017
     check_consul: 10 # in seconds
     drop_info_log: false # Drop mongo (I)nformational log, for Verbosity Level of 0
+    # logs configuration
+    logrotate: enabled # or disabled
+    history_days: 30 # How many days to store logs if logrotate is set to 'enabled'
     versioning:
         enable: true # Enable or not the versioning of the scripts.
     included_scripts: # List of regexs allowing to determine which scripts will be included and applied on database.
