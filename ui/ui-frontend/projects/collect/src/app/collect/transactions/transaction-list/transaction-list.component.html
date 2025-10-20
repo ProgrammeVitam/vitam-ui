@@ -74,7 +74,7 @@
                   <button
                     mat-icon-button
                     class="action-icon-btn btn btn-circle outline outline-primary"
-                    [disabled]="transactionIsDownloadDisabled(transaction) || !hasDownloadTransactionRole"
+                    [disabled]="!hasDownloadTransactionRole"
                     (click)="downloadSipTransaction(transaction)"
                   >
                     <i class="vitamui-icon vitamui-icon-download"></i>
