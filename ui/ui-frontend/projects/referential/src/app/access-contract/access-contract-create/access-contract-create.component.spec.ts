@@ -53,6 +53,7 @@ import {
   ConfirmDialogService,
   ExternalParametersService,
   LoggerModule,
+  MiscValidators,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractCreateComponent } from './access-contract-create.component';
@@ -78,22 +79,22 @@ const expectedAccessContract = {
   excludedRootUnits: [''],
 };
 
-let component: AccessContractCreateComponent;
-let fixture: ComponentFixture<AccessContractCreateComponent>;
-
 class Page {
+  constructor(private fixture: ComponentFixture<AccessContractCreateComponent>) {}
   get submit() {
-    return fixture.nativeElement.querySelector('button[type=submit]');
+    return this.fixture.nativeElement.querySelector('button[type=submit]');
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return this.fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
 }
 
-let page: Page;
-
 describe('AccessContractCreateComponent', () => {
+  let component: AccessContractCreateComponent;
+  let fixture: ComponentFixture<AccessContractCreateComponent>;
+  let page: Page;
+
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { getOriginatingAgenciesAsOptions: of([]) });
@@ -145,7 +146,7 @@ describe('AccessContractCreateComponent', () => {
     component = fixture.componentInstance;
     component.allNodes.setValue(true);
     fixture.detectChanges();
-    page = new Page();
+    page = new Page(fixture);
   });
 
   it('should create', () => {
@@ -176,6 +177,10 @@ describe('AccessContractCreateComponent', () => {
   });
 
   describe('Form', () => {
+    it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+      expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
+    });
+
     it('should be invalid when empty', () => {
       expect(component.form.invalid).toBeTruthy();
     });

@@ -82,7 +82,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, MiscValidators } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
@@ -139,22 +139,22 @@ const expectedSecurityProfile = {
   permissions: [''],
 };
 
-let component: SecurityProfileCreateComponent;
-let fixture: ComponentFixture<SecurityProfileCreateComponent>;
-
 class Page {
+  constructor(private fixture: ComponentFixture<SecurityProfileCreateComponent>) {}
   get submit() {
-    return fixture.nativeElement.querySelector('button[type=submit]');
+    return this.fixture.nativeElement.querySelector('button[type=submit]');
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return this.fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
 }
 
-let page: Page;
-
 describe('SecurityProfileCreateComponent', () => {
+  let component: SecurityProfileCreateComponent;
+  let fixture: ComponentFixture<SecurityProfileCreateComponent>;
+  let page: Page;
+
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', { create: of({}) });
@@ -190,11 +190,15 @@ describe('SecurityProfileCreateComponent', () => {
     fixture = TestBed.createComponent(SecurityProfileCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    page = new Page();
+    page = new Page(fixture);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+    expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
   });
 
   describe('Template', () => {

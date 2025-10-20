@@ -46,7 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, RuleService, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, MiscValidators, RuleService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateComponent } from './rule-create.component';
@@ -132,6 +132,10 @@ describe('RuleCreateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('applies MiscValidators.requiredIdentifier to ruleId control', () => {
+    expect(component.form.get('ruleId').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
   });
 
   describe('Template', () => {

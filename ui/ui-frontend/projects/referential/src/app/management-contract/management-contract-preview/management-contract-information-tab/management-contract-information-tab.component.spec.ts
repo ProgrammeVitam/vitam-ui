@@ -43,7 +43,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  BASE_URL,
+  InjectorModule,
+  IntermediaryVersionEnum,
+  LoggerModule,
+  ManagementContract,
+  MiscValidators,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { InputStubComponent, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab.component';
@@ -271,5 +279,9 @@ describe('ManagementContractInformationTabComponent', () => {
       activationDate: null,
       deactivationDate: jasmine.any(String),
     });
+  });
+
+  it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+    expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
   });
 });

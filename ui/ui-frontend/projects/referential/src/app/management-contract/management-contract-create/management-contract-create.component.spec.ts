@@ -52,6 +52,7 @@ import {
   InjectorModule,
   LoggerModule,
   ManagementContract,
+  MiscValidators,
   VitamUILibraryModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
@@ -136,6 +137,10 @@ describe('ManagementContractCreateComponent', () => {
 
     it('form should have an "identifier" field', () => {
       expect(component.form.get('identifier')).toBeTruthy();
+    });
+
+    it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+      expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
     });
 
     it('isDisabledButton should be true then false after calling create service', fakeAsync(() => {
