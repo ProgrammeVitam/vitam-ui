@@ -71,7 +71,10 @@ export class ArchivalProfileUnitApiService extends PaginatedHttpClient<ArchivalP
     return super.patch(partialAgency, headers);
   }
 
-  create(archivalUnitProfile: ArchivalProfileUnit, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
+  create(
+    archivalUnitProfile: ArchivalProfileUnit,
+    headers = new HttpHeaders({ [SKIP_ERROR_NOTIFICATION]: 1 }),
+  ): Observable<ArchivalProfileUnit> {
     return this.http.post<ArchivalProfileUnit>(this.apiUrl, archivalUnitProfile, { headers });
   }
 
