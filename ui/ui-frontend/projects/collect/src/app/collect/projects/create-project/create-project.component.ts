@@ -40,7 +40,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize, forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
+import { last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
@@ -496,17 +496,24 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
         finalize(() => {
           this.isLoading = false;
+        }),
+      )
+      .subscribe({
+        next: (_result) => {
           this.snackBarService.open({
             message: 'COLLECT.UPLOAD.TERMINATED',
             duration: 10_000,
           });
-        }),
-        catchError((error) => {
+        },
+        error: (error) => {
           this.logger.error(error);
+          this.snackBarService.open({
+            message: 'COLLECT.UPLOAD.UPLOAD_SIP_ERROR',
+            duration: 10_000,
+          });
           return throwError(error);
-        }),
-      )
-      .subscribe();
+        },
+      });
   }
 
   getNodeTitle(selectedNode?: any): string {

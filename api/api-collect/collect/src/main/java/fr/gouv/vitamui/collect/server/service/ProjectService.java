@@ -55,6 +55,7 @@ import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
@@ -239,7 +240,7 @@ public class ProjectService {
             collectService.uploadSipToTransaction(vitamContext, transactionId, inputStream);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
-            throw new InternalServerException(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
+            throw new BadRequestException(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
         }
     }
 

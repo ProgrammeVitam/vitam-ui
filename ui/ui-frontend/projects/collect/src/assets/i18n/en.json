@@ -96,7 +96,8 @@
       "WEIGHT": "Weight",
       "ADD_FILE": "Drag and drop ",
       "BROWSE": "or browse",
-      "ADD_FILE_DESCRIPTION": "Max size: 1 GB"
+      "ADD_FILE_DESCRIPTION": "Max size: 1 GB",
+      "UPLOAD_SIP_ERROR": "SIP file validation error"
     },
     "MODAL": {
       "TITLE": "Create an upload project",
