@@ -133,7 +133,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   canSend(transaction: Transaction): boolean {
-    const allowedStatus = [TransactionStatus.READY, TransactionStatus.VALIDATED];
+    const allowedStatus = [TransactionStatus.VALIDATED];
     const isAllowedStatus = allowedStatus.includes(transaction.status);
 
     return this.hasSendTransactionRole && !this.isAutomaticIngest && isAllowedStatus;
