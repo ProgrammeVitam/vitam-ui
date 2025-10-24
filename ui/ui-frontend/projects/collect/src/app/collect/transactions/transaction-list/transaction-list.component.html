@@ -91,15 +91,7 @@
                   >
                     {{ 'COLLECT.VALIDATE_ACTION' | translate }}
                   </button>
-                  <button
-                    mat-menu-item
-                    [disabled]="
-                      !(transactionIsReady(transaction) || transactionIsValidated(transaction)) ||
-                      !hasSendTransactionRole ||
-                      disabledSendTransactions.has(transaction.id)
-                    "
-                    (click)="sendTransaction(transaction)"
-                  >
+                  <button mat-menu-item [disabled]="!canSend(transaction)" (click)="sendTransaction(transaction)">
                     {{ 'COLLECT.INGEST_ACTION' | translate }}
                   </button>
                   <button

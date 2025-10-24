@@ -39,7 +39,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } f
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, merge, Observable, Subject, Subscription, zip } from 'rxjs';
+import { BehaviorSubject, finalize, merge, Observable, Subject, Subscription, zip } from 'rxjs';
 import { debounceTime, filter, map, mergeMap, share, take, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import {
@@ -92,6 +92,7 @@ import { ArchiveSearchHelperService } from './archive-search-criteria/services/a
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { AddUnitsComponent } from './add-units/add-units.component';
+import { TransactionsService } from '../transactions/transactions.service';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -218,6 +219,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private searchCriteriaService: SearchCriteriaService,
     private ruleService: RuleService,
     private snackBarService: SnackBarService,
+    private transactionService: TransactionsService,
   ) {
     super(route, globalEventService);
 
@@ -1229,15 +1231,28 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   validateTransaction() {
-    this.archiveUnitCollectService.validateTransaction(this.transaction.id).subscribe((transaction: Transaction) => {
-      this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
-      this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
-      this.transaction = transaction;
-      this.snackBarService.open({
-        message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
-        duration: 10_000,
+    this.transactionService
+      .validate(this.transaction, { isAutomaticIngest: this.isAutomaticIngest })
+      .pipe(
+        finalize(() => {
+          this.snackBarService.open({
+            message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
+            duration: 10_000,
+          });
+        }),
+      )
+      .subscribe((transaction: Transaction) => {
+        this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
+        this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
+        this.transaction = transaction;
       });
-    });
+  }
+
+  canSend(transaction: Transaction): boolean {
+    const allowedStatus = [TransactionStatus.VALIDATED];
+    const isAllowedStatus = allowedStatus.includes(transaction.status);
+
+    return this.hasSendTransactionRole && !this.isAutomaticIngest && isAllowedStatus;
   }
 
   sendTransaction() {

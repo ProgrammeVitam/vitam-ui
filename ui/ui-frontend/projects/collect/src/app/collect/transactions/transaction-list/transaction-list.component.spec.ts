@@ -93,6 +93,7 @@ describe('TransactionListComponent', () => {
       abortTransaction: of({}),
       editTransaction: of({}),
       validateTransaction: of({}),
+      validate: of({}),
       search: of([transaction]),
     },
   );
@@ -175,7 +176,7 @@ describe('TransactionListComponent', () => {
   it('should validate Transaction', () => {
     const transactionService = TestBed.inject(TransactionsService);
     component.validateTransaction(transaction);
-    expect(transactionService.validateTransaction).toHaveBeenCalled();
+    expect(transactionService.validate).toHaveBeenCalled();
   });
 
   it('should abort Transaction', () => {
