@@ -96,7 +96,8 @@
       "WEIGHT": "Poids",
       "ADD_FILE": "Glisser-déposer",
       "BROWSE": "ou Parcourir",
-      "ADD_FILE_DESCRIPTION": "Poids maximal conseillé: 1 GB"
+      "ADD_FILE_DESCRIPTION": "Poids maximal conseillé: 1 GB",
+      "UPLOAD_SIP_ERROR": "Erreur de validation du fichier SIP"
     },
     "MODAL": {
       "TITLE": "Créer un projet de versement",
