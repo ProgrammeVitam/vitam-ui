@@ -463,7 +463,7 @@
     "ASK_SUBROGATION": "The user {{ user }} requests a temporary access to your rights",
     "ACCEPT_SUBROGATION": "Accept",
     "DECLINE_SUBROGATION": "Decline",
-    "ERROR_WITH_LOGBOOK_OPERATION_ID": "See in logbook operation",
+    "ERROR_WITH_LOGBOOK_OPERATION_ID": "See in logbook operation: ({{content}})",
     "ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON": "Go to logbook operation"
   },
   "ERROR_DIALOG": {
