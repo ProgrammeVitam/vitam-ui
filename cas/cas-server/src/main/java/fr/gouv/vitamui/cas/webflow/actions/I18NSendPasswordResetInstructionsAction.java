@@ -72,7 +72,6 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * Send reset password emails with i18n messages.
