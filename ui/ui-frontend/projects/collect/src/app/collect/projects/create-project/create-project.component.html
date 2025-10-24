@@ -385,7 +385,7 @@
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
-              *ngIf="units && connectedToArchivingSystem"
+              *ngIf="units && connectedToArchivingSystem && connectedToLocalEasWithCurrentTenant"
               [dataSource]="units"
               [formControl]="linkParentIdControl"
               [mode]="FilingPlanMode.SOLO"
@@ -393,7 +393,7 @@
             </vitamui-library-filing-plan>
             <vitamui-input
               class="w-100"
-              *ngIf="!connectedToArchivingSystem"
+              *ngIf="!connectedToLocalEasWithCurrentTenant"
               [required]="connectedToArchivingSystem"
               [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate"
               formControlName="unitUp"
@@ -478,7 +478,7 @@
                             <span class="required-marker">*</span>
                           }
                         </label>
-                        @if (connectedToArchivingSystem) {
+                        @if (connectedToArchivingSystem && connectedToLocalEasWithCurrentTenant) {
                           <vitamui-library-filing-plan formControlName="unitUp" [dataSource]="units" [mode]="FilingPlanMode.SOLO">
                           </vitamui-library-filing-plan>
                         } @else {
