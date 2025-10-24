@@ -36,12 +36,11 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, interval, of, takeWhile } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { Direction, InfiniteScrollTable, SnackBarService, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { ProjectsService } from '../../projects/projects.service';
-import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-list',
@@ -60,7 +59,6 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   hasCloseTransactionRole = false;
   hasDownloadTransactionRole = false;
   isAutomaticIngest = false;
-  disabledSendTransactions = new Set<string>();
 
   constructor(
     private transactionService: TransactionsService,
@@ -114,36 +112,31 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   validateTransaction(transaction: Transaction) {
-    this.transactionService.validateTransaction(transaction.id).subscribe(
-      () => {
-        transaction.status = TransactionStatus.READY;
-        if (this.isAutomaticIngest) {
-          this.disabledSendTransactions.add(transaction.id);
-          // Lancer un polling pour suivre le statut
-          interval(5000)
-            .pipe(
-              switchMap(() => this.transactionService.getTransactionById(transaction.id).pipe(catchError(() => of(null)))),
-              takeWhile(
-                (updatedTransaction: Transaction | null) =>
-                  updatedTransaction != null && updatedTransaction.status !== TransactionStatus.SENDING,
-                true,
-              ),
-            )
-            .subscribe((updatedTransaction: Transaction | null) => {
-              if (updatedTransaction) {
-                transaction.status = updatedTransaction.status;
-              }
-            });
-        }
-        this.snackBarService.open({
-          message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
-          duration: 10_000,
-        });
-      },
-      () => {
-        transaction.status = TransactionStatus.KO;
-      },
-    );
+    this.transactionService
+      .validate(transaction, { isAutomaticIngest: this.isAutomaticIngest })
+      .pipe(
+        finalize(() => {
+          this.snackBarService.open({
+            message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
+            duration: 10_000,
+          });
+        }),
+      )
+      .subscribe({
+        next: (next) => {
+          transaction.status = next.status;
+        },
+        error: () => {
+          transaction.status = TransactionStatus.KO;
+        },
+      });
+  }
+
+  canSend(transaction: Transaction): boolean {
+    const allowedStatus = [TransactionStatus.READY, TransactionStatus.VALIDATED];
+    const isAllowedStatus = allowedStatus.includes(transaction.status);
+
+    return this.hasSendTransactionRole && !this.isAutomaticIngest && isAllowedStatus;
   }
 
   abortTransaction(transaction: Transaction) {
@@ -182,14 +175,6 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
 
   transactionIsOpen(transaction: Transaction): boolean {
     return TransactionStatus.OPEN === transaction.status;
-  }
-
-  transactionIsReady(transaction: Transaction): boolean {
-    return TransactionStatus.READY === transaction.status;
-  }
-
-  transactionIsValidated(transaction: Transaction): boolean {
-    return TransactionStatus.VALIDATED === transaction.status;
   }
 
   transactionIsEditable(transaction: Transaction): boolean {

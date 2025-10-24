@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { saveAs } from 'file-saver-es';
 import {
   DEFAULT_PAGE_SIZE,
@@ -47,9 +47,11 @@ import {
   SearchService,
   SnackBarService,
   Transaction,
+  TransactionStatus,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
+import { pollUntil } from './polling';
 
 @Injectable({
   providedIn: 'root',
@@ -84,6 +86,25 @@ export class TransactionsService extends SearchService<Transaction> {
 
   public getTransactionById(transactionById: string) {
     return this.transactionApiService.getTransactionById(transactionById);
+  }
+
+  public validate(transaction: Transaction, context = { isAutomaticIngest: false }): Observable<Transaction> {
+    return this.validateTransaction(transaction.id).pipe(
+      switchMap(() => {
+        const status$ = this.getTransactionById(transaction.id).pipe(map((next) => next.status));
+        const isValidated = (status: TransactionStatus) => {
+          return status === TransactionStatus.VALIDATED;
+        };
+        const isNotSending = (status: TransactionStatus) => {
+          return status !== TransactionStatus.SENDING;
+        };
+        const isFinalState = context.isAutomaticIngest ? isNotSending : isValidated;
+        const pollingOptions = { period: 3000, maxRetries: 30, until: isFinalState };
+
+        return pollUntil(status$, pollingOptions);
+      }),
+      map((status) => ({ ...transaction, status: status })),
+    );
   }
 
   validateTransaction(id: string) {
