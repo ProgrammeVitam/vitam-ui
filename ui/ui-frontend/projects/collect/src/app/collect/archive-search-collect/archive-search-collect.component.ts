@@ -1249,6 +1249,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   canSend(transaction: Transaction): boolean {
+    if (!transaction) return false;
+
     const allowedStatus = [TransactionStatus.VALIDATED];
     const isAllowedStatus = allowedStatus.includes(transaction.status);
 
