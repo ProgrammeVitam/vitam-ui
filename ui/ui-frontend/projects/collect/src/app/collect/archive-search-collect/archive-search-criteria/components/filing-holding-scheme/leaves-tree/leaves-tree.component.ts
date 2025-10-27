@@ -81,7 +81,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   allNonOrphanNodes: FilingHoldingSchemeNode[] = [];
   nonOrphanNodeSelected = false;
   nonOrphanChildNodeSelected = false;
-
+  showEveryNodes = false;
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
     (node) => node.children,
   );
@@ -154,7 +154,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     if (this.firstToggle(node)) {
-      await this.leavesTreeService.loadOrphanNodeChildrenOnFirstToggle(node, false);
+      await this.leavesTreeService.loadOrphanNodeChildrenOnFirstToggle(node, this.showEveryNodes);
       this.refreshTreeNodes();
     }
   }
@@ -170,7 +170,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
         node.canLoadMoreChildren = false;
         node.canLoadMoreMatchingChildren = false;
       } else {
-        await this.leavesTreeService.loadNodeChildrenOnFirstToggle(node, false);
+        await this.leavesTreeService.loadNodeChildrenOnFirstToggle(node, this.showEveryNodes);
       }
       this.refreshTreeNodes();
     }
@@ -180,7 +180,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.nestedTreeControlLeaves.isExpanded(node)) {
       return;
     }
-    await this.leavesTreeService.loadMoreFromOrphanNode(node, false);
+    await this.leavesTreeService.loadMoreFromOrphanNode(node, this.showEveryNodes);
     this.refreshTreeNodes();
   }
 
@@ -188,13 +188,16 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.nestedTreeControlLeaves.isExpanded(node)) {
       return;
     }
-    await this.leavesTreeService.loadMoreFromNode(node, false);
+    await this.leavesTreeService.loadMoreFromNode(node, this.showEveryNodes);
     this.refreshTreeNodes();
   }
 
   canLoadMoreUAForNode(node: FilingHoldingSchemeNode): boolean {
-    if (node.isLoadingChildren) {
+    if (node.isLoadingChildren || node.canLoadMoreChildren === false) {
       return false;
+    }
+    if (!this.showEveryNodes) {
+      return node.canLoadMoreMatchingChildren;
     }
     return node.canLoadMoreChildren;
   }
@@ -213,6 +216,10 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   nodeHasPositiveCount(node: FilingHoldingSchemeNode): boolean {
     return node.count && node.count > 0;
+  }
+
+  nodeHasResultOrShowAll(node: FilingHoldingSchemeNode) {
+    return this.nodeHasPositiveCount(node) || this.nodeHasUnknownCount(node) || this.showEveryNodes;
   }
 
   nodeHasUnknownCount(node: FilingHoldingSchemeNode): boolean {
