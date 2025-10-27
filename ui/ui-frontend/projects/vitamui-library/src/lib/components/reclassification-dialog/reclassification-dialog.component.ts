@@ -186,14 +186,8 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
     initialValue: this.form.controls.singleSelect.controls.id.status,
   });
 
-  readonly multiSelectStatus = toSignal(this.form.controls.multiSelect.controls.filingPlan.statusChanges, {
-    initialValue: this.form.controls.multiSelect.controls.filingPlan.status,
-  });
-
-  readonly multiSelectValue = computed(() => {
-    this.multiSelectStatus(); // FIXME: Filing Plan component not reactive on value change
-
-    return this.form.controls.multiSelect.controls.filingPlan.value;
+  readonly multiSelectValue = toSignal(this.form.controls.multiSelect.controls.filingPlan.valueChanges, {
+    initialValue: this.form.controls.multiSelect.controls.filingPlan.value,
   });
 
   readonly hasInvalidTarget = computed(() => {
