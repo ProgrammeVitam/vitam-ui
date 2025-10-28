@@ -221,7 +221,20 @@ export class ArchiveSharedDataService {
   addSimpleSearchCriteriaSubjects(searchCriteriaList: SearchCriteriaAddAction[]) {
     const builder = this.queryParamsService.builder();
     searchCriteriaList.forEach((searchCriteria) => {
-      builder.addQueryParam(searchCriteria.valueElt.id, searchCriteria.valueElt.value);
+      if (searchCriteria.valueElt.id === 'VIRTUAL') {
+        const paramsLength = searchCriteria.valueElt.value.split('/').length;
+        if (
+          searchCriteria.valueElt.value.split('/')[paramsLength] === undefined &&
+          searchCriteria.valueElt.value.split('/')[paramsLength + 1] === undefined
+        ) {
+          builder.addQueryParam(
+            searchCriteria.valueElt.id,
+            `${searchCriteria.valueElt.value}/${searchCriteria.valueElt.virtualNodeRealParentId}/${searchCriteria.valueElt.virtualNodeRealParentTitle}`,
+          );
+        }
+      } else {
+        builder.addQueryParam(searchCriteria.valueElt.id, searchCriteria.valueElt.value);
+      }
       this.simpleSearchCriteriaAddSubject.next(searchCriteria);
     });
     builder.navigate();
@@ -285,7 +298,11 @@ export class ArchiveSharedDataService {
 
   sendRemoveFromChildSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
     const builder = this.queryParamsService.builder();
-    builder.removeQueryParam(searchCriteriaAction.valueElt.id, searchCriteriaAction.valueElt.value);
+    let valueToRemove =
+      searchCriteriaAction.valueElt.id !== 'VIRTUAL'
+        ? searchCriteriaAction.valueElt.value
+        : `${searchCriteriaAction.valueElt.value}/${searchCriteriaAction.valueElt.virtualNodeRealParentId}/${searchCriteriaAction.valueElt.virtualNodeRealParentTitle}`;
+    builder.removeQueryParam(searchCriteriaAction.valueElt.id, valueToRemove);
     this.searchCriteriaRemoveFromChildSubject.next(searchCriteriaAction);
     builder.navigate();
   }

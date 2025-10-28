@@ -158,9 +158,28 @@ export class SearchCriteriaService {
         const beginDate = this.getBeginDate(fragment, key);
         const endDate = this.getEndDate(fragment, key);
         const dataType = this.getDataType(key);
+        const titleForVirtual =
+          key === 'VIRTUAL'
+            ? this.setParamForVirtualPositions(fragment, fragment.split('/').length - 1)
+              ? this.setParamForVirtualPositions(fragment, fragment.split('/').length - 1)
+              : null
+            : null;
+        const idForVirtual =
+          key === 'VIRTUAL'
+            ? this.setParamForVirtualPositions(fragment, fragment.split('/').length - 2)
+              ? this.setParamForVirtualPositions(fragment, fragment.split('/').length - 2)
+              : null
+            : null;
 
         const defaultCriteriaConfig: Partial<SearchCriteriaAddAction> = {
-          valueElt: { id: key, value: formattedValue, beginInterval: beginDate, endInterval: endDate },
+          valueElt: {
+            id: key,
+            value: key === 'VIRTUAL' ? this.setValueForVirtualPositions(fragment) : formattedValue,
+            beginInterval: beginDate,
+            endInterval: endDate,
+            virtualNodeRealParentTitle: key === 'VIRTUAL' ? titleForVirtual : null,
+            virtualNodeRealParentId: key === 'VIRTUAL' ? idForVirtual : null,
+          },
           labelElt: formattedValue,
           keyTranslated: true,
           operator: operator,
@@ -179,6 +198,19 @@ export class SearchCriteriaService {
         } as SearchCriteriaAddAction;
       }),
     );
+  }
+
+  private setValueForVirtualPositions(fragment: string) {
+    const fragments = fragment.split('/');
+    let acc = '';
+    for (let i = 1; i < fragments.length - 2; i++) {
+      acc += '/' + fragments[i];
+    }
+    return acc;
+  }
+
+  private setParamForVirtualPositions(fragment: string, pos: number) {
+    return fragment.split('/')[pos];
   }
 
   private getCategory(key: string) {

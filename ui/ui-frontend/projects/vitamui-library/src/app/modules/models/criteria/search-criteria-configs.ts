@@ -139,6 +139,10 @@ const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> }
     keyElt: 'ORPHANS_NODE',
     keyTranslated: true,
   },
+  VIRTUAL: {
+    keyElt: 'VIRTUAL',
+    keyTranslated: true,
+  },
   NODES: {
     keyElt: 'NODE',
     keyTranslated: true,
