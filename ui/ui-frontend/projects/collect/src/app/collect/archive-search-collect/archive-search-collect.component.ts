@@ -221,9 +221,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         if (!node.checked) {
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
-            this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+            this.removeCriteria(ORPHANS_NODE_ID, { id: 'position', value: ORPHANS_NODE_ID }, true);
           } else {
-            this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
+            this.removeCriteria('NODE', { id: 'NODES', value: node.id }, true);
           }
           return;
         }
@@ -233,14 +233,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.searchCriteriaKeys,
             this.nbQueryCriteria,
             ORPHANS_NODE_ID,
-            { id: ORPHANS_NODE_ID, value: ORPHANS_NODE_ID },
+            { id: 'position', value: ORPHANS_NODE_ID },
             node.title,
             true,
             CriteriaOperator.MISSING,
             SearchCriteriaTypeEnum.FIELDS,
             false,
             CriteriaDataType.STRING,
-            false,
+            true,
           );
         } else {
           this.archiveHelperService.addCriteria(
@@ -248,14 +248,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.searchCriteriaKeys,
             this.nbQueryCriteria,
             'NODE',
-            { id: node.id, value: node.id },
+            { id: 'NODES', value: node.id },
             node.title,
             true,
             CriteriaOperator.EQ,
             SearchCriteriaTypeEnum.NODES,
             false,
             CriteriaDataType.STRING,
-            false,
+            true,
           );
         }
       }),

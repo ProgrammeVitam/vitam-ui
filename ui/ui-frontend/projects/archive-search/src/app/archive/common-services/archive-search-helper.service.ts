@@ -191,6 +191,18 @@ export class ArchiveSearchHelperService {
             action: 'ADD',
           });
         }
+        if (emit === true && [SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES].includes(category)) {
+          this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
+            keyElt,
+            valueElt,
+            labelElt,
+            keyTranslated,
+            operator,
+            category,
+            valueTranslated,
+            dataType,
+          });
+        }
       }
     }
   }
@@ -304,7 +316,7 @@ export class ArchiveSearchHelperService {
           }
           this.archiveExchangeDataService.emitSearchCriteriaChange(searchCriterias);
           nbQueryCriteria--;
-          if ((emit === true && key === 'NODE') || key === ORPHANS_NODE_ID) {
+          if (emit === true && [ORPHANS_NODE_ID, 'NODE'].includes(key)) {
             this.archiveExchangeDataService.emitNodeTarget(valueElt.value);
           }
 
@@ -343,7 +355,10 @@ export class ArchiveSearchHelperService {
               action: 'REMOVE',
             });
           }
-          if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === ALL_ARCHIVE_UNIT_TYPES) {
+          if (
+            emit === true &&
+            [SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES, ALL_ARCHIVE_UNIT_TYPES].includes(val.category)
+          ) {
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
               valueElt,

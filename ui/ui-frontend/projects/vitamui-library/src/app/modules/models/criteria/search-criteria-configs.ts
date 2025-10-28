@@ -110,6 +110,14 @@ const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> }
     keyTranslated: true,
     operator: CriteriaOperator.IN,
   },
+  position: {
+    keyElt: 'ORPHANS_NODE',
+    keyTranslated: true,
+  },
+  NODES: {
+    keyElt: 'NODE',
+    keyTranslated: true,
+  },
 };
 searchCriteriaConfigs.Title = searchCriteriaConfigs.title;
 searchCriteriaConfigs.Description = searchCriteriaConfigs.description;
