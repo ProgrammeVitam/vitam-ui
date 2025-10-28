@@ -5,7 +5,7 @@
         <span>{{ label }} :</span>
       </div>
 
-      <div class="col-2">
+      <div class="col-3">
         <vitamui-datepicker
           [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
           formControlName="dateMin"
@@ -25,7 +25,7 @@
         </span>
       </div>
 
-      <div class="col-2" *ngIf="showDateMax">
+      <div class="col-3" *ngIf="showDateMax">
         <vitamui-datepicker
           [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
           formControlName="dateMax"
