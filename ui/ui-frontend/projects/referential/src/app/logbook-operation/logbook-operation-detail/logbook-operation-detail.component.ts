@@ -96,11 +96,6 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));
-    this.subscriptions.add(
-      this.logbookDownloadService.logbookOperationsReloaded.subscribe((logbookOperations) =>
-        this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations),
-      ),
-    );
     this.refreshLogbookOperation();
   }
 
@@ -110,15 +105,6 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
 
   ngOnChanges() {
     this.refreshLogbookOperation();
-  }
-
-  private setLogbookOperationIfIfHasBeenReloaded(logbookOperations: IEvent[]) {
-    const logbookOperationUpdated = logbookOperations.find((e) => e.id === this.eventId);
-    if (logbookOperationUpdated) {
-      this.event = logbookOperationUpdated;
-      this.updateDownloadButton();
-      this.updateReportFilename();
-    }
   }
 
   private setAccessContractId(userExternalParameters: Map<string, string>) {
@@ -189,7 +175,9 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     }
     this.setAccessContractLogbookIdentifier();
     this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier).subscribe((event) => {
-      this.logbookDownloadService.logbookOperationsReloaded.next([event]);
+      // Assign directly instead of emitting through the Subject
+      // This prevents the detail panel from receiving truncated operations from the list
+      this.setEvent(event);
     });
   }
 
@@ -198,6 +186,12 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
       return false;
     }
     return this.event.typeProc === LogbookOperationTypeProc.INGEST_TEST && this.ingestIsFinish();
+  }
+
+  private setEvent(event: IEvent): void {
+    this.event = event;
+    this.updateDownloadButton();
+    this.updateReportFilename();
   }
 
   private ingestIsFinish(): boolean {
