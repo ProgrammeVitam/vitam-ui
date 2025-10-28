@@ -20,7 +20,7 @@ management:
     jmx:
       domain: pastis-commons
       unique-names: true
-      web.exposure.include: info,health,prometheus
+    web.exposure.include: info,health,prometheus
   endpoint:
     health:
       show-details: always
