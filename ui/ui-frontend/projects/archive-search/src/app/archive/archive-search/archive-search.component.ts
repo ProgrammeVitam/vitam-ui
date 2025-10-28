@@ -241,35 +241,35 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         if (!node.checked) {
           node.count = null;
           if (node.id === ORPHANS_NODE_ID) {
-            this.removeCriteria(ORPHANS_NODE_ID, { id: node.id, value: node.id }, false);
+            this.removeCriteria(ORPHANS_NODE_ID, { id: 'position', value: ORPHANS_NODE_ID }, true);
           } else {
-            this.removeCriteria('NODE', { id: node.id, value: node.id }, false);
+            this.removeCriteria('NODE', { id: 'NODES', value: node.id }, true);
           }
           return;
         }
         if (node.id === ORPHANS_NODE_ID) {
           this.addCriteria(
             ORPHANS_NODE_ID,
-            { id: ORPHANS_NODE_ID, value: ORPHANS_NODE_ID },
+            { id: 'position', value: ORPHANS_NODE_ID },
             node.title,
             true,
             CriteriaOperator.MISSING,
             SearchCriteriaTypeEnum.FIELDS,
             false,
             CriteriaDataType.STRING,
-            false,
+            true,
           );
         } else {
           this.addCriteria(
             'NODE',
-            { id: node.id, value: node.id },
+            { id: 'NODES', value: node.id },
             node.title,
             true,
             CriteriaOperator.EQ,
             SearchCriteriaTypeEnum.NODES,
             false,
             CriteriaDataType.STRING,
-            false,
+            true,
           );
         }
       }),
