@@ -877,58 +877,38 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.searchCriteriaKeys = [];
       this.included = false;
     }
-    this.reMapSearchCriteriaFromSearchCriteriaHistory(event);
+    this.applySearchCriteriaHistory(event);
   }
 
-  public reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
+  private applySearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
     // TODO : to uncomment when filing will be available
     // this.setFilingHoldingScheme();
     // this.checkAllNodes(false);
+
     storedSearchCriteriaHistory.searchCriteriaList.forEach((criteria: SearchCriteriaEltements) => {
       this.fillTreeNodeAsSearchCriteriaHistory(criteria);
-      const c = criteria.criteria;
+
+      const category = criteria.category as SearchCriteriaTypeEnum;
+      const isRuleCategory = Object.keys(SearchCriteriaTypeEnum)
+        .filter((key) => key.includes('RULE'))
+        .includes(category);
+
+      if (isRuleCategory) {
+        this.addCriteriaCategory(category);
+      }
+
       criteria.values.forEach((value) => {
-        if (
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.REUSE_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.DISSEMINATION_RULE]
-        ) {
-          this.addCriteriaCategory(criteria.category);
-          this.archiveHelperService.addCriteria(
-            this.searchCriterias,
-            this.searchCriteriaKeys,
-            this.nbQueryCriteria,
-            c,
-            value,
-            value.value,
-            criteria.keyTranslated,
-            criteria.operator,
-            criteria.category,
-            criteria.valueTranslated,
-            criteria.dataType,
-            true,
-          );
-        } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS]) {
-          this.archiveHelperService.addCriteria(
-            this.searchCriterias,
-            this.searchCriteriaKeys,
-            this.nbQueryCriteria,
-            c,
-            value,
-            c === ALL_ARCHIVE_UNIT_TYPES
-              ? this.translateService.instant('COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + value.id)
-              : value.value,
-            criteria.keyTranslated,
-            criteria.operator,
-            SearchCriteriaTypeEnum.FIELDS,
-            criteria.valueTranslated,
-            criteria.dataType,
-            true,
-          );
-        }
+        this.addCriteria(
+          criteria.criteria,
+          value,
+          value.value,
+          criteria.keyTranslated,
+          criteria.operator,
+          category,
+          criteria.valueTranslated,
+          criteria.dataType,
+          true,
+        );
       });
     });
   }
@@ -1027,6 +1007,33 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     if (archiveUnit) {
       return archiveUnit['#unitType'];
     }
+  }
+
+  private addCriteria(
+    keyElt: string,
+    valueElt: CriteriaValue,
+    labelElt: string,
+    keyTranslated: boolean,
+    operator: string,
+    category: SearchCriteriaTypeEnum,
+    valueTranslated: boolean,
+    dataType: string,
+    emit: boolean,
+  ) {
+    this.archiveHelperService.addCriteria(
+      this.searchCriterias,
+      this.searchCriteriaKeys,
+      this.nbQueryCriteria,
+      keyElt,
+      valueElt,
+      labelElt,
+      keyTranslated,
+      operator,
+      category,
+      valueTranslated,
+      dataType,
+      emit,
+    );
   }
 
   trackBy(_: number, unit: Unit) {
