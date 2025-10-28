@@ -327,7 +327,7 @@ describe('ArchiveSearchCollectComponent', () => {
       const virtualNode1: NodeData = {
         checked: true,
         virtualPath: 'virtualPath',
-        id: 'virtualPath',
+        id: 'VIRTUAL',
         realParentId: 'someRealParentId',
         realParentTitle: 'someRealParentTitle',
         isVirtual: true,
@@ -337,7 +337,7 @@ describe('ArchiveSearchCollectComponent', () => {
       const virtualNode2: NodeData = {
         checked: true,
         virtualPath: 'virtualPath',
-        id: 'virtualPath',
+        id: 'VIRTUAL',
         realParentId: 'someOtherRealParentId',
         realParentTitle: 'someOtherRealParentTitle',
         isVirtual: true,
@@ -353,7 +353,7 @@ describe('ArchiveSearchCollectComponent', () => {
       const virtualCriteria = component.searchCriterias.get('VIRTUAL');
       expect(virtualCriteria?.values?.length).toEqual(2);
 
-      const virtualValues = virtualCriteria.values.filter((value) => value?.value?.id === 'virtualPath');
+      const virtualValues = virtualCriteria.values.filter((value) => value?.value?.id === 'VIRTUAL');
       expect(virtualValues.map((o) => o.value.virtualNodeRealParentId)).toEqual(
         arrayWithExactContents(['someRealParentId', 'someOtherRealParentId']),
       );
@@ -371,7 +371,7 @@ describe('ArchiveSearchCollectComponent', () => {
       let virtualNode1: NodeData = {
         checked: true,
         virtualPath: 'virtualPath',
-        id: 'virtualPath',
+        id: 'VIRTUAL',
         realParentId: 'someRealParentId',
         realParentTitle: 'someRealParentTitle',
         isVirtual: true,
@@ -381,7 +381,7 @@ describe('ArchiveSearchCollectComponent', () => {
       let virtualNode2: NodeData = {
         checked: true,
         virtualPath: 'virtualPath',
-        id: 'virtualPath',
+        id: 'VIRTUAL',
         realParentId: 'someOtherRealParentId',
         realParentTitle: 'someOtherRealParentTitle',
         isVirtual: true,
@@ -397,7 +397,7 @@ describe('ArchiveSearchCollectComponent', () => {
       let virtualCriteria = component.searchCriterias.get('VIRTUAL');
       expect(virtualCriteria?.values?.length).toEqual(2);
 
-      let virtualValues = virtualCriteria.values.filter((value) => value?.value?.id === 'virtualPath');
+      let virtualValues = virtualCriteria.values.filter((value) => value?.value?.id === 'VIRTUAL');
 
       virtualNode1.checked = false;
       archiveSharedDataService.emitNode(virtualNode1);
