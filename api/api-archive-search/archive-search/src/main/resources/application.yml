@@ -21,7 +21,7 @@ management:
   endpoints:
     jmx:
       domain: archive-search
-      web.exposure.include: info,health,prometheus
+    web.exposure.include: info,health,prometheus
   endpoint:
     health:
       show-details: always
