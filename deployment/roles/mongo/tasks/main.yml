@@ -74,7 +74,20 @@
   notify: mongo - restart service
   tags: update_mongodb_configuration
 
-# TODO: Add logrotate
+- name: Enable logrotate for vitamui-mongod
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/vitamui-mongod
+    owner: root
+    group: root
+    mode: 0644
+  when: mongodb.logrotate | default('enabled') | lower == 'enabled'
+
+- name: Disable logrotate for vitamui-mongod
+  file:
+    path: /etc/logrotate.d/vitamui-mongod
+    state: absent
+  when: mongodb.logrotate | default('enabled') | lower == 'disabled'
 
 #### Consul configuration ####
 
