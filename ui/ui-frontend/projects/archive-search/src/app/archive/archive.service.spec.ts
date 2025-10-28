@@ -70,43 +70,99 @@ describe('ArchiveService', () => {
   it('should build archive unit path', () => {
     const mockedUnits = [
       {
-        '#id': 'aeaqaaaaaeeioj2zae62wamzgjq5saaaaaac',
-        Title: 'Sous dossier 2',
-        '#unitups': ['aeaqaaaaaeeioj2zae62wamzgjq5saaaaaab'],
+        '#id': 'aeaqaaaabieci5gnciz5kam2cby53jaaaaaq',
+        Title: 'Justice',
+        '#unitups': ['aeaqaaaabieci5gnciz5kam2cby53eyaaafa'],
+        '#allunitups': ['aeaqaaaabieci5gnciz5kam2cby53eyaaafa'],
       },
       {
-        '#id': 'aeaqaaaaaeeioj2zae62wamzgjq5saaaaaab',
-        Title: 'Sous dossier 1',
-        '#unitups': ['aeaqaaaaaeeioj2zae62wamzgjq5saaaaaaa'],
+        '#id': 'aeaqaaaabiec7aytaxuy2am2cdqibnyaaafa',
+        Title: 'Cabinet de Michel Mercier',
+        '#unitups': ['aeaqaaaabieci5gnciz5kam2cby53jaaaabq'],
+        '#allunitups': [
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaaaq',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaabq',
+          'aeaqaaaabieci5gnciz5kam2cby53eyaaafa',
+        ],
       },
       {
-        '#id': 'aeaqaaaaaeeioj2zae62wamzgjq5saaaaaaa',
-        Title: 'Dossier 1',
-        '#unitups': ['aeaqaaaaaeeioj2zae62wamzgjq5s7iaaaca'],
+        '#id': 'aeaqaaaabieci5gnciz5kam2cdqpgiqaaapq',
+        Title: 'Assemblée nationale',
+        '#unitups': ['aeaqaaaabieci5gnciz5kam2cdqpgiiaaaca'],
+        '#allunitups': [
+          'aeaqaaaabieci5gnciz5kam2cdqpgiiaaaca',
+          'aeaqaaaabiec7aytaxuy2am2cdqiboaaaadq',
+          'aeaqaaaabiec7aytaxuy2am2cdqibnyaaafa',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaaaq',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaabq',
+          'aeaqaaaabieci5gnciz5kam2cdqpftiaaabq',
+          'aeaqaaaabiec7aytaxuy2am2cdqiboaaaaeq',
+          'aeaqaaaabieci5gnciz5kam2cby53eyaaafa',
+        ],
       },
       {
-        '#id': 'aeaqaaaaaeeioj2zae62wamzgjq5s7iaaaca',
-        Title: 'Supports de présentation',
-        '#unitups': ['aeaqaaaaaeeioj2zae62wamzgjq5tcaaaaba'],
+        '#id': 'aeaqaaaabieci5gnciz5kam2cdqpftiaaabq',
+        Title: 'Discours et interventions de Michel Mercier, garde des sceaux de 2010 à 2012',
+        '#unitups': ['aeaqaaaabiec7aytaxuy2am2cdqiboaaaaeq'],
+        '#allunitups': [
+          'aeaqaaaabiec7aytaxuy2am2cdqiboaaaadq',
+          'aeaqaaaabiec7aytaxuy2am2cdqibnyaaafa',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaaaq',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaabq',
+          'aeaqaaaabiec7aytaxuy2am2cdqiboaaaaeq',
+          'aeaqaaaabieci5gnciz5kam2cby53eyaaafa',
+        ],
       },
       {
-        '#id': 'aeaqaaaaaeeioj2zae62wamzgjq5tcaaaaba',
-        Title: 'Multilatérales',
-        '#unitups': ['aeaqaaaaaeeioj2zae62wamzgjq5tciaaaba'],
+        '#id': 'aeaqaaaabieci5gnciz5kam2cdqpgiiaaaca',
+        Title: 'Discours prononcés devant le parlement',
+        '#unitups': ['aeaqaaaabieci5gnciz5kam2cdqpftiaaabq'],
+        '#allunitups': [
+          'aeaqaaaabiec7aytaxuy2am2cdqiboaaaadq',
+          'aeaqaaaabiec7aytaxuy2am2cdqibnyaaafa',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaaaq',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaabq',
+          'aeaqaaaabieci5gnciz5kam2cdqpftiaaabq',
+          'aeaqaaaabiec7aytaxuy2am2cdqiboaaaaeq',
+          'aeaqaaaabieci5gnciz5kam2cby53eyaaafa',
+        ],
       },
       {
-        '#id': 'aeaqaaaaaeeioj2zae62wamzgjq5tciaaaba',
-        Title: 'VaS',
-        '#unitups': ['aeaqaaaaaeeioj2zae62wamzgjq5tciaaaca'],
+        '#id': 'aeaqaaaabiec7aytaxuy2am2cdqiboaaaadq',
+        Title: 'Communication',
+        '#unitups': ['aeaqaaaabiec7aytaxuy2am2cdqibnyaaafa'],
+        '#allunitups': [
+          'aeaqaaaabiec7aytaxuy2am2cdqibnyaaafa',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaaaq',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaabq',
+          'aeaqaaaabieci5gnciz5kam2cby53eyaaafa',
+        ],
       },
       {
-        '#id': 'aeaqaaaaaeeioj2zae62wamzgjq5tciaaaca',
-        Title_: {
-          fr: 'VITAM',
-        },
+        '#id': 'aeaqaaaabiec7aytaxuy2am2cdqiboaaaaeq',
+        Title: 'Discours du ministre',
+        '#unitups': ['aeaqaaaabiec7aytaxuy2am2cdqiboaaaadq'],
+        '#allunitups': [
+          'aeaqaaaabiec7aytaxuy2am2cdqiboaaaadq',
+          'aeaqaaaabiec7aytaxuy2am2cdqibnyaaafa',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaaaq',
+          'aeaqaaaabieci5gnciz5kam2cby53jaaaabq',
+          'aeaqaaaabieci5gnciz5kam2cby53eyaaafa',
+        ],
+      },
+      {
+        '#id': 'aeaqaaaabieci5gnciz5kam2cby53jaaaabq',
+        Title: 'Cabinet du ministre',
+        '#unitups': ['aeaqaaaabieci5gnciz5kam2cby53jaaaaaq'],
+        '#allunitups': ['aeaqaaaabieci5gnciz5kam2cby53jaaaaaq', 'aeaqaaaabieci5gnciz5kam2cby53eyaaafa'],
+      },
+      {
+        '#id': 'aeaqaaaabieci5gnciz5kam2cby53eyaaafa',
+        Title: 'Archives postérieures à 1789',
         '#unitups': [],
+        '#allunitups': [],
       },
-    ] as Unit[];
+    ] as unknown as Unit[];
     archiveApiService.searchArchiveUnitsByCriteria.and.returnValue(
       of({
         $hits: {
@@ -123,8 +179,12 @@ describe('ArchiveService', () => {
         '#allunitups': mockedUnits.map((u) => u['#id']),
       } as Unit)
       .subscribe(({ fullPath, resumePath }) => {
-        expect(fullPath).toEqual('/VITAM/VaS/Multilatérales/Supports de présentation/Dossier 1/Sous dossier 1/Sous dossier 2');
-        expect(resumePath).toEqual('/VITAM/VaS/Multilatérales/.../Dossier 1/Sous dossier 1/Sous dossier 2');
+        expect(fullPath).toEqual(
+          '/Archives postérieures à 1789/Justice/Cabinet du ministre/Cabinet de Michel Mercier/Communication/Discours du ministre/Discours et interventions de Michel Mercier, garde des sceaux de 2010 à 2012/Discours prononcés devant le parlement/Assemblée nationale',
+        );
+        expect(resumePath).toEqual(
+          '/Archives postérieures à 1789/Justice/Cabinet du ministre/.../Discours et interventions de Michel Mercier, garde des sceaux de 2010 à 2012/Discours prononcés devant le parlement/Assemblée nationale',
+        );
       });
   });
 });
