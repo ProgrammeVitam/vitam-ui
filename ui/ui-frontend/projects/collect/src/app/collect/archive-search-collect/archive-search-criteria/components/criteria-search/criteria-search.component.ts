@@ -62,7 +62,11 @@ export class CriteriaSearchComponent {
   private removeCriteriaList(criteriaValues: CriteriaValue[]) {
     const builder = this.queryParamsService.builder();
     criteriaValues.forEach((criteriaValue) => {
-      builder.removeQueryParam(criteriaValue.id, criteriaValue.value);
+      let value =
+        criteriaValue.id === 'VIRTUAL'
+          ? criteriaValue.value + '/' + criteriaValue.virtualNodeRealParentId + '/' + criteriaValue.virtualNodeRealParentTitle
+          : criteriaValue.value;
+      builder.removeQueryParam(criteriaValue.id, value);
       this.criteriaRemoveEvent.emit({ keyElt: this.criteriaKey, valueElt: criteriaValue });
     });
     builder.navigate();

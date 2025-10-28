@@ -254,11 +254,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             this.removeCriteria(
               'VIRTUAL',
               {
-                id: node.virtualPath,
-                value: '/' + node.virtualPath,
+                id: 'VIRTUAL',
+                value: `/${node.virtualPath}`,
                 virtualNodeRealParentId: node.realParentId,
+                virtualNodeRealParentTitle: node.realParentTitle,
               },
-              false,
+              true,
             );
           } else {
             this.removeCriteria('NODE', { id: NODES, value: node.id }, true);
@@ -282,18 +283,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             this.addCriteria(
               'VIRTUAL',
               {
-                id: node.virtualPath,
-                value: '/' + node.virtualPath,
+                id: 'VIRTUAL',
+                value: `/${node.virtualPath}`,
                 virtualNodeRealParentId: node.realParentId,
                 virtualNodeRealParentTitle: node.realParentTitle,
               },
-              node.title,
+              `/${node.virtualPath}`,
               true,
               CriteriaOperator.EQ,
               SearchCriteriaTypeEnum.FIELDS,
               false,
               CriteriaDataType.STRING,
-              false,
+              true,
             );
           } else {
             this.addCriteria(
