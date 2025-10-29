@@ -138,6 +138,7 @@ public class OperationController {
         return operationService.findHistoryById(id);
     }
 
+    @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")
     public ResponseEntity<Resource> exportEventById(
         final @PathVariable("id") String id,
