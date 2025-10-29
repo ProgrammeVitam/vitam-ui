@@ -303,12 +303,13 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
       criteriaList: criteriaSearchList,
       pageNumber: 0,
       size: archiveUnit['#allunitups'].length,
+      includedFields: ['#id', 'Title', '#unitups', '#allunitups'],
     };
 
     return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult: PagedResult) => {
         const path = (pagedResult.results as Unit[])
-          ?.sort((p1, p2) => (p1['#unitups'].includes(p2['#id']) ? 1 : -1)) // Order hierarchically
+          ?.sort((p1, p2) => (p1['#allunitups'].includes(p2['#id']) ? 1 : -1)) // Order hierarchically
           ?.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_));
 
         const fullPath = path ? `/${path.join('/')}` : '';
