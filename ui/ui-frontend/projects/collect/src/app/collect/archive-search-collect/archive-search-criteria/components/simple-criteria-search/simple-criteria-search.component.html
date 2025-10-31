@@ -80,6 +80,7 @@
         pickerType="day"
         [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate"
         [min]="beginDt.value"
+        [withTimeZone]="true"
       ></vitamui-common-multiple-options-datepicker>
       <vitamui-common-multiple-options-datepicker
         class="col-6"
@@ -87,6 +88,7 @@
         pickerType="day"
         [label]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate"
         [min]="endDt.value"
+        [withTimeZone]="true"
       ></vitamui-common-multiple-options-datepicker>
     </div>
     <div class="hgap-4">

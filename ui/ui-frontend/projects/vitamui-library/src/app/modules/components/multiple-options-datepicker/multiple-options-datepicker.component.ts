@@ -62,6 +62,7 @@ export class MultipleOptionsDatepickerComponent extends AbstractFormInputDirecti
   @Input() hint: string;
   @Input() min?: Date;
   @Input() max?: Date;
+  @Input() withTimeZone = false;
 
   // We store a value specific for the datepicker in order to store a Date object and not a String for datepicker to keep the currently selected value
   datePickerValue: Date;
@@ -133,7 +134,7 @@ export class MultipleOptionsDatepickerComponent extends AbstractFormInputDirecti
   setYearMonthAndDay(date: Date) {
     if (this.pickerType === 'day') {
       this.datePickerValue = date;
-      this.control.setValue(this.datePipe.transform(date, 'yyyy-MM-dd'));
+      this.control.setValue(this.withTimeZone ? date.toISOString() : this.datePipe.transform(date, 'yyyy-MM-dd'));
       this.onChange(this.control.value);
     }
   }
