@@ -464,7 +464,7 @@
     "ASK_SUBROGATION": "L'utilisateur {{ user }} demande un accès temporaire à vos droits",
     "ACCEPT_SUBROGATION": "Accepter",
     "DECLINE_SUBROGATION": "Refuser",
-    "ERROR_WITH_LOGBOOK_OPERATION_ID": "Voir dans le journal des opérations",
+    "ERROR_WITH_LOGBOOK_OPERATION_ID": "Voir dans le journal des opérations : ({{content}})",
     "ERROR_WITH_LOGBOOK_OPERATION_ID_BUTTON": "Aller au journal des opérations"
   },
   "ERROR_DIALOG": {
