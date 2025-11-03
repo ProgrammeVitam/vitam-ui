@@ -1318,6 +1318,78 @@
               ]
             }
           ]
+        },
+        {
+          "name": "UpdateOperation",
+          "nameFr": "Opération de mise à jour",
+          "element": "Complex",
+          "cardinality": "0-1",
+          "type": "null",
+          "choice": "no",
+          "extensible": "no",
+          "enumeration": [],
+          "definition": "Identification des métadonnées utilisées pour la recherche de l'unité archivistique à mettre à jour.",
+          "collection": "Unités d'archives",
+          "external": false,
+          "children": [
+            {
+              "name": "SystemId",
+              "nameFr": "Identifiant système",
+              "element": "Simple",
+              "cardinality": "0-1",
+              "type": "token",
+              "choice": "yes",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Identifiant système de l'unité archivistique.",
+              "collection": "Unités d'archives",
+              "external": false,
+              "children": []
+            },
+            {
+              "name": "ArchiveUnitIdentifierKey",
+              "nameFr": "Clé d'identification de l'unité archivistique",
+              "element": "Complex",
+              "cardinality": "0-1",
+              "type": "null",
+              "choice": "yes",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Clé d'identification de l'unité archivistique basée sur des métadonnées.",
+              "collection": "Unités d'archives",
+              "external": false,
+              "children": [
+                {
+                  "name": "MetadataName",
+                  "nameFr": "Nom de la métadonnée",
+                  "element": "Simple",
+                  "cardinality": "1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Nom de la métadonnée utilisée pour identifier l'unité archivistique.",
+                  "collection": "Unités d'archives",
+                  "external": false,
+                  "children": []
+                },
+                {
+                  "name": "MetadataValue",
+                  "nameFr": "Valeur de la métadonnée",
+                  "element": "Simple",
+                  "cardinality": "1",
+                  "type": "string",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Valeur de la métadonnée utilisée pour identifier l'unité archivistique.",
+                  "collection": "Unités d'archives",
+                  "external": false,
+                  "children": []
+                }
+              ]
+            }
+          ]
         }
       ]
     },

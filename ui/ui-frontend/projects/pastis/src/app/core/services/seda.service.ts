@@ -155,4 +155,18 @@ export class SedaService {
 
     return node.children.reduce((acc, cur) => acc || this.findSedaNode(nodeName, cur), null);
   }
+
+  /**
+   * Returns all sibling elements that have choice=true for a given element
+   * These elements are mutually exclusive
+   * @param element the element to check
+   * @param sedaParent the parent node containing the children
+   */
+  getChoiceSiblings(element: SedaData, sedaParent: SedaData): SedaData[] {
+    if (!element || !sedaParent || !element.choice) {
+      return [];
+    }
+
+    return sedaParent.children.filter((child: SedaData) => child.choice && child.name !== element.name);
+  }
 }

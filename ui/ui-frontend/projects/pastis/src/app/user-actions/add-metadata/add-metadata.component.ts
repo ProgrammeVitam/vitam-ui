@@ -198,6 +198,14 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
       this.allowedChildren.push(element);
       this.allowedChildren = this.allowedChildren.slice(0, this.allowedChildren.length);
     }
+
+    // When removing a choice element, restore its siblings to the allowed list
+    const choiceSiblings = this.sedaService.getChoiceSiblings(element, this.fileNode.sedaData);
+    if (choiceSiblings.length > 0) {
+      const existingNames = new Set(this.allowedChildren.map((e) => e.name));
+      this.allowedChildren = [...this.allowedChildren, ...choiceSiblings.filter((s) => !existingNames.has(s.name))];
+    }
+
     const orderedNames = Object.values(this.allowedChildren);
     this.allowedChildren.sort((a, b) => {
       return orderedNames.indexOf(a) - orderedNames.indexOf(b);
@@ -221,6 +229,10 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
         this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== 'PreventInheritance');
       }
     }
+
+    // Handle mutually exclusive elements (choice="yes")
+    const siblingNames = this.sedaService.getChoiceSiblings(element, this.fileNode.sedaData).map((sibling) => sibling.name);
+    this.allowedChildren = this.allowedChildren.filter((e: SedaData) => !siblingNames.includes(e.name));
 
     this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
     this.updateButtonStatusAndDataToSend();
