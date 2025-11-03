@@ -167,6 +167,12 @@ export class FileService implements OnDestroy {
 
       const nodeName = node.name === 'xml:id' ? 'id' : node.name;
       node.sedaData = parent?.sedaData ? this.sedaService.findSedaNode(nodeName, parent.sedaData) : this.sedaService.findSedaNode(nodeName);
+
+      // Copy external flag from sedaData to fileNode
+      if (node.sedaData && node.sedaData.external !== undefined) {
+        node.external = node.sedaData.external;
+      }
+
       this.linkFileNodeToSedaData(node, node.children);
     });
   }
