@@ -34,12 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EmbeddedViewRef, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, EditObject, JsonPatch, SpinnerOverlayService } from 'vitamui-library';
+import {
+  ArchiveUnit,
+  ArchiveUnitEditorComponent,
+  EditObject,
+  JsonPatch,
+  SpinnerOverlayService,
+  VitamUISnackBarService,
+} from 'vitamui-library';
 import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({
@@ -54,24 +60,19 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   @Input() transactionId: string;
   @Output() editModeChange = new EventEmitter<boolean>();
 
-  @ViewChild('savingOK') savingOK: TemplateRef<any>;
   @ViewChild('updateDialog') updateDialog: TemplateRef<ArchiveUnitDescriptionTabComponent>;
   @ViewChild('cancelDialog') cancelDialog: TemplateRef<ArchiveUnitDescriptionTabComponent>;
 
   archiveUnitEditor: ArchiveUnitEditorComponent;
   editObject: EditObject;
-  snackBarRef: MatSnackBarRef<EmbeddedViewRef<any>>;
 
   private readonly subscriptions = new Subscription();
-  private readonly snackBarConfig: MatSnackBarConfig = {
-    duration: 10000,
-  };
 
   constructor(
     private dialog: MatDialog,
     private archiveUnitService: ArchiveUnitService,
-    private snackBar: MatSnackBar,
     private spinnerOverlayService: SpinnerOverlayService,
+    private snackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnDestroy(): void {
@@ -134,7 +135,10 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   }
 
   private handleUpdateSuccess(): void {
-    this.snackBarRef = this.snackBar.openFromTemplate(this.savingOK, this.snackBarConfig);
+    this.snackBarService.open({
+      message: 'ARCHIVE_UNIT.DIALOGS.SAVE.MESSAGES.SUCCESS',
+      duration: 10_000,
+    });
 
     this.patchUnit(this.archiveUnit, this.archiveUnitEditor.getJsonPatch().jsonPatch);
 
