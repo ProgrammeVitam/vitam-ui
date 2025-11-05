@@ -392,4 +392,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   asFormGroup(control: AbstractControl) {
     return control as FormGroup;
   }
+
+  asFormControl(control: AbstractControl) {
+    return control as FormControl;
+  }
 }
