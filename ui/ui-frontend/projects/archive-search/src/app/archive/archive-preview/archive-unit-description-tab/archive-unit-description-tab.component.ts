@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { merge, Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
+import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import {
   ApplicationId,
   ArchiveUnit,
@@ -57,7 +58,7 @@ import { ArchiveUnitService } from './archive-unit.service';
   styleUrls: ['./archive-unit-description-tab.component.scss'],
   standalone: false,
 })
-export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
+export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy {
   @Input() archiveUnit: ArchiveUnit;
   @Input() editMode = false;
   @Output() editModeChange = new EventEmitter<boolean>();
@@ -67,6 +68,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
 
   archiveUnitEditor: ArchiveUnitEditorComponent;
   editObject: EditObject;
+  canSave = false;
 
   private readonly subscriptions = new Subscription();
   private readonly dialogConfig: MatDialogConfig = { autoFocus: false };
@@ -115,7 +117,14 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     private archiveUnitService: ArchiveUnitService,
     private spinnerOverlayService: SpinnerOverlayService,
     private snackBarService: SnackBarService,
+    private translateService: TranslateService,
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['editMode']) {
+      this.updateCanSave();
+    }
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -126,11 +135,55 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
 
     this.archiveUnitEditor = editor;
 
-    const subscription = this.archiveUnitEditor?.editObject$.subscribe((editObject) => {
-      this.editObject = editObject;
-    });
+    this.subscriptions.add(
+      this.archiveUnitEditor.editObject$
+        .pipe(
+          tap((editObject) => (this.editObject = editObject)),
+          switchMap((editObject) => {
+            if (!editObject?.control) {
+              return new Observable<void>();
+            }
+            // Combine valueChanges and statusChanges into a single stream
+            return merge(editObject.control.valueChanges, editObject.control.statusChanges).pipe(startWith(null));
+          }),
+        )
+        .subscribe(() => this.updateCanSave()),
+    );
+  }
 
-    if (subscription) this.subscriptions.add(subscription);
+  private updateCanSave(): void {
+    if (!this.editObject?.control) {
+      this.canSave = false;
+      return;
+    }
+
+    const isModified = this.isModified();
+    const hasTitleFilled = this.isFieldFilled('Title');
+    const hasDescriptionLevelFilled = this.isFieldFilled('DescriptionLevel');
+    this.canSave = isModified && hasTitleFilled && hasDescriptionLevelFilled;
+  }
+
+  private isFieldFilled(fieldKey: string): boolean {
+    const field = this.findFieldByKey(this.editObject, fieldKey);
+    if (!field) {
+      return true; // Si on ne trouve pas le champ, on autorise l'enregistrement
+    }
+
+    const fieldValue = field.control.value;
+    return fieldValue !== null && fieldValue !== undefined && fieldValue !== '';
+  }
+
+  private findFieldByKey(editObj: EditObject, key: string): EditObject | null {
+    if (editObj.key === key) {
+      return editObj;
+    }
+    if (editObj.children) {
+      for (const child of editObj.children) {
+        const found = this.findFieldByKey(child, key);
+        if (found) return found;
+      }
+    }
+    return null;
   }
 
   isModified(): boolean {
@@ -181,6 +234,27 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   }
 
   onSave(): void {
+    // Check if required fields are filled before opening dialog
+    if (!this.canSave) {
+      const titleFilled = this.isFieldFilled('Title');
+      const descriptionLevelFilled = this.isFieldFilled('DescriptionLevel');
+
+      const missingFields = [];
+      if (!titleFilled) {
+        missingFields.push(this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE'));
+      }
+      if (!descriptionLevelFilled) {
+        missingFields.push(this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DescriptionLevel'));
+      }
+
+      this.snackBarService.open({
+        message: 'ARCHIVE_UNIT.REQUIRED_FIELDS',
+        translateParams: { missingFields: missingFields.join(', ') },
+        duration: 10_000,
+      });
+      return;
+    }
+
     this.subscriptions.add(
       this.dialog
         .open(this.updateDialog, this.dialogConfig)
@@ -245,6 +319,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   private backToDisplayMode(): void {
     this.spinnerOverlayService.close();
     this.editMode = false;
+    this.canSave = false;
     this.editModeChange.emit(this.editMode);
   }
 }

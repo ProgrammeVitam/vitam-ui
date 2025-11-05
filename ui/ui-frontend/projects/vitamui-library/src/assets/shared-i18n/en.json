@@ -5749,6 +5749,7 @@
       "TITLE": "EDIT MODE (MODIFICATION AND COMPLETION) - VERSION {{sedaVersion}} SEDA"
     },
     "INVALID_FORM": "The following metadata are invalid: {{invalidLeavesMessage}}",
+    "REQUIRED_FIELDS": "The following fields are required: {{missingFields}}",
     "ACTIONS": {
       "ADD": "Add a new metadata bloc",
       "REMOVE": "Remove the metadata bloc"
