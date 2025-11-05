@@ -1152,13 +1152,17 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.searchCriteriaKeys = [];
       this.included = false;
     }
-    this.applySearchCriteriaHistory(event);
+    this.clearCriteria();
+    setTimeout(() => this.applySearchCriteriaHistory(event));
   }
 
   private applySearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
     // TODO : to uncomment when filing will be available
     // this.setFilingHoldingScheme();
     // this.checkAllNodes(false);
+
+    // Collect all criteria to update URL at once
+    const criteriaToAddToUrl: any[] = [];
 
     storedSearchCriteriaHistory.searchCriteriaList.forEach((criteria: SearchCriteriaEltements) => {
       this.fillTreeNodeAsSearchCriteriaHistory(criteria);
@@ -1182,10 +1186,29 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           category,
           criteria.valueTranslated,
           criteria.dataType,
-          true,
+          false,
         );
+
+        // Collect criteria for URL update (only FIELDS and NODES categories)
+        if ([SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES].includes(category)) {
+          criteriaToAddToUrl.push({
+            keyElt: criteria.criteria,
+            valueElt: value,
+            labelElt: value.value,
+            keyTranslated: criteria.keyTranslated,
+            operator: criteria.operator,
+            category,
+            valueTranslated: criteria.valueTranslated,
+            dataType: criteria.dataType,
+          });
+        }
       });
     });
+
+    // Update URL with all restored criteria at once
+    if (criteriaToAddToUrl.length > 0) {
+      this.archiveSharedDataService.addSimpleSearchCriteriaSubjects(criteriaToAddToUrl);
+    }
   }
 
   fillTreeNodeAsSearchCriteriaHistory(searchCriteriaList: SearchCriteriaEltements) {
