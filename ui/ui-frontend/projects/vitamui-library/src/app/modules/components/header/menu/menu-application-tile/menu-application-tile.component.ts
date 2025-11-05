@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Application } from './../../../../models/application';
+import { Component, Input, OnInit } from '@angular/core';
+import { Application } from '../../../../models';
 
 @Component({
   selector: 'vitamui-common-menu-application-tile',
@@ -43,7 +43,7 @@ import { Application } from './../../../../models/application';
   styleUrls: ['./menu-application-tile.component.scss'],
   standalone: false,
 })
-export class MenuApplicationTileComponent {
+export class MenuApplicationTileComponent implements OnInit {
   @Input()
   public application: Application;
 
@@ -53,7 +53,14 @@ export class MenuApplicationTileComponent {
   @Input()
   public hlCriteria?: string;
 
-  @Output() openApplication = new EventEmitter<Application>();
+  protected name: string;
+  protected tooltip: string;
 
   constructor() {}
+
+  public ngOnInit(): void {
+    const prefix = `APPLICATION.${this.application.identifier}`;
+    this.name = `${prefix}.NAME`;
+    this.tooltip = `${prefix}.TOOLTIP`;
+  }
 }

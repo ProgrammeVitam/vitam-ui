@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject, switchMap } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { UserApiService } from './api/user-api.service';
 import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
@@ -156,23 +156,13 @@ export class TenantSelectionService {
     });
   }
 
-  public saveTenantIdentifier(identifier?: number): Observable<number> {
-    return new Observable((observer) => {
-      if (!identifier) {
-        if (this.selectedTenant) {
-          identifier = this.selectedTenant.identifier;
-        } else {
-          identifier = this.lastTenantIdentifier;
-        }
-      }
-
-      this.userApiService
-        .analytics({ lastTenantIdentifier: identifier })
-        .pipe(map((value) => value.analytics.lastTenantIdentifier))
-        .subscribe((tenantIdentifier: number) => {
-          this.setLastTenantIdentifier(tenantIdentifier);
-          observer.next(tenantIdentifier);
-        });
-    });
+  public saveTenantIdentifier(tenantId?: number): Observable<number> {
+    return of(tenantId).pipe(
+      map((tenantId) => tenantId ?? this.selectedTenant.identifier ?? this.lastTenantIdentifier),
+      switchMap((tenantId) => this.userApiService.analytics({ lastTenantIdentifier: tenantId })),
+      map((user) => user.analytics?.lastTenantIdentifier),
+      filter((tenantId) => !Number.isNaN(tenantId)),
+      tap((tenantId) => this.setLastTenantIdentifier(tenantId)),
+    );
   }
 }
