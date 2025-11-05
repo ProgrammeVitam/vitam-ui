@@ -37,7 +37,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ConnectedPosition, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TooltipPosition } from './TooltipPosition.enum';
 import { CommonTooltipComponent } from './common-tooltip.component';
 
@@ -86,6 +86,7 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   #tooltipRef?: ComponentRef<CommonTooltipComponent>;
   #showTimeoutId: ReturnType<typeof setTimeout>;
   #hideTimeoutId: ReturnType<typeof setTimeout>;
+  #testRemovedInterval: ReturnType<typeof setInterval>;
   #overlayRef: OverlayRef;
 
   constructor(
@@ -133,6 +134,7 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   @HostListener('click') // If the tooltip host is destroyed (removed from DOM) on click (e.g.: an option in a select input), we'll never have mouseleave/blur event, so we also hide the tooltip on click
   hide() {
     clearTimeout(this.#showTimeoutId);
+    clearInterval(this.#testRemovedInterval);
     this.#hideTimeoutId = setTimeout(() => this.closeToolTip(), this.vitamuiTooltipShowDelay);
   }
 
@@ -143,6 +145,10 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
         const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
         this.#tooltipRef = this.#overlayRef.attach(tooltipPortal);
         this.updateTooltip();
+
+        this.#testRemovedInterval = setInterval(() => {
+          if (!this.elementRef.nativeElement.isConnected) this.hide();
+        }, 100);
       }, this.vitamuiTooltipShowDelay);
     }
   }
