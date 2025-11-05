@@ -18,7 +18,7 @@
       (itemSelected)="updateApps($event)"
     ></vitamui-common-item-select>
 
-    <div class="apps-container col-3 ml-auto" (click)="onClose()">
+    <div class="apps-container col-3 ml-auto" (click)="close()">
       <span class="pr-2">{{ 'MENU.MY_APPLICATIONS' | translate }}</span>
       <button mat-icon-button class="apps-button">
         <i class="vitamui-icon vitamui-icon-apps-colored"
@@ -34,13 +34,12 @@
     <ng-container *ngIf="filteredApplications; else displayMats">
       <span class="px-3">{{ 'MENU.RESULT' | translate }}&nbsp;: </span>
       <hr class="mb-0" />
-      <mat-selection-list id="searchResults" (selectionChange)="onClose($event)" class="py-3 overflow">
+      <mat-selection-list id="searchResults" (selectionChange)="navigateToApplication($event)" class="py-3 overflow" [multiple]="false">
         <mat-list-option [value]="app" @slideAnimation *ngFor="let app of filteredApplications">
           <vitamui-common-menu-application-tile
             [application]="app"
             [applicationUrl]="getApplicationUrl(app)"
             [hlCriteria]="criteria"
-            (openApplication)="openApplication(app)"
           ></vitamui-common-menu-application-tile>
         </mat-list-option>
       </mat-selection-list>
@@ -56,12 +55,11 @@
           *ngFor="let element of appMap | keyvalue"
           [label]="'MENU.' + element.key.identifier | translate: { default: element.key.title }"
         >
-          <mat-selection-list (selectionChange)="onClose($event)" class="py-3">
+          <mat-selection-list (selectionChange)="navigateToApplication($event)" class="py-3" [multiple]="false">
             <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of element.value">
               <vitamui-common-menu-application-tile
                 [application]="app"
                 [applicationUrl]="getApplicationUrl(app)"
-                (openApplication)="openApplication(app)"
               ></vitamui-common-menu-application-tile>
             </mat-list-option>
           </mat-selection-list>

@@ -127,7 +127,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.overlay
       .backdropClick()
       .pipe(takeUntil(this.destroyer$))
-      .subscribe(() => this.onClose());
+      .subscribe(() => this.close());
     this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
       return { value: tenant, label: tenant.name };
     });
@@ -213,13 +213,24 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchBar.onFocus();
   }
 
-  public onClose(event?: MatSelectionListChange): void {
-    if (event) {
-      this.openApplication(event.options[0].value);
-    }
-
+  public close(): void {
     this.state = 'close';
     setTimeout(() => this.dialogRef.close(), 500);
+  }
+
+  public navigateToApplication(event: MatSelectionListChange): void {
+    if (!event) throw Error('No event to navigate to an application');
+
+    const application: Application = event?.options?.at(0)?.value;
+    if (!application) throw Error('No application found in event');
+
+    this.applicationService.openApplication(
+      application,
+      this.router,
+      this.startupService.getConfigStringValue('UI_URL'),
+      this.selectedTenant.value.identifier,
+    );
+    this.close();
   }
 
   public changeTabFocus(value?: MatTabChangeEvent): void {
@@ -243,16 +254,5 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public getApplicationUrl(application: Application): string {
     return this.applicationService.getApplicationUrl(application, this.selectedTenant.value.identifier);
-  }
-
-  public openApplication(application: Application): void {
-    this.applicationService.openApplication(
-      application,
-      this.router,
-      this.startupService.getConfigStringValue('UI_URL'),
-      this.selectedTenant.value.identifier,
-    );
-
-    this.onClose();
   }
 }
