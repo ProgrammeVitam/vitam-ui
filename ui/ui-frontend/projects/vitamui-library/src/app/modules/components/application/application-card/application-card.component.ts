@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationService } from '../../../application.service';
 import { Application } from '../../../models';
@@ -46,8 +46,11 @@ import { StartupService } from '../../../startup.service';
   styleUrls: ['./application-card.component.scss'],
   standalone: false,
 })
-export class ApplicationCardComponent {
+export class ApplicationCardComponent implements OnInit {
   @Input() application: Application;
+  protected link: string;
+  protected title: string;
+  protected subtitle: string;
 
   constructor(
     private applicationService: ApplicationService,
@@ -55,11 +58,14 @@ export class ApplicationCardComponent {
     private router: Router,
   ) {}
 
-  public openApplication(application: Application): void {
-    this.applicationService.openApplication(application, this.router, this.startupService.getConfigStringValue('UI_URL'));
+  ngOnInit(): void {
+    this.link = this.applicationService.getApplicationUrl(this.application);
+    this.title = `APPLICATION.${this.application.identifier}.NAME`;
+    this.subtitle = `APPLICATION.${this.application.identifier}.TOOLTIP`;
   }
 
-  public getApplicationUrl(application: Application): string {
-    return this.applicationService.getApplicationUrl(application);
+  public openApplication(event: MouseEvent): void {
+    event.preventDefault();
+    this.applicationService.openApplication(this.application, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }
