@@ -1,91 +1,27 @@
 <h2>Checkboxes</h2>
 
 <h3>mat-checkbox</h3>
-@for (disabled of [false, true]; track disabled) {
-  <div class="row">
-    @for (state of [{}, { checked: true }, { indeterminate: true }]; track state) {
-      <mat-checkbox class="col" [checked]="state.checked" [indeterminate]="state.indeterminate" [disabled]="disabled">
-        Text form option label
-      </mat-checkbox>
-    }
-  </div>
-}
-
-<h3>input type="checkbox"</h3>
-<div class="row m-0">
-  <div class="col m-0">
-    <h4>Default</h4>
-    <div class="col mt-4">
-      <input type="checkbox" class="vitamui-checkbox" />
-      <input type="checkbox" class="vitamui-checkbox" disabled />
-      <input type="checkbox" class="vitamui-checkbox" checked disabled />
+<div class="gap-4">
+  @for (
+    type of [
+      { disabled: false, hover: false },
+      { disabled: false, hover: true },
+      { disabled: true, hover: false },
+    ];
+    track type
+  ) {
+    <div class="row">
+      @for (state of [{}, { checked: true }, { indeterminate: true }]; track state) {
+        <mat-checkbox
+          class="col"
+          [checked]="state.checked"
+          [indeterminate]="state.indeterminate"
+          [disabled]="type.disabled"
+          [class.hover]="type.hover"
+        >
+          Text form option label
+        </mat-checkbox>
+      }
     </div>
-  </div>
-
-  <div class="col m-0">
-    <h4>Label</h4>
-    <div class="col mt-4">
-      <label class="vitamui-checkbox">
-        <input type="checkbox" />
-      </label>
-      <label class="vitamui-checkbox">
-        <input type="checkbox" disabled />
-      </label>
-      <label class="vitamui-checkbox">
-        <input type="checkbox" checked disabled />
-      </label>
-    </div>
-  </div>
-
-  <div class="col m-0">
-    <h4>Wide label</h4>
-    <div class="col mt-4">
-      <label class="vitamui-checkbox wide">
-        <input type="checkbox" />
-      </label>
-      <label class="vitamui-checkbox wide">
-        <input type="checkbox" disabled />
-      </label>
-      <label class="vitamui-checkbox wide">
-        <input type="checkbox" checked disabled />
-      </label>
-    </div>
-  </div>
-</div>
-<div class="row m-0">
-  <div class="col m-0">
-    <h4>Text label</h4>
-    <div class="col mt-4">
-      <label class="vitamui-checkbox">
-        <input type="checkbox" />
-        <span>clic me</span>
-      </label>
-      <label class="vitamui-checkbox">
-        <input type="checkbox" disabled />
-        <span>clic me</span>
-      </label>
-      <label class="vitamui-checkbox">
-        <input type="checkbox" checked disabled />
-        <span>clic me</span>
-      </label>
-    </div>
-  </div>
-
-  <div class="col m-0">
-    <h4>Wide text label</h4>
-    <div class="col mt-4">
-      <label class="vitamui-checkbox wide">
-        <input type="checkbox" />
-        <span>clic me</span>
-      </label>
-      <label class="vitamui-checkbox wide">
-        <input type="checkbox" disabled />
-        <span>clic me</span>
-      </label>
-      <label class="vitamui-checkbox wide">
-        <input type="checkbox" checked disabled />
-        <span>clic me</span>
-      </label>
-    </div>
-  </div>
+  }
 </div>

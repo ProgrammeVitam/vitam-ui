@@ -1,27 +1,26 @@
 <div class="container">
-  <form [formGroup]="storageRuleCriteriaForm">
-    <div class="row justify-content-start">
-      <div class="col-5 form-control">
-        <vitamui-select
-          formControlName="storageRuleIdentifier"
-          [options]="storageRuleOptions"
-          [multiple]="true"
-          [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_DUC' | translate"
-          [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_DUC' | translate"
-        >
-        </vitamui-select>
-      </div>
+  <form [formGroup]="storageRuleCriteriaForm" class="gap-4 align-items-stretch">
+    <div class="hgap-4">
+      <vitamui-select
+        class="w-100"
+        formControlName="storageRuleIdentifier"
+        [options]="storageRuleOptions"
+        [multiple]="true"
+        [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_DUC' | translate"
+        [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_DUC' | translate"
+      >
+      </vitamui-select>
+      <div class="w-100"></div>
     </div>
 
-    <div class="row justify-content-start">
-      <div class="col-11 form-control">
-        <p class="title-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA' | translate }}</p>
+    <div class="gap-2 align-items-stretch">
+      <div class="text medium bold primary uppercase">
+        {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA' | translate }}
       </div>
-    </div>
 
-    <div class="row justify-content-start">
-      <div class="col-5 form-control">
+      <div class="hgap-4">
         <vitamui-datepicker
+          class="w-100"
           [label]="
             (endDateInterval
               ? 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
@@ -32,183 +31,105 @@
           [max]="storageRuleCriteriaForm.get('storageRuleEndDate').value"
           outputType="Date"
           format="dd/MM/yyyy"
-          class="w-100"
         ></vitamui-datepicker>
-      </div>
-      <div class="col-1 form-control">
-        <button
-          class="validate-action-button"
-          *ngIf="!endDateInterval && storageRuleCriteriaForm.get('storageRuleStartDate').value"
-          type="button"
-          mat-mini-fab
-          (click)="addBeginDtDucCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
-      </div>
-
-      <div class="col-4 form-control">
-        @if (!endDateInterval) {
-          <p class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
-            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.STORAGE_RULE.CREATE_INTERVAL' | translate }}
-          </p>
-        } @else {
-          <vitamui-datepicker
-            [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate"
-            formControlName="storageRuleEndDate"
-            [min]="storageRuleCriteriaForm.get('storageRuleStartDate').value"
-            outputType="Date"
-            format="dd/MM/yyyy"
-            class="w-100"
-          ></vitamui-datepicker>
-        }
-      </div>
-      <div class="col-1 form-control">
-        <button
-          class="validate-date-small-button"
-          *ngIf="
-            endDateInterval &&
-            storageRuleCriteriaForm.get('storageRuleStartDate').value &&
-            storageRuleCriteriaForm.get('storageRuleEndDate').value
-          "
-          type="button"
-          mat-mini-fab
-          (click)="addIntervalDtDucCriteria()"
-        >
-          <i class="material-icons">check</i>
-        </button>
-      </div>
-      <div class="col-1 form-control">
-        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
-          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.STORAGE_RULE.DELETE_INTERVAL' | translate }}
-        </p>
+        <div class="w-100 hgap-2">
+          @if (!endDateInterval) {
+            @if (storageRuleCriteriaForm.get('storageRuleStartDate').value) {
+              <button class="validate-action-button" type="button" mat-mini-fab (click)="addBeginDtDucCriteria()">
+                <i class="material-icons">check</i>
+              </button>
+            }
+            <button class="btn link" (click)="updateEndDateInterval(true)">
+              {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.STORAGE_RULE.CREATE_INTERVAL' | translate }}
+            </button>
+          } @else {
+            <vitamui-datepicker
+              [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate"
+              formControlName="storageRuleEndDate"
+              [min]="storageRuleCriteriaForm.get('storageRuleStartDate').value"
+              outputType="Date"
+              format="dd/MM/yyyy"
+              class="w-100"
+            ></vitamui-datepicker>
+            @if (storageRuleCriteriaForm.get('storageRuleStartDate').value && storageRuleCriteriaForm.get('storageRuleEndDate').value) {
+              <button class="validate-date-small-button" type="button" mat-mini-fab (click)="addIntervalDtDucCriteria()">
+                <i class="material-icons">check</i>
+              </button>
+            }
+            <button class="btn link" (click)="updateEndDateInterval(false)">
+              {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.STORAGE_RULE.DELETE_INTERVAL' | translate }}
+            </button>
+          }
+        </div>
       </div>
     </div>
 
-    <div class="row justify-content-around">
-      <div class="col-4 form-control">
-        <div class="row criteria-choice">
-          <p class="title-text">
-            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
-          </p>
+    <div class="hgap-4 align-items-stretch justify-content-between">
+      <div class="gap-2 w-100">
+        <div class="text medium bold primary uppercase">
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
         </div>
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              type="checkbox"
-              (click)="checkBoxChange('ORIGIN_HAS_AT_LEAST_ONE', $event)"
-              id="HAS_AT_LEAST_ONE_RULE_ORIGIN"
-              [checked]="storageAdditionalCriteria.get('ORIGIN_HAS_AT_LEAST_ONE')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_AT_LEAST_ONE_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              type="checkbox"
-              (click)="checkBoxChange('ORIGIN_INHERITE_AT_LEAST_ONE', $event)"
-              id="INHERITE_AT_LEAST_ONE_RULE_ORIGIN"
-              [checked]="storageAdditionalCriteria.get('ORIGIN_INHERITE_AT_LEAST_ONE')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.INHERITE_AT_LEAST_ONE_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
-
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              id="HAS_NO_RULE_ORIGIN"
-              type="checkbox"
-              (click)="checkBoxChange('ORIGIN_HAS_NO_ONE', $event)"
-              [checked]="storageAdditionalCriteria.get('ORIGIN_HAS_NO_ONE')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              id="WAITING_TO_RE_CALCULATE_RULE_ORIGIN"
-              type="checkbox"
-              (click)="checkBoxChange('ORIGIN_WAITING_RECALCULATE', $event)"
-              [checked]="storageAdditionalCriteria.get('ORIGIN_WAITING_RECALCULATE')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
+        <mat-checkbox
+          (click)="checkBoxChange('ORIGIN_HAS_AT_LEAST_ONE', $event)"
+          [checked]="storageAdditionalCriteria.get('ORIGIN_HAS_AT_LEAST_ONE')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_AT_LEAST_ONE_STORAGE_RULE' | translate }}
+        </mat-checkbox>
+        <mat-checkbox
+          (click)="checkBoxChange('ORIGIN_INHERITE_AT_LEAST_ONE', $event)"
+          [checked]="storageAdditionalCriteria.get('ORIGIN_INHERITE_AT_LEAST_ONE')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.INHERITE_AT_LEAST_ONE_STORAGE_RULE' | translate }}
+        </mat-checkbox>
+        <mat-checkbox (click)="checkBoxChange('ORIGIN_HAS_NO_ONE', $event)" [checked]="storageAdditionalCriteria.get('ORIGIN_HAS_NO_ONE')">
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_STORAGE_RULE' | translate }}
+        </mat-checkbox>
+        <mat-checkbox
+          (click)="checkBoxChange('ORIGIN_WAITING_RECALCULATE', $event)"
+          [checked]="storageAdditionalCriteria.get('ORIGIN_WAITING_RECALCULATE')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_STORAGE_RULE' | translate }}
+        </mat-checkbox>
       </div>
-      <div class="col-4 form-control">
-        <div class="row criteria-choice">
-          <p class="title-text">
-            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.TITLE' | translate }}
-          </p>
+      <div class="gap-2 w-100">
+        <div class="text medium bold primary uppercase">
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.TITLE' | translate }}
         </div>
-
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              id="HAS_FINAL_ACTION_TYPE"
-              type="checkbox"
-              (click)="checkBoxChange('FINAL_ACTION_HAS_FINAL_ACTION', $event)"
-              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_HAS_FINAL_ACTION')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.HAS_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              type="checkbox"
-              id="INHERITE_FINAL_ACTION_TYPE"
-              (click)="checkBoxChange('FINAL_ACTION_INHERITE_FINAL_ACTION', $event)"
-              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_INHERITE_FINAL_ACTION')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.INHERITE_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
+        <mat-checkbox
+          (click)="checkBoxChange('FINAL_ACTION_HAS_FINAL_ACTION', $event)"
+          [checked]="storageAdditionalCriteria.get('FINAL_ACTION_HAS_FINAL_ACTION')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.HAS_STORAGE_RULE' | translate }}
+        </mat-checkbox>
+        <mat-checkbox
+          (click)="checkBoxChange('FINAL_ACTION_INHERITE_FINAL_ACTION', $event)"
+          [checked]="storageAdditionalCriteria.get('FINAL_ACTION_INHERITE_FINAL_ACTION')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.INHERITE_STORAGE_RULE' | translate }}
+        </mat-checkbox>
       </div>
-      <div class="col-3 form-control">
-        <div class="row criteria-choice">
-          <p class="title-text">
-            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TITLE' | translate }}
-          </p>
+      <div class="gap-2 w-100">
+        <div class="text medium bold primary uppercase">
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TITLE' | translate }}
         </div>
-
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              type="checkbox"
-              (click)="checkBoxChange('FINAL_ACTION_TYPE_COPY', $event)"
-              id="COPY_FINAL_ACTION"
-              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_COPY')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.COPY_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
-
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              type="checkbox"
-              id="TRANSFER_FINAL_ACTION"
-              (click)="checkBoxChange('FINAL_ACTION_TYPE_TRANSFER', $event)"
-              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_TRANSFER')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TRANSFER_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
-        <div class="row">
-          <label class="criteria-checkbox-choice">
-            <input
-              type="checkbox"
-              id="RESTRICT_ACCESS_FINAL_ACTION"
-              (click)="checkBoxChange('FINAL_ACTION_TYPE_RESTRICT_ACCESS', $event)"
-              [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_RESTRICT_ACCESS')"
-            />
-            <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.RESTRICT_ACCESS_STORAGE_RULE' | translate }}</span>
-          </label>
-        </div>
+        <mat-checkbox
+          (click)="checkBoxChange('FINAL_ACTION_TYPE_COPY', $event)"
+          [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_COPY')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.COPY_STORAGE_RULE' | translate }}
+        </mat-checkbox>
+        <mat-checkbox
+          (click)="checkBoxChange('FINAL_ACTION_TYPE_TRANSFER', $event)"
+          [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_TRANSFER')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TRANSFER_STORAGE_RULE' | translate }}
+        </mat-checkbox>
+        <mat-checkbox
+          (click)="checkBoxChange('FINAL_ACTION_TYPE_RESTRICT_ACCESS', $event)"
+          [checked]="storageAdditionalCriteria.get('FINAL_ACTION_TYPE_RESTRICT_ACCESS')"
+        >
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.RESTRICT_ACCESS_STORAGE_RULE' | translate }}
+        </mat-checkbox>
       </div>
     </div>
   </form>

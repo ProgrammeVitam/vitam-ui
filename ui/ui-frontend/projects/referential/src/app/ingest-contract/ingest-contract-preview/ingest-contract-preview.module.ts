@@ -59,6 +59,7 @@ import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/i
 import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
 import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab/ingest-contract-signature-tab.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { TranslateModule } from '@ngx-translate/core';
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslateModule,
+    MatCheckbox,
   ],
   exports: [IngestContractPreviewComponent],
 })

@@ -93,6 +93,7 @@ import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TransactionsService } from '../transactions/transactions.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -682,8 +683,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   // Manage criteria filters methods
 
-  checkParentBoxChange(event: any) {
-    const { checked } = event.target;
+  checkParentBoxChange(event: MatCheckboxChange) {
+    const { checked } = event;
 
     this.isAllChecked = checked;
     this.itemSelected = checked ? this.totalResults : 0;
@@ -697,11 +698,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.listOfUACriteriaSearch = [];
   }
 
-  checkChildrenBoxChange(archiveUnit: Unit, event: any) {
-    event.stopPropagation();
-
+  checkChildrenBoxChange(archiveUnit: Unit, event: MatCheckboxChange) {
     const id = archiveUnit['#id'];
-    const action = event.target.checked;
+    const action = event.checked;
 
     if (this.isAllChecked && !action) {
       this.listOfUACriteriaSearch = [];

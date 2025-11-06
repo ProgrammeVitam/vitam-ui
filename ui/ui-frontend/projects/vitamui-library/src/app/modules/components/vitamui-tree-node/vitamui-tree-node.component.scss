@@ -17,21 +17,8 @@
   }
 
   .mat-mdc-checkbox {
-    --mdc-checkbox-state-layer-size: 24px;
-
     &-disabled {
       pointer-events: unset;
-    }
-
-    ::ng-deep {
-      .mat-mdc-checkbox-touch-target {
-        width: 24px;
-        height: 24px;
-      }
-      .mdc-label {
-        padding-left: 0;
-        margin-left: 5px;
-      }
     }
   }
 

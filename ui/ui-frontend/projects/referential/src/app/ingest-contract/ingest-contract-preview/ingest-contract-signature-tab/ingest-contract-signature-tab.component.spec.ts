@@ -43,6 +43,7 @@ import { SignedDocumentPolicyEnum } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('IngestContractSignatureTabComponent', () => {
   let component: IngestContractSignatureTabComponent;
@@ -51,7 +52,7 @@ describe('IngestContractSignatureTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatButtonToggleModule],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatButtonToggleModule, MatCheckboxModule],
       declarations: [IngestContractSignatureTabComponent],
       providers: [FormBuilder, { provide: IngestContractService, useValue: ingestContractServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],

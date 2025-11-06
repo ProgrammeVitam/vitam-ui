@@ -1,17 +1,17 @@
-.facet-area {
-  display: block;
-  overflow: auto;
+@use 'spacing';
+
+.card-criteria {
+  @extend .gap-4;
+  align-items: stretch !important;
+
+  background: var(--vitamui-white);
+  border-radius: 10px;
+  margin-top: 5px;
+  padding: 30px;
 }
 
 ::ng-deep.mat-mdc-menu-panel {
   max-width: fit-content !important;
-}
-.link-without-underline {
-  cursor: pointer;
-  color: var(--vitamui-primary);
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 .red-text {
@@ -23,13 +23,6 @@
 .icon-style {
   font-size: 50px;
   line-height: 5px;
-}
-
-.disabled-div {
-  pointer-events: none;
-}
-.enabled-div {
-  pointer-events: painted;
 }
 
 .facet-div {
@@ -48,14 +41,6 @@
   padding: 10px 10px;
   font-size: large;
   font-weight: bold;
-}
-
-.vitamui-row-selected {
-  background: var(--vitamui-primary-50);
-
-  &:hover {
-    background: var(--vitamui-primary-50);
-  }
 }
 
 // Make disabled tabs clickable to be able to trigger the mat menu

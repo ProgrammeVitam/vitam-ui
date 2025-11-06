@@ -105,6 +105,7 @@ import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -945,8 +946,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.queryParamsService.setQueryParams({}, {});
   }
 
-  checkParentBoxChange(event: any) {
-    const { checked } = event.target;
+  checkParentBoxChange(event: MatCheckboxChange) {
+    const { checked } = event;
 
     this.isAllChecked = checked;
     this.selectedItemCount = checked ? this.totalResults : 0;
@@ -961,12 +962,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.listOfUACriteriaSearch = [];
   }
 
-  checkChildrenBoxChange(archiveUnit: Unit, event: any) {
-    event.stopPropagation();
-
+  checkChildrenBoxChange(archiveUnit: Unit, event: MatCheckboxChange) {
     const id = archiveUnit['#id'];
     const unitType: UnitType = archiveUnit['#unitType'];
-    const action = event.target.checked;
+    const action = event.checked;
 
     if (this.isAllChecked && !action) {
       this.listOfUACriteriaSearch = [];

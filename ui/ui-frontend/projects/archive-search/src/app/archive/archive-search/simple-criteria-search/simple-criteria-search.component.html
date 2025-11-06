@@ -73,7 +73,7 @@
     </div>
 
     <div class="hgap-4 align-items-start">
-      <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
+      <p class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
     </div>
     <div class="hgap-4 align-items-start pb-4">
       <vitamui-datepicker
@@ -92,20 +92,17 @@
       ></vitamui-datepicker>
     </div>
     <div class="hgap-4 align-items-start">
-      <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
+      <p class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
     </div>
     <ng-template #archiveUnitType let-archiveUnitType let-icon="icon">
-      <div class="d-flex align-items-center w-100">
-        <label class="criteria-checkbox-choice">
-          <input
-            type="checkbox"
-            (click)="toggleArchiveUnitCriteria(archiveUnitType, $event)"
-            [checked]="archiveUnitTypesCriteria.get(archiveUnitType)"
-          />
-          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + archiveUnitType | translate }}</span>
-        </label>
+      <mat-checkbox
+        class="w-100"
+        (click)="toggleArchiveUnitCriteria(archiveUnitType, $event)"
+        [checked]="archiveUnitTypesCriteria.get(archiveUnitType)"
+      >
+        {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + archiveUnitType | translate }}
         <i class="vitamui-icon vitamui-row-icon status-badge icon-large ml-1" [class]="icon"></i>
-      </div>
+      </mat-checkbox>
     </ng-template>
     <div class="hgap-4 align-items-start pb-2 w-50">
       <ng-container
@@ -124,7 +121,7 @@
       ></ng-container>
     </div>
     <div class="hgap-4 align-items-start">
-      <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
+      <p class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
     </div>
     @if (otherCriteriaOptions) {
       <div class="hgap-4 align-items-start align-items-start pb-4">
