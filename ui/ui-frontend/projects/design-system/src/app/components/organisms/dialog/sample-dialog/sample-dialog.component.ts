@@ -52,7 +52,6 @@ import {
 @Component({
   selector: 'design-system-sample-dialog',
   templateUrl: './sample-dialog.component.html',
-  styleUrls: ['./sample-dialog.component.scss'],
   imports: [
     CommonModule,
     TranslatePipe,
