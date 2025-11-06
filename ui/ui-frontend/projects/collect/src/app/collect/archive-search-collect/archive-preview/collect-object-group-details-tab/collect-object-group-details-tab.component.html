@@ -69,7 +69,7 @@
         {{ getFormatLitteral(versionWithQualifier?.FormatIdentification) }}
       </div>
       <button
-        class="download-button"
+        class="btn btn-circle small primary"
         [disabled]="versionWithQualifier?.Size === 0 || !hasDownloadDocumentRole"
         (click)="onClickDownloadObject($event, versionWithQualifier)"
       >
