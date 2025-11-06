@@ -794,7 +794,8 @@
       "STORAGE_BACKUP": "Sauvegarde des journaux des écritures",
       "TRACEABILITY": "Sécurisation",
       "CHECK": "Vérification des journaux sécurisés",
-      "ARCHIVE_TRANSFER": "Transfert"
+      "ARCHIVE_TRANSFER": "Transfert",
+      "COLLECT_SIP_INGEST": "Processus d'entrée du SIP dans Collect"
     },
     "HOME": {
       "TITLE": "Journal des opérations",
