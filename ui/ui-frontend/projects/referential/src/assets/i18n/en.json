@@ -794,7 +794,8 @@
       "STORAGE_BACKUP": "Backup of write logs",
       "TRACEABILITY": "Security",
       "CHECK": "Checking secure logs",
-      "ARCHIVE_TRANSFER": "Transfer"
+      "ARCHIVE_TRANSFER": "Transfer",
+      "COLLECT_SIP_INGEST": "Process of Collect ingest"
     },
     "HOME": {
       "TITLE": "Operations log",
