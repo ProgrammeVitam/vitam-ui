@@ -99,7 +99,7 @@ public final class ApiIamConstants {
 
     public static final String SUPPORT_LEVEL = "SUPPORT";
 
-    public static final String LEVEL_VALID_REGEXP = "(^[A-Z0-9]+(.[A-Z0-9]+)*$)|^$";
+    public static final String LEVEL_VALID_REGEXP = "(^[A-Z0-9]+(\\.[A-Z0-9]+)*$)|^$";
 
     public static final String ACCOUNT_PROFILE_DESCRIPTION = "Profil de l'application Mon Compte";
 
