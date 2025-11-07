@@ -3210,6 +3210,7 @@
     "EXT_VITAMUI_CREATE_PROFILE": "Création du profil",
     "EXT_VITAMUI_CREATE_PROFILE.OK": "Succès de la création du profil",
     "EXT_VITAMUI_UPDATE_PROFILE": "Modification du profil",
+    "EXT_VITAMUI_UPDATE_PROFILE.OK": "Succès de la modification du profil",
     "EXT_VITAMUI_START_SURROGATE_USER": "Démarrage de la subrogation de l'utilisateur",
     "EXT_VITAMUI_START_SURROGATE_GENERIC": "Démarrage de la subrogation de l'utilisateur générique",
     "EXT_VITAMUI_START_SURROGATE_GENERIC.OK": "Succès du démarrage de la subrogation de l'utilisateur générique",
