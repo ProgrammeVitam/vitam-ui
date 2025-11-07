@@ -168,17 +168,8 @@ export class SelectComponent extends AbstractFormInputDirective implements After
 
   @Input({ required: true })
   set options(optionsParam: VitamuiSelectOptions | any[]) {
-    const options: VitamuiSelectOptions =
-      optionsParam instanceof Array
-        ? optionsParam[0]?.key != null && optionsParam[0]?.label != null
-          ? { options: optionsParam }
-          : {
-              options: optionsParam.map((option) => ({
-                key: option,
-                label: option.toString(),
-              })),
-            }
-        : optionsParam;
+    const options: VitamuiSelectOptions = this.normalizeSelection(optionsParam);
+
     this.allOptions = options?.options != null ? options.options : [];
     if (options?.customSorting != null) {
       this.customSorting = options.customSorting;
@@ -186,10 +177,16 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     }
     this.displayedOptions = this.allOptions;
     this.resizeContainerHeightInSearchView();
-    if (!this.selectedOptions.length)
-      this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys?.includes(option.key));
-    if (this.control) this.control.setValue(this.control.value); // We force-update the control value after updating the options to make sure the mat-select updates the displayed value
+    this.synchronizeSelectedOptions();
     this.resizeContainerHeightInSelectedItemsView();
+
+    // Force display update after options are loaded
+    if (this.control?.value && this.allOptions.length > 0) {
+      Promise.resolve().then(() => {
+        this.updateMatSelectTriggerContent();
+        this.cd.detectChanges();
+      });
+    }
     this.addEventListeners();
   }
 
@@ -217,6 +214,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   private _enableSearch = true;
   private _enableSelectAll?: boolean;
   private _enableDisplaySelected?: boolean;
+  private isUpdatingTrigger = false; // Prevent infinite recursion
 
   @ViewChild('searchBar') searchBar: SearchBarComponent;
   @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
@@ -244,7 +242,6 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   ngAfterViewChecked(): void {
-    this.updateCheckboxes();
     this.updateSelectAll();
   }
 
@@ -255,12 +252,18 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.sd
       .scrolled()
       .pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable))
-      .subscribe(() => {
-        this.updateCheckboxes();
-        this.updateSelectAll();
-      });
+      .subscribe(() => this.updateSelectAll());
 
     this.addEventListeners();
+
+    // Force value display after complete initialization
+    if (this.control?.value) {
+      Promise.resolve().then(() => {
+        this.synchronizeSelectedOptions();
+        this.updateMatSelectTriggerContent();
+        this.cd.detectChanges();
+      });
+    }
   }
 
   private addEventListeners() {
@@ -285,23 +288,29 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];
-    } else {
+    } else if (this.allOptions.length > 0) {
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys.includes(option.key));
     }
-    this.updateCheckboxes();
-    this.updateSelectAll();
 
     this.resizeContainerHeightInSelectedItemsView();
+    this.updateMatSelectTriggerContent();
+    this.cd.markForCheck();
   }
 
   protected openedChange(opened: boolean): void {
-    // Attend que overlay du select soit rendu
-    setTimeout(() => {
-      this.viewport.checkViewportSize();
-    });
+    if (opened) {
+      setTimeout(() => {
+        this.ensureValueDisplay();
+        this.viewport?.checkViewportSize();
+
+        if (this.selectedOptions.length > 0) {
+          this.scrollToSelectedOption();
+        }
+      });
+    }
 
     if (opened && this.enableSearch) {
-      this.searchBar.onFocus();
+      this.searchBar?.onFocus();
     }
   }
 
@@ -374,7 +383,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       if (uncheckingOption) {
         this.selectedOptions = this.selectedOptions.filter((selectedOption) => selectedOption.key !== value);
       } else {
-        this.selectedOptions.push(this.allOptions.filter((selectedOption) => selectedOption.key === value)[0]);
+        const optionToAdd = this.allOptions.find((selectedOption) => selectedOption.key === value);
+        if (optionToAdd) {
+          this.selectedOptions.push(optionToAdd);
+        }
       }
     } else {
       this.selectedOptions = uncheckingOption ? [] : this.allOptions.filter((selectedOption) => selectedOption.key === value);
@@ -390,19 +402,43 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     }
 
     this.updateMatSelectTriggerContent();
-    this.normalizeSelection();
   }
 
-  protected compareOptions(o1: { key: string } | null, o2: { key: string } | null): boolean {
-    return !!o1 && !!o2 ? o1.key === o2.key : o1 === o2;
-  }
-
-  private normalizeSelection() {
-    if (this.multiple && Array.isArray(this.control.value)) {
-      const set = new Set(this.control.value);
-      const normalized = this.allOptions.map((o) => o.key).filter((k) => set.has(k));
-      this.control.setValue(normalized, { emitEvent: false });
+  public readonly compareOptions = (o1: any, o2: any): boolean => {
+    if (o1 == null || o2 == null) {
+      return o1 === o2;
     }
+
+    if (this.multiple && Array.isArray(o1) && Array.isArray(o2)) {
+      if (o1.length !== o2.length) return false;
+      return o1.every((val) => o2.includes(val));
+    }
+
+    const val1 = typeof o1 === 'object' ? o1.key : o1;
+    const val2 = typeof o2 === 'object' ? o2.key : o2;
+
+    return String(val1) === String(val2);
+  };
+
+  private normalizeSelection(optionsParam: VitamuiSelectOptions | any[]): VitamuiSelectOptions {
+    if (optionsParam instanceof Array) {
+      if (optionsParam.length === 0) {
+        return { options: [] };
+      }
+
+      const firstItem = optionsParam[0];
+      if (firstItem?.key != null && firstItem?.label != null) {
+        return { options: optionsParam };
+      } else {
+        return {
+          options: optionsParam.map((option) => ({
+            key: option,
+            label: option.toString(),
+          })),
+        };
+      }
+    }
+    return optionsParam;
   }
 
   private overrideControlMethods() {
@@ -448,12 +484,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       this.selectedOptions = [...this.allOptions];
       const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
       this.onChange(selectedKeys);
-      this.updateCheckboxes();
     } else {
       this.clearAllSelectedOptions();
     }
     this.resizeContainerHeightInSelectedItemsView();
-    this.normalizeSelection();
   }
 
   private resizeContainerHeightInSearchView(): void {
@@ -503,44 +537,71 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     }
   }
 
-  private updateCheckboxes(): void {
-    if (this.optionKeys == null) {
-      return;
-    }
+  private updateMatSelectTriggerContent(): void {
+    if (!this.matSelect || this.isUpdatingTrigger) return;
 
-    let needUpdate = false;
-
-    this.optionKeys.forEach((optionKey) => {
-      const selected = this.selectedOptions.filter((selectedOption) => selectedOption.key === optionKey.value);
-
-      if (selected.length > 0 && !optionKey.selected) {
-        optionKey.select(false);
-        needUpdate = true;
-      } else if (selected.length === 0 && optionKey.selected) {
-        optionKey.deselect(false);
-        needUpdate = true;
-      }
+    Object.defineProperties(this.matSelect, {
+      empty: {
+        value: this.selectedOptions.length <= 0,
+        writable: true,
+      },
     });
 
-    if (needUpdate) {
-      this.cd.detectChanges();
+    if (this.control?.value != null) {
+      this.isUpdatingTrigger = true;
+
+      try {
+        this.matSelect.value = this.control.value;
+        this.matSelect._onChange(this.control.value);
+        this.matSelect.stateChanges.next();
+      } finally {
+        this.isUpdatingTrigger = false;
+      }
     }
-
-    this.updateMatSelectTriggerContent();
-  }
-
-  private updateMatSelectTriggerContent(): void {
-    if (this.matSelect)
-      Object.defineProperties(this.matSelect, {
-        empty: {
-          value: this.selectedOptions.length <= 0,
-          writable: true,
-        },
-      });
   }
 
   focus() {
     this.matSelect.focus();
+  }
+
+  private scrollToSelectedOption(): void {
+    if (!this.viewport || this.selectedOptions.length === 0) return;
+
+    const firstSelectedOption = this.selectedOptions[0];
+    const index = this.displayedOptions.findIndex((opt) => opt.key === firstSelectedOption.key);
+
+    if (index >= 0) {
+      setTimeout(() => {
+        this.viewport.scrollToIndex(index, 'smooth');
+      }, 100);
+    }
+  }
+
+  private synchronizeSelectedOptions(): void {
+    const keysToSelect = this.preselectedOptionKeys?.length
+      ? this.preselectedOptionKeys
+      : this.control?.value
+        ? Array.isArray(this.control.value)
+          ? this.control.value
+          : [this.control.value]
+        : [];
+
+    if (keysToSelect.length > 0 && this.allOptions.length > 0) {
+      this.selectedOptions = this.allOptions.filter((option) => keysToSelect.includes(option.key));
+      this.updateMatSelectTriggerContent();
+    }
+  }
+
+  private ensureValueDisplay(): void {
+    if (!this.matSelect || !this.control?.value) return;
+
+    setTimeout(() => {
+      this.updateMatSelectTriggerContent();
+      if (this.multiple && Array.isArray(this.control.value)) {
+        this.selectedOptions = this.allOptions.filter((option) => this.control.value.includes(option.key));
+      }
+      this.cd.detectChanges();
+    });
   }
 
   protected readonly Validators = Validators;

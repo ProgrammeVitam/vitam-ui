@@ -231,5 +231,319 @@ describe('SelectComponent', () => {
       const allValues = options.options.map((option) => option.key);
       expect(testHostComponent.control.value).toEqual(allValues);
     });
+
+    it('should only select chosen options and not others', async () => {
+      const labelElement = hostFixture.debugElement.query(By.css('mat-label')).nativeElement;
+      labelElement.click();
+
+      const selectOptions = await selectHarness.getOptions();
+      await selectOptions[1].click();
+      await selectOptions[2].click();
+
+      expect(testHostComponent.control.value).toEqual(['option1', 'option2']);
+      expect(testHostComponent.control.value).not.toContain('option3');
+      expect(testHostComponent.control.value).not.toContain('something-else');
+    });
+
+    it('should correctly deselect an option without affecting others', async () => {
+      testHostComponent.control.setValue(['option1', 'option2', 'option3']);
+      hostFixture.detectChanges();
+      await hostFixture.whenStable();
+
+      const labelElement = hostFixture.debugElement.query(By.css('mat-label')).nativeElement;
+      labelElement.click();
+
+      const selectOptions = await selectHarness.getOptions();
+      await selectOptions[2].click();
+
+      expect(testHostComponent.control.value).toEqual(['option1', 'option3']);
+      expect(testHostComponent.control.value).not.toContain('option2');
+    });
+
+    it('should display preselected values correctly on load', async () => {
+      const preselectedValues = ['option2', 'option3'];
+      testHostComponent.control.setValue(preselectedValues);
+      hostFixture.detectChanges();
+      await hostFixture.whenStable();
+
+      const valueElement = hostFixture.debugElement.query(By.css('mat-select-trigger')).nativeElement;
+      expect(valueElement.textContent.trim().startsWith('2')).toBeTrue();
+    });
+
+    it('should maintain selection integrity when options are reloaded', async () => {
+      testHostComponent.control.setValue(['option1', 'option3']);
+      hostFixture.detectChanges();
+      await hostFixture.whenStable();
+
+      testHostComponent.options = {
+        options: [
+          { key: 'option1', label: 'Updated Option 1' },
+          { key: 'option2', label: 'Updated Option 2' },
+          { key: 'option3', label: 'Updated Option 3' },
+        ],
+      };
+      hostFixture.detectChanges();
+      await hostFixture.whenStable();
+
+      expect(testHostComponent.control.value).toEqual(['option1', 'option3']);
+    });
+  });
+
+  describe('in NON multiple mode (selection integrity)', () => {
+    beforeEach(init(false));
+
+    it('should only select one option at a time', async () => {
+      const labelElement = hostFixture.debugElement.query(By.css('mat-label')).nativeElement;
+
+      labelElement.click();
+      const selectOptions = await selectHarness.getOptions();
+      await selectOptions[0].click();
+
+      expect(testHostComponent.control.value).toBe('option1');
+
+      labelElement.click();
+      const selectOptions2 = await selectHarness.getOptions();
+      await selectOptions2[1].click();
+
+      expect(testHostComponent.control.value).toBe('option2');
+    });
+
+    it('should only select the chosen value and not others', async () => {
+      const labelElement = hostFixture.debugElement.query(By.css('mat-label')).nativeElement;
+
+      labelElement.click();
+      const selectOptions = await selectHarness.getOptions();
+      await selectOptions[1].click();
+
+      expect(testHostComponent.control.value).toBe('option2');
+      expect(testHostComponent.control.value).not.toBe('option1');
+      expect(testHostComponent.control.value).not.toBe('option3');
+      expect(testHostComponent.control.value).not.toBe('something-else');
+    });
+
+    it('should display preselected value correctly on load', async () => {
+      testHostComponent.control.setValue('option3');
+      hostFixture.detectChanges();
+      await hostFixture.whenStable();
+
+      const valueElement = hostFixture.debugElement.query(By.css('mat-select-trigger')).nativeElement;
+      expect(valueElement.textContent.trim()).toBe('option 3');
+    });
+  });
+
+  describe('compareOptions method', () => {
+    describe('comparing null and undefined values', () => {
+      beforeEach(init(false));
+
+      it('should return true when both values are null', () => {
+        const result = testHostComponent.selectComponent.compareOptions(null, null);
+        expect(result).toBeTrue();
+      });
+
+      it('should return true when both values are undefined', () => {
+        const result = testHostComponent.selectComponent.compareOptions(undefined, undefined);
+        expect(result).toBeTrue();
+      });
+
+      it('should return false when one value is null and the other is undefined', () => {
+        const result = testHostComponent.selectComponent.compareOptions(null, undefined);
+        expect(result).toBeFalse();
+      });
+
+      it('should return false when one value is null and the other is a string', () => {
+        const result = testHostComponent.selectComponent.compareOptions(null, 'option1');
+        expect(result).toBeFalse();
+      });
+
+      it('should return false when one value is undefined and the other is a string', () => {
+        const result = testHostComponent.selectComponent.compareOptions(undefined, 'option1');
+        expect(result).toBeFalse();
+      });
+    });
+
+    describe('comparing string values', () => {
+      beforeEach(init(false));
+
+      it('should return true when both strings are identical', () => {
+        const result = testHostComponent.selectComponent.compareOptions('option1', 'option1');
+        expect(result).toBeTrue();
+      });
+
+      it('should return false when strings are different', () => {
+        const result = testHostComponent.selectComponent.compareOptions('option1', 'option2');
+        expect(result).toBeFalse();
+      });
+
+      it('should return true when comparing string with numeric value as string', () => {
+        const result = testHostComponent.selectComponent.compareOptions('123', 123);
+        expect(result).toBeTrue();
+      });
+
+      it('should return false when comparing different numeric values as strings', () => {
+        const result = testHostComponent.selectComponent.compareOptions('123', 456);
+        expect(result).toBeFalse();
+      });
+    });
+
+    describe('comparing object values with key property', () => {
+      beforeEach(init(false));
+
+      it('should return true when both objects have the same key', () => {
+        const obj1 = { key: 'option1', label: 'Option 1' };
+        const obj2 = { key: 'option1', label: 'Option 1' };
+        const result = testHostComponent.selectComponent.compareOptions(obj1, obj2);
+        expect(result).toBeTrue();
+      });
+
+      it('should return false when objects have different keys', () => {
+        const obj1 = { key: 'option1', label: 'Option 1' };
+        const obj2 = { key: 'option2', label: 'Option 2' };
+        const result = testHostComponent.selectComponent.compareOptions(obj1, obj2);
+        expect(result).toBeFalse();
+      });
+    });
+
+    describe('comparing array values (multiple mode)', () => {
+      beforeEach(init(true));
+
+      it('should return true when both arrays are empty', () => {
+        const result = testHostComponent.selectComponent.compareOptions([], []);
+        expect(result).toBeTrue();
+      });
+
+      it('should return true when both arrays contain the same values in the same order', () => {
+        const arr1 = ['option1', 'option2', 'option3'];
+        const arr2 = ['option1', 'option2', 'option3'];
+        const result = testHostComponent.selectComponent.compareOptions(arr1, arr2);
+        expect(result).toBeTrue();
+      });
+
+      it('should return true when both arrays contain the same values in different order', () => {
+        const arr1 = ['option1', 'option2', 'option3'];
+        const arr2 = ['option3', 'option1', 'option2'];
+        const result = testHostComponent.selectComponent.compareOptions(arr1, arr2);
+        expect(result).toBeTrue();
+      });
+
+      it('should return false when arrays have different lengths', () => {
+        const arr1 = ['option1', 'option2'];
+        const arr2 = ['option1', 'option2', 'option3'];
+        const result = testHostComponent.selectComponent.compareOptions(arr1, arr2);
+        expect(result).toBeFalse();
+      });
+
+      it('should return false when arrays have same length but different values', () => {
+        const arr1 = ['option1', 'option2', 'option3'];
+        const arr2 = ['option1', 'option2', 'option4'];
+        const result = testHostComponent.selectComponent.compareOptions(arr1, arr2);
+        expect(result).toBeFalse();
+      });
+    });
+
+    describe('comparing mixed types', () => {
+      beforeEach(init(false));
+
+      it('should return true when comparing number to string representation', () => {
+        const result = testHostComponent.selectComponent.compareOptions(123, '123');
+        expect(result).toBeTrue();
+      });
+
+      it('should return true when comparing boolean true to string "true"', () => {
+        const result = testHostComponent.selectComponent.compareOptions(true, 'true');
+        expect(result).toBeTrue();
+      });
+
+      it('should return true when comparing boolean false to string "false"', () => {
+        const result = testHostComponent.selectComponent.compareOptions(false, 'false');
+        expect(result).toBeTrue();
+      });
+
+      it('should handle empty string comparison', () => {
+        const result = testHostComponent.selectComponent.compareOptions('', '');
+        expect(result).toBeTrue();
+      });
+
+      it('should return false when comparing empty string to null', () => {
+        const result = testHostComponent.selectComponent.compareOptions('', null);
+        expect(result).toBeFalse();
+      });
+    });
+
+    describe('edge cases', () => {
+      beforeEach(init(false));
+
+      it('should not match similar but different option keys', () => {
+        // This test ensures that "option1" is not matched with "option10" or "option12"
+        const result1 = testHostComponent.selectComponent.compareOptions('option1', 'option10');
+        expect(result1).toBeFalse();
+
+        const result2 = testHostComponent.selectComponent.compareOptions('option1', 'option12');
+        expect(result2).toBeFalse();
+      });
+
+      it('should correctly compare options with special characters', () => {
+        const result1 = testHostComponent.selectComponent.compareOptions('option-1', 'option-1');
+        expect(result1).toBeTrue();
+
+        const result2 = testHostComponent.selectComponent.compareOptions('option_1', 'option-1');
+        expect(result2).toBeFalse();
+      });
+
+      it('should handle whitespace in option values', () => {
+        const result1 = testHostComponent.selectComponent.compareOptions('option 1', 'option 1');
+        expect(result1).toBeTrue();
+
+        const result2 = testHostComponent.selectComponent.compareOptions('option 1', 'option  1');
+        expect(result2).toBeFalse();
+      });
+
+      it('should not partially match option keys', () => {
+        // Ensures that selecting "usage" doesn't match "usage_report" or vice versa
+        const result = testHostComponent.selectComponent.compareOptions('usage', 'usage_report');
+        expect(result).toBeFalse();
+      });
+    });
+  });
+
+  describe('regression test for bug (Referential fields appear empty in edit mode despite a saved value)', () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule, TranslateModule.forRoot(), TestHostComponent],
+      }).compileComponents();
+
+      hostFixture = TestBed.createComponent(TestHostComponent);
+      testHostComponent = hostFixture.componentInstance;
+    });
+
+    it('should display preselected value in edit mode even when it is far down in a long list', async () => {
+      // Create a large list of options (100 items)
+      const largeOptionList = Array.from({ length: 100 }, (_, i) => ({
+        key: `option${i}`,
+        label: `Option ${i}`,
+      }));
+
+      testHostComponent.options = { options: largeOptionList };
+      testHostComponent.multiple = false;
+
+      // Preselect an option far down the list (option #95)
+      testHostComponent.control.setValue('option95');
+
+      hostFixture.detectChanges();
+      await hostFixture.whenStable();
+
+      selectHarness = await TestbedHarnessEnvironment.loader(hostFixture).getHarness(MatSelectHarness);
+
+      // Verify the selected value is displayed in the trigger
+      const valueText = await selectHarness.getValueText();
+      expect(valueText).toBe('Option 95');
+
+      // Open the select
+      await selectHarness.open();
+      await hostFixture.whenStable();
+
+      // Verify the value is still displayed after opening
+      const valueTextAfterOpen = await selectHarness.getValueText();
+      expect(valueTextAfterOpen).toBe('Option 95');
+    });
   });
 });
