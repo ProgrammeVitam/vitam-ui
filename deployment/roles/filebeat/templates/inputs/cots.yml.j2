@@ -4,10 +4,10 @@
 #
 {% if filebeat.cots.consul.enable_log | bool %}
 - type: filestream
-  id: {{ vitam_site_name }}-consul
+  id: {{ vitamui_site_name }}-consul
   enabled: true
   paths:
-    - "{{ vitam_defaults.folder.root_path }}/log/consul/consul*.log"
+    - "{{ vitam_defaults.folder.root_path }}/log/consul/consul.log"
   ignore_older: {{ filebeat.config.ignore_older }}
   fields_under_root: true
   fields:
