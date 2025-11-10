@@ -264,9 +264,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       searchCriteria?.forEach((sc) => {
         sc.values?.forEach((value) => this.archiveHelperService.removeCriteria(sc.key, value.value, false, [], searchCriteria, 0));
       });
-      if (params.keys.length) {
-        this.addCriteriaFromParams(
-          Object.fromEntries(
+
+      const paramsToAdd = params.keys.length
+        ? Object.fromEntries(
             Object.entries<string>(this.route.snapshot.queryParams).map(([key, value]) => [
               key,
               value
@@ -274,8 +274,15 @@ export class SimpleCriteriaSearchComponent implements OnInit {
                 .split(',')
                 .map((v) => decodeURIComponent(v)),
             ]),
-          ),
-        );
+          )
+        : {};
+
+      if (!paramsToAdd['archiveUnitType']) {
+        paramsToAdd['archiveUnitType'] = ['ARCHIVE_UNIT_WITH_OBJECTS', 'ARCHIVE_UNIT_WITHOUT_OBJECTS'];
+      }
+
+      if (Object.keys(paramsToAdd).length) {
+        this.addCriteriaFromParams(paramsToAdd);
       }
     });
   }
