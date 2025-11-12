@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, resource, ViewChildren } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   CountryOption,
@@ -79,6 +79,16 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
   multiSelectOptions$: Observable<VitamuiSelectOptions>;
 
   wrapperControl = new FormControl('FR');
+
+  loadingOptions = resource<VitamuiSelectOptions | any[], unknown>({
+    loader: () =>
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(['AAA', 'BBB']);
+          setTimeout(() => this.loadingOptions.reload(), 5_000);
+        }, 5_000);
+      }),
+  });
 
   @ViewChildren(SelectComponent, { read: ElementRef }) components: QueryList<ElementRef>;
 

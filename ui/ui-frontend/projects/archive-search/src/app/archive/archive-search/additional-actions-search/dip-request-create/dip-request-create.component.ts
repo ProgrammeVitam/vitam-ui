@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, resource, ResourceRef } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize, Subscription } from 'rxjs';
+import { finalize, firstValueFrom, Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
   AgencyService,
@@ -48,9 +48,9 @@ import {
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
+  SnackBarService,
   UsageVersionEnum,
   VitamuiSelectOptions,
-  SnackBarService,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
@@ -66,7 +66,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   formGroups: FormGroup[];
   isLoading = false;
   usageOptions: VitamuiSelectOptions[] = [];
-  agencyOptions: VitamuiSelectOptions;
+  readonly agencyOptionsResource: ResourceRef<VitamuiSelectOptions>;
 
   constructor(
     private translate: TranslateService,
@@ -85,7 +85,25 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       selectedItemCountKnown?: boolean;
     },
     private snackBarService: SnackBarService,
-  ) {}
+  ) {
+    this.agencyOptionsResource = resource<VitamuiSelectOptions, void>({
+      loader: () =>
+        firstValueFrom(
+          this.agencyService.getAll().pipe(
+            map(
+              (agencies) =>
+                ({
+                  options: agencies.map((agency) => ({
+                    key: agency.identifier,
+                    label: `${agency.identifier} - ${agency.name}`,
+                  })),
+                  customSorting: (a, b) => a.key.localeCompare(b.key),
+                }) satisfies VitamuiSelectOptions,
+            ),
+          ),
+        ),
+    });
+  }
 
   itemSelected: number;
   selectedItemCountKnown: boolean;
@@ -98,20 +116,6 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     this.selectedItemCountKnown = this.data.selectedItemCountKnown;
     this.initForms();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
-    this.agencyService
-      .getAll()
-      .pipe(
-        map((agencies) => agencies.sort((a, b) => a.identifier.localeCompare(b.identifier))),
-        map(
-          (agencies): VitamuiSelectOptions => ({
-            options: agencies.map((agency) => ({
-              key: agency.identifier,
-              label: `${agency.identifier} - ${agency.name}`,
-            })),
-          }),
-        ),
-      )
-      .subscribe((selectOptions) => (this.agencyOptions = selectOptions));
   }
 
   private initForms() {
