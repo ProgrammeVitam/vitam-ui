@@ -150,7 +150,8 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     return collectedNodes;
   }
 
-  onCancel() {
+  onCancel(cancelButtonClicked = false) {
+    if (cancelButtonClicked && !this.isModified()) this.backToDisplayMode();
     if (!this.isModified() || this.dialog.openDialogs.length > 0) {
       return; // form not modified or dialog already open
     }
