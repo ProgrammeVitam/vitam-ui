@@ -35,38 +35,65 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
   FilingPlanMode,
   IngestContract,
   Option,
+  SelectComponent,
   SignaturePolicy,
   SignedDocumentPolicyEnum,
-  VitamuiSelectOptions,
+  VitamUICommonModule,
   VitamuiHttpHeaders,
+  VitamUILibraryModule,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
+import { CommonModule } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-contract-create',
   templateUrl: './ingest-contract-create.component.html',
   styleUrls: ['./ingest-contract-create.component.scss'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatRadioModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    SelectComponent,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
   readonly FilingPlanMode = FilingPlanMode;
 
-  @Input() tenantIdentifier: number;
-  @Input() isSlaveMode: boolean;
+  protected readonly tenantIdentifier: number;
+  protected readonly isSlaveMode: boolean;
 
   form: FormGroup;
   hasCustomGraphicIdentity = false;
@@ -77,7 +104,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<IngestContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { tenantIdentifier: number; isSlaveMode: boolean },
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService,
     private ingestContractCreateValidators: IngestContractCreateValidators,
@@ -85,7 +112,10 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private fileFormatService: FileFormatService,
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
-  ) {}
+  ) {
+    this.tenantIdentifier = data.tenantIdentifier;
+    this.isSlaveMode = data.isSlaveMode;
+  }
 
   statusControl = new FormControl(false);
   linkParentIdControl = new FormControl();
