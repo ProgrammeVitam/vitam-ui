@@ -58,4 +58,18 @@ This is a form component that allows the user to select an option from a list of
     ></vitamui-select>
   </vitamui-form-field-value-wrapper>
   <div><strong>Value: </strong>{{ wrapperControl.value | json }}</div>
+
+  <h3>Loading</h3>
+  <p>
+    The component can show a loading spinner, for when options are not yes loaded, by providing an "options" of type ResourceRef (from
+    Angular resource API).
+  </p>
+  <vitamui-select
+    [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+    [options]="loadingOptions"
+    [multiple]="true"
+    [enableSearch]="enableSearch"
+    [enableSelectAll]="enableSelectAll"
+    [enableDisplaySelected]="enableDisplaySelected"
+  ></vitamui-select>
 }
