@@ -1,11 +1,7 @@
 @use '../../../../sass/spacing';
 
 :host {
-  @extend .mb-4;
-
-  &:has(+ mat-dialog-actions) {
-    @extend .mb-6;
-  }
+  display: block;
 }
 
 .with-progress-bar {
