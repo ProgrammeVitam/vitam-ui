@@ -2,7 +2,7 @@
 
 <div *ngIf="editMode">
   <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.3' }" class="editor-banner">
-    <button (click)="onSave()" [disabled]="!isModified()" class="btn primary save">
+    <button (click)="onSave()" [disabled]="!canSave" class="btn primary save">
       {{ 'COMMON.SAVE' | translate }}
     </button>
     <button (click)="onCancel(true)" class="btn primary cancel">
@@ -18,7 +18,7 @@
     [title]="'ARCHIVE_UNIT.DIALOGS.SAVE.CONTENT' | translate"
   ></vitamui-dialog-header>
   <mat-dialog-actions>
-    <button [matDialogClose]="true" [disabled]="!isModified()" class="btn primary btn-confirm-dialog">
+    <button [matDialogClose]="true" [disabled]="!canSave" class="btn primary btn-confirm-dialog">
       {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CONFIRM' | translate }}
     </button>
     <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CANCEL' | translate }}</button>
