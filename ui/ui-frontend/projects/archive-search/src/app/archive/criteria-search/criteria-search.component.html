@@ -221,14 +221,7 @@
             <ng-container *ngFor="let criteriaValue of criteriaVal.values; let isFirst = first; let isLast = last">
               <div
                 class="button-content right-button"
-                [vitamuiTooltip]="
-                  (criteriaValue.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
-                      | translateWithOptionalTypeSuffix)
-                    : criteriaVal.key) +
-                  ' : ' +
-                  getCriteriaLabel(criteriaVal.key, criteriaValue)
-                "
+                [vitamuiTooltip]="getCriteriaKeyLabel(criteriaValue) + ' : ' + getCriteriaLabel(criteriaVal.key, criteriaValue)"
                 [vitamuiTooltipShowDelay]="300"
                 [ngClass]="[
                   isFirst ? 'left-arround' : 'left-not-arround',
@@ -237,20 +230,10 @@
               >
                 <ng-container *ngIf="isFirst">
                   <i *ngIf="criteriaKey === 'NODE'" class="vitamui-icon vitamui-icon-radio-checked vitamui-row-icon"></i>
-                  {{
-                    (criteriaValue.keyTranslated
-                      ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key
-                        | translateWithOptionalTypeSuffix)
-                      : criteriaVal.key) + ' : '
-                  }}
+                  {{ getCriteriaKeyLabel(criteriaValue) + ' : ' }}
                 </ng-container>
 
-                {{
-                  criteriaValue.valueTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
-                      | translate)
-                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
-                }}
+                {{ getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50 }}
               </div>
               <div
                 class="vitamui-remove-search-criteria"
