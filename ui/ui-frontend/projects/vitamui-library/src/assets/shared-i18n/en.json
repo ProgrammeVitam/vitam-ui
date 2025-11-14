@@ -3211,7 +3211,7 @@
     "EXT_VITAMUI_CREATE_PROFILE": "Profile creation",
     "EXT_VITAMUI_CREATE_PROFILE.OK": "Success of the profile creation",
     "EXT_VITAMUI_UPDATE_PROFILE": "Profile modification",
-    "EXT_VITAMUI_UPDATE_PROFILE.OK": "Success of the Profile modification",
+    "EXT_VITAMUI_UPDATE_PROFILE.OK": "Success of the profile modification",
     "EXT_VITAMUI_START_SURROGATE_USER": "Start of user subrogation",
     "EXT_VITAMUI_START_SURROGATE_GENERIC": "Start of generic user subrogation",
     "EXT_VITAMUI_START_SURROGATE_GENERIC.OK": "Success of the start of generic user subrogation",
