@@ -41,7 +41,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaTypeEnum, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  BASE_URL,
+  InjectorModule,
+  LoggerModule,
+  SearchCriteriaTypeEnum,
+  TranslateWithOptionalTypeSuffixPipe,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CriteriaSearchComponent } from './criteria-search.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -64,6 +71,7 @@ describe('CriteriaSearchComponent', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        TranslateWithOptionalTypeSuffixPipe,
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
