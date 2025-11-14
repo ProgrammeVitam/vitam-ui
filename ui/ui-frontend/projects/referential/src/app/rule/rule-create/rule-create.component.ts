@@ -38,7 +38,7 @@ import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ManagementRuleValidators, Rule, RuleService } from 'vitamui-library';
+import { ConfirmDialogService, MiscValidators, Rule, RuleService } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateValidators } from './rule-create.validators';
 import { sizes } from '../../ontology/ontology-form-options';
@@ -77,7 +77,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       ruleId: [
         null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), ManagementRuleValidators.ruleIdPattern],
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), MiscValidators.requiredIdentifier],
         this.ruleCreateValidator.uniqueRuleId(),
       ],
       ruleType: [null, Validators.required],

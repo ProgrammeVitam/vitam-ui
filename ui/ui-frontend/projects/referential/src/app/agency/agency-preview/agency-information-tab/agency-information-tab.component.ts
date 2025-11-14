@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
-import { Agency, ApplicationId, diff, Role, SecurityService, AgencyService, VitamUICommonModule } from 'vitamui-library';
+import { Agency, AgencyService, ApplicationId, diff, MiscValidators, Role, SecurityService, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { AgencyCreateValidators } from '../../agency-create/agency-create.validators';
@@ -99,7 +99,7 @@ export class AgencyInformationTabComponent {
     private agencyCreateValidators: AgencyCreateValidators,
   ) {
     this.form = this.formBuilder.group({
-      name: [null, [Validators.required, agencyCreateValidators.onlyWhitespaces]],
+      name: [null, [MiscValidators.requiredNotBlank]],
       description: [null],
     });
 

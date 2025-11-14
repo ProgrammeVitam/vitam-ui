@@ -462,8 +462,7 @@
         "TENANT_TOGGLE_TOOLTIP_TRUE": "A check is performed on the tenants and contracts defined in the application context when an external application connects to the service",
         "NAME_ALREADY_EXISTS": "Name already in use",
         "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
-        "INCORRECT_NAME": "This name contains one or many unauthorized characters",
-        "INCORRECT_IDENTIFIER": "This identifier contains one or many unauthorized characters"
+        "INCORRECT_NAME": "This name contains one or many unauthorized characters"
       },
       "PERMISSION": {
         "TITLE": "Permissions",
@@ -640,8 +639,7 @@
       "IDENTIFIER_TOOLTIP": "The identifier is unique per type of rule. It must not include spaces or accented characters",
       "TYPE_TOOLTIP": "StorageRule : Current useful life - AppraisalRule : Administrative useful life - AccessRule : Communicability delay - ReuseRule: Duration of reuse - DisseminationRule : Broadcast delay - ClassificationRule : Classification duration",
       "NAME_ALREADY_EXISTS": "Name already in use",
-      "IDENTIFIER_ALREADY_EXISTS": "The rule code entered already exists",
-      "IDENTIFIER_NO_COMPLIANT": "Non-compliant identifier"
+      "IDENTIFIER_ALREADY_EXISTS": "The rule code entered already exists"
     },
     "TAB": {
       "INFORMATION": {
@@ -1071,7 +1069,7 @@
       "EVIDENCE_AUDIT_IDENTIFIER": "Consistency audit identifier",
       "CHOOSE_ATTACHMENT_POSITION": "Choose attachment position",
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS": "Enter ingest operations identifiers",
-      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Comma-separated ingest operations identifiers",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Ingest operations identifier(s)",
       "CHOOSE_ORIGINATING_AGENCY": "Choose producer services",
       "EVIDENCE_AUDIT_NOT_FOUND": "The consistency audit identifier entered does not exist",
       "CHOOSE_INGEST_OPERATIONS_PERIOD": "Choose ingest operation period",

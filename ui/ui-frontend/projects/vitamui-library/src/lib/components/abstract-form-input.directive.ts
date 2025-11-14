@@ -142,7 +142,11 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   writeValue(_obj: any) {}
 
   isRequired(): boolean {
-    return this.control.hasValidator(Validators.required) || this.control.hasValidator(MiscValidators.requiredNotBlank);
+    return (
+      this.control.hasValidator(Validators.required) ||
+      this.control.hasValidator(MiscValidators.requiredNotBlank) ||
+      this.control.hasValidator(MiscValidators.requiredIdentifier)
+    );
   }
 
   private updateValidators() {

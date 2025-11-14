@@ -50,8 +50,8 @@ import {
   CriteriaValue,
   InjectorModule,
   LoggerModule,
-  WINDOW_LOCATION,
   Rule,
+  WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RuleValidator } from '../../rule.validator';
@@ -62,7 +62,6 @@ const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
 const ruleValidatorMock = jasmine.createSpyObj('RuleValidator', {
-  ruleIdPattern: () => of(),
   uniqueRuleId: () => of(),
 });
 

@@ -105,10 +105,4 @@ export class ContextCreateValidators {
       return !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectName: true };
     };
   };
-
-  allowedIdentifier = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors => {
-      return !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true };
-    };
-  };
 }

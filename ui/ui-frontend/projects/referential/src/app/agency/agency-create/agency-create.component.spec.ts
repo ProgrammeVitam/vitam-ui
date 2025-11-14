@@ -46,7 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, AgencyService } from 'vitamui-library';
+import { AgencyService, ConfirmDialogService, MiscValidators } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AgencyCreateComponent } from './agency-create.component';
 import { AgencyCreateValidators } from './agency-create.validators';
@@ -81,22 +81,22 @@ const expectedAgency = {
   description: 'My Beautiful description',
 };
 
-let component: AgencyCreateComponent;
-let fixture: ComponentFixture<AgencyCreateComponent>;
-
 class Page {
+  constructor(private fixture: ComponentFixture<AgencyCreateComponent>) {}
   get submit() {
-    return fixture.nativeElement.querySelector('button[type=submit]');
+    return this.fixture.nativeElement.querySelector('button[type=submit]');
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return this.fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
 }
 
-let page: Page;
-
 describe('AgencyCreateComponent', () => {
+  let component: AgencyCreateComponent;
+  let fixture: ComponentFixture<AgencyCreateComponent>;
+  let page: Page;
+
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
@@ -104,7 +104,6 @@ describe('AgencyCreateComponent', () => {
     const agencyValidatorSpy = jasmine.createSpyObj('AgencyCreateValidators', {
       uniqueIdentifier: () => of(null),
       uniqueName: () => of(null),
-      onlyWhitespaces: () => {},
     });
     await TestBed.configureTestingModule({
       imports: [
@@ -133,7 +132,7 @@ describe('AgencyCreateComponent', () => {
     fixture = TestBed.createComponent(AgencyCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    page = new Page();
+    page = new Page(fixture);
   });
 
   it('should create', () => {
@@ -157,6 +156,10 @@ describe('AgencyCreateComponent', () => {
   });
 
   describe('Form', () => {
+    it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+      expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
+    });
+
     it('should be invalid when empty', () => {
       expect(component.form.invalid).toBeTruthy();
     });

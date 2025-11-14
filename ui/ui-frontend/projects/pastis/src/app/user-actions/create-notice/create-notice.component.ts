@@ -115,7 +115,7 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       identifier: [
         { value: this.notice.identifier, disabled: this.editNotice },
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), MiscValidators.allowedIdentifier],
+        [MiscValidators.requiredIdentifier, Validators.minLength(2), Validators.maxLength(100)],
       ],
       name: [this.notice.name, Validators.required],
       status: [this.notice.status],

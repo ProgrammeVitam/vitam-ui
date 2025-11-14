@@ -46,12 +46,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, MiscValidators, SelectComponent, StartupService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateComponent } from './file-format-create.component';
 import { FileFormatCreateValidators } from './file-format-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 const expectedFileFormat = {
   puid: '424242',
@@ -59,27 +60,28 @@ const expectedFileFormat = {
   name: 'Test',
   mimeType: 'application/test',
   extensions: '.test, .tst',
+  hasPriorityOverFileFormatIDs: false,
 };
 
-let component: FileFormatCreateComponent;
-let fixture: ComponentFixture<FileFormatCreateComponent>;
-
 class Page {
+  constructor(private fixture: ComponentFixture<FileFormatCreateComponent>) {}
   get submit() {
-    return fixture.nativeElement.querySelector('button[type=submit]');
+    return this.fixture.nativeElement.querySelector('button[type=submit]');
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return this.fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
 }
 
-let page: Page;
+describe('FileFormatCreateComponent', () => {
+  let component: FileFormatCreateComponent;
+  let fixture: ComponentFixture<FileFormatCreateComponent>;
+  let page: Page;
 
-xdescribe('  FileFormatCreateComponent', () => {
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', { create: of({}) });
+    const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', { create: of({}), getAllForTenant: of({}) });
     const fileFormatCreateValidatorsSpy = jasmine.createSpyObj('FileFormatCreateValidators', {
       uniquePuid: () => of(null),
       uniqueName: () => of(null),
@@ -93,12 +95,15 @@ xdescribe('  FileFormatCreateComponent', () => {
         MatProgressBarModule,
         NoopAnimationsModule,
         MatProgressSpinnerModule,
+        SelectComponent,
+        TranslateModule.forRoot(),
         VitamUICommonTestModule,
       ],
       declarations: [FileFormatCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: StartupService, useValue: { getTenantIdentifier: () => of(1) } },
         { provide: FileFormatService, useValue: fileFormatServiceSpy },
         { provide: FileFormatCreateValidators, useValue: fileFormatCreateValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
@@ -111,11 +116,15 @@ xdescribe('  FileFormatCreateComponent', () => {
     fixture = TestBed.createComponent(FileFormatCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    page = new Page();
+    page = new Page(fixture);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('applies MiscValidators.requiredIdentifier to puid control', () => {
+    expect(component.form.get('puid').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
   });
 
   describe('Template', () => {

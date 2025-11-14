@@ -462,8 +462,7 @@
         "TENANT_TOGGLE_TOOLTIP_TRUE": "Un contrôle est effectué sur les tenants et contrats définis dans le contexte applicatif quand une application externe se connecte au service",
         "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
         "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
-        "INCORRECT_NAME": "Ce nom contient un ou des caractères non autorisés",
-        "INCORRECT_IDENTIFIER": "Cet identifiant contient un ou des caractères non autorisés"
+        "INCORRECT_NAME": "Ce nom contient un ou des caractères non autorisés"
       },
       "PERMISSION": {
         "TITLE": "Permissions",
@@ -640,8 +639,7 @@
       "IDENTIFIER_TOOLTIP": "L'identifiant est unique par type de règle. Il ne doit pas comprendre d'espace ou de caractère accentué",
       "TYPE_TOOLTIP": "StorageRule : Durée d'utilité courante - AppraisalRule : Durée d'utilité administrative - AccessRule : Délai de communicabilité - ReuseRule: Durée de réutilisation - DisseminationRule : Délai de diffusion - ClassificationRule : Durée de classification",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
-      "IDENTIFIER_ALREADY_EXISTS": "Le code de la règle renseigné existe déjà",
-      "IDENTIFIER_NO_COMPLIANT": "Identifiant non conforme"
+      "IDENTIFIER_ALREADY_EXISTS": "Le code de la règle renseigné existe déjà"
     },
     "TAB": {
       "INFORMATION": {
@@ -1071,7 +1069,7 @@
       "EVIDENCE_AUDIT_IDENTIFIER": "Identifiant de l'audit de cohérence",
       "CHOOSE_ATTACHMENT_POSITION": "Choisir une position de rattachement",
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS": "Saisir le(s) identifiant(s) d'opération d'entrée",
-      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Identifiant(s) d'opération d'entrée séparés par des virgules",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Identifiant(s) d'opération d'entrée",
       "CHOOSE_ORIGINATING_AGENCY": "Choisir le(s) service(s) producteur(s)",
       "EVIDENCE_AUDIT_NOT_FOUND": "L'identifiant d'audit de cohérence saisi n'existe pas",
       "CHOOSE_INGEST_OPERATIONS_PERIOD": "Choisir une période d'opération d'entrée",

@@ -34,14 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ValidatorFn } from '@angular/forms';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileInformationTabComponent } from './profile-information-tab.component';
+import { ProfileService } from '../../../../core/services/profile.service';
+import { MiscValidators, SnackBarService } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
 
-export interface Validators {
-  readonly ruleIdPattern: ValidatorFn;
-}
+describe('ProfileInformationTabComponent', () => {
+  let fixture: ComponentFixture<ProfileInformationTabComponent>;
+  let component: ProfileInformationTabComponent;
 
-export const RULE_ID_PATTERN_ERROR_KEY = 'ruleIdPattern';
+  beforeEach(waitForAsync(() => {
+    const profileServiceMock = jasmine.createSpyObj('ProfileService', ['updateProfilePa', 'updateProfilePua', 'refreshListProfiles']);
 
-export const ManagementRuleValidators: Validators = {
-  ruleIdPattern: (control) => (/[À-ÖØ-öø-ÿ ]/.test(control.value) ? { [RULE_ID_PATTERN_ERROR_KEY]: true } : null),
-};
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [ProfileInformationTabComponent],
+      providers: [
+        { provide: ProfileService, useValue: profileServiceMock },
+        { provide: SnackBarService, useValue: {} },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ProfileInformationTabComponent);
+    component = fixture.componentInstance;
+  }));
+
+  it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+    expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
+  });
+});

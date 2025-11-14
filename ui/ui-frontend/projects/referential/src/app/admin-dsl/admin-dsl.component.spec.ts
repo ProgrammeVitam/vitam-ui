@@ -56,7 +56,7 @@ describe('AdminDslComponent', () => {
     id: 'id',
     accessContract: 'AC-000001',
     dslQueryType: DslQueryType.ARCHIVE_UNIT,
-    dsl: {},
+    dsl: '',
     response: {},
   };
 

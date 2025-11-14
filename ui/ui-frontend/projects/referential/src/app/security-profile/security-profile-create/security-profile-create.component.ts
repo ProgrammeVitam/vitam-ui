@@ -38,7 +38,7 @@ import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, MiscValidators } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
@@ -79,7 +79,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
       ],
       identifier: [
         null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        [MiscValidators.requiredIdentifier, Validators.minLength(2), Validators.maxLength(100)],
         this.securityProfileCreateValidators.uniqueIdentifier(),
       ],
       fullAccess: [true],

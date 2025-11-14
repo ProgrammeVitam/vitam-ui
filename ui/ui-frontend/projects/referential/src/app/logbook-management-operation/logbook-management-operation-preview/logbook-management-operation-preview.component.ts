@@ -41,6 +41,7 @@ import { filter } from 'rxjs/operators';
 import { OperationDetails } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 import { FormControl, Validators } from '@angular/forms';
+import { MiscValidators } from 'vitamui-library';
 
 @Component({
   selector: 'app-logbook-management-operation-preview',
@@ -72,7 +73,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   }
 
   ngOnInit(): void {
-    this.reason = new FormControl('', [Validators.required, Validators.maxLength(500), Validators.minLength(3)]);
+    this.reason = new FormControl('', [MiscValidators.requiredNotBlank, Validators.maxLength(500), Validators.minLength(3)]);
     if (this.logbookManagementOperationService.operationUpdated) {
       this.operationUpdatedSub = this.logbookManagementOperationService.operationUpdated.subscribe((updatedOperation: OperationDetails) => {
         this.operation = updatedOperation;

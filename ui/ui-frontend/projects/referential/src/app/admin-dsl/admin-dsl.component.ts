@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, DslQueryType, Option, SnackBarService, AccessContractService } from 'vitamui-library';
+import { AccessContractService, AppRootComponent, DslQueryType, MiscValidators, Option, SnackBarService } from 'vitamui-library';
 import { AdminDslService } from './admin-dsl.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -85,7 +85,7 @@ export class AdminDslComponent extends AppRootComponent {
       dslQueryType: [null, Validators.required],
       id: [null, [Validators.minLength(36), Validators.maxLength(36)]],
       accessContract: [null, Validators.required],
-      dsl: [null, Validators.required],
+      dsl: [null, MiscValidators.requiredNotBlank],
       response: null,
     });
   }

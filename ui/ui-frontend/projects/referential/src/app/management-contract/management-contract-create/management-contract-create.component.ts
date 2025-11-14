@@ -43,6 +43,7 @@ import {
   ConfirmDialogService,
   Logger,
   ManagementContract,
+  MiscValidators,
   Option,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
@@ -98,7 +99,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         ? {
             identifier: [
               null,
-              [Validators.required, Validators.minLength(5), Validators.maxLength(100)],
+              [MiscValidators.requiredIdentifier, Validators.minLength(5), Validators.maxLength(100)],
               this.managementContractCreateValidators.uniqueIdentifier(),
             ],
           }
@@ -106,15 +107,15 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       status: [true],
       name: [
         null,
-        [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
+        [MiscValidators.requiredNotBlank, Validators.minLength(3), Validators.maxLength(100)],
         this.managementContractCreateValidators.uniqueName(),
       ],
       description: [null],
       // Step 2
       storage: this.formBuilder.group({
-        unitStrategy: ['default', Validators.required],
-        objectGroupStrategy: ['default', Validators.required],
-        objectStrategy: ['default', Validators.required],
+        unitStrategy: ['default', MiscValidators.requiredNotBlank],
+        objectGroupStrategy: ['default', MiscValidators.requiredNotBlank],
+        objectStrategy: ['default', MiscValidators.requiredNotBlank],
       }),
       // Step 3
       persistentIdentifierPolicies: this.getDefaultPersistentIdentifierPolicies(),

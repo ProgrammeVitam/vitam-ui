@@ -40,12 +40,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   AccessContract,
   AccessContractService,
+  AgencyService,
   ConfirmDialogService,
   FilingPlanMode,
+  MiscValidators,
   Option,
   Status,
   VitamuiSelectOptions,
-  AgencyService,
 } from 'vitamui-library';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
@@ -137,16 +138,16 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.form = this.formBuilder.group({
-      identifier: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.accessContractCreateValidators.uniqueIdentifier(),
-      ],
       status: [false],
       name: [
         null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
         this.accessContractCreateValidators.uniqueName(),
+      ],
+      identifier: [
+        null,
+        [MiscValidators.requiredIdentifier, Validators.minLength(2), Validators.maxLength(100)],
+        this.accessContractCreateValidators.uniqueIdentifier(),
       ],
       description: [null],
       accessLog: [false],

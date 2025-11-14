@@ -36,63 +36,74 @@
  */
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { FileFormat, MiscValidators, SecurityService, StartupService, WINDOW_LOCATION } from 'vitamui-library';
-import { FileFormatService } from '../../file-format.service';
-import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
+import {
+  IngestContract,
+  MiscValidators,
+  SecurityService,
+  SelectComponent,
+  SignedDocumentPolicyEnum,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
+import { IngestContractInformationTabComponent } from './ingest-contract-information-tab.component';
+import { IngestContractService } from '../../ingest-contract.service';
+import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';
+import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 
-describe('FileFormatInformationTabComponent', () => {
-  let component: FileFormatInformationTabComponent;
-  let fixture: ComponentFixture<FileFormatInformationTabComponent>;
+describe('IngestContractInformationTabComponent', () => {
+  let component: IngestContractInformationTabComponent;
+  let fixture: ComponentFixture<IngestContractInformationTabComponent>;
 
-  const fileFormatServiceMock = {
-    patch: (_data: any) => of(null),
-    getAllForTenant: (_data: any) => of(null),
+  const fileFormatValue: Partial<IngestContract> = {
+    identifier: 'ingestId',
+    status: 'ACTIVE',
+    name: 'Name',
+    description: 'description',
+    archiveProfiles: [],
+    managementContractId: 'managementContractId',
   };
 
-  const fileFormatValue: Partial<FileFormat> = {
-    puid: 'EXTERNAL_puid',
+  const previousValue: IngestContract = {
+    id: 'xxx',
+    tenant: 1,
+    version: 1,
+    identifier: 'ingestId',
+    status: 'ACTIVE',
     name: 'Name',
-    mimeType: 'application/puid',
-    version: '1.0',
-    versionPronom: '3.0',
-    extensions: ['.puid'],
-    hasPriorityOverFileFormatIDs: ['fmt/1', 'fmt/2', 'fmt/3'],
-    createdDate: '20/02/2020',
-    updateDate: '20/02/2020',
-  };
-
-  const previousValue: FileFormat = {
-    id: 'vitam_id',
-    documentVersion: 0,
-    version: '1.0',
-    versionPronom: '3.0',
-    puid: 'EXTERNAL_puid',
-    name: 'Name',
-    description: 'Format de Fichier',
-    mimeType: 'application/puid',
-    hasPriorityOverFileFormatIDs: [],
-    group: 'test',
-    alert: false,
-    comment: 'No Comment',
-    extensions: ['.puid'],
-    createdDate: '20/02/2020',
-    updateDate: '20/02/2020',
+    description: 'description',
+    creationDate: '',
+    lastUpdate: '',
+    activationDate: '',
+    deactivationDate: '',
+    checkParentLink: '',
+    linkParentId: '',
+    checkParentId: [],
+    masterMandatory: false,
+    everyDataObjectVersion: false,
+    dataObjectVersion: [],
+    formatUnidentifiedAuthorized: false,
+    everyFormatType: false,
+    formatType: [],
+    archiveProfiles: [],
+    managementContractId: 'managementContractId',
+    computeInheritedRulesAtIngest: false,
+    signaturePolicy: {
+      signedDocument: SignedDocumentPolicyEnum.ALLOWED,
+      declaredSignature: false,
+      declaredTimestamp: false,
+      declaredAdditionalProof: false,
+    },
   };
 
   beforeEach(async () => {
-    const startupServiceStub = {
-      getTenantIdentifier: () => '',
-    };
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [FileFormatInformationTabComponent],
+      imports: [TranslateModule.forRoot(), FormsModule, ReactiveFormsModule, SelectComponent, VitamUICommonTestModule],
+      declarations: [IngestContractInformationTabComponent],
       providers: [
-        { provide: StartupService, useValue: startupServiceStub },
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },
@@ -103,17 +114,19 @@ describe('FileFormatInformationTabComponent', () => {
             hasRole$: () => of(true),
           },
         },
+        { provide: IngestContractService, useValue: {} },
+        { provide: ManagementContractApiService, useValue: { getAllByParams: () => of({}) } },
+        { provide: ArchiveProfileApiService, useValue: { getAllByParams: () => of({}) } },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: FileFormatService, useValue: fileFormatServiceMock },
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileFormatInformationTabComponent);
+    fixture = TestBed.createComponent(IngestContractInformationTabComponent);
     component = fixture.componentInstance;
+    component.ingestContract = previousValue;
     component.form.setValue(fileFormatValue);
-    component.previousValue = (): FileFormat => previousValue;
     fixture.detectChanges();
   });
 
@@ -122,7 +135,7 @@ describe('FileFormatInformationTabComponent', () => {
     expect(component).toBeTruthy();
   }));
 
-  it('applies MiscValidators.requiredIdentifier to puid control', () => {
-    expect(component.form.get('puid').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
+  it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+    expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
   });
 });

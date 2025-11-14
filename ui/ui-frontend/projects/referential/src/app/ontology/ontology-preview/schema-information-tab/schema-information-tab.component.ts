@@ -36,12 +36,10 @@
  */
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SchemaElement, SchemaService, Option } from 'vitamui-library';
+import { MiscValidators, Option, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 @Component({
   selector: 'app-schema-information-tab',
@@ -111,13 +109,13 @@ export class SchemaInformationTabComponent {
     public schemaService: SchemaService,
   ) {
     this.form = this.formBuilder.group({
-      Path: [{ value: '', disabled: true }, [Validators.required]],
-      ApiPath: [{ value: '', disabled: true }, [Validators.required]],
+      Path: [{ value: '', disabled: true }, [MiscValidators.requiredNotBlank]],
+      ApiPath: [{ value: '', disabled: true }, [MiscValidators.requiredNotBlank]],
       ShortName: [{ value: '', disabled: true }],
-      FieldName: [{ value: '', disabled: true }, [Validators.required]],
+      FieldName: [{ value: '', disabled: true }, [MiscValidators.requiredNotBlank]],
       SedaField: [{ value: '', disabled: true }],
       ApiField: [{ value: '', disabled: true }],
-      Description: [{ value: '', disabled: true }, [Validators.required]],
+      Description: [{ value: '', disabled: true }, [MiscValidators.requiredNotBlank]],
       Type: [{ value: '', disabled: true }, [Validators.required]],
       DataType: [{ value: '', disabled: true }, [Validators.required]],
       Collection: [{ value: '', disabled: true }, [Validators.required]],

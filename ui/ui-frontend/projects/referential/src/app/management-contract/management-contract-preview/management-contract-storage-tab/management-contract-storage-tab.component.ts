@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, of } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { ManagementContract, StorageStrategy, diff } from 'vitamui-library';
+import { diff, ManagementContract, MiscValidators, StorageStrategy } from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
 
 @Component({
@@ -98,9 +98,9 @@ export class ManagementContractStorageTabComponent implements OnDestroy {
     private managementContractService: ManagementContractService,
   ) {
     this.form = this.formBuilder.group({
-      unitStrategy: [null, Validators.required],
-      objectGroupStrategy: [null, Validators.required],
-      objectStrategy: [null, Validators.required],
+      unitStrategy: [null, MiscValidators.requiredNotBlank],
+      objectGroupStrategy: [null, MiscValidators.requiredNotBlank],
+      objectStrategy: [null, MiscValidators.requiredNotBlank],
     });
   }
 

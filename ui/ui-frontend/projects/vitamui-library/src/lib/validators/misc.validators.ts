@@ -38,10 +38,16 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export interface MiscValidators {
   readonly requiredNotBlank: ValidatorFn;
-  readonly allowedIdentifier: ValidatorFn;
+  readonly requiredIdentifier: ValidatorFn;
 }
 export const MiscValidators: MiscValidators = {
-  requiredNotBlank: (control) => (control.value == null || control.value.trim().length === 0 ? { requiredNotBlank: true } : null),
-  allowedIdentifier: (control: AbstractControl): ValidationErrors =>
-    !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true },
+  requiredNotBlank: (control: AbstractControl<string | string[]>) =>
+    control.value == null ||
+    (control.value instanceof Array && !control.value.length) ||
+    (control.value instanceof Array ? control.value : [control.value]).some((v) => v.trim().length === 0)
+      ? { requiredNotBlank: true }
+      : null,
+  // Based on HTTPParameterValue ESAPI Validator in Vitam Core
+  requiredIdentifier: (control: AbstractControl): ValidationErrors =>
+    control.value ? (control.value.match('^[a-zA-Z0-9.\\-\\/+=@_ ]*$') ? null : { incorrectIdentifier: true }) : { required: true }, // FIXME: maybe we should prevent "/" and "+"
 };

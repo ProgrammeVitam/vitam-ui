@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { MiscValidators } from './misc.validators';
 
 describe('MiscValidators', () => {
@@ -50,24 +50,64 @@ describe('MiscValidators', () => {
   });
 
   describe('requiredNotBlank', () => {
-    const expectValid = (str: string) => () => {
-      const formGroup = formBuilder.group({
-        field: [str, MiscValidators.requiredNotBlank],
-      });
-      expect(formGroup.valid).withContext('Form group must be valid').toBeTruthy();
-      expect(formGroup.get('field').errors).withContext('Field control must not have errors').toBeNull();
-    };
-    const expectInvalid = (str: string | null) => () => {
-      const formGroup = formBuilder.group({
-        field: [str, MiscValidators.requiredNotBlank],
-      });
-      expect(formGroup.invalid).withContext('Form group must be invalid').toBeTruthy();
-      expect(formGroup.get('field').errors).withContext('Field control must have errors').toBeTruthy();
-    };
+    const expectValid = expectValidBuilder(MiscValidators.requiredNotBlank);
+    const expectInvalid = expectInvalidBuilder(MiscValidators.requiredNotBlank);
+
     it('should allow non blank field without spaces', expectValid('azerty'));
     it('should allow non blank field with spaces', expectValid(' azer ty  '));
     it('should not allow null fields', expectInvalid(null));
     it('should not allow empty fields', expectInvalid(''));
     it('should not allow blank fields', expectInvalid('    '));
+
+    it('should allow non blank fields without spaces', expectValid(['aaa', 'bbb']));
+    it('should allow non blank fields with spaces', expectValid(['a a a', ' b b b ']));
+    it('should not allow only an empty field', expectInvalid(['']));
+    it('should not allow an empty list', expectInvalid([]));
+    it('should not allow an empty field in the list', expectInvalid(['aaa', '']));
+    it('should not allow only a blank field', expectInvalid(['    ']));
+    it('should not allow a blank field in the list', expectInvalid(['aaa', '    ']));
   });
+
+  describe('requiredIdentifier', () => {
+    const expectValid = expectValidBuilder(MiscValidators.requiredIdentifier);
+    const expectInvalid = expectInvalidBuilder(MiscValidators.requiredIdentifier);
+
+    it('should allow non special characters', expectValid('AzErTy042'));
+    it('should allow spaces', expectValid(' AzEr Ty 042 '));
+    it('should allow ".", "-", "=", "@", "_", "/", "+"', expectValid('A.z-E=r@T_y/0+42')); // FIXME: maybe we should prevent "/" and "+"
+
+    it('should not allow null fields', expectInvalid(null));
+    it('should not allow empty fields', expectInvalid(''));
+    it('should not allow accents', expectInvalid('café'));
+    it(
+      'should not allow other special chars',
+      expectInvalid('test!') &&
+        expectInvalid('test$') &&
+        expectInvalid('test*') &&
+        expectInvalid('test?') &&
+        expectInvalid('test;') &&
+        expectInvalid('test:') &&
+        expectInvalid('test#'),
+    );
+  });
+
+  function expectValidBuilder(validatorFn: ValidatorFn) {
+    return (value: string | string[]) => () => {
+      const formGroup = formBuilder.group({
+        field: [value, validatorFn],
+      });
+      expect(formGroup.valid).withContext(`Value "${value}" should be considered valid`).toBeTruthy();
+      expect(formGroup.get('field').errors).withContext('Field control must not have errors').toBeNull();
+    };
+  }
+
+  function expectInvalidBuilder(validatorFn: ValidatorFn) {
+    return (value: string | string[] | null) => () => {
+      const formGroup = formBuilder.group({
+        field: [value, validatorFn],
+      });
+      expect(formGroup.invalid).withContext(`Value "${value}" should be considered invalid`).toBeTruthy();
+      expect(formGroup.get('field').errors).withContext('Field control must have errors').toBeTruthy();
+    };
+  }
 });

@@ -39,18 +39,21 @@ import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, OtpState } from 'vitamui-library';
+import { BASE_URL, ConfirmDialogService, LoggerModule, MiscValidators, SelectComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ContextService } from '../context.service';
 import { ContextCreateComponent } from './context-create.component';
 import { ContextCreateValidators } from './context-create.validators';
+import { SecurityProfileService } from '../../security-profile/security-profile.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { ContextEditPermissionModule } from './context-edit-permission/context-edit-permission.module';
 
 @Component({
   selector: 'app-owner-form',
@@ -75,79 +78,62 @@ class OwnerFormStubComponent implements ControlValueAccessor {
 }
 
 const expectedContext = {
-  enabled: true,
-  code: '424242',
+  status: 'INACTIVE',
   name: 'John Doe',
-  companyName: 'John Co.',
-  hasCustomGraphicIdentity: false,
-  passwordRevocationDelay: 3,
-  otp: OtpState.OPTIONAL,
-  address: {
-    street: 'street',
-    zipCode: '12345',
-    city: 'New York',
-    country: 'US',
-  },
-  language: 'en',
-  emailDomains: ['test.com', 'toto.co.uk'],
-  defaultEmailDomain: 'test.com',
-  owners: [
-    {
-      code: '666666',
-      name: 'Alice Vans',
-      companyName: 'Vans',
-      address: {
-        street: 'street2',
-        zipCode: '43121',
-        city: 'Paris',
-        country: 'FR',
-      },
-    },
-  ],
+  identifier: 'jdoe',
+  securityProfile: 'securityProfile',
+  enableControl: false,
+  permissions: [] as unknown[],
 };
 
-let component: ContextCreateComponent;
-let fixture: ComponentFixture<ContextCreateComponent>;
-
 class Page {
+  constructor(private fixture: ComponentFixture<ContextCreateComponent>) {}
   get submit() {
-    return fixture.nativeElement.querySelector('button[type=submit]');
+    return this.fixture.nativeElement.querySelector('button[type=submit]');
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return this.fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
 }
 
-let page: Page;
+const securityProfileServiceMock = {
+  getAll: () => of([]),
+};
 
-// TODO gafou : boom tomorrow
-xdescribe('ContextCreateComponent', () => {
+describe('ContextCreateComponent', () => {
+  let component: ContextCreateComponent;
+  let fixture: ComponentFixture<ContextCreateComponent>;
+  let page: Page;
+
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const contextServiceSpy = jasmine.createSpyObj('ContextService', { create: of({}) });
-    const contextCreateValidatorsSpy = jasmine.createSpyObj('ContextCreateValidators', {
-      uniqueCode: () => of(null),
-      uniqueDomain: of(null),
-    });
+    const contextServiceSpy = jasmine.createSpyObj('ContextService', { create: of({}), existsProperties: of({}) });
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
+        ContextEditPermissionModule,
+        LoggerModule.forRoot(),
         MatButtonToggleModule,
+        MatDialogActions,
+        MatFormFieldModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        SelectComponent,
+        TranslateModule.forRoot(),
         VitamUICommonTestModule,
       ],
       declarations: [ContextCreateComponent, OwnerFormStubComponent],
       providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: ContextService, useValue: contextServiceSpy },
-        { provide: ContextCreateValidators, useValue: contextCreateValidatorsSpy },
+        ContextCreateValidators,
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: SecurityProfileService, useValue: securityProfileServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -157,98 +143,24 @@ xdescribe('ContextCreateComponent', () => {
     fixture = TestBed.createComponent(ContextCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    page = new Page();
+    page = new Page(fixture);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+    expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
+  });
+
   describe('Template', () => {
     it('should have the right inputs', () => {
-      expect(page.control('code')).toBeTruthy();
       expect(page.control('name')).toBeTruthy();
-      expect(page.control('companyName')).toBeTruthy();
-      expect(page.control('street')).toBeTruthy();
-      expect(page.control('zipCode')).toBeTruthy();
-      expect(page.control('city')).toBeTruthy();
-      expect(page.control('country')).toBeTruthy();
-      expect(page.control('language')).toBeTruthy();
-      expect(page.control('passwordRevocationDelay')).toBeTruthy();
-      expect(page.control('otp')).toBeTruthy();
-      expect(page.control('emailDomains')).toBeTruthy();
-      // expect(page.control('hasCustomGraphicIdentity')).toBeTruthy();
     });
 
     it('should have a submit button', () => {
       expect(page.submit).toBeTruthy();
-      expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedContext);
-      fixture.detectChanges();
-      expect(page.submit.attributes.disabled).toBeFalsy();
-    });
-  });
-
-  describe('Form', () => {
-    it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
-    });
-
-    it('should be valid', () => {
-      component.form.setValue(expectedContext);
-      expect(component.form.valid).toBeTruthy();
-    });
-
-    describe('Validators', () => {
-      describe('code', () => {
-        it('should check the code format', () => {
-          expect(setControlValue('code', '').invalid).toBeTruthy();
-          expect(setControlValue('code', 'A1A1AazZ').invalid).toBeTruthy();
-          expect(setControlValue('code', '1234567890123456789012345').invalid).toBeTruthy();
-          expect(setControlValue('code', '123456789012345678901').invalid).toBeTruthy();
-          expect(setControlValue('code', '12345678901234567890').valid).toBeTruthy('12345678901234567890');
-          expect(setControlValue('code', '000000000').valid).toBeTruthy('000000000');
-          expect(setControlValue('code', '999999').valid).toBeTruthy('999999');
-        });
-      });
-
-      describe('fields', () => {
-        it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy();
-          expect(setControlValue('name', 'n').valid).toBeTruthy();
-
-          expect(setControlValue('companyName', '').invalid).toBeTruthy();
-          expect(setControlValue('companyName', 't').valid).toBeTruthy();
-
-          expect(setControlValue('address.street', '').invalid).toBeTruthy();
-          expect(setControlValue('address.street', 't').valid).toBeTruthy();
-
-          expect(setControlValue('address.zipCode', '').invalid).toBeTruthy();
-          expect(setControlValue('address.zipCode', 't').valid).toBeTruthy();
-
-          expect(setControlValue('address.city', '').invalid).toBeTruthy();
-          expect(setControlValue('address.city', 't').valid).toBeTruthy();
-
-          expect(setControlValue('address.country', '').invalid).toBeTruthy();
-          expect(setControlValue('address.country', 't').valid).toBeTruthy();
-
-          expect(setControlValue('language', '').invalid).toBeTruthy();
-          expect(setControlValue('language', 't').valid).toBeTruthy();
-
-          expect(setControlValue('emailDomains', '').invalid).toBeTruthy();
-          expect(setControlValue('emailDomains', 't').valid).toBeTruthy();
-
-          expect(setControlValue('defaultEmailDomain', '').invalid).toBeTruthy();
-          expect(setControlValue('defaultEmailDomain', 't').valid).toBeTruthy();
-        });
-      });
-
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
-
-        return control;
-      }
     });
   });
 

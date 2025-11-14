@@ -36,12 +36,21 @@
  */
 import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty, omit } from 'underscore';
-import { ApplicationId, diff, FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, Role, SecurityService, VitamuiSelectOptions } from 'vitamui-library';
+import {
+  ApplicationId,
+  diff,
+  FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
+  MiscValidators,
+  Role,
+  SecurityService,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 
 @Component({
@@ -139,12 +148,12 @@ export class FileFormatInformationTabComponent {
     private securityService: SecurityService,
   ) {
     this.form = this.formBuilder.group({
-      puid: [{ value: null, disabled: true }, Validators.required],
-      name: [{ value: null }, Validators.required],
-      mimeType: [{ value: null }],
-      version: [{ value: null }, Validators.required],
-      extensions: [{ value: null }],
-      hasPriorityOverFileFormatIDs: [{ value: null }],
+      puid: [{ value: null, disabled: true }, MiscValidators.requiredIdentifier],
+      name: [null, MiscValidators.requiredNotBlank],
+      mimeType: [null],
+      version: [null, MiscValidators.requiredNotBlank],
+      extensions: [null, MiscValidators.requiredNotBlank],
+      hasPriorityOverFileFormatIDs: [null],
       createdDate: [{ value: null, disabled: true }],
       updateDate: [{ value: null, disabled: true }],
       versionPronom: [{ value: null, disabled: true }],

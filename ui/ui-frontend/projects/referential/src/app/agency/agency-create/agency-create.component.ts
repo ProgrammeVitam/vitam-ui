@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Agency, ConfirmDialogService, AgencyService } from 'vitamui-library';
+import { Agency, AgencyService, ConfirmDialogService, MiscValidators } from 'vitamui-library';
 import { AgencyCreateValidators } from './agency-create.validators';
 
 @Component({
@@ -61,12 +61,8 @@ export class AgencyCreateComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: [null, [Validators.required, this.agencyCreateValidators.onlyWhitespaces], this.agencyCreateValidators.uniqueName()],
-      identifier: [
-        null,
-        [Validators.required, this.agencyCreateValidators.onlyWhitespaces],
-        this.agencyCreateValidators.uniqueIdentifier(),
-      ],
+      name: [null, [MiscValidators.requiredNotBlank], this.agencyCreateValidators.uniqueName()],
+      identifier: [null, [MiscValidators.requiredIdentifier], this.agencyCreateValidators.uniqueIdentifier()],
       description: [null],
     });
   }

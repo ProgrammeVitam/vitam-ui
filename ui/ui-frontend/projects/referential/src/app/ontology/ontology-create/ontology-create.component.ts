@@ -38,7 +38,13 @@ import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, setTypeDetailAndStringSize, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  MiscValidators,
+  setTypeDetailAndStringSize,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
 import { collections, sizes, types } from '../ontology-form-options';
@@ -82,7 +88,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.ontologyCreateValidator.patternID()],
         this.ontologyCreateValidator.uniqueID(),
       ],
-      shortName: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      shortName: [null, [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)]],
       type: [null, Validators.required],
       typeDetail: [null],
       stringSize: [null],

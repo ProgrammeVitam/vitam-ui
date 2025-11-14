@@ -36,11 +36,11 @@
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, IngestContract, Option, VitamuiHttpHeaders } from 'vitamui-library';
+import { diff, IngestContract, MiscValidators, Option, VitamuiHttpHeaders } from 'vitamui-library';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';
@@ -122,10 +122,10 @@ export class IngestContractInformationTabComponent implements OnInit {
     private ingestContractCreateValidators: IngestContractCreateValidators,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
+      identifier: [null, MiscValidators.requiredIdentifier],
       status: ['ACTIVE'],
-      name: [null, Validators.required, this.ingestContractCreateValidators.uniqueNameWhileEdit(this.previousValue)],
-      description: [null, Validators.required],
+      name: [null, MiscValidators.requiredNotBlank, this.ingestContractCreateValidators.uniqueNameWhileEdit(this.previousValue)],
+      description: [null, MiscValidators.requiredNotBlank],
       archiveProfiles: [new Array<string>() /* Validators.required */],
       managementContractId: [null],
     });

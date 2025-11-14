@@ -41,23 +41,23 @@ import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import {
-  CriteriaDataType,
-  CriteriaOperator,
-  diff,
-  ManagementRuleValidators,
-  Rule,
-  RuleService,
-  SearchCriteriaDto,
-  SearchCriteriaEltDto,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  diff,
+  MiscValidators,
+  Rule,
+  RuleService,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
@@ -154,10 +154,10 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
       {
         oldRule: [
           null,
-          [Validators.required, ManagementRuleValidators.ruleIdPattern],
+          [Validators.required, MiscValidators.requiredIdentifier],
           [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
         ],
-        newRule: [null, [ManagementRuleValidators.ruleIdPattern], [this.managementRulesValidatorService.checkRuleIdExistence()]],
+        newRule: [null, [MiscValidators.requiredIdentifier], [this.managementRulesValidatorService.checkRuleIdExistence()]],
         startDate: [null],
         endDate: [{ value: null, disabled: true }],
         ruleUpdated: [{ value: false, disabled: true }],

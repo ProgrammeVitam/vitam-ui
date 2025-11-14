@@ -50,6 +50,7 @@ import {
   ExternalParameters,
   ExternalParametersService,
   LoggerModule,
+  MiscValidators,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
@@ -122,5 +123,9 @@ describe('IngestContractCreateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('applies MiscValidators.requiredIdentifier to identifier control', () => {
+    expect(component.form.get('identifier').hasValidator(MiscValidators.requiredIdentifier)).toBeTruthy();
   });
 });

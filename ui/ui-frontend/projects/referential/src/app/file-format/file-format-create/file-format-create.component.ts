@@ -43,6 +43,7 @@ import {
   ConfirmDialogService,
   FILE_FORMAT_EXTERNAL_PREFIX,
   FileFormat,
+  MiscValidators,
   Option,
   StartupService,
   VitamuiSelectOptions,
@@ -84,11 +85,19 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)], this.fileFormatCreateValidators.uniqueName()],
-      puid: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)], this.fileFormatCreateValidators.uniquePuid()],
-      version: [null, Validators.required],
+      name: [
+        null,
+        [MiscValidators.requiredNotBlank, Validators.minLength(2), Validators.maxLength(100)],
+        this.fileFormatCreateValidators.uniqueName(),
+      ],
+      puid: [
+        null,
+        [MiscValidators.requiredIdentifier, Validators.minLength(2), Validators.maxLength(100)],
+        this.fileFormatCreateValidators.uniquePuid(),
+      ],
+      version: [null, MiscValidators.requiredNotBlank],
       mimeType: [null],
-      extensions: [null, Validators.required],
+      extensions: [null, MiscValidators.requiredNotBlank],
       hasPriorityOverFileFormatIDs: [null],
     });
 
