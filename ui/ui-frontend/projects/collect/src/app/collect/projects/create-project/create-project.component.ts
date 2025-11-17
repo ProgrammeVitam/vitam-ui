@@ -369,7 +369,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
-      project.unitUp = this.connectedToArchivingSystem ? this.linkParentIdControl.value.included[0] : this.projectForm.value.unitUp;
+      project.unitUp =
+        this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant
+          ? this.linkParentIdControl.value.included[0]
+          : this.projectForm.value.unitUp;
     } else {
       project.unitUps = this.convertRuleParamsToMetadata();
     }
@@ -384,7 +387,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       return {
         metadataKey: metadataKey,
         metadataValue: metadataValue,
-        unitUp: this.connectedToArchivingSystem ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
+        unitUp:
+          this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
       };
     });
   }
@@ -405,7 +409,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     const newRuleParamForm = this.formBuilder.group({
       ontologyList: ontologyListControl,
       metadataValue: metadataValueControl,
-      unitUp: this.connectedToArchivingSystem ? [{ included: [], excluded: [] }, oneIncludedNodeRequired()] : [''],
+      // When not connected to local EAS (different tenant or SAE), unitUp is a simple string
+      unitUp:
+        this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant
+          ? [{ included: [], excluded: [] }, oneIncludedNodeRequired()]
+          : [''],
     });
 
     this.rulesParams.push(newRuleParamForm);
@@ -517,13 +525,14 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   getNodeTitle(selectedNode?: any): string {
-    if (this.connectedToArchivingSystem) {
+    if (this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant) {
       if (!selectedNode?.unitUp?.included?.length) return '';
       const vitamId = selectedNode?.unitUp?.included[0];
       if (!vitamId || !this.units) return '';
       const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
       return foundNode ? ` : ${fetchTitle(foundNode.Title, foundNode.Title_)}` : '';
     } else {
+      // When not connected to local EAS (different tenant or SAE), unitUp is a simple string
       return selectedNode?.unitUp ? ` : ${selectedNode.unitUp}` : '';
     }
   }
