@@ -46,7 +46,7 @@ describe('PastisGenericPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PastisGenericPopupComponent],
+      imports: [PastisGenericPopupComponent],
       providers: [DataGeneriquePopupService, PastisPopupSelectionService],
     }).compileComponents();
   });

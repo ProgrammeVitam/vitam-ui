@@ -71,6 +71,7 @@
         "POPUP_SAVE_OK_LABEL": "VALIDER",
         "POPUP_CREATE_NOTICE_CANCEL_LABEL": "PRECEDENT",
         "POPUP_CREATE_NOTICE_TITLE_DIALOG": "Rédiger la notice de profil",
+        "POPUP_CREATE_PROFILE_NOTICE_TITLE_DIALOG": "Créer une notice de profil",
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG": "Enregistrement",
         "POPUP_CREATE_NOTICE_TITLE_DIALOG_EDIT": "Valider la notice de profil",
         "POPUP_CREATE_NOTICE_SUBTITLE_DIALOG_EDIT": "Validation",
@@ -255,7 +256,8 @@
         "TITRE_PA": "PA : Profil d'archivage\n",
         "TITRE_PUA": "\n PUA : Profil d'unité archivistique\n",
         "CONTENT_PA": " Le profil d’archivage impose une structuration à l’ensemble du bordereau de versement. Il permet de contrôler lors de l’entrée dans le SAE la conformité du bordereau.",
-        "CONTENT_PUA": " Le profil d’unité archivistique est spécifique à une unité d’archives seulement."
+        "CONTENT_PUA": " Le profil d’unité archivistique est spécifique à une unité d’archives seulement.",
+        "SEDA_VERSION": "Version du SEDA souhaitée"
       }
     }
   },
@@ -469,6 +471,9 @@
   "ERROR_DIALOG": {
     "TITLE": "Erreur serveur interne (500)",
     "MESSAGE": "Une erreur interne s'est produite. Veuillez contacter un administrateur si le problème persiste."
+  },
+  "ERROR_IDENTIFIER": {
+    "IDENTIFIER_ALREADY_EXISTS": "L'identifiant existe déjà, utilisez un autre identifiant"
   },
   "EVENT_TYPE_LABEL": {
     "AUDIT": "Audit",

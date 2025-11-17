@@ -93,6 +93,7 @@ import { ListProfileComponent } from './list-profile/list-profile.component';
 import { FilterByStringNamePipe } from './list-profile/pipes/filterByStringName.pipe';
 import { FilterByTypePipe } from './list-profile/pipes/filterByType.pipe';
 import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
+import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 @NgModule({
   imports: [
@@ -112,6 +113,7 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     UserActionsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    PastisGenericPopupComponent,
   ],
   exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
   declarations: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],

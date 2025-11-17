@@ -85,22 +85,19 @@ import { SharedModule } from '../shared/shared.module';
 import { FilterByNamePipe } from './add-metadata/add-metadata.component';
 import { UserActionAddPuaControlComponent } from './add-pua-control/add-pua-control.component';
 import { AllowAdditionalPropertiesComponent } from './allow-additional-properties/allow-additional-properties.component';
-import { CreateNoticeComponent } from './create-notice/create-notice.component';
 import { UserActionsDownloadDocComponent } from './download-doc/download-doc.component';
 import { DuplicateMetadataComponent } from './duplicate-metadata/duplicate-metadata.component';
-import { SaveProfileOptionsComponent } from './save-profile-options/save-profile-options.component';
 import { UserActionSaveProfileComponent } from './save-profile/save-profile.component';
 import { SelectNoticeComponent } from './select-notice/select-notice.component';
 import { UserActionUploadProfileComponent } from './upload-profile/upload-profile.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 @NgModule({
   declarations: [
     AllowAdditionalPropertiesComponent,
-    CreateNoticeComponent,
     DuplicateMetadataComponent,
     FilterByNamePipe,
-    SaveProfileOptionsComponent,
     SelectNoticeComponent,
     UserActionAddPuaControlComponent,
     UserActionSaveProfileComponent,
@@ -120,6 +117,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedModule,
     TranslateModule,
     VitamUILibraryModule,
+    PastisGenericPopupComponent,
   ],
   exports: [
     UserActionUploadProfileComponent,
