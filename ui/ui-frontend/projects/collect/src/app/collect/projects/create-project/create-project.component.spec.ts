@@ -205,6 +205,7 @@ describe('CreateProjectComponent', () => {
     const form = {
       messageIdentifier: 'abcd',
       connectedToArchivingSystem: true,
+      unitUp: 'test',
       linkParentIdControl: {
         included: ['inc'],
       },
@@ -223,7 +224,7 @@ describe('CreateProjectComponent', () => {
     const arg = projectsServiceMock.create.calls.mostRecent().args[0] as Project;
     expect(arg.name).toBe(form.messageIdentifier);
     expect(arg.messageIdentifier).toBe(form.messageIdentifier);
-    expect(arg.unitUp).toBe(form.linkParentIdControl.included[0]);
+    expect(arg.unitUp).toBe(form.unitUp);
     expect(arg.unitUps).toBeUndefined();
     expect(arg.automaticIngest).toBeFalsy();
 
