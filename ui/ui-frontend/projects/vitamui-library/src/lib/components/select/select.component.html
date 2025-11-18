@@ -83,37 +83,43 @@
         ></vitamui-common-search-bar>
       </div>
 
-      <div [style.height]="containerHeightInSearchView">
-        <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
-          <div class="vitamui-mat-select-options">
-            <ng-container *ngIf="enableSelectAll && multiple">
-              <mat-option [id]="String(0)" (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
-                <span class="text normal secondary bold">
-                  {{ selectAllLabel }}
-                </span>
-              </mat-option>
-              <mat-divider></mat-divider>
-            </ng-container>
+      @if (loading()) {
+        <!--Keep this hidden option otherwise the spinner is not displayed-->
+        <mat-option style="display: none"></mat-option>
+        <mat-spinner class="vitamui-spinner medium" style="margin: auto"></mat-spinner>
+      } @else {
+        <div [style.height]="containerHeightInSearchView">
+          <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
+            <div class="vitamui-mat-select-options">
+              <ng-container *ngIf="enableSelectAll && multiple">
+                <mat-option [id]="String(0)" (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
+                  <span class="text normal secondary bold">
+                    {{ selectAllLabel }}
+                  </span>
+                </mat-option>
+                <mat-divider></mat-divider>
+              </ng-container>
 
-            <ng-container *cdkVirtualFor="let option of displayedOptions; let last = last; let index = index">
-              <mat-option
-                [id]="String(index + 1)"
-                [value]="option.key"
-                (onSelectionChange)="onSelectionChange($event)"
-                [disabled]="option.disabled"
-                [vitamuiTooltip]="option.info"
-              >
-                <span
-                  [innerHTML]="option.label | highlight: searchTextControl.value"
-                  vitamuiCommonEllipsis
-                  [isToolTipOnMouseEnter]="true"
-                ></span>
-              </mat-option>
-              <mat-divider *ngIf="!last"></mat-divider>
-            </ng-container>
-          </div>
-        </cdk-virtual-scroll-viewport>
-      </div>
+              <ng-container *cdkVirtualFor="let option of displayedOptions; let last = last; let index = index">
+                <mat-option
+                  [id]="String(index + 1)"
+                  [value]="option.key"
+                  (onSelectionChange)="onSelectionChange($event)"
+                  [disabled]="option.disabled"
+                  [vitamuiTooltip]="option.info"
+                >
+                  <span
+                    [innerHTML]="option.label | highlight: searchTextControl.value"
+                    vitamuiCommonEllipsis
+                    [isToolTipOnMouseEnter]="true"
+                  ></span>
+                </mat-option>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-container>
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </div>
+      }
     }
   </mat-select>
 

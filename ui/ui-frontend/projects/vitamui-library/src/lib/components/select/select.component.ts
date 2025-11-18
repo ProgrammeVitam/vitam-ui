@@ -41,11 +41,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
+  effect,
   forwardRef,
   HostListener,
   Injector,
   Input,
   QueryList,
+  ResourceRef,
+  Signal,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
@@ -69,6 +73,7 @@ import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { normalizeString } from '../../utils/string.util';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -106,6 +111,7 @@ export interface VitamuiSelectOptions {
     ScrollingModule,
     SearchBarComponent,
     TranslatePipe,
+    MatProgressSpinner,
   ],
   providers: [
     VITAMUI_SELECT_VALUE_ACCESSOR,
@@ -166,8 +172,22 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     return this._enableDisplaySelected;
   }
 
+  private isResource(
+    optionsParam: VitamuiSelectOptions | any[] | ResourceRef<VitamuiSelectOptions | any[]>,
+  ): optionsParam is ResourceRef<VitamuiSelectOptions | any[]> {
+    return !!(optionsParam as ResourceRef<VitamuiSelectOptions | any[]>)?.isLoading;
+  }
+
   @Input({ required: true })
-  set options(optionsParam: VitamuiSelectOptions | any[]) {
+  set options(optionsParam: VitamuiSelectOptions | any[] | ResourceRef<VitamuiSelectOptions | any[]>) {
+    if (this.isResource(optionsParam)) {
+      this.optionsResource = optionsParam;
+    } else {
+      this.handleOptions(optionsParam);
+    }
+  }
+
+  private handleOptions(optionsParam: VitamuiSelectOptions | any[]) {
     const options: VitamuiSelectOptions =
       optionsParam instanceof Array
         ? optionsParam[0]?.key != null && optionsParam[0]?.label != null
@@ -193,8 +213,11 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.addEventListeners();
   }
 
+  private optionsResource: ResourceRef<VitamuiSelectOptions | any[]>;
+
   @Input() selectAllLabel = this.translateService.instant('SELECT.SELECT_ALL');
   @Input() allSelectedLabel?: string;
+  loading: Signal<boolean> = computed(() => (this.optionsResource ? this.optionsResource.isLoading() : false));
 
   public displayedOptions: Option[] = [];
 
@@ -241,6 +264,16 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     private translateService: TranslateService,
   ) {
     super(injector);
+
+    effect(() => {
+      if (this.optionsResource) {
+        if (this.optionsResource.isLoading()) {
+          this.handleOptions([]);
+        } else {
+          this.handleOptions(this.optionsResource.value());
+        }
+      }
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -297,7 +330,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   protected openedChange(opened: boolean): void {
     // Attend que overlay du select soit rendu
     setTimeout(() => {
-      this.viewport.checkViewportSize();
+      if (!this.loading()) {
+        this.viewport.checkViewportSize();
+      }
     });
 
     if (opened && this.enableSearch) {
