@@ -36,7 +36,7 @@
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import {
   ApplicationService,
   DownloadUtils,
@@ -48,8 +48,8 @@ import {
   SidenavPage,
 } from 'vitamui-library';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
-import { Observable, Subscription } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
+import { mergeMap, shareReplay } from 'rxjs/operators';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
@@ -69,16 +69,16 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   search = '';
   tenantId: number;
-  isSlaveMode: boolean;
 
   tenantIdentifier: number;
   appName = 'INGEST_APP';
   hasUpdateIngestRole$: Observable<boolean>;
 
+  #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('INGEST_CONTRACT').pipe(shareReplay(1));
+
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
-    private router: Router,
     globalEventService: GlobalEventService,
     private applicationService: ApplicationService,
     private securityService: SecurityService,
@@ -89,7 +89,6 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
-      this.updateSlaveMode();
     });
 
     this.route.params.subscribe((params) => {
@@ -106,16 +105,20 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
         return this.securityService.hasRole$(this.appName, Role.ROLE_UPDATE_INGEST_CONTRACTS, this.tenantIdentifier);
       }),
     );
-
-    this.updateSlaveMode();
   }
 
-  openCreateIngestcontractDialog() {
-    const dialogRef = this.dialog.open(IngestContractCreateComponent, {
-      disableClose: true,
-    });
-    dialogRef.componentInstance.tenantIdentifier = this.tenantId;
-    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
+  async openCreateIngestContractDialog() {
+    const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);
+    const dialogRef = this.dialog.open<IngestContractCreateComponent, IngestContractCreateComponent['data']>(
+      IngestContractCreateComponent,
+      {
+        data: {
+          tenantIdentifier: this.tenantId,
+          isSlaveMode: isSlaveMode,
+        },
+        disableClose: true,
+      },
+    );
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         this.refreshList();
@@ -132,16 +135,6 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   onSearchSubmit(search: string) {
     this.search = search || '';
-  }
-
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
-  }
-
-  updateSlaveMode() {
-    this.applicationService.isApplicationExternalIdentifierEnabled('INGEST_CONTRACT').subscribe((value) => {
-      this.isSlaveMode = value;
-    });
   }
 
   showIngestContract(item: IngestContract) {
