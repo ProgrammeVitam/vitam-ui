@@ -745,6 +745,10 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
                 <configuration>
+                    <from>
+                        <image>gcr.io/distroless/java17</image>
+                    </from>
+                    <allowInsecureRegistries>true</allowInsecureRegistries>
                     <to>
                         <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/cas-server</image>
                         <tags>${project.version}</tags>
@@ -759,8 +763,24 @@
                     </extraDirectories>
                     <container>
                         <entrypoint>java,-jar,/app/cas-server.war</entrypoint>
+                        <jvmFlags>
+                            <jvmFlag>-XX:MaxRAMPercentage=75.0</jvmFlag>
+                            <jvmFlag>-XX:MinRAMPercentage=50.0</jvmFlag>
+                            <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
+                        </jvmFlags>
+                        <labels>
+                            <mvn.build.version>${project.version}</mvn.build.version>
+                        </labels>
                     </container>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
