@@ -17,7 +17,7 @@
       </vitamui-title-breadcrumb>
 
       <vitamui-banner [searchbarPlaceholder]="'INGEST_CONTRACT.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
-        <button class="btn primary mr-3" (click)="openCreateIngestcontractDialog()" [disabled]="(hasUpdateIngestRole$ | async) === false">
+        <button class="btn primary mr-3" (click)="openCreateIngestContractDialog()" [disabled]="(hasUpdateIngestRole$ | async) === false">
           <span>{{ 'INGEST_CONTRACT.HOME.CREATE_INGEST_CONTRACT' | translate }}</span>
         </button>
 

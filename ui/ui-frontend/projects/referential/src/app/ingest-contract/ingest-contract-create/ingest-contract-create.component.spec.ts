@@ -59,6 +59,7 @@ import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;
@@ -73,6 +74,7 @@ describe('IngestContractCreateComponent', () => {
 
     const accessContractServiceMock = {
       getAll: () => of([]),
+      currentAccessContractId$: of('access_contract_id'),
     };
 
     const parameters: Map<string, string> = new Map<string, string>();
@@ -92,9 +94,15 @@ describe('IngestContractCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [IngestContractCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [VitamUICommonTestModule, LoggerModule.forRoot(), TranslateModule.forRoot(), MatButtonToggleModule],
+      imports: [
+        IngestContractCreateComponent,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
+        MatButtonToggleModule,
+      ],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
