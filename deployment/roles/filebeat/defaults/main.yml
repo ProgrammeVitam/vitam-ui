@@ -4,9 +4,6 @@ filebeat_version: "{{ filebeat.version | default('8.18.0') }}"
 filebeat_package: "filebeat{{ '=' if ansible_os_family == 'Debian' else '-' }}{{ filebeat_version }}"
 
 filebeat:
-  processors:
-    - add_host_metadata:
-        when.not.contains.tags: forwarded
   config:
     ignore_older: "24h"
   system:

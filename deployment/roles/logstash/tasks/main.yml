@@ -1,5 +1,6 @@
 ---
 
+#### Logstash installation ####
 - name: "Install {{ logstash_package }} package"
   package:
     name: "{{ logstash_package }}"
@@ -11,7 +12,6 @@
   notify: "logstash - restart service"
 
 ## Logstash configuration
-
 - name: Ensure logstash directories exist
   file:
     path: "{{ vitamui_defaults.folder.root_path }}/{{ item }}/logstash"
@@ -28,16 +28,7 @@
     - tmp
   notify: "logstash - restart service"
 
-- name: ensure json conf extra directory exists
-  file:
-    path: "{{ logstash_confextra_dir }}"
-    owner: "{{ logstash_user }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  notify: "logstash - restart service"
-
-- name: apply configuration files
+- name: Apply logstash configuration files
   template:
     src: "{{ item }}.j2"
     dest: "/etc/logstash/{{ item }}"
@@ -53,69 +44,61 @@
 
 - block:
 
-  - name: remove filebeat logstash configuration if it exists
-    file:
-      path: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
-      state: absent
-    notify: "logstash - restart service"
+    - name: remove filebeat logstash configuration if it exists
+      file:
+        path: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
+        state: absent
+      notify: "logstash - restart service"
 
-  - name: configure logstash parser
-    template:
-      src: "{{ item }}.j2"
-      dest: "{{ logstash_conf_dir }}/{{ item }}"
-      owner: "{{ logstash_user }}"
-      group: "{{ vitamui_defaults.users.group }}"
-      mode: "{{ vitamui_defaults.folder.conf_permission }}"
-    with_items:
-      - 01-logstash-vitam-input.conf
-      - 02-logstash-vitam-filter.conf
-      - 03-logstash-vitam-output.conf
-    notify: "logstash - restart service"
+    - name: configure logstash parser
+      template:
+        src: "{{ item }}.j2"
+        dest: "{{ logstash_conf_dir }}/{{ item }}"
+        owner: "{{ logstash_user }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: "{{ vitamui_defaults.folder.conf_permission }}"
+      with_items:
+        - 01-logstash-vitam-input.conf
+        - 02-logstash-vitam-filter.conf
+        - 03-logstash-vitam-output.conf
+      notify: "logstash - restart service"
 
-- name: add vitam patterns conf
-  template:
-    src: vitam-patterns.j2
-    dest: "/usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/logstash-patterns-core-{{ logstash_patterns_core_version }}/patterns/vitam"
-    owner: "{{ logstash_user }}"
-    group: "{{ vitamui_defaults.users.group }}"
-  notify: "logstash - restart service"
+    - name: add vitam patterns conf
+      template:
+        src: vitam-patterns.j2
+        dest: "/usr/share/logstash/vendor/bundle/jruby/3.1.0/gems/logstash-patterns-core-{{ logstash_patterns_core_version }}/patterns/vitam"
+        owner: "{{ logstash_user }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: "{{ vitamui_defaults.folder.conf_permission }}"
+      notify: "logstash - restart service"
 
   when: syslog.name | default('filebeat') != 'filebeat'
 
 - block:
 
-  - name: remove rsyslog logstash configuration if it exists
-    file:
-      path: "{{ logstash_conf_dir }}/{{ item }}"
-      state: absent
-    with_items:
-      - 01-logstash-vitam-input.conf
-      - 02-logstash-vitam-filter.conf
-      - 03-logstash-vitam-output.conf
-    notify: "logstash - restart service"
+    - name: remove rsyslog logstash configuration if it exists
+      file:
+        path: "{{ logstash_conf_dir }}/{{ item }}"
+        state: absent
+      with_items:
+        - 01-logstash-vitam-input.conf
+        - 02-logstash-vitam-filter.conf
+        - 03-logstash-vitam-output.conf
+        - extra/elasticsearch-template.json
+      notify: "logstash - restart service"
 
-  - name: configure logstash parser when filebeat
-    template:
-      src: filebeat-to-logstash.conf.j2
-      dest: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
-      owner: "{{ logstash_user }}"
-      group: "{{ vitamui_defaults.users.group }}"
-      mode: "{{ vitamui_defaults.folder.conf_permission }}"
-    notify: "logstash - restart service"
+    - name: configure logstash parser when filebeat
+      template:
+        src: filebeat-to-logstash.conf.j2
+        dest: "{{ logstash_conf_dir }}/filebeat-to-logstash.conf"
+        owner: "{{ logstash_user }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: "{{ vitamui_defaults.folder.conf_permission }}"
+      notify: "logstash - restart service"
 
   when: syslog.name | default('filebeat') == 'filebeat'
 
-- name: configure extra parser configuration
-  template:
-    src: elasticsearch-template.json.j2
-    dest: "{{ logstash_confextra_dir }}/elasticsearch-template.json"
-    owner: "{{ logstash_user }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitam_defaults.folder.conf_permission }}"
-  notify: "logstash - restart service"
-
 #### Consul configuration ####
-
 - name: Ensure consul config dir is OK
   file:
     path: "{{ consul.conf_folder | default('/vitam/conf/consul') }}"
@@ -151,5 +134,5 @@
   until:
     - result.status is defined
     - result.status == 200
-  retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
-  delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"
+  retries: "{{ vitamui_defaults.services.status_retries_number }}"
+  delay: "{{ vitamui_defaults.services.status_retries_delay }}"
