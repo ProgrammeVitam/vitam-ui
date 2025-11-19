@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from 'ui-frontend-common';
 
 @Component({
@@ -6,8 +6,14 @@ import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from 'ui-fronte
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
 })
-export class CriteriaSearchComponent {
+export class CriteriaSearchComponent implements OnInit {
   constructor() {}
+
+  ngOnInit() {
+    if (this.criteriaVal) {
+      this.criteriaVal.keyTranslated = true;
+    }
+  }
 
   @Input()
   criteriaKey: string;
