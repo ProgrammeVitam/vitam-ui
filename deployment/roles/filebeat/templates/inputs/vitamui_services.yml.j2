@@ -20,15 +20,9 @@
   processors:
     {% if vitamui_service == 'api_gateway' %}
     - dissect:
-        tokenizer: '[%{date_time}] %{client_ip|ip} - - [%{?misformated_date_time}] "%{http_request}" %{http_status_code|integer} %{response_size}'
+        tokenizer: '[%{date_time}] %{client_ip|ip} - - [%{?misformated_date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
         trim_values: all
-    - dissect:
-        tokenizer: '%{http_method} %{request_path} HTTP/%{http_version}'
-        field: http_request
-        target_prefix: ""
-        trim_values: all
-        ignore_failure: true
     - timestamp:
         field: date_time
         layouts:
@@ -47,15 +41,9 @@
       {% endif %}
     {% else %}
     - dissect:
-        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_request}" %{http_status_code|integer} %{response_size}'
+        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
         trim_values: all
-    - dissect:
-        tokenizer: '%{http_method} %{request_path} HTTP/%{http_version}'
-        field: http_request
-        target_prefix: ""
-        trim_values: all
-        ignore_failure: true
     - timestamp:
         field: date_time
         layouts:
@@ -64,7 +52,7 @@
           - '30/Sep/2024:13:46:37 +0200'
     {% endif %}
     - drop_fields:
-        fields: ["date_time", "http_request"]
+        fields: ["date_time"]
 
   {% endif %}
   {% if filebeat.services.vitamui[vitamui_service].enable_management | default(true) | bool %}
@@ -82,15 +70,9 @@
     type: application
   processors:
     - dissect:
-        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_request}" %{http_status_code|integer} %{response_size}'
+        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
         trim_values: all
-    - dissect:
-        tokenizer: '%{http_method} %{request_path} HTTP/%{http_version}'
-        field: http_request
-        target_prefix: ""
-        trim_values: all
-        ignore_failure: true
     - timestamp:
         field: date_time
         layouts:
@@ -98,7 +80,7 @@
         test:
           - '30/Sep/2024:13:46:37 +0200'
     - drop_fields:
-        fields: ["date_time", "http_request"]
+        fields: ["date_time"]
     {% if filebeat.drop_health_checks_logs | default(true) | bool %}
     # Drop health checks
     - drop_event:
