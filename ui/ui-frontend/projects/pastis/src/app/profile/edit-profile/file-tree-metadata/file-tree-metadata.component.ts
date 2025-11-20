@@ -426,7 +426,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     if (element) {
       if (element.type === 'date') {
         return 'date';
-      } else if (PA_MANDATORY_ENUM_FIELDS.includes(element.nomDuChamp)) {
+      } else if (PA_MANDATORY_ENUM_FIELDS.includes(element.nomDuChamp) || (element.enumeration && element.enumeration.length > 0)) {
         return 'enumeration';
       } else {
         return '';
