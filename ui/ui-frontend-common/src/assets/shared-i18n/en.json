@@ -5612,6 +5612,7 @@
     "EDITOR_BANNER": {
       "TITLE": "EDIT MODE (MODIFICATION AND COMPLETION) - VERSION {{sedaVersion}} SEDA"
     },
+    "REQUIRED_FIELDS": "The following fields are required: {{missingFields}}",
     "ACTIONS": {
       "ADD": "Add a new metadata bloc",
       "REMOVE": "Remove the metadata bloc"

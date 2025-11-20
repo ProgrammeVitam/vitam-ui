@@ -5400,6 +5400,7 @@
     "EDITOR_BANNER": {
       "TITLE": "MODE EDITION (MODIFICATION ET COMPLÉTION) - VERSION {{sedaVersion}} SEDA"
     },
+    "REQUIRED_FIELDS": "Les champs suivants sont obligatoires : {{missingFields}}",
     "ACTIONS": {
       "ADD": "Ajouter un nouveau bloc de métadonnées",
       "REMOVE": "Supprimer le bloc de métadonnées"
