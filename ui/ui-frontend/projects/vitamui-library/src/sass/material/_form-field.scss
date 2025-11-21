@@ -54,7 +54,7 @@
       border-radius: var(--mdc-shape-small);
       height: 60px;
 
-      &--focused,
+      &--focused:not(.mdc-text-field--disabled),
       &--invalid {
         @include elevation.shadow-0;
       }
