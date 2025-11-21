@@ -84,7 +84,6 @@ import { ProfileService } from '../../core/services/profile.service';
 import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
 import { BreadcrumbDataTop } from '../../models/breadcrumb';
 import { ProfileDescription } from '../../models/profile-description.model';
-import { ProfileResponse } from '../../models/profile-response';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { CreateProfileComponent, CreateProfileFormResult } from '../create-profile/create-profile.component';
@@ -134,9 +133,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   sedaUrl: string =
     this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.sedaUrl;
-
-  newProfileUrl: string = this.pastisConfig.pastisNewProfile;
-
   subscription1$: Subscription;
   _uploadProfileSub: Subscription;
   subscriptions: Subscription[] = [];
@@ -251,8 +247,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   editProfile(element: ProfileDescription) {
     this.profileService.controlSchema.next(element?.controlSchema);
-    this.router.navigate([this.pastisConfig.pastisEditPage, element.id], {
-      state: element,
+    this.router.navigate(['edit', element.id], {
       relativeTo: this.route,
       skipLocationChange: false,
     });
@@ -265,8 +260,11 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       const formData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
       this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe((response: any) => {
-        if (response) {
-          this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
+        if (response && response.id) {
+          // Navigate to edit page with the profile ID
+          this.router.navigate(['edit', response.id], {
+            relativeTo: this.route,
+          });
         }
       });
       this.subscriptions.push(this._uploadProfileSub);
@@ -289,16 +287,16 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     const dialogRef = this.dialog.open(CreateProfileComponent, createProfileDialogConfig);
     const subscription = dialogRef
       .afterClosed()
-      .pipe(
-        filter<CreateProfileFormResult>((result) => Boolean(result)),
-        switchMap((result) =>
-          this.profileService.createProfile(this.pastisConfig.createProfileByTypeUrl, result.profileType, result.profileVersion),
-        ),
-        filter<ProfileResponse>((profileResponse) => Boolean(profileResponse)),
-      )
-      .subscribe((profileResponse) =>
-        this.router.navigate([this.pastisConfig.pastisNewProfile], { state: profileResponse, relativeTo: this.route }),
-      );
+      .pipe(filter<CreateProfileFormResult>((result) => Boolean(result)))
+      .subscribe((result) => {
+        this.router.navigate(['new'], {
+          queryParams: {
+            type: result.profileType,
+            version: result.profileVersion,
+          },
+          relativeTo: this.route,
+        });
+      });
     this.subscriptions.push(subscription);
   }
 

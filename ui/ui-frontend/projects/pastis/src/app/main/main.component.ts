@@ -74,7 +74,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, Subscription } from 'rxjs';
+import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
 import { ToggleSidenavService } from '../core/services/toggle-sidenav.service';
 import { FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams } from '../models/file-node';
@@ -108,6 +108,7 @@ export class MainComponent implements OnInit, OnDestroy {
   uploadedProfileSelected: ProfileDescription;
 
   private _routeParamsSubscription: Subscription;
+  private _profileLoadingSubscription: Subscription;
 
   constructor(
     public fileService: FileService,
@@ -118,9 +119,6 @@ export class MainComponent implements OnInit, OnDestroy {
     private loaderService: NgxUiLoaderService,
     private router: Router,
   ) {
-    this.uploadedProfileResponse = this.router.getCurrentNavigation().extras.state as ProfileResponse;
-    this.uploadedProfileSelected = this.router.getCurrentNavigation().extras.state as ProfileDescription;
-
     this.sideNavService.isOpened.subscribe((status) => {
       this.opened = status;
     });
@@ -133,29 +131,20 @@ export class MainComponent implements OnInit, OnDestroy {
     this.fileService.currentTreeLoaded = false;
     this._routeParamsSubscription = this.route.params.subscribe((params) => {
       const profileId = params.id;
+
       // If a profileId has been defined, it is retrieved from backend
       if (profileId !== undefined) {
-        if (this.uploadedProfileSelected === undefined) {
-          this.router.navigate(['/pastis/tenant/1'], { skipLocationChange: false });
-        } else {
-          this.fileService.getProfileAndUpdateTree(this.uploadedProfileSelected);
-        }
+        this.loadProfileById(profileId);
       } else {
-        // Otherwise we must have an user uploaded profile
-        this.uploadedProfileResponse.id = null;
-
-        this.loaderService.start();
-        this.profileService
-          .getMetaModel(this.uploadedProfileResponse.sedaVersion)
-          .pipe(
-            tap((metaModel) => {
-              this.sedaService.setMetaModel(metaModel);
-              this.fileService.linkFileNodeToSedaData(null, [this.uploadedProfileResponse.profile]);
-              this.fileService.updateTreeWithProfile(this.uploadedProfileResponse);
-            }),
-            finalize(() => this.loaderService.stop()),
-          )
-          .subscribe();
+        // Check for query params to create a new profile
+        this.route.queryParams.subscribe((queryParams) => {
+          if (queryParams['type'] && queryParams['version']) {
+            this.createNewProfile(queryParams['type'], queryParams['version']);
+          } else {
+            // No valid params, redirect to list
+            this.router.navigate(['/'], { skipLocationChange: false });
+          }
+        });
       }
     });
     this.opened = true;
@@ -193,6 +182,55 @@ export class MainComponent implements OnInit, OnDestroy {
     if (this._routeParamsSubscription != null) {
       this._routeParamsSubscription.unsubscribe();
     }
+    if (this._profileLoadingSubscription != null) {
+      this._profileLoadingSubscription.unsubscribe();
+    }
     if (this.pendingSub) this.pendingSub.unsubscribe();
+  }
+
+  private loadProfileById(profileId: string) {
+    // Unsubscribe from previous profile loading to avoid multiple concurrent requests
+    if (this._profileLoadingSubscription != null) {
+      this._profileLoadingSubscription.unsubscribe();
+    }
+
+    // Subscribe to profiles list
+    this._profileLoadingSubscription = this.profileService.retrievedProfiles.subscribe((profiles) => {
+      if (!profiles || profiles.length === 0) {
+        // Profiles not loaded yet, refresh the list
+        this.profileService.refreshListProfiles();
+        return;
+      }
+
+      // Find the profile in the list
+      const profileDescription = profiles.find((p) => p.id === profileId);
+      if (profileDescription) {
+        this.fileService.getProfileAndUpdateTree(profileDescription);
+      } else {
+        this.router.navigate(['/'], { skipLocationChange: false });
+      }
+    });
+  }
+
+  private createNewProfile(profileType: string, profileVersion: string) {
+    this.loaderService.start();
+    this.profileService
+      .createProfile('/pastis/profile', profileType as any, profileVersion as any)
+      .pipe(
+        tap((profileResponse) => {
+          this.uploadedProfileResponse = profileResponse;
+          this.uploadedProfileResponse.id = null;
+        }),
+        switchMap((profileResponse) =>
+          this.profileService.getMetaModel(profileResponse.sedaVersion).pipe(map((metaModel) => ({ profileResponse, metaModel }))),
+        ),
+        tap(({ profileResponse, metaModel }) => {
+          this.sedaService.setMetaModel(metaModel);
+          this.fileService.linkFileNodeToSedaData(null, [profileResponse.profile]);
+          this.fileService.updateTreeWithProfile(profileResponse);
+        }),
+        finalize(() => this.loaderService.stop()),
+      )
+      .subscribe();
   }
 }
