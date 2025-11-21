@@ -239,14 +239,14 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse uploadProjectZip(
+    public RequestResponse<JsonNode> uploadProjectZip(
         final VitamContext vitamContext,
         final String transactionId,
         final String attachmentId,
         final InputStream inputStream
     ) throws VitamClientException {
         LOGGER.debug("upload zip by transaction id : {}", transactionId);
-        final RequestResponse result = collectExternalClient.uploadZipToTransaction(
+        final RequestResponse<JsonNode> result = collectExternalClient.uploadZipToTransaction(
             vitamContext,
             transactionId,
             inputStream,
@@ -399,21 +399,17 @@ public class CollectService {
      * @param transactionId The transaction identifier
      * @param csvFile The csv File to update units
      * @param vitamContext The vitam context
-     * @return String
+     * @return RequestResponse<JsonNode>
+     * @throws VitamClientException Thrown exception
      */
 
-    public String updateCollectArchiveUnits(VitamContext vitamContext, String transactionId, InputStream csvFile) {
+    public RequestResponse<JsonNode> updateCollectArchiveUnitsWithCsv(
+        VitamContext vitamContext,
+        String transactionId,
+        InputStream csvFile
+    ) throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionId);
-        String response;
-        RequestResponse<JsonNode> result;
-        try {
-            result = collectExternalClient.updateUnits(vitamContext, transactionId, csvFile);
-            response = Integer.toString(result.getHttpCode());
-        } catch (VitamClientException e) {
-            response = "ERROR_400";
-            LOGGER.debug("Unable to process units update operation");
-        }
-        return response;
+        return collectExternalClient.updateUnitsWithCsvMetadata(vitamContext, transactionId, csvFile);
     }
 
     public JsonNode selectUnitWithInheritedRules(

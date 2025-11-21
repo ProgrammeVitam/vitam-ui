@@ -89,3 +89,9 @@ button.primary {
   transform-origin: left;
   transition: transform 150ms ease-out;
 }
+
+.scroll-area {
+  overflow-y: auto;
+  max-height: 264px;
+  scrollbar-width: thin;
+}

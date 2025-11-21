@@ -26,6 +26,7 @@
  */
 package fr.gouv.vitamui.collect.server.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.common.dto.UploadSipResult;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -187,7 +188,7 @@ public class ProjectController {
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @Operation(summary = "Upload and stream collect zip file")
     @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void streamingUpload(
+    public JsonNode streamingUpload(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
         @RequestHeader(value = CommonConstants.X_ATTACHMENT_ID_HEADER, required = false) final String attachmentId,
@@ -198,7 +199,7 @@ public class ProjectController {
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[External] upload collect zip file : {}", originalFileName);
-        projectService.streamingUpload(
+        return projectService.streamingUpload(
             inputStream,
             transactionId,
             attachmentId,

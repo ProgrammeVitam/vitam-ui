@@ -29,8 +29,15 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
+import fr.gouv.vitam.common.error.VitamError;
+import fr.gouv.vitam.common.error.VitamErrorDetails;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,13 +46,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -59,10 +64,14 @@ class UpdateArchiveUnitsMetadataServiceTest {
     private CollectService collectService;
 
     @Test
-    void updateCollectArchiveUnits_should_pass_when_Vitam_Return_Ok() {
+    void updateCollectArchiveUnits_should_pass_when_Vitam_Return_Ok()
+        throws VitamClientException, InvalidParseOperationException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
-        final String vitamResponse = "vitamJsonResponse";
+        final List<VitamErrorDetails> resultsDto = List.of();
+        RequestResponseOK<JsonNode> vitamResponse = new RequestResponseOK<>();
+        vitamResponse.setHttpCode(200);
+        vitamResponse.addResult(JsonHandler.toJsonNode(resultsDto));
         final String transactionId = "transactionId";
         InputStream csvFileInputStream =
             UpdateArchiveUnitsMetadataServiceTest.class.getClassLoader()
@@ -70,48 +79,69 @@ class UpdateArchiveUnitsMetadataServiceTest {
 
         //When
         // TODO : do not mix raw values and Matchers !
-        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any())).thenReturn(
-            vitamResponse
-        );
-        String response = transactionService.updateArchiveUnitsFromFile(
+        Mockito.when(
+            collectService.updateCollectArchiveUnitsWithCsv(eq(vitamContext), eq(transactionId), any())
+        ).thenReturn(vitamResponse);
+        List<VitamErrorDetails> response = transactionService.updateArchiveUnitsFromCsvFile(
             csvFileInputStream,
             transactionId,
             vitamContext
         );
 
         //Then
-        assertThat(response).isEqualTo(vitamResponse);
+        assertThat(response).isEqualTo(resultsDto);
     }
 
     @Test
-    void updateCollectArchiveUnits_should_not_pass_when_Vitam_throw_exception() {
+    void updateCollectArchiveUnits_should_not_pass_when_Vitam_throw_exception() throws VitamClientException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
-        final String vitamResponse = "ERROR_400";
+        VitamClientException exception = new VitamClientException("error message");
+        List<VitamErrorDetails> errorDetailsList = List.of(new VitamErrorDetails("ERROR_KEY", null));
+        exception.setVitamError(
+            new VitamError<>("BAD_REQUEST")
+                .setHttpCode(400)
+                .setContext("Collect")
+                .setMessage("error message")
+                .setErrorsDetails(errorDetailsList)
+        );
         final String transactionId = "transactionId";
         InputStream csvFileInputStream =
             UpdateArchiveUnitsMetadataServiceTest.class.getClassLoader()
                 .getResourceAsStream("data/updateCollectArchiveUnits/wrong_collect_metadata.csv");
 
         //When
-        Mockito.when(collectService.updateCollectArchiveUnits(eq(vitamContext), eq(transactionId), any())).thenReturn(
-            vitamResponse
+        Mockito.when(
+            collectService.updateCollectArchiveUnitsWithCsv(eq(vitamContext), eq(transactionId), any())
+        ).thenThrow(exception);
+
+        List<VitamErrorDetails> response = transactionService.updateArchiveUnitsFromCsvFile(
+            csvFileInputStream,
+            transactionId,
+            vitamContext
         );
 
         //Then
-        assertThatCode(
-            () -> transactionService.updateArchiveUnitsFromFile(csvFileInputStream, transactionId, vitamContext)
-        ).isInstanceOf(RequestTimeOutException.class);
+        assertThat(response).isEqualTo(errorDetailsList);
     }
 
-    private static String readFromInputStream(InputStream inputStream) throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append("\n");
-            }
-        }
-        return resultStringBuilder.toString();
+    @Test
+    void updateCollectionArchiveUnits_should_not_pass_when_Vitam_throws_internal_server_exception()
+        throws VitamClientException {
+        // GIven
+        VitamContext vitamContext = new VitamContext(1);
+        VitamClientException exception = new VitamClientException("error message");
+        exception.setVitamError(new VitamError<>("INTERNAL_SERVER_ERROR").setHttpCode(500));
+        final String transactionId = "transactionId";
+        InputStream csvFileInputStream =
+            UpdateArchiveUnitsMetadataServiceTest.class.getClassLoader()
+                .getResourceAsStream("data/updateCollectArchiveUnits/wrong_collect_metadata.csv");
+
+        //When
+        Mockito.when(collectService.updateCollectArchiveUnitsWithCsv(any(), any(), any())).thenThrow(exception);
+
+        assertThrows(InternalServerException.class, () -> {
+            transactionService.updateArchiveUnitsFromCsvFile(csvFileInputStream, transactionId, vitamContext);
+        });
     }
 }

@@ -34,10 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './project';
-export * from './project-status';
-export * from './transaction';
-export * from './transaction-status';
-export * from './legal-status';
-export * from './vitam-error';
-export * from './vitam-error-details';
+
+import { VitamErrorDetails } from './vitam-error-details';
+
+export interface VitamError {
+  httpCode: number;
+  code: string;
+  context: string;
+  state: string;
+  message: string;
+  description?: string;
+  errorsDetails?: VitamErrorDetails[];
+}

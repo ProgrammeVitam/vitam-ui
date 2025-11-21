@@ -59,6 +59,7 @@ import {
   SnackBarService,
   Transaction,
   Unit,
+  VitamErrorDetails,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
@@ -283,13 +284,12 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return this.sortByTitle(out);
   }
 
-  // update metadata CSV file
-  updateUnitsMetadata(csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
+  updateUnitsMetadataByCsvFile(csvFile: Blob, fileName: string, transactionId: string): Observable<VitamErrorDetails[]> {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/octet-stream');
     headers = headers.append(VitamuiHttpHeaders.X_ORIGINAL_FILENAME, fileName);
 
-    return this.transactionApiService.updateUnitsMetadata(transactionId, csvFile, headers);
+    return this.transactionApiService.updateUnitsMetadataByCsvFile(transactionId, csvFile, headers);
   }
 
   getExternalOntologiesList(): Observable<IOntology[]> {
