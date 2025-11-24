@@ -374,7 +374,8 @@
           "INGEST": "Entrée",
           "PRESERVATION": "Préservation",
           "TRANSFER_REPLY": "Transfert",
-          "ELIMINATION": "Elimination"
+          "ELIMINATION": "Elimination",
+          "DELETE_GOT_VERSIONS": "Suppression des versions des groupes d'objets"
         }
       }
     }
