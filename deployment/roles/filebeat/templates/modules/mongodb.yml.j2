@@ -6,8 +6,10 @@
   log:
     enabled: {{ filebeat.cots.mongodb.enable_log | bool | lower }}
     var.paths:
-      - "{{ vitamui_defaults.folder.root_path }}/log/mongod/mongo*.log"
+      - "{{ vitamui_defaults.folder.root_path }}/log/mongod/mongod.log"
     input:
+      type: filestream
+      id: {{ vitamui_site_name }}-mongodb-mongod
       fields_under_root: true
       fields:
         kind: log
@@ -48,7 +50,11 @@
               - '2006-01-02T15:04:05.000Z07:00'
             test:
               - '2024-09-30T13:46:37.298+02:00'
+        {% if mongodb.drop_info_log | default(true) | bool %}
         - drop_event:
             when:
               equals:
                 log_level: "INFO"
+        {% endif %}
+        - drop_fields:
+            fields: ["fileset", "service"]

@@ -11,6 +11,8 @@
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
+      type: filestream
+      id: {{ vitamui_site_name }}-nginx-access
       fields_under_root: true
       fields:
         kind: access
@@ -21,6 +23,7 @@
         - dissect:
             tokenizer: '%{client_ip|ip} - %{sender} [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size} "%{referer}" "%{user_agent}" "%{x_forwarded_for}"'
             target_prefix: ""
+            trim_values: all
         - timestamp:
             field: date_time
             layouts:
@@ -28,8 +31,8 @@
             test:
               - '30/Sep/2024:13:46:37 +0200'
         - drop_fields:
-            fields: ["date_time"]
-{% if filebeat.drop_health_checks_logs | default(true) | bool %}
+            fields: ["date_time", "fileset", "service"]
+        {% if filebeat.drop_health_checks_logs | default(true) | bool %}
         # Drop Blackbox health checks
         - drop_event:
             when:
@@ -38,7 +41,7 @@
                     http_status_code: 200
                 - regexp:
                     user_agent: "^Blackbox.*"
-{% endif %}
+        {% endif %}
 
   # Error logs
   error:
@@ -48,12 +51,46 @@
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
+      type: filestream
+      id: {{ vitamui_site_name }}-nginx-error
       fields_under_root: true
       fields:
-        kind: error
+        kind: log
         vitam_component: nginx
         source: vitamui
         type: cots
+      processors:
+        - dissect:
+            tokenizer: '%{date_time} [%{log_level}] %{?pid}#%{?tid}: %{log_message}'
+            target_prefix: ""
+            trim_values: all
+        - script:
+            lang: javascript
+            id: set_nginx_log_level
+            source: >
+              function process(event) {
+                var lvl = (event.Get("log_level") || "").toLowerCase();
+                switch (lvl) {
+                  case "debug": event.Put("log_level", "DEBUG"); break;
+                  case "info":
+                  case "notice": event.Put("log_level", "INFO"); break;
+                  case "warn": event.Put("log_level", "WARN"); break;
+                  case "error": event.Put("log_level", "ERROR"); break;
+                  case "crit":
+                  case "alert":
+                  case "emerg": event.Put("log_level", "FATAL"); break;
+                  default: event.Put("log_level", "UNKNOWN");
+                }
+                return event;
+              }
+        - timestamp:
+            field: date_time
+            layouts:
+              - '2006/01/02 15:04:05'
+            test:
+              - '2025/11/14 09:39:01'
+        - drop_fields:
+            fields: ["date_time", "message", "fileset", "service"]
 
   # Ingress-nginx controller logs. This is disabled by default. It could be used in Kubernetes environments to parse ingress-nginx logs
   ingress_controller:
@@ -63,6 +100,8 @@
     # Filebeat will choose the paths depending on your OS.
     #var.paths:
     input:
+      type: filestream
+      id: {{ vitamui_site_name }}-nginx-ingress
       fields_under_root: true
       fields:
         kind: ingress

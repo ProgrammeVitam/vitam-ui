@@ -9,19 +9,19 @@
 
 - name: Ensure Filebeat directory exist
   file:
-    path: "/etc/filebeat"
+    path: /etc/filebeat
     state: directory
-    mode: "{{ vitam_defaults.folder.folder_permission }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
   notify: "filebeat - restart service"
   when: install_mode == "container"
 
 - name: "Deploy systemd service file for filebeat"
   template:
-    src: "filebeat.service.j2"
+    src: filebeat.service.j2
     dest: "{{ '/lib/systemd/system' if ansible_os_family == 'Debian' else '/usr/lib/systemd/system' }}/filebeat.service"
     owner: root
     group: root
-    mode: "0644"
+    mode: 0644
   notify: "filebeat - restart service"
   when: install_mode == "container"
 
@@ -30,6 +30,19 @@
     src: filebeat.yml.j2
     dest: /etc/filebeat/filebeat.yml
     mode: 0644
+  notify: "filebeat - restart service"
+
+- name: Ensure filebeat directories exist
+  file:
+    path: "{{ vitamui_defaults.folder.root_path }}/{{ item }}/filebeat"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    state: directory
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  with_items:
+    - conf
+    - data
+    - log
   notify: "filebeat - restart service"
 
 - include_tasks: add_modules.yml
