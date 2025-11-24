@@ -2,7 +2,7 @@
 
 - name: Create inputs.d folder
   file:
-    path: /etc/filebeat/inputs.d
+    path: "{{ filebeat_inputs_dir }}"
     state: directory
     mode: "{{ vitam_defaults.folder.folder_permission }}"
   notify: "filebeat - restart service"
@@ -21,14 +21,14 @@
   - name: Add VitamUI filebeat inputs
     template:
       src: inputs/vitamui_services.yml.j2
-      dest: /etc/filebeat/inputs.d/vitamui-services.yml
+      dest: "{{ filebeat_inputs_dir }}/vitamui-services.yml"
       mode: 0644
     notify: "filebeat - restart service"
 
   - name: Add COTS filebeat inputs
     template:
       src: inputs/cots.yml.j2
-      dest: /etc/filebeat/inputs.d/cots.yml
+      dest: "{{ filebeat_inputs_dir }}/cots.yml"
       mode: 0644
     notify: "filebeat - restart service"
 

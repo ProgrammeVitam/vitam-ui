@@ -146,6 +146,7 @@
                 outputType="Date"
                 format="yyyy-MM-dd"
                 class="w-100"
+                [withTimeZone]="['StartDate', 'EndDate'].includes(otherCriteria.Path)"
               ></vitamui-common-multiple-options-datepicker>
             } @else {
               <!--FIXME: what do we do with OBJECT type?-->
