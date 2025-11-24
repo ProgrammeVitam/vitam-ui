@@ -8,18 +8,18 @@
         <div class="top-right">
           <ng-container [ngSwitch]="getEventStatus(node)">
             <div *ngSwitchCase="'OK'">
-              <span class="ingest-message-text">{{ node.eventData.outMessg }}</span>
+              <span class="ingest-message-text">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
               <span class="ev-det-tech-data">{{ getEvDetData(node) }}</span>
             </div>
             <div *ngSwitchCase="'KO'">
-              <span class="ingest-message-text text danger bold">{{ node.eventData.outMessg }}</span>
+              <span class="ingest-message-text text danger bold">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
               <span class="ev-det-tech-data text danger">{{ getEvDetData(node) }}</span>
             </div>
             <div *ngSwitchCase="'FATAL'">
-              <span class="ingest-message-text text light bold">{{ node.eventData.outMessg }}</span>
+              <span class="ingest-message-text text light bold">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
             </div>
             <div *ngSwitchCase="'WARNING'">
-              <span class="ingest-message-text text warning bold">{{ node.eventData.outMessg }}</span>
+              <span class="ingest-message-text text warning bold">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
               <span class="ev-det-tech-data text warning">{{ getEvDetData(node) }}</span>
             </div>
           </ng-container>
@@ -52,18 +52,18 @@
           <div class="top-right">
             <ng-container [ngSwitch]="getEventStatus(node)">
               <div *ngSwitchCase="'OK'">
-                <span class="ingest-message-text">{{ node.eventData.outMessg }}</span>
+                <span class="ingest-message-text">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
                 <span class="ev-det-tech-data">{{ getEvDetData(node) }}</span>
               </div>
               <div *ngSwitchCase="'KO'">
-                <span class="ingest-message-text text danger bold">{{ node.eventData.outMessg }}</span>
+                <span class="ingest-message-text text danger bold">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
                 <span class="ev-det-tech-data text danger bold">{{ getEvDetData(node) }}</span>
               </div>
               <div *ngSwitchCase="'FATAL'">
-                <span class="ingest-message-text text light bold">{{ node.eventData.outMessg }}</span>
+                <span class="ingest-message-text text light bold">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
               </div>
               <div *ngSwitchCase="'WARNING'">
-                <span class="ingest-message-text text warning bold">{{ node.eventData.outMessg }}</span>
+                <span class="ingest-message-text text warning bold">{{ 'EVENT_TYPE_LABEL.' + node.eventData.evType | translate }}</span>
                 <span class="ev-det-tech-data text warning">{{ getEvDetData(node) }}</span>
               </div>
             </ng-container>
