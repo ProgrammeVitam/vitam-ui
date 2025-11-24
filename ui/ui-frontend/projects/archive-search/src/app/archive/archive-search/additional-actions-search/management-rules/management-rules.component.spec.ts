@@ -320,15 +320,6 @@ describe('ManagementRulesComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 4 rows  ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-
-      // Then
-      expect(elementRow.length).toBe(4);
-    });
-
     it('should have 2 text titles', () => {
       const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
 

@@ -116,7 +116,7 @@
     "SELECT_RULE_CATEGORY": "Select a rule category",
     "SELECT_RULE_ACTION": "Select an action",
     "OTHER_ACTIONS": "Other actions",
-    "BACK": "BACK",
+    "QUIT": "QUIT",
     "EXECUTE_RULE_UPDATE": "Start update",
     "EXECUTE_RULE_UPDATE_MESSAGE": "The operation to update the management rules has been launched",
     "ACTION_ON_RULES": "Action on the rules",
@@ -196,7 +196,7 @@
     "DIALOG_MESSAGE": {
       "UPDATE_CONFIRM_TITLE_MESSAGE": "Validate rule change(s)",
       "DELETE_COMPONENT": "Are you sure you want to delete this rule update block?",
-      "UPDATE_CONFIRM_MESSAGE": "Attention, you are about to validate the changes of rule(s) on all the archival units taken into account in the requested update. Do you confirm this update?",
+      "UPDATE_CONFIRM_MESSAGE": "Attention, you are about to validate the changes of rule(s) on all the archival units taken into account in the requested update.<br>Do you confirm this update?",
       "EXIT_CONFIRM_MESSAGE": "Are you sure you want to quit updating business rules on {{ua_selected}} selected archival units?"
     },
     "CATEGORIES_NAME": {

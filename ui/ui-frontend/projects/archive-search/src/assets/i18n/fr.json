@@ -116,7 +116,7 @@
     "SELECT_RULE_CATEGORY": "Sélectionnez une catégorie de règle",
     "SELECT_RULE_ACTION": "Sélectionnez une action",
     "OTHER_ACTIONS": "Autres actions",
-    "BACK": "RETOUR",
+    "QUIT": "QUITTER",
     "EXECUTE_RULE_UPDATE": "Lancer la mise à jour",
     "EXECUTE_RULE_UPDATE_MESSAGE": "L'opération de mise à jour des règles de gestion a bien été lancée",
     "ACTION_ON_RULES": "Action sur les règles",
@@ -196,7 +196,7 @@
     "DIALOG_MESSAGE": {
       "UPDATE_CONFIRM_TITLE_MESSAGE": "Validation de changement(s) de règle(s)",
       "DELETE_COMPONENT": "Êtes-vous sûr de vouloir supprimer ce bloc de mise à jour des règles ?",
-      "UPDATE_CONFIRM_MESSAGE": "Attention, vous êtes sur le point de valider les changements de règle(s) sur l'ensemble des unités archivistiques prises en compte dans la mise à jour demandée. Confirmez-vous cette mise à jour ?",
+      "UPDATE_CONFIRM_MESSAGE": "Attention, vous êtes sur le point de valider les changements de règle(s) sur l'ensemble des unités archivistiques prises en compte dans la mise à jour demandée.<br>Confirmez-vous cette mise à jour ?",
       "EXIT_CONFIRM_MESSAGE": "Êtes-vous sûr de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
     },
     "CATEGORIES_NAME": {

@@ -28,6 +28,7 @@
 .update-rules-table-head {
   display: flex;
   align-items: center;
+  height: 70px;
   font-weight: 700;
   color: var(--vitamui-grey-900);
   margin-bottom: 0.3rem;
@@ -40,10 +41,4 @@
 
 .row-padding {
   padding-left: 20px;
-}
-
-.details-ua {
-  text-align: center;
-  vertical-align: middle;
-  line-height: 50px;
 }

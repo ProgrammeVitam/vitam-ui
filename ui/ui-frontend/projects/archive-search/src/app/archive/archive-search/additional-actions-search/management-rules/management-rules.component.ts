@@ -42,6 +42,7 @@ import { Observable, Subscription } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import {
   ApplicationId,
+  BreadCrumbData,
   Logger,
   Option,
   Rule,
@@ -140,6 +141,13 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   ruleCategorySelected: string;
   hasExactCount: boolean;
   resultNumberToShow: string;
+  isUpdateInProgress = true;
+
+  breadcrumbData: BreadCrumbData[] = [
+    { identifier: ApplicationId.PORTAL_APP },
+    { identifier: ApplicationId.ARCHIVE_SEARCH_APP },
+    { label: this.translate.instant('ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE') },
+  ];
 
   private subscriptions = new Subscription();
 
@@ -597,6 +605,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSelectAction(rule: string) {
+    this.isUpdateInProgress = false;
     switch (rule) {
       case 'ADD_RULES':
         if (this.isRuleCategorySelected && !this.isAddValidActions) {
@@ -656,17 +665,22 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   returnToArchiveSearchPage() {
-    const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog);
+    if (this.isUpdateInProgress) {
+      this.initializeParameters();
+      this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
+    } else {
+      const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog);
 
-    this.subscriptions.add(
-      dialogRef
-        .afterClosed()
-        .pipe(filter((result) => !!result))
-        .subscribe(() => {
-          this.initializeParameters();
-          this.location.back();
-        }),
-    );
+      this.subscriptions.add(
+        dialogRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {
+            this.initializeParameters();
+            this.location.back();
+          }),
+      );
+    }
   }
 
   submitUpdates() {
@@ -675,6 +689,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};
 
+    this.isUpdateInProgress = false;
     this.prepareAppraisalRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
     this.prepareAccessRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
     this.prepareStorageRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
@@ -700,6 +715,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
           this.archiveService.updateUnitsRules(ruleSearchCriteriaDto).subscribe(
             (response) => {
+              this.isUpdateInProgress = true;
               const ruleActions: ActionsRules[] = [];
               this.managementRulesSharedDataService.emitRuleActions(ruleActions);
               this.managementRulesSharedDataService.emitManagementRules([]);
@@ -717,6 +733,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
               });
             },
             (error: any) => {
+              this.isUpdateInProgress = false;
               this.logger.error('Error message :', error);
             },
           );
