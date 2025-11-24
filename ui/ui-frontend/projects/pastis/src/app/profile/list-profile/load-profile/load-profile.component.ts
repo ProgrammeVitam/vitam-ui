@@ -37,6 +37,10 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { FileSelectorComponent, PipesModule, VitamUILibraryModule } from 'vitamui-library';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
 
 export interface LoadProfileConfig {
   title: string;
@@ -54,9 +58,15 @@ export interface LoadProfileConfig {
   selector: 'vitamui-load-profile',
   templateUrl: './load-profile.component.html',
   styleUrl: './load-profile.component.scss',
-  imports: [FileSelectorComponent, PipesModule, MatDialogModule, VitamUILibraryModule],
+  imports: [FileSelectorComponent, PipesModule, MatDialogModule, VitamUILibraryModule, AsyncPipe, ReactiveFormsModule],
 })
 export class LoadProfileComponent {
+  protected files = new FormControl([]);
+  protected isEmpty$ = new BehaviorSubject(true).pipe(
+    switchMap(() => this.files.valueChanges.pipe(startWith(this.files.value))),
+    map((files: File[] | FileList) => files?.length === 0),
+  );
+
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public config: LoadProfileConfig,
