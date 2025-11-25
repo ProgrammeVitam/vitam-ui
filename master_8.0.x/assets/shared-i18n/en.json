@@ -3527,7 +3527,9 @@
     "DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE": "Supply for the Register of Funds",
     "STP_DELETE_GOT_VERSIONS_FINALIZATION.STARTED": "Beginning of the finalization process for deleting object group versions",
     "STP_DELETE_GOT_VERSIONS_FINALIZATION": "Finalization process for deleting object group versions",
-    "DELETE_GOT_VERSIONS_FINALIZATION": "Finalization of deleting object group versions"
+    "DELETE_GOT_VERSIONS_FINALIZATION": "Finalization of deleting object group versions",
+    "STORE_METADATA_AND_LFC_WORKSPACE": "Objects groups storage into workspace",
+    "DELETE_GOT_VERSIONS_STORAGE": "Deletion of objects groups from offers"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
@@ -5637,6 +5639,7 @@
       "TITLE": "EDIT MODE (MODIFICATION AND COMPLETION) - VERSION {{sedaVersion}} SEDA"
     },
     "INVALID_FORM": "The following metadata are invalid: {{invalidLeavesMessage}}",
+    "REQUIRED_FIELDS": "The following fields are required: {{missingFields}}",
     "ACTIONS": {
       "ADD": "Add a new metadata bloc",
       "REMOVE": "Remove the metadata bloc"
