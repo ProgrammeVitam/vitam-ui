@@ -3530,6 +3530,7 @@
     "STP_DELETE_GOT_VERSIONS_PREPARATION.STARTED": "Beginning of the preparation process for deleting object group versions",
     "STP_DELETE_GOT_VERSIONS_PREPARATION": "Preparation process for deleting object group versions",
     "DELETE_GOT_VERSIONS_PREPARATION": "Preparing to delete object group versions",
+    "DELETE_GOT_VERSIONS_ACTION": "Deleting object group versions",
     "STP_DELETE_GOT_VERSIONS_ACTION.STARTED": "Beginning of process for deleting object group versions",
     "STP_DELETE_GOT_VERSIONS_ACTION": "Process for deleting versions of object groups",
     "STP_DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE.STARTED": "Beginning of the fund register process",
