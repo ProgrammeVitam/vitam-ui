@@ -3530,6 +3530,7 @@
     "STP_DELETE_GOT_VERSIONS_PREPARATION.STARTED": "Début du processus de préparation de la suppression des versions des groupes d'objets",
     "STP_DELETE_GOT_VERSIONS_PREPARATION": "Processus de préparation de la suppression des versions des groupes d'objets",
     "DELETE_GOT_VERSIONS_PREPARATION": "Préparation de la suppression des versions des groupes d'objets",
+    "DELETE_GOT_VERSIONS_ACTION": "Suppression des versions des groupes d'objets",
     "STP_DELETE_GOT_VERSIONS_ACTION.STARTED": "Début du processus de suppression des versions des groupes d'objets",
     "STP_DELETE_GOT_VERSIONS_ACTION": "Processus de suppression des versions des groupes d'objets",
     "STP_DELETE_GOT_VERSIONS_ACCESSION_REGISTER_UPDATE.STARTED": "Début du processus de l'alimentation du Registre des Fonds",
