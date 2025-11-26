@@ -72,7 +72,8 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
@@ -107,8 +108,10 @@ export class MainComponent implements OnInit, OnDestroy {
 
   uploadedProfileSelected: ProfileDescription;
 
-  private _routeParamsSubscription: Subscription;
   private _profileLoadingSubscription: Subscription;
+
+  private readonly params = toSignal(this.route.params);
+  private readonly queryParams = toSignal(this.route.queryParams);
 
   constructor(
     public fileService: FileService,
@@ -125,28 +128,37 @@ export class MainComponent implements OnInit, OnDestroy {
     this.pendingSub = this.sideNavService.isPending.subscribe((status) => {
       this.pending = status;
     });
-  }
 
-  ngOnInit() {
-    this.fileService.currentTreeLoaded = false;
-    this._routeParamsSubscription = this.route.params.subscribe((params) => {
-      const profileId = params.id;
+    effect(() => {
+      const params = this.params();
+      if (!params) {
+        return;
+      }
+
+      const profileId = params['id'];
 
       // If a profileId has been defined, it is retrieved from backend
       if (profileId !== undefined) {
         this.loadProfileById(profileId);
       } else {
         // Check for query params to create a new profile
-        this.route.queryParams.subscribe((queryParams) => {
-          if (queryParams['type'] && queryParams['version']) {
-            this.createNewProfile(queryParams['type'], queryParams['version']);
-          } else {
-            // No valid params, redirect to list
-            this.router.navigate(['/'], { skipLocationChange: false });
-          }
-        });
+        const queryParams = this.queryParams();
+        if (!queryParams) {
+          return;
+        }
+
+        if (queryParams['type'] && queryParams['version']) {
+          this.createNewProfile(queryParams['type'], queryParams['version']);
+        } else {
+          // No valid params, redirect to list
+          this.router.navigate(['/'], { skipLocationChange: false });
+        }
       }
     });
+  }
+
+  ngOnInit() {
+    this.fileService.currentTreeLoaded = false;
     this.opened = true;
   }
 
@@ -179,9 +191,6 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this._routeParamsSubscription != null) {
-      this._routeParamsSubscription.unsubscribe();
-    }
     if (this._profileLoadingSubscription != null) {
       this._profileLoadingSubscription.unsubscribe();
     }
