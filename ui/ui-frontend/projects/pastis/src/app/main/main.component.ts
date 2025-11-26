@@ -79,7 +79,6 @@ import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
 import { ToggleSidenavService } from '../core/services/toggle-sidenav.service';
 import { FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams } from '../models/file-node';
-import { ProfileDescription } from '../models/profile-description.model';
 import { ProfileResponse } from '../models/profile-response';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 import { ProfileService } from '../core/services/profile.service';
@@ -106,12 +105,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   uploadedProfileResponse: ProfileResponse;
 
-  uploadedProfileSelected: ProfileDescription;
-
-  private _profileLoadingSubscription: Subscription;
-
   private readonly params = toSignal(this.route.params);
   private readonly queryParams = toSignal(this.route.queryParams);
+  private readonly retrievedProfiles = toSignal(this.profileService.retrievedProfiles);
 
   constructor(
     public fileService: FileService,
@@ -139,7 +135,20 @@ export class MainComponent implements OnInit, OnDestroy {
 
       // If a profileId has been defined, it is retrieved from backend
       if (profileId !== undefined) {
-        this.loadProfileById(profileId);
+        const profiles = this.retrievedProfiles();
+        if (!profiles || profiles.length === 0) {
+          // Profiles not loaded yet, refresh the list
+          this.profileService.refreshListProfiles();
+          return;
+        }
+
+        // Find the profile in the list
+        const profileDescription = profiles.find((p) => p.id === profileId);
+        if (profileDescription) {
+          this.fileService.getProfileAndUpdateTree(profileDescription);
+        } else {
+          this.router.navigate(['/'], { skipLocationChange: false });
+        }
       } else {
         // Check for query params to create a new profile
         const queryParams = this.queryParams();
@@ -191,34 +200,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this._profileLoadingSubscription != null) {
-      this._profileLoadingSubscription.unsubscribe();
-    }
     if (this.pendingSub) this.pendingSub.unsubscribe();
-  }
-
-  private loadProfileById(profileId: string) {
-    // Unsubscribe from previous profile loading to avoid multiple concurrent requests
-    if (this._profileLoadingSubscription != null) {
-      this._profileLoadingSubscription.unsubscribe();
-    }
-
-    // Subscribe to profiles list
-    this._profileLoadingSubscription = this.profileService.retrievedProfiles.subscribe((profiles) => {
-      if (!profiles || profiles.length === 0) {
-        // Profiles not loaded yet, refresh the list
-        this.profileService.refreshListProfiles();
-        return;
-      }
-
-      // Find the profile in the list
-      const profileDescription = profiles.find((p) => p.id === profileId);
-      if (profileDescription) {
-        this.fileService.getProfileAndUpdateTree(profileDescription);
-      } else {
-        this.router.navigate(['/'], { skipLocationChange: false });
-      }
-    });
   }
 
   private createNewProfile(profileType: string, profileVersion: string) {
