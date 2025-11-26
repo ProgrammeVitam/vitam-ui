@@ -38,7 +38,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { Subscription } from 'rxjs';
 import { NoticeService } from '../../core/services/notice.service';
@@ -103,8 +102,6 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   sedaUrl: string;
   @Input()
   newProfileUrl: string;
-  @Input()
-  uploader: FileUploader = new FileUploader({ url: '' });
 
   expanded = false;
 
