@@ -47,7 +47,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { FileUploadModule } from 'ng2-file-upload';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { PastisMaterialModule } from '../material.module';
@@ -68,7 +67,6 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     MatTabsModule,
     SharedModule,
     FileTreeModule,
-    FileUploadModule,
     PastisMaterialModule,
     UserActionsModule,
     MatSlideToggleModule,

@@ -41,7 +41,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadModule } from 'ng2-file-upload';
 import { VitamUIInputModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { PastisMaterialModule } from '../material.module';
@@ -55,11 +54,9 @@ import { DuplicateMetadataComponent } from './duplicate-metadata/duplicate-metad
 import { SaveProfileOptionsComponent } from './save-profile-options/save-profile-options.component';
 import { UserActionSaveProfileComponent } from './save-profile/save-profile.component';
 import { SelectNoticeComponent } from './select-notice/select-notice.component';
-import { UserActionUploadProfileComponent } from './upload-profile/upload-profile.component';
 
 @NgModule({
   declarations: [
-    UserActionUploadProfileComponent,
     FilterByNamePipe,
     UserActionSaveProfileComponent,
     UserActionsDownloadDocComponent,
@@ -73,7 +70,6 @@ import { UserActionUploadProfileComponent } from './upload-profile/upload-profil
   imports: [
     CommonModule,
     PastisMaterialModule,
-    FileUploadModule,
     SharedModule,
     MatInputModule,
     MatFormFieldModule,
@@ -84,7 +80,6 @@ import { UserActionUploadProfileComponent } from './upload-profile/upload-profil
     MatSlideToggleModule,
   ],
   exports: [
-    UserActionUploadProfileComponent,
     UserActionSaveProfileComponent,
     UserActionsDownloadDocComponent,
     FilterByNamePipe,
