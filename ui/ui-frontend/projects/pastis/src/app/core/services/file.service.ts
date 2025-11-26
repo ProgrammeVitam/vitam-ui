@@ -71,9 +71,9 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, finalize, mergeMap, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, finalize, mergeMap, Observable } from 'rxjs';
 import { FileNode, TypeConstants } from '../../models/file-node';
 import { Notice } from '../../models/notice.model';
 import { ProfileDescription } from '../../models/profile-description.model';
@@ -88,9 +88,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Injectable({
   providedIn: 'root',
 })
-export class FileService implements OnDestroy {
+export class FileService {
   currentTree = new BehaviorSubject<FileNode[]>([]);
-  tree$ = this.currentTree.asObservable();
 
   notice = new BehaviorSubject<ProfileDescription>(null);
   noticeEditable = new BehaviorSubject<Notice>(null);
@@ -99,8 +98,6 @@ export class FileService implements OnDestroy {
 
   currentTreeLoaded = false;
   parentNodeMap = new Map<FileNode, FileNode>();
-
-  private _profileServiceGetProfileSubscription: Subscription;
 
   public tabChildrenRulesChange = new BehaviorSubject<string[][]>([]);
 
@@ -133,13 +130,8 @@ export class FileService implements OnDestroy {
    * Get profile from backend with id
    */
   getProfileAndUpdateTree(element: ProfileDescription) {
-    // Cancel previous request if still pending to avoid data race conditions
-    if (this._profileServiceGetProfileSubscription != null) {
-      this._profileServiceGetProfileSubscription.unsubscribe();
-    }
-
     this.loaderService.start();
-    this._profileServiceGetProfileSubscription = this.profileService
+    this.profileService
       .getProfile(element)
       .pipe(
         mergeMap((profile) =>
@@ -218,10 +210,6 @@ export class FileService implements OnDestroy {
     }
   }
 
-  setNewChildrenRules(rules: string[][]) {
-    this.tabChildrenRulesChange.next(rules);
-  }
-
   /**
    * Delete all the attributes of the concerned FileNode
    * @param fileNode The concerned FileNode
@@ -298,12 +286,6 @@ export class FileService implements OnDestroy {
       noticeProfile.status = notice.status;
       noticeProfile.description = notice.description;
       this.notice.next(noticeProfile);
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._profileServiceGetProfileSubscription != null) {
-      this._profileServiceGetProfileSubscription.unsubscribe();
     }
   }
 
