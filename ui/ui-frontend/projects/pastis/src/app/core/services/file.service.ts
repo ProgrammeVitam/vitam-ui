@@ -133,6 +133,11 @@ export class FileService implements OnDestroy {
    * Get profile from backend with id
    */
   getProfileAndUpdateTree(element: ProfileDescription) {
+    // Cancel previous request if still pending to avoid data race conditions
+    if (this._profileServiceGetProfileSubscription != null) {
+      this._profileServiceGetProfileSubscription.unsubscribe();
+    }
+
     this.loaderService.start();
     this._profileServiceGetProfileSubscription = this.profileService
       .getProfile(element)
