@@ -62,7 +62,6 @@
     "lodash": "^4.17.15",
     "material-design-icons": "^3.0.1",
     "ng2-date-picker": "^8.0.0",
-    "ng2-file-upload": "^1.4.0",
     "ng2-nvd3": "^2.0.0",
     "ngx-color-picker": "^9.0.0",
     "ngx-filesize": "^2.0.2",

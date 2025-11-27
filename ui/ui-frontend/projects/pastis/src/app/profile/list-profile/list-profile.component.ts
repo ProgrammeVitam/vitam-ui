@@ -35,12 +35,11 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { FileUploader } from 'ng2-file-upload';
 import { Subscription } from 'rxjs';
 import { Direction, GlobalEventService, SidenavPage, StartupService } from 'ui-frontend-common';
 import { environment } from '../../../environments/environment';
@@ -77,9 +76,6 @@ function constantToTranslate() {
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
-
-  @Input()
-  uploader: FileUploader = new FileUploader({ url: '' });
 
   retrievedProfiles: ProfileDescription[] = [];
 
