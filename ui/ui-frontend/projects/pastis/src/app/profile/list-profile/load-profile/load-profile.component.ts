@@ -35,10 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { FileSelectorComponent, PipesModule } from 'vitamui-library';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { FileSelectorComponent, PipesModule, VitamUILibraryModule } from 'vitamui-library';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
 
 export interface LoadProfileConfig {
   title: string;
@@ -56,10 +58,16 @@ export interface LoadProfileConfig {
   selector: 'vitamui-load-profile',
   templateUrl: './load-profile.component.html',
   styleUrl: './load-profile.component.scss',
+  imports: [FileSelectorComponent, PipesModule, MatDialogModule, VitamUILibraryModule, AsyncPipe, ReactiveFormsModule],
   standalone: true,
-  imports: [FileSelectorComponent, NgIf, TranslateModule, NgForOf, PipesModule, MatLegacyDialogModule, AsyncPipe],
 })
 export class LoadProfileComponent {
+  protected files = new FormControl([]);
+  protected isEmpty$ = new BehaviorSubject(true).pipe(
+    switchMap(() => this.files.valueChanges.pipe(startWith(this.files.value))),
+    map((files: File[] | FileList) => files?.length === 0),
+  );
+
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public config: LoadProfileConfig,
