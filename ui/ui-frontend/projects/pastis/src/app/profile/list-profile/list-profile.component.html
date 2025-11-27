@@ -29,10 +29,8 @@
           <input
             #fileInput
             (change)="uploadProfile($event.target.files)"
-            [uploader]="uploader"
             accept=".json, .rng"
             class="buttons"
-            ng2FileSelect
             style="display: none"
             type="file"
           />
