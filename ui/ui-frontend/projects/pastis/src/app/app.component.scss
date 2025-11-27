@@ -8,6 +8,7 @@
   display: flex;
   font-size: 15px;
   font-family: Mulish;
+  z-index: 2; // To have header over sidenav in pastis standalone
 }
 .separator {
   margin-top: 100px;

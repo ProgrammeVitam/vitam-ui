@@ -83,7 +83,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { FileUploadModule } from 'ng2-file-upload';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { UserActionsModule } from '../user-actions/user-actions.module';
@@ -99,7 +98,6 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     CommonModule,
     CoreModule,
     FileTreeModule,
-    FileUploadModule,
     FormsModule,
     MatIconModule,
     MatSlideToggleModule,
