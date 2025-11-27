@@ -77,7 +77,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadModule } from 'ng2-file-upload';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { PastisMaterialModule } from '../material.module';
@@ -91,7 +90,6 @@ import { DuplicateMetadataComponent } from './duplicate-metadata/duplicate-metad
 import { SaveProfileOptionsComponent } from './save-profile-options/save-profile-options.component';
 import { UserActionSaveProfileComponent } from './save-profile/save-profile.component';
 import { SelectNoticeComponent } from './select-notice/select-notice.component';
-import { UserActionUploadProfileComponent } from './upload-profile/upload-profile.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
@@ -104,13 +102,11 @@ import { TranslateModule } from '@ngx-translate/core';
     SelectNoticeComponent,
     UserActionAddPuaControlComponent,
     UserActionSaveProfileComponent,
-    UserActionUploadProfileComponent,
     UserActionsDownloadDocComponent,
   ],
   imports: [
     CommonModule,
     CoreModule,
-    FileUploadModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -122,7 +118,6 @@ import { TranslateModule } from '@ngx-translate/core';
     VitamUILibraryModule,
   ],
   exports: [
-    UserActionUploadProfileComponent,
     UserActionSaveProfileComponent,
     UserActionsDownloadDocComponent,
     FilterByNamePipe,
