@@ -83,7 +83,6 @@ import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-t
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { FileUploadModule } from 'ng2-file-upload';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
@@ -103,7 +102,6 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     MatTabsModule,
     SharedModule,
     FileTreeModule,
-    FileUploadModule,
     PastisMaterialModule,
     UserActionsModule,
     MatSlideToggleModule,
