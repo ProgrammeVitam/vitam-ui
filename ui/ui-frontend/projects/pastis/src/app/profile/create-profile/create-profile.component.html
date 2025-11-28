@@ -2,7 +2,7 @@
 
 <mat-dialog-content>
   <div [formGroup]="form" class="gap-5">
-    <pastis-generic-popup
+    <app-pastis-generic-popup
       [firstChoice]="ProfileType.PA"
       [secondChoice]="ProfileType.PUA"
       [title]="'PROFILE.POP_UP_CREATION.CHOICE.TITLE' | translate"
@@ -19,11 +19,11 @@
         vitamuiTooltipPosition="RIGHT"
         [vitamuiTooltipShowDelay]="300"
       ></i>
-    </pastis-generic-popup>
+    </app-pastis-generic-popup>
 
     <div>
-      <div class="subtitle">Version du SEDA souhaitée</div>
-      <mat-radio-group class="seda-options" formControlName="profileVersion">
+      <div class="text bold caption primary">{{ 'PROFILE.CREATE_PROFILE.INFORMATION.SEDA_VERSION' | translate }}</div>
+      <mat-radio-group class="hgap-2" formControlName="profileVersion">
         <mat-radio-button *ngFor="let profileVersionOption of ProfileVersionOptions" [value]="profileVersionOption.version">{{
           profileVersionOption.label
         }}</mat-radio-button>
