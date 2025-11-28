@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -93,8 +93,8 @@ import { LoadProfileComponent, LoadProfileConfig } from './load-profile/load-pro
 import { Profile } from '../../models/profile';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { NoticeService } from '../../core/services/notice.service';
-import { MatDialogConfig } from '@angular/material/dialog';
 import { NotificationService } from '../../core/services/notification.service';
+import { map } from 'rxjs/operators';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
@@ -354,7 +354,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         filter((confirmed) => confirmed),
         switchMap(() =>
           this.dialog
-            .open<LoadProfileComponent, LoadProfileConfig>(LoadProfileComponent, {
+            .open<LoadProfileComponent, LoadProfileConfig, File[]>(LoadProfileComponent, {
               panelClass: 'vitamui-modal',
               data: {
                 title: this.translations.popupUploadTitle,
@@ -367,37 +367,36 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
             })
             .afterClosed(),
         ),
+        filter((files) => Boolean(files?.length)),
+        map((files) => files.at(0)),
       )
-      .subscribe((files) => {
-        if (files) {
-          const fileToUpload: File = files[0];
-          if (profileDescription.type === ProfileType.PA) {
-            const profile: Profile = this.noticeService.profileDescriptionToPaProfile(profileDescription);
-            this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(
-              () => this.refreshListProfiles(),
-              () =>
-                this.notificationService.showError(
-                  this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
-                ),
-            );
-          }
-          if (profileDescription.type === ProfileType.PUA && fileToUpload) {
-            const fileReader = new FileReader();
-            fileReader.readAsText(fileToUpload, 'UTF-8');
-            fileReader.onload = () => {
-              const jsonObj: ProfileDescription = JSON.parse(fileReader.result.toString());
-              if (jsonObj.sedaVersion !== profileDescription.sedaVersion) {
-                this.notificationService.showError(
-                  this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
-                );
-              } else {
-                profileDescription.controlSchema = jsonObj.controlSchema;
-                const archivalProfileUnit: ArchivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
-                this.profileService.updateProfilePua(archivalProfileUnit).subscribe(() => this.refreshListProfiles());
-              }
-            };
-            fileReader.onerror = (error) => console.error(error);
-          }
+      .subscribe((fileToUpload) => {
+        if (profileDescription.type === ProfileType.PA) {
+          const profile: Profile = this.noticeService.profileDescriptionToPaProfile(profileDescription);
+          this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe({
+            next: () => this.refreshListProfiles(),
+            error: () =>
+              this.notificationService.showError(
+                this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
+              ),
+          });
+        }
+        if (profileDescription.type === ProfileType.PUA && fileToUpload) {
+          const fileReader = new FileReader();
+          fileReader.readAsText(fileToUpload, 'UTF-8');
+          fileReader.onload = () => {
+            const jsonObj: ProfileDescription = JSON.parse(fileReader.result.toString());
+            if (jsonObj.sedaVersion !== profileDescription.sedaVersion) {
+              this.notificationService.showError(
+                this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
+              );
+            } else {
+              profileDescription.controlSchema = jsonObj.controlSchema;
+              const archivalProfileUnit: ArchivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
+              this.profileService.updateProfilePua(archivalProfileUnit).subscribe(() => this.refreshListProfiles());
+            }
+          };
+          fileReader.onerror = (error) => console.error(error);
         }
       });
   }
