@@ -1,0 +1,126 @@
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_PROFILE_NOTICE_TITLE_DIALOG' | translate"
+  [title]="[
+    'PROFILE.POP_UP_CREATION.POPUP_CREATION_TITLE_DIALOG' | translate,
+    'PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_TITLE_DIALOG' | translate,
+  ]"
+></vitamui-dialog-header>
+
+<form [formGroup]="noticeForm">
+  <vitamui-common-stepper #stepper [(selectedIndex)]="stepIndex">
+    <cdk-step>
+      <mat-dialog-content>
+        <div class="gap-5">
+          <app-pastis-generic-popup
+            [firstChoice]="ProfileType.PA"
+            [secondChoice]="ProfileType.PUA"
+            [title]="'PROFILE.POP_UP_CREATION.CHOICE.TITLE' | translate"
+            (changeStatusEvent)="noticeForm.controls.profileType.setValue($event)"
+          >
+            <i
+              class="vitamui-icon vitamui-icon-info vitamui-grey-700 clickable"
+              [style.fontSize.px]="25"
+              vitamuiTooltip="{{ 'PROFILE.CREATE_PROFILE.INFORMATION.TITRE_PA' | translate }} &#13; {{
+                'PROFILE.CREATE_PROFILE.INFORMATION.CONTENT_PA' | translate
+              }}  &#13; {{ 'PROFILE.CREATE_PROFILE.INFORMATION.TITRE_PUA' | translate }} &#13; {{
+                'PROFILE.CREATE_PROFILE.INFORMATION.CONTENT_PUA' | translate
+              }}"
+              vitamuiTooltipPosition="RIGHT"
+              [vitamuiTooltipShowDelay]="300"
+            ></i>
+          </app-pastis-generic-popup>
+          <div>
+            <div class="text bold caption primary">{{ 'PROFILE.CREATE_PROFILE.INFORMATION.SEDA_VERSION' | translate }}</div>
+            <mat-radio-group class="hgap-2" formControlName="profileVersion">
+              @for (profileVersionOption of ProfileVersionOptions; track profileVersionOption.version) {
+                <mat-radio-button [value]="profileVersionOption.version">{{ profileVersionOption.label }}</mat-radio-button>
+              }
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <vitamui-next-step [disabled]="!isStepOneValid()"></vitamui-next-step>
+        <button (click)="onClose()" class="btn cancel link" type="button">
+          {{ 'COMMON.UNDO' | translate }}
+        </button>
+      </mat-dialog-actions>
+    </cdk-step>
+    <cdk-step>
+      <mat-dialog-content>
+        <mat-dialog-content class="gap-3 align-items-stretch">
+          <div class="row">
+            @if (externalIdentifierEnabledSignal()) {
+              <div class="col-10 form-control">
+                <vitamui-common-input
+                  class="col-9 px-0"
+                  placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate }}"
+                  formControlName="identifier"
+                >
+                </vitamui-common-input>
+                <vitamui-common-input-error
+                  *ngIf="noticeForm?.get('identifier')?.touched && noticeForm?.get('identifier')?.hasError('identifierExist')"
+                >
+                  {{ 'ERROR_IDENTIFIER.IDENTIFIER_ALREADY_EXISTS' | translate }}
+                </vitamui-common-input-error>
+              </div>
+            }
+          </div>
+
+          <div class="row">
+            <div class="col-10 form-control">
+              <vitamui-common-input
+                class="col-9 px-0"
+                formControlName="name"
+                placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate }} "
+              >
+              </vitamui-common-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-10 form-control">
+              <vitamui-common-textarea
+                formControlName="description"
+                placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate }} "
+                [rows]="4"
+                style="width: 100%"
+              >
+              </vitamui-common-textarea>
+            </div>
+          </div>
+          @if (modePUA()) {
+            <div class="row">
+              <div class="col-10 form-control">
+                <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2">
+                  <vitamui-common-slide-toggle formControlName="additionalProperties">
+                    {{ 'PROFILE.POP_UP_CREATION_NOTICE.ALLOW_METADATA' | translate }}
+                  </vitamui-common-slide-toggle>
+                </div>
+              </div>
+            </div>
+          }
+          <vitamui-select
+            class="d-block"
+            formControlName="status"
+            [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.SAVE_AS_ACTIVE_OR_INACTIVE' | translate"
+            [options]="statusOptions"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </mat-dialog-content>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <button type="submit" (click)="validate()" [disabled]="!isFormValid()" class="btn primary">
+            {{ 'PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_OK_LABEL' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+  </vitamui-common-stepper>
+</form>
