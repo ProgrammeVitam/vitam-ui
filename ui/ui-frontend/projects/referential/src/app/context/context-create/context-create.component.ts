@@ -34,23 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Context, Option } from 'vitamui-library';
+import { ConfirmDialogService, Context, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile/security-profile.service';
 import { ContextService } from '../context.service';
 import { ContextCreateValidators } from './context-create.validators';
+import { CommonModule } from '@angular/common';
+import { ContextEditPermissionModule } from './context-edit-permission/context-edit-permission.module';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-context-create',
   templateUrl: './context-create.component.html',
   styleUrls: ['./context-create.component.scss'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ContextEditPermissionModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
 export class ContextCreateComponent implements OnInit, OnDestroy {
-  @Input() isSlaveMode: boolean;
+  protected readonly isSlaveMode: boolean;
 
   form: FormGroup;
   statusControl = new FormControl(false);
@@ -68,13 +91,15 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<ContextCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { isSlaveMode: boolean },
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private contextService: ContextService,
     private contextCreateValidators: ContextCreateValidators,
     private securityProfileService: SecurityProfileService,
-  ) {}
+  ) {
+    this.isSlaveMode = data.isSlaveMode;
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({

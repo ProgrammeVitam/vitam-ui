@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
@@ -51,18 +51,46 @@ import { FormGroupToManagementContractConverterService } from '../components/for
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { PersistentIdentifierPoliciesFormModule } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.module';
 
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 @Component({
   selector: 'app-management-contract-create',
   templateUrl: './management-contract-create.component.html',
   styleUrls: ['./management-contract-create.component.scss'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatRadioModule,
+    MatSelectModule,
+    PersistentIdentifierPoliciesFormModule,
+    ReactiveFormsModule,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<ManagementContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { isSlaveMode: boolean },
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private managementContractService: ManagementContractService,
@@ -71,7 +99,9 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private formGroupToManagementContractConverterService: FormGroupToManagementContractConverterService,
     private logger: Logger,
     private translateService: TranslateService,
-  ) {}
+  ) {
+    this.isSlaveMode = data.isSlaveMode;
+  }
 
   form: FormGroup;
 
