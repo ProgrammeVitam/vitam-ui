@@ -62,6 +62,7 @@ import {
   RuleCategoryAction,
   RuleSearchCriteriaDto,
 } from '../../../models/ruleAction.interface';
+import { Location } from '@angular/common';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 
@@ -167,6 +168,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private translate: TranslateService,
     private logger: Logger,
     private ruleService: RuleService,
@@ -662,7 +664,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         .pipe(filter((result) => !!result))
         .subscribe(() => {
           this.initializeParameters();
-          this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
+          this.location.back();
         }),
     );
   }
