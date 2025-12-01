@@ -71,7 +71,7 @@
           {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
         </vitamui-common-slide-toggle>
 
-        <div class="select-threshold" *ngIf="!externalParamProfileForm.get('usePlatformThreshold').value">
+        <div class="select-threshold" *ngIf="!externalParamProfileForm.controls.usePlatformThreshold.value">
           <vitamui-select
             class="w-100"
             formControlName="bulkOperationsThreshold"
@@ -91,7 +91,7 @@
 
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="onValidate()">
+          <button type="submit" class="btn primary" [disabled]="isFormInvalid()">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button type="button" class="btn link cancel" (click)="onCancel()">

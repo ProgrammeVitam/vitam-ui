@@ -104,11 +104,17 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    return this.form.get('name').invalid || this.form.get('description').invalid || this.form.get('level').invalid;
+    const nameControl = this.form.controls.name;
+    const descriptionControl = this.form.controls.description;
+    const levelControl = this.form.controls.level;
+
+    return nameControl.invalid || nameControl.pending || descriptionControl.invalid || levelControl.invalid;
   }
 
   secondStepInvalid(): boolean {
-    return this.form.get('profileIds').invalid;
+    const profileIdsControl = this.form.controls.profileIds;
+
+    return profileIdsControl.invalid || profileIdsControl.pending;
   }
 
   formValid(): boolean {
