@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, ApplicationId, ExternalParamProfile, diff } from 'vitamui-library';
+import { AccessContract, ExternalParamProfile, diff } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../../external-param-profile.validators';
 
@@ -89,7 +89,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('externalParamProfile') && this.form) {
-      this.resetForm(this.form, this.externalParamProfile, this.readOnly);
+      this.resetForm(this.externalParamProfile, this.readOnly);
       this.previousValue = this.form.value;
     }
   }
@@ -121,24 +121,18 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
         switchMap((formData) => this.externalParamProfileService.patch(formData).pipe(catchError((error) => of(error)))),
         catchError((error) => of(error)),
       )
-      .subscribe((externalParamProfile: ExternalParamProfile) => this.resetForm(this.form, externalParamProfile, this.readOnly));
+      .subscribe((externalParamProfile: ExternalParamProfile) => this.resetForm(externalParamProfile, this.readOnly));
   }
 
-  private resetForm(form: FormGroup, externalParamProfile: ExternalParamProfile, readOnly: boolean) {
-    form.reset(externalParamProfile, { emitEvent: false });
-    this.initFormValidators(form, externalParamProfile);
-    InformationTabComponent.initFormActivationState(form, readOnly);
+  private resetForm(externalParamProfile: ExternalParamProfile, readOnly: boolean) {
+    this.form.reset(externalParamProfile, { emitEvent: false });
+    this.initFormValidators(externalParamProfile);
+    InformationTabComponent.initFormActivationState(this.form, readOnly);
   }
 
-  private initFormValidators(form: FormGroup, externalParamProfile: ExternalParamProfile) {
-    form
+  private initFormValidators(externalParamProfile: ExternalParamProfile) {
+    this.form
       .get('name')
-      .setAsyncValidators(
-        this.externalParamProfileValidators.nameExists(
-          +this.tenantIdentifier,
-          ApplicationId.EXTERNAL_PARAM_PROFILE_APP,
-          externalParamProfile.name,
-        ),
-      );
+      .setAsyncValidators(this.externalParamProfileValidators.nameExists(+this.tenantIdentifier, externalParamProfile.name));
   }
 }
