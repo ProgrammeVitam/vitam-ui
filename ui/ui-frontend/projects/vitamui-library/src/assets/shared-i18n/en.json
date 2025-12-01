@@ -566,6 +566,7 @@
   },
   "EVENT_TYPE_LABEL": {
     "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES": "Checking the blocking of reclassification of archival units by hold rules.",
+    "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES.OK": "Success of checking the blocking of reclassification of archival units by hold rules.",
     "EXPORT_CHECK_RESOURCE_AVAILABILITY": "Checking the availability of binary objects on the storage offer",
     "EXPORT_CHECK_RESOURCE_AVAILABILITY.OK": "Success of checking the availability of binary objects on the storage offer",
     "CHECK_ATTACHEMENT": "Verification of the attachment between existing and new objects, groups of objects and archival units",
@@ -580,6 +581,7 @@
     "STP_COMPUTE_INHERITED_RULES.STARTED": "Process for calculating the applicable management rules",
     "STP_COMPUTE_INHERITED_RULES": "Process for calculating the applicable management rules",
     "COMPUTE_INHERITED_RULES_ACTION": "Calculation of applicable management rules",
+    "COMPUTE_INHERITED_RULES_ACTION.OK": "Success of the calculation of applicable management rules",
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION.STARTED": "Process for finalizing the calculation of the applicable management rules",
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION": "Finalization of the calculation of the applicable management rules",
     "CHECK_OBJECT_SIZE": "File size check",
