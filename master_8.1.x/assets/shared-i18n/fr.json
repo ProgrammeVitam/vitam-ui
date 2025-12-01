@@ -556,6 +556,7 @@
   },
   "EVENT_TYPE_LABEL": {
     "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES": "Contrôle du blocage de reclassification des unités archivistiques par des règles de gel.",
+    "RECLASSIFICATION_PREPARATION_CHECK_HOLD_RULES.OK": "Succès du contrôle du blocage de reclassification des unités archivistiques par des règles de gel.",
     "EXPORT_CHECK_RESOURCE_AVAILABILITY": "Vérification de la disponibilité des objets binaires sur l'offre de stockage",
     "CHECK_ATTACHEMENT": "Vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux.",
     "CHECK_ATTACHEMENT.OK": "Succès de la vérification du rattachement entre objets, groupes d'objets et unités archivistiques existantes et les nouveaux.",
@@ -569,6 +570,7 @@
     "STP_COMPUTE_INHERITED_RULES.STARTED": "Début du processus de calcul des règles de gestion applicables",
     "STP_COMPUTE_INHERITED_RULES": "Processus de calcul des règles de gestion applicables",
     "COMPUTE_INHERITED_RULES_ACTION": "Calcul des règles de gestion applicables",
+    "COMPUTE_INHERITED_RULES_ACTION.OK": "Succès du calcul des règles de gestion applicables",
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION.STARTED": "Début du processus de finalisation du calcul des règles de gestion applicables",
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION": "Processus de finalisation du calcul des règles de gestion applicables",
     "CHECK_OBJECT_SIZE": "Vérification de la taille des fichiers",
