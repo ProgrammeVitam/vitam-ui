@@ -54,15 +54,11 @@ describe('ManagementContractComponent', () => {
   let component: ManagementContractComponent;
   let fixture: ComponentFixture<ManagementContractComponent>;
 
-  const applicationServiceMock = {
-    getActiveTenantAppsMap: () => of([]),
-    isApplicationExternalIdentifierEnabled: () => of(true),
-    getTenantAppMap: () => of([]),
-    openApplication: () => of(),
-  };
+  const applicationServiceSpy = jasmine.createSpyObj<ApplicationService>('ApplicationService', ['isApplicationExternalIdentifierEnabled']);
+  applicationServiceSpy.isApplicationExternalIdentifierEnabled.and.returnValue(of(true));
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
@@ -86,7 +82,7 @@ describe('ManagementContractComponent', () => {
         },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: ApplicationService, useValue: applicationServiceMock },
+        { provide: ApplicationService, useValue: applicationServiceSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
@@ -116,14 +112,11 @@ describe('ManagementContractComponent', () => {
     expect(component.search).toEqual('');
   });
 
-  it('should call isApplicationExternalIdentifierEnabled of ApplicationService', () => {
-    // Given
-    spyOn(applicationServiceMock, 'isApplicationExternalIdentifierEnabled').and.callThrough();
-
+  it('should call isApplicationExternalIdentifierEnabled of ApplicationService', async () => {
     // When
-    component.updateSlaveMode();
+    await component.openCreateManagementContractDialog();
 
     // Then
-    expect(applicationServiceMock.isApplicationExternalIdentifierEnabled).toHaveBeenCalled();
+    expect(applicationServiceSpy.isApplicationExternalIdentifierEnabled).toHaveBeenCalled();
   });
 });

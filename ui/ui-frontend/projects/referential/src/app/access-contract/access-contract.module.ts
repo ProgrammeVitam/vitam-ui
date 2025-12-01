@@ -47,11 +47,11 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
-import { AccessContractCreateModule } from './access-contract-create';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { AccessContractPreviewModule } from './access-contract-preview/access-contract-preview.module';
 import { AccessContractRoutingModule } from './access-contract-routing.module';
 import { AccessContractComponent } from './access-contract.component';
+import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 
 @NgModule({
   imports: [
@@ -66,7 +66,7 @@ import { AccessContractComponent } from './access-contract.component';
     MatProgressSpinnerModule,
     MatTabsModule,
     AccessContractRoutingModule,
-    AccessContractCreateModule,
+    AccessContractCreateComponent,
     AccessContractPreviewModule,
     ImportDialogModule,
   ],

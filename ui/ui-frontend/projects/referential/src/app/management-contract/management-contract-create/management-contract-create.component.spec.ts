@@ -88,9 +88,9 @@ describe('ManagementContractCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
+        ManagementContractCreateComponent,
         BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
