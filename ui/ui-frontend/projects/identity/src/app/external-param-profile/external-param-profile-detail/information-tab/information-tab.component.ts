@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { of, skip, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEqual } from 'underscore';
-import { ApplicationId, ExternalParamProfile } from 'vitamui-library';
+import { ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../../external-param-profile.validators';
 
@@ -127,13 +127,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   private initFormValidators(externalParamProfile: ExternalParamProfile) {
     this.form
       .get('name')
-      .setAsyncValidators(
-        this.externalParamProfileValidators.nameExists(
-          +this.tenantIdentifier,
-          ApplicationId.EXTERNAL_PARAM_PROFILE_APP,
-          externalParamProfile.name,
-        ),
-      );
+      .setAsyncValidators(this.externalParamProfileValidators.nameExists(+this.tenantIdentifier, externalParamProfile.name));
   }
 
   private initFormActivationState(readOnly: boolean) {

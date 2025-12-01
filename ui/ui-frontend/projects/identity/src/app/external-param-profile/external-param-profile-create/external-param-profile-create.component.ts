@@ -38,7 +38,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationId, ConfirmDialogService, ExternalParamProfile, Option } from 'vitamui-library';
+import { ConfirmDialogService, ExternalParamProfile, Option } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { map } from 'rxjs/operators';
@@ -52,7 +52,7 @@ import { DecimalPipe } from '@angular/common';
   standalone: false,
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
-  externalParamProfileForm: FormGroup;
+  form: FormGroup;
   activeAccessContractsIdentifiers$: Observable<string[]>;
   private keyPressSubscription: Subscription;
   tenantIdentifier: string;
@@ -91,25 +91,25 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   private initForm(tenantIdentifier: string) {
-    this.externalParamProfileForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       enabled: true,
       accessContract: [null, Validators.required],
       description: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(250)]],
-      name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        [this.externalParamProfileValidators.nameExists(+tenantIdentifier)],
+      ],
       usePlatformThreshold: true,
       bulkOperationsThreshold: [null, []],
     });
-
-    this.externalParamProfileForm
-      .get('name')
-      .setAsyncValidators(this.externalParamProfileValidators.nameExists(+tenantIdentifier, ApplicationId.EXTERNAL_PARAM_PROFILE_APP));
   }
 
   onSubmit() {
-    if (this.externalParamProfileForm.invalid) {
+    if (this.form.invalid) {
       return;
     }
-    const externalParamProfile: ExternalParamProfile = this.externalParamProfileForm.getRawValue();
+    const externalParamProfile: ExternalParamProfile = this.form.getRawValue();
     if (externalParamProfile.usePlatformThreshold) {
       externalParamProfile.bulkOperationsThreshold = null;
     }
@@ -126,22 +126,22 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.externalParamProfileForm.dirty) {
+    if (this.form.dirty) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
     }
   }
 
-  onValidate() {
-    return false;
+  isFormInvalid() {
+    return this.form.pending || this.form.invalid;
   }
 
   firstStepInvalid(): boolean {
-    return this.externalParamProfileForm.get('name').invalid || this.externalParamProfileForm.get('description').invalid;
-  }
+    const nameControl = this.form.controls.name;
+    const descriptionControl = this.form.controls.description;
+    const accessContractControl = this.form.controls.accessContract;
 
-  formValid(): boolean {
-    return this.externalParamProfileForm.pending || this.externalParamProfileForm.invalid;
+    return nameControl.invalid || nameControl.pending || descriptionControl.invalid || accessContractControl.invalid;
   }
 }
