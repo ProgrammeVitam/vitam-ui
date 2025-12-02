@@ -92,7 +92,13 @@ To generate PKI, bellow the steps:
     * dev-deployment/environments/certs/server/ca/ca-intermediate.crt
     * dev-deployment/environments/certs/server/ca/ca-root.crt
 
-    In Chrome: <chrome://settings/certificates> -> Authorities -> Import
+    In Chrome:
+    - use certutil (install it from libnss3-tools package or equivalent if not already installed): 
+   ```bash
+    certutil -d sql:$HOME/.pki/nssdb -A -t "CT,c,c" -n "ca_root_server - vitamui" -i dev-deployment/environments/certs/server/ca/ca-root.crt
+    certutil -d sql:$HOME/.pki/nssdb -A -t "CT,c,c" -n "ca_intermediate_server - vitamui" -i dev-deployment/environments/certs/server/ca/ca-intermediate.crt
+    ```
+    - or (deprecated) <chrome://settings/certificates> -> Authorities -> Import
 
     In Firefox: <about:preferences#privacy> -> Certificates -> Show Certificates -> Authorities -> Import
 
