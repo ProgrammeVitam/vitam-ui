@@ -36,16 +36,29 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  CriteriaSearchCriteria,
+  CriteriaValue,
+  QueryParamsService,
+  SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
+  TranslateWithOptionalTypeSuffixPipe,
+} from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
   standalone: false,
+  providers: [TranslateWithOptionalTypeSuffixPipe],
 })
 export class CriteriaSearchComponent {
-  constructor(private queryParamsService: QueryParamsService) {}
+  constructor(
+    private queryParamsService: QueryParamsService,
+    private translateService: TranslateService,
+    private translateWithOptionalTypeSuffixPipe: TranslateWithOptionalTypeSuffixPipe,
+  ) {}
 
   @Input()
   criteriaKey: string;
@@ -74,5 +87,30 @@ export class CriteriaSearchComponent {
 
   removeCriteriaAllValues() {
     this.removeCriteriaList(this.criteriaVal.values.map((value) => value.value));
+  }
+
+  getCriteriaKeyLabel(criteriaValue: SearchCriteriaValue): string {
+    if (criteriaValue.keyTranslated) {
+      const translationKey = `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${this.criteriaVal.key}`;
+      return this.translateWithOptionalTypeSuffixPipe.transform(translationKey);
+    }
+    return this.criteriaVal.key;
+  }
+
+  getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
+    if (criteriaValue.valueTranslated) {
+      return this.translateService.instant(
+        `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
+      );
+    }
+    if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
+      return criteriaValue.keyTranslated
+        ? this.translateService.instant(`COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue.label}`)
+        : criteriaValue.label;
+    }
+    if (key === 'ORPHANS_NODE') {
+      return this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
+    }
+    return criteriaValue.value?.value ?? '';
   }
 }
