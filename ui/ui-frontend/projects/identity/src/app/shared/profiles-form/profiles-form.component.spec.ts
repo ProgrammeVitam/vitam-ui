@@ -141,7 +141,7 @@ const expectedApp = {
 };
 
 @Component({
-  template: ` <app-profiles-form [(ngModel)]="profiles"></app-profiles-form> `,
+  template: ` <app-profiles-form [(ngModel)]="profiles" level=""></app-profiles-form> `,
   standalone: false,
 })
 class TesthostComponent {

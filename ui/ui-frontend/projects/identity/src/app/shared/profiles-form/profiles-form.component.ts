@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, OnInit, SimpleChanges, ViewChild, OnChanges } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { Application, ApplicationApiService, Option, Profile, ProfileService, SelectComponent } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { OptionTree } from './option-tree.interface';
+import { zip } from 'rxjs';
 
 export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,29 +56,17 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   providers: [PROFILES_FORM_VALUE_ACCESSOR],
   standalone: false,
 })
-export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
+export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnChanges {
   profiles: Profile[] = [];
   profileIds: string[] = [];
   applicationsDetails: Application[] = [];
 
   public loading = true;
 
-  @Input()
-  showLevel = false;
-
+  @Input() showLevel = false;
   @Input() tenantIdentifier: number;
-
   @Input() applicationNameExclude: string[];
-  @Input()
-  set level(level: string) {
-    this._level = level;
-    this.getProfiles();
-  }
-
-  get level(): string {
-    return this._level;
-  }
-  private _level: string;
+  @Input() level: string;
 
   appSelect = new FormControl(null, [Validators.required]);
   tenantSelect = new FormControl(null, [Validators.required]);
@@ -88,8 +77,13 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   filteredProfiles: Option[] = [];
 
   @ViewChild('tenantInput', { static: false }) tenantInput: SelectComponent;
-  @ViewChild('profileInput', { static: true }) profileInput: SelectComponent;
-  @ViewChild('addButton', { static: true }) addButton: ElementRef;
+  @ViewChild('profileInput', { static: false }) profileInput: SelectComponent;
+  @ViewChild('addButton', { static: false }) addButton: ElementRef;
+
+  private applicationsDetails$ = this.appApiService.getAllByParams(new HttpParams().set('filterApp', 'false')).pipe(
+    map((applications) => applications.APPLICATION_CONFIGURATION),
+    shareReplay(1),
+  );
 
   constructor(
     private rngProfileService: ProfileService,
@@ -97,7 +91,8 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getProfiles();
+    this.applicationsDetails$.subscribe((applicationsDetails) => (this.applicationsDetails = applicationsDetails));
+
     this.appSelect.valueChanges.subscribe(() => {
       this.filterTenants();
       if (this.filteredTenants.length === 1) {
@@ -105,7 +100,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
       } else {
         this.tenantSelect.setValue(null);
         if (!this.tenantIdentifier) {
-          setTimeout(() => this.tenantInput.focus(), 0);
+          setTimeout(() => this.tenantInput?.focus(), 0);
         }
       }
       this.toggleSelects();
@@ -121,26 +116,25 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
       if (this.filteredProfiles.length === 1) {
         setTimeout(() => this.addButton.nativeElement.focus(), 0);
       } else {
-        setTimeout(() => this.profileInput.focus(), 0);
+        setTimeout(() => this.profileInput?.focus(), 0);
       }
     });
   }
 
-  getProfiles() {
-    const params = new HttpParams().set('filterApp', 'false');
-    this.appApiService
-      .getAllByParams(params)
-      .pipe(
-        tap((applications) => (this.applicationsDetails = applications.APPLICATION_CONFIGURATION)),
-        switchMap(() => this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude)),
-      )
-      .subscribe((profiles) => {
-        this.profiles = profiles;
-        this.profileIds = this.filterProfileIds(this.profileIds, this.profiles, this.applicationsDetails);
-        this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, this.applicationsDetails));
-        this.updateApplicationTree();
-        this.loading = false;
-      });
+  ngOnChanges(_changes: SimpleChanges) {
+    this.getProfiles();
+  }
+
+  private getProfiles() {
+    const rngProfiles$ = this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude);
+
+    zip(this.applicationsDetails$, rngProfiles$).subscribe(([applicationsDetails, profiles]) => {
+      this.profiles = profiles;
+      this.profileIds = this.filterProfileIds(this.profileIds, this.profiles, applicationsDetails);
+      this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, applicationsDetails));
+      this.updateApplicationTree();
+      this.loading = false;
+    });
   }
 
   onChange = (_: any) => {};
