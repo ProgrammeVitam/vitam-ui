@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, resource, ResourceRef } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ResourceRef } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize, firstValueFrom, Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
   AgencyService,
@@ -55,6 +55,7 @@ import {
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dip-request-create',
@@ -86,20 +87,18 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     },
     private snackBarService: SnackBarService,
   ) {
-    this.agencyOptionsResource = resource<VitamuiSelectOptions, void>({
+    this.agencyOptionsResource = rxResource<VitamuiSelectOptions, void>({
       loader: () =>
-        firstValueFrom(
-          this.agencyService.getAll().pipe(
-            map(
-              (agencies) =>
-                ({
-                  options: agencies.map((agency) => ({
-                    key: agency.identifier,
-                    label: `${agency.identifier} - ${agency.name}`,
-                  })),
-                  customSorting: (a, b) => a.key.localeCompare(b.key),
-                }) satisfies VitamuiSelectOptions,
-            ),
+        this.agencyService.getAll().pipe(
+          map(
+            (agencies) =>
+              ({
+                options: agencies.map((agency) => ({
+                  key: agency.identifier,
+                  label: `${agency.identifier} - ${agency.name}`,
+                })),
+                customSorting: (a, b) => a.key.localeCompare(b.key),
+              }) satisfies VitamuiSelectOptions,
           ),
         ),
     });

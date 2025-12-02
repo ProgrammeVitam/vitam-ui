@@ -48,7 +48,7 @@ import {
   Injector,
   Input,
   QueryList,
-  ResourceRef,
+  Resource,
   Signal,
   ViewChild,
   ViewChildren,
@@ -173,13 +173,13 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   private isResource(
-    optionsParam: VitamuiSelectOptions | any[] | ResourceRef<VitamuiSelectOptions | any[]>,
-  ): optionsParam is ResourceRef<VitamuiSelectOptions | any[]> {
-    return !!(optionsParam as ResourceRef<VitamuiSelectOptions | any[]>)?.isLoading;
+    optionsParam: VitamuiSelectOptions | any[] | Resource<VitamuiSelectOptions | any[]>,
+  ): optionsParam is Resource<VitamuiSelectOptions | any[]> {
+    return !!(optionsParam as Resource<VitamuiSelectOptions | any[]>)?.isLoading;
   }
 
   @Input({ required: true })
-  set options(optionsParam: VitamuiSelectOptions | any[] | ResourceRef<VitamuiSelectOptions | any[]>) {
+  set options(optionsParam: VitamuiSelectOptions | any[] | Resource<VitamuiSelectOptions | any[]>) {
     if (this.isResource(optionsParam)) {
       this.optionsResource = optionsParam;
     } else {
@@ -213,7 +213,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.addEventListeners();
   }
 
-  private optionsResource: ResourceRef<VitamuiSelectOptions | any[]>;
+  private optionsResource: Resource<VitamuiSelectOptions | any[]>;
 
   @Input() selectAllLabel = this.translateService.instant('SELECT.SELECT_ALL');
   @Input() allSelectedLabel?: string;
