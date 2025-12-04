@@ -404,21 +404,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.updateMatSelectTriggerContent();
   }
 
-  public readonly compareOptions = (o1: any, o2: any): boolean => {
-    if (o1 == null || o2 == null) {
-      return o1 === o2;
-    }
-
-    if (this.multiple && Array.isArray(o1) && Array.isArray(o2)) {
-      if (o1.length !== o2.length) return false;
-      return o1.every((val) => o2.includes(val));
-    }
-
-    const val1 = typeof o1 === 'object' ? o1.key : o1;
-    const val2 = typeof o2 === 'object' ? o2.key : o2;
-
-    return String(val1) === String(val2);
-  };
+  protected compareOptions(o1: { key: string } | null, o2: { key: string } | null): boolean {
+    return !!o1 && !!o2 ? o1.key === o2.key : o1 === o2;
+  }
 
   private normalizeSelection(optionsParam: VitamuiSelectOptions | any[]): VitamuiSelectOptions {
     if (optionsParam instanceof Array) {
