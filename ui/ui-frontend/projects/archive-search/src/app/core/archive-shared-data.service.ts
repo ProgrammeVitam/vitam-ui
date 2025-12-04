@@ -237,7 +237,9 @@ export class ArchiveSharedDataService {
       }
       this.simpleSearchCriteriaAddSubject.next(searchCriteria);
     });
-    builder.navigate();
+
+    // Update URL with query params and create history entry
+    builder.navigate({ replaceUrl: false });
   }
 
   addSimpleSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
@@ -304,7 +306,9 @@ export class ArchiveSharedDataService {
         : `${searchCriteriaAction.valueElt.value}/${searchCriteriaAction.valueElt.virtualNodeRealParentId}/${searchCriteriaAction.valueElt.virtualNodeRealParentTitle}`;
     builder.removeQueryParam(searchCriteriaAction.valueElt.id, valueToRemove);
     this.searchCriteriaRemoveFromChildSubject.next(searchCriteriaAction);
-    builder.navigate();
+
+    // Update URL with query params and create history entry
+    builder.navigate({ replaceUrl: false });
   }
 
   receiveRemoveFromChildSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {

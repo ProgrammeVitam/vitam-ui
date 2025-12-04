@@ -165,7 +165,10 @@ export class UpdateUnitManagementRuleService {
         this.managementRulesSharedDataService.emitCriteriaSearchListToSave(criteriaSearchList);
         this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQueryToSend);
 
-        router.navigate(['/archive-search/update-rules/tenant/', tenantIdentifier]);
+        // Navigate preserving query params in URL to maintain browser history
+        router.navigate(['/archive-search/update-rules/tenant/', tenantIdentifier], {
+          queryParamsHandling: 'preserve',
+        });
       }
     });
   }

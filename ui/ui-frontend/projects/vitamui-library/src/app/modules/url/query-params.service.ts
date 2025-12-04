@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
@@ -43,9 +44,14 @@ class QueryParamBuilder {
   #queryParams: Params = {};
   constructor(
     private router: Router,
-    route: ActivatedRoute,
+    private location: Location,
   ) {
-    this.#queryParams = { ...route.snapshot.queryParams };
+    // Use location.path() to get current URL params instead of router.url
+    // This ensures we get the most up-to-date params, even after Location.replaceState() calls
+    // router.url is not updated by Location.replaceState(), but location.path() is
+    const currentPath = this.location.path();
+    const currentUrlTree = this.router.parseUrl(currentPath);
+    this.#queryParams = { ...currentUrlTree.queryParams };
   }
 
   addQueryParam(key: string, value: string): this {
@@ -60,6 +66,10 @@ class QueryParamBuilder {
     this.#queryParams[key] = currentValue.filter((v: string) => decodeURIComponent(v) !== value).join(',');
     if (!this.#queryParams[key]?.length) delete this.#queryParams[key];
     return this;
+  }
+
+  getQueryParams(): Params {
+    return { ...this.#queryParams };
   }
 
   navigate(extras: NavigationExtras = {}): Observable<boolean> {
@@ -79,6 +89,7 @@ export class QueryParamsService {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private location: Location,
   ) {}
 
   setQueryParams(
@@ -97,7 +108,7 @@ export class QueryParamsService {
   }
 
   builder() {
-    return new QueryParamBuilder(this.router, this.route);
+    return new QueryParamBuilder(this.router, this.location);
   }
 
   getQueryParams(): Observable<Params> {
