@@ -953,7 +953,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   openCriteriaPopup(searchCriteriaHistory$: SearchCriteriaHistory) {
     const dialogConfig: MatDialogConfig = {
-      panelClass: 'p-0',
+      panelClass: ['p-0', 'search-criteria-dialog'],
       disableClose: false,
       data: {
         searchCriteriaHistory: searchCriteriaHistory$,
