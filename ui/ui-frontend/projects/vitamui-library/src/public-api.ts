@@ -114,6 +114,7 @@ export * from './app/modules/archive-unit/components/physical-archive-viewer/phy
 export * from './app/modules/components/accordion/accordion.component';
 export * from './app/modules/components/badge/badge.component';
 export * from './app/modules/components/chip/chip.component';
+export * from './app/modules/components/elements/elements.component';
 export * from './app/modules/components/collapse/collapse.component';
 export * from './app/modules/components/common-progress-bar/common-progress-bar.component';
 export * from './app/modules/components/common-tooltip/common-tooltip.component';

@@ -79,6 +79,7 @@ export * from './components/application-card/application-card.component';
 export * from './components/autocomplete';
 export * from './components/badge/badge.component';
 export * from './components/chip/chip.component';
+export * from './components/elements/elements.component';
 export * from './components/collapse/collapse.module';
 export * from './components/confirm-dialog/index';
 export * from './components/data/data.component';

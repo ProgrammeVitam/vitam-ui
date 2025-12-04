@@ -1,0 +1,14 @@
+<div
+  class="container pl-4"
+  (click)="onClick($event)"
+  [vitamuiTooltip]="hasToolTipOnTitle ? toolTipTitleText : null"
+  [vitamuiTooltipPosition]="hasToolTipOnTitle ? BOTTOM : null"
+>
+  <i class="vitamui-icon {{ icon }} mr-2"></i>
+
+  <span class="medium text bold">
+    {{ title | truncate: 30 }}
+  </span>
+
+  <span class="normal text ml-1"> - ({{ number }} {{ unit }}) </span>
+</div>
