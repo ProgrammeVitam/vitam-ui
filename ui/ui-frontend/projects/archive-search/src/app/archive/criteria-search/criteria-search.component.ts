@@ -36,14 +36,14 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
-
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
 })
 export class CriteriaSearchComponent implements OnInit {
-  constructor() {}
+  constructor(private translateService: TranslateService) {}
 
   ngOnInit() {
     if (this.criteriaVal) {
@@ -73,7 +73,28 @@ export class CriteriaSearchComponent implements OnInit {
     });
   }
 
+  getCriteriaKeyLabel(criteriaValue: SearchCriteriaValue): string {
+    if (criteriaValue.keyTranslated) {
+      const translationKey = `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${this.criteriaVal.key}`;
+      return this.translateService.instant(translationKey);
+    }
+    return this.criteriaVal.key;
+  }
+
   getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
-    return key === 'ALL_ARCHIVE_UNIT_TYPES' ? criteriaValue.label : criteriaValue.value.value;
+    if (criteriaValue.valueTranslated) {
+      return this.translateService.instant(
+        `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
+      );
+    }
+    if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
+      return criteriaValue.keyTranslated
+        ? this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue.label}`)
+        : criteriaValue.label;
+    }
+    if (key === 'ORPHANS_NODE') {
+      return this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE');
+    }
+    return criteriaValue.value?.value ?? '';
   }
 }
