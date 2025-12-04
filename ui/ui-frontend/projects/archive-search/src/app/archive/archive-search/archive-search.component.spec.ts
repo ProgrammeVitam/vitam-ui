@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Location } from '@angular/common';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -128,7 +129,13 @@ describe('ArchiveSearchComponent', () => {
   };
 
   const setupTest = async (queryParams: Params) => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate', 'createUrlTree', 'serializeUrl', 'parseUrl']);
+    routerSpy.createUrlTree.and.returnValue({});
+    routerSpy.serializeUrl.and.returnValue('/test-url');
+    routerSpy.parseUrl.and.returnValue({ queryParams: {} });
+
+    const locationSpy = jasmine.createSpyObj('Location', ['replaceState', 'path']);
+    locationSpy.path.and.returnValue('/test-url');
 
     spyOn(archiveServiceStub, 'searchArchiveUnitsByCriteria').and.callThrough();
 
@@ -157,6 +164,7 @@ describe('ArchiveSearchComponent', () => {
         { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock },
+        { provide: Location, useValue: locationSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
         { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },

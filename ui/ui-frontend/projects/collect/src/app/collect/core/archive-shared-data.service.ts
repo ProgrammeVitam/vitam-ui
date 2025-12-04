@@ -219,7 +219,8 @@ export class ArchiveSharedDataService {
       builder.addQueryParam(searchCriteria.valueElt.id, searchCriteria.valueElt.value);
       this.simpleSearchCriteriaAddSubject.next(searchCriteria);
     });
-    builder.navigate();
+    // Update URL with query params and create history entry
+    builder.navigate({ replaceUrl: false });
   }
 
   addSimpleSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
@@ -254,7 +255,9 @@ export class ArchiveSharedDataService {
     const builder = this.queryParamsService.builder();
     builder.removeQueryParam(searchCriteriaAction.valueElt.id, searchCriteriaAction.valueElt.value);
     this.searchCriteriaRemoveFromChildSubject.next(searchCriteriaAction);
-    builder.navigate();
+
+    // Update URL with query params and create history entry
+    builder.navigate({ replaceUrl: false });
   }
 
   receiveRemoveFromChildSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
