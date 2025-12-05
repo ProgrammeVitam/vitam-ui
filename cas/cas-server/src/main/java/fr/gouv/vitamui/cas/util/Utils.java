@@ -38,8 +38,12 @@ package fr.gouv.vitamui.cas.util;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
@@ -49,8 +53,6 @@ import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.core.util.Pac4jConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.webflow.context.ExternalContext;
@@ -58,10 +60,6 @@ import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -71,10 +69,9 @@ import java.util.Map;
  *
  *
  */
+@Slf4j
 @RequiredArgsConstructor
 public class Utils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
 
     private static final int BROWSER_SESSION_LIFETIME = -1;
 
@@ -98,7 +95,7 @@ public class Utils {
         final RequestContext requestContext
     ) throws IOException {
         final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-        val service = WebUtils.getService(requestContext);
+        final var service = WebUtils.getService(requestContext);
 
         String url = CommonHelper.addParameter(
             casServerPrefix + "/clientredirect",
@@ -192,7 +189,7 @@ public class Utils {
         if (StringUtils.isNotBlank(idp)) {
             return idp;
         }
-        val cookie = org.springframework.web.util.WebUtils.getCookie(request, CommonConstants.IDP_PARAMETER);
+        final var cookie = org.springframework.web.util.WebUtils.getCookie(request, CommonConstants.IDP_PARAMETER);
         if (cookie != null) {
             return cookie.getValue();
         }

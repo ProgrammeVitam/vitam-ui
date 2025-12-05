@@ -1,0 +1,222 @@
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
+ * contact.vitam@culture.gouv.fr
+ *
+ * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
+ * high volumetry securely and efficiently.
+ *
+ * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
+ * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
+ *
+ * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
+ * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
+ * successive licensors have only limited liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific status of free software, that may mean
+ * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
+ * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
+ * accept its terms.
+ */
+package fr.gouv.vitamui.cas.webflow.login.actions;
+
+import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
+import org.apereo.cas.ticket.TicketGrantingTicket;
+import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.web.flow.CasWebflowConstants;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
+import org.apereo.cas.web.flow.actions.DelegatedClientAuthenticationAction;
+import org.apereo.cas.web.support.WebUtils;
+import org.springframework.webflow.execution.Event;
+import org.springframework.webflow.execution.RequestContext;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import static fr.gouv.vitamui.cas.authentication.UserPrincipalResolver.EMAIL_VALID_REGEXP;
+
+/**
+ * Custom authentication delegation:
+ * - automatic delegation given the provided IdP
+ * - extraction of the username/surrogate passed as a request parameter
+ * - save the portalUrl in the webflow.
+ */
+@Slf4j
+public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
+
+    public static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^[_a-z0-9]+$");
+
+    private final IdentityProviderHelper identityProviderHelper;
+
+    private final ProvidersService providersService;
+
+    private final Utils utils;
+
+    private final TicketRegistry ticketRegistry;
+
+    private final CasApi casApi;
+
+    private final String vitamuiPortalUrl;
+
+    public CustomDelegatedClientAuthenticationAction(
+        final DelegatedClientAuthenticationConfigurationContext configContext,
+        final DelegatedClientAuthenticationWebflowManager delegatedClientAuthenticationWebflowManager,
+        final DelegatedClientAuthenticationFailureEvaluator failureEvaluator,
+        final IdentityProviderHelper identityProviderHelper,
+        final ProvidersService providersService,
+        final Utils utils,
+        final TicketRegistry ticketRegistry,
+        final CasApi casApi,
+        final String vitamuiPortalUrl
+    ) {
+        super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
+        this.identityProviderHelper = identityProviderHelper;
+        this.providersService = providersService;
+        this.utils = utils;
+        this.ticketRegistry = ticketRegistry;
+        this.casApi = casApi;
+        this.vitamuiPortalUrl = vitamuiPortalUrl;
+    }
+
+    @Override
+    protected Event doExecuteInternal(final RequestContext context) {
+        // save a label in the webflow
+        final var flowScope = context.getFlowScope();
+        flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
+
+        // retrieve the service if it exists to prepare the serviceUrl parameter (for
+        // the back links)
+        final var service = WebUtils.getService(context);
+        if (service != null) {
+            flowScope.put("serviceUrl", service.getOriginalUrl());
+        }
+
+        final var event = super.doExecuteInternal(context);
+        if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
+            // extract and parse username
+            String username = context.getRequestParameters().get(Constants.LOGIN_USER_EMAIL_PARAM);
+
+            // extract and parse subrogation information
+            String surrogateEmail = context.getRequestParameters().get(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
+            String surrogateCustomerId = context
+                .getRequestParameters()
+                .get(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
+
+            String superUserEmail = context.getRequestParameters().get(Constants.LOGIN_SUPER_USER_EMAIL_PARAM);
+            String superUserCustomerId = context
+                .getRequestParameters()
+                .get(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
+
+            if (StringUtils.isNoneBlank(surrogateEmail, surrogateCustomerId, superUserEmail, superUserCustomerId)) {
+                validateEmail(surrogateEmail);
+                validateEmail(superUserEmail);
+                validateCustomerId(surrogateCustomerId);
+                validateCustomerId(superUserCustomerId);
+
+                LOGGER.debug(
+                    "Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+                    surrogateEmail,
+                    surrogateCustomerId,
+                    superUserEmail,
+                    superUserCustomerId
+                );
+
+                flowScope.put(Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
+                flowScope.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
+                flowScope.put(Constants.FLOW_LOGIN_EMAIL, superUserEmail);
+                flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, superUserCustomerId);
+
+                SurrogateUsernamePasswordCredential credential = new SurrogateUsernamePasswordCredential();
+                credential.setUsername(superUserEmail);
+                credential.setSurrogateUsername(surrogateEmail);
+                WebUtils.putCredential(context, credential);
+
+                CustomerDto surrogateCustomer = casApi
+                    .getCustomersByIds(List.of(surrogateCustomerId))
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(
+                        () -> new IllegalArgumentException("Invalid surrogateCustomerId: '" + surrogateCustomerId + "'")
+                    );
+
+                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
+                flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getName());
+            } else if (StringUtils.isNotBlank(username)) {
+                validateEmail(username);
+                WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
+                flowScope.put(Constants.PROVIDED_USERNAME, username);
+            }
+
+            // get the idp if it exists
+            final var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
+            final var idp = utils.getIdpValue(request);
+            LOGGER.debug("Provided idp: {}", idp);
+            if (StringUtils.isNotBlank(idp)) {
+                TicketGrantingTicket tgt = null;
+                final var tgtId = WebUtils.getTicketGrantingTicketId(context);
+                if (tgtId != null) {
+                    tgt = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
+                }
+
+                // if no authentication
+                if (tgt == null || tgt.isExpired()) {
+                    // if it matches an existing IdP, save it and redirect
+                    final var optProvider = identityProviderHelper.findByTechnicalName(
+                        providersService.getProviders(),
+                        idp
+                    );
+                    if (optProvider.isPresent()) {
+                        final var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
+                        response.addCookie(utils.buildIdpCookie(idp, configContext.getCasProperties().getTgc()));
+                        final var client = ((Pac4jClientIdentityProviderDto) optProvider.get()).getClient();
+                        LOGGER.debug("Force redirect to the SAML IdP: {}", client.getName());
+                        try {
+                            return utils.performClientRedirection(this, client, context);
+                        } catch (final IOException e) {
+                            throw new RuntimeException("Unable to perform redirection", e);
+                        }
+                    }
+                }
+            }
+        }
+
+        return event;
+    }
+
+    private void validateEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Null email");
+        }
+        if (!EMAIL_VALID_REGEXP.matcher(email).matches()) {
+            throw new IllegalArgumentException("email : '" + email + "' format is not allowed");
+        }
+    }
+
+    private void validateCustomerId(String customerId) {
+        if (customerId == null) {
+            throw new IllegalArgumentException("Null customerId");
+        }
+        if (!CUSTOMER_ID_VALIDATION_PATTERN.matcher(customerId).matches()) {
+            throw new IllegalArgumentException("Invalid customerId: '" + customerId + "'");
+        }
+    }
+}

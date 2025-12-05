@@ -24,6 +24,10 @@
     <dependencies>
         <!-- VITAMUI -->
         <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-utils</artifactId>
+        </dependency>
+        <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-commons</artifactId>
         </dependency>

@@ -1,11 +1,10 @@
 package fr.gouv.vitamui.cas.web;
 
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.util.Pac4jConstants;
 import org.springframework.http.HttpHeaders;
@@ -64,33 +63,33 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
         }
 
         if (serverRequest instanceof ServletServerHttpRequest) {
-            val request = ((ServletServerHttpRequest) serverRequest).getServletRequest();
+            final var request = ((ServletServerHttpRequest) serverRequest).getServletRequest();
 
-            val uri = request.getRequestURI();
-            val clientName = request.getParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER);
+            final var uri = request.getRequestURI();
+            final var clientName = request.getParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER);
             if (StringUtils.endsWith(uri, "/login") && StringUtils.isNotBlank(clientName)) {
                 LOGGER.debug("Delegated authn callback for clientName: {}", clientName);
-                val identityProvider = identityProviderHelper.findByTechnicalName(
+                final var identityProvider = identityProviderHelper.findByTechnicalName(
                     providersService.getProviders(),
                     clientName
                 );
                 if (identityProvider.isPresent()) {
                     String providerUrl = null;
-                    val provider = identityProvider.get();
+                    final var provider = identityProvider.get();
                     // SAML?
-                    val samlMetadata = provider.getIdpMetadata();
+                    final var samlMetadata = provider.getIdpMetadata();
                     if (StringUtils.isNotBlank(samlMetadata)) {
                         providerUrl = getSamlProviderUrl(provider);
                         // OIDC?
                     } else {
-                        val discoveryUrl = provider.getDiscoveryUrl();
+                        final var discoveryUrl = provider.getDiscoveryUrl();
                         if (StringUtils.isNotBlank(discoveryUrl)) {
                             providerUrl = discoveryUrl;
                         }
                     }
                     LOGGER.debug("providerUrl: {}", providerUrl);
                     if (StringUtils.isNotBlank(providerUrl)) {
-                        val followingSlash = providerUrl.indexOf("/", 9);
+                        final var followingSlash = providerUrl.indexOf("/", 9);
                         if (followingSlash < 0) {
                             allowOrigin = providerUrl;
                         } else {
@@ -173,12 +172,12 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xpath = xpathFactory.newXPath();
 
-            var location = xpath.evaluate(IDP_LOCATION_XPATH_EXPRESSION, document);
+            final var location = xpath.evaluate(IDP_LOCATION_XPATH_EXPRESSION, document);
             if (StringUtils.isNotBlank(location)) {
                 return location;
             }
 
-            var entityId = xpath.evaluate(IDP_ENTITY_XPATH_EXPRESSION, document);
+            final var entityId = xpath.evaluate(IDP_ENTITY_XPATH_EXPRESSION, document);
             if (StringUtils.isNotBlank(entityId)) {
                 return entityId;
             }

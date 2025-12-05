@@ -20,7 +20,7 @@
   "ALLOWED_URLS": ["/archive-search-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
-    "redirectUri": "?",
+    "redirectUri": "https://dev.vitamui.com:4209/archive-search",
     "postLogoutRedirectUri": "https://dev.vitamui.com:4209/archive-search",
     "clientId": "archive-search",
     "responseType": "code",

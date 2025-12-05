@@ -1,14 +1,13 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.iam.client.CasRestClient;
+import fr.gouv.vitamui.cas.webflow.login.actions.CustomDelegatedClientAuthenticationAction;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
 import org.apereo.cas.pac4j.client.DelegatedClientNameExtractor;
@@ -18,10 +17,8 @@ import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
 import org.apereo.cas.web.flow.DelegatedClientIdentityProviderConfigurationProducer;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -29,7 +26,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -38,7 +34,6 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link CustomDelegatedClientAuthenticationAction}.
  */
-@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = CustomDelegatedClientAuthenticationActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class CustomDelegatedClientAuthenticationActionTest extends BaseWebflowActionTest {
@@ -56,23 +51,27 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
 
     @Override
     @Before
-    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
+    public void setUp() throws FileNotFoundException {
         super.setUp();
 
-        val configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
+        final var configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
         when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(
             mock(DelegatedClientIdentityProviderConfigurationProducer.class)
         );
         when(configContext.getDelegatedClientNameExtractor()).thenReturn(mock(DelegatedClientNameExtractor.class));
+        final var casProperties = mock(
+            org.apereo.cas.configuration.CasConfigurationProperties.class,
+            org.mockito.Answers.RETURNS_DEEP_STUBS
+        );
+        when(configContext.getCasProperties()).thenReturn(casProperties);
+        when(casProperties.getAuthn().getPac4j().getCore().getName()).thenReturn("clientName");
 
-        CasRestClient casRestClient = mock(CasRestClient.class);
+        CasApi casApi = mock(CasApi.class);
         CustomerDto surrogateCustomerDto = new CustomerDto();
         surrogateCustomerDto.setCode(CODE);
         surrogateCustomerDto.setName(COMPANY);
         surrogateCustomerDto.setId(CUSTOMER_ID_2);
-        doReturn(List.of(surrogateCustomerDto))
-            .when(casRestClient)
-            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
+        doReturn(List.of(surrogateCustomerDto)).when(casApi).getCustomersByIds(eq(List.of(CUSTOMER_ID_2)));
 
         action = new CustomDelegatedClientAuthenticationAction(
             configContext,
@@ -82,16 +81,16 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
             mock(ProvidersService.class),
             mock(Utils.class),
             mock(TicketRegistry.class),
-            casRestClient,
+            casApi,
             ""
         );
     }
 
     @Test
-    public void testPreProvidedUsername() {
+    public void testPreProvidedUsername() throws Exception {
         requestParameters.put("username", EMAIL1);
 
-        action.doExecute(context);
+        action.execute(context);
 
         assertThat(flowParameters.get(Constants.PROVIDED_USERNAME)).isEqualTo(EMAIL1);
 
@@ -105,19 +104,19 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
     public void testInvalidPreProvidedUsername() {
         requestParameters.put("username", BAD_EMAIL);
 
-        assertThatThrownBy(() -> action.doExecute(context))
+        assertThatThrownBy(() -> action.execute(context))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("format is not allowed");
     }
 
     @Test
-    public void testSubrogation() {
+    public void testSubrogation() throws Exception {
         requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, EMAIL1);
         requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);
         requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, CUSTOMER_ID_2);
 
-        action.doExecute(context);
+        action.execute(context);
 
         assertThat(flowParameters.get("credential")).isOfAnyClassIn(SurrogateUsernamePasswordCredential.class);
         SurrogateUsernamePasswordCredential credential =
@@ -142,7 +141,7 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);
         requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, CUSTOMER_ID_2);
 
-        assertThatThrownBy(() -> action.doExecute(context))
+        assertThatThrownBy(() -> action.execute(context))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("format is not allowed");
     }
@@ -154,14 +153,14 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, EMAIL2);
         requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, BAD_CUSTOMER_ID);
 
-        assertThatThrownBy(() -> action.doExecute(context))
+        assertThatThrownBy(() -> action.execute(context))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Invalid customerId");
     }
 
     @Test
-    public void testNoUsernameAndNoSubrogation() {
-        action.doExecute(context);
+    public void testNoUsernameAndNoSubrogation() throws Exception {
+        action.execute(context);
 
         assertNull(flowParameters.get(Constants.PROVIDED_USERNAME));
 

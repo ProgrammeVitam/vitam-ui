@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.common.utils;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.oidc.client.OidcClient;
@@ -27,7 +26,6 @@ public class Pac4jClientBuilderTest {
     private static final JWSAlgorithm ALGORITHM = JWSAlgorithm.HS256;
     private static final Map CUSTOM_PARAMS = Map.of("prompt", "login");
 
-    @Disabled
     @Test
     public void testOidcProviderCreationSuccessful() {
         final IdentityProviderDto provider = new IdentityProviderDto();
@@ -62,9 +60,8 @@ public class Pac4jClientBuilderTest {
     }
 
     @Test
-    public void testOidcProviderCreationFailure() {
+    public void shouldClientCreationFailsWhenNoProviderClientId() {
         final IdentityProviderDto provider = new IdentityProviderDto();
-        provider.setClientId(CLIENT_ID);
         provider.setClientSecret(CLIENT_SECRET);
         provider.setDiscoveryUrl("http://url");
 
@@ -72,7 +69,45 @@ public class Pac4jClientBuilderTest {
         builder.setCasLoginUrl(LOGIN_URL);
 
         final Optional<IndirectClient> optClient = builder.buildClient(provider);
+        assertTrue(optClient.isEmpty());
+    }
 
+    @Test
+    public void shouldClientCreationFailsWhenNoProviderClientSecret() {
+        final IdentityProviderDto provider = new IdentityProviderDto();
+        provider.setClientId(CLIENT_ID);
+        provider.setDiscoveryUrl("http://url");
+
+        final Pac4jClientBuilder builder = new Pac4jClientBuilder();
+        builder.setCasLoginUrl(LOGIN_URL);
+
+        final Optional<IndirectClient> optClient = builder.buildClient(provider);
+        assertTrue(optClient.isEmpty());
+    }
+
+    @Test
+    public void shouldClientCreationFailsWhenNoProviderDiscoveryUrl() {
+        final IdentityProviderDto provider = new IdentityProviderDto();
+        provider.setClientId(CLIENT_ID);
+        provider.setClientSecret(CLIENT_SECRET);
+
+        final Pac4jClientBuilder builder = new Pac4jClientBuilder();
+        builder.setCasLoginUrl(LOGIN_URL);
+
+        final Optional<IndirectClient> optClient = builder.buildClient(provider);
+        assertTrue(optClient.isEmpty());
+    }
+
+    @Test
+    public void shouldClientCreationFailsWhenNoBuilderLoginUrl() {
+        final IdentityProviderDto provider = new IdentityProviderDto();
+        provider.setClientId(CLIENT_ID);
+        provider.setClientSecret(CLIENT_SECRET);
+        provider.setDiscoveryUrl("http://url");
+
+        final Pac4jClientBuilder builder = new Pac4jClientBuilder();
+
+        final Optional<IndirectClient> optClient = builder.buildClient(provider);
         assertTrue(optClient.isEmpty());
     }
 }

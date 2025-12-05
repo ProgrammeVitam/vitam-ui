@@ -1,14 +1,12 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.flow.action.SurrogateInitialAuthenticationAction;
 import org.apereo.cas.web.flow.actions.BaseCasWebflowAction;
 import org.apereo.cas.web.support.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -16,13 +14,12 @@ import org.springframework.webflow.execution.RequestContext;
 /**
  * CUSTO: Full rewrite of {@link SurrogateInitialAuthenticationAction}
  */
+@Slf4j
 public class CustomSurrogateInitialAuthenticationAction extends BaseCasWebflowAction {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomSurrogateInitialAuthenticationAction.class);
-
     @Override
-    protected Event doExecute(RequestContext context) throws Exception {
-        val up = WebUtils.getCredential(context, UsernamePasswordCredential.class);
+    protected Event doExecuteInternal(RequestContext context) {
+        final var up = WebUtils.getCredential(context, UsernamePasswordCredential.class);
         if (up == null) {
             LOGGER.debug(
                 "Provided credentials cannot be found, or are already of type [{}]",
@@ -31,7 +28,7 @@ public class CustomSurrogateInitialAuthenticationAction extends BaseCasWebflowAc
             return null;
         }
 
-        val flowScope = context.getFlowScope();
+        final var flowScope = context.getFlowScope();
         if (isSubrogationMode(flowScope)) {
             String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
             String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);

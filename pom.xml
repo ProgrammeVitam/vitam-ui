@@ -68,10 +68,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>21</java.version>
-        <java.release>17</java.release>
+        <java.release>21</java.release>
         <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
 
         <vitam.version>9.1.0-SNAPSHOT</vitam.version>
 
@@ -91,7 +91,7 @@
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
         <launch4j-maven-plugin.version>2.4.1</launch4j-maven-plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
-        <lombok.version>1.18.30</lombok.version>
+        <lombok.version>1.18.38</lombok.version>
         <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
         <maven.asciidoctor.plugin.version>2.0.0</maven.asciidoctor.plugin.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
