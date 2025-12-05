@@ -16,7 +16,7 @@
                   : criteriaValue.valueTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
                       | translate)
-                    : criteriaValue.label
+                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
               }}"
               matTooltipClass="vitamui-tooltip"
               [matTooltipShowDelay]="300"
@@ -62,7 +62,6 @@
               <div
                 class="vitamui-or-criteria-content"
                 [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
-                class="button-or left-not-arround right-button"
               >
                 {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_OR' | translate }}
               </div>
@@ -132,7 +131,6 @@
               <div
                 class="vitamui-or-criteria-content"
                 [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
-                class="button-or left-not-arround right-button"
               >
                 {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_OR' | translate }}
               </div>
@@ -240,7 +238,7 @@
                   criteriaValue.valueTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
                       | translate)
-                    : criteriaValue.label
+                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
                 }}"
                 matTooltipClass="vitamui-tooltip"
                 [matTooltipShowDelay]="300"
@@ -264,7 +262,7 @@
                   criteriaValue.valueTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
                       | translate)
-                    : (criteriaValue.label | truncate: 50)
+                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
                 }}
               </div>
               <div
@@ -294,7 +292,6 @@
                 class="vitamui-or-criteria-content"
                 *ngIf="!isLast"
                 [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
-                class="button-or left-not-arround right-button"
               >
                 {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_OR' | translate }}
               </div>
