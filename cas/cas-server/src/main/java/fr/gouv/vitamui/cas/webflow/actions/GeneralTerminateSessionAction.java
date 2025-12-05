@@ -39,47 +39,34 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.iam.client.CasRestClient;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.authentication.Authentication;
-import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
-import org.apereo.cas.authentication.DefaultAuthenticationBuilder;
 import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.SimpleWebApplicationServiceImpl;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
 import org.apereo.cas.logout.LogoutManager;
-import org.apereo.cas.logout.SingleLogoutExecutionRequest;
 import org.apereo.cas.logout.slo.SingleLogoutRequestContext;
 import org.apereo.cas.logout.slo.SingleLogoutRequestExecutor;
-import org.apereo.cas.services.BaseRegisteredService;
-import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.InvalidTicketException;
-import org.apereo.cas.ticket.ServiceTicketSessionTrackingPolicy;
 import org.apereo.cas.ticket.TicketGrantingTicket;
-import org.apereo.cas.ticket.TicketGrantingTicketImpl;
-import org.apereo.cas.ticket.expiration.NeverExpiresExpirationPolicy;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
 import org.apereo.cas.web.support.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,14 +76,14 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 
 /**
- * Terminate session action with custom IAM logout and fallback mechanisms (to perform a general logout).
+ * Terminate session action with custom IAM logout and fallback mechanisms (to
+ * perform a general logout).
  *
  *
  */
+@Slf4j
 @Getter
 public class GeneralTerminateSessionAction extends TerminateSessionAction {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GeneralTerminateSessionAction.class);
 
     private final Utils utils;
 
@@ -109,8 +96,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
     private final Action frontChannelLogoutAction;
 
     private final TicketRegistry ticketRegistry;
-
-    private final ServiceTicketSessionTrackingPolicy serviceTicketSessionTrackingPolicy;
 
     public GeneralTerminateSessionAction(
         final CentralAuthenticationService centralAuthenticationService,
@@ -125,8 +110,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         final ServicesManager servicesManager,
         final CasConfigurationProperties casProperties,
         final Action frontChannelLogoutAction,
-        final TicketRegistry ticketRegistry,
-        final ServiceTicketSessionTrackingPolicy serviceTicketSessionTrackingPolicy
+        final TicketRegistry ticketRegistry
     ) {
         super(
             centralAuthenticationService,
@@ -143,7 +127,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         this.casProperties = casProperties;
         this.frontChannelLogoutAction = frontChannelLogoutAction;
         this.ticketRegistry = ticketRegistry;
-        this.serviceTicketSessionTrackingPolicy = serviceTicketSessionTrackingPolicy;
     }
 
     @Override
@@ -218,48 +201,10 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
     }
 
     protected List<SingleLogoutRequestContext> performGeneralLogout(final String tgtId) {
-        try {
-            final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
-            successes.put("fake", null);
-
-            final Authentication authentication = new DefaultAuthenticationBuilder()
-                .setPrincipal(new FakePrincipal(tgtId))
-                .setSuccesses(successes)
-                .addCredential(null)
-                .build();
-
-            final TicketGrantingTicketImpl fakeTgt = new TicketGrantingTicketImpl(
-                tgtId,
-                authentication,
-                new NeverExpiresExpirationPolicy()
-            );
-
-            final Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
-            int i = 1;
-            for (final RegisteredService registeredService : registeredServices) {
-                final String logoutUrl = ((BaseRegisteredService) registeredService).getLogoutUrl();
-                if (logoutUrl != null) {
-                    final String serviceId = logoutUrl.toString();
-                    final String fakeSt = "ST-fake-" + i;
-                    final Service service = new FakeSimpleWebApplicationServiceImpl(serviceId, serviceId, fakeSt);
-                    fakeTgt.grantServiceTicket(
-                        fakeSt,
-                        service,
-                        new NeverExpiresExpirationPolicy(),
-                        false,
-                        serviceTicketSessionTrackingPolicy
-                    );
-                    i++;
-                }
-            }
-
-            return logoutManager.performLogout(
-                SingleLogoutExecutionRequest.builder().ticketGrantingTicket(fakeTgt).build()
-            );
-        } catch (final RuntimeException e) {
-            LOGGER.error("Unable to perform general logout", e);
-            return new ArrayList<>();
-        }
+        // TODO: CAS 7 Migration - SingleLogoutExecutionRequest is missing or changed.
+        // Disabling this fallback mechanism for now.
+        LOGGER.warn("performGeneralLogout is disabled in CAS 7 migration due to missing API.");
+        return new ArrayList<>();
     }
 
     private static class FakeSimpleWebApplicationServiceImpl extends SimpleWebApplicationServiceImpl {
@@ -274,5 +219,10 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
     private static class FakePrincipal implements Principal {
 
         private final String id;
+
+        @Override
+        public String getId() {
+            return this.id;
+        }
     }
 }

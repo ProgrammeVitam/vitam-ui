@@ -1,9 +1,7 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.util.Utils;
-import lombok.val;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.junit.Before;
@@ -31,14 +29,14 @@ public class TriggerChangePasswordActionTest extends BaseWebflowActionTest {
 
     @Override
     @Before
-    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
+    public void setUp() throws FileNotFoundException {
         super.setUp();
 
-        val tgtId = "TGT-1";
+        final var tgtId = "TGT-1";
 
         flowParameters.put("ticketGrantingTicketId", tgtId);
 
-        val ticketRegistrySupport = mock(TicketRegistrySupport.class);
+        final var ticketRegistrySupport = mock(TicketRegistrySupport.class);
         action = new TriggerChangePasswordAction(ticketRegistrySupport, mock(Utils.class));
 
         when(ticketRegistrySupport.getAuthenticatedPrincipalFrom(tgtId)).thenReturn(mock(Principal.class));
@@ -48,14 +46,14 @@ public class TriggerChangePasswordActionTest extends BaseWebflowActionTest {
     public void changePassword() {
         requestParameters.put("doChangePassword", "yes");
 
-        val event = action.doExecute(context);
+        final var event = action.doExecute(context);
 
         assertEquals("changePassword", event.getId());
     }
 
     @Test
     public void dontChangePassword() {
-        val event = action.doExecute(context);
+        final var event = action.doExecute(context);
 
         assertEquals("continue", event.getId());
     }

@@ -47,12 +47,10 @@ import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.jee.context.JEEContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
@@ -63,20 +61,21 @@ import java.util.Optional;
 
 /**
  * This class can dispatch the user:
- * - either to customer selection page (if user have multiple accounts for different customers)
+ * - either to customer selection page (if user have multiple accounts for
+ * different customers)
  * - or to the password page
  * - or to an external IdP (authentication delegation)
- * - or to the bad configuration page if the user is not linked to any identity provider
+ * - or to the bad configuration page if the user is not linked to any identity
+ * provider
  * - or to the disabled account page if the user is disabled.
  */
+@Slf4j
 @RequiredArgsConstructor
 public class DispatcherAction extends AbstractAction {
 
     public static final String DISABLED = "disabled";
     public static final String BAD_CONFIGURATION = "badConfiguration";
     public static final String TRANSITION_SELECT_CUSTOMER = "selectCustomer";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DispatcherAction.class);
 
     private final ProvidersService providersService;
 
@@ -90,7 +89,7 @@ public class DispatcherAction extends AbstractAction {
 
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
-        val flowScope = requestContext.getFlowScope();
+        var flowScope = requestContext.getFlowScope();
 
         if (isSubrogationMode(flowScope)) {
             return processSubrogationRequest(requestContext, flowScope);
@@ -101,7 +100,7 @@ public class DispatcherAction extends AbstractAction {
 
     private Event processSubrogationRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
         throws IOException {
-        // We came from subrogation validation
+        // We came from subrogation varidation
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
@@ -167,9 +166,9 @@ public class DispatcherAction extends AbstractAction {
         }
         var identityProviderDto = providerOpt.get();
 
-        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-        val webContext = new JEEContext(request, response);
+        var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+        var webContext = new JEEContext(request, response);
 
         if (identityProviderDto.getInternal()) {
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
@@ -211,7 +210,8 @@ public class DispatcherAction extends AbstractAction {
                 );
         if (userDto == null) {
             // To avoid account existence disclosure, unknown users are silently ignored.
-            // Once they enter their credentials, they will get a generic "login or password invalid" error message.
+            // Once they enter their credentials, they will get a generic "login or password
+            // invalid" error message.
             return false;
         }
         return (userDto.getStatus() != UserStatusEnum.ENABLED);

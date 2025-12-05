@@ -42,9 +42,9 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
@@ -60,7 +60,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 /**
@@ -115,12 +114,18 @@ public class ResetPasswordController {
             return false;
         }
 
-        val usernameLower = username.toLowerCase().trim();
+        final var usernameLower = username.toLowerCase().trim();
         LinkedMultiValueMap<String, Object> customerIdMapElt = new LinkedMultiValueMap<>();
         customerIdMapElt.add(Constants.RESET_PWD_CUSTOMER_ID_ATTR, customerId);
-        val query = PasswordManagementQuery.builder().username(usernameLower).record(customerIdMapElt).build();
+        final var query = PasswordManagementQuery.builder().username(usernameLower).record(customerIdMapElt).build();
 
-        val email = passwordManagementService.findEmail(query);
+        String email;
+        try {
+            email = passwordManagementService.findEmail(query);
+        } catch (final Throwable e) {
+            LOGGER.error("Error finding email", e);
+            return false;
+        }
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");
             return false;
@@ -132,7 +137,7 @@ public class ResetPasswordController {
         }
 
         final Locale locale = new Locale(language);
-        val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
+        final var duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
         final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : duration.toMinutes();
         request.setAttribute(
             PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE,
@@ -144,7 +149,7 @@ public class ResetPasswordController {
             userLoginModel.setCustomerId(customerId);
             String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
 
-            val url = passwordResetUrlBuilder.build(userLoginModelToToken).toString();
+            final var url = passwordResetUrlBuilder.build(userLoginModelToToken).toString();
             final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
                 messageSource,
                 firstname,
@@ -164,7 +169,7 @@ public class ResetPasswordController {
             );
 
             return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
-        } catch (final Exception e) {
+        } catch (final Throwable e) {
             LOGGER.error("Cannot reset password", e);
             return false;
         }

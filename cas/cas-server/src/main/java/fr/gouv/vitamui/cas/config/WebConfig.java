@@ -40,7 +40,6 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.web.CustomCorsProcessor;
 import fr.gouv.vitamui.cas.web.CustomOidcCasClientRedirectActionBuilder;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.oidc.util.OidcRequestSupport;
 import org.apereo.cas.services.ServicesManager;
@@ -51,7 +50,6 @@ import org.apereo.cas.web.support.ArgumentExtractor;
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.core.client.Client;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -75,9 +73,12 @@ public class WebConfig {
         @Qualifier("oidcRequestSupport") final OidcRequestSupport oidcRequestSupport,
         @Qualifier("oauthCasClient") final Client oauthCasClient
     ) {
-        val builder = new CustomOidcCasClientRedirectActionBuilder(oidcRequestSupport, oauthRequestParameterResolver);
-        val casClient = (CasClient) oauthCasClient;
-        casClient.setRedirectionActionBuilder((webContext, sessionStore) -> builder.build(casClient, webContext));
+        final var builder = new CustomOidcCasClientRedirectActionBuilder(
+            oidcRequestSupport,
+            oauthRequestParameterResolver
+        );
+        final var casClient = (CasClient) oauthCasClient;
+        casClient.setRedirectionActionBuilder(callContext -> builder.build(casClient, callContext.webContext()));
         return builder;
     }
 
@@ -94,7 +95,7 @@ public class WebConfig {
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public FilterRegistrationBean<CorsFilter> casCorsFilter(
+    public CorsFilter corsFilter(
         final CasConfigurationProperties casProperties,
         @Qualifier(
             "corsHttpWebRequestConfigurationSource"
@@ -102,14 +103,8 @@ public class WebConfig {
         final IdentityProviderHelper identityProviderHelper,
         final ProvidersService providersService
     ) {
-        val filter = new CorsFilter(corsHttpWebRequestConfigurationSource);
-        // CUSTO:
+        final var filter = new CorsFilter(corsHttpWebRequestConfigurationSource);
         filter.setCorsProcessor(new CustomCorsProcessor(providersService, identityProviderHelper));
-        val bean = new FilterRegistrationBean<>(filter);
-        bean.setName("casCorsFilter");
-        bean.setAsyncSupported(true);
-        bean.setOrder(0);
-        bean.setEnabled(casProperties.getHttpWebRequest().getCors().isEnabled());
-        return bean;
+        return filter;
     }
 }

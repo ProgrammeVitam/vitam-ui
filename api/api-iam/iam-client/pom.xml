@@ -18,10 +18,10 @@
         <!-- current Cas version use an incompatible Spring boot version 2.7.18 with java 21,
         that's why we keep CAS in JAVA 17, and all dependencies as iam-client and commons that are compiled in Java 21 with target java 17-->
         <java.version>21</java.version>
-        <java.release>17</java.release>
+        <java.release>21</java.release>
         <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
     </properties>
 
     <build>

@@ -1,7 +1,8 @@
 package fr.gouv.vitamui.cas;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import lombok.val;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -18,9 +19,6 @@ import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 import org.springframework.webflow.test.MockParameterMap;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 
 import static org.mockito.Mockito.mock;
@@ -48,7 +46,7 @@ public abstract class BaseWebflowActionTest {
     protected HttpServletResponse response;
 
     @Before
-    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
+    public void setUp() throws FileNotFoundException {
         context = mock(RequestContext.class);
 
         requestParameters = new MockParameterMap();
@@ -58,7 +56,7 @@ public abstract class BaseWebflowActionTest {
         when(context.getFlowScope()).thenReturn(flowParameters);
         flowParameters.put("service", mock(WebApplicationService.class));
 
-        val flow = mock(Flow.class);
+        final var flow = mock(Flow.class);
         when(flow.getVariable("credential")).thenReturn(mock(FlowVariable.class));
 
         when(context.getActiveFlow()).thenReturn(flow);

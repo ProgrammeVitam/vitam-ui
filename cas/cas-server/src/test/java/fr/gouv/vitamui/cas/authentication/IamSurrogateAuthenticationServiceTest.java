@@ -1,12 +1,9 @@
 package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import fr.gouv.vitamui.iam.client.CasRestClient;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
-import lombok.val;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.SubrogationDto;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.services.ServicesManager;
@@ -26,7 +23,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
@@ -42,22 +38,17 @@ public final class IamSurrogateAuthenticationServiceTest {
 
     private static final String SURROGATE = "surrogate";
     private static final String SURROGATE_CUSTOMER_ID = "surrogate_customer_id";
-
     private static final String SU_ID = "id";
-
     private static final String SU_EMAIL = "superUser";
     private static final String SU_CUSTOMER_ID = "superUserCustomerId";
 
     private IamSurrogateAuthenticationService service;
-
-    private CasRestClient casRestClient;
+    private CasApi casApi;
 
     @Before
     public void setUp() {
-        casRestClient = mock(CasRestClient.class);
-
-        val utils = new Utils(null, 0, null, null, "");
-        service = new IamSurrogateAuthenticationService(casRestClient, mock(ServicesManager.class), utils);
+        casApi = mock(CasApi.class);
+        service = new IamSurrogateAuthenticationService(casApi, mock(ServicesManager.class));
     }
 
     @After
@@ -69,7 +60,7 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testCanAuthenticateOk() {
         givenSubrogationInRequestContext();
 
-        when(casRestClient.getSubrogationsBySuperUserId(any(HttpContext.class), eq(SU_ID))).thenReturn(
+        when(casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(SU_ID), eq(null), eq(null))).thenReturn(
             List.of(surrogation())
         );
 
@@ -80,9 +71,9 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testCanAuthenticateCannotSurrogate() {
         givenSubrogationInRequestContext();
 
-        val subrogation = surrogation();
+        final var subrogation = surrogation();
         subrogation.setSurrogate("anotherUser");
-        when(casRestClient.getSubrogationsBySuperUserId(any(HttpContext.class), eq(SU_ID))).thenReturn(
+        when(casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(SU_ID), eq(null), eq(null))).thenReturn(
             List.of(subrogation)
         );
 
@@ -93,9 +84,9 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testCanAuthenticateNotAccepted() {
         givenSubrogationInRequestContext();
 
-        val subrogation = surrogation();
+        final var subrogation = surrogation();
         subrogation.setStatus(SubrogationStatusEnum.CREATED);
-        when(casRestClient.getSubrogationsBySuperUserId(any(HttpContext.class), eq(SU_ID))).thenReturn(
+        when(casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(SU_ID), eq(null), eq(null))).thenReturn(
             List.of(subrogation)
         );
 
@@ -107,23 +98,23 @@ public final class IamSurrogateAuthenticationServiceTest {
         givenSubrogationInRequestContext();
 
         when(
-            casRestClient.getSubrogationsBySuperUserEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(SU_EMAIL),
-                eq(SU_CUSTOMER_ID)
-            )
+            casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(null), eq(SU_EMAIL), eq(SU_CUSTOMER_ID))
         ).thenReturn(List.of(surrogation()));
 
         service.getImpersonationAccounts(SU_EMAIL);
     }
 
     private Principal principal() {
-        val factory = new DefaultPrincipalFactory();
-        return factory.createPrincipal(SU_ID);
+        final var factory = new DefaultPrincipalFactory();
+        try {
+            return factory.createPrincipal(SU_ID);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private SubrogationDto surrogation() {
-        val subrogation = new SubrogationDto();
+        final var subrogation = new SubrogationDto();
         subrogation.setSurrogate(SURROGATE);
         subrogation.setSurrogateCustomerId(SURROGATE_CUSTOMER_ID);
         subrogation.setSuperUser(SU_EMAIL);

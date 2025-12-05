@@ -82,8 +82,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apereo.cas.ticket.UniqueTicketIdGenerator;
-import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +105,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -202,7 +201,16 @@ public class CasService {
     @SuppressWarnings("unused")
     private static final Logger LOGGER = LoggerFactory.getLogger(CasService.class);
 
-    private static final UniqueTicketIdGenerator TICKET_GENERATOR = new DefaultUniqueTicketIdGenerator();
+    /**
+     * Generate a unique ticket ID with the given prefix.
+     * Uses UUID for guaranteed uniqueness.
+     *
+     * @param prefix The prefix for the ticket ID
+     * @return A unique ticket ID in the format: prefix-uuid
+     */
+    private static String generateUniqueTicketId(String prefix) {
+        return prefix + "-" + UUID.randomUUID().toString();
+    }
 
     public CasService() {}
 
@@ -346,10 +354,10 @@ public class CasService {
     /**
      * Method to retrieve the user information
      *
-     * @param loginEmail email of the user
+     * @param loginEmail      email of the user
      * @param loginCustomerId The customerId of the user
-     * @param idp can be null
-     * @param userIdentifier can be null
+     * @param idp             can be null
+     * @param userIdentifier  can be null
      * @param optEmbedded
      * @return
      */
@@ -637,7 +645,7 @@ public class CasService {
         token.setCreatedDate(currentDate);
         final Date nowPlusXMinutes = DateUtils.addMinutes(currentDate, ttlInMinutes);
         token.setUpdatedDate(nowPlusXMinutes);
-        token.setId(TICKET_GENERATOR.getNewTicketId(TOKEN_PREFIX));
+        token.setId(generateUniqueTicketId(TOKEN_PREFIX));
         token.setSurrogation(isSubrogation);
         tokenRepository.save(token);
         user.setLastConnection(OffsetDateTime.now());

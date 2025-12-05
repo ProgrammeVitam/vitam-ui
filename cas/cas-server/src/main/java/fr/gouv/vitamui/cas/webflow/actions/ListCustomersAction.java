@@ -47,18 +47,15 @@ import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -70,17 +67,17 @@ import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigure
 
 /**
  * This class lists users matching provided login email:
- * - if subrogation mode : customerId is already provided in scope ==> continue to dispatcher
+ * - if subrogation mode : customerId is already provided in scope ==> continue
+ * to dispatcher
  * - if a single user is found ==> continue to dispatcher
  * - if multiple users found ==> redirect to customer selection page
- * - if no user found : act as if it exists (to avoid account existence disclosure)
+ * - if no user found : act as if it exists (to avoid account existence
+ * disclosure)
  */
-@RequiredArgsConstructor
+@Slf4j
 public class ListCustomersAction extends AbstractAction {
 
     public static final String BAD_CONFIGURATION = "badConfiguration";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ListCustomersAction.class);
 
     private final ProvidersService providersService;
 
@@ -90,9 +87,21 @@ public class ListCustomersAction extends AbstractAction {
 
     private final Utils utils;
 
+    public ListCustomersAction(
+        final ProvidersService providersService,
+        final IdentityProviderHelper identityProviderHelper,
+        final CasRestClient casRestClient,
+        final Utils utils
+    ) {
+        this.providersService = providersService;
+        this.identityProviderHelper = identityProviderHelper;
+        this.casRestClient = casRestClient;
+        this.utils = utils;
+    }
+
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
-        val flowScope = requestContext.getFlowScope();
+        var flowScope = requestContext.getFlowScope();
 
         if (isSubrogationMode(flowScope)) {
             return processSubrogationRequest(flowScope);
@@ -157,7 +166,8 @@ public class ListCustomersAction extends AbstractAction {
             return processSingleUserForInputEmail(flowScope, username, existingUsersList.get(0));
         } else if (existingUsersList.isEmpty()) {
             // To avoid account existence disclosure, unknown users are silently ignored.
-            // Once they enter their credentials, they will get a generic "login or password invalid" error message.
+            // Once they enter their credentials, they will get a generic "login or password
+            // invalid" error message.
             return processNoUserFoundMatchingInputEmail(flowScope, username);
         } else {
             return processMultipleUsersForInputEmail(flowScope, username, existingUsersList);
@@ -165,7 +175,8 @@ public class ListCustomersAction extends AbstractAction {
     }
 
     private Event processSingleUserForInputEmail(MutableAttributeMap<Object> flowScope, String username, UserDto user) {
-        // Ensure user has a proper Identity Provided configured, and redirect to dispatcher...
+        // Ensure user has a proper Identity Provided configured, and redirect to
+        // dispatcher...
         LOGGER.debug("A single user matched provided login of '{}': {}", username, user);
 
         String customerId = user.getCustomerId();

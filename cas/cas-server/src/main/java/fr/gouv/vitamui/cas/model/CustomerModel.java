@@ -38,16 +38,38 @@
  */
 package fr.gouv.vitamui.cas.model;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 
-@Data
-@Accessors(chain = true)
 public class CustomerModel implements Serializable {
 
-    String customerId;
-    String code;
-    String name;
+    private String customerId;
+    private String code;
+    private String name;
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public CustomerModel setCustomerId(String customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public CustomerModel setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public CustomerModel setName(String name) {
+        this.name = name;
+        return this;
+    }
 }

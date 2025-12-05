@@ -36,35 +36,42 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.ticket.ExpirationPolicy;
+import org.apereo.cas.ticket.ExpirationPolicyBuilder;
+import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 import org.apereo.cas.ticket.expiration.builder.TransientSessionTicketExpirationPolicyBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 
 /**
- * Specific expiration policy builder for password management (retrieves the expiration in minutes pushed by the ResetPasswordController).
+ * Specific expiration policy builder for password management (retrieves the
+ * expiration in minutes pushed by the ResetPasswordController).
  */
-public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSessionTicketExpirationPolicyBuilder {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PmTransientSessionTicketExpirationPolicyBuilder.class);
+@Slf4j
+public class PmTransientSessionTicketExpirationPolicyBuilder
+    implements ExpirationPolicyBuilder<TransientSessionTicket> {
 
     public static final String PM_EXPIRATION_IN_MINUTES_ATTRIBUTE = "pmExpirationInMinutes";
 
+    private final CasConfigurationProperties casProperties;
+
+    private final TransientSessionTicketExpirationPolicyBuilder transientSessionTicketExpirationPolicyBuilder;
+
     public PmTransientSessionTicketExpirationPolicyBuilder(final CasConfigurationProperties casProperties) {
-        super(casProperties);
+        this.casProperties = casProperties;
+        this.transientSessionTicketExpirationPolicyBuilder = new TransientSessionTicketExpirationPolicyBuilder(
+            casProperties
+        );
     }
 
-    @Override
     public ExpirationPolicy toTransientSessionTicketExpirationPolicy() {
-        val attributes = RequestContextHolder.getRequestAttributes();
+        final var attributes = RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             try {
-                val expInMinutes = (Long) attributes.getAttribute(PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, 0);
+                final var expInMinutes = (Long) attributes.getAttribute(PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, 0);
                 if (expInMinutes != null) {
                     return new HardTimeoutExpirationPolicy(expInMinutes * 60);
                 }
@@ -72,7 +79,12 @@ public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSe
                 LOGGER.error("Cannot get expiration in minutes", e);
             }
         }
-        val duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
+        final var duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
         return new HardTimeoutExpirationPolicy(duration.toSeconds());
+    }
+
+    @Override
+    public ExpirationPolicy buildTicketExpirationPolicy() {
+        return toTransientSessionTicketExpirationPolicy();
     }
 }

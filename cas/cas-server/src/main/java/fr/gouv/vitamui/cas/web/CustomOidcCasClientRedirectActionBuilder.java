@@ -3,8 +3,6 @@ package fr.gouv.vitamui.cas.web;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.oidc.OidcConstants;
@@ -22,9 +20,13 @@ import java.util.Optional;
 /**
  * Propagates custom parameters from OIDC to CAS.
  */
-@Slf4j
+
 @RequiredArgsConstructor
 public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasClientRedirectActionBuilder {
+
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(
+        CustomOidcCasClientRedirectActionBuilder.class
+    );
 
     private final OidcRequestSupport oidcRequestSupport;
 
@@ -35,7 +37,7 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
         var renew = casClient.getConfiguration().isRenew();
         var gateway = casClient.getConfiguration().isGateway();
 
-        val prompts = parameterResolver.resolveSupportedPromptValues(context);
+        final var prompts = parameterResolver.resolveSupportedPromptValues(context);
         if (prompts.contains(OidcConstants.PROMPT_NONE)) {
             renew = false;
             gateway = true;
@@ -46,7 +48,7 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
             renew = true;
         }
 
-        val action = internalBuild(casClient, context, renew, gateway);
+        final var action = internalBuild(casClient, context, renew, gateway);
         LOGGER.debug("Final redirect action is [{}]", action);
         return action;
     }
@@ -57,11 +59,11 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
         final boolean renew,
         final boolean gateway
     ) {
-        val username = context.getRequestParameter(Constants.LOGIN_USER_EMAIL_PARAM);
-        val superUserEmail = context.getRequestParameter(Constants.LOGIN_SUPER_USER_EMAIL_PARAM);
-        val superUserCustomerId = context.getRequestParameter(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
-        val surrogateEmail = context.getRequestParameter(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
-        val surrogateCustomerId = context.getRequestParameter(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
+        final var username = context.getRequestParameter(Constants.LOGIN_USER_EMAIL_PARAM);
+        final var superUserEmail = context.getRequestParameter(Constants.LOGIN_SUPER_USER_EMAIL_PARAM);
+        final var superUserCustomerId = context.getRequestParameter(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM);
+        final var surrogateEmail = context.getRequestParameter(Constants.LOGIN_SURROGATE_EMAIL_PARAM);
+        final var surrogateCustomerId = context.getRequestParameter(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM);
 
         boolean subrogationMode =
             superUserEmail.isPresent() &&
@@ -69,11 +71,11 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
             surrogateEmail.isPresent() &&
             surrogateCustomerId.isPresent();
 
-        val idp = context.getRequestParameter(CommonConstants.IDP_PARAMETER);
+        final var idp = context.getRequestParameter(CommonConstants.IDP_PARAMETER);
 
-        val serviceUrl = casClient.computeFinalCallbackUrl(context);
-        val casServerLoginUrl = casClient.getConfiguration().getLoginUrl();
-        val redirectionUrl =
+        final var serviceUrl = casClient.computeFinalCallbackUrl(context);
+        final var casServerLoginUrl = casClient.getConfiguration().getLoginUrl();
+        final var redirectionUrl =
             casServerLoginUrl +
             (casServerLoginUrl.contains("?") ? "&" : "?") +
             CasProtocolConstants.PARAMETER_SERVICE +

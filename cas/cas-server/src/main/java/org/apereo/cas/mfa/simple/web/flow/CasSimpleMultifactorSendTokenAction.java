@@ -1,8 +1,5 @@
 package org.apereo.cas.mfa.simple.web.flow;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.CoreAuthenticationUtils;
@@ -36,10 +33,13 @@ import java.util.Optional;
 /**
  * To be removed when upgrading to CAS version >= 6.6.3.
  */
-@Slf4j
-@RequiredArgsConstructor
+
 public class CasSimpleMultifactorSendTokenAction
     extends AbstractMultifactorAuthenticationAction<CasSimpleMultifactorAuthenticationProvider> {
+
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(
+        CasSimpleMultifactorSendTokenAction.class
+    );
 
     private static final String MESSAGE_MFA_TOKEN_SENT = "cas.mfa.simple.label.tokensent";
 
@@ -53,6 +53,20 @@ public class CasSimpleMultifactorSendTokenAction
 
     private final BucketConsumer bucketConsumer;
 
+    public CasSimpleMultifactorSendTokenAction(
+        final CommunicationsManager communicationsManager,
+        final CasSimpleMultifactorAuthenticationService multifactorAuthenticationService,
+        final CasSimpleMultifactorAuthenticationProperties properties,
+        final CasSimpleMultifactorTokenCommunicationStrategy tokenCommunicationStrategy,
+        final BucketConsumer bucketConsumer
+    ) {
+        this.communicationsManager = communicationsManager;
+        this.multifactorAuthenticationService = multifactorAuthenticationService;
+        this.properties = properties;
+        this.tokenCommunicationStrategy = tokenCommunicationStrategy;
+        this.bucketConsumer = bucketConsumer;
+    }
+
     protected boolean isSmsSent(
         final CommunicationsManager communicationsManager,
         final CasSimpleMultifactorAuthenticationProperties properties,
@@ -61,11 +75,11 @@ public class CasSimpleMultifactorSendTokenAction
         final RequestContext requestContext
     ) {
         if (communicationsManager.isSmsSenderDefined()) {
-            val smsProperties = properties.getSms();
-            val token = tokenTicket.getId();
+            var smsProperties = properties.getSms();
+            var token = tokenTicket.getId();
             // CUSTO:
-            val tokenWithoutPrefix = token.substring(CasSimpleMultifactorAuthenticationTicket.PREFIX.length() + 1);
-            val smsText = StringUtils.isNotBlank(smsProperties.getText())
+            var tokenWithoutPrefix = token.substring(CasSimpleMultifactorAuthenticationTicket.PREFIX.length() + 1);
+            var smsText = StringUtils.isNotBlank(smsProperties.getText())
                 ? SmsBodyBuilder.builder()
                     .properties(smsProperties)
                     .parameters(Map.of("token", token, "tokenWithoutPrefix", tokenWithoutPrefix))
@@ -73,13 +87,18 @@ public class CasSimpleMultifactorSendTokenAction
                     .get()
                 : token;
 
-            val smsRequest = SmsRequest.builder()
+            var smsRequest = SmsRequest.builder()
                 .from(smsProperties.getFrom())
                 .principal(principal)
                 .attribute(smsProperties.getAttributeName())
                 .text(smsText)
                 .build();
-            return communicationsManager.sms(smsRequest);
+            try {
+                return communicationsManager.sms(smsRequest);
+            } catch (final Throwable e) {
+                LOGGER.error("Error sending SMS", e);
+                return false;
+            }
         }
         return false;
     }
@@ -102,32 +121,38 @@ public class CasSimpleMultifactorSendTokenAction
         final RequestContext requestContext
     ) {
         if (communicationsManager.isMailSenderDefined()) {
-            val mailProperties = properties.getMail();
-            val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-            val parameters = CoreAuthenticationUtils.convertAttributeValuesToObjects(principal.getAttributes());
+            var mailProperties = properties.getMail();
+            var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+            var parameters = CoreAuthenticationUtils.convertAttributeValuesToObjects(principal.getAttributes());
 
-            val token = tokenTicket.getId();
-            val tokenWithoutPrefix = token.substring(CasSimpleMultifactorAuthenticationTicket.PREFIX.length() + 1);
+            var token = tokenTicket.getId();
+            var tokenWithoutPrefix = token.substring(CasSimpleMultifactorAuthenticationTicket.PREFIX.length() + 1);
             parameters.put("token", token);
             // CUSTO:
             parameters.put("tokenWithoutPrefix", tokenWithoutPrefix);
 
-            val locale = Optional.ofNullable(RequestContextUtils.getLocaleResolver(request)).map(
+            var locale = Optional.ofNullable(RequestContextUtils.getLocaleResolver(request)).map(
                 resolver -> resolver.resolveLocale(request)
             );
-            val body = EmailMessageBodyBuilder.builder()
+            var body = EmailMessageBodyBuilder.builder()
                 .properties(mailProperties)
                 .locale(locale)
                 .parameters(parameters)
                 .build()
                 .get();
-            val emailRequest = EmailMessageRequest.builder()
+            var emailRequest = EmailMessageRequest.builder()
                 .emailProperties(mailProperties)
                 .principal(principal)
-                .attribute(mailProperties.getAttributeName())
+                .attribute(mailProperties.getAttributeName().get(0)) // CAS 7 change:
+                // attributeName is a list
                 .body(body)
                 .build();
-            return communicationsManager.email(emailRequest);
+            try {
+                return communicationsManager.email(emailRequest);
+            } catch (final Throwable e) {
+                LOGGER.error("Error sending email", e);
+                return EmailCommunicationResult.builder().build();
+            }
         }
         return EmailCommunicationResult.builder().build();
     }
@@ -145,40 +170,45 @@ public class CasSimpleMultifactorSendTokenAction
 
     @Override
     protected Event doPreExecute(final RequestContext requestContext) throws Exception {
-        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-        val authentication = WebUtils.getInProgressAuthentication();
-        val result = bucketConsumer.consume(getThrottledRequestKeyFor(authentication));
+        var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+        var authentication = WebUtils.getInProgressAuthentication();
+        var result = bucketConsumer.consume(getThrottledRequestKeyFor(authentication, requestContext));
         result.getHeaders().forEach(response::addHeader);
         return result.isConsumed() ? super.doPreExecute(requestContext) : error();
     }
 
     @Override
-    protected Event doExecute(final RequestContext requestContext) throws Exception {
-        val authentication = WebUtils.getInProgressAuthentication();
-        val principal = resolvePrincipal(authentication.getPrincipal());
-        val token = getOrCreateToken(requestContext, principal);
+    protected Event doExecuteInternal(final RequestContext requestContext) {
+        var authentication = WebUtils.getInProgressAuthentication();
+        var principal = resolvePrincipal(authentication.getPrincipal(), requestContext);
+        var token = getOrCreateToken(requestContext, principal);
         LOGGER.debug("Using token [{}] created at [{}]", token.getId(), token.getCreationTime());
 
-        val strategy = tokenCommunicationStrategy.determineStrategy(token);
-        val smsSent =
+        var strategy = tokenCommunicationStrategy.determineStrategy(token);
+        var smsSent =
             strategy.contains(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.SMS) &&
             isSmsSent(communicationsManager, properties, principal, token, requestContext);
 
-        val emailSent =
+        var emailSent =
             strategy.contains(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.EMAIL) &&
             isMailSent(communicationsManager, properties, principal, token, requestContext).isSuccess();
 
-        val notificationSent =
+        var notificationSent =
             strategy.contains(
                 CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.NOTIFICATION
             ) &&
             isNotificationSent(communicationsManager, principal, token);
 
         if (smsSent || emailSent || notificationSent) {
-            multifactorAuthenticationService.store(token);
+            try {
+                multifactorAuthenticationService.store(token);
+            } catch (final Throwable e) {
+                LOGGER.error("Error storing token", e);
+                return error();
+            }
             LOGGER.debug("Successfully submitted token via strategy option [{}] to [{}]", strategy, principal.getId());
             WebUtils.addInfoMessageToContext(requestContext, MESSAGE_MFA_TOKEN_SENT);
-            val attributes = new LocalAttributeMap<Object>("token", token.getId());
+            var attributes = new LocalAttributeMap<Object>("token", token.getId());
             WebUtils.putSimpleMultifactorAuthenticationToken(requestContext, token);
             return new EventFactorySupport().event(this, CasWebflowConstants.TRANSITION_ID_SUCCESS, attributes);
         }
@@ -197,7 +227,7 @@ public class CasSimpleMultifactorSendTokenAction
         final RequestContext requestContext,
         final Principal principal
     ) {
-        val currentToken = WebUtils.getSimpleMultifactorAuthenticationToken(
+        var currentToken = WebUtils.getSimpleMultifactorAuthenticationToken(
             requestContext,
             CasSimpleMultifactorAuthenticationTicket.class
         );
@@ -206,14 +236,14 @@ public class CasSimpleMultifactorSendTokenAction
             .orElseGet(
                 Unchecked.supplier(() -> {
                     WebUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
-                    val service = WebUtils.getService(requestContext);
+                    var service = WebUtils.getService(requestContext);
                     return multifactorAuthenticationService.generate(principal, service);
                 })
             );
     }
 
-    private String getThrottledRequestKeyFor(final Authentication authentication) {
-        val principal = resolvePrincipal(authentication.getPrincipal());
+    private String getThrottledRequestKeyFor(final Authentication authentication, final RequestContext requestContext) {
+        var principal = resolvePrincipal(authentication.getPrincipal(), requestContext);
         return principal.getId();
     }
 }

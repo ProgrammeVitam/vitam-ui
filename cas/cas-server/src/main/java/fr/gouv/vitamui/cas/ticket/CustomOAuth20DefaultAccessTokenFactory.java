@@ -45,6 +45,7 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessTokenFactory;
+import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
 
 import java.util.List;
@@ -60,9 +61,10 @@ public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccess
     public CustomOAuth20DefaultAccessTokenFactory(
         final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicy,
         final JwtBuilder jwtBuilder,
-        final ServicesManager servicesManager
+        final ServicesManager servicesManager,
+        final TicketTrackingPolicy descendantTicketsTrackingPolicy
     ) {
-        super(expirationPolicy, jwtBuilder, servicesManager);
+        super(expirationPolicy, jwtBuilder, servicesManager, descendantTicketsTrackingPolicy);
     }
 
     protected String generateAccessTokenId(final Service service, final Authentication authentication) {

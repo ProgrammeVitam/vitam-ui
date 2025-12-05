@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
@@ -45,8 +44,10 @@ import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.iam.client.CasRestClient;
-import lombok.val;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.LoginRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -56,15 +57,12 @@ import org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAut
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.services.ServicesManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -75,26 +73,21 @@ import java.util.Map;
 /**
  * Authentication handler to check the username/password on the IAM API.
  */
+@Slf4j
 public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthenticationHandler.class);
-
-    private final CasRestClient casRestClient;
-
-    private final Utils utils;
+    private final CasApi casApi;
 
     private final String ipHeaderName;
 
     public UserAuthenticationHandler(
         final ServicesManager servicesManager,
         final PrincipalFactory principalFactory,
-        final CasRestClient casRestClient,
-        final Utils utils,
+        final CasApi casApi,
         final String ipHeaderName
     ) {
         super(UserAuthenticationHandler.class.getSimpleName(), servicesManager, principalFactory, 1);
-        this.casRestClient = casRestClient;
-        this.utils = utils;
+        this.casApi = casApi;
         this.ipHeaderName = ipHeaderName;
     }
 
@@ -103,15 +96,16 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
         final UsernamePasswordCredential transformedCredential,
         final String originalPassword
     ) throws GeneralSecurityException, PreventedException {
-        val requestContext = RequestContextHolder.getRequestContext();
-        val flowScope = requestContext.getFlowScope();
-        val loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
-        val loginCustomerId = flowScope.getRequiredString(Constants.FLOW_LOGIN_CUSTOMER_ID);
-        val surrogateEmail = flowScope.getString(Constants.FLOW_SURROGATE_EMAIL);
-        val surrogateCustomerId = flowScope.getString(Constants.FLOW_SURROGATE_CUSTOMER_ID);
-        val externalContext = requestContext.getExternalContext();
-        val ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
-        val context = utils.buildContext(loginEmail);
+        var requestContext = RequestContextHolder.getRequestContext();
+        var flowScope = requestContext.getFlowScope();
+        var loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
+        var loginCustomerId = flowScope.getRequiredString(Constants.FLOW_LOGIN_CUSTOMER_ID);
+        var surrogateEmail = flowScope.getString(Constants.FLOW_SURROGATE_EMAIL);
+        var surrogateCustomerId = flowScope.getString(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        var externalContext = requestContext.getExternalContext();
+        var ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
+        // TODO: check if context is already populated
+        // var context = utils.buildContext(loginEmail);
 
         LOGGER.debug(
             "Authenticating loginEmail: {} / loginCustomerId: {} / surrogateEmail: {} / surrogateCustomerId:" +
@@ -123,16 +117,17 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
             ip
         );
 
+        final var login = new LoginRequestDto();
+        login.setLoginEmail(loginEmail);
+        login.setLoginCustomerId(loginCustomerId);
+        login.setPassword(originalPassword);
+        login.setSurrogateEmail(surrogateEmail);
+        login.setSurrogateCustomerId(surrogateCustomerId);
+        login.setIp(ip);
+
         try {
-            val user = casRestClient.login(
-                context,
-                loginEmail,
-                loginCustomerId,
-                originalPassword,
-                surrogateEmail,
-                surrogateCustomerId,
-                ip
-            );
+            // TODO: check if needs context
+            var user = casApi.login(login);
             if (user != null) {
                 if (mustChangePassword(user)) {
                     LOGGER.info("Password expired for: {} ({})", loginEmail, loginCustomerId);
@@ -148,7 +143,13 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
                         attributes.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, List.of(surrogateCustomerId));
                     }
 
-                    final Principal principal = principalFactory.createPrincipal(loginEmail, attributes);
+                    Principal principal;
+                    try {
+                        principal = principalFactory.createPrincipal(loginEmail, attributes);
+                    } catch (final Throwable e) {
+                        LOGGER.error("Error creating principal", e);
+                        throw new PreventedException(e);
+                    }
                     LOGGER.debug("Successful authentication, created principal: {}", principal);
                     return createHandlerResult(transformedCredential, principal, new ArrayList<>());
                 } else {
@@ -175,7 +176,7 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     }
 
     protected boolean mustChangePassword(final UserDto user) {
-        val pwdExpirationDate = user.getPasswordExpirationDate();
+        var pwdExpirationDate = user.getPasswordExpirationDate();
         return (pwdExpirationDate == null || pwdExpirationDate.isBefore(OffsetDateTime.now()));
     }
 }

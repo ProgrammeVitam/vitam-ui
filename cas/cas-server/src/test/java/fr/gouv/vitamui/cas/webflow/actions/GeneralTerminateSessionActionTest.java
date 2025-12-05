@@ -50,7 +50,6 @@ public final class GeneralTerminateSessionActionTest extends BaseWebflowActionTe
             servicesManager,
             new CasConfigurationProperties(),
             null,
-            null,
             null
         );
 

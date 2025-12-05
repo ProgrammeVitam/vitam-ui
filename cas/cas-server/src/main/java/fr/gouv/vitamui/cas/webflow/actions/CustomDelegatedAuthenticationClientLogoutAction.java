@@ -2,8 +2,6 @@ package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.web.flow.actions.DelegatedAuthenticationClientLogoutAction;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
@@ -15,8 +13,12 @@ import java.util.Optional;
 /**
  * Propagate the logout from CAS to the authn delegated server.
  */
-@Slf4j
+
 public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAuthenticationClientLogoutAction {
+
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(
+        CustomDelegatedAuthenticationClientLogoutAction.class
+    );
 
     private final ProvidersService providersService;
 
@@ -35,7 +37,7 @@ public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAu
 
     @Override
     protected Optional<Client> findCurrentClient(final UserProfile currentProfile) {
-        val optClient = currentProfile == null
+        final var optClient = currentProfile == null
             ? Optional.<Client>empty()
             : clients.findClient(currentProfile.getClientName());
 
@@ -44,8 +46,8 @@ public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAu
             return Optional.empty();
         }
 
-        val client = optClient.get();
-        val provider = identityProviderHelper
+        var client = optClient.get();
+        var provider = identityProviderHelper
             .findByTechnicalName(providersService.getProviders(), client.getName())
             .get();
         LOGGER.debug("provider: {}", provider);

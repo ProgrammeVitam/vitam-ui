@@ -36,27 +36,23 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
-import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.AuthUserDto;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.DefaultAuthentication;
 import org.apereo.cas.authentication.PreventedException;
-import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
@@ -64,11 +60,9 @@ import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.FileNotFoundException;
@@ -100,7 +94,6 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link IamPasswordManagementService}.
  */
-@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { PasswordConfiguration.class })
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class IamPasswordManagementServiceTest extends BaseWebflowActionTest {
@@ -114,64 +107,45 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     private static final String PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE = "admin-Change-itChange-it0!0!";
 
     private IamPasswordManagementService service;
-
-    private CasRestClient casRestClient;
-
-    private ProvidersService providersService;
-
+    private CasApi casApi;
     private Map<String, List<Object>> authAttributes;
-
     private IdentityProviderDto identityProviderDto;
-
     private IdentityProviderHelper identityProviderHelper;
-
-    private PasswordValidator passwordValidator;
-
     private Principal principal;
-
-    private PasswordManagementProperties passwordManagementProperties;
 
     @Value("${cas.authn.pm.core.password-policy-pattern}")
     private String policyPattern;
 
-    private PasswordConfiguration passwordConfiguration;
-
     @Before
-    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
+    public void setUp() throws FileNotFoundException {
         super.setUp();
 
-        casRestClient = mock(CasRestClient.class);
-        providersService = mock(ProvidersService.class);
-        passwordValidator = new PasswordValidator();
+        casApi = mock(CasApi.class);
+        ProvidersService providersService = mock(ProvidersService.class);
+        PasswordValidator passwordValidator = new PasswordValidator();
         identityProviderHelper = mock(IdentityProviderHelper.class);
         identityProviderDto = new IdentityProviderDto();
         identityProviderDto.setInternal(true);
-        passwordManagementProperties = new PasswordManagementProperties();
+        PasswordManagementProperties passwordManagementProperties = new PasswordManagementProperties();
         passwordManagementProperties.getCore().setPasswordPolicyPattern(encode(policyPattern));
-        passwordConfiguration = new PasswordConfiguration();
+        PasswordConfiguration passwordConfiguration = new PasswordConfiguration();
         passwordConfiguration.setCheckOccurrence(true);
         passwordConfiguration.setOccurrencesCharsNumber(4);
         when(
             identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(EMAIL), eq(CUSTOMER_ID))
         ).thenReturn(Optional.of(identityProviderDto));
-        UserDto userDto = new UserDto();
+        AuthUserDto userDto = new AuthUserDto();
         userDto.setLastname("ADMIN");
         userDto.setCustomerId(CUSTOMER_ID);
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(EMAIL),
-                eq(CUSTOMER_ID),
-                any(Optional.class)
-            )
-        ).thenReturn(userDto);
-        val utils = new Utils(null, 0, null, null, "");
+        userDto.setStatus(UserStatusEnum.ENABLED);
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(userDto);
+        final var utils = new Utils(null, 0, null, null, "");
         service = new IamPasswordManagementService(
             passwordManagementProperties,
             null,
             null,
             null,
-            casRestClient,
+            casApi,
             providersService,
             identityProviderHelper,
             null,
@@ -200,12 +174,15 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordSuccessfully() {
+    public void testChangePasswordSuccessfully() throws Throwable {
+        AuthUserDto userDto = new AuthUserDto();
+        userDto.setLastname("ADMIN");
+        userDto.setCustomerId(CUSTOMER_ID);
+        userDto.setStatus(UserStatusEnum.ENABLED);
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(userDto);
+
         assertTrue(
-            service.change(
-                new UsernamePasswordCredential(EMAIL, PASSWORD),
-                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-            )
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()))
         );
     }
 
@@ -214,8 +191,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         assertThatCode(
             () ->
                 service.change(
-                    new UsernamePasswordCredential(EMAIL, NOT_PASSWORD),
-                    new PasswordChangeRequest(EMAIL, PASSWORD, NOT_PASSWORD)
+                    new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), NOT_PASSWORD.toCharArray())
                 )
         ).isInstanceOf(IamPasswordManagementService.PasswordConfirmException.class);
     }
@@ -225,37 +201,21 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         assertThatCode(
             () ->
                 service.change(
-                    new UsernamePasswordCredential(EMAIL, BAD_PASSWORD),
-                    new PasswordChangeRequest(EMAIL, BAD_PASSWORD, BAD_PASSWORD)
+                    new PasswordChangeRequest(EMAIL, null, BAD_PASSWORD.toCharArray(), BAD_PASSWORD.toCharArray())
                 )
         ).isInstanceOf(IamPasswordManagementService.PasswordNotMatchRegexException.class);
     }
 
     @Test
-    public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurenceInPassword() {
+    public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurrenceInPassword() throws Throwable {
         try {
             assertTrue(
                 service.change(
-                    new UsernamePasswordCredential(EMAIL, PASSWORD_CONTAINS_DICTIONARY),
-                    new PasswordChangeRequest(EMAIL, PASSWORD_CONTAINS_DICTIONARY, PASSWORD_CONTAINS_DICTIONARY)
-                )
-            );
-            fail("should fail");
-        } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
-            assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
-        }
-    }
-
-    @Test
-    public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurenceInsensitiveCaseInPassword() {
-        try {
-            assertTrue(
-                service.change(
-                    new UsernamePasswordCredential(EMAIL, PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE),
                     new PasswordChangeRequest(
                         EMAIL,
-                        PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE,
-                        PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE
+                        null,
+                        PASSWORD_CONTAINS_DICTIONARY.toCharArray(),
+                        PASSWORD_CONTAINS_DICTIONARY.toCharArray()
                     )
                 )
             );
@@ -266,68 +226,17 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailureBecauseOfGenericUser() {
+    public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurrenceInsensitiveCaseInPassword()
+        throws Throwable {
         try {
-            UserDto userDto = new UserDto();
-            userDto.setType(UserTypeEnum.GENERIC);
-            userDto.setCustomerId(CUSTOMER_ID);
-            when(
-                casRestClient.getUserByEmailAndCustomerId(
-                    any(HttpContext.class),
-                    eq(EMAIL),
-                    eq(CUSTOMER_ID),
-                    any(Optional.class)
-                )
-            ).thenReturn(userDto);
             assertTrue(
                 service.change(
-                    new UsernamePasswordCredential(EMAIL, PASSWORD),
-                    new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-                )
-            );
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals("user last name can not be null", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testChangePasswordOKWhenUsernameLengthIsLowerThanCheckOccurrenceCharNumber() {
-        UserDto userDto = new UserDto();
-        userDto.setLastname("ADMI");
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(EMAIL),
-                eq(CUSTOMER_ID),
-                any(Optional.class)
-            )
-        ).thenReturn(userDto);
-        assertTrue(
-            service.change(
-                new UsernamePasswordCredential(EMAIL, PASSWORD),
-                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-            )
-        );
-    }
-
-    @Test
-    public void testChangePasswordFailureBecausePasswordContaisnFullUsernameThenReturnException() {
-        try {
-            UserDto userDto = new UserDto();
-            userDto.setLastname("ADMIN");
-            when(
-                casRestClient.getUserByEmailAndCustomerId(
-                    any(HttpContext.class),
-                    eq(EMAIL),
-                    eq(CUSTOMER_ID),
-                    any(Optional.class)
-                )
-            ).thenReturn(userDto);
-            assertTrue(
-                service.change(
-                    new UsernamePasswordCredential(EMAIL, PASSWORD_CONTAINS_DICTIONARY),
-                    new PasswordChangeRequest(EMAIL, PASSWORD_CONTAINS_DICTIONARY, PASSWORD_CONTAINS_DICTIONARY)
+                    new PasswordChangeRequest(
+                        EMAIL,
+                        null,
+                        PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE.toCharArray(),
+                        PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE.toCharArray()
+                    )
                 )
             );
             fail("should fail");
@@ -337,17 +246,65 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailsBecauseOfASuperUser() {
+    public void testChangePasswordFailureBecauseOfGenericUser() throws Throwable {
+        try {
+            AuthUserDto userDto = new AuthUserDto();
+            userDto.setType(UserTypeEnum.GENERIC);
+            userDto.setCustomerId(CUSTOMER_ID);
+            userDto.setStatus(UserStatusEnum.ENABLED);
+            when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(userDto);
+            assertTrue(
+                service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()))
+            );
+            fail("should fail");
+        } catch (final IllegalArgumentException e) {
+            assertEquals("user last name can not be null", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testChangePasswordOKWhenUsernameLengthIsLowerThanCheckOccurrenceCharNumber() throws Throwable {
+        AuthUserDto userDto = new AuthUserDto();
+        userDto.setLastname("ADMI");
+        userDto.setStatus(UserStatusEnum.ENABLED);
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(userDto);
+        assertTrue(
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()))
+        );
+    }
+
+    @Test
+    public void testChangePasswordFailureBecausePasswordContainsFullUsernameThenReturnException() throws Throwable {
+        try {
+            AuthUserDto userDto = new AuthUserDto();
+            userDto.setLastname("ADMIN");
+            userDto.setStatus(UserStatusEnum.ENABLED);
+            when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(userDto);
+            assertTrue(
+                service.change(
+                    new PasswordChangeRequest(
+                        EMAIL,
+                        null,
+                        PASSWORD_CONTAINS_DICTIONARY.toCharArray(),
+                        PASSWORD_CONTAINS_DICTIONARY.toCharArray()
+                    )
+                )
+            );
+            fail("should fail");
+        } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
+            assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
+        }
+    }
+
+    @Test
+    public void testChangePasswordFailsBecauseOfASuperUser() throws Throwable {
         authAttributes.put(
             SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL,
             Collections.singletonList("fakeSuperUser")
         );
 
         try {
-            service.change(
-                new UsernamePasswordCredential(EMAIL, PASSWORD),
-                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-            );
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals("cannot use password management with subrogation", e.getMessage());
@@ -355,17 +312,14 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailsBecauseOfASuperUser2() {
-        val attributes = new HashMap<String, List<Object>>();
+    public void testChangePasswordFailsBecauseOfASuperUser2() throws Throwable {
+        final var attributes = new HashMap<String, List<Object>>();
         attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList("fakeSuperUser"));
         attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList("fakeSuperUserCustomerId"));
         when(principal.getAttributes()).thenReturn(attributes);
 
         try {
-            service.change(
-                new UsernamePasswordCredential(EMAIL, PASSWORD),
-                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-            );
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals("cannot use password management with subrogation", e.getMessage());
@@ -373,14 +327,11 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailsBecauseUserIsExternal() {
+    public void testChangePasswordFailsBecauseUserIsExternal() throws Throwable {
         identityProviderDto.setInternal(null);
 
         try {
-            service.change(
-                new UsernamePasswordCredential(EMAIL, null),
-                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-            );
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals("only an internal user [" + EMAIL + "] can change his password", e.getMessage());
@@ -388,16 +339,13 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailsBecauseUserIsNotLinkedToAnIdentityProvider() {
+    public void testChangePasswordFailsBecauseUserIsNotLinkedToAnIdentityProvider() throws Throwable {
         when(
             identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(EMAIL), eq(CUSTOMER_ID))
         ).thenReturn(Optional.empty());
 
         try {
-            service.change(
-                new UsernamePasswordCredential(EMAIL, null),
-                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-            );
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()));
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals(
@@ -408,29 +356,19 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailsAtServer() {
+    public void testChangePasswordFailsAtServer() throws Throwable {
         doThrow(new InvalidAuthenticationException(""))
-            .when(casRestClient)
-            .changePassword(any(HttpContext.class), any(String.class), any(String.class), any(String.class));
+            .when(casApi)
+            .changePassword(any(String.class), any(String.class), any(String.class));
 
         assertFalse(
-            service.change(
-                new UsernamePasswordCredential(EMAIL, PASSWORD),
-                new PasswordChangeRequest(EMAIL, PASSWORD, PASSWORD)
-            )
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()))
         );
     }
 
     @Test
     public void testFindEmailOk() {
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(EMAIL),
-                eq(CUSTOMER_ID),
-                eq(Optional.empty())
-            )
-        ).thenReturn(user(UserStatusEnum.ENABLED));
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(user(UserStatusEnum.ENABLED));
 
         assertEquals(EMAIL, service.findEmail(getPasswordManagementQuery()));
     }
@@ -443,14 +381,9 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     @Test
     public void testFindEmailErrorThrown() {
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(EMAIL),
-                eq(CUSTOMER_ID),
-                eq(Optional.empty())
-            )
-        ).thenThrow(new BadRequestException("error"));
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenThrow(
+            new BadRequestException("error")
+        );
 
         assertThatThrownBy(() -> service.findEmail(getPasswordManagementQuery())).isInstanceOf(
             PreventedException.class
@@ -459,48 +392,27 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     @Test
     public void testFindEmailUserNull() {
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(EMAIL),
-                eq(CUSTOMER_ID),
-                eq(Optional.empty())
-            )
-        ).thenReturn(null);
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(null);
 
         assertNull(service.findEmail(getPasswordManagementQuery()));
     }
 
     @Test
     public void testFindEmailUserDisabled() {
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(EMAIL),
-                eq(CUSTOMER_ID),
-                eq(Optional.empty())
-            )
-        ).thenReturn(user(UserStatusEnum.DISABLED));
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(user(UserStatusEnum.DISABLED));
 
         assertNull(service.findEmail(getPasswordManagementQuery()));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetSecurityQuestionsOk() {
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(EMAIL),
-                eq(CUSTOMER_ID),
-                eq(Optional.empty())
-            )
-        ).thenReturn(user(UserStatusEnum.ENABLED));
+        when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(user(UserStatusEnum.ENABLED));
 
         service.getSecurityQuestions(getPasswordManagementQuery());
     }
 
-    private UserDto user(final UserStatusEnum status) {
-        val user = new UserDto();
+    private AuthUserDto user(final UserStatusEnum status) {
+        final var user = new AuthUserDto();
         user.setStatus(status);
         user.setEmail(EMAIL);
         user.setCustomerId(CUSTOMER_ID);
@@ -508,7 +420,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     /*
-     * application properties are by default encod with */
+     * application properties are by default encod with
+     */
     private String encode(String policyPattern) {
         return new String(policyPattern.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
     }

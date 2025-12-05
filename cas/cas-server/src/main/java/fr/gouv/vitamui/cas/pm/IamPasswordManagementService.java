@@ -49,16 +49,15 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
-import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.PreventedException;
-import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
 import org.apereo.cas.pm.InvalidPasswordException;
@@ -69,8 +68,6 @@ import org.apereo.cas.pm.impl.BasePasswordManagementService;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
@@ -78,11 +75,9 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
@@ -91,13 +86,12 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
  */
 @Getter
 @Setter
+@Slf4j
 public class IamPasswordManagementService extends BasePasswordManagementService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(IamPasswordManagementService.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private final CasRestClient casRestClient;
+    private final CasApi casApi;
 
     private final ProvidersService providersService;
 
@@ -113,14 +107,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private final PasswordConfiguration passwordConfiguration;
 
-    private static Integer maxOldPassword;
-
     public IamPasswordManagementService(
         final PasswordManagementProperties passwordManagementProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
         final String issuer,
         final PasswordHistoryService passwordHistoryService,
-        final CasRestClient casRestClient,
+        final CasApi casApi,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
         final CentralAuthenticationService centralAuthenticationService,
@@ -130,7 +122,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final PasswordConfiguration passwordConfiguration
     ) {
         super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
-        this.casRestClient = casRestClient;
+        this.casApi = casApi;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
         this.centralAuthenticationService = centralAuthenticationService;
@@ -138,12 +130,11 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         this.ticketRegistry = ticketRegistry;
         this.passwordValidator = passwordValidator;
         this.passwordConfiguration = passwordConfiguration;
-        this.maxOldPassword = passwordConfiguration.getMaxOldPassword();
     }
 
     protected RequestContext blockIfSubrogation() {
-        val requestContext = RequestContextHolder.getRequestContext();
-        val authentication = WebUtils.getAuthentication(requestContext);
+        final var requestContext = RequestContextHolder.getRequestContext();
+        final var authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
             // login/pwd subrogation
             String superUsername = (String) utils.getAttributeValue(
@@ -165,40 +156,37 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     @Override
-    public boolean changeInternal(final Credential c, final PasswordChangeRequest bean)
-        throws InvalidPasswordException {
-        val requestContext = blockIfSubrogation();
-        val flowScope = requestContext.getFlowScope();
+    public boolean changeInternal(final PasswordChangeRequest bean) throws InvalidPasswordException {
+        final var requestContext = blockIfSubrogation();
+        final var flowScope = requestContext.getFlowScope();
 
         if (flowScope != null) {
             flowScope.put("passwordHasBeenChanged", true);
         }
 
-        if (!passwordValidator.isEqualConfirmed(bean.getPassword(), bean.getConfirmedPassword())) {
+        String password = new String(bean.getPassword());
+        String confirmedPassword = new String(bean.getConfirmedPassword());
+
+        if (!passwordValidator.isEqualConfirmed(password, confirmedPassword)) {
             throw new PasswordConfirmException();
         }
 
-        if (!passwordValidator.isValid(getProperties().getCore().getPasswordPolicyPattern(), bean.getPassword())) {
+        if (!passwordValidator.isValid(getProperties().getCore().getPasswordPolicyPattern(), password)) {
             throw new PasswordNotMatchRegexException();
         }
 
-        val upc = (UsernamePasswordCredential) c;
-        val username = upc.getUsername();
-
+        final var username = bean.getUsername();
         LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
         Assert.notNull(username, "username can not be null");
-        UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
 
-        final UserDto user = casRestClient.getUserByEmailAndCustomerId(
-            utils.buildContext(userLogin.getUserEmail()),
-            userLogin.getUserEmail(),
-            userLogin.getCustomerId(),
-            Optional.empty()
-        );
+        final UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
+        final UserDto user = findUserByEmailAndCustomerId(userLogin.getUserEmail(), userLogin.getCustomerId());
+
         if (user == null) {
             LOGGER.debug("User not found with login: {}", userLogin.getUserEmail());
             throw new InvalidPasswordException();
         }
+
         if (user.getStatus() != UserStatusEnum.ENABLED) {
             LOGGER.debug("User cannot login: {} - User {}", userLogin.getUserEmail(), user.toString());
             throw new InvalidPasswordException();
@@ -219,7 +207,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             if (
                 passwordValidator.isContainsUserOccurrences(
                     userLastName,
-                    bean.getPassword(),
+                    password,
                     passwordConfiguration.getOccurrencesCharsNumber()
                 )
             ) {
@@ -229,7 +217,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             }
         }
 
-        val identityProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
+        final var identityProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
             providersService.getProviders(),
             userLogin.getUserEmail(),
             userLogin.getCustomerId()
@@ -244,12 +232,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         );
 
         try {
-            casRestClient.changePassword(
-                utils.buildContext(userLogin.getUserEmail()),
-                userLogin.getUserEmail(),
-                userLogin.getCustomerId(),
-                bean.getPassword()
-            );
+            casApi.changePassword(userLogin.getUserEmail(), userLogin.getCustomerId(), password);
             return true;
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
@@ -262,9 +245,11 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     @NotNull
     private UserLoginModel extractUserLoginAndCustomerIdModel(MutableAttributeMap<Object> flowScope, String username) {
         // IMPORTANT: 2 possible workflows :
-        // -> If we came from password expiration workflow ==> We already have the username/customerId from flow scope
-        // -> If we came from password reset link by email ==> We use a dirty hack to encode a username+password pair as
-        //    a json-serialized UserLoginModel encoded into the `username` field.
+        // -> If we came from password expiration workflow ==> We already have the
+        // username/customerId from flow scope
+        // -> If we came from password reset link by email ==> We use a dirty hack to
+        // encode a username+password pair as
+        // a json-serialized UserLoginModel encoded into the `username` field.
 
         String loginEmailFromFlowScope = null;
         String loginCustomerIdFromFlowScope = null;
@@ -315,17 +300,11 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     @Override
     public String findEmail(final PasswordManagementQuery query) {
-        val username = query.getUsername();
-        String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
+        final var username = query.getUsername().toLowerCase().trim();
+        final String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
 
-        val usernameWithLowercase = username.toLowerCase().trim();
         try {
-            UserDto user = casRestClient.getUserByEmailAndCustomerId(
-                utils.buildContext(usernameWithLowercase),
-                usernameWithLowercase,
-                customerId,
-                Optional.empty()
-            );
+            UserDto user = findUserByEmailAndCustomerId(username, customerId);
             if (user == null) {
                 LOGGER.error("User not found");
                 return null;
@@ -335,7 +314,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             }
             return null;
         } catch (final VitamUIException e) {
-            LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
+            LOGGER.error("Cannot retrieve user: {}", username, e);
             throw new PreventedException(e);
         }
     }
@@ -399,5 +378,9 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         public String getMessage() {
             return "Invalid password containing an occurence of user name !";
         }
+    }
+
+    private UserDto findUserByEmailAndCustomerId(String email, String customerId) {
+        return casApi.getUser(email, customerId, null, null, null);
     }
 }

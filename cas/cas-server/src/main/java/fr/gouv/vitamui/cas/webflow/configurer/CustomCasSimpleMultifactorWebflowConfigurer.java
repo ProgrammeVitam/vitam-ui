@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.webflow.configurer;
 
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.util.CollectionUtils;
@@ -83,11 +82,11 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
     @Override
     protected void doInitialize() {
         multifactorAuthenticationFlowDefinitionRegistries.forEach(registry -> {
-            val flow = getFlow(registry, MFA_SIMPLE_EVENT_ID);
+            var flow = getFlow(registry, MFA_SIMPLE_EVENT_ID);
             createFlowVariable(flow, CasWebflowConstants.VAR_ID_CREDENTIAL, CasSimpleMultifactorTokenCredential.class);
             flow.getStartActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_INITIAL_FLOW_SETUP));
 
-            val initLoginFormState = createActionState(
+            var initLoginFormState = createActionState(
                 flow,
                 CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM,
                 createEvaluateAction(CasWebflowConstants.ACTION_ID_INIT_LOGIN_ACTION)
@@ -101,7 +100,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             createEndState(flow, CasWebflowConstants.STATE_ID_SUCCESS);
             createEndState(flow, CasWebflowConstants.STATE_ID_UNAVAILABLE);
 
-            val sendSimpleToken = createActionState(
+            var sendSimpleToken = createActionState(
                 flow,
                 CasWebflowConstants.STATE_ID_SIMPLE_MFA_SEND_TOKEN,
                 CasWebflowConstants.ACTION_ID_MFA_SIMPLE_SEND_TOKEN
@@ -121,13 +120,13 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             createViewState(flow, "missingPhone", "casSmsMissingPhoneView");
             //
 
-            val setPrincipalAction = createSetAction(
+            var setPrincipalAction = createSetAction(
                 "viewScope.principal",
                 "conversationScope.authentication.principal"
             );
-            val propertiesToBind = CollectionUtils.wrapList("token");
-            val binder = createStateBinderConfiguration(propertiesToBind);
-            val viewLoginFormState = createViewState(
+            var propertiesToBind = CollectionUtils.wrapList("token");
+            var binder = createStateBinderConfiguration(propertiesToBind);
+            var viewLoginFormState = createViewState(
                 flow,
                 CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM,
                 TEMPLATE_SIMPLE_MFA_LOGIN,
@@ -140,7 +139,8 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             );
             viewLoginFormState.getEntryActionList().add(setPrincipalAction);
 
-            // CUSTO: instead of CasWebflowConstants.STATE_ID_REAL_SUBMIT, send to intermediateSubmit
+            // CUSTO: instead of CasWebflowConstants.STATE_ID_REAL_SUBMIT, send to
+            // intermediateSubmit
             createTransitionForState(
                 viewLoginFormState,
                 CasWebflowConstants.TRANSITION_ID_SUBMIT,
@@ -156,7 +156,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             );
 
             // CUSTO:
-            val intermediateSubmit = createActionState(
+            var intermediateSubmit = createActionState(
                 flow,
                 "intermediateSubmit",
                 createEvaluateAction("checkMfaTokenAction")
@@ -167,7 +167,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
                 CasWebflowConstants.STATE_ID_REAL_SUBMIT
             );
             createTransitionForState(intermediateSubmit, CasWebflowConstants.TRANSITION_ID_ERROR, "codeExpired");
-            val codeExpired = createViewState(flow, "codeExpired", "casSmsCodeExpiredView");
+            var codeExpired = createViewState(flow, "codeExpired", "casSmsCodeExpiredView");
             createTransitionForState(
                 codeExpired,
                 CasWebflowConstants.TRANSITION_ID_RESEND,
@@ -175,7 +175,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             );
             //
 
-            val realSubmitState = createActionState(
+            var realSubmitState = createActionState(
                 flow,
                 CasWebflowConstants.STATE_ID_REAL_SUBMIT,
                 createEvaluateAction(CasWebflowConstants.ACTION_ID_OTP_AUTHENTICATION_ACTION)

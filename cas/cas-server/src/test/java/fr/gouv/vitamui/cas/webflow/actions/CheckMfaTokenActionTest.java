@@ -1,8 +1,6 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
-import lombok.val;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -39,13 +37,13 @@ public class CheckMfaTokenActionTest extends BaseWebflowActionTest {
 
     @Override
     @Before
-    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
+    public void setUp() throws FileNotFoundException {
         super.setUp();
 
         ticketRegistry = mock(TicketRegistry.class);
         action = new CheckMfaTokenAction(ticketRegistry);
 
-        val credential = mock(CasSimpleMultifactorTokenCredential.class);
+        final var credential = mock(CasSimpleMultifactorTokenCredential.class);
         when(credential.getToken()).thenReturn(TOKEN);
         when(credential.getId()).thenReturn(TOKEN);
         flowParameters.put("credential", credential);
@@ -58,20 +56,20 @@ public class CheckMfaTokenActionTest extends BaseWebflowActionTest {
 
     @Test
     public void tokenNotExpired() {
-        val creationDate = ZonedDateTime.now().minus(30, ChronoUnit.SECONDS);
+        final var creationDate = ZonedDateTime.now().minus(30, ChronoUnit.SECONDS);
         when(ticket.getCreationTime()).thenReturn(creationDate);
 
-        val event = action.doExecute(context);
+        final var event = action.doExecute(context);
 
         assertEquals("success", event.getId());
     }
 
     @Test
     public void tokenExpired() {
-        val creationDate = ZonedDateTime.now().minus(70, ChronoUnit.SECONDS);
+        final var creationDate = ZonedDateTime.now().minus(70, ChronoUnit.SECONDS);
         when(ticket.getCreationTime()).thenReturn(creationDate);
 
-        val event = action.doExecute(context);
+        final var event = action.doExecute(context);
 
         assertEquals("error", event.getId());
     }

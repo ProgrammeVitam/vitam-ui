@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import org.springframework.context.HierarchicalMessageSource;
 
 import java.util.Locale;
@@ -48,9 +45,6 @@ import java.util.Locale;
  *
  *
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 public class PmMessageToSend {
 
     public static final String ONE_DAY = "1day";
@@ -68,6 +62,14 @@ public class PmMessageToSend {
     private final String subject;
 
     private final String text;
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getText() {
+        return text;
+    }
 
     private PmMessageToSend(final String subject, final String text) {
         this.subject = subject;

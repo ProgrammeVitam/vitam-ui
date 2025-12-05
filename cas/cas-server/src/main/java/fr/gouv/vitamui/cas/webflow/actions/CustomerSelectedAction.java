@@ -39,9 +39,7 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -52,16 +50,16 @@ import java.util.List;
 import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 
 /**
- * This class persists user selected customerId into flow scope and redirect to dispatcher
+ * This class persists user selected customerId into flow scope and redirect to
+ * dispatcher
  */
+@Slf4j
 @RequiredArgsConstructor
 public class CustomerSelectedAction extends AbstractAction {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerSelectedAction.class);
-
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
-        val flowScope = requestContext.getFlowScope();
+        var flowScope = requestContext.getFlowScope();
 
         String loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
         String customerId = requestContext.getRequestParameters().get(Constants.SELECT_CUSTOMER_ID_PARAM);

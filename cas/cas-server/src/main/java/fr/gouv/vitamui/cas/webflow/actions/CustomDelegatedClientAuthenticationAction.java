@@ -43,7 +43,7 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -55,8 +55,6 @@ import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
 import org.apereo.cas.web.flow.actions.DelegatedClientAuthenticationAction;
 import org.apereo.cas.web.support.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -72,11 +70,10 @@ import static fr.gouv.vitamui.cas.authentication.UserPrincipalResolver.EMAIL_VAL
  * - extraction of the username/surrogate passed as a request parameter
  * - save the portalUrl in the webflow.
  */
+@Slf4j
 public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
 
     public static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^[_a-z0-9]+$");
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomDelegatedClientAuthenticationAction.class);
 
     private final IdentityProviderHelper identityProviderHelper;
 
@@ -111,18 +108,19 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
     }
 
     @Override
-    public Event doExecute(final RequestContext context) {
+    protected Event doExecuteInternal(final RequestContext context) {
         // save a label in the webflow
-        val flowScope = context.getFlowScope();
+        var flowScope = context.getFlowScope();
         flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
 
-        // retrieve the service if it exists to prepare the serviceUrl parameter (for the back links)
-        val service = WebUtils.getService(context);
+        // retrieve the service if it exists to prepare the serviceUrl parameter (for
+        // the back links)
+        var service = WebUtils.getService(context);
         if (service != null) {
             flowScope.put("serviceUrl", service.getOriginalUrl());
         }
 
-        val event = super.doExecute(context);
+        var event = super.doExecuteInternal(context);
         if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
             // extract and parse username
             String username = context.getRequestParameters().get(Constants.LOGIN_USER_EMAIL_PARAM);
@@ -179,12 +177,12 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             }
 
             // get the idp if it exists
-            val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
-            val idp = utils.getIdpValue(request);
+            var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
+            var idp = utils.getIdpValue(request);
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
                 TicketGrantingTicket tgt = null;
-                val tgtId = WebUtils.getTicketGrantingTicketId(context);
+                var tgtId = WebUtils.getTicketGrantingTicketId(context);
                 if (tgtId != null) {
                     tgt = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
                 }
@@ -192,11 +190,11 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 // if no authentication
                 if (tgt == null || tgt.isExpired()) {
                     // if it matches an existing IdP, save it and redirect
-                    val optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
+                    var optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
                     if (optProvider.isPresent()) {
-                        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
+                        var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
                         response.addCookie(utils.buildIdpCookie(idp, configContext.getCasProperties().getTgc()));
-                        val client = ((Pac4jClientIdentityProviderDto) optProvider.get()).getClient();
+                        var client = ((Pac4jClientIdentityProviderDto) optProvider.get()).getClient();
                         LOGGER.debug("Force redirect to the SAML IdP: {}", client.getName());
                         try {
                             return utils.performClientRedirection(this, client, context);

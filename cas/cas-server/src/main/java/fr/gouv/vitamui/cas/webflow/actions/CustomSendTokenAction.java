@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.util.Utils;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.bucket4j.consumer.BucketConsumer;
 import org.apereo.cas.configuration.model.support.mfa.simple.CasSimpleMultifactorAuthenticationProperties;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
@@ -55,8 +53,10 @@ import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 /**
  * The custom action to send SMS for the MFA simple token.
  */
-@Slf4j
+
 public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
+
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CustomSendTokenAction.class);
 
     private static final String MESSAGE_MFA_TOKEN_SENT = "cas.mfa.simple.label.tokensent";
 
@@ -81,13 +81,13 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
     }
 
     @Override
-    protected Event doExecute(final RequestContext requestContext) throws Exception {
-        val authentication = WebUtils.getInProgressAuthentication();
-        val principal = resolvePrincipal(authentication.getPrincipal());
+    protected Event doExecuteInternal(final RequestContext requestContext) {
+        var authentication = WebUtils.getInProgressAuthentication();
+        var principal = resolvePrincipal(authentication.getPrincipal(), requestContext);
 
         // check for a principal attribute and redirect to a custom page when missing
-        val principalAttributes = principal.getAttributes();
-        val mobile = (String) utils.getAttributeValue(principalAttributes, "mobile");
+        var principalAttributes = principal.getAttributes();
+        var mobile = (String) utils.getAttributeValue(principalAttributes, "mobile");
         if (mobile == null) {
             requestContext.getFlowScope().put("firstname", utils.getAttributeValue(principalAttributes, "firstname"));
             return getEventFactorySupport().event(this, "missingPhone");
@@ -96,7 +96,7 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
         // remove token
         WebUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
 
-        val event = super.doExecute(requestContext);
+        var event = super.doExecuteInternal(requestContext);
 
         // add the obfuscated phone to the webflow in case of success
         if (CasWebflowConstants.TRANSITION_ID_SUCCESS.equals(event.getId())) {

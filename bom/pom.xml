@@ -18,7 +18,7 @@
         <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
         <assertj.version>3.25.3</assertj.version>
         <bouncycastle.version>1.78</bouncycastle.version>
-        <cas.version>6.6.12</cas.version>
+        <cas.version>7.0.10.1</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections4.version>4.4</commons.collections4.version>
         <commons.compress.version>1.26.1</commons.compress.version>
@@ -33,14 +33,14 @@
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
         <glassfish.jaxb.version>3.0.2</glassfish.jaxb.version>
         <gson.version>2.10.1</gson.version>
-        <hibernate.validatior.version>6.1.7.Final</hibernate.validatior.version>
+        <hibernate.validatior.version>8.0.1.Final</hibernate.validatior.version>
         <http.client.version>5.4.4</http.client.version>
         <http.core.version>5.3.4</http.core.version>
         <istack-commons-runtime.version>4.0.0-M2</istack-commons-runtime.version>
         <jackson.version>2.17.0</jackson.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
         <jakarta.el.version>5.0.1</jakarta.el.version>
-        <jakarta.mail.version>1.6.5</jakarta.mail.version>
+        <jakarta.mail.version>2.0.1</jakarta.mail.version>
         <jakarta.xml.binding.version>4.0.2</jakarta.xml.binding.version>
         <javassist.version>3.30.2-GA</javassist.version>
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
@@ -55,23 +55,23 @@
         <json.version>20240303</json.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <juli.to.slf4j.version>1.1.1</juli.to.slf4j.version>
-        <logback.version>1.2.13</logback.version>
+        <logback.version>1.4.14</logback.version>
         <lombok.version>1.18.38</lombok.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <micrometer.version>1.13.15</micrometer.version>
-        <mongo.driver.sync.version>4.6.1</mongo.driver.sync.version>
+        <mongo.driver.sync.version>4.11.1</mongo.driver.sync.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
         <opencsv.version>5.4</opencsv.version>
         <org.apache.odftoolkit.version>0.8.2-incubating</org.apache.odftoolkit.version>
         <org.odftoolkit.version>0.8.7</org.odftoolkit.version>
-        <pac4j.version>5.4.6</pac4j.version>
+        <pac4j.version>6.1.1</pac4j.version>
         <podam.version>7.2.5.RELEASE</podam.version>
         <poi.version>5.2.5</poi.version>
         <selma.version>1.0</selma.version>
         <serenity-spring.version>3.3.10</serenity-spring.version>
         <serenity.cucumber.version>2.2.6</serenity.cucumber.version>
         <serenity.version>3.3.10</serenity.version>
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>2.0.9</slf4j.version>
         <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
         <spring-security-cas.version>6.2.8</spring-security-cas.version>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>

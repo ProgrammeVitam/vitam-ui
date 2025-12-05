@@ -40,9 +40,7 @@
 package fr.gouv.vitamui.cas.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 
-@Data
 public class UserLoginModel {
 
     @JsonProperty("userEmail")
@@ -50,4 +48,40 @@ public class UserLoginModel {
 
     @JsonProperty("customerId")
     private String customerId;
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserLoginModel that = (UserLoginModel) o;
+        return (
+            java.util.Objects.equals(userEmail, that.userEmail) && java.util.Objects.equals(customerId, that.customerId)
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(userEmail, customerId);
+    }
+
+    @Override
+    public String toString() {
+        return "UserLoginModel{" + "userEmail='" + userEmail + '\'' + ", customerId='" + customerId + '\'' + '}';
+    }
 }

@@ -39,13 +39,11 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.pm.web.flow.PasswordManagementWebflowConfigurer;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.web.support.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -56,10 +54,9 @@ import org.springframework.webflow.execution.RequestContextHolder;
  *
  *
  */
+@Slf4j
 @RequiredArgsConstructor
 public class TriggerChangePasswordAction extends AbstractAction {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TriggerChangePasswordAction.class);
 
     public static final String EVENT_ID_CHANGE_PASSWORD = "changePassword";
     public static final String EVENT_ID_CONTINUE = "continue";
@@ -69,9 +66,7 @@ public class TriggerChangePasswordAction extends AbstractAction {
     private final Utils utils;
 
     protected Event doExecute(final RequestContext context) {
-        final String doChangePassword = context
-            .getRequestParameters()
-            .get(PasswordManagementWebflowConfigurer.DO_CHANGE_PASSWORD_PARAMETER);
+        final String doChangePassword = context.getRequestParameters().get("doChangePassword");
         LOGGER.debug("doChangePassword: {}", doChangePassword);
         if (doChangePassword != null) {
             // we force to change the password and as the user is already authenticated,

@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
@@ -58,7 +57,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Override
     @Before
-    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
+    public void setUp() throws FileNotFoundException {
         super.setUp();
 
         ProvidersService providersService = mock(ProvidersService.class);

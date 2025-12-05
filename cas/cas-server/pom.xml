@@ -13,14 +13,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- make cas-server on jdk 17 temporarily -->
-        <java.version>17</java.version>
-        <java.release>17</java.release>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
+        <!-- make cas-server on jdk 21 -->
+        <java.release>21</java.release>
+        <java.version>21</java.version>
+        <maven.compiler.release>21</maven.compiler.release>
 
-        <cas.version>6.6.12</cas.version>
+        <cas.version>7.0.10</cas.version>
+        <logback.version>1.4.14</logback.version>
+        <logstash.logback.encoder.version>8.0</logstash.logback.encoder.version>
+        <mongo.driver.sync.version>4.11.1</mongo.driver.sync.version>
+        <jquery.ui.version>1.14.1</jquery.ui.version>
+        <pac4j.version>6.1.1</pac4j.version>
 
         <!--Dependencies-->
         <assertj-core.version>3.11.1</assertj-core.version>
@@ -28,20 +31,26 @@
         <jib.skip>true</jib.skip>
         <jquery-ui.version>1.13.2</jquery-ui.version>
         <junit-vintage-engine.version>5.7.2</junit-vintage-engine.version>
-        <micrometer.version>1.9.3</micrometer.version>
+        <micrometer.version>1.12.1</micrometer.version>
         <mockito.version>5.2.0</mockito.version>
-        <mongo.version>4.7.1</mongo.version>
+        <mongo.version>4.11.1</mongo.version>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
         <rpm.skip>false</rpm.skip>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
-        <spring.boot.version>2.7.18</spring.boot.version>
-        <spring.cloud.consul.version>3.1.1</spring.cloud.consul.version>
-        <spring.test.version>5.3.22</spring.test.version>
-        <spring.version>5.3.22</spring.version>
+        <spring.boot.version>3.2.1</spring.boot.version>
+        <spring.cloud.consul.version>4.1.0</spring.cloud.consul.version>
         <swagger.version>2.2.2</swagger.version>
-        <thymeleaf-spring5.version>3.0.15.RELEASE</thymeleaf-spring5.version>
+        <lombok.version>1.18.36</lombok.version>
+
+        <slf4j.version>2.0.9</slf4j.version>
+        <jakarta.mail.version>2.0.1</jakarta.mail.version>
+        <jackson.version>2.16.1</jackson.version>
+        <groovy.version>4.0.17</groovy.version>
+        <reactor.version>3.6.2</reactor.version>
+        <spring.data.mongo.version>4.2.2</spring.data.mongo.version>
 
         <!--Plugins-->
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
         <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
         <libsass-maven-plugin.version>0.3.1</libsass-maven-plugin.version>
         <maven-war-plugin.version>3.2.0</maven-war-plugin.version>
@@ -55,9 +64,53 @@
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>bom</artifactId>
-                <version>8.1.1</version> <!-- TODO: Force dependencies to 8.1.x until CAS is upgraded -->
+                <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apereo.cas</groupId>
+                <artifactId>cas-server-support-bom</artifactId>
+                <version>${cas.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.groovy</groupId>
+                <artifactId>groovy-bom</artifactId>
+                <version>${groovy.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents.client5</groupId>
+                <artifactId>httpclient5</artifactId>
+                <version>5.2.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents.core5</groupId>
+                <artifactId>httpcore5</artifactId>
+                <version>5.2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents.core5</groupId>
+                <artifactId>httpcore5-h2</artifactId>
+                <version>5.2.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -68,6 +121,10 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-client</artifactId>
             <exclusions>
+                <exclusion>
+                    <groupId>fr.gouv.vitam</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-web</artifactId>
@@ -91,6 +148,24 @@
             </exclusions>
         </dependency>
 
+        <!-- ... -->
+
+        <!-- VITAMUI -->
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>iam-client-legacy</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>fr.gouv.vitam</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents.client5</groupId>
+                    <artifactId>httpclient5</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -109,6 +184,14 @@
                 <exclusion>
                     <artifactId>spring-cloud-starter-loadbalancer</artifactId>
                     <groupId>org.springframework.cloud</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpcore</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -136,8 +219,11 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-mongo-service-registry</artifactId>
-            <version>${cas.version}</version>
             <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents.core5</groupId>
+                    <artifactId>httpcore5</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>io.dropwizard.metrics</groupId>
                     <artifactId>metrics-core</artifactId>
@@ -149,8 +235,41 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>${reactor.version}</version>
+        </dependency>
+        <!-- Mongo-Driver -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>${spring.data.mongo.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
+            <version>${mongo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-core</artifactId>
+            <version>${mongo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>bson</artifactId>
             <version>${mongo.version}</version>
         </dependency>
 
@@ -158,92 +277,128 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication</artifactId>
-            <version>${cas.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-pac4j-webflow</artifactId>
-            <version>${cas.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>io.dropwizard.metrics</groupId>
-                    <artifactId>metrics-core</artifactId>
+                    <groupId>org.apereo.inspektr</groupId>
+                    <artifactId>inspektr-audit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apereo.inspektr</groupId>
+                    <artifactId>inspektr-common</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apereo.inspektr</groupId>
+                    <artifactId>inspektr-support-spring</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apereo.cas</groupId>-->
+<!--            <artifactId>cas-server-support-pac4j-webflow</artifactId>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>io.dropwizard.metrics</groupId>-->
+<!--                    <artifactId>metrics-core</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.apereo.inspektr</groupId>-->
+<!--                    <artifactId>inspektr-audit</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.apereo.inspektr</groupId>-->
+<!--                    <artifactId>inspektr-common</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.apereo.inspektr</groupId>-->
+<!--                    <artifactId>inspektr-support-spring</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-pac4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-core</artifactId>
-            <version>${cas.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-pac4j-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-core-clients</artifactId>
-            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-pac4j-webflow</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-web</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-util</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-saml-core-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-jee</artifactId>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-passwordless-webflow</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-passwordless-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-javaee</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-http</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-config</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-cas</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-oauth</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-core</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>spring-webmvc-pac4j</artifactId>
+            <version>${spring-webmvc-pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-saml</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-oidc</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
@@ -251,172 +406,141 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-hazelcast-ticket-registry</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+            <version>2.15.1</version>
         </dependency>
 
         <!-- X509 authentication -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-x509-webflow</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-x509-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-webflow-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- subrogation -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-authentication</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-webflow</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-services-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- password management -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pm-webflow</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pm-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-notifications</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- multi-factor authentication -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-simple-mfa</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-simple-mfa-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication-mfa</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-webflow-mfa-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-sms-smsmode</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication-mfa-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-bucket4j-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- throttling -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-throttle</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- logout -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-actions-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- others -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-cookie-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-web-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-actions</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-webapp-init</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-tickets</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-services-authentication</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-saml-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.mail</groupId>
+            <groupId>org.eclipse.angus</groupId>
             <artifactId>jakarta.mail</artifactId>
         </dependency>
 
@@ -424,109 +548,130 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-webflow</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-token-core-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-core-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-services</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- OIDC support -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oidc</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oidc-core-api</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oidc-core</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- CORS -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-webapp-config</artifactId>
-            <version>${cas.version}</version>
+            <artifactId>cas-server-support-webconfig</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-services</artifactId>
-            <version>${cas.version}</version>
         </dependency>
 
         <!-- metrics -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-metrics</artifactId>
-            <version>${cas.version}</version>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-otel</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.opentelemetry</groupId>
+          <artifactId>opentelemetry-exporter-otlp</artifactId>
+        </dependency>
 
         <!-- logs -->
         <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-logback</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.1.12</version>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.gandon.tomcat</groupId>
-            <artifactId>juli-to-slf4j</artifactId>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash.logback.encoder.version}</version>
         </dependency>
 
         <!-- UTIL -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.38</version>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring5</artifactId>
-            <version>${thymeleaf-spring5.version}</version>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.1.Final</version>
         </dependency>
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -558,7 +703,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring.test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -566,6 +710,37 @@
             <artifactId>assertj-core</artifactId>
             <version>${assertj-core.version}</version>
             <scope>test</scope>
+        </dependency>
+        <!-- VITAMUI -->
+
+
+        <!-- CAS Core Notifications -->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-core-notifications-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-surrogate-core</artifactId>
+        </dependency>
+        <!-- Conflict resolution: Exclude old inspektr jars that are shaded in cas-server-core-audit-api -->
+        <dependency>
+            <groupId>org.apereo.inspektr</groupId>
+            <artifactId>inspektr-common</artifactId>
+            <version>1.8.20.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.inspektr</groupId>
+            <artifactId>inspektr-audit</artifactId>
+            <version>1.8.20.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.inspektr</groupId>
+            <artifactId>inspektr-support-spring</artifactId>
+            <version>1.8.20.GA</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -626,6 +801,19 @@
 
         <plugins>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${maven-war-plugin.version}</version>
@@ -665,6 +853,13 @@
                                 <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-expression-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-webmvc-pac4j-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-slf4j2-impl-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-jakarta-web-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-spring-boot-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-spring-cloud-config-client-*.jar</exclude>
+                                <exclude>WEB-INF/lib/httpclient5-*.jar</exclude>
+                                <exclude>WEB-INF/lib/httpclient-*.jar</exclude>
+                                <exclude>WEB-INF/lib/httpcore-*.jar</exclude>
                             </excludes>
                         </overlay>
                     </overlays>
@@ -689,11 +884,17 @@
                         WEB-INF/lib/slf4j-api-*.jar,
                         WEB-INF/lib/oauth2-oidc-sdk-*.jar,
                         WEB-INF/lib/pac4j-*.jar,
-                        WEB-INF/lib/spring-webmvc-pac4j-*.jar
+                        WEB-INF/lib/spring-webmvc-pac4j-*.jar,
+                        WEB-INF/lib/log4j-slf4j2-impl-*.jar,
+                        WEB-INF/lib/log4j-jakarta-web-*.jar,
+                        WEB-INF/lib/log4j-spring-boot-*.jar,
+                        WEB-INF/lib/log4j-spring-cloud-config-client-*.jar,
+                        WEB-INF/lib/httpclient5-*.jar,
+                        WEB-INF/lib/httpclient-*.jar,
+                        WEB-INF/lib/httpcore-*.jar
                     </packagingExcludes>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -721,10 +922,13 @@
                 </executions>
             </plugin>
 
+
+
             <plugin>
                 <groupId>com.gitlab.haynes</groupId>
                 <artifactId>libsass-maven-plugin</artifactId>
                 <version>${libsass-maven-plugin.version}</version>
+                <!--
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -733,11 +937,12 @@
                         </goals>
                     </execution>
                 </executions>
+                -->
                 <configuration>
                     <inputPath>${project.basedir}/src/main/config/sass</inputPath>
                     <outputPath>${project.basedir}/src/main/resources/static/css</outputPath>
                     <generateSourceMap>false</generateSourceMap>
-                    <outputStyle/>
+                    <outputStyle>compressed</outputStyle>
                 </configuration>
             </plugin>
             <plugin>

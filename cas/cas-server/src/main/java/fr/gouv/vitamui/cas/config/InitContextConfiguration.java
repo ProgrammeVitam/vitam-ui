@@ -37,14 +37,13 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.util.Constants;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.xml.bind.DatatypeConverter;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,10 +52,9 @@ import java.nio.file.Paths;
 /**
  * Custom context initializer to pre-fill logo and favicon.
  */
+@Slf4j
 @RequiredArgsConstructor
 public class InitContextConfiguration implements ServletContextInitializer {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(InitContextConfiguration.class);
 
     private final String vitamuiLogoLargePath;
 

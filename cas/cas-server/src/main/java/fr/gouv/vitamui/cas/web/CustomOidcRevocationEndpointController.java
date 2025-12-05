@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.cas.web;
 
-import lombok.val;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.oidc.OidcConfigurationContext;
 import org.apereo.cas.oidc.web.controllers.token.OidcRevocationEndpointController;
 import org.apereo.cas.support.oauth.OAuth20Constants;
@@ -10,20 +11,16 @@ import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.refreshtoken.OAuth20RefreshToken;
 import org.apereo.cas.util.function.FunctionUtils;
 import org.jooq.lambda.Unchecked;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
- * Custom : Revoke token for all services without checking clientId : Global Logout
+ * Custom : Revoke token for all services without checking clientId : Global
+ * Logout
  */
+@Slf4j
 public class CustomOidcRevocationEndpointController extends OidcRevocationEndpointController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomOidcRevocationEndpointController.class);
 
     public CustomOidcRevocationEndpointController(final OidcConfigurationContext configurationContext) {
         super(configurationContext);
@@ -34,20 +31,21 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
         final String clientId,
         final HttpServletResponse response
     ) throws Exception {
-        val registryToken = FunctionUtils.doAndHandle(() -> {
-            val state = getConfigurationContext().getTicketRegistry().getTicket(token, OAuth20Token.class);
+        final var registryToken = FunctionUtils.doAndHandle(() -> {
+            final var state = getConfigurationContext().getTicketRegistry().getTicket(token, OAuth20Token.class);
             return state == null || state.isExpired() ? null : state;
         });
         if (registryToken == null) {
             LOGGER.error("Provided token [{}] has not been found in the ticket registry", token);
         } else if (isRefreshToken(registryToken) || isAccessToken(registryToken)) {
             /*
-            Custom : Don't check clientId to allow revoke token to all services (SSO)
-            if (!StringUtils.equals(clientId, registryToken.getClientId())) {
-                LOGGER.warn("Provided token [{}] has not been issued for the service [{}]", token, clientId);
-                return OAuth20Utils.writeError(response, OAuth20Constants.INVALID_REQUEST);
-            }
-            */
+             * Custom : Don't check clientId to allow revoke token to all services (SSO)
+             * if (!StringUtils.equals(clientId, registryToken.getClientId())) {
+             * LOGGER.warn("Provided token [{}] has not been issued for the service [{}]",
+             * token, clientId);
+             * return OAuth20Utils.writeError(response, OAuth20Constants.INVALID_REQUEST);
+             * }
+             */
 
             if (isRefreshToken(registryToken)) {
                 revokeToken((OAuth20RefreshToken) registryToken);
@@ -59,7 +57,7 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
             return OAuth20Utils.writeError(response, OAuth20Constants.INVALID_REQUEST);
         }
 
-        val mv = new ModelAndView(new MappingJackson2JsonView());
+        final var mv = new ModelAndView(new MappingJackson2JsonView());
         mv.setStatus(HttpStatus.OK);
         return mv;
     }

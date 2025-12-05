@@ -37,17 +37,14 @@
 package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
-import lombok.val;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
 import org.apereo.cas.services.ServicesManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.webflow.execution.RequestContextHolder;
 
@@ -57,22 +54,14 @@ import java.util.Optional;
 /**
  * Specific surrogate service based on the IAM API.
  */
+@Slf4j
 public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticationService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IamSurrogateAuthenticationService.class);
+    private final CasApi casApi;
 
-    private final CasRestClient casRestClient;
-
-    private final Utils utils;
-
-    public IamSurrogateAuthenticationService(
-        final CasRestClient casRestClient,
-        final ServicesManager servicesManager,
-        final Utils utils
-    ) {
+    public IamSurrogateAuthenticationService(final CasApi casApi, final ServicesManager servicesManager) {
         super(servicesManager);
-        this.casRestClient = casRestClient;
-        this.utils = utils;
+        this.casApi = casApi;
     }
 
     @Override
@@ -81,8 +70,8 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
         final Principal principal,
         final Optional<Service> service
     ) {
-        val requestContext = RequestContextHolder.getRequestContext();
-        val flowScope = requestContext.getFlowScope();
+        final var requestContext = RequestContextHolder.getRequestContext();
+        final var flowScope = requestContext.getFlowScope();
 
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
@@ -102,10 +91,10 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
             String.format("Invalid surrogate. Expected '%s', got: '%s'", surrogateEmail, surrogate)
         );
 
-        val id = principal.getId();
+        final var id = principal.getId();
         boolean canAuthenticate = false;
         try {
-            val subrogations = casRestClient.getSubrogationsBySuperUserId(utils.buildContext(id), id);
+            final var subrogations = casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(id, null, null);
             canAuthenticate = subrogations
                 .stream()
                 .filter(s -> s.getStatus() == SubrogationStatusEnum.ACCEPTED)

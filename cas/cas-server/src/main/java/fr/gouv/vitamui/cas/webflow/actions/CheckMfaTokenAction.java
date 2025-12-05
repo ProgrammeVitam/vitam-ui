@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
 import org.apereo.cas.ticket.InvalidTicketException;
@@ -55,24 +53,25 @@ import java.time.temporal.ChronoUnit;
  * Check the MFA token.
  */
 @RequiredArgsConstructor
-@Slf4j
 public class CheckMfaTokenAction extends AbstractAction {
+
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CheckMfaTokenAction.class);
 
     private final TicketRegistry ticketRegistry;
 
     @Override
     protected Event doExecute(final RequestContext requestContext) {
-        val credential = WebUtils.getCredential(requestContext);
-        val tokenCredential = (CasSimpleMultifactorTokenCredential) credential;
-        val token = CasSimpleMultifactorAuthenticationTicket.PREFIX + "-" + tokenCredential.getToken();
+        var credential = WebUtils.getCredential(requestContext);
+        var tokenCredential = (CasSimpleMultifactorTokenCredential) credential;
+        var token = CasSimpleMultifactorAuthenticationTicket.PREFIX + "-" + tokenCredential.getToken();
         LOGGER.debug("Checking token: {}", token);
         WebUtils.putCredential(requestContext, new CasSimpleMultifactorTokenCredential(token));
 
         try {
-            val acct = this.ticketRegistry.getTicket(token, CasSimpleMultifactorAuthenticationTicket.class);
+            var acct = this.ticketRegistry.getTicket(token, CasSimpleMultifactorAuthenticationTicket.class);
             if (acct != null) {
-                val creationTime = acct.getCreationTime();
-                val now_less_one_minute = ZonedDateTime.now().minus(60, ChronoUnit.SECONDS);
+                var creationTime = acct.getCreationTime();
+                var now_less_one_minute = ZonedDateTime.now().minus(60, ChronoUnit.SECONDS);
                 // considered expired after 60 seconds
                 if (creationTime.isBefore(now_less_one_minute)) {
                     return error();

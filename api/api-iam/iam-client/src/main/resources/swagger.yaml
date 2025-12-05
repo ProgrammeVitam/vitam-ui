@@ -2526,7 +2526,7 @@ paths:
                     content:
                         '*/*':
                             schema:
-                                $ref: "#/components/schemas/UserDto"
+                                $ref: "#/components/schemas/AuthUserDto"
                             example: null
     /iam/v1/cas/subrogations:
         get:

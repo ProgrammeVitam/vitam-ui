@@ -36,27 +36,24 @@
  */
 package fr.gouv.vitamui.cas.provider;
 
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.iam.client.IdentityProviderRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
+import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.client.IndirectClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -64,21 +61,20 @@ import java.util.stream.Collectors;
  *
  *
  */
-@Getter
+
+@Slf4j
 @RequiredArgsConstructor
 public class ProvidersService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProvidersService.class);
-
+    @Getter
     private List<IdentityProviderDto> providers = new ArrayList<>();
 
+    @Getter
     private final Clients clients;
 
-    private final IdentityProviderRestClient identityProviderRestClient;
+    private final IdentityProvidersApi identityProvidersApi;
 
     private final Pac4jClientBuilder pac4jClientBuilder;
-
-    private final Utils utils;
 
     @PostConstruct
     public void afterPropertiesSet() {
@@ -97,12 +93,12 @@ public class ProvidersService {
     }
 
     protected void loadData() {
-        final List<IdentityProviderDto> temporaryProviders = identityProviderRestClient.getAll(
-            utils.buildContext(null),
-            Optional.empty(),
-            Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)
-        );
-        // sort by identifier. This is needed in order to take the internal provider first.
+        // TODO: context usage ?
+        final String embedded = ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA;
+        List<fr.gouv.vitamui.iam.openapiclient.domain.IdentityProviderDto> temporaryProviders =
+            identityProvidersApi.getAll(null, embedded);
+        // sort by identifier. This is needed in order to take the internal provider
+        // first.
         temporaryProviders.sort(Comparator.comparing(IdentityProviderDto::getIdentifier));
         LOGGER.debug(
             "Reloaded {} providers: {}",

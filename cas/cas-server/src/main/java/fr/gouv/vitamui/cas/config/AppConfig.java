@@ -45,18 +45,22 @@ import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
-import fr.gouv.vitamui.iam.client.CasRestClient;
-import fr.gouv.vitamui.iam.client.IamRestClientFactory;
-import fr.gouv.vitamui.iam.client.IdentityProviderRestClient;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
+import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
+import jakarta.validation.constraints.NotNull;
 import lombok.SneakyThrows;
-import lombok.val;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
+import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -77,150 +81,48 @@ import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
 import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.Ordered;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.validation.constraints.NotNull;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.EMAIL_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 
 /**
  * Configure all beans to customize the CAS server.
  */
+@Slf4j
 @Configuration
 @EnableConfigurationProperties(
     { CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class }
 )
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
-
-    @Autowired
-    private CasConfigurationProperties casProperties;
-
-    @Autowired
-    @Qualifier("servicesManager")
-    private ServicesManager servicesManager;
-
-    @Autowired
-    @Qualifier("principalFactory")
-    private PrincipalFactory principalFactory;
-
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    @Qualifier("surrogateAuthenticationService")
-    private SurrogateAuthenticationService surrogateAuthenticationService;
-
-    @Autowired
-    private IamClientConfigurationProperties iamClientProperties;
-
-    @Autowired
-    @Qualifier("registeredServiceAccessStrategyEnforcer")
-    private AuditableExecution registeredServiceAccessStrategyEnforcer;
-
-    @Autowired
-    @Qualifier("surrogateEligibilityAuditableExecution")
-    private AuditableExecution surrogateEligibilityAuditableExecution;
-
-    @Autowired
-    @Qualifier("ticketGrantingTicketUniqueIdGenerator")
-    private UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator;
-
-    @Autowired
-    @Qualifier("accessTokenJwtBuilder")
-    private JwtBuilder accessTokenJwtBuilder;
-
-    @Autowired
-    @Qualifier("grantingTicketExpirationPolicy")
-    private ObjectProvider<ExpirationPolicyBuilder> grantingTicketExpirationPolicy;
-
-    @Autowired
-    private CipherExecutor protocolTicketCipherExecutor;
-
-    @Autowired
-    @Qualifier("accessTokenExpirationPolicy")
-    private ExpirationPolicyBuilder accessTokenExpirationPolicy;
-
-    @Autowired
-    private JavaMailSender mailSender;
-
-    @Autowired
-    @Qualifier("centralAuthenticationService")
-    private ObjectProvider<CentralAuthenticationService> centralAuthenticationService;
-
-    @Autowired
-    @Qualifier("passwordManagementCipherExecutor")
-    private CipherExecutor passwordManagementCipherExecutor;
-
-    @Autowired
-    @Qualifier("passwordHistoryService")
-    private PasswordHistoryService passwordHistoryService;
-
-    @Autowired
-    private PasswordConfiguration passwordConfiguration;
-
-    @Value("${cas.secret.token}")
-    @NotNull
-    private String tokenApiCas;
-
-    @Value("${ip.header}")
-    private String ipHeaderName;
-
-    @Value("${vitamui.cas.tenant.identifier}")
-    private Integer casTenantIdentifier;
-
-    @Value("${vitamui.cas.identity}")
-    private String casIdentity;
-
-    @Value("${theme.vitamui-logo-large:#{null}}")
-    private String vitamuiLogoLargePath;
-
-    @Value("${theme.vitamui-favicon:#{null}}")
-    private String vitamuiFaviconPath;
-
-    @Value("${vitamui.authn.x509.emailAttribute:}")
-    private String x509EmailAttribute;
-
-    @Value("${vitamui.authn.x509.emailAttributeParsing:}")
-    private String x509EmailAttributeParsing;
-
-    @Value("${vitamui.authn.x509.emailAttributeExpansion:}")
-    private String x509EmailAttributeExpansion;
-
-    @Value("${vitamui.authn.x509.identifierAttribute:}")
-    private String x509IdentifierAttribute;
-
-    @Value("${vitamui.authn.x509.identifierAttributeParsing:}")
-    private String x509IdentifierAttributeParsing;
-
-    @Value("${vitamui.authn.x509.identifierAttributeExpansion:}")
-    private String x509IdentifierAttributeExpansion;
-
-    @Value("${vitamui.authn.x509.defaultDomain:}")
-    private String x509DefaultDomain;
-
     // overrides the CAS specific message converter to prevent
-    // the CasRestExternalClient to use the 'application/vnd.cas.services+yaml;charset=UTF-8'
+    // the CasRestExternalClient to use the
+    // 'application/vnd.cas.services+yaml;charset=UTF-8'
     // content type and to fail
     @Bean
     public HttpMessageConverter yamlHttpMessageConverter() {
@@ -234,33 +136,54 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler(
-        final IamRestClientFactory iamRestClientFactory,
-        final CasRestClient casRestClient
+        final CasApi casApi,
+        @Value("${ip.header}") final String ipHeaderName,
+        @Qualifier("principalFactory") final PrincipalFactory principalFactory,
+        @Qualifier("servicesManager") final ServicesManager servicesManager
     ) {
-        return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient, utils(), ipHeaderName);
+        return new UserAuthenticationHandler(servicesManager, principalFactory, casApi, ipHeaderName);
     }
+
+    //    @Bean
+    //    public LoginPwdAuthenticationHandler loginPwdAuthenticationHandler(
+    //        final IamInternalRestClientFactory iamRestClientFactory,
+    //        final CasInternalRestClient casRestClient,
+    //        final Utils utils,
+    //        @Value("${ip.header}") final String ipHeaderName,
+    //        @Qualifier("principalFactory") final PrincipalFactory principalFactory,
+    //        @Qualifier("servicesManager") final ServicesManager servicesManager) {
+    //        return new LoginPwdAuthenticationHandler(
+    //            servicesManager, principalFactory, casRestClient, utils, ipHeaderName);
+    //    }
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public PrincipalResolver defaultPrincipalResolver(
-        final ProvidersService providersService,
+        @Value("${vitamui.authn.x509.emailAttribute:}") final String x509EmailAttribute,
+        @Value("${vitamui.authn.x509.emailAttributeParsing:}") final String x509EmailAttributeParsing,
+        @Value("${vitamui.authn.x509.emailAttributeExpansion:}") final String x509EmailAttributeExpansion,
+        @Value("${vitamui.authn.x509.identifierAttribute:}") final String x509IdentifierAttribute,
+        @Value("${vitamui.authn.x509.identifierAttributeParsing:}") final String x509IdentifierAttributeParsing,
+        @Value("${vitamui.authn.x509.identifierAttributeExpansion:}") final String x509IdentifierAttributeExpansion,
+        @Value("${vitamui.authn.x509.defaultDomain:}") final String x509DefaultDomain,
         @Qualifier("delegatedClientDistributedSessionStore") final SessionStore delegatedClientDistributedSessionStore,
-        final CasRestClient casRestClient
+        @Qualifier(PrincipalFactory.BEAN_NAME) PrincipalFactory principalFactory,
+        final ProvidersService providersService,
+        final CasApi casApi
     ) {
-        val emailMapping = new X509AttributeMapping(
+        final var emailMapping = new X509AttributeMapping(
             x509EmailAttribute,
             x509EmailAttributeParsing,
             x509EmailAttributeExpansion
         );
-        val identifierMapping = new X509AttributeMapping(
+        final var identifierMapping = new X509AttributeMapping(
             x509IdentifierAttribute,
             x509IdentifierAttributeParsing,
             x509IdentifierAttributeExpansion
         );
         return new UserPrincipalResolver(
             principalFactory,
-            casRestClient,
-            utils(),
+            casApi,
             delegatedClientDistributedSessionStore,
             identityProviderHelper(),
             providersService,
@@ -273,7 +196,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public AuthenticationEventExecutionPlanConfigurer registerInternalHandler(
         final UserAuthenticationHandler userAuthenticationHandler,
-        @Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver
+        @Qualifier("defaultPrincipalResolver") final PrincipalResolver defaultPrincipalResolver
     ) {
         return plan ->
             plan.registerAuthenticationHandlerWithPrincipalResolver(
@@ -285,7 +208,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver surrogatePrincipalResolver(
-        @Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver
+        @Qualifier("defaultPrincipalResolver") final PrincipalResolver defaultPrincipalResolver
     ) {
         return defaultPrincipalResolver;
     }
@@ -293,39 +216,42 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver x509SubjectDNPrincipalResolver(
-        @Qualifier("defaultPrincipalResolver") PrincipalResolver defaultPrincipalResolver
+        @Qualifier("defaultPrincipalResolver") final PrincipalResolver defaultPrincipalResolver
     ) {
         return defaultPrincipalResolver;
     }
 
     @Bean
-    public IamRestClientFactory iamRestClientFactory(final RestTemplateBuilder restTemplateBuilder) {
-        LOGGER.debug("Iam client factory: {}", iamClientProperties);
-        return new IamRestClientFactory(iamClientProperties, restTemplateBuilder);
+    public IamApiClientsFactory iamApiClientsFactory(
+        final IamClientConfigurationProperties iamClientProperties,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new IamApiClientsFactory(iamClientProperties, restTemplateBuilder);
     }
 
     @Bean
-    public CasRestClient casRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getCasExternalRestClient();
+    public CasApi casApi(final IamApiClientsFactory iamApiClientsFactory) {
+        return iamApiClientsFactory.getCasApi();
     }
 
     @Bean
-    public IdentityProviderRestClient identityProviderCrudRestClient(final IamRestClientFactory iamRestClientFactory) {
-        return iamRestClientFactory.getIdentityProviderExternalRestClient();
+    public IdentityProvidersApi identityProvidersApi(final IamApiClientsFactory iamApiClientsFactory) {
+        return iamApiClientsFactory.getIdentityProvidersApi();
     }
 
+    @Bean
     @RefreshScope
-    @Bean
-    public Clients builtClients() {
+    public Clients builtClients(final CasConfigurationProperties casProperties) {
         return new Clients(casProperties.getServer().getLoginUrl());
     }
 
     @Bean
     public ProvidersService providersService(
-        @Qualifier("builtClients") final Clients builtClients,
-        final IdentityProviderRestClient identityProviderCrudRestClient
+        final Clients builtClients,
+        final IdentityProvidersApi identityProvidersApi,
+        final Pac4jClientBuilder pac4jClientBuilder
     ) {
-        return new ProvidersService(builtClients, identityProviderCrudRestClient, pac4jClientBuilder(), utils());
+        return new ProvidersService(builtClients, identityProvidersApi, pac4jClientBuilder);
     }
 
     @Bean
@@ -339,7 +265,13 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public Utils utils() {
+    public Utils utils(
+        @Value("${token.api.cas}") @NotNull final String tokenApiCas,
+        @Value("${vitamui.cas.tenant.identifier}") final Integer casTenantIdentifier,
+        @Value("${vitamui.cas.identity}") final String casIdentity,
+        final JavaMailSender mailSender,
+        final CasConfigurationProperties casProperties
+    ) {
         return new Utils(
             tokenApiCas,
             casTenantIdentifier,
@@ -350,23 +282,41 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory() {
+    public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory(
+        @Qualifier(ServicesManager.BEAN_NAME) ServicesManager servicesManager,
+        @Qualifier(
+            "ticketGrantingTicketUniqueIdGenerator"
+        ) final UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator,
+        @Qualifier("grantingTicketExpirationPolicy") final ObjectProvider<
+            ExpirationPolicyBuilder
+        > grantingTicketExpirationPolicy,
+        final CipherExecutor protocolTicketCipherExecutor,
+        final Utils utils
+    ) {
         return new DynamicTicketGrantingTicketFactory(
             ticketGrantingTicketUniqueIdGenerator,
             grantingTicketExpirationPolicy.getObject(),
             protocolTicketCipherExecutor,
             servicesManager,
-            utils()
+            utils
         );
     }
 
     @Bean
-    @RefreshScope
-    public OAuth20AccessTokenFactory defaultAccessTokenFactory() {
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public OAuth20AccessTokenFactory defaultAccessTokenFactory(
+        @Qualifier("accessTokenExpirationPolicy") final ExpirationPolicyBuilder accessTokenExpirationPolicy,
+        @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager,
+        @Qualifier("accessTokenJwtBuilder") final JwtBuilder accessTokenJwtBuilder,
+        @Qualifier(
+            TicketTrackingPolicy.BEAN_NAME_DESCENDANT_TICKET_TRACKING
+        ) final TicketTrackingPolicy descendantTicketsTrackingPolicy
+    ) {
         return new CustomOAuth20DefaultAccessTokenFactory(
             accessTokenExpirationPolicy,
             accessTokenJwtBuilder,
-            servicesManager
+            servicesManager,
+            descendantTicketsTrackingPolicy
         );
     }
 
@@ -380,40 +330,51 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             Ordered.HIGHEST_PRECEDENCE
         );
         metadata.getProperties().setStorageName(casProperties.getAuthn().getOauth().getAccessToken().getStorageName());
-        val timeout = Beans.newDuration(
+        final var timeout = Beans.newDuration(
             casProperties.getAuthn().getOauth().getAccessToken().getMaxTimeToLiveInSeconds()
         ).getSeconds();
         metadata.getProperties().setStorageTimeout(timeout);
-        metadata.getProperties().setExcludeFromCascade(casProperties.getLogout().isRemoveDescendantTickets());
+        // metadata.getProperties().setExcludeFromCascade(casProperties.getLogout().isRemoveDescendantTickets());
         registerTicketDefinition(plan, metadata);
     }
 
     @RefreshScope
     @Bean
     @SneakyThrows
-    public SurrogateAuthenticationService surrogateAuthenticationService(final CasRestClient casRestClient) {
-        return new IamSurrogateAuthenticationService(casRestClient, servicesManager, utils());
+    public SurrogateAuthenticationService surrogateAuthenticationService(
+        final CasApi casApi,
+        @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager
+    ) {
+        return new IamSurrogateAuthenticationService(casApi, servicesManager);
     }
 
-    @RefreshScope
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     @Bean
     public PasswordManagementService passwordChangeService(
+        final CasConfigurationProperties casProperties,
+        @Qualifier("passwordManagementCipherExecutor") final CipherExecutor passwordManagementCipherExecutor,
+        @Qualifier(PasswordHistoryService.BEAN_NAME) final PasswordHistoryService passwordHistoryService,
         final ProvidersService providersService,
         final TicketRegistry ticketRegistry,
-        final CasRestClient casRestClient
+        final CasApi casApi,
+        final IdentityProviderHelper identityProviderHelper,
+        final Utils utils,
+        final PasswordValidator passwordValidator,
+        @Qualifier("centralAuthenticationService") final CentralAuthenticationService centralAuthenticationService,
+        final PasswordConfiguration passwordConfiguration
     ) {
         return new IamPasswordManagementService(
             casProperties.getAuthn().getPm(),
             passwordManagementCipherExecutor,
             casProperties.getServer().getPrefix(),
             passwordHistoryService,
-            casRestClient,
+            casApi,
             providersService,
-            identityProviderHelper(),
-            centralAuthenticationService.getObject(),
-            utils(),
+            identityProviderHelper,
+            centralAuthenticationService,
+            utils,
             ticketRegistry,
-            passwordValidator(),
+            passwordValidator,
             passwordConfiguration
         );
     }
@@ -424,7 +385,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return new CasSimpleMultifactorTokenCommunicationStrategy() {
             @Override
             public EnumSet<TokenSharingStrategyOptions> determineStrategy(
-                CasSimpleMultifactorAuthenticationTicket token
+                final CasSimpleMultifactorAuthenticationTicket token
             ) {
                 return EnumSet.of(TokenSharingStrategyOptions.SMS);
             }
@@ -432,12 +393,239 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public ServletContextInitializer servletContextInitializer() {
-        return new InitContextConfiguration(vitamuiLogoLargePath, vitamuiFaviconPath);
+    public ServletContextInitializer servletContextInitializer(
+        @Value("${theme.vitamui-logo-large:#{null}}") final String vitamuiLargeLogoPath,
+        @Value("${theme.vitamui-favicon:#{null}}") final String vitamuiFaviconPath
+    ) {
+        return new InitContextConfiguration(vitamuiLargeLogoPath, vitamuiFaviconPath);
     }
 
     @Bean
     public ServletContextInitializer servletPasswordContextInitializer() {
         return new InitPasswordConstraintsConfiguration();
+    }
+
+    // TODO: integrate
+    //  @Bean
+    //  public PasswordlessUserAccountStore passwordlessUserAccountStore(
+    //      final ProvidersService providersService,
+    //      final IdentityProviderHelper identityProviderHelper,
+    //      final CasInternalRestClient casRestClient,
+    //      @Value("${cas.authn.surrogate.separator}") final String surrogationSeparator,
+    //      final Utils utils) {
+    //    return new CustomPasswordlessUserAccountStore(
+    //        providersService, identityProviderHelper, casRestClient, surrogationSeparator, utils);
+    //  }
+
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public AuthenticationEventExecutionPlanConfigurer passwordManagementAuthenticationExecutionPlanConfigurer() {
+        return plan -> {};
+    }
+
+    // TODO: should integrate ?
+    //  @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    //  @Bean
+    //  public DelegatedIdentityProviders delegatedIdentityProviders(
+    //      final ProvidersService providersService) {
+    //    return new CustomDelegatedIdentityProviders(providersService);
+    //  }
+    //
+    //  @Bean
+    //  @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    //  public DelegatedClientAuthenticationConfigurationContext
+    //      delegatedClientAuthenticationConfigurationContext(
+    //          @Qualifier(SingleLogoutRequestExecutor.BEAN_NAME)
+    //              final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor,
+    //          @Qualifier(AuditableExecution.AUDITABLE_EXECUTION_DELEGATED_AUTHENTICATION_ACCESS)
+    //              final AuditableExecution
+    //                  registeredServiceDelegatedAuthenticationPolicyAuditableEnforcer,
+    //          @Qualifier("serviceTicketRequestWebflowEventResolver")
+    //              final CasWebflowEventResolver serviceTicketRequestWebflowEventResolver,
+    //          @Qualifier("initialAuthenticationAttemptWebflowEventResolver")
+    //              final CasDelegatingWebflowEventResolver
+    //                  initialAuthenticationAttemptWebflowEventResolver,
+    //          @Qualifier("adaptiveAuthenticationPolicy")
+    //              final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
+    //          final CasConfigurationProperties casProperties,
+    //          @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager,
+    //          @Qualifier(DelegatedIdentityProviders.BEAN_NAME)
+    //              final DelegatedIdentityProviders identityProviders,
+    //          @Qualifier(DelegatedClientIdentityProviderConfigurationProducer.BEAN_NAME)
+    //              final DelegatedClientIdentityProviderConfigurationProducer
+    //                  delegatedClientIdentityProviderConfigurationProducer,
+    //          @Qualifier("delegatedClientIdentityProviderConfigurationPostProcessor")
+    //              final DelegatedClientIdentityProviderConfigurationPostProcessor
+    //                  delegatedClientIdentityProviderConfigurationPostProcessor,
+    //          @Qualifier("delegatedClientDistributedSessionCookieGenerator")
+    //              final CasCookieBuilder delegatedClientDistributedSessionCookieGenerator,
+    //          @Qualifier(CentralAuthenticationService.BEAN_NAME)
+    //              final CentralAuthenticationService centralAuthenticationService,
+    //          @Qualifier("pac4jDelegatedClientNameExtractor")
+    //              final DelegatedClientNameExtractor pac4jDelegatedClientNameExtractor,
+    //          @Qualifier(AuthenticationSystemSupport.BEAN_NAME)
+    //              final AuthenticationSystemSupport authenticationSystemSupport,
+    //          @Qualifier(ArgumentExtractor.BEAN_NAME) final ArgumentExtractor argumentExtractor,
+    //          @Qualifier(TicketRegistry.BEAN_NAME) final TicketRegistry ticketRegistry,
+    //          @Qualifier("delegatedClientDistributedSessionStore")
+    //              final SessionStore delegatedClientDistributedSessionStore,
+    //          @Qualifier(TicketFactory.BEAN_NAME) final TicketFactory ticketFactory,
+    //          @Qualifier(AuditableExecution.AUDITABLE_EXECUTION_REGISTERED_SERVICE_ACCESS)
+    //              final AuditableExecution registeredServiceAccessStrategyEnforcer,
+    //          @Qualifier("delegatedClientIdentityProviderRedirectionStrategy")
+    //              final DelegatedClientIdentityProviderRedirectionStrategy
+    //                  delegatedClientIdentityProviderRedirectionStrategy,
+    //          @Qualifier(SingleSignOnParticipationStrategy.BEAN_NAME)
+    //              final SingleSignOnParticipationStrategy webflowSingleSignOnParticipationStrategy,
+    //          @Qualifier(AuthenticationServiceSelectionPlan.BEAN_NAME)
+    //              final AuthenticationServiceSelectionPlan
+    //                  authenticationRequestServiceSelectionStrategies,
+    //          @Qualifier("delegatedAuthenticationCookieGenerator")
+    //              final CasCookieBuilder delegatedAuthenticationCookieGenerator,
+    //          @Qualifier("delegatedAuthenticationCredentialExtractor")
+    //              final DelegatedAuthenticationCredentialExtractor
+    //                  delegatedAuthenticationCredentialExtractor,
+    //          final ConfigurableApplicationContext applicationContext,
+    //          @Qualifier(LogoutExecutionPlan.BEAN_NAME) final LogoutExecutionPlan logoutExecutionPlan,
+    //          final ObjectProvider<List<DelegatedClientAuthenticationRequestCustomizer>>
+    //              customizersProvider,
+    //          final DelegatedClientIdentityProviderAuthorizer
+    //              delegatedClientIdentityProviderAuthorizer) {
+    //
+    //    val customizers =
+    //        Optional.ofNullable(customizersProvider.getIfAvailable()).orElseGet(ArrayList::new).stream()
+    //            .filter(BeanSupplier::isNotProxy)
+    //            .collect(Collectors.toList());
+    //
+    //    val authorizers = Arrays.asList(delegatedClientIdentityProviderAuthorizer);
+    //
+    //    return DelegatedClientAuthenticationConfigurationContext.builder()
+    //        .credentialExtractor(delegatedAuthenticationCredentialExtractor)
+    //        .initialAuthenticationAttemptWebflowEventResolver(
+    //            initialAuthenticationAttemptWebflowEventResolver)
+    //        .serviceTicketRequestWebflowEventResolver(serviceTicketRequestWebflowEventResolver)
+    //        .adaptiveAuthenticationPolicy(adaptiveAuthenticationPolicy)
+    //        .identityProviders(identityProviders)
+    //        .ticketRegistry(ticketRegistry)
+    //        .applicationContext(applicationContext)
+    //        .servicesManager(servicesManager)
+    //        .delegatedAuthenticationPolicyEnforcer(
+    //            registeredServiceDelegatedAuthenticationPolicyAuditableEnforcer)
+    //        .authenticationSystemSupport(authenticationSystemSupport)
+    //        .casProperties(casProperties)
+    //        .centralAuthenticationService(centralAuthenticationService)
+    //        .authenticationRequestServiceSelectionStrategies(
+    //            authenticationRequestServiceSelectionStrategies)
+    //        .singleSignOnParticipationStrategy(webflowSingleSignOnParticipationStrategy)
+    //        .sessionStore(delegatedClientDistributedSessionStore)
+    //        .argumentExtractor(argumentExtractor)
+    //        .ticketFactory(ticketFactory)
+    //        .delegatedClientIdentityProvidersProducer(
+    //            delegatedClientIdentityProviderConfigurationProducer)
+    //        .delegatedClientIdentityProviderConfigurationPostProcessor(
+    //            delegatedClientIdentityProviderConfigurationPostProcessor)
+    //        .delegatedClientCookieGenerator(delegatedAuthenticationCookieGenerator)
+    //        .delegatedClientDistributedSessionCookieGenerator(
+    //            delegatedClientDistributedSessionCookieGenerator)
+    //        .registeredServiceAccessStrategyEnforcer(registeredServiceAccessStrategyEnforcer)
+    //        .delegatedClientAuthenticationRequestCustomizers(customizers)
+    //        .delegatedClientNameExtractor(pac4jDelegatedClientNameExtractor)
+    //        .delegatedClientIdentityProviderAuthorizers(authorizers)
+    //        .delegatedClientIdentityProviderRedirectionStrategy(
+    //            delegatedClientIdentityProviderRedirectionStrategy)
+    //        .singleLogoutRequestExecutor(defaultSingleLogoutRequestExecutor)
+    //        .logoutExecutionPlan(logoutExecutionPlan)
+    //        .build();
+    //  }
+    //
+    //  @Bean
+    //  @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    //  public DelegatedAuthenticationPreProcessor surrogateDelegatedAuthenticationPreProcessor() {
+    //    return new DelegatedAuthenticationPreProcessor() {
+    //      @Override
+    //      public Principal process(
+    //          final Principal principal,
+    //          final BaseClient client,
+    //          final Credential credential,
+    //          final Service service)
+    //          throws Throwable {
+    //        return principal;
+    //      }
+    //    };
+    //  }
+    //
+    //  @Bean
+    //  MongoClientSettingsBuilderCustomizer mongoMetricsSynchronousContextProvider(
+    //      ObservationRegistry registry) {
+    //    return (clientSettingsBuilder) -> {
+    //      clientSettingsBuilder
+    //          .contextProvider(ContextProviderFactory.create(registry))
+    //          .addCommandListener(new MongoObservationCommandListener(registry));
+    //    };
+    //  }
+
+    /**
+     * Ne fonctionne pas entièrement, nécessite un équivalent complet pour la nouvelle API.
+     *
+     * TODO: A remplacer ou améloirer.
+     *
+     * @param utils
+     * @return
+     */
+    @Bean
+    public RestTemplateCustomizer restTemplateCustomizer(final Utils utils) {
+        return restTemplate ->
+            restTemplate
+                .getInterceptors()
+                .add((request, body, execution) -> {
+                    final var context = SecurityContextHolder.getContext();
+                    final boolean hasPrincipal =
+                        context != null &&
+                        context.getAuthentication() != null &&
+                        context.getAuthentication().getPrincipal() != null;
+                    final HttpContext httpContext;
+
+                    if (hasPrincipal) {
+                        final Principal principal = (Principal) context.getAuthentication().getPrincipal();
+                        final Map<String, List<Object>> attributes = principal.getAttributes();
+                        final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
+                        final String superUserEmail = (String) utils.getAttributeValue(
+                            attributes,
+                            SUPER_USER_ATTRIBUTE
+                        );
+                        final String superUserCustomerId = (String) utils.getAttributeValue(
+                            attributes,
+                            SUPER_USER_CUSTOMER_ID_ATTRIBUTE
+                        );
+                        if (StringUtils.isNotBlank(superUserCustomerId)) {
+                            httpContext = utils.buildContext(superUserEmail);
+                        } else {
+                            httpContext = utils.buildContext(principalEmail);
+                        }
+                    } else {
+                        httpContext = utils.buildContext("admin@change-it.fr");
+                    }
+
+                    if (httpContext.getTenantIdentifier() != null) {
+                        request
+                            .getHeaders()
+                            .add(CommonConstants.X_TENANT_ID_HEADER, httpContext.getTenantIdentifier().toString());
+                    }
+                    if (httpContext.getRequestId() != null) {
+                        request.getHeaders().add(CommonConstants.X_REQUEST_ID_HEADER, httpContext.getRequestId());
+                    }
+                    if (httpContext.getApplicationId() != null) {
+                        request
+                            .getHeaders()
+                            .add(CommonConstants.X_APPLICATION_ID_HEADER, httpContext.getApplicationId());
+                    }
+
+                    // Hack for CAS - CAS is considered as an external server requiring proper roles
+                    request
+                        .getHeaders()
+                        .add(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_EXTERNAL);
+
+                    return execution.execute(request, body);
+                });
     }
 }

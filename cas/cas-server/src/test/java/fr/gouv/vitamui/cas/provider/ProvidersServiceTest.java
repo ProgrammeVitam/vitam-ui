@@ -1,13 +1,10 @@
 package fr.gouv.vitamui.cas.provider;
 
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import fr.gouv.vitamui.iam.client.IdentityProviderRestClient;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
-import lombok.val;
+import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.IdentityProviderDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,7 +40,7 @@ public final class ProvidersServiceTest {
 
     private ProvidersService service;
 
-    private IdentityProviderRestClient restClient;
+    private IdentityProvidersApi identityProvidersApi;
 
     private SAML2Client saml2Client;
 
@@ -54,11 +50,10 @@ public final class ProvidersServiceTest {
 
     @Before
     public void setUp() {
-        val clients = new Clients();
-        val builder = mock(Pac4jClientBuilder.class);
-        restClient = mock(IdentityProviderRestClient.class);
-        val utils = new Utils(null, 0, null, null, "");
-        service = new ProvidersService(clients, restClient, builder, utils);
+        final var clients = new Clients();
+        final var builder = mock(Pac4jClientBuilder.class);
+        identityProvidersApi = mock(IdentityProvidersApi.class);
+        service = new ProvidersService(clients, identityProvidersApi, builder);
 
         provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
@@ -76,23 +71,22 @@ public final class ProvidersServiceTest {
     @Test
     public void testGetProviders() {
         when(
-            restClient.getAll(
-                any(HttpContext.class),
-                eq(Optional.empty()),
-                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            identityProvidersApi.getAll(
+                eq(null),
+                eq(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)
             )
-        ).thenReturn(Arrays.asList(provider));
+        ).thenReturn(Collections.singletonList(provider));
 
         service.loadData();
 
-        val missingProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
+        final var missingProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
             service.getProviders(),
             "user1@vitamui.com",
             CUSTOMER_ID
         );
         assertFalse(missingProvider.isPresent());
 
-        val userProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
+        final var userProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
             service.getProviders(),
             "user1@company.com",
             CUSTOMER_ID
@@ -110,10 +104,9 @@ public final class ProvidersServiceTest {
     @Test
     public void testNoProviderResponse() {
         when(
-            restClient.getAll(
-                any(HttpContext.class),
-                eq(Optional.empty()),
-                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            identityProvidersApi.getAll(
+                eq(null),
+                eq(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)
             )
         ).thenReturn(null);
         try {
@@ -130,10 +123,9 @@ public final class ProvidersServiceTest {
     @Test
     public void testBadProviderResponse() {
         when(
-            restClient.getAll(
-                any(HttpContext.class),
-                eq(Optional.empty()),
-                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            identityProvidersApi.getAll(
+                eq(null),
+                eq(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)
             )
         ).thenThrow(new RuntimeException(ERROR_MESSAGE));
 

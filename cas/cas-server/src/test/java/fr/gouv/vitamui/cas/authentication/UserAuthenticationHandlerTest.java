@@ -1,16 +1,15 @@
 package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import fr.gouv.vitamui.iam.client.CasRestClient;
-import lombok.val;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.LoginRequestDto;
+import fr.gouv.vitamui.iam.openapiclient.domain.UserDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -32,14 +31,11 @@ import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialException;
-import javax.servlet.http.HttpServletRequest;
-import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -64,22 +60,15 @@ public final class UserAuthenticationHandlerTest {
 
     private UserAuthenticationHandler handler;
 
-    private CasRestClient casRestClient;
+    private CasApi casApi;
 
     private Credential credential;
     private LocalAttributeMap<Object> flowParameters;
 
     @Before
     public void setUp() {
-        casRestClient = mock(CasRestClient.class);
-        val utils = new Utils(null, 0, null, null, "");
-        handler = new UserAuthenticationHandler(
-            null,
-            new DefaultPrincipalFactory(),
-            casRestClient,
-            utils,
-            IP_HEADER_NAME
-        );
+        casApi = mock(CasApi.class);
+        handler = new UserAuthenticationHandler(null, new DefaultPrincipalFactory(), casApi, IP_HEADER_NAME);
         credential = new UsernamePasswordCredential("ignored", PASSWORD);
 
         RequestContext requestContext = mock(RequestContext.class);
@@ -101,64 +90,50 @@ public final class UserAuthenticationHandlerTest {
     }
 
     @Test
-    public void testSuccessfulAuthentication() throws GeneralSecurityException, PreventedException {
+    public void testSuccessfulAuthentication() throws Throwable {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PASSWORD),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenReturn(basicUser(UserStatusEnum.ENABLED));
+        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.ENABLED));
 
         // When
-        val result = handler.authenticate(credential, null);
+        final var result = handler.authenticate(credential, null);
 
         // Then
         assertEquals(USERNAME, result.getPrincipal().getId());
-        assertEquals(USERNAME, result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0));
-        assertEquals(CUSTOMER_ID, result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0));
+        assertEquals(USERNAME, result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_EMAIL).getFirst());
+        assertEquals(
+            CUSTOMER_ID,
+            result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).getFirst()
+        );
         assertNull(result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_EMAIL));
         assertNull(result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID));
     }
 
     @Test
-    public void testSuccessfulSubrogationAuthentication() throws GeneralSecurityException, PreventedException {
+    public void testSuccessfulSubrogationAuthentication() throws Throwable {
         // Given
         givenSubrogationRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(SUPER_USER_EMAIL),
-                eq(SUPER_USER_CUSTOMER_ID),
-                eq(PASSWORD),
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(IP_ADDRESS)
-            )
-        ).thenReturn(basicUser(UserStatusEnum.ENABLED));
+        when(casApi.login(eq(surrogateCredentials()))).thenReturn(basicUser(UserStatusEnum.ENABLED));
 
         // When
-        val result = handler.authenticate(credential, null);
+        final var result = handler.authenticate(credential, null);
 
         // Then
         assertEquals(SUPER_USER_EMAIL, result.getPrincipal().getId());
-        assertEquals(SUPER_USER_EMAIL, result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_EMAIL).get(0));
+        assertEquals(
+            SUPER_USER_EMAIL,
+            result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_EMAIL).getFirst()
+        );
         assertEquals(
             SUPER_USER_CUSTOMER_ID,
-            result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).get(0)
+            result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).getFirst()
         );
-        assertEquals(USERNAME, result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_EMAIL).get(0));
+        assertEquals(USERNAME, result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_EMAIL).getFirst());
         assertEquals(
             CUSTOMER_ID,
-            result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID).get(0)
+            result.getPrincipal().getAttributes().get(Constants.FLOW_SURROGATE_CUSTOMER_ID).getFirst()
         );
     }
 
@@ -167,17 +142,7 @@ public final class UserAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(PASSWORD),
-                eq(CUSTOMER_ID),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenReturn(null);
+        when(casApi.login(eq(userCredentials()))).thenReturn(null);
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountNotFoundException.class);
@@ -188,17 +153,7 @@ public final class UserAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(PASSWORD),
-                eq(CUSTOMER_ID),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenReturn(basicUser(UserStatusEnum.DISABLED));
+        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.DISABLED));
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
@@ -209,17 +164,7 @@ public final class UserAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PASSWORD),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenReturn(basicUser(UserStatusEnum.BLOCKED));
+        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.BLOCKED));
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
@@ -230,19 +175,9 @@ public final class UserAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        val user = basicUser(UserStatusEnum.ENABLED);
+        final var user = basicUser(UserStatusEnum.ENABLED);
         user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PASSWORD),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenReturn(user);
+        when(casApi.login(eq(userCredentials()))).thenReturn(user);
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(
@@ -255,17 +190,7 @@ public final class UserAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PASSWORD),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenThrow(new InvalidAuthenticationException(""));
+        when(casApi.login(eq(userCredentials()))).thenThrow(new InvalidAuthenticationException(""));
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(CredentialException.class);
@@ -276,17 +201,7 @@ public final class UserAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PASSWORD),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenThrow(new TooManyRequestsException(""));
+        when(casApi.login(eq(userCredentials()))).thenThrow(new TooManyRequestsException(""));
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountLockedException.class);
@@ -297,24 +212,14 @@ public final class UserAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(
-            casRestClient.login(
-                any(HttpContext.class),
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PASSWORD),
-                eq(null),
-                eq(null),
-                eq(IP_ADDRESS)
-            )
-        ).thenThrow(new BadRequestException(""));
+        when(casApi.login(eq(userCredentials()))).thenThrow(new BadRequestException(""));
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(PreventedException.class);
     }
 
     private UserDto basicUser(final UserStatusEnum status) {
-        val user = new UserDto();
+        final var user = new UserDto();
         user.setStatus(status);
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setPasswordExpirationDate(OffsetDateTime.now().plusDays(1));
@@ -333,5 +238,30 @@ public final class UserAuthenticationHandlerTest {
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, SUPER_USER_CUSTOMER_ID);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USERNAME);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID);
+    }
+
+    private LoginRequestDto userCredentials() {
+        final LoginRequestDto credentials = new LoginRequestDto();
+
+        credentials.setLoginEmail(USERNAME);
+        credentials.setPassword(PASSWORD);
+        credentials.setLoginCustomerId(CUSTOMER_ID);
+        credentials.setSurrogateEmail(null);
+        credentials.setSurrogateCustomerId(null);
+        credentials.setIp(IP_ADDRESS);
+
+        return credentials;
+    }
+
+    private LoginRequestDto surrogateCredentials() {
+        final LoginRequestDto credentials = userCredentials();
+
+        credentials.setSurrogateEmail(credentials.getLoginEmail());
+        credentials.setSurrogateCustomerId(credentials.getLoginCustomerId());
+
+        credentials.setLoginEmail(SUPER_USER_EMAIL);
+        credentials.setLoginCustomerId(SUPER_USER_CUSTOMER_ID);
+
+        return credentials;
     }
 }
