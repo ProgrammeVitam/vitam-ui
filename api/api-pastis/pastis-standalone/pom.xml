@@ -228,7 +228,7 @@
                         <executions>
                             <!-- download openjdk -->
                             <execution>
-                                <id>download-jdk</id>
+                                <id>download-jre</id>
                                 <phase>initialize</phase>
                                 <goals>
                                     <goal>run</goal>
@@ -236,28 +236,27 @@
                                 <configuration>
                                     <target>
                                         <get
-                                                src="https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jdk_x64_windows_hotspot_21.0.7_6.zip"
-                                                dest="${project.build.directory}/jdk21.zip"
-                                                verbose="false"
-                                                usetimestamp="true"/>
+                                            src="https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9+10/OpenJDK21U-jre_x64_windows_hotspot_21.0.9_10.zip"
+                                            dest="${project.build.directory}/jre21.zip"
+                                            verbose="false"
+                                            usetimestamp="true"/>
                                     </target>
                                 </configuration>
                             </execution>
-
                             <!-- unzip jdk -->
                             <execution>
-                                <id>unzip-jdk</id>
+                                <id>unzip-jre</id>
                                 <phase>package</phase>
-                                <configuration>
-                                    <target>
-                                        <echo message="unzipping file"/>
-                                        <unzip src="${project.build.directory}/jdk21.zip"
-                                               dest="${project.build.directory}/jdk21/"/>
-                                    </target>
-                                </configuration>
                                 <goals>
                                     <goal>run</goal>
                                 </goals>
+                                <configuration>
+                                    <target>
+                                        <echo message="unzipping file"/>
+                                        <unzip src="${project.build.directory}/jre21.zip"
+                                               dest="${project.build.directory}/"/>
+                                    </target>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -283,9 +282,8 @@
                             <errTitle>Erreur</errTitle>
                             <jre>
                                 <minVersion>21</minVersion>
-                                <path>./jdk21/jdk-21.0.7+6</path>
+                                <path>./jdk-21.0.9+10-jre</path>
                                 <requires64Bit/>
-                                <requiresJdk/>
                             </jre>
                             <versionInfo>
                                 <fileVersion>1.0.0.0</fileVersion>
