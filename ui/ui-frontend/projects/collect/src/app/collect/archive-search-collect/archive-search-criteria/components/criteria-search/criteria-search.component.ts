@@ -35,7 +35,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from 'ui-frontend-common';
+import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'ui-frontend-common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-criteria-search',
@@ -43,7 +44,7 @@ import { CriteriaValue, SearchCriteria, SearchCriteriaTypeEnum } from 'ui-fronte
   styleUrls: ['./criteria-search.component.scss'],
 })
 export class CriteriaSearchComponent {
-  constructor() {}
+  constructor(private translateService: TranslateService) {}
 
   @Input()
   criteriaKey: string;
@@ -65,5 +66,15 @@ export class CriteriaSearchComponent {
     this.criteriaVal.values.forEach((value) => {
       this.removeCriteria(keyElt, value.value);
     });
+  }
+
+  getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
+    if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
+      return criteriaValue.label;
+    }
+    if (key === 'ORPHANS_NODE') {
+      return this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
+    }
+    return criteriaValue.value?.value ?? '';
   }
 }
