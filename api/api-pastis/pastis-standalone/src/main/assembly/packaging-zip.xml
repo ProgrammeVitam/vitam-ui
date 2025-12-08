@@ -12,7 +12,7 @@
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>*.exe</include>
-                <include>jdk17/jdk-17.0.13+11/**</include>
+                <include>jdk-17.0.17+10-jre/**</include>
             </includes>
         </fileSet>
         <fileSet>
