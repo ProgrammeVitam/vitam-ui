@@ -88,9 +88,7 @@ export class CriteriaSearchComponent implements OnInit {
       );
     }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
-      return criteriaValue.keyTranslated
-        ? this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue.label}`)
-        : criteriaValue.label;
+      return criteriaValue.label;
     }
     if (key === 'ORPHANS_NODE') {
       return this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE');
