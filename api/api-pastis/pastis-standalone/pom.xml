@@ -268,7 +268,7 @@
                         <executions>
                             <!-- download openjdk -->
                             <execution>
-                                <id>download-jdk</id>
+                                <id>download-jre</id>
                                 <phase>initialize</phase>
                                 <goals>
                                     <goal>run</goal>
@@ -276,28 +276,27 @@
                                 <configuration>
                                     <target>
                                         <get
-                                            src="https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip"
-                                            dest="${project.build.directory}/jdk11.zip"
+                                            src="https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.29+7/OpenJDK11U-jre_x64_windows_hotspot_11.0.29_7.zip"
+                                            dest="${project.build.directory}/jre11.zip"
                                             verbose="false"
-                                            usetimestamp="true" />
+                                            usetimestamp="true"/>
                                     </target>
                                 </configuration>
                             </execution>
-
                             <!-- unzip jdk -->
                             <execution>
-                                <id>unzip-jdk</id>
+                                <id>unzip-jre</id>
                                 <phase>package</phase>
-                                <configuration>
-                                    <tasks>
-                                        <echo message="unzipping file" />
-                                        <unzip src="${project.build.directory}/jdk11.zip"
-                                            dest="${project.build.directory}/jdk11/" />
-                                    </tasks>
-                                </configuration>
                                 <goals>
                                     <goal>run</goal>
                                 </goals>
+                                <configuration>
+                                    <target>
+                                        <echo message="unzipping file"/>
+                                        <unzip src="${project.build.directory}/jre11.zip"
+                                               dest="${project.build.directory}/"/>
+                                    </target>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -324,9 +323,8 @@
                             <errTitle>Erreur</errTitle>
                             <jre>
                                 <minVersion>11</minVersion>
-                                <path>./jdk11/jdk-11</path>
+                                <path>./jdk-11.0.29+7-jre</path>
                                 <requires64Bit />
-                                <requiresJdk />
                             </jre>
                             <versionInfo>
                                 <fileVersion>1.0.0.0</fileVersion>
