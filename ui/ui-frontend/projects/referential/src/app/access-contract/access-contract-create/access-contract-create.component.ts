@@ -34,34 +34,72 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
   AccessContract,
   AccessContractService,
+  AgencyService,
   ConfirmDialogService,
   FilingPlanMode,
   Option,
+  SelectComponent,
   Status,
+  VitamUICommonModule,
+  VitamUILibraryModule,
   VitamuiSelectOptions,
-  AgencyService,
 } from 'vitamui-library';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AccessContractPreviewModule } from '../access-contract-preview/access-contract-preview.module';
+import { CommonModule } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-create',
   templateUrl: './access-contract-create.component.html',
   styleUrls: ['./access-contract-create.component.scss'],
-  standalone: false,
+  imports: [
+    AccessContractPreviewModule,
+    CommonModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatRadioModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    SelectComponent,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
   protected readonly FILLING_PLAN_MODE = FilingPlanMode;
-  @Input() tenantIdentifier: number;
-  @Input() isSlaveMode: boolean;
+  protected readonly tenantIdentifier: number;
+  protected readonly isSlaveMode: boolean;
 
   form: FormGroup;
 
@@ -86,13 +124,16 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<AccessContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { tenantIdentifier: number; isSlaveMode: boolean },
     private formBuilder: FormBuilder,
     private accessContractCreateValidators: AccessContractCreateValidators,
     private accessContractService: AccessContractService,
     private agencyService: AgencyService,
     private confirmDialogService: ConfirmDialogService,
-  ) {}
+  ) {
+    this.tenantIdentifier = data.tenantIdentifier;
+    this.isSlaveMode = data.isSlaveMode;
+  }
 
   ngOnInit() {
     this.agencyService.getOriginatingAgenciesAsOptions().subscribe((options: Option[]) => (this.originatingAgenciesOptions = { options }));

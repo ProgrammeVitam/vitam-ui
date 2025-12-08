@@ -111,9 +111,9 @@ describe('AccessContractCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AccessContractCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
+        AccessContractCreateComponent,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,

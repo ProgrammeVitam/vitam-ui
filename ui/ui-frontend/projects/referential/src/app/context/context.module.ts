@@ -43,12 +43,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { ContextCreateModule } from './context-create';
 import { ContextEditModule } from './context-edit/context-edit.module';
 import { ContextListComponent } from './context-list/context-list.component';
 import { ContextPreviewModule } from './context-preview/context-preview.module';
 import { ContextRoutingModule } from './context-routing.module';
 import { ContextComponent } from './context.component';
+import { ContextCreateComponent } from './context-create/context-create.component';
 
 @NgModule({
   imports: [
@@ -56,7 +56,7 @@ import { ContextComponent } from './context.component';
     RouterModule,
     VitamUICommonModule,
     ContextRoutingModule,
-    ContextCreateModule,
+    ContextCreateComponent,
     ContextEditModule,
     ContextPreviewModule,
     MatMenuModule,

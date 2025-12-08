@@ -44,11 +44,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
-import { ManagementContractCreateModule } from './management-contract-create/management-contract-create.module';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 import { ManagementContractPreviewModule } from './management-contract-preview/management-contract-preview.module';
 import { ManagementContractRoutingModule } from './management-contract-routing.module';
 import { ManagementContractComponent } from './management-contract.component';
+import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 
 @NgModule({
   declarations: [ManagementContractComponent, ManagementContractListComponent],
@@ -65,7 +65,7 @@ import { ManagementContractComponent } from './management-contract.component';
     MatTabsModule,
     ManagementContractRoutingModule,
     ManagementContractPreviewModule,
-    ManagementContractCreateModule,
+    ManagementContractCreateComponent,
   ],
 })
 export class ManagementContractModule {}

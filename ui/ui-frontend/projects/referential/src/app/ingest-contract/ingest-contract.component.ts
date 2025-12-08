@@ -109,6 +109,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   async openCreateIngestContractDialog() {
     const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);
+    this.dialog.closeAll(); // Prevent opening multiple dialogs
     const dialogRef = this.dialog.open<IngestContractCreateComponent, IngestContractCreateComponent['data']>(
       IngestContractCreateComponent,
       {

@@ -34,22 +34,45 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { SecurityProfileEditPermissionModule } from './security-profile-edit-permission/security-profile-edit-permission.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-security-profile-create',
   templateUrl: './security-profile-create.component.html',
   styleUrls: ['./security-profile-create.component.scss'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    SecurityProfileEditPermissionModule,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
 export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
-  @Input() isSlaveMode: boolean;
+  isSlaveMode: boolean;
 
   form: FormGroup;
   hasCustomGraphicIdentity = false;
@@ -63,12 +86,14 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<SecurityProfileCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { isSlaveMode: boolean },
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private securityProfileService: SecurityProfileService,
     private securityProfileCreateValidators: SecurityProfileCreateValidators,
-  ) {}
+  ) {
+    this.isSlaveMode = data.isSlaveMode;
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
