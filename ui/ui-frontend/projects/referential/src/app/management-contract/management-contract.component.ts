@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'vitamui-library';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
+import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-management-contract',
@@ -48,14 +49,14 @@ import { ManagementContractListComponent } from './management-contract-list/mana
   styleUrls: ['./management-contract.component.scss'],
   standalone: false,
 })
-export class ManagementContractComponent extends SidenavPage<ManagementContract> implements OnInit, OnDestroy {
+export class ManagementContractComponent extends SidenavPage<ManagementContract> {
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
 
   search = '';
   tenantId: number;
   isSlaveMode: boolean;
 
-  subscriptions: Subscription = new Subscription();
+  #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
 
   constructor(
     public dialog: MatDialog,
@@ -66,7 +67,6 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
-      this.updateSlaveMode();
     });
 
     this.route.params.subscribe((params) => {
@@ -76,15 +76,19 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
     });
   }
 
-  ngOnInit() {
-    this.updateSlaveMode();
-  }
+  async openCreateManagementContractDialog() {
+    const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);
+    this.dialog.closeAll(); // Prevent opening multiple dialogs
+    const dialogRef = this.dialog.open<ManagementContractCreateComponent, ManagementContractCreateComponent['data']>(
+      ManagementContractCreateComponent,
+      {
+        disableClose: true,
+        data: {
+          isSlaveMode: isSlaveMode,
+        },
+      },
+    );
 
-  openCreateManagementcontractDialog() {
-    const dialogRef = this.dialog.open(ManagementContractCreateComponent, {
-      disableClose: true,
-    });
-    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         this.refreshList();
@@ -103,19 +107,7 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
     this.search = search || '';
   }
 
-  updateSlaveMode() {
-    this.subscriptions.add(
-      this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').subscribe((value) => {
-        this.isSlaveMode = value;
-      }),
-    );
-  }
-
   showManagementContract(item: ManagementContract) {
     this.openPanel(item);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 }

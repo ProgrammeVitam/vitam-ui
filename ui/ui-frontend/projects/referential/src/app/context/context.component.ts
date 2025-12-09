@@ -36,12 +36,14 @@
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { ApplicationService, Context, GlobalEventService, SidenavPage } from 'vitamui-library';
 
 import { ContextCreateComponent } from './context-create/context-create.component';
 import { ContextListComponent } from './context-list/context-list.component';
+import { shareReplay } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-context',
@@ -51,24 +53,31 @@ import { ContextListComponent } from './context-list/context-list.component';
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   search = '';
-  isSlaveMode: boolean;
   tenantIdentifier: string;
 
   @ViewChild(ContextListComponent, { static: true }) contextListComponent: ContextListComponent;
 
+  #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('CONTEXT').pipe(shareReplay(1));
+
   constructor(
     public dialog: MatDialog,
     public route: ActivatedRoute,
-    private router: Router,
     globalEventService: GlobalEventService,
     private applicationService: ApplicationService,
   ) {
     super(route, globalEventService);
   }
 
-  openCreateContextDialog() {
-    const dialogRef = this.dialog.open(ContextCreateComponent, { disableClose: true });
-    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
+  async openCreateContextDialog() {
+    const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);
+    this.dialog.closeAll(); // Prevent opening multiple dialogs
+    const dialogRef = this.dialog.open<ContextCreateComponent, ContextCreateComponent['data']>(ContextCreateComponent, {
+      disableClose: true,
+      data: {
+        isSlaveMode: isSlaveMode,
+      },
+    });
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
         this.refreshList();
@@ -83,25 +92,12 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
     this.contextListComponent.searchContextOrdered();
   }
 
-  updateSlaveMode() {
-    this.applicationService.isApplicationExternalIdentifierEnabled('CONTEXT').subscribe((value) => {
-      this.isSlaveMode = value;
-    });
-  }
-
   onSearchSubmit(search: string) {
     this.search = search || '';
   }
 
   ngOnInit() {
-    this.updateSlaveMode();
-    this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
-    });
-  }
-
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.route.params.subscribe((params) => (this.tenantIdentifier = params.tenantIdentifier));
   }
 
   showContext(item: Context) {

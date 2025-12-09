@@ -82,11 +82,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-domains-input',
@@ -165,6 +166,7 @@ describe('SecurityProfileCreateComponent', () => {
     });
     await TestBed.configureTestingModule({
       imports: [
+        SecurityProfileCreateComponent,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
@@ -173,8 +175,9 @@ describe('SecurityProfileCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        TranslateModule.forRoot(),
       ],
-      declarations: [SecurityProfileCreateComponent, SecurityProfileEditPermissionStubComponent, DomainInputStubComponent],
+      declarations: [SecurityProfileEditPermissionStubComponent, DomainInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -183,7 +186,11 @@ describe('SecurityProfileCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(SecurityProfileCreateComponent, {
+        remove: { imports: [VitamUILibraryModule] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

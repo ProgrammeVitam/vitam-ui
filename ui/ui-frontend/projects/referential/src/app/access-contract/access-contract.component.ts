@@ -51,10 +51,11 @@ import {
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 
-import { Subject, Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
+import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-access',
@@ -65,11 +66,10 @@ import { AccessContractListComponent } from './access-contract-list/access-contr
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
   public search = '';
   public tenantIdentifier: number;
-  public isSlaveMode = false;
 
   @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
 
-  private readonly destroyer$ = new Subject<void>();
+  #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').pipe(shareReplay(1));
 
   constructor(
     public globalEventService: GlobalEventService,
@@ -85,24 +85,26 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
 
   ngOnInit() {
     this.route.params.subscribe((params) => (this.tenantIdentifier = params.tenantIdentifier));
-    this.globalEventService.tenantEvent.subscribe(() => {
-      this.refreshList();
-      this.updateSlaveMode();
-    });
-
-    this.updateSlaveMode();
+    this.globalEventService.tenantEvent.subscribe(() => this.refreshList());
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
-    this.destroyer$.next();
-    this.destroyer$.complete();
   }
 
-  public openCreateAccesscontractDialog() {
-    const dialogRef = this.dialog.open(AccessContractCreateComponent, { disableClose: true });
-    dialogRef.componentInstance.tenantIdentifier = this.tenantIdentifier;
-    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
+  async openCreateAccessContractDialog() {
+    const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);
+    this.dialog.closeAll(); // Prevent opening multiple dialogs
+    const dialogRef = this.dialog.open<AccessContractCreateComponent, AccessContractCreateComponent['data']>(
+      AccessContractCreateComponent,
+      {
+        disableClose: true,
+        data: {
+          tenantIdentifier: this.tenantIdentifier,
+          isSlaveMode: isSlaveMode,
+        },
+      },
+    );
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
@@ -163,11 +165,5 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     }
 
     this.accessContractListComponent.searchAccessContractOrdered();
-  }
-
-  private updateSlaveMode() {
-    this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').subscribe((value) => {
-      this.isSlaveMode = value;
-    });
   }
 }

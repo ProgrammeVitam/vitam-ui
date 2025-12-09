@@ -42,11 +42,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
-import { SecurityProfileCreateModule } from './security-profile-create';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 import { SecurityProfilePreviewModule } from './security-profile-preview/security-profile-preview.module';
 import { SecurityProfileRoutingModule } from './security-profile-routing.module';
 import { SecurityProfileComponent } from './security-profile.component';
+import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
 
 @NgModule({
   imports: [
@@ -54,7 +54,7 @@ import { SecurityProfileComponent } from './security-profile.component';
     RouterModule,
     VitamUICommonModule,
     SecurityProfileRoutingModule,
-    SecurityProfileCreateModule,
+    SecurityProfileCreateComponent,
     SecurityProfilePreviewModule,
     MatMenuModule,
     MatDialogModule,
