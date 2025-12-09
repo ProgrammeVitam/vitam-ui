@@ -84,9 +84,7 @@ export class CriteriaSearchComponent {
       );
     }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
-      return criteriaValue.keyTranslated
-        ? this.translateService.instant(`COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue.label}`)
-        : criteriaValue.label;
+      return criteriaValue.label;
     }
     if (key === 'ORPHANS_NODE') {
       return this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
