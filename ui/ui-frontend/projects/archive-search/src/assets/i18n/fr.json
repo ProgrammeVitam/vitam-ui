@@ -75,7 +75,7 @@
       "DRAG_AND_DROP": "Glisser ou déposer",
       "BROWSE": "Ou parcourir",
       "ACCEPTED_FORMAT": "format accepté : xml",
-      "MAX_SIZE": "Taille maximale conseillée: 10 GB",
+      "MAX_SIZE": "Taille maximale conseillée : 10 GB",
       "OPERATION_MESSAGE_IDENTIFIER": "Identifiant de la demande de transfert d'origine",
       "TRANSFER_REALISATION_DATE": "Date de la réalisation du transfert",
       "ENTRY_CONTRACT": "Contrat d'entrée du transfert",
@@ -170,7 +170,7 @@
       },
       "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n'est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
       "UA_WITH_NO_PREVENT_RULES": "Cette règle n'est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
-      "SAME_TARGET_RULE": "Règle cible identique: {{ value }}",
+      "SAME_TARGET_RULE": "Règle cible identique : {{ value }}",
       "REQUIRED_RULE_OR_START_DATE": "Nécessite au moins une règle ou une date de début pour la mise à jour"
     },
     "FINAL_ACTION": {
