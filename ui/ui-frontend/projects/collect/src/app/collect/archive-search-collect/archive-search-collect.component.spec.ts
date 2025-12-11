@@ -71,6 +71,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
 import arrayWithExactContents = jasmine.arrayWithExactContents;
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -219,7 +220,9 @@ describe('ArchiveSearchCollectComponent', () => {
     describe('checkChildrenBoxChange', () => {
       it('should include the unselected child when parent is checked, into the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: false,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -234,13 +237,14 @@ describe('ArchiveSearchCollectComponent', () => {
         expect(component.isIndeterminate).toBeTrue();
         expect(component.itemSelected).toBe(0);
         expect(component.itemNotSelected).toBe(0);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
 
       it('should exclude the selected child when parent is checked, from the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
         component.itemNotSelected = 1;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: true,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -254,12 +258,13 @@ describe('ArchiveSearchCollectComponent', () => {
         expect(component.isIndeterminate).toBeFalsy();
         expect(component.itemSelected).toBe(1);
         expect(component.itemNotSelected).toBe(0);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
 
       it('should include the selected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: true,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -278,7 +283,9 @@ describe('ArchiveSearchCollectComponent', () => {
 
       it('should not include the unselected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: false,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -292,7 +299,6 @@ describe('ArchiveSearchCollectComponent', () => {
         expect(component.isIndeterminate).toBeFalsy();
         expect(component.itemSelected).toBe(0);
         expect(component.itemNotSelected).toBe(0);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
     });
   });

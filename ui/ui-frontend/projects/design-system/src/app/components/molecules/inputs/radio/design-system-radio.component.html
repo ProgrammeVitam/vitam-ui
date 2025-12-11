@@ -1,0 +1,23 @@
+<h2>Radio buttons</h2>
+
+<h3>mat-radio-button</h3>
+<div class="gap-4">
+  @for (
+    type of [
+      { disabled: false, hover: false },
+      { disabled: false, hover: true },
+      { disabled: true, hover: false },
+    ];
+    track type
+  ) {
+    <div class="row">
+      <mat-radio-group class="hgap-4">
+        @for (state of [{}, { checked: true }]; track state) {
+          <mat-radio-button class="col" [checked]="state.checked" [disabled]="type.disabled" [class.hover]="type.hover">
+            Text form option label
+          </mat-radio-button>
+        }
+      </mat-radio-group>
+    </div>
+  }
+</div>

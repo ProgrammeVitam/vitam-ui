@@ -1,6 +1,21 @@
 @use '../bootstrap';
 @use '../spacing';
 
+:root {
+  --mdc-radio-state-layer-size: 24px;
+
+  .mat-mdc-radio-button.mat-primary {
+    --mdc-radio-unselected-icon-color: var(--vitamui-grey-700);
+    --mdc-radio-disabled-unselected-icon-color: var(--vitamui-grey-700);
+    --mdc-radio-disabled-unselected-icon-opacity: 1;
+    --mdc-radio-disabled-selected-icon-color: var(--vitamui-grey-700);
+    --mdc-radio-disabled-selected-icon-opacity: 1;
+
+    --mat-radio-label-text-color: var(--vitamui-grey-900);
+    --mat-radio-disabled-label-color: var(--vitamui-grey-700);
+  }
+}
+
 mat-radio-group mat-radio-button + *:not(mat-radio-button) {
   @extend .py-4;
   @extend .px-5;
@@ -10,4 +25,60 @@ mat-radio-group mat-radio-button + *:not(mat-radio-button) {
   align-items: stretch !important;
 
   background-color: var(--vitamui-background);
+}
+
+.mat-mdc-radio-button {
+  .mdc-radio {
+    width: 16px !important;
+    height: 16px !important;
+    padding: 4px !important;
+
+    .mat-mdc-radio-touch-target {
+      width: 30px !important;
+      height: 30px !important;
+    }
+
+    .mdc-radio__background {
+      width: 16px !important;
+      height: 16px !important;
+
+      &::before {
+        opacity: 1 !important;
+        background-color: var(--vitamui-primary-50) !important;
+        top: calc(-1 * (var(--mdc-radio-state-layer-size) - 16px) / 2);
+        left: calc(-1 * (var(--mdc-radio-state-layer-size) - 16px) / 2);
+      }
+
+      .mdc-radio__outer-circle {
+        border-width: 1px !important;
+      }
+
+      .mdc-radio__inner-circle {
+        border-width: 8px !important;
+      }
+    }
+
+    .mat-ripple-element {
+      display: none;
+    }
+  }
+
+  .mdc-label {
+    padding-left: 10px;
+  }
+
+  &:not(:hover, .hover) .mdc-radio__native-control:focus + .mdc-radio__background::before {
+    transform: scale(0) !important;
+  }
+
+  .mdc-radio__native-control:disabled + .mdc-radio__background > .mdc-radio__outer-circle {
+    background-color: var(--vitamui-grey-200);
+  }
+
+  &:hover,
+  &.hover {
+    .mdc-radio__background::before {
+      transform: scale(calc(30 / 24)) !important;
+    }
+  }
 }

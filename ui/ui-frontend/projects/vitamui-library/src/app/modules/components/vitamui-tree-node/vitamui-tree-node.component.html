@@ -20,8 +20,10 @@
   [vitamuiTooltip]="node?.title"
   [vitamuiTooltipShowDelay]="300"
 >
-  <label class="node-label" [ngClass]="isVirtualNode() ? 'virtual' : ''" (click)="onLabelClick($event)">
-    <i class="mr-1 vitamui-icon" [ngClass]="isVirtualNode() ? 'vitamui-icon-folder-full' : icon"></i>
+  <span class="node-label hgap-1" [ngClass]="isVirtualNode() ? 'virtual' : ''" (click)="onLabelClick($event)">
+    @if (isVirtualNode() || icon) {
+      <i class="vitamui-icon" [ngClass]="isVirtualNode() ? 'vitamui-icon-folder-full' : icon"></i>
+    }
     {{ node?.title }}
-  </label>
+  </span>
 </mat-checkbox>

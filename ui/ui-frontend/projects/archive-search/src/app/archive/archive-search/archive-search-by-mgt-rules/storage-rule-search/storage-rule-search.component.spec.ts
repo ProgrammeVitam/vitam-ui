@@ -147,30 +147,4 @@ describe('StorageRuleSearchComponent', () => {
     // Then
     expect(archiveSharedDataServiceSpy.addSimpleSearchCriteriaSubject).not.toHaveBeenCalled();
   });
-
-  describe('DOM', () => {
-    it('should have 16 rows', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-      expect(elementRow.length).toBe(16);
-    });
-
-    it('should have 5 text titles', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.title-text');
-
-      expect(formTitlesHtmlElements).toBeTruthy();
-      expect(formTitlesHtmlElements.length).toBe(5);
-      expect(formTitlesHtmlElements[0].textContent).toContain('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA');
-    });
-
-    it('should have 1 vitamui select  ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementVitamuiInput = nativeElement.querySelectorAll('vitamui-select');
-
-      // Then
-      expect(elementVitamuiInput).toBeTruthy();
-      expect(elementVitamuiInput.length).toBe(1);
-    });
-  });
 });

@@ -369,14 +369,13 @@
         <ng-container *ngTemplateOutlet="checkbox"></ng-container>
       </th>
       <td mat-cell *matCellDef="let archiveUnit">
-        <label class="vitamui-checkbox wide">
-          <input
-            [id]="archiveUnit?.['#id']"
-            (change)="checkChildrenBoxChange(archiveUnit, $event)"
-            type="checkbox"
-            [checked]="isAllChecked"
-          />
-        </label>
+        <mat-checkbox
+          [id]="archiveUnit?.['#id']"
+          class="p-2"
+          (change)="checkChildrenBoxChange(archiveUnit, $event)"
+          [checked]="isAllChecked"
+        >
+        </mat-checkbox>
       </td>
     </ng-container>
 
@@ -633,9 +632,8 @@
 </ng-template>
 
 <ng-template #checkbox>
-  <label class="vitamui-checkbox wide" (change)="checkParentBoxChange($event)">
-    <input id="all" type="checkbox" [checked]="isAllChecked" [indeterminate]="isIndeterminate" />
-  </label>
+  <mat-checkbox id="all" class="p-2" (change)="checkParentBoxChange($event)" [checked]="isAllChecked" [indeterminate]="isIndeterminate">
+  </mat-checkbox>
 </ng-template>
 <ng-template #type>
   <span>

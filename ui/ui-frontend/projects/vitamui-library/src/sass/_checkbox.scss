@@ -10,12 +10,12 @@
     &.mat-primary {
       --mdc-checkbox-selected-checkmark-color: var(--vitamui-white);
 
-      --mdc-checkbox-unselected-hover-state-layer-opacity: 1;
-      --mdc-checkbox-unselected-hover-state-layer-color: transparent;
       --mdc-checkbox-unselected-icon-color: var(--vitamui-grey-700);
 
-      --mdc-checkbox-selected-hover-state-layer-opacity: 1;
-      --mdc-checkbox-selected-hover-state-layer-color: var(--vitamui-primary-50);
+      --mat-checkbox-label-text-color: var(--vitamui-grey-900);
+
+      --mat-checkbox-disabled-label-color: var(--vitamui-grey-700);
+      --mdc-checkbox-disabled-selected-checkmark-color: var(--vitamui-grey-700);
     }
   }
   .mat-mdc-checkbox-touch-target {
@@ -32,12 +32,48 @@
     width: $boxSize;
     height: $boxSize;
     border-width: 1px;
+    border-radius: 3px;
+
+    border-color: var(--vitamui-grey-700) !important;
   }
-  .mdc-checkbox__ripple {
-    border-radius: 2px;
+  input:checked:not(:disabled),
+  input:indeterminate:not(:disabled) {
+    ~ .mdc-checkbox__background {
+      border-color: var(--vitamui-primary) !important;
+    }
+  }
+  .mat-mdc-checkbox {
+    label {
+      padding-left: 10px;
+    }
+    .mdc-checkbox__ripple {
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      top: calc(50% - 15px);
+      left: calc(50% - 15px);
+      background-color: var(--vitamui-primary-50) !important;
+      opacity: 0 !important;
+    }
+    &:hover,
+    &.hover {
+      .mdc-checkbox__ripple {
+        opacity: 1 !important;
+      }
+    }
   }
   .mdc-checkbox__checkmark {
-    padding: 1px;
+    padding: 2px;
+  }
+  .mdc-checkbox__checkmark-path {
+    stroke-width: 6px;
+  }
+  .mdc-checkbox__mixedmark {
+    width: 8px;
+  }
+  .mdc-checkbox--disabled .mdc-checkbox__background {
+    background-color: var(--vitamui-grey-200) !important;
   }
 }
 

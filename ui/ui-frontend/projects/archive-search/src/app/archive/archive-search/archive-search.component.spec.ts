@@ -72,6 +72,7 @@ import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-c
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../models/nodedata.interface';
 import arrayWithExactContents = jasmine.arrayWithExactContents;
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -266,7 +267,9 @@ describe('ArchiveSearchComponent', () => {
     describe('checkChildrenBoxChange', () => {
       it('should include the unselected child when parent is checked, into the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: false,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -282,13 +285,14 @@ describe('ArchiveSearchComponent', () => {
         expect(component.selectedItemCount).toBe(0);
         expect(component.itemNotSelected).toBe(0);
         expect(component.selectedHoldingUnitItemCount).toBe(0);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
 
       it('should exclude the selected child when parent is checked, from the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
         component.itemNotSelected = 1;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: true,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -303,12 +307,13 @@ describe('ArchiveSearchComponent', () => {
         expect(component.selectedItemCount).toBe(1);
         expect(component.itemNotSelected).toBe(0);
         expect(component.selectedHoldingUnitItemCount).toBe(1);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
 
       it('should include the selected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: true,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -324,12 +329,13 @@ describe('ArchiveSearchComponent', () => {
         expect(component.selectedItemCount).toBe(1);
         expect(component.itemNotSelected).toBe(0);
         expect(component.selectedHoldingUnitItemCount).toBe(1);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
 
       it('should not include the unselected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: false } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: false,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -344,12 +350,13 @@ describe('ArchiveSearchComponent', () => {
         expect(component.selectedItemCount).toBe(0);
         expect(component.itemNotSelected).toBe(0);
         expect(component.selectedHoldingUnitItemCount).toBe(0);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
 
       it('should not increase selectedHoldingUnitItemCount if unitType is not HOLDING_UNIT', () => {
         component.isAllChecked = false;
-        const event: Event = jasmine.createSpyObj<Event>(['stopPropagation'], { target: { checked: true } as HTMLInputElement });
+        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+          checked: true,
+        });
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -365,7 +372,6 @@ describe('ArchiveSearchComponent', () => {
         expect(component.selectedItemCount).toBe(1);
         expect(component.itemNotSelected).toBe(0);
         expect(component.selectedHoldingUnitItemCount).toBe(0);
-        expect(event.stopPropagation).toHaveBeenCalled();
       });
     });
   });

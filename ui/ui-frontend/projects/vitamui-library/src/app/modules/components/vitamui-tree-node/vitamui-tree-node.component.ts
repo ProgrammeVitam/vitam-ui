@@ -78,6 +78,7 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
     this.labelClick.emit();
     if (!this.labelIsLinkedToCheckbox) {
       event.stopPropagation();
+      event.preventDefault();
     } else {
       this.node.checked = !this.node.checked;
     }

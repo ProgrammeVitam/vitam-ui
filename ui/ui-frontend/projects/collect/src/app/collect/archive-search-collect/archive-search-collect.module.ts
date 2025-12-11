@@ -92,6 +92,8 @@ import {
   MatRowDef,
   MatTable,
 } from '@angular/material/table';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -123,6 +125,8 @@ import {
     MatHeaderRowDef,
     MatRow,
     MatRowDef,
+    MatMiniFabButton,
+    MatCheckbox,
   ],
   declarations: [
     AccessRuleSearchComponent,

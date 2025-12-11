@@ -61,7 +61,7 @@
       <mat-dialog-content>
         <div class="gap-4">
           <div class="gap-2">
-            <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }}</div>
+            <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }}</div>
             <mat-button-toggle-group
               formControlName="includeLifeCycleLogs"
               #group="matButtonToggleGroup"
@@ -73,7 +73,7 @@
           </div>
 
           <div class="gap-2">
-            <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
+            <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
             <mat-button-toggle-group formControlName="sedaVersion" class="vitamui-button-toggle-group">
               <mat-button-toggle value="2.1">SEDA 2.1</mat-button-toggle>
               <mat-button-toggle value="2.2">SEDA 2.2</mat-button-toggle>
@@ -83,7 +83,7 @@
 
           <div class="gap-5">
             <div class="gap-2">
-              <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
+              <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
               <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
                 <mat-button-toggle [value]="UsageVersionEnum.ALL">{{ 'ARCHIVE_SEARCH.DIP.ALL' | translate }} </mat-button-toggle>
                 <mat-button-toggle [value]="UsageVersionEnum.NONE">{{ 'ARCHIVE_SEARCH.DIP.NONE' | translate }} </mat-button-toggle>
@@ -130,7 +130,7 @@
           </div>
 
           <div class="gap-2">
-            <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT' | translate }}</div>
+            <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT' | translate }}</div>
             <div class="col-6">
               <vitamui-slide-toggle formControlName="exportWithTree">
                 {{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT_MESSAGE' | translate }}

@@ -36,10 +36,11 @@
  */
 import { Component } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
-  selector: 'design-system-checkbox',
-  imports: [MatCheckboxModule],
-  templateUrl: './design-system-checkbox.component.html',
+  selector: 'design-system-radio',
+  imports: [MatCheckboxModule, MatRadioButton, MatRadioGroup],
+  templateUrl: './design-system-radio.component.html',
 })
-export class DesignSystemCheckboxComponent {}
+export class DesignSystemRadioComponent {}

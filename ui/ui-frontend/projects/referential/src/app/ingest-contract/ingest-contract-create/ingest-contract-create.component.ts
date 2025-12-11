@@ -66,6 +66,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-ingest-contract-create',
@@ -86,6 +87,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    MatCheckbox,
   ],
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
@@ -335,7 +337,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  signedDocumentPolicyIsDisabled(): boolean {
+  private signedDocumentPolicyIsDisabled(): boolean {
     return this.signaturePolicy?.value?.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
   }
 }

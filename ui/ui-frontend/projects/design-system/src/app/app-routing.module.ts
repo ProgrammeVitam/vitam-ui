@@ -65,6 +65,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { DialogComponent } from './components/organisms/dialog/dialog.component';
 import { SnackbarComponent } from './components/organisms/snackbar/snackbar.component';
 import { SlideToggleComponent } from './components/atoms/slide-toggle/slide-toggle.component';
+import { DesignSystemRadioComponent } from './components/molecules/inputs/radio/design-system-radio.component';
 
 export interface RouteData {
   // Alternative search terms
@@ -112,6 +113,7 @@ const routes: Routes = [
           { path: 'select', component: DesignSystemSelectComponent },
           { path: 'select-with-tree', component: DesignSystemSelectWithTreeComponent },
           { path: 'checkboxes', component: DesignSystemCheckboxComponent },
+          { path: 'radios', component: DesignSystemRadioComponent },
           { path: 'datepicker', component: DesignSystemDatepickerComponent },
           { path: 'search-with-type-selector', component: DesignSystemSearchWithTypeSelectorComponent },
           { path: 'old-input', component: DesignSystemOldInputsComponent },

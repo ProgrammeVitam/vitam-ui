@@ -287,7 +287,7 @@
     <!-- STEP 9 - Versement de documents signés -->
     <cdk-step>
       <mat-dialog-content>
-        <div class="main-content" formGroupName="signaturePolicy">
+        <div class="main-content gap-5" formGroupName="signaturePolicy">
           <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
             <mat-button-toggle
               value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
@@ -308,24 +308,19 @@
               {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN | translate }}
             </mat-button-toggle>
           </mat-button-toggle-group>
-          <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</p>
-          <div class="criteria-checkbox-choice">
-            <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-              <input type="checkbox" id="declaredSignature" formControlName="declaredSignature" />
-              <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}</span>
-            </label>
-          </div>
-          <div class="criteria-checkbox-choice">
-            <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-              <input type="checkbox" id="TIMESTAMP" formControlName="declaredTimestamp" />
-              <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}</span>
-            </label>
-          </div>
-          <div class="criteria-checkbox-choice">
-            <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-              <input type="checkbox" id="ADDITIONAL_EVIDENCES" formControlName="declaredAdditionalProof" />
-              <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}</span>
-            </label>
+          <div class="gap-3">
+            <div class="text medium bold primary">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</div>
+            <div class="gap-2 ml-4">
+              <mat-checkbox formControlName="declaredSignature">
+                {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}
+              </mat-checkbox>
+              <mat-checkbox formControlName="declaredTimestamp">
+                {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}
+              </mat-checkbox>
+              <mat-checkbox formControlName="declaredAdditionalProof">
+                {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}
+              </mat-checkbox>
+            </div>
           </div>
         </div>
       </mat-dialog-content>

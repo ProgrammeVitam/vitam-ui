@@ -46,19 +46,6 @@
   transform-origin: left;
   transition: transform 150ms ease-out;
 }
-.card-criteria {
-  background: var(--vitamui-white);
-  border: 1px solid var(--vitamui-grey-400);
-  box-sizing: border-box;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  padding-top: 15px;
-  margin-top: 10px;
-  margin-right: 9px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 15px;
-}
 .after-search-launched-button {
   color: var(--vitamui-white);
   background-color: var(--vitamui-secondary);
@@ -254,13 +241,6 @@
 
 .btn-new-save {
   font-size: 16px;
-}
-
-.criteria-choice {
-  font-family: Mulish;
-  font-size: 14px;
-  font-weight: 500;
-  padding-top: 6px;
 }
 
 .padding-bottom-medium {

@@ -148,7 +148,7 @@ export class IngestContractSignatureTabComponent implements OnChanges {
     }
   }
 
-  signedDocumentPolicyIsDisabled(): boolean {
+  private signedDocumentPolicyIsDisabled(): boolean {
     return this.form.value.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
   }
 
