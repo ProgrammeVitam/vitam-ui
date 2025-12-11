@@ -37,7 +37,7 @@
     "FILE_FORMAT_DETAIL_INFO": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
     "WRONG_FORMAT": "Le format de fichier n'est pas supporté, veuillez choisir un format {{ format }}",
     "ERRORS_DURING_IMPORT": "Une ou plusieurs erreurs ont été identifiées dans le fichier d'import.<br>Veuillez consulter le détail de ces erreurs et corriger le fichier d'import.",
-    "ERRORS_LIST": "Liste des erreurs identifiées:",
+    "ERRORS_LIST": "Liste des erreurs identifiées :",
     "IMPORT_ERROR_MESSAGE": {
       "FILE_IS_EMPTY": "Le fichier est vide.",
       "FILE_SIZE_TOO_BIG": "le fichier d'import ne doit pas dépasser les 2 Mo.",
@@ -638,7 +638,7 @@
       "PERIOD": "Durée",
       "UNIT_MEASURE": "Unité de mesure",
       "IDENTIFIER_TOOLTIP": "L'identifiant est unique par type de règle. Il ne doit pas comprendre d'espace ou de caractère accentué",
-      "TYPE_TOOLTIP": "StorageRule : Durée d'utilité courante - AppraisalRule : Durée d'utilité administrative - AccessRule : Délai de communicabilité - ReuseRule: Durée de réutilisation - DisseminationRule : Délai de diffusion - ClassificationRule : Durée de classification",
+      "TYPE_TOOLTIP": "StorageRule : Durée d'utilité courante - AppraisalRule : Durée d'utilité administrative - AccessRule : Délai de communicabilité - ReuseRule : Durée de réutilisation - DisseminationRule : Délai de diffusion - ClassificationRule : Durée de classification",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
       "IDENTIFIER_ALREADY_EXISTS": "Le code de la règle renseigné existe déjà",
       "IDENTIFIER_NO_COMPLIANT": "Identifiant non conforme"

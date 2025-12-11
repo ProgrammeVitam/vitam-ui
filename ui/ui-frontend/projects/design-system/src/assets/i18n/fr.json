@@ -183,16 +183,16 @@
     },
     "TRANSLATE_PARAMETERS": "Texte traduit avec plusieurs paramètres : {{ param1 }} et {{ param2 }}.",
     "TRANSLATE_NUMBER": {
-      "ZERO": "Texte traduit au singulier et pluriel: Je n'ai aucune pomme.",
-      "SINGULAR": "Texte traduit au singulier et pluriel: J'ai une pomme.",
-      "PLURAL": "Texte traduit au singulier et pluriel: J'ai {{ number }} pommes."
+      "ZERO": "Texte traduit au singulier et pluriel : Je n'ai aucune pomme.",
+      "SINGULAR": "Texte traduit au singulier et pluriel : J'ai une pomme.",
+      "PLURAL": "Texte traduit au singulier et pluriel : J'ai {{ number }} pommes."
     },
     "TRANSLATE_HTML": "Texte traduit contenant du <strong>code html</strong>.",
     "NUMBER_OF_APPLE": "Nombre de pommes",
     "TRANSLATE_FRENCH_ONLY": "Texte uniquement traduit en français.",
     "ALWAYS_TRANSLATE": "Toujours traduire les nouveaux libellés : ne laisser aucun texte en dur.",
-    "KEY_NAMING": "Pour le nommage des clés, utiliser des majuscules et underscores. Toujours commencer par le nom de l'app, et au minimum inclure le composant où il se situe. Ex: CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE",
-    "KEY_NAMING_COMMON": "Pour les textes très récurrents, les mettre dans la catégorie COMMON. Ex: COMMON.BACK",
+    "KEY_NAMING": "Pour le nommage des clés, utiliser des majuscules et underscores. Toujours commencer par le nom de l'app, et au minimum inclure le composant où il se situe. Ex : CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE",
+    "KEY_NAMING_COMMON": "Pour les textes très récurrents, les mettre dans la catégorie COMMON. Ex : COMMON.BACK",
     "FIRST_INPUT": "Premier paramètre",
     "SECOND_INPUT": "Deuxième paramètre"
   },
