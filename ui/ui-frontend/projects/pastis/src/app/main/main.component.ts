@@ -86,6 +86,8 @@ import { ProfileService } from '../core/services/profile.service';
 import { SedaService } from '../core/services/seda.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { tap } from 'rxjs/operators';
+import { ProfileType } from '../models/profile-type.enum';
+import { ProfileVersion } from '../models/profile-version.enum';
 
 @Component({
   selector: 'app-home',
@@ -144,7 +146,9 @@ export class MainComponent implements OnInit, OnDestroy {
         // Check for query params to create a new profile
         this.route.queryParams.subscribe((queryParams) => {
           if (queryParams['type'] && queryParams['version']) {
-            this.createNewProfile(queryParams['type'], queryParams['version']);
+            const type: ProfileType = queryParams?.type;
+            const version: ProfileVersion = queryParams?.version;
+            this.createNewProfile(type, version);
           } else {
             // No valid params, redirect to list
             this.router.navigate(['/'], { skipLocationChange: false });
@@ -217,10 +221,10 @@ export class MainComponent implements OnInit, OnDestroy {
     });
   }
 
-  private createNewProfile(profileType: string, profileVersion: string) {
+  private createNewProfile(profileType: ProfileType, profileVersion: ProfileVersion) {
     this.loaderService.start();
     this.profileService
-      .createProfile('/pastis/profile', profileType as any, profileVersion as any)
+      .createProfile(profileType, profileVersion)
       .pipe(
         tap((profileResponse) => {
           this.uploadedProfileResponse = profileResponse;
