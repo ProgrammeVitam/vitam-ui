@@ -667,7 +667,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   returnToArchiveSearchPage() {
     if (this.isUpdateInProgress) {
       this.initializeParameters();
-      this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
+      this.location.back();
     } else {
       const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog);
 
