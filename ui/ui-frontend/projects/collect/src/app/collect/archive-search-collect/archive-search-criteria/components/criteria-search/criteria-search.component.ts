@@ -49,8 +49,19 @@ export class CriteriaSearchComponent {
   @Input()
   criteriaKey: string;
 
+  private _criteriaVal: SearchCriteria;
+
   @Input()
-  criteriaVal: SearchCriteria;
+  set criteriaVal(value: SearchCriteria) {
+    this._criteriaVal = value;
+    if (this._criteriaVal) {
+      this._criteriaVal.keyTranslated = true;
+    }
+  }
+
+  get criteriaVal(): SearchCriteria {
+    return this._criteriaVal;
+  }
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 
@@ -68,9 +79,24 @@ export class CriteriaSearchComponent {
     });
   }
 
+  getCriteriaKeyLabel(criteriaValue: SearchCriteriaValue): string {
+    if (criteriaValue.keyTranslated) {
+      const translationKey = `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${this.criteriaVal.key}`;
+      return this.translateService.instant(translationKey);
+    }
+    return this.criteriaVal.key;
+  }
+
   getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
+    if (criteriaValue.valueTranslated) {
+      return this.translateService.instant(
+        `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
+      );
+    }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
-      return criteriaValue.label;
+      return criteriaValue.keyTranslated
+        ? this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue?.value?.id}`)
+        : criteriaValue.label;
     }
     if (key === 'ORPHANS_NODE') {
       return this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
