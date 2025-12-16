@@ -37,7 +37,7 @@
 
 import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { finalize, from, Observable, switchMap } from 'rxjs';
+import { finalize, from, Observable, of, switchMap } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -50,11 +50,20 @@ import {
   Unit,
   ZipFile,
   ZipFileStatus,
+  ApplicationId,
+  SnackBarService,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { FormControl, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+
+export enum ImportType {
+  DIRECTORIES_FILES = 'DIRECTORIES_FILES',
+  COMPRESSED = 'COMPRESSED',
+  SIP = 'SIP',
+}
 
 @Component({
   selector: 'app-add-units',
@@ -66,9 +75,11 @@ export class AddUnitsComponent implements OnInit {
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
 
+  uploadedOperationId: string;
   isLoading = false;
   stepIndex = 0;
 
+  importTypeControl: FormControl<string | null> = new FormControl(null);
   filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
   zipFileStatus$: Observable<ZipFileStatus>;
   linkParentIdControl = new FormControl({ included: [], excluded: [] });
@@ -82,6 +93,8 @@ export class AddUnitsComponent implements OnInit {
     public data: {
       transaction: Transaction;
     },
+    private route: ActivatedRoute,
+    private snackBarService: SnackBarService,
     private dialog: MatDialog,
     private addUnitsDialogRef: MatDialogRef<AddUnitsComponent>,
     private archiveCollectService: ArchiveCollectService,
@@ -128,6 +141,9 @@ export class AddUnitsComponent implements OnInit {
   }
 
   close(filesUploaded: boolean) {
+    if (filesUploaded && this.importType === ImportType.SIP && this.uploadedOperationId) {
+      this.handleUploadSIPSuccess(this.uploadedOperationId);
+    }
     this.confirmCancelDialog?.close(true);
     this.addUnitsDialogRef.close(filesUploaded);
   }
@@ -137,13 +153,33 @@ export class AddUnitsComponent implements OnInit {
     this.stepIndex++;
     const zipFile = new ZipFile(this.data.transaction.id);
     this.zipFileStatus$ = zipFile.zipFileStatus$;
-    from(zipFile.addFiles(this.filesToUploadControl.value).generateZip())
+
+    // For COMPRESSED and SIP types, use the file directly without zipping it
+    let compressedZip: Blob;
+    if ([ImportType.COMPRESSED, ImportType.SIP].includes(this.importType as ImportType)) {
+      compressedZip = new Blob(this.filesToUploadControl.value, { type: 'application/zip' });
+      zipFile.zipFileStatus.size = compressedZip.size;
+      zipFile.zipFileStatus.currentFileUploadedSize = 100;
+    }
+
+    from(
+      this.importType === ImportType.DIRECTORIES_FILES
+        ? zipFile.addFiles(this.filesToUploadControl.value).generateZip()
+        : of(compressedZip).toPromise(),
+    )
       .pipe(
         switchMap((content) =>
-          this.archiveCollectService.uploadZip(content, this.data.transaction.id, this.linkParentIdControl.value.included[0]),
+          this.importType === ImportType.SIP
+            ? this.archiveCollectService.uploadSip(content, this.data.transaction.id)
+            : this.archiveCollectService.uploadZip(content, this.data.transaction.id, this.linkParentIdControl.value.included[0]),
         ),
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
+        tap((httpEvent) => {
+          if (this.importType === ImportType.SIP && httpEvent.type === HttpEventType.Response) {
+            this.uploadedOperationId = httpEvent.body;
+          }
+        }),
         finalize(() => (this.isLoading = false)),
       )
       .subscribe({
@@ -152,4 +188,29 @@ export class AddUnitsComponent implements OnInit {
         },
       });
   }
+
+  resetFilesToImportList() {
+    this.filesToUploadControl.setValue([]);
+  }
+
+  private handleUploadSIPSuccess(operationId: string): void {
+    const tenantId = this.route.snapshot.params.tenantIdentifier;
+    this.snackBarService.open({
+      message: 'COLLECT.MODAL.IMPORT_SIP_ARCHIVES_PACKAGE_WITH_SUCCESS',
+      buttons: [
+        {
+          appId: ApplicationId.LOGBOOK_OPERATION_APP,
+          path: `/tenant/${tenantId}?guid=${operationId}`,
+          label: 'SNACK_BAR.TO_OPERATION_APP',
+        },
+      ],
+      duration: 100_000,
+    });
+  }
+
+  get importType(): string | null {
+    return this.importTypeControl.value;
+  }
+
+  protected ImportType = ImportType;
 }
