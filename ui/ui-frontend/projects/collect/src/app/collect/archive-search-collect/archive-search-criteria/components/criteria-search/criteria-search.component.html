@@ -231,15 +231,7 @@
             <ng-container *ngFor="let criteriaValue of criteriaVal.values; let index = index; let isFirst = first; let isLast = last">
               <div
                 class="button-content right-button"
-                matTooltip="{{
-                  criteriaValue.keyTranslated
-                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                    : criteriaVal.key
-                }}:{{
-                  criteriaValue.valueTranslated
-                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label | translate)
-                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
-                }}"
+                matTooltip="{{ getCriteriaKeyLabel(criteriaValue) + ' : ' + getCriteriaLabel(criteriaVal.key, criteriaValue) }}"
                 matTooltipClass="vitamui-tooltip"
                 [matTooltipShowDelay]="300"
                 [ngClass]="[
@@ -249,18 +241,10 @@
               >
                 <ng-container *ngIf="isFirst">
                   <i *ngIf="criteriaKey === 'NODE'" class="vitamui-icon vitamui-icon-radio-checked vitamui-row-icon"></i>
-                  {{
-                    (criteriaValue.keyTranslated
-                      ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                      : criteriaVal.key) + ' : '
-                  }}
+                  {{ getCriteriaKeyLabel(criteriaValue) + ' : ' }}
                 </ng-container>
 
-                {{
-                  criteriaValue.valueTranslated
-                    ? ('COLLECT.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label | translate)
-                    : (getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50)
-                }}
+                {{ getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50 }}
               </div>
               <div
                 class="vitamui-remove-search-criteria"
