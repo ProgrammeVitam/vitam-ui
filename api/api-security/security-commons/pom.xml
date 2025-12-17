@@ -9,7 +9,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>api-security</artifactId>
-        <version>7.1.4-SNAPSHOT</version>
+        <version>7.1.5-SNAPSHOT</version>
     </parent>
 
     <dependencies>
