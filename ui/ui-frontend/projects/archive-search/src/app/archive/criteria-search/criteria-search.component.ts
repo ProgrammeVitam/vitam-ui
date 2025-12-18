@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -42,20 +42,25 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
 })
-export class CriteriaSearchComponent implements OnInit {
+export class CriteriaSearchComponent {
   constructor(private translateService: TranslateService) {}
-
-  ngOnInit() {
-    if (this.criteriaVal) {
-      this.criteriaVal.keyTranslated = true;
-    }
-  }
 
   @Input()
   criteriaKey: string;
 
+  private _criteriaVal: CriteriaSearchCriteria;
+
   @Input()
-  criteriaVal: CriteriaSearchCriteria;
+  set criteriaVal(value: CriteriaSearchCriteria) {
+    this._criteriaVal = value;
+    if (this._criteriaVal) {
+      this._criteriaVal.keyTranslated = true;
+    }
+  }
+
+  get criteriaVal(): CriteriaSearchCriteria {
+    return this._criteriaVal;
+  }
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 
@@ -88,7 +93,7 @@ export class CriteriaSearchComponent implements OnInit {
       );
     }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
-      return criteriaValue.label;
+      return this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue?.value?.id}`);
     }
     if (key === 'ORPHANS_NODE') {
       return this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE');

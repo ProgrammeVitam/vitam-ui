@@ -50,8 +50,19 @@ export class CriteriaSearchComponent {
   @Input()
   criteriaKey: string;
 
+  private _criteriaVal: CriteriaSearchCriteria;
+
   @Input()
-  criteriaVal: CriteriaSearchCriteria;
+  set criteriaVal(value: CriteriaSearchCriteria) {
+    this._criteriaVal = value;
+    if (this._criteriaVal) {
+      this._criteriaVal.keyTranslated = true;
+    }
+  }
+
+  get criteriaVal(): CriteriaSearchCriteria {
+    return this._criteriaVal;
+  }
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 
@@ -84,7 +95,7 @@ export class CriteriaSearchComponent {
       );
     }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
-      return criteriaValue.label;
+      return this.translateService.instant(`COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue?.value?.id}`);
     }
     if (key === 'ORPHANS_NODE') {
       return this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
