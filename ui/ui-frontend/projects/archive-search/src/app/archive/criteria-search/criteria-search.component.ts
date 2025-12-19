@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -42,14 +42,8 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
 })
-export class CriteriaSearchComponent implements OnInit {
+export class CriteriaSearchComponent {
   constructor(private translateService: TranslateService) {}
-
-  ngOnInit() {
-    if (this.criteriaVal) {
-      this.criteriaVal.keyTranslated = true;
-    }
-  }
 
   @Input()
   criteriaKey: string;
@@ -62,6 +56,10 @@ export class CriteriaSearchComponent implements OnInit {
     if (this._criteriaVal) {
       this._criteriaVal.keyTranslated = true;
     }
+  }
+
+  get criteriaVal(): CriteriaSearchCriteria {
+    return this._criteriaVal;
   }
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
