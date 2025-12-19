@@ -52,6 +52,7 @@ export class CriteriaSearchComponent {
   }
 
   getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
+    console.log(criteriaValue);
     if (criteriaValue.valueTranslated) {
       return this.translateService.instant(
         `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
