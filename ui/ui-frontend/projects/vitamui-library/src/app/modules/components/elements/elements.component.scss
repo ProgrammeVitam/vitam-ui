@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid var(--vitamui-grey-400);
+
+  .vitamui-icon {
+    display: flex;
+    align-items: center;
+    color: var(--vitamui-grey-600);
+    width: 24px;
+    height: 24px;
+  }
+}

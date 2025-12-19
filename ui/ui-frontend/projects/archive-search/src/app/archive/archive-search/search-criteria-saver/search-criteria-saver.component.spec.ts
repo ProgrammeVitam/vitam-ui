@@ -161,12 +161,6 @@ describe('SearchCriteriaSaverComponent', () => {
     expect(component.criteriaToUpdate.savingDate).not.toBeNull();
   });
 
-  it('should showScrollFilter be false', () => {
-    component.out('scroll-filters');
-    expect(component.showScrollFilter).toBeFalsy();
-    expect(component.noScroll).toBeFalsy();
-  });
-
   it('should call updateSearchCriteriaHistory', () => {
     // Gievn
     const criteriaToUpdate: SearchCriteriaHistory = {
@@ -217,24 +211,6 @@ describe('SearchCriteriaSaverComponent', () => {
 
       // Then
       expect(elementRow.length).toBe(3);
-    });
-
-    it('should return true after over scroll-results event', () => {
-      // When
-      component.over('scroll-results');
-
-      // Then
-      expect(component.showScroll).toBeTruthy();
-      expect(component.noScroll).toBeFalsy();
-    });
-
-    it('should return true after over scroll-filters event', () => {
-      // When
-      component.over('scroll-filters');
-
-      // Then
-      expect(component.showScrollFilter).toBeTruthy();
-      expect(component.noScroll).toBeFalsy();
     });
   });
 

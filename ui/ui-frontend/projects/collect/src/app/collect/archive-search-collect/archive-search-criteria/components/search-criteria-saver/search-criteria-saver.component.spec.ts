@@ -222,22 +222,6 @@ describe('SearchCriteriaSaverComponent', () => {
       });
     });
 
-    describe('the scroll component should be present', () => {
-      it('should showScroll be true', () => {
-        component.over('scroll-results');
-        expect(component.showScroll).toBeTruthy();
-        expect(component.noScroll).toBeFalsy();
-      });
-    });
-
-    describe('the scroll filter component should not be present', () => {
-      it('should showScrollFilter be false', () => {
-        component.out('scroll-filters');
-        expect(component.showScrollFilter).toBeFalsy();
-        expect(component.noScroll).toBeFalsy();
-      });
-    });
-
     describe('the saving date must be added and calculated', () => {
       it('savingDate of each criteria save should not be null', () => {
         // Given
