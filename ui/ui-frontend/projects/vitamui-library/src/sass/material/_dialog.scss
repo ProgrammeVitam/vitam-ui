@@ -7,6 +7,10 @@
     width: 500px;
   }
 
+  .cdk-overlay-pane.search-criteria-dialog .mat-mdc-dialog-container {
+    width: 1000px;
+  }
+
   .cdk-overlay-pane.p-0 .mdc-dialog__surface {
     @extend .p-0;
   }

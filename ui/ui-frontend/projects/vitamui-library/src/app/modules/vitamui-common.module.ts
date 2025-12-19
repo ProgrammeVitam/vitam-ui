@@ -105,6 +105,7 @@ import { VitamuiSupHeaderComponent } from './components/vitamui-sup-header/vitam
 import { VitamuiTreeNodeComponent } from './components/vitamui-tree-node/vitamui-tree-node.component';
 import { InputComponent } from '../../lib/components/input/input.component';
 import { VitamUIFieldErrorComponent } from './components/vitamui-field-error/vitamui-field-error.component';
+import { ElementsComponent } from './components/elements/elements.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -140,6 +141,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     BadgeComponent,
     CdkStepperModule,
     ChipComponent,
+    ElementsComponent,
     ClickOutsideDirective,
     CollapseDirectiveModule,
     CollapseModule,
@@ -199,6 +201,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     AutocompletePositionDirectiveModule,
     BadgeComponent,
     ChipComponent,
+    ElementsComponent,
     ClickOutsideDirective,
     CollapseDirectiveModule,
     CommonModule,
