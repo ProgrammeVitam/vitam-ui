@@ -1,0 +1,21 @@
+---
+
+- name: Check that the prometheus scrape_configs directory exist
+  file:
+    path: "{{ prometheus_server_config_path }}/scrape_configs"
+    state: directory
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitam_defaults.users.group }}"
+    mode: "{{ '0755' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
+  notify: "prometheus-server - restart service"
+
+- name: Copy scrape config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ prometheus_server_config_path }}/scrape_configs/{{ item | basename | regex_replace('\\.j2$') }}"
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitam_defaults.users.group }}"
+    mode: "{{ '0644' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
+  with_fileglob:
+    - "templates/*.yml.j2"
+  notify: "prometheus-server - restart service"

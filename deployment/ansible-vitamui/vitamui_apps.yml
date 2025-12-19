@@ -11,9 +11,7 @@
     vitamui_certificate_type: server
     password_keystore: "{{ keystores_server_security }}"
     password_truststore: "{{ truststores_server }}"
-    consul_tags: "security, api"
-  tags:
-    - security
+  tags: security
 
 # External apps
 - hosts: hosts_vitamui_iam
@@ -27,9 +25,7 @@
     password_keystore: "{{ keystores_server_iam }}"
     password_truststore: "{{ truststores_client_external }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"
-    consul_tags: "iam, api"
-  tags:
-    - iam
+  tags: iam
 
 - hosts: hosts_cas_server
   gather_facts: no
@@ -42,6 +38,4 @@
     vitamui_certificate_type: external
     password_keystore: "{{ keystores_server_cas_server }}"
     password_truststore: "{{ truststores_client_external }}"
-    consul_tags: "cas-server, cas, external"
-  tags:
-    - cas-server
+  tags: cas-server

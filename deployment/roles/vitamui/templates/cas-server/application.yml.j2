@@ -1,16 +1,18 @@
+#jinja2: lstrip_blocks: True
 spring:
+  application:
+    name: vitamui-{{ vitamui_struct.vitamui_component }}
   cloud:
     consul:
       enabled: true
       host: {{ hostvars[inventory_hostname][consul.network] if (inventory_hostname in groups['hosts_vitamui_consul_server'] or inventory_hostname in groups['hosts_consul_server']) else 'localhost' }}
       discovery:
-        serviceName: vitamui-{{ vitamui_struct.vitamui_component }}
+        serviceName: ${spring.application.name}
         preferIpAddress: true
         ipAddress: ${server.address}
         healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
-        tags: {{ consul_tags }}
-
-spring.application.name: cas-server
+        tags: vitamui, {{ vitamui_struct.vitamui_component }}
+        instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
 
 server:
 {% if vitamui_struct.secure | default(secure) | bool == true %}
@@ -47,6 +49,13 @@ management:
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 vitamui.cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 vitamui.cas.identity: cas
