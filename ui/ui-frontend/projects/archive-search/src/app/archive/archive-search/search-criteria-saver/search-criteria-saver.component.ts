@@ -61,9 +61,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   nbCriterias = 0;
   nameControl: string;
   ToUpdate = true;
-  noScroll = false;
-  showScrollFilter = false;
-  showScroll = false;
   updateConfirm = false;
   subscriptionAllSearchCriteriaHistory: Subscription;
   searchCriteriaHistories: SearchCriteriaHistory[];
@@ -168,7 +165,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     if (this.criteriaToUpdate) {
       this.ToUpdate = null;
       this.updateConfirm = true;
-      this.noScroll = true;
       this.criteriaId = '';
     }
   }
@@ -210,34 +206,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
 
   closeSaveCriteriaForm() {
     this.dialogRef.close(true);
-  }
-
-  over(eventType: string) {
-    switch (eventType) {
-      case 'scroll-results':
-        this.showScroll = true;
-        this.noScroll = false;
-        break;
-      case 'scroll-filters':
-        this.showScrollFilter = true;
-        this.noScroll = false;
-        break;
-      default:
-        break;
-    }
-  }
-  out(eventType: string) {
-    switch (eventType) {
-      case 'scroll-results':
-        this.showScroll = false;
-        break;
-      case 'scroll-filters':
-        this.showScrollFilter = false;
-        this.noScroll = false;
-        break;
-      default:
-        break;
-    }
   }
 
   getCategoryName(categoryEnum: SearchCriteriaTypeEnum): string {

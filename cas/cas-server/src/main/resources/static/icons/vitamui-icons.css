@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?b1hl71');
-  src:  url('fonts/vitamui-icon.eot?b1hl71#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?b1hl71') format('truetype'),
-    url('fonts/vitamui-icon.woff?b1hl71') format('woff'),
-    url('fonts/vitamui-icon.svg?b1hl71#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?u6sheu');
+  src:  url('fonts/vitamui-icon.eot?u6sheu#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?u6sheu') format('truetype'),
+    url('fonts/vitamui-icon.woff?u6sheu') format('woff'),
+    url('fonts/vitamui-icon.svg?u6sheu#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,10 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-save:before {
+  content: "\e97a";
+  color: #757575;
+}
 .vitamui-icon-ic24-arborescence:before {
   content: "\e961";
 }

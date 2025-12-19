@@ -113,6 +113,7 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
 import { VitamuiSupHeaderModule } from './components/vitamui-sup-header/vitamui-sup-header.module';
+import { ElementsComponent } from './components/elements/elements.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -154,6 +155,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     DatepickerModule,
     MultipleOptionsDatepickerModule,
     DragAndDropDirective,
+    ElementsComponent,
     ClickOutsideDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
@@ -221,6 +223,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     MultipleOptionsDatepickerModule,
     DownloadSnackBarModule,
     DragAndDropDirective,
+    ElementsComponent,
     ClickOutsideDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
