@@ -91,11 +91,11 @@ export class CriteriaSearchComponent {
   getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
     if (criteriaValue.valueTranslated) {
       return this.translateService.instant(
-        `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
+        `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
       );
     }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
-      return this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue?.value?.id}`);
+      return this.translateService.instant(`COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.${criteriaValue?.value?.id}`);
     }
     if (key === 'ORPHANS_NODE') {
       return this.translateService.instant('COLLECT.FILING_SCHEMA.ORPHANS_NODE');
