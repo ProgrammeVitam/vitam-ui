@@ -9,7 +9,7 @@
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="noticeForm">
+<form [formGroup]="noticeForm" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper [(selectedIndex)]="stepIndex">
     <cdk-step>
       <mat-dialog-content>
