@@ -1,6 +1,6 @@
 package fr.gouv.vitamui.cas.web;
 
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;

@@ -62,10 +62,14 @@ public abstract class Constants {
     public static final String FLOW_LOGIN_CUSTOMER_ID = "loginCustomerId";
     public static final String FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST = "availableCustomerList";
 
+    public static final String DISPATCHED_USERNAME = "dispatchedUsername";
+
     // web:
     public static final String PORTAL_URL = "portalUrl";
 
     public static final String VITAM_UI_FAVICON = "vitamuiFavicon";
+
+    public static final String VITAMUI_LOGO_LARGE = "vitamuiLogoLarge";
 
     public static final String PASSWORD_CUSTOM_CONSTRAINTS = "passwordCustomConstraints";
 

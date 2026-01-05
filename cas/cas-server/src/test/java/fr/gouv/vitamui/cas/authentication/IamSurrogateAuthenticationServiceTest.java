@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.cas.authentication;
 
+import fr.gouv.vitamui.cas.surrogation.IamSurrogateAuthenticationService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;

@@ -37,9 +37,9 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
-import fr.gouv.vitamui.cas.pm.PmMessageToSend;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.password.PmMessageToSend;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -214,8 +214,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         String username = request.getParameter(REQUEST_PARAMETER_USERNAME);
         if (StringUtils.isBlank(username)) {
             final Object credential = flowScope.get("credential");
-            if (credential instanceof UsernamePasswordCredential) {
-                final UsernamePasswordCredential usernamePasswordCredential = (UsernamePasswordCredential) credential;
+            if (credential instanceof UsernamePasswordCredential usernamePasswordCredential) {
                 username = usernamePasswordCredential.getUsername();
             }
         }

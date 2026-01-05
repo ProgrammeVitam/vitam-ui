@@ -1,24 +1,21 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
-import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
-import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.AuthUserDto;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.execution.Event;
 
 import java.io.FileNotFoundException;
@@ -27,7 +24,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,7 +31,6 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link DispatcherAction}.
  */
-@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = DispatcherActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class DispatcherActionTest extends BaseWebflowActionTest {
@@ -45,11 +40,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
     private static final String USER_2 = "user2@vitamui.fr";
     private static final String CUSTOMER_ID_2 = "customer2";
 
-    private static final String PASSWORD = "password";
-
     private IdentityProviderHelper identityProviderHelper;
 
-    private CasRestClient casRestClient;
+    private CasApi casApi;
 
     private DispatcherAction action;
 
@@ -62,13 +55,13 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
         ProvidersService providersService = mock(ProvidersService.class);
         identityProviderHelper = mock(IdentityProviderHelper.class);
-        casRestClient = mock(CasRestClient.class);
+        casApi = mock(CasApi.class);
 
         final Utils utils = new Utils(null, 0, null, null, "");
         action = new DispatcherAction(
             providersService,
             identityProviderHelper,
-            casRestClient,
+            casApi,
             utils,
             mock(SessionStore.class)
         );
@@ -116,16 +109,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
         flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
 
-        UserDto userDto = new UserDto();
+        AuthUserDto userDto = new AuthUserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(USER_1),
-                eq(CUSTOMER_ID_1),
-                eq(Optional.empty())
-            )
-        ).thenReturn(userDto);
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -151,16 +137,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
 
-        UserDto userDto = new UserDto();
+        AuthUserDto userDto = new AuthUserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(USER_2),
-                eq(CUSTOMER_ID_2),
-                eq(Optional.empty())
-            )
-        ).thenReturn(userDto);
+        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(null), eq(null), eq(null))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -174,16 +153,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
 
-        UserDto userDto = new UserDto();
+        AuthUserDto userDto = new AuthUserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(USER_1),
-                eq(CUSTOMER_ID_1),
-                eq(Optional.empty())
-            )
-        ).thenReturn(userDto);
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -213,16 +185,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
         flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
 
-        UserDto userDto = new UserDto();
+        AuthUserDto userDto = new AuthUserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(USER_1),
-                eq(CUSTOMER_ID_1),
-                eq(Optional.empty())
-            )
-        ).thenReturn(userDto);
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -252,16 +217,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
 
-        UserDto userDto = new UserDto();
+        AuthUserDto userDto = new AuthUserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(USER_2),
-                eq(CUSTOMER_ID_2),
-                eq(Optional.empty())
-            )
-        ).thenReturn(userDto);
+        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(null), eq(null), eq(null))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 
@@ -277,16 +235,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
 
-        UserDto userDto = new UserDto();
+        AuthUserDto userDto = new AuthUserDto();
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(
-            casRestClient.getUserByEmailAndCustomerId(
-                any(HttpContext.class),
-                eq(USER_1),
-                eq(CUSTOMER_ID_1),
-                eq(Optional.empty())
-            )
-        ).thenReturn(userDto);
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(userDto);
 
         final Event event = action.doExecute(context);
 

@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
@@ -83,7 +83,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final TicketRegistry ticketRegistry;
 
-    private final CasRestClient casRestClient;
+    private final CasApi casApi;
 
     private final String vitamuiPortalUrl;
 
@@ -95,7 +95,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         final ProvidersService providersService,
         final Utils utils,
         final TicketRegistry ticketRegistry,
-        final CasRestClient casRestClient,
+        final CasApi casApi,
         final String vitamuiPortalUrl
     ) {
         super(configContext, delegatedClientAuthenticationWebflowManager, failureEvaluator);
@@ -103,24 +103,24 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         this.providersService = providersService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
-        this.casRestClient = casRestClient;
+        this.casApi = casApi;
         this.vitamuiPortalUrl = vitamuiPortalUrl;
     }
 
     @Override
     protected Event doExecuteInternal(final RequestContext context) {
         // save a label in the webflow
-        var flowScope = context.getFlowScope();
+        final var flowScope = context.getFlowScope();
         flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
 
         // retrieve the service if it exists to prepare the serviceUrl parameter (for
         // the back links)
-        var service = WebUtils.getService(context);
+        final var service = WebUtils.getService(context);
         if (service != null) {
             flowScope.put("serviceUrl", service.getOriginalUrl());
         }
 
-        var event = super.doExecuteInternal(context);
+        final var event = super.doExecuteInternal(context);
         if (CasWebflowConstants.TRANSITION_ID_GENERATE.equals(event.getId())) {
             // extract and parse username
             String username = context.getRequestParameters().get(Constants.LOGIN_USER_EMAIL_PARAM);
@@ -160,8 +160,9 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 credential.setSurrogateUsername(surrogateEmail);
                 WebUtils.putCredential(context, credential);
 
-                CustomerDto surrogateCustomer = casRestClient
-                    .getCustomersByIds(utils.buildContext(surrogateEmail), List.of(surrogateCustomerId))
+                // TODO: surrogate context ?
+                CustomerDto surrogateCustomer = casApi
+                    .getCustomersByIds(List.of(surrogateCustomerId))
                     .stream()
                     .findFirst()
                     .orElseThrow(
@@ -177,12 +178,12 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             }
 
             // get the idp if it exists
-            var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
-            var idp = utils.getIdpValue(request);
+            final var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
+            final var idp = utils.getIdpValue(request);
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
                 TicketGrantingTicket tgt = null;
-                var tgtId = WebUtils.getTicketGrantingTicketId(context);
+                final var tgtId = WebUtils.getTicketGrantingTicketId(context);
                 if (tgtId != null) {
                     tgt = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
                 }
@@ -190,11 +191,14 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 // if no authentication
                 if (tgt == null || tgt.isExpired()) {
                     // if it matches an existing IdP, save it and redirect
-                    var optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
+                    final var optProvider = identityProviderHelper.findByTechnicalName(
+                        providersService.getProviders(),
+                        idp
+                    );
                     if (optProvider.isPresent()) {
-                        var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
+                        final var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
                         response.addCookie(utils.buildIdpCookie(idp, configContext.getCasProperties().getTgc()));
-                        var client = ((Pac4jClientIdentityProviderDto) optProvider.get()).getClient();
+                        final var client = ((Pac4jClientIdentityProviderDto) optProvider.get()).getClient();
                         LOGGER.debug("Force redirect to the SAML IdP: {}", client.getName());
                         try {
                             return utils.performClientRedirection(this, client, context);

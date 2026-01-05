@@ -60,8 +60,6 @@ public class InitContextConfiguration implements ServletContextInitializer {
 
     private final String vitamuiFaviconPath;
 
-    private static final String VITAMUI_LOGO_LARGE = "vitamuiLogoLarge";
-
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
         if (vitamuiLogoLargePath != null) {
@@ -74,7 +72,7 @@ public class InitContextConfiguration implements ServletContextInitializer {
                     // default PNG
                     base64Logo = "data:image/png;base64," + base64Logo;
                 }
-                servletContext.setAttribute(VITAMUI_LOGO_LARGE, base64Logo);
+                servletContext.setAttribute(Constants.VITAMUI_LOGO_LARGE, base64Logo);
             } catch (final IOException e) {
                 LOGGER.warn("Can't find vitam ui large logo", e);
             }

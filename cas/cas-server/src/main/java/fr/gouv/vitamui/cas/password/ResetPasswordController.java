@@ -1,0 +1,188 @@
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
+package fr.gouv.vitamui.cas.password;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
+import fr.gouv.vitamui.cas.model.UserLoginModel;
+import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.support.Beans;
+import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.pm.PasswordManagementQuery;
+import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.pm.PasswordResetUrlBuilder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.HierarchicalMessageSource;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Locale;
+
+/**
+ * Rest controller for CAS extra features.
+ */
+@RestController
+@RequestMapping("/extras")
+@RequiredArgsConstructor
+@Slf4j
+public class ResetPasswordController {
+
+    private final CasConfigurationProperties casProperties;
+
+    private final PasswordManagementService passwordManagementService;
+
+    private final CommunicationsManager communicationsManager;
+
+    private final HierarchicalMessageSource messageSource;
+
+    private final Utils utils;
+
+    private final PasswordResetUrlBuilder passwordResetUrlBuilder;
+
+    private final IdentityProviderHelper identityProviderHelper;
+
+    private final ProvidersService providersService;
+
+    private final ObjectMapper objectMapper;
+
+    @Value("${theme.vitamui-platform-name:VITAM-UI}")
+    private String vitamuiPlatformName;
+
+    @GetMapping("/resetPassword")
+    public boolean resetPassword(
+        @RequestParam(value = "username", defaultValue = "") final String username,
+        @RequestParam(value = "firstname", defaultValue = "") final String firstname,
+        @RequestParam(value = "lastname", defaultValue = "") final String lastname,
+        @RequestParam(value = "customerId", defaultValue = "") final String customerId,
+        @RequestParam(value = "ttl", defaultValue = "") final String ttl,
+        @RequestParam(value = "language", defaultValue = "en") final String language,
+        final HttpServletRequest request
+    ) {
+        if (!communicationsManager.isMailSenderDefined()) {
+            LOGGER.warn(
+                "CAS is unable to send password-reset emails given no settings are defined to account for email servers"
+            );
+            return false;
+        }
+
+        if (StringUtils.isBlank(username)) {
+            LOGGER.warn("No username is provided");
+            return false;
+        }
+
+        final var usernameLower = username.toLowerCase().trim();
+        LinkedMultiValueMap<String, Object> customerIdMapElt = new LinkedMultiValueMap<>();
+        customerIdMapElt.add(Constants.RESET_PWD_CUSTOMER_ID_ATTR, customerId);
+        final var query = PasswordManagementQuery.builder().username(usernameLower).record(customerIdMapElt).build();
+
+        String email;
+        try {
+            email = passwordManagementService.findEmail(query);
+        } catch (final Throwable e) {
+            LOGGER.error("Error finding email", e);
+            return false;
+        }
+        if (StringUtils.isBlank(email)) {
+            LOGGER.warn("No recipient is provided");
+            return false;
+        } else if (
+            !identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email, customerId)
+        ) {
+            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
+            return false;
+        }
+
+        final Locale locale = new Locale(language);
+        final var duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
+        final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : duration.toMinutes();
+        request.setAttribute(
+            PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE,
+            expMinutes
+        );
+        try {
+            var userLoginModel = new UserLoginModel();
+            userLoginModel.setUserEmail(query.getUsername());
+            userLoginModel.setCustomerId(customerId);
+            String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
+
+            final var url = passwordResetUrlBuilder.build(userLoginModelToToken).toString();
+            final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
+                messageSource,
+                firstname,
+                lastname,
+                String.valueOf(expMinutes),
+                url,
+                vitamuiPlatformName,
+                locale
+            );
+
+            LOGGER.debug(
+                "Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)",
+                utils.sanitizePasswordResetUrl(url),
+                email,
+                messageToSend.getSubject(),
+                expMinutes
+            );
+
+            return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
+        } catch (final Throwable e) {
+            LOGGER.error("Cannot reset password", e);
+            return false;
+        }
+    }
+
+    protected boolean sendPasswordResetEmailToAccount(final String to, final String subject, final String msg) {
+        return utils.htmlEmail(
+            msg,
+            casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
+            subject,
+            to,
+            null,
+            null
+        );
+    }
+}

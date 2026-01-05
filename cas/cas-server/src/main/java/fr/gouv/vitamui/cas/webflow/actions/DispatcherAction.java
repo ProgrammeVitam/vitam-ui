@@ -36,16 +36,16 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.iam.client.CasRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.web.support.WebUtils;
@@ -81,7 +81,7 @@ public class DispatcherAction extends AbstractAction {
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    private final CasRestClient casRestClient;
+    private final CasApi casApi;
 
     private final Utils utils;
 
@@ -201,13 +201,8 @@ public class DispatcherAction extends AbstractAction {
     }
 
     private boolean ensureUserIsEnabled(String email, String customerId) {
-        UserDto userDto =
-            this.casRestClient.getUserByEmailAndCustomerId(
-                    utils.buildContext(email),
-                    email,
-                    customerId,
-                    Optional.empty()
-                );
+        // TODO: when should inject to idp field ?
+        UserDto userDto = this.casApi.getUser(email, customerId, null, null, null);
         if (userDto == null) {
             // To avoid account existence disclosure, unknown users are silently ignored.
             // Once they enter their credentials, they will get a generic "login or password

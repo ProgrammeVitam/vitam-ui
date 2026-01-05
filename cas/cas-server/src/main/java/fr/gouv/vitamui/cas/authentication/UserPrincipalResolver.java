@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.x509.CertificateParser;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
@@ -333,7 +333,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
             Assert.isTrue(
                 email.equals(loginEmailFromSession),
-                String.format("Invarid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email)
+                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email)
             );
 
             if (surrogateEmailFromSession != null && surrogateCustomerIdFromSession != null) {
@@ -441,8 +441,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
             attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
         }
-        if (user instanceof AuthUserDto) {
-            final AuthUserDto authUser = (AuthUserDto) user;
+        if (user instanceof final AuthUserDto authUser) {
             attributes.put(
                 PROFILE_GROUP_ATTRIBUTE,
                 Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup()))

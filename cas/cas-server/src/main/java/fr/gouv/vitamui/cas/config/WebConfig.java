@@ -36,27 +36,50 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import fr.gouv.vitamui.cas.provider.ProvidersService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
+import fr.gouv.vitamui.cas.password.CustomCasWebSecurityConfigurerAdapter;
+import fr.gouv.vitamui.cas.password.ResetPasswordController;
+import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.web.CustomCorsProcessor;
 import fr.gouv.vitamui.cas.web.CustomOidcCasClientRedirectActionBuilder;
+import fr.gouv.vitamui.cas.web.CustomOidcRevocationEndpointController;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.oidc.OidcConfigurationContext;
 import org.apereo.cas.oidc.util.OidcRequestSupport;
+import org.apereo.cas.oidc.web.controllers.token.OidcRevocationEndpointController;
+import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.pm.PasswordResetUrlBuilder;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.web.support.RegisteredServiceCorsConfigurationSource;
 import org.apereo.cas.support.oauth.web.OAuth20RequestParameterResolver;
 import org.apereo.cas.support.oauth.web.response.OAuth20CasClientRedirectActionBuilder;
+import org.apereo.cas.web.CasWebSecurityConfigurer;
 import org.apereo.cas.web.support.ArgumentExtractor;
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.core.client.Client;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 /**
  * Web customizations.
@@ -106,5 +129,77 @@ public class WebConfig {
         final var filter = new CorsFilter(corsHttpWebRequestConfigurationSource);
         filter.setCorsProcessor(new CustomCorsProcessor(providersService, identityProviderHelper));
         return filter;
+    }
+
+    @Bean
+    public ResetPasswordController resetPasswordController(
+        @Qualifier(PasswordResetUrlBuilder.BEAN_NAME) final PasswordResetUrlBuilder passwordResetUrlBuilder,
+        @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
+        @Qualifier(
+            PasswordManagementService.DEFAULT_BEAN_NAME
+        ) final PasswordManagementService passwordManagementService,
+        @Qualifier("messageSource") final HierarchicalMessageSource messageSource,
+        final CasConfigurationProperties casProperties,
+        final IdentityProviderHelper identityProviderHelper,
+        final ProvidersService providersService,
+        final Utils utils
+    ) {
+        return new ResetPasswordController(
+            casProperties,
+            passwordManagementService,
+            communicationsManager,
+            messageSource,
+            utils,
+            passwordResetUrlBuilder,
+            identityProviderHelper,
+            providersService,
+            new ObjectMapper()
+        );
+    }
+
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    @Bean
+    public OidcRevocationEndpointController oidcRevocationEndpointController(
+        @Qualifier(OidcConfigurationContext.BEAN_NAME) final OidcConfigurationContext oidcConfigurationContext
+    ) {
+        return new CustomOidcRevocationEndpointController(oidcConfigurationContext);
+    }
+
+    @Bean
+    public WebSecurityCustomizer casWebSecurityCustomizer(
+        @Qualifier("securityContextRepository") final SecurityContextRepository securityContextRepository,
+        final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
+        final List<CasWebSecurityConfigurer> configurersList,
+        final WebEndpointProperties webEndpointProperties,
+        final CasConfigurationProperties casProperties
+    ) {
+        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+            casProperties,
+            webEndpointProperties,
+            pathMappedEndpoints,
+            configurersList,
+            securityContextRepository
+        );
+        return adapter::configureWebSecurity;
+    }
+
+    @Bean
+    public SecurityFilterChain casWebSecurityConfigurerAdapter(
+        @Qualifier("securityContextRepository") final SecurityContextRepository securityContextRepository,
+        final HttpSecurity http,
+        final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
+        final List<CasWebSecurityConfigurer> configurersList,
+        final WebEndpointProperties webEndpointProperties,
+        final SecurityProperties securityProperties,
+        final CasConfigurationProperties casProperties
+    ) throws Exception {
+        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+            casProperties,
+            webEndpointProperties,
+            pathMappedEndpoints,
+            configurersList,
+            securityContextRepository
+        );
+        return adapter.configureHttpSecurity(http).build();
     }
 }

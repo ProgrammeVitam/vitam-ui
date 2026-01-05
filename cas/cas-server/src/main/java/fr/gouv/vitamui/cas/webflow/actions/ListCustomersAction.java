@@ -36,17 +36,16 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.CustomerModel;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.iam.client.CasRestClient;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.CustomerDto;
+import fr.gouv.vitamui.iam.openapiclient.domain.UserDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -83,20 +82,16 @@ public class ListCustomersAction extends AbstractAction {
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    private final CasRestClient casRestClient;
-
-    private final Utils utils;
+    private final CasApi casApi;
 
     public ListCustomersAction(
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
-        final CasRestClient casRestClient,
-        final Utils utils
+        final CasApi casApi
     ) {
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
-        this.casRestClient = casRestClient;
-        this.utils = utils;
+        this.casApi = casApi;
     }
 
     @Override
@@ -276,10 +271,8 @@ public class ListCustomersAction extends AbstractAction {
             availableCustomerIds
         );
 
-        List<CustomerDto> customers = casRestClient.getCustomersByIds(
-            utils.buildContext(username),
-            availableCustomerIds
-        );
+        // TODO: context username ?
+        List<CustomerDto> customers = casApi.getCustomersByIds(availableCustomerIds);
 
         LOGGER.debug("Available customers: {}", customers);
 
@@ -303,7 +296,8 @@ public class ListCustomersAction extends AbstractAction {
     }
 
     private List<UserDto> getUsers(String email) {
-        return casRestClient.getUsersByEmail(utils.buildContext(email), email, Optional.empty());
+        // TODO: email context ?
+        return casApi.getUsersByEmail(email, null);
     }
 
     private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {

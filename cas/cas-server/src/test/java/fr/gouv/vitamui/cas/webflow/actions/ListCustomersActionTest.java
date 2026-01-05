@@ -1,39 +1,33 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
+import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.CustomerModel;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.iam.client.CasRestClient;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.CustomerDto;
+import fr.gouv.vitamui.iam.openapiclient.domain.UserDto;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.execution.Event;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static fr.gouv.vitamui.cas.webflow.actions.ListCustomersAction.BAD_CONFIGURATION;
 import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ListCustomersActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public class ListCustomersActionTest extends BaseWebflowActionTest {
@@ -45,22 +39,15 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     private static final String CUSTOMER_ID_2 = "customer2";
     public static final String EMAIL_DOMAIN_1 = ".*@vitamui.com";
     public static final String EMAIL_DOMAIN_2 = ".*@vitamui.fr";
-    private CasRestClient casRestClient;
+    private CasApi casApi;
     private ListCustomersAction listCustomersAction;
 
     @Before
     public void before() {
         ProvidersService providersService = mock(ProvidersService.class);
-        casRestClient = mock(CasRestClient.class);
+        casApi = mock(CasApi.class);
 
-        final Utils utils = new Utils(null, 0, null, null, "");
-
-        listCustomersAction = new ListCustomersAction(
-            providersService,
-            new IdentityProviderHelper(),
-            casRestClient,
-            utils
-        );
+        listCustomersAction = new ListCustomersAction(providersService, new IdentityProviderHelper(), casApi);
 
         IdentityProviderDto providerDto1 = getIdentityProvider(CUSTOMER_ID_1, false, EMAIL_DOMAIN_1);
         IdentityProviderDto providerDto2 = getIdentityProvider(CUSTOMER_ID_2, true, EMAIL_DOMAIN_1, EMAIL_DOMAIN_2);
@@ -105,7 +92,7 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
 
-        doReturn(List.of(userDto)).when(casRestClient).getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
+        doReturn(List.of(userDto)).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -129,15 +116,13 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         UserDto userDto2 = new UserDto();
         userDto2.setCustomerId(CUSTOMER_ID_2);
 
-        doReturn(List.of(userDto1, userDto2))
-            .when(casRestClient)
-            .getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
+        doReturn(List.of(userDto1, userDto2)).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
 
         CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
         doReturn(List.of(customerDto1, customerDto2))
-            .when(casRestClient)
-            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .when(casApi)
+            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -159,10 +144,10 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     public void testLoginWithUnknownUserMatchingASingleCustomerMailDomain() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL2, "password"));
 
-        doReturn(emptyList()).when(casRestClient).getUsersByEmail(any(), eq(EMAIL2), eq(Optional.empty()));
+        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL2), eq(null));
 
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "code2", "customer2");
-        doReturn(List.of(customerDto2)).when(casRestClient).getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_2)));
+        doReturn(List.of(customerDto2)).when(casApi).getCustomersByIds(eq(List.of(CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -179,13 +164,13 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     public void testLoginWithUnknownUserMatchingMultipleCustomerMailDomain() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        doReturn(emptyList()).when(casRestClient).getUsersByEmail(any(), eq(EMAIL1), eq(Optional.empty()));
+        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
 
         CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
         doReturn(List.of(customerDto1, customerDto2))
-            .when(casRestClient)
-            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .when(casApi)
+            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -207,15 +192,13 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     public void testLoginWithUnknownUserMatchingNoValidCustomerMailDomain() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL_UNKNOWN_DOMAIN, "password"));
 
-        doReturn(emptyList())
-            .when(casRestClient)
-            .getUsersByEmail(any(), eq(EMAIL_UNKNOWN_DOMAIN), eq(Optional.empty()));
+        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL_UNKNOWN_DOMAIN), eq(null));
 
         CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
         doReturn(List.of(customerDto1, customerDto2))
-            .when(casRestClient)
-            .getCustomersByIds(any(), eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .when(casApi)
+            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
         // When
         Event event = listCustomersAction.doExecute(context);
