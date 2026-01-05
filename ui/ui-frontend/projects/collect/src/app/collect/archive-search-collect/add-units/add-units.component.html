@@ -17,13 +17,37 @@
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
         </div>
       } @else {
-        <vitamui-file-selector
-          [directoryMode]="true"
-          [maxSizeInBytes]="uploadMaxSizeInBytes"
-          [multiple]="true"
-          [formControl]="filesToUploadControl"
-        >
-        </vitamui-file-selector>
+        <div class="main-content">
+          <div class="gap-6">
+            <vitamui-select
+              class="w-100"
+              [placeholder]="'COLLECT.MODAL.IMPORT_TYPE_PLACEHOLDER' | translate"
+              [formControl]="importTypeControl"
+              [options]="[
+                { key: 'DIRECTORIES_FILES', label: 'COLLECT.MODAL.IMPORT_TYPE_DIRECTORIES_FILES_V0' | translate },
+                { key: 'COMPRESSED', label: 'COLLECT.MODAL.IMPORT_TYPE_COMPRESSED' | translate },
+                { key: 'SIP', label: 'COLLECT.MODAL.IMPORT_SIP_ARCHIVES_PACKAGE' | translate },
+              ]"
+              [enableSearch]="false"
+              (change)="resetFilesToImportList()"
+              required
+            >
+            </vitamui-select>
+            @if (importType === ImportType.DIRECTORIES_FILES) {
+              <vitamui-file-selector
+                class="w-100"
+                [directoryMode]="true"
+                [maxSizeInBytes]="uploadMaxSizeInBytes"
+                [multiple]="true"
+                [formControl]="filesToUploadControl"
+              >
+              </vitamui-file-selector>
+            }
+            @if (importType === ImportType.COMPRESSED || importType === ImportType.SIP) {
+              <vitamui-file-selector class="w-100" [extensions]="['.zip']" [formControl]="filesToUploadControl"> </vitamui-file-selector>
+            }
+          </div>
+        </div>
       }
     </mat-dialog-content>
 
@@ -40,9 +64,13 @@
     <mat-dialog-content>
       <div class="main-content">
         <div class="form-group">
-          @if (projectUnits) {
+          @if (projectUnits && importType === ImportType.DIRECTORIES_FILES) {
             <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="linkParentIdControl" [dataSource]="projectUnits">
             </vitamui-library-filing-plan>
+          } @else if (importType === ImportType.COMPRESSED || importType === ImportType.SIP) {
+            <span class="text meduim">
+              {{ 'COLLECT.MODAL.ARCHIVE_POSITION_MSG_FOR_SIP' | translate }}
+            </span>
           }
         </div>
       </div>

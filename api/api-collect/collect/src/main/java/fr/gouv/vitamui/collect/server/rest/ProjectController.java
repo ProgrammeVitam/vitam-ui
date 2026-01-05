@@ -26,7 +26,9 @@
  */
 package fr.gouv.vitamui.collect.server.rest;
 
+import fr.gouv.vitam.collect.common.dto.UploadSipResult;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectAttachmentsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectConfigurationDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectContextDto;
@@ -208,18 +210,23 @@ public class ProjectController {
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @Operation(summary = "Upload and stream SIP")
     @PostMapping(value = "/uploadSip", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void streamingUploadSip(
+    public String streamingUploadSip(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId
-    ) throws PreconditionFailedException {
+    ) throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("[External] upload SIP");
-        projectService.streamingUploadSip(
+        var requestResponse = projectService.streamingUploadSip(
             inputStream,
             transactionId,
             externalParametersService.buildVitamContextFromExternalParam()
         );
+        if (!requestResponse.isOk()) {
+            throw new VitamClientException("Error occurs when uploading SIP to: " + transactionId);
+        }
+        var response = (UploadSipResult) ((RequestResponseOK<?>) requestResponse).getFirstResult();
+        return response.requestId();
     }
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS_DESCRIPTION)

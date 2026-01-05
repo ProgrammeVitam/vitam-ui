@@ -564,7 +564,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   resetFilesToImportList() {
-    this.filesToUploadControl.reset();
+    this.filesToUploadControl.setValue([]);
   }
 
   private setDefaultArchivingSystemValue() {

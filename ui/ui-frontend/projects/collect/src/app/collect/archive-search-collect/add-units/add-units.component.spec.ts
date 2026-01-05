@@ -46,6 +46,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DecimalPipe } from '@angular/common';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -86,6 +87,15 @@ describe('AddUnitsComponent', () => {
         totalResults: 0,
       }),
   };
+
+  const activatedRouteMock = {
+    snapshot: {
+      params: {
+        tenantIdentifier: '15',
+      },
+    },
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AddUnitsComponent],
@@ -104,6 +114,7 @@ describe('AddUnitsComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { tenantIdentifier: '15', selectedTransaction } },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveCollectService, useValue: archiveCollectServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
         DecimalPipe,
         BytesPipe,
         provideHttpClient(withInterceptorsFromDi()),
