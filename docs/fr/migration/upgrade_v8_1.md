@@ -122,7 +122,8 @@ ansible-playbook -i environments/<inventaire> ansible-vitamui-extra/bootstrap.ym
 
 ### Montée de version vers MongoDB 8.0
 
-> Attention: Cette montée de version doit être effectuée AVANT la montée de version V8.1 de VitamUI.
+> **Attention**
+> Cette montée de version doit être effectuée AVANT la montée de version V8.1 de VitamUI.
 > Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V8.1.
 > Il est recommandé d'effectuer un backup de la base de données à l'aide de mongodump avant de poursuivre.
 

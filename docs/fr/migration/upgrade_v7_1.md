@@ -126,7 +126,7 @@ Puis exécutez le playbook suivant :
 ansible-playbook -i environments/<inventaire> ansible-vitamui-extra/bootstrap.yml --ask-vault-pass
 ```
 
-### Montée de version vers mongo 6.0
+### Montée de version vers MongoDB 6.0
 
 > Attention: Cette montée de version doit être effectuée AVANT la montée de version V7.1 de VitamUI.
 > Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V7.1.
@@ -138,7 +138,7 @@ Exécutez le playbook suivant à partir de l'ansiblerie de la V7.1 :
 ansible-playbook -i environments/<inventaire> ansible-vitamui-migration/migration_mongodb_60.yml --ask-vault-pass
 ```
 
-### Montée de version vers mongo 7.0
+### Montée de version vers MongoDB 7.0
 
 > Attention: Cette montée de version doit être effectuée AVANT la montée de version V7.1 de VitamUI et après la montée de version de MongoDB 6.0 ci-dessus.
 > Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V7.1.
