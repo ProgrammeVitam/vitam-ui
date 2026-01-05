@@ -1,28 +1,10 @@
-# Procédure de Montée de version VitamUI V9.1
+# Procédure de Montée de version VitamUI V9.0
 
-> Attention: Veuillez appliquer les procédures spécifiques à chacune des versions précédentes en fonction de la version de départ selon la suite suivante: V7.1 -> V8.0 -> V8.1 -> V9.0 -> V9.1.
+> Attention: Veuillez appliquer les procédures spécifiques à chacune des versions précédentes en fonction de la version de départ selon la suite suivante: V7.1 -> V8.0 -> V8.1 -> V9.0.
 
 ## Adaptation des sources de déploiement ansible
 
-### Déploiement de la configuration Prometheus pour les métriques VitamUI
-
-Si vous avez déployé Prometheus sur la zone Vitam et que vous souhaitez pouvoir utiliser les nouveaux dashboards associés, vous devrez renseigner la configuration suivante.
-
-Ajouter au fichier d'inventaire le groupe `[hosts_prometheus]` ainsi que les machines associées correspondantes à l'inventaire de vitam.
-
-```yml
-################################################################################
-# ZONE VITAM
-################################################################################
-[vitam:children]
-hosts_prometheus
-
-[hosts_prometheus]
-# EDIT: Optional used for deploying scraping configurations for VitamUI Components
-my-vitam-prometheus-server
-```
-
-Le déploiement de la configuration s'effectue à l'aide du playbook: `ansible-vitamui-extra/vitamui_extra.yml --tags prometheus`
+N/A
 
 ---
 
@@ -44,10 +26,10 @@ ansible-playbook -i environments/<inventaire> ansible-vitamui-extra/bootstrap.ym
 
 > **Attention**
 > Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V9.1.
-> Cette opération est à effectuer si vous venez des versions de VitamUI suivantes: V8.1.2-, V9.0.0
+> Cette opération est à effectuer si vous venez des versions de VitamUI suivante: V8.1.2-
 > Il est recommandé d'effectuer un backup de la base de données à l'aide de mongodump avant de poursuivre.
 
-Exécutez le playbook suivant à partir de l'ansiblerie de la V9.1 :
+Exécutez le playbook suivant à partir de l'ansiblerie de la V9.0 :
 
 ```sh
 ansible-playbook -i environments/<inventaire> ansible-vitamui-migration/migration_mongodb_80.yml --ask-vault-pass
