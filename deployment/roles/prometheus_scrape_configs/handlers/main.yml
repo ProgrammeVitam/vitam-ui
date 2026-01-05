@@ -1,0 +1,7 @@
+---
+
+- name: "prometheus-server - restart service"
+  systemd:
+    name: vitam-prometheus
+    state: restarted
+    daemon_reload: true

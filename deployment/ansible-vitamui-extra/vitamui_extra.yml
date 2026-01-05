@@ -22,3 +22,10 @@
   gather_facts: yes
   roles:
     - merge_index_apache
+
+# Deploy prometheus scrape configs for VitamUI metrics
+- hosts: hosts_prometheus | default([])
+  gather_facts: false
+  roles:
+    - prometheus_scrape_configs
+  tags: prometheus

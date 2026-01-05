@@ -1,0 +1,4 @@
+---
+
+prometheus_server_config_path: "{{ vitam_defaults.folder.root_path | default('/vitam') }}/conf/prometheus"
+default_prometheus_metrics_path: "{{ prometheus.metrics_path | default('/actuator/prometheus') }}"

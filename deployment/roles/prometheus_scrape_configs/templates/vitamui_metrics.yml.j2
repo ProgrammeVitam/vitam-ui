@@ -1,0 +1,101 @@
+#jinja2: lstrip_blocks: True
+scrape_configs:
+{% if groups['hosts_vitamui_api_gateway'] | length > 0 %}
+
+  - job_name: vitamui-api-gateway
+    metrics_path: {{ vitamui.api_gateway.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_api_gateway'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.api_gateway.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_vitamui_iam'] | length > 0 %}
+
+  - job_name: vitamui-iam
+    metrics_path: {{ vitamui.iam.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_iam'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.iam.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_vitamui_ingest'] | length > 0 %}
+
+  - job_name: vitamui-ingest
+    metrics_path: {{ vitamui.ingest.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_ingest'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.ingest.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_vitamui_archive_search'] | length > 0 %}
+
+  - job_name: vitamui-archive-search
+    metrics_path: {{ vitamui.archive_search.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_archive_search'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.archive_search.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_vitamui_collect'] | length > 0 %}
+
+  - job_name: vitamui-collect
+    metrics_path: {{ vitamui.collect.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_collect'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.collect.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_vitamui_referential'] | default([]) | length > 0 %}
+
+  - job_name: vitamui-referential
+    metrics_path: {{ vitamui.referential.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_referential'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.referential.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_vitamui_security'] | default([]) | length > 0 %}
+
+  - job_name: vitamui-security
+    metrics_path: {{ vitamui.security.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_security'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.security.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_vitamui_pastis'] | length > 0 %}
+
+  - job_name: vitamui-pastis
+    metrics_path: {{ vitamui.pastis.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_vitamui_pastis'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.pastis.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
+{% if groups['hosts_cas_server'] | length > 0 %}
+
+  - job_name: vitamui-cas-server
+    metrics_path: {{ vitamui.cas_server.metrics_path | default(default_prometheus_metrics_path) }}
+    static_configs:
+      {% for host in groups['hosts_cas_server'] %}
+      - targets: ["{{ hostvars[host]['ip_admin'] }}:{{ vitamui.cas_server.port_admin }}"]
+        labels:
+          hostname: {{ host.split(".")[0] }}
+      {% endfor %}
+{% endif %}
