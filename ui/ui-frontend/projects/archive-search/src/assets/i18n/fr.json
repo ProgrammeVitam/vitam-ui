@@ -13,7 +13,9 @@
       "EXECUTE_ONE": "Eliminer l'archive"
     },
     "RULES_ACTION": {
-      "UPDATE_RULE": "Mettre à jour des règles"
+      "UPDATE_RULE": "Mettre à jour des règles",
+      "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+      "ACTION_ALERTE_FIRST_MESSAGE": "L'action demandée n'est pas possible pour cette sélection"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
