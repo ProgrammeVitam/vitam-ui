@@ -18,7 +18,9 @@
       }
     },
     "RULES_ACTION": {
-      "UPDATE_RULE": "Update rules"
+      "UPDATE_RULE": "Update rules",
+      "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
+      "ACTION_ALERTE_FIRST_MESSAGE": "The requested action is not possible for this selection"
     },
     "PUA": {
       "UPDATE": "Update AUP"
