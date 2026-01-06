@@ -576,6 +576,39 @@
   </mat-dialog-actions>
 </ng-template>
 
+<ng-template #launchSelectionContainsHoldingUnitAlertMessageDialog>
+  <vitamui-dialog-header [subhead]="'ARCHIVE_SEARCH.RULES_ACTION.ACTION_ALERTE_TITLE' | translate"></vitamui-dialog-header>
+  <mat-dialog-content>
+    <div class="row red-text">
+      <div class="col-1">
+        <i class="material-icons icon-style">cancel</i>
+      </div>
+      <div class="col-11">
+        {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_TITLE' | translate }}
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-1">
+        <span class="vertical-line"></span>
+      </div>
+      <div class="col-11">
+        <div class="text small bold">
+          {{ 'ARCHIVE_SEARCH.RULES_ACTION.ACTION_ALERTE_FIRST_MESSAGE' | translate }}
+        </div>
+        <div class="text small">
+          {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE' | translate }}
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">
+      {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
 <ng-template #confirmImportantAllowedBulkOperationsDialog>
   <mat-dialog-content>
     <div class="text large bold">
