@@ -209,6 +209,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
   @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
   launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('launchSelectionContainsHoldingUnitAlertMessageDialog', { static: true })
+  launchSelectionContainsHoldingUnitAlertMessageDialog: TemplateRef<ArchiveSearchComponent>;
   archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
   @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
   confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>;
@@ -1339,7 +1341,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.router,
           this.selectedItemCount,
           this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
-          this.actionsWithThresholdReachedAlerteMessageDialog,
+          this.launchSelectionContainsHoldingUnitAlertMessageDialog,
           this.confirmSecondActionBigNumberOfResultsActionDialog,
         ),
       this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD,
