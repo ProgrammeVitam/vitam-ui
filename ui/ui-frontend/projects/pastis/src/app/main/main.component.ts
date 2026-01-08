@@ -79,7 +79,6 @@ import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
 import { ToggleSidenavService } from '../core/services/toggle-sidenav.service';
 import { FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams } from '../models/file-node';
-import { ProfileDescription } from '../models/profile-description.model';
 import { ProfileResponse } from '../models/profile-response';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 import { ProfileService } from '../core/services/profile.service';
@@ -109,8 +108,7 @@ export class MainComponent implements OnInit, OnDestroy {
   events: string[] = [];
 
   uploadedProfileResponse: ProfileResponse;
-
-  uploadedProfileSelected: ProfileDescription;
+  uploadedProfileByFile: ProfileResponse;
 
   private _routeParamsSubscription: Subscription;
   private _profileLoadingSubscription: Subscription;
@@ -131,6 +129,8 @@ export class MainComponent implements OnInit, OnDestroy {
     this.pendingSub = this.sideNavService.isPending.subscribe((status) => {
       this.pending = status;
     });
+    const navigation = this.router.getCurrentNavigation();
+    this.uploadedProfileByFile = navigation?.extras.state?.payload;
   }
 
   ngOnInit() {
@@ -145,7 +145,9 @@ export class MainComponent implements OnInit, OnDestroy {
       } else {
         // Check for query params to create a new profile
         this.route.queryParams.subscribe((queryParams) => {
-          if (queryParams['type'] && queryParams['version']) {
+          if (this.uploadedProfileByFile !== undefined) {
+            this.uploadNewProfile();
+          } else if (queryParams['type'] && queryParams['version']) {
             const type: ProfileType = queryParams?.type;
             const version: ProfileVersion = queryParams?.version;
             this.createNewProfile(type, version);
@@ -237,6 +239,21 @@ export class MainComponent implements OnInit, OnDestroy {
           this.sedaService.setMetaModel(metaModel);
           this.fileService.linkFileNodeToSedaData(null, [profileResponse.profile]);
           this.fileService.updateTreeWithProfile(profileResponse);
+        }),
+        finalize(() => this.loaderService.stop()),
+      )
+      .subscribe();
+  }
+
+  private uploadNewProfile() {
+    this.loaderService.start();
+    this.profileService
+      .getMetaModel(this.uploadedProfileByFile.sedaVersion)
+      .pipe(
+        map((metaModel) => {
+          this.sedaService.setMetaModel(metaModel);
+          this.fileService.linkFileNodeToSedaData(null, [this.uploadedProfileByFile.profile]);
+          this.fileService.updateTreeWithProfile(this.uploadedProfileByFile);
         }),
         finalize(() => this.loaderService.stop()),
       )
