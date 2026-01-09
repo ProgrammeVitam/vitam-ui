@@ -18,6 +18,7 @@ Documentation de montée de versions majeures Vitam-UI
    upgrade_v7_1.md
    upgrade_v8_0.md
    upgrade_v8_1.md
+   upgrade_v9_0.md
    migration_container.md
 
 Documentation de montée de versions mineures / bugfixes Vitam-UI
@@ -30,3 +31,5 @@ Documentation de montée de versions mineures / bugfixes Vitam-UI
 
    update_v7_1.md
    update_v8_0.md
+   update_v8_1.md
+   update_v9_0.md
