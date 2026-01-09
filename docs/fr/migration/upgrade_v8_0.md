@@ -85,7 +85,7 @@ ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/reini
 
 > **Attention**
 > Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V8.0.
-> Cette opération est à effectuer si vous venez des versions de VitamUI suivante: V7.1.4-
+> Cette opération est à effectuer si vous venez des versions de VitamUI suivante: V7.1.4-.
 > Il est recommandé d'effectuer un backup de la base de données à l'aide de mongodump avant de poursuivre.
 
 Exécutez le playbook suivant à partir de l'ansiblerie de la V8.0 :

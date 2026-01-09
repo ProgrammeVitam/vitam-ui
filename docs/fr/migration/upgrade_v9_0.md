@@ -26,7 +26,7 @@ ansible-playbook -i environments/<inventaire> ansible-vitamui-extra/bootstrap.ym
 
 > **Attention**
 > Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V9.1.
-> Cette opération est à effectuer si vous venez des versions de VitamUI suivante: V8.1.2-
+> Cette opération est à effectuer si vous venez des versions de VitamUI suivante: V8.1.2-.
 > Il est recommandé d'effectuer un backup de la base de données à l'aide de mongodump avant de poursuivre.
 
 Exécutez le playbook suivant à partir de l'ansiblerie de la V9.0 :
