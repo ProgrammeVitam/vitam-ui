@@ -34,7 +34,7 @@ import org.testcontainers.containers.MongoDBContainer;
 
 public class AbstractMongoTests {
 
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:7.0.8");
+    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:7.0.28");
 
     @BeforeAll
     static void startContainers() {
