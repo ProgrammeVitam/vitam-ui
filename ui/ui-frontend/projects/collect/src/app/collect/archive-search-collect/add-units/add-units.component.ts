@@ -52,12 +52,12 @@ import {
   ZipFileStatus,
   ApplicationId,
   SnackBarService,
+  StartupService,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { FormControl, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
 
 export enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
@@ -75,7 +75,6 @@ export class AddUnitsComponent implements OnInit {
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
 
-  uploadedOperationId: string;
   isLoading = false;
   stepIndex = 0;
 
@@ -93,7 +92,7 @@ export class AddUnitsComponent implements OnInit {
     public data: {
       transaction: Transaction;
     },
-    private route: ActivatedRoute,
+    private startupService: StartupService,
     private snackBarService: SnackBarService,
     private dialog: MatDialog,
     private addUnitsDialogRef: MatDialogRef<AddUnitsComponent>,
@@ -141,9 +140,6 @@ export class AddUnitsComponent implements OnInit {
   }
 
   close(filesUploaded: boolean) {
-    if (filesUploaded && this.importType === ImportType.SIP && this.uploadedOperationId) {
-      this.handleUploadSIPSuccess(this.uploadedOperationId);
-    }
     this.confirmCancelDialog?.close(true);
     this.addUnitsDialogRef.close(filesUploaded);
   }
@@ -176,8 +172,13 @@ export class AddUnitsComponent implements OnInit {
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
         tap((httpEvent) => {
-          if (this.importType === ImportType.SIP && httpEvent.type === HttpEventType.Response) {
-            this.uploadedOperationId = httpEvent.body;
+          if (httpEvent.type === HttpEventType.Response) {
+            if (this.importType === ImportType.SIP) {
+              this.handleUploadSuccess(httpEvent.body);
+            } else {
+              // For ZIP and DIRECTORIES_FILES, show success banner without operation ID
+              this.handleUploadSuccess(null);
+            }
           }
         }),
         finalize(() => (this.isLoading = false)),
@@ -193,19 +194,28 @@ export class AddUnitsComponent implements OnInit {
     this.filesToUploadControl.setValue([]);
   }
 
-  private handleUploadSIPSuccess(operationId: string): void {
-    const tenantId = this.route.snapshot.params.tenantIdentifier;
-    this.snackBarService.open({
-      message: 'COLLECT.MODAL.IMPORT_SIP_ARCHIVES_PACKAGE_WITH_SUCCESS',
-      buttons: [
-        {
-          appId: ApplicationId.LOGBOOK_OPERATION_APP,
-          path: `/tenant/${tenantId}?guid=${operationId}`,
-          label: 'SNACK_BAR.TO_OPERATION_APP',
-        },
-      ],
-      duration: 100_000,
-    });
+  private handleUploadSuccess(operationId: string | null): void {
+    if (operationId) {
+      // For SIP imports with operation ID
+      const tenantId = this.startupService.getTenantIdentifier();
+      this.snackBarService.open({
+        message: 'COLLECT.MODAL.IMPORT_SIP_ARCHIVES_PACKAGE_WITH_SUCCESS',
+        buttons: [
+          {
+            appId: ApplicationId.LOGBOOK_OPERATION_APP,
+            path: `/tenant/${tenantId}?guid=${operationId}`,
+            label: 'SNACK_BAR.TO_OPERATION_APP',
+          },
+        ],
+        duration: 100_000,
+      });
+    } else {
+      // For ZIP and DIRECTORIES_FILES imports without operation ID
+      this.snackBarService.open({
+        message: 'COLLECT.UPLOAD.TERMINATED',
+        duration: 10_000,
+      });
+    }
   }
 
   get importType(): string | null {
