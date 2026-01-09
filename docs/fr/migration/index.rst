@@ -30,3 +30,4 @@ Documentation de montée de versions mineures / bugfixes Vitam-UI
 
    update_v7_1.md
    update_v8_0.md
+   update_v8_1.md

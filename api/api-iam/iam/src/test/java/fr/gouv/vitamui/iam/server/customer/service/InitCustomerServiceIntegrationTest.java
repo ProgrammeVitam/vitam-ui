@@ -78,7 +78,7 @@ public class InitCustomerServiceIntegrationTest {
     private static class CommonRepositoriesConfig {}
 
     @Container
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:8.0.8");
+    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:8.0.17");
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {

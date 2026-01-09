@@ -81,6 +81,19 @@ En cas de re-génération des certificats, ils doivent être mis à jour en base
 ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/reinit_security_certificates.yml --ask-vault-pass
 ```
 
+### Mise à jour de MongoDB vers la version 7.0.28
+
+> **Attention**
+> Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V8.0.
+> Cette opération est à effectuer si vous venez des versions de VitamUI suivante: V7.1.4-.
+> Il est recommandé d'effectuer un backup de la base de données à l'aide de mongodump avant de poursuivre.
+
+Exécutez le playbook suivant à partir de l'ansiblerie de la V8.0 :
+
+```sh
+ansible-playbook -i environments/<inventaire> ansible-vitamui-migration/migration_mongodb_70.yml --ask-vault-pass
+```
+
 ### Arrêt complet de VitamUI
 
 > Cette opération doit être effectuée AVANT la montée de version vers la V8.0.
