@@ -97,7 +97,7 @@
     <ng-template #archiveUnitType let-archiveUnitType let-icon="icon">
       <mat-checkbox
         class="w-100"
-        (click)="toggleArchiveUnitCriteria(archiveUnitType, $event)"
+        (change)="toggleArchiveUnitCriteria(archiveUnitType, $event)"
         [checked]="archiveUnitTypesCriteria.get(archiveUnitType)"
       >
         {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + archiveUnitType | translate }}
