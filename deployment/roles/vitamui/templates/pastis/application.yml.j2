@@ -75,6 +75,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      hostname: {{ inventory_hostname }}
 
 cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 

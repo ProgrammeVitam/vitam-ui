@@ -54,6 +54,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      hostname: {{ inventory_hostname }}
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
