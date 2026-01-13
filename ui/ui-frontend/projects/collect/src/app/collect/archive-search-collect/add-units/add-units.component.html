@@ -64,10 +64,10 @@
     <mat-dialog-content>
       <div class="main-content">
         <div class="form-group">
-          @if (projectUnits && importType === ImportType.DIRECTORIES_FILES) {
+          @if (projectUnits && (importType === ImportType.DIRECTORIES_FILES || importType === ImportType.COMPRESSED)) {
             <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="linkParentIdControl" [dataSource]="projectUnits">
             </vitamui-library-filing-plan>
-          } @else if (importType === ImportType.COMPRESSED || importType === ImportType.SIP) {
+          } @else if (importType === ImportType.SIP) {
             <span class="text meduim">
               {{ 'COLLECT.MODAL.ARCHIVE_POSITION_MSG_FOR_SIP' | translate }}
             </span>
