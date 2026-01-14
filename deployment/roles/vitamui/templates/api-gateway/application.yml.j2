@@ -26,6 +26,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      hostname: {{ inventory_hostname }}
 
 authn:
   client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}

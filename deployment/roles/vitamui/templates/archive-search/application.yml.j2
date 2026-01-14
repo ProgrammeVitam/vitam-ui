@@ -58,6 +58,7 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      hostname: {{ inventory_hostname }}
 
 gateway:
   enabled: true
