@@ -65,6 +65,7 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
 import { ManagementRulesSharedDataService } from '../../services/management-rules-shared-data.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ArchiveSearchHelperService } from '../../services/archive-search-helper.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
@@ -282,9 +283,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
 
-  toggleArchiveUnitCriteria(archiveUnitType: ArchiveUnitType, event: any) {
-    this.archiveUnitTypesCriteria.set(archiveUnitType, event.target.checked);
-    const action = event.target.checked ? 'ADD' : 'REMOVE';
+  toggleArchiveUnitCriteria(archiveUnitType: ArchiveUnitType, event: MatCheckboxChange) {
+    this.archiveUnitTypesCriteria.set(archiveUnitType, event.checked);
+    const action = event.checked ? 'ADD' : 'REMOVE';
     this.processArchiveUnitTypeCriteriaAction(action, archiveUnitType);
   }
 

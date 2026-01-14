@@ -63,6 +63,7 @@ import { combineLatest } from 'rxjs';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ArchiveSearchHelperService } from '../../common-services/archive-search-helper.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_FILING_UNIT = 'ARCHIVE_UNIT_FILING_UNIT';
@@ -306,8 +307,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
 
-  toggleArchiveUnitCriteria(archiveUnitType: ArchiveUnitType, event: any) {
-    const action = event.target.checked ? 'ADD' : 'REMOVE';
+  toggleArchiveUnitCriteria(archiveUnitType: ArchiveUnitType, event: MatCheckboxChange) {
+    const action = event.checked ? 'ADD' : 'REMOVE';
     this.processArchiveUnitTypeCriteriaAction(action, archiveUnitType);
   }
 
