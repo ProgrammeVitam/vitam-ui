@@ -142,9 +142,15 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
       const formData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
       this.profileService.uploadProfile(formData).subscribe((response: any) => {
-        if (response && response.id) {
-          // Navigate to edit page with the profile ID
-          this.router.navigate(['edit', response.id], {
+        if (response) {
+          this.router.navigate(['new'], {
+            state: {
+              payload: response,
+            },
+            queryParams: {
+              type: response.type,
+              version: response.sedaVersion,
+            },
             relativeTo: this.route,
           });
         }
