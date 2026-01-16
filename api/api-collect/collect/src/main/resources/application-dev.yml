@@ -25,10 +25,10 @@ server:
   host:
   port: 8090
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_collect.jks
+    key-store: ../../../dev-deployment/environments/keystores/vitamui-services/server/collect/keystore_collect.jks
     key-store-password: changeme
     key-password: changeme
-    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
     trust-store-password: changeme
     client-auth: want
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -51,10 +51,10 @@ collect:
     secure: true
     ssl-configuration:
       truststore:
-        key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
         key-password: changeme
       keystore:
-        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_collect.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/collect/keystore_collect.jks
         key-password: changeme
         type: JKS
       hostname-verification: false

@@ -16,7 +16,7 @@ module.exports = applications.map((application) => ({
     protocol: 'https:',
     host: 'localhost',
     port: 8070,
-    pfx: fs.readFileSync(`../../dev-deployment/environments/certs/server/hosts/localhost/ui-${application.pfx}.p12`),
+    pfx: fs.readFileSync(`../../dev-deployment/environments/keystores/vitamui-services/clients/ui-${application.pfx}/keystore_ui-${application.pfx}.p12`),
     passphrase: 'changeme',
   },
   changeOrigin: true,
