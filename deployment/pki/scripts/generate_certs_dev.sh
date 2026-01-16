@@ -27,40 +27,40 @@ function generateCerts {
     pki_logger "Recopie des clés publiques des CA"
     copyCAFromPki client-external
     copyCAFromPki client-vitam
-    copyCAFromPki server
+    copyCAFromPki vitamui-services
 
     # Generate hosts certificates
     pki_logger "Génération des certificats serveurs"
     # Zone interne
-    generateHostCertAndStorePassphrase          security            hosts_vitamui_security
+    generateServerCertAndStorePassphrase            security            vitamui-services
     #Zone externe
-    generateHostCertAndStorePassphrase          iam                 hosts_vitamui_iam
-    generateHostCertAndStorePassphrase          cas-server          hosts_cas_server
-    generateHostCertAndStorePassphrase          referential         hosts_vitamui_referential
-    generateHostCertAndStorePassphrase          ingest              hosts_vitamui_ingest
-    generateHostCertAndStorePassphrase          archive-search      hosts_vitamui_archive_search
-    generateHostCertAndStorePassphrase          collect             hosts_vitamui_collect
-    generateHostCertAndStorePassphrase          pastis              hosts_vitamui_pastis
-    generateHostCertAndStorePassphrase          api-gateway         hosts_vitamui_api_gateway
+    generateServerAndClientCertAndStorePassphrase   iam                 vitamui-services
+    generateServerAndClientCertAndStorePassphrase   cas-server          vitamui-services
+    generateServerAndClientCertAndStorePassphrase   referential         vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ingest              vitamui-services
+    generateServerAndClientCertAndStorePassphrase   archive-search      vitamui-services
+    generateServerAndClientCertAndStorePassphrase   collect             vitamui-services
+    generateServerAndClientCertAndStorePassphrase   pastis              vitamui-services
+    generateServerAndClientCertAndStorePassphrase   api-gateway         vitamui-services
     #Zone UI
-    generateHostCertAndStorePassphrase          ui-portal           hosts_ui_portal
-    generateHostCertAndStorePassphrase          ui-identity         hosts_ui_identity
-    generateHostCertAndStorePassphrase          ui-identity-admin   hosts_ui_identity_admin
-    generateHostCertAndStorePassphrase          ui-referential      hosts_ui_referential
-    generateHostCertAndStorePassphrase          ui-ingest           hosts_ui_ingest
-    generateHostCertAndStorePassphrase          ui-archive-search   hosts_ui_archive_search
-    generateHostCertAndStorePassphrase          ui-pastis           hosts_ui_pastis
-    generateHostCertAndStorePassphrase          ui-collect          hosts_ui_collect
-    generateHostCertAndStorePassphrase          ui-design-system    hosts_ui_design_system
+    generateServerAndClientCertAndStorePassphrase   ui-portal           vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ui-identity         vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ui-identity-admin   vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ui-referential      vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ui-ingest           vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ui-archive-search   vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ui-pastis           vitamui-services
+    generateServerAndClientCertAndStorePassphrase   ui-collect          vitamui-services
+    generateServerCertAndStorePassphrase            ui-design-system    vitamui-services
 
     #Reverse
-    generateHostCertAndStorePassphrase          reverse             hosts_vitamui_reverseproxy
+    generateServerCertAndStorePassphrase            reverse             hosts_vitamui_reverseproxy     vitamui-services
 
     # Example of generated client cert for a customer allowing to perform request on external APIs
-    generateClientCertAndStorePassphrase        customer_x          client-external
+    generateClientCertAndStorePassphrase            customer_x          client-external
 
     # Generate Vitam certificates for VitamUI
-    generateClientCertAndStorePassphrase        vitamui             client-vitam
+    generateClientCertAndStorePassphrase            vitamui             client-vitam
 }
 
 ######################################################################

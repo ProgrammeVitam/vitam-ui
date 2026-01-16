@@ -138,7 +138,7 @@ db.certificates.insertOne({
 
 {%- endmacro %}
 
-{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_archive_search"]|first }}/ui-archive-search.pem', 'ui_archive_search_context') }}
+{{ insertCertififcate('{{ inventory_dir }}/certs/vitamui-services/server/ui-archive-search/ui-archive-search.pem', 'ui_archive_search_context') }}
 
 print("INFO 01_archive_search.js : END security update for Archive search");
 

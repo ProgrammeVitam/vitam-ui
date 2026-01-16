@@ -135,29 +135,42 @@
 
 - name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (server)"
   copy:
-    src: "{{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
+    src: "{{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
     dest: "{{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   when:
     - vitamui_struct.secure | default(secure) | lower == 'true'
-    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == ''
+    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == ''
   tags: update_vitamui_certificates
   notify: restart service
 
-# Copy the trustore for all vitamui components in order to communicate between them.
-- name: Copy server truststore
+- name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (client)"
   copy:
-    src: "{{ inventory_dir }}/keystores/server/truststore_server.jks"
-    dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
+    src: "{{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
+    dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   when:
     - vitamui_struct.secure | default(secure) | lower == 'true'
-    - vitamui_certificate_type | default('none') | lower == 'server'
-    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/truststore_server.jks || echo nofile') == ''
+    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == ''
+  tags: update_vitamui_certificates
+  notify: restart service
+
+# Copy the trustore for all vitamui components in order to communicate between them.
+- name: Copy vitamui-services truststore
+  copy:
+    src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.jks"
+    dest: "{{ vitamui_folder_conf }}/truststore_vitamui.jks"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+  when:
+    - vitamui_struct.secure | default(secure) | lower == 'true'
+    - vitamui_certificate_type | default('none') | lower == 'vitamui-services'
+    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.jks || echo nofile') == ''
   tags: update_vitamui_certificates
   notify: restart service
 

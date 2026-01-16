@@ -16,7 +16,7 @@
 
 - name: List trusted CA files
   find:
-    paths: "{{ inventory_dir }}/certs/server/ca/"
+    paths: "{{ inventory_dir }}/certs/vitamui-services/ca/"
     patterns: "*.crt"
   delegate_to: localhost
   register: trusted_ca_certs
@@ -26,7 +26,7 @@
 
 - name: Check trusted CA files present
   fail:
-    msg: "CA certificates missing from {{ inventory_dir }}/certs/server/ca/ directory"
+    msg: "CA certificates missing from {{ inventory_dir }}/certs/vitamui-services/ca/ directory"
   when: trusted_ca_certs.files | length == 0
 
 - name: Copy trusted CA certs

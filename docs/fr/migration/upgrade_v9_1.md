@@ -4,6 +4,59 @@
 
 ## Adaptation des sources de déploiement ansible
 
+### Séparation des certificats client / serveur – Appels inter-VitamUI
+
+**Périmètre** : communications mTLS entre services VitamUI (ex. api-gateway → iam, portal → archive-search, etc.)
+
+À partir de la V9.1, les certificats utilisés pour les appels inter-services VitamUI sont explicitement séparés :
+
+*   **Certificat serveur** : présenté par un service VitamUI lorsqu’il reçoit une connexion.
+*   **Certificat client** : présenté par un service VitamUI lorsqu’il appelle un autre service VitamUI.
+
+Chaque service VitamUI possède donc :
+*   Un keystore serveur.
+*   Un keystore client.
+
+Un truststore VitamUI interne est utilisé pour établir la confiance entre services.
+
+**Nouvelle arborescence des dossiers :**
+*   Les certificats serveurs sont désormais localisés dans `environments/certs/vitamui-services/server/`.
+*   Les keystores serveurs sont désormais localisés dans `environments/keystores/vitamui-services/server/`.
+*   Les certificats clients sont désormais localisés dans `environments/certs/vitamui-services/clients/`.
+*   Les keystores clients sont désormais localisés dans `environments/keystores/vitamui-services/clients/`.
+
+#### Mise à jour des certificats
+
+À partir de la V9.1, la séparation des certificat serveur/client de vitamui nécessite la regénération des certificats.
+
+* Générer les nouveaux certificats
+
+  ```sh
+  ./pki/scripts/generate_certs.sh environments/<inventaire> true
+  ```
+
+  > Le paramètre true permet d'écraser les certificats existants.
+
+* Mutualisation des PKIs entre Vitam & VitamUI
+
+  Afin de permettre à VitamUI de communiquer avec Vitam, il va falloir procéder à un échanges de certificats et des autorités de certifications.
+
+  Pour ce faire, il existe un script permettant de faciliter cet échange qui prend les paramètres suivants:
+
+  ```sh
+  ./scripts/mutualize_certs_for_vitamui.sh -v ../../vitam.git/deployment/environments/certs -u ./environments/certs
+  ```
+
+  > Attention ! Après cette étape, il sera nécessaire de regénérer les stores de la zone Vitam, suite à l'ajout des certificats de VitamUI, et de reconfigurer Vitam en utilisant le `--tags update_vitam_certificates`.
+
+* Regénérer les stores de VitamUI
+
+  ```sh
+  ./generate_stores.sh true
+  ```
+
+  > Le paramètre true permet d'écraser les stores existants.
+
 ### Déploiement de la configuration Prometheus pour les métriques VitamUI
 
 Si vous avez déployé Prometheus sur la zone Vitam et que vous souhaitez pouvoir utiliser les nouveaux dashboards associés, vous devrez renseigner la configuration suivante.

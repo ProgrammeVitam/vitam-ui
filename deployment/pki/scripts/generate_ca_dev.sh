@@ -14,7 +14,7 @@ set -e
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../../dev-deployment" ; pwd )"
 
 function get_autorities() {
-    echo "server client-external client-vitam"
+    echo "vitamui-services client-external client-vitam"
 }
 
 ######################################################################
