@@ -68,7 +68,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
+import { MatOption, MatOptionModule, MatOptionSelectionChange, MatPseudoCheckboxModule } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -105,6 +105,7 @@ export interface VitamuiSelectOptions {
     MatInputModule,
     MatListModule,
     MatOptionModule,
+    MatPseudoCheckboxModule,
     MatSelectModule,
     PipesModule,
     ReactiveFormsModule,
@@ -363,13 +364,16 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       this.searchBar?.reset();
     }
   }
+  protected toggleSelectAll(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
 
-  protected toggleSelectAll(event: MatOptionSelectionChange): void {
-    if (!event.isUserInput) {
-      return;
-    }
+    // Toggle: if all are selected, deselect all. Otherwise, select all.
+    this.selectAll(!this.isAllSelected());
+  }
 
-    this.selectAll(event.source.selected);
+  protected isAllSelected(): boolean {
+    return this.allOptions.length > 0 && this.getSelectedOptionsCount() === this.allOptions.length;
   }
 
   protected clearAllSelectedOptions(): void {
