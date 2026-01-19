@@ -51,6 +51,8 @@ import { TypographyComponent } from './components/tokens/typography/typography.c
 import { DesignSystemComponent } from './components/design-system/design-system.component';
 import { DesignSystemChipsComponent } from './components/atoms/chips/design-system-chips.component';
 import { DesignSystemBadgesComponent } from './components/atoms/badges/design-system-badges.component';
+import { DesignSystemInformationBlocComponent } from './components/atoms/design-system-information-bloc/design-system-information-bloc.component';
+import { DesignSystemInformationDetailComponent } from './components/atoms/design-system-information-detail/design-system-information-detail.component';
 import { SpacingComponent } from './components/tokens/spacing/spacing.component';
 import { DesignSystemCheckboxComponent } from './components/molecules/inputs/checkbox/design-system-checkbox.component';
 import { DesignSystemSelectComponent } from './components/molecules/inputs/select/design-system-select.component';
@@ -94,6 +96,8 @@ const routes: Routes = [
       { path: 'buttons', component: ButtonsComponent },
       { path: 'chips', component: DesignSystemChipsComponent },
       { path: 'badges', component: DesignSystemBadgesComponent },
+      { path: 'information-bloc', component: DesignSystemInformationBlocComponent },
+      { path: 'information-detail', component: DesignSystemInformationDetailComponent },
       { path: 'icons', component: IconsComponent },
       { path: 'slide-toggle', component: SlideToggleComponent },
       { path: 'tooltip', component: TooltipComponent },

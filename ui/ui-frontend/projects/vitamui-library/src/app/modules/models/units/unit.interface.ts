@@ -195,11 +195,13 @@ export interface InheritanceRuleDto {
 
 export interface ValidationError {
   evId: string;
-  obId: string;
+  obId?: string;
   evTypeProc: string;
-  evDetData: string;
   outDetail: string;
   outMessg: string;
+  evDetData?: string;
+  evDateTime: string;
+  evIdProc: string;
 }
 
 export interface ObjectGroupInfo {

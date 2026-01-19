@@ -1,4 +1,10 @@
 <div class="object-details-group IDS" *ngIf="unitObject">
+  @if (objectsGroupErrors().length) {
+    <div class="mb-3">
+      <vitamui-information-bloc [decoration]="'bordered'"></vitamui-information-bloc>
+    </div>
+  }
+
   <div class="row">
     <div class="col title">
       {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.TECHNICAL_OBJECT_GROUP' | translate }}
@@ -27,17 +33,15 @@
     </div>
   </div>
 
-  @if (errorMessagesGot && errorMessagesGot['null']) {
-    <div class="row-separator"></div>
-    <div class="row">
-      <div class="col title">
+  @if (technicalObjectsGroupErrors().length) {
+    <div class="d-flex flex-column gap-2 align-items-stretch">
+      <div class="text normal bold danger">
         {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}
       </div>
+      @for (error of technicalObjectsGroupErrors(); track error) {
+        <vitamui-information-detail [error]="error"></vitamui-information-detail>
+      }
     </div>
-    <vitamui-common-data
-      [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.LABEL' | translate"
-      [value]="errorMessagesGot['null']"
-    ></vitamui-common-data>
   }
 </div>
 
@@ -290,14 +294,13 @@
     </div>
 
     @if (errorMessagesGot && errorMessagesGot[versionWithQualifier['#id']]) {
-      <div class="object-details-group">
-        <div class="row title">
+      <div class="d-flex flex-column gap-2 align-items-stretch">
+        <div class="text normal bold danger">
           {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}
         </div>
-        <vitamui-common-data
-          [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.LABEL' | translate"
-          [value]="errorMessagesGot[versionWithQualifier['#id']]"
-        ></vitamui-common-data>
+        @for (error of errorMessagesGot[versionWithQualifier['#id']]; track $index) {
+          <vitamui-information-detail [error]="error"></vitamui-information-detail>
+        }
       </div>
     }
 

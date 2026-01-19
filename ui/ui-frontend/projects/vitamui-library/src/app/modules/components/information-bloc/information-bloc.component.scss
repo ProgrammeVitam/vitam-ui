@@ -1,0 +1,39 @@
+:host {
+  &.primary {
+    --color: var(--vitamui-primary);
+    --background-color: var(--vitamui-primary-50);
+  }
+  &.secondary {
+    --color: var(--vitamui-secondary);
+    --background-color: var(--vitamui-secondary-50);
+  }
+  &.danger {
+    --color: var(--vitamui-red);
+    --background-color: var(--vitamui-red-50);
+  }
+  &.success {
+    --color: var(--vitamui-green);
+    --background-color: var(--vitamui-green-50);
+  }
+  &.warning {
+    --color: var(--vitamui-orange);
+    --background-color: var(--vitamui-orange-50);
+  }
+  &.neutral {
+    --color: var(--vitamui-grey);
+    --background-color: var(--vitamui-grey-50);
+  }
+
+  .style {
+    border-radius: 10px;
+    background-color: var(--background-color);
+
+    .vitamui-icon {
+      color: var(--color);
+    }
+
+    &.bordered {
+      border: 1px solid var(--color);
+    }
+  }
+}

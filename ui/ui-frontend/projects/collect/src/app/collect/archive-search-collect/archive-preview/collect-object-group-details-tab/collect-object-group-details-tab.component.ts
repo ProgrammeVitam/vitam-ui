@@ -36,7 +36,7 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, computed, input, InputSignal, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import {
   ApiUnitObject,
   DescriptionLevel,
@@ -46,6 +46,9 @@ import {
   TenantSelectionService,
   Unit,
   VersionWithQualifierDto,
+  ValidationError,
+  getErrorOnTechnicalObjectsGroup,
+  getErrorOnObjectsGroup,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
@@ -64,12 +67,20 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   standalone: false,
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
-  @Input() archiveUnit: Unit;
+  archiveUnit: InputSignal<Unit> = input(null);
+
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
   hasDownloadDocumentRole = false;
   private allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
-  errorMessagesGot: Record<string, string[]>;
+  errorMessagesGot: Record<string, ValidationError[]>;
+
+  technicalObjectsGroupErrors: Signal<ValidationError[]> = computed(() => {
+    return getErrorOnTechnicalObjectsGroup(this.archiveUnit());
+  });
+  objectsGroupErrors: Signal<ValidationError[]> = computed(() => {
+    return getErrorOnObjectsGroup(this.archiveUnit());
+  });
 
   constructor(
     private archiveCollectService: ArchiveCollectService,
@@ -84,20 +95,20 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
       this.unitObject = null;
       this.versionsWithQualifiersOrdered = null;
       if (this.unitHasObject()) {
-        this.getObjectGroupDetailsById(this.archiveUnit);
+        this.getObjectGroupDetailsById(this.archiveUnit());
       }
     }
   }
 
   unitHasObject(): boolean {
-    return this.allowedDescriptionLevel.includes(this.archiveUnit.DescriptionLevel) && !!this.archiveUnit['#object'];
+    return this.allowedDescriptionLevel.includes(this.archiveUnit().DescriptionLevel) && !!this.archiveUnit()['#object'];
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
     event.stopPropagation();
     return this.archiveCollectService.downloadObjectFromUnit(
-      this.archiveUnit['#id'],
-      this.archiveUnit['#object'],
+      this.archiveUnit()['#id'],
+      this.archiveUnit()['#object'],
       versionWithQualifier.qualifier,
       versionWithQualifier.version,
     );
@@ -114,10 +125,10 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
       this.errorMessagesGot = this.unitObject['#errors']?.reduce(
         (acc, err) => {
           const key = err.obId || 'null';
-          acc[key] = [...(acc[key] || []), err.outMessg];
+          acc[key] = [...(acc[key] || []), err];
           return acc;
         },
-        {} as Record<string, string[]>,
+        {} as Record<string, ValidationError[]>,
       );
       this.setFirstVersionWithQualifierOpen();
     });

@@ -37,7 +37,7 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
-import { Unit, unitToVitamuiIcon } from 'vitamui-library';
+import { Unit, unitToVitamuiIcon, ArchiveUnit, addErrorStatusBadgeIfArchiveUnitHasErrors } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
@@ -150,5 +150,9 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
 
   getArchiveUnitIcon(unit: Unit) {
     return unitToVitamuiIcon(unit);
+  }
+
+  addStatusBadgeforArchiveUnitWithErrors(archiveUnit: ArchiveUnit) {
+    return addErrorStatusBadgeIfArchiveUnitHasErrors(archiveUnit);
   }
 }

@@ -2,6 +2,7 @@
   [extended]="isPanelextended"
   [title]="archiveUnit | unitI18n: 'Title' | truncate: 29"
   [icon]="getArchiveUnitIcon(archiveUnit)"
+  [badge]="addStatusBadgeforArchiveUnitWithErrors(archiveUnit)"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="archiveUnit | unitI18n: 'Title'"
   [toolTipTitleDuration]="300"
@@ -31,6 +32,7 @@
       <app-archive-unit-information-tab
         [archiveUnit]="archiveUnit"
         (showNormalPanel)="showNormalPanel()"
+        (openObjectsTab)="selectedTabChangeEvent($event)"
       ></app-archive-unit-information-tab>
     </mat-tab>
 
