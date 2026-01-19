@@ -1,6 +1,6 @@
 db = db.getSiblingDB("cas");
 
-print("START v9.0.0-05_update_applications_serviceId.js");
+print("START v9.0.0-06_update_applications_serviceId.js");
 
 // Update every serviceId, making sure the regex is escaped ("." should be "\\." to prevent matching incorrect URLs, like for example https://sub-domain.com/ instead of https://sub.domain.com/)
 db.services.updateOne({ "_id": NumberInt(1) }, {
@@ -44,4 +44,4 @@ db.services.updateOne({ "_id": NumberInt(8) }, {
     }
 });
 
-print("END v9.0.0-05_update_applications_serviceId.js");
+print("END v9.0.0-06_update_applications_serviceId.js");
