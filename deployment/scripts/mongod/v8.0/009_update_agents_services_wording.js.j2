@@ -1,0 +1,13 @@
+db = db.getSiblingDB('iam')
+
+print("START 009_update_agents_services_wording.js");
+
+db.applications.updateOne({
+    "identifier" : "AGENCIES_APP",
+}, {
+    $set: {
+        "name": "Services Agents"
+    },
+});
+
+print("STOP 009_update_agents_services_wording.js");
