@@ -33,6 +33,15 @@ server:
     client-certificate-header-name: x-ssl-cert
   error:
     path: /error
+  tomcat:
+    connection-timeout: 60000
+    accesslog:
+      enabled: true
+      max-days: 365
+      directory: "/vitamui/log/iam"
+      prefix: "accesslog-iam"
+      file-date-format: ".yyyy-MM-dd"
+      suffix: ".log"
 
 management:
   server:

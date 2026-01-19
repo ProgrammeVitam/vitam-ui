@@ -55,14 +55,21 @@ public class IamApiClient extends ApiClient {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             final HttpContext context;
-            if (authentication instanceof PreAuthenticatedAuthenticationToken) {
+            if (
+                authentication instanceof PreAuthenticatedAuthenticationToken &&
+                authentication.getPrincipal() instanceof HttpContext
+            ) {
                 // Needed for the initial call to usersApi.getMe() during authentication
                 context = (HttpContext) authentication.getPrincipal();
-            } else {
+            } else if (authentication.getCredentials() instanceof HttpContext) {
                 // The other calls get normal authentication credentials
                 context = (HttpContext) authentication.getCredentials();
+            } else {
+                context = null;
             }
-            updateParamsForAuth(headerParams, context);
+            if (context != null) {
+                updateParamsForAuth(headerParams, context);
+            }
         }
     }
 
