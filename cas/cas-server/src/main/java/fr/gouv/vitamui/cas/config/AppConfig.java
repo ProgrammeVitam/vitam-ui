@@ -610,21 +610,27 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
                     final HttpContext httpContext;
 
                     if (hasPrincipal) {
-                        final Principal principal = (Principal) context.getAuthentication().getPrincipal();
-                        final Map<String, List<Object>> attributes = principal.getAttributes();
-                        final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
-                        final String superUserEmail = (String) utils.getAttributeValue(
-                            attributes,
-                            SUPER_USER_ATTRIBUTE
-                        );
-                        final String superUserCustomerId = (String) utils.getAttributeValue(
-                            attributes,
-                            SUPER_USER_CUSTOMER_ID_ATTRIBUTE
-                        );
-                        if (StringUtils.isNotBlank(superUserCustomerId)) {
-                            httpContext = utils.buildContext(superUserEmail);
+                        Object principal = context.getAuthentication().getPrincipal();
+                        if (principal instanceof Principal principalObj) {
+                            final Map<String, List<Object>> attributes = principalObj.getAttributes();
+                            final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
+                            final String superUserEmail = (String) utils.getAttributeValue(
+                                attributes,
+                                SUPER_USER_ATTRIBUTE
+                            );
+                            final String superUserCustomerId = (String) utils.getAttributeValue(
+                                attributes,
+                                SUPER_USER_CUSTOMER_ID_ATTRIBUTE
+                            );
+                            if (StringUtils.isNotBlank(superUserCustomerId)) {
+                                httpContext = utils.buildContext(superUserEmail);
+                            } else {
+                                httpContext = utils.buildContext(principalEmail);
+                            }
+                        } else if (principal instanceof String principalString) {
+                            httpContext = utils.buildContext(principalString);
                         } else {
-                            httpContext = utils.buildContext(principalEmail);
+                            httpContext = utils.buildContext("admin@change-it.fr");
                         }
                     } else {
                         httpContext = utils.buildContext("admin@change-it.fr");
