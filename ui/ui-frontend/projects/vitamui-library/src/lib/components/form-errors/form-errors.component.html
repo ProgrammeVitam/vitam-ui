@@ -1,8 +1,5 @@
 @if (control.touched) {
   @for (errorKey of Object.keys(errors); track errorKey) {
-    <div class="mt-1 hgap-1">
-      <i class="vitamui-icon vitamui-icon-anomalie danger"></i>
-      <mat-error class="text caption danger" [translate]="getErrorMessageKey(errorKey)" [translateParams]="errors[errorKey]"></mat-error>
-    </div>
+    <vitamui-form-error [errorMessageMap]="errorMessageMap" [errorKey]="errorKey" [translateParams]="errors[errorKey]"></vitamui-form-error>
   }
 }

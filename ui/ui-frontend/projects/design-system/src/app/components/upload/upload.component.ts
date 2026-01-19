@@ -36,12 +36,57 @@
  */
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VitamUICommonModule } from 'vitamui-library';
+import { FileValidationErrors, readFileContent, VitamUICommonModule } from 'vitamui-library';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'design-system-upload',
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
-  imports: [CommonModule, VitamUICommonModule],
+  imports: [CommonModule, VitamUICommonModule, FormsModule, ReactiveFormsModule],
 })
-export class UploadComponent {}
+export class UploadComponent {
+  filenameValidator =
+    (expectedFileName: string) =>
+    async (file: File): Promise<FileValidationErrors> => {
+      if (file.name !== expectedFileName) {
+        console.warn(`Invalid filename. Expected: "${expectedFileName}"`);
+        return {
+          fileErrors: { INVALID_FILE_NAME: { expectedFileName: expectedFileName } },
+          controlErrors: { invalidFiles: true },
+        };
+      }
+      console.log(`Filename valid`);
+      return null;
+    };
+
+  csvValidator = async (file: File): Promise<FileValidationErrors> => {
+    const content = await readFileContent(file);
+    const errors = [];
+    const header = 'Identifier,Name,Description';
+    const lines = content.split('\n');
+    if (!content.startsWith(header)) {
+      errors.push(`Première ligne invalide :<ul><li>Valeur : "${lines[0]}"</li><li>Valeur attendue : "${header}"</li></ul>`);
+    }
+    const dataLines = lines.slice(1, -1);
+    if (dataLines.length === 0) {
+      errors.push(`Il n'y a aucune ligne de données`);
+    }
+    dataLines.forEach((line, index) => {
+      if (line.split(',').length !== header.split(',').length) {
+        errors.push(
+          `La ligne ${index + 1} n'a pas autant de colonnes que le header :<ul><li>Valeur : "${line}"</li><li>${header.split(',').length} colonnes attendues</li></ul>`,
+        );
+      }
+    });
+    if (errors.length > 0) {
+      console.warn(`Invalid CSV:`, errors);
+      return {
+        fileErrors: { INVALID_CSV: true },
+        controlErrors: { INVALID_CSV_DETAIL: { detail: errors.map((error) => `<li>${error}</li>`).join('') } },
+      };
+    }
+    console.log(`Valid content`);
+    return null;
+  };
+}

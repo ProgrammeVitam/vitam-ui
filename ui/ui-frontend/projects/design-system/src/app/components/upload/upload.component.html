@@ -1,26 +1,87 @@
 <div>
   <h2>Upload files/directories</h2>
 
-  <h3>Only 1 file (~25 MB max size)</h3>
-  <vitamui-file-selector [maxSizeInBytes]="25 * 1024 * 1024"> </vitamui-file-selector>
+  <h3>One file</h3>
+  <p>Only one file is allowed (no directories).</p>
+  <div class="row">
+    <div class="col-4">
+      <h4>Normal</h4>
+      <vitamui-file-selector />
+    </div>
+    <div class="col-4">
+      <h4>Max size</h4>
+      <vitamui-file-selector [maxSizeInBytes]="5 * 1024 * 1024" />
+    </div>
+    <div class="col-4">
+      <h4>Extension</h4>
+      <vitamui-file-selector [extensions]="['.json', '.png']" />
+    </div>
+    <div class="col-4">
+      <h4>Max size, extension</h4>
+      <vitamui-file-selector [maxSizeInBytes]="5 * 1024 * 1024" [extensions]="['.json', '.png']" />
+    </div>
+    <div class="col-4">
+      <h4>Filename validator</h4>
+      <vitamui-file-selector [fileValidators]="filenameValidator('text.txt')" information="Le nom de fichier doit être : text.txt" />
+    </div>
+    <div class="col-4">
+      <h4>CSV validator</h4>
+      <vitamui-file-selector
+        [extensions]="['.csv']"
+        [fileValidators]="csvValidator"
+        information='Le CSV doit avoir un header "Identifier,Name,Description", contenir au moins une ligne de données et avoir autant de colonnes sur chaque ligne'
+      />
+    </div>
+  </div>
 
-  <h3>Multiple files allowed</h3>
-  <p>Drag & dropped directories are spread to individual files.</p>
-  <vitamui-file-selector [multiple]="true" [maxSizeInBytes]="25 * 1024 * 1024"> </vitamui-file-selector>
+  <hr />
 
-  <h3>Directory mode</h3>
-  <p>Drag & dropped directories are treated as single elements.</p>
-  <p>Individual files can also be added (through drag & drop only).</p>
-  <vitamui-file-selector [directoryMode]="true" [maxSizeInBytes]="25 * 1024 * 1024"> </vitamui-file-selector>
+  <h3>Multiple files</h3>
+  <p>Multiple files are allowed (no directories).</p>
+  <div class="row">
+    <div class="col-4">
+      <h4>Normal</h4>
+      <vitamui-file-selector [multiple]="true" />
+    </div>
+    <div class="col-4">
+      <h4>Max size</h4>
+      <vitamui-file-selector [multiple]="true" [maxSizeInBytes]="5 * 1024 * 1024" />
+    </div>
+    <div class="col-4">
+      <h4>Extension</h4>
+      <vitamui-file-selector [multiple]="true" [extensions]="['.json', '.png']" />
+    </div>
+    <div class="col-4">
+      <h4>Max size, extension</h4>
+      <vitamui-file-selector [multiple]="true" [maxSizeInBytes]="5 * 1024 * 1024" [extensions]="['.json', '.png']" />
+    </div>
+  </div>
 
-  <h3>Only '.json' & '.png' files are allowed</h3>
-  <vitamui-file-selector [multiple]="true" [extensions]="['.json', '.png']"> </vitamui-file-selector>
+  <hr />
+
+  <h3>Directory mode (multiple files)</h3>
+  <p>Multiple files and directories are allowed.</p>
+
+  <div class="row">
+    <div class="col-6">
+      <h4>Normal</h4>
+      <vitamui-file-selector [directoryMode]="true" />
+    </div>
+    <div class="col-6">
+      <h4>Max size</h4>
+      <vitamui-file-selector [directoryMode]="true" [maxSizeInBytes]="5 * 1024 * 1024" />
+    </div>
+  </div>
+
+  <hr />
 
   <h3>Custom template</h3>
+  <p>An example to show that the template can be customized.</p>
+
   <vitamui-file-selector #fs [multiple]="true">
     <ng-template #fileList>
       <ul style="margin: 0 auto">
-        <li *ngFor="let file of fs.files">{{ file.name }} ({{ file.size }})</li>
+        <li *ngFor="let file of fs.displayFiles">{{ file.name }} ({{ file.size }})</li>
       </ul>
     </ng-template>
     <ng-template #content>
