@@ -1,6 +1,6 @@
-<VirtualHost {{ ip_service }}:{{ reverse_proxy_port | default(443) }}>
+<VirtualHost {{ ip_service }}:{{ reverse_proxy_port }}>
 
-{% if vitamui_reverse_external_protocol | default('https') | lower == 'https' %}
+{% if vitamui_reverse_external_protocol | lower == 'https' %}
     SSLEngine on
     SSLCertificateFile /etc/{{ apache_service }}/certs/reverse.crt
     SSLCertificateKeyFile /etc/{{ apache_service }}/certs/reverse.key

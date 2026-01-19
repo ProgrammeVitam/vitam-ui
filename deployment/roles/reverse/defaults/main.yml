@@ -1,6 +1,7 @@
 ---
 
 vitamui_reverse_external_protocol: https
+reverse_proxy_port: "{{ 443 if vitamui_reverse_external_protocol | lower == 'https' else 80 }}"
 reverse_connection_params: "acquire=5000 connectiontimeout=300 timeout=600 retry=5"
 
 assets_path: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
