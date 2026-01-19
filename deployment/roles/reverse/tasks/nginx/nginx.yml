@@ -29,6 +29,7 @@
     - reverse.key
     - dhparam.pem
   notify: reload nginx
+  when: vitamui_reverse_external_protocol | lower == 'https'
 
 - name: Ensure nginx is started
   systemd:
