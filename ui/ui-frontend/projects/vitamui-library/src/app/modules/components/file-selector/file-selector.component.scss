@@ -4,42 +4,29 @@ input[type='file'] {
 
 .drag-and-drop-area {
   width: 100%;
-  border: 2px dashed var(--vitamui-primary);
+  border: 1px dashed var(--vitamui-primary);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   &.on-over {
-    border: 2px solid var(--vitamui-secondary);
+    border: 1px solid var(--vitamui-secondary);
     background: var(--vitamui-grey-400);
     opacity: 0.9;
     color: var(--vitamui-white);
   }
 
   &.error {
-    border: 2px dashed var(--vitamui-red);
+    border: 1px dashed var(--vitamui-red);
   }
 }
 
-.vitamui-chip-list {
+.files-wrapper {
   overflow-y: auto;
-  text-align: center;
-  max-height: 195px;
-  margin-right: -10px;
-  padding-right: 10px;
+  max-height: 230px;
   scrollbar-color: var(--vitamui-primary) var(--vitamui-primary-50);
   scrollbar-width: thin;
-
-  .vitamui-chip {
-    width: 100%;
-    margin: 5px auto;
-    border-radius: 5px;
-    border: 1px solid var(--vitamui-primary);
-  }
-
-  .file-size {
-    color: var(--vitamui-grey-600);
-    margin-left: 15px;
-  }
+  scrollbar-gutter: stable both-edges;
+  padding: 0 20px;
 }

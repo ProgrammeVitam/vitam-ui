@@ -34,29 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControlWarn } from './form-control-warn';
-import { FormErrorComponent } from './form-error/form-error.component';
+import { ValidationErrors } from '@angular/forms';
 
-@Component({
-  selector: 'vitamui-form-errors',
-  imports: [MatFormFieldModule, FormErrorComponent],
-  templateUrl: './form-errors.component.html',
-  styleUrl: './form-errors.component.scss',
-})
-export class FormErrorsComponent {
-  @Input({ required: true }) control: AbstractControl;
+export interface DisplayFile {
+  name: string;
+  size: number;
+  directory: boolean;
+  errors?: ValidationErrors;
   /**
-   * By default, the i18n key for the error message is computed as `ERRORS.[errorKey]`.
-   * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
+   * Reference to corresponding files
    */
-  @Input() errorMessageMap: { [key: string]: string } = {};
-
-  get errors() {
-    return { ...((this.control as FormControlWarn).warnings || {}), ...(this.control.errors || {}) };
-  }
-
-  protected readonly Object = Object;
+  files: File[];
 }

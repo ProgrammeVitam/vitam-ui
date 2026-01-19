@@ -49,15 +49,15 @@ import {
 } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslatePipe } from '@ngx-translate/core';
-import { I18nPluralPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
+import { I18nPluralPipe, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
-import { DisplayFile } from './display-file.interface';
+import { DisplayFile } from './display-file/display-file.interface';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
 import { BytesPipe } from '../../pipes';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
-import { SnackBarService } from '../snack-bar/snack-bar.service';
+import { DisplayFileComponent } from './display-file/display-file.component';
 
 export const FILE_SELECTOR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -74,11 +74,29 @@ export function readFileContent(file: File): Promise<string> {
   });
 }
 
+export interface FileValidationErrors {
+  /** Errors that will be displayed on the file */
+  fileErrors: ValidationErrors;
+  /** Errors that will be displayed on the control (global error) */
+  controlErrors: ValidationErrors;
+}
+
+type FileValidatorFunction = (file: File) => Promise<FileValidationErrors | null>;
+
 @Component({
   selector: 'vitamui-file-selector',
   templateUrl: './file-selector.component.html',
   styleUrl: './file-selector.component.scss',
-  imports: [FormsModule, DragAndDropDirective, TranslatePipe, NgForOf, PipesModule, NgTemplateOutlet, I18nPluralPipe, FormErrorsComponent],
+  imports: [
+    FormsModule,
+    DragAndDropDirective,
+    TranslatePipe,
+    PipesModule,
+    NgTemplateOutlet,
+    I18nPluralPipe,
+    FormErrorsComponent,
+    DisplayFileComponent,
+  ],
   providers: [FILE_SELECTOR_VALUE_ACCESSOR, BytesPipe],
 })
 export class FileSelectorComponent extends AbstractFormInputDirective implements OnInit {
@@ -94,9 +112,11 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     return this.#multiple || this.directoryMode;
   }
   #multiple = false;
-  /** Only directories can be selected through OS picker. Drag&Drop allows both directories and files */
   @Input() directoryMode = false;
   @Input() maxSizeInBytes: number;
+  /** Extra information to display between picker links and selected files */
+  @Input({ transform: (v: string | string[]) => (v instanceof Array ? v : [v]) }) information: string[];
+  @Input() fileValidators?: FileValidatorFunction | FileValidatorFunction[];
 
   @ContentChild('fileList') fileList: TemplateRef<any>;
   @ContentChild('content') content: TemplateRef<any>;
@@ -116,7 +136,6 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   constructor(
     injector: Injector,
     private bytesPipe: BytesPipe,
-    private snackBarService: SnackBarService,
   ) {
     super(injector);
   }
@@ -124,12 +143,19 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   ngOnInit() {
     super.ngOnInit();
 
-    this.control.addValidators([this.maxSizeInBytesValidator(this.maxSizeInBytes)]);
+    this.control.addValidators([this.maxSizeInBytesValidator, this.maxFilesValidator]);
     this.control.valueChanges.subscribe((files) => this.filesChanged.emit(files));
   }
 
-  writeValue() {
-    this.updateDisplayFiles();
+  private isInitialization = true;
+
+  writeValue(): void {
+    // Only add files to init the component from the form control value, otherwise it would be triggered after calling control.setValue
+    if (this.isInitialization) {
+      this.isInitialization = false;
+      this.addDisplayFiles(this.control.value);
+      return;
+    }
   }
 
   hasErrors(): boolean {
@@ -140,45 +166,181 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     return this.multiple || this.directoryMode || !this.displayFiles?.length;
   }
 
-  handleFilesSelection(files: FileList | File[]) {
+  async handleFilesSelection(files: FileList | File[]) {
     this.control.markAsTouched();
-    if (!this.multiple && (this.control.value?.length > 0 || files.length > 1)) {
-      this.resetInput();
-      return;
-    }
 
-    if (this.hasDuplicateRootElement(files)) {
-      this.snackBarService.open({ message: 'FILE_SELECTOR.UPLOAD_FILE_ALREADY_IMPORTED' });
-      this.resetInput();
-      return;
-    }
-
-    this.updateFiles(files);
+    await this.updateFiles(files);
 
     this.resetInput();
   }
 
-  private updateFiles(files: FileList | File[]) {
-    // Filter to keep only the ones matching extension list (useful for drag & drop and to make sure no other type has been selected)
-    const filteredFiles = Array.from(files)
-      .filter((file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())))
-      .slice(0, this.multiple ? undefined : 1);
-    this.control.setValue([...(this.control.value || []), ...filteredFiles]);
-    this.updateDisplayFiles();
+  private async updateFiles(files: FileList | File[]) {
+    this.control.setValue([...(this.control.value || []), ...Array.from(files)]);
+    await this.addDisplayFiles(files);
   }
 
-  private updateDisplayFiles() {
-    if (this.directoryMode) {
-      this.displayFiles = this.getRootElements(this.control.value);
-    } else {
-      this.displayFiles = Array.from(this.control.value || []).map(
-        (file: File): DisplayFile => ({
-          name: file.name,
-          size: file.size,
-          directory: false,
-        }),
-      );
+  private async addDisplayFiles(newFiles: FileList | File[]) {
+    this.displayFiles = [...this.displayFiles, ...(await this.getRootElements(newFiles))];
+
+    await this.computeErrors();
+  }
+
+  private async computeErrors() {
+    // Compute errors on root files
+    for (const displayFile of this.displayFiles) {
+      displayFile.errors = await this.computeDisplayFileErrors(displayFile);
     }
+
+    this.computeDuplicationError();
+
+    this.sortDisplayFiles();
+  }
+
+  /**
+   * We sort to display errors first, then by type (directory, file), then by name ASC
+   */
+  private sortDisplayFiles() {
+    this.displayFiles.sort((f1, f2) => {
+      const f1HasErrors = !!f1.errors && !!Object.keys(f1.errors);
+      const f2HasErrors = !!f2.errors && !!Object.keys(f2.errors);
+      return f1HasErrors === f2HasErrors
+        ? f1.directory === f2.directory
+          ? f1.name.localeCompare(f2.name)
+          : f1.directory
+            ? -1
+            : 1
+        : f1HasErrors
+          ? -1
+          : 1;
+    });
+  }
+
+  private computeDuplicationError() {
+    const fileNameCounts = this.displayFiles
+      .map((df) => df.name.toLowerCase())
+      .reduce(
+        (acc, name) => {
+          acc[name] = (acc[name] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
+    this.displayFiles.forEach((displayFile) => {
+      if (fileNameCounts[displayFile.name.toLowerCase()] > 1) {
+        displayFile.errors = {
+          ...(displayFile.errors || {}),
+          [displayFile.directory ? 'duplicatedDirectory' : 'duplicatedFile']: true,
+        };
+        this.addGlobalErrors({ invalidFiles: { files: `<li>${displayFile.name}</li>` } });
+      }
+    });
+  }
+
+  private async computeDisplayFileErrors(displayFile: DisplayFile): Promise<ValidationErrors> {
+    if (displayFile.directory) {
+      return this.computeDirectoryErrors(displayFile);
+    } else {
+      return this.computeFileErrors(displayFile.files[0]);
+    }
+  }
+
+  private async computeDirectoryErrors(displayFile: DisplayFile): Promise<ValidationErrors | undefined> {
+    console.group(`Computing errors on directory "${displayFile.name}"`);
+
+    const validators: ((displayFile: DisplayFile) => Promise<FileValidationErrors | undefined>)[] = [this.directoryForbiddenValidator];
+    const errors = await this.runValidators(validators, displayFile);
+
+    console.groupEnd();
+    return errors;
+  }
+
+  private async computeFileErrors(file: File): Promise<ValidationErrors | undefined> {
+    console.group(`Computing errors on file "${file.name}"`);
+
+    const customFileValidators = this.fileValidators
+      ? this.fileValidators instanceof Array
+        ? this.fileValidators
+        : [this.fileValidators]
+      : [];
+    const validators: ((file: File) => Promise<FileValidationErrors | undefined>)[] = [
+      this.fileExtensionValidator,
+      ...customFileValidators,
+    ];
+    const errors = await this.runValidators(validators, file);
+
+    console.groupEnd();
+    return errors;
+  }
+
+  private async runValidators<T extends File | DisplayFile>(
+    validators: ((element: T) => Promise<FileValidationErrors | undefined>)[],
+    element: T,
+  ) {
+    let errors: ValidationErrors = {};
+    for (const validator of validators) {
+      const validationErrors = await validator.call(this, element);
+      const fileErrors = validationErrors?.fileErrors || {};
+      const controlErrors = validationErrors?.controlErrors || {};
+
+      // We're adding errors to the file
+      errors = { ...errors, ...fileErrors };
+
+      // We're adding some errors to the control to make it invalid
+      this.addGlobalErrors(controlErrors);
+    }
+    return Object.keys(errors).length > 0 ? errors : undefined;
+  }
+
+  private addGlobalErrors(controlErrors: any) {
+    for (let entry of Object.entries(controlErrors)) {
+      const errorKey = entry[0];
+      let errorDetail = entry[1];
+
+      const alreadyExistingErrorDetail = this.control.errors ? this.control.errors[errorKey] : undefined;
+
+      // We're combining errors if other files have generated the same error
+      if (errorDetail instanceof Object && alreadyExistingErrorDetail instanceof Object) {
+        errorDetail = Object.fromEntries(
+          Object.entries(errorDetail).map(([key, value]) => {
+            if (typeof value === 'string') {
+              return [key, (alreadyExistingErrorDetail[key] || '') + value];
+            }
+            return [key, value];
+          }),
+        );
+      }
+
+      this.control.setErrors({
+        ...this.control.errors,
+        [errorKey]: errorDetail,
+      });
+    }
+  }
+
+  private async fileExtensionValidator(file: File): Promise<FileValidationErrors | undefined> {
+    if (!this.extensions) return undefined;
+    if (!this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase()))) {
+      console.warn(`Invalid extension. Expected: ${this.extensions.join(', ')}`);
+      return {
+        fileErrors: { invalidExtension: { extensions: this.extensions.join(', ') } },
+        controlErrors: {
+          invalidFiles: { files: `<li>${file.name}</li>` },
+        },
+      };
+    }
+    console.log(`Valid extension`);
+    return undefined;
+  }
+
+  private async directoryForbiddenValidator(displayFile: DisplayFile): Promise<FileValidationErrors | undefined> {
+    if (this.directoryMode) return undefined;
+    console.warn(`Directory forbidden.`);
+    return {
+      fileErrors: { directoryForbidden: true },
+      controlErrors: {
+        invalidFiles: { files: `<li>${displayFile.name}</li>` },
+      },
+    };
   }
 
   openFileSelectorOSDialog() {
@@ -189,18 +351,10 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     this.directorySelector.nativeElement.click();
   }
 
-  removeFile(displayFile: DisplayFile) {
-    if (displayFile.directory) {
-      this.control.setValue(this.control.value.filter((file: CustomFile) => !this.getPath(file).startsWith(displayFile.name)));
-    } else {
-      let files: DisplayFile[] = this.control.value;
-      files.splice(
-        files.findIndex((file) => file.name === displayFile.name),
-        1,
-      );
-      this.control.setValue(files);
-    }
-    this.updateDisplayFiles();
+  async removeFile(displayFile: DisplayFile) {
+    this.control.setValue(this.control.value.filter((file: CustomFile) => !displayFile.files.includes(file)));
+    this.displayFiles = this.displayFiles.filter((df) => df !== displayFile);
+    await this.computeErrors();
   }
 
   /**
@@ -211,20 +365,23 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     if (this.directorySelector) this.directorySelector.nativeElement.value = '';
   }
 
-  private getRootElements(files: FileList | File[]): DisplayFile[] {
-    if (files.length === 0) return [];
+  private async getRootElements(files: FileList | File[]): Promise<DisplayFile[]> {
+    if (!files || files.length === 0) return [];
 
     const rootElementsMap = new Map<string, DisplayFile>();
 
-    Array.from(files || []).forEach((file: CustomFile) => {
+    for (const file of Array.from(files) as CustomFile[]) {
       const path = this.getPath(file);
       const rootPath = path.split('/')[0];
+      const existing = rootElementsMap.get(rootPath);
+
       rootElementsMap.set(rootPath, {
         name: rootPath,
-        size: (rootElementsMap.get(rootPath)?.size || 0) + (file?.size || 0),
-        directory: rootElementsMap.get(rootPath)?.directory || rootPath !== path,
+        size: (existing?.size || 0) + (file?.size || 0),
+        directory: existing?.directory || file?.isDirectory || rootPath !== path,
+        files: [...(existing?.files || []), file],
       });
-    });
+    }
 
     return Array.from(rootElementsMap.values());
   }
@@ -235,19 +392,31 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     return file?.webkitRelativePath || file?.relativePath || file?.name;
   }
 
-  private hasDuplicateRootElement(files: FileList | File[]): boolean {
-    const rootElementNames = [...new Set(Array.from(files).map((file: CustomFile) => this.getPath(file)?.split('/')[0] || file.name))];
-    return rootElementNames.some((rootElementName) =>
-      this.displayFiles.some((displayElement) => displayElement.name?.toLowerCase() === rootElementName?.toLowerCase()),
-    );
-  }
+  maxSizeInBytesValidator = (control: AbstractControl<CustomFile[]>): ValidationErrors => {
+    if (!this.maxSizeInBytes) return null;
+    const size = (control.value || []).reduce((acc: number, file: CustomFile) => acc + (file.size || 0), 0);
+    if (size > this.maxSizeInBytes) {
+      console.warn(`Maximum size exceeded: ${size}/${this.maxSizeInBytes}`);
+      return {
+        maxSizeInBytes: {
+          size: this.bytesPipe.transform(size),
+          maxSize: this.bytesPipe.transform(this.maxSizeInBytes),
+        },
+      };
+    }
+    console.debug(`Maximum size respected: ${size}/${this.maxSizeInBytes}`);
+    return null;
+  };
 
-  maxSizeInBytesValidator =
-    (maxSizeInBytes: number) =>
-    (control: AbstractControl<CustomFile[]>): ValidationErrors => {
-      const size = (control.value || []).reduce((acc: number, file: CustomFile) => acc + (file.size || 0), 0);
-      return size > maxSizeInBytes
-        ? { maxSizeInBytes: { size: this.bytesPipe.transform(size), maxSize: this.bytesPipe.transform(maxSizeInBytes) } }
-        : null;
-    };
+  maxFilesValidator = (control: AbstractControl<CustomFile[]>): ValidationErrors => {
+    const maxFiles = this.multiple ? undefined : 1;
+    if (!maxFiles) return null;
+    const nbFiles = (control.value || []).length;
+    if (nbFiles > maxFiles) {
+      console.warn(`Maximum number of files (${maxFiles}) exceeded`);
+      return { maxFiles: true };
+    }
+    console.debug(`Maximum number of files respected`);
+    return null;
+  };
 }

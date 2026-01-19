@@ -34,8 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export interface DisplayFile {
-  name: string;
-  size: number;
-  directory: boolean;
+import { Component, Input } from '@angular/core';
+import { MatError } from '@angular/material/input';
+import { TranslatePipe } from '@ngx-translate/core';
+
+@Component({
+  selector: 'vitamui-form-error',
+  imports: [MatError, TranslatePipe],
+  templateUrl: './form-error.component.html',
+  styleUrl: './form-error.component.scss',
+})
+export class FormErrorComponent {
+  @Input() errorKey: string;
+  @Input() translateParams: { [p: string]: any };
+
+  /**
+   * By default, the i18n key for the error message is computed as `ERRORS.[errorKey]`.
+   * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
+   */
+  @Input() errorMessageMap: { [key: string]: string } = {};
+
+  getErrorMessageKey(errorKey: string): string {
+    return (this.errorMessageMap && this.errorMessageMap[errorKey]) || 'ERRORS.' + errorKey;
+  }
 }
