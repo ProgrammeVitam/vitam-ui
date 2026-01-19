@@ -1,0 +1,225 @@
+{
+  "MENU": {
+    "FIND": {
+      "PLACEHOLDER": "Find in design system",
+      "SEARCH_BAR_PLACEHOLDER": "Filter"
+    }
+  },
+  "ROUTE": {
+    "upload": {
+      "TITLE": "Upload"
+    },
+    "tokens": {
+      "TITLE": "Tokens",
+      "colors.TITLE": "Colors",
+      "shadows.TITLE": "Shadows",
+      "typography.TITLE": "Typography",
+      "spacing.TITLE": "Spacing"
+    },
+    "atoms": {
+      "TITLE": "Atoms",
+      "buttons.TITLE": "Buttons",
+      "chips.TITLE": "Chips",
+      "badges.TITLE": "Badges",
+      "icons.TITLE": "Icons",
+      "slide-toggle.TITLE": "Slide toggle / Switch",
+      "tooltip.TITLE": "Tooltip"
+    },
+    "molecules": {
+      "TITLE": "Molecules",
+      "breadcrumbs.TITLE": "Breadcrumbs",
+      "loaders-steppers.TITLE": "Loaders & Steppers",
+      "forms": {
+        "TITLE": "Forms",
+        "select.TITLE": "Select",
+        "select-with-tree.TITLE": "Select with tree",
+        "checkboxes.TITLE": "Checkboxes",
+        "radios.TITLE": "Radio buttons",
+        "datepicker.TITLE": "Datepicker",
+        "old-input.TITLE": "OLD input",
+        "input.TITLE": "Input",
+        "search-with-type-selector.TITLE": "Search with type selector"
+      }
+    },
+    "organisms": {
+      "TITLE": "Organisms",
+      "table.TITLE": "Table",
+      "tab-group.TITLE": "Tab group",
+      "dialog.TITLE": "Dialog",
+      "snackbar.TITLE": "Snackbar"
+    },
+    "miscellaneous.TITLE": "Miscellaneous",
+    "translation.TITLE": "Translation",
+    "**.TITLE": "Help"
+  },
+  "COMMON": {
+    "ID": "Id",
+    "ADRESS": {
+      "STREET": "Number and name of the street",
+      "ZIPCODE": "Zipcode",
+      "COUNTRY": "Country"
+    }
+  },
+  "CUSTOMER": {
+    "HOME": {
+      "TITLE_PLACEHOLDER": "Name, Company name, Organisazation code, Address..."
+    }
+  },
+  "ARRAY": {
+    "OLD_TABLES": "Tables (old)",
+    "BASIC_WITH_DOUBLE_LINES_TITLE": "Basic array with double lines",
+    "FILTER_TITLE": "Array with filters",
+    "SUBTABLE_TITLE": "Array with subtable",
+    "DIALOG_TITLE": "Dialog array",
+    "COLUMN": {
+      "ADMIN_PROFILE_NAME": "Admin profile name",
+      "ID": "Id",
+      "DESCRIPTION": "Description",
+      "LEVEL": "Level",
+      "GROUP_NAME": "Group name",
+      "STATUS": {
+        "ENABLED": "Enabled",
+        "DISABLED": "Disabled"
+      }
+    },
+    "ADD_OWNER": "Add an owner",
+    "EXPORT_RESULTS": "Export results",
+    "HEADER": "Header",
+    "NEW_TABLES": "Tables (new)",
+    "TABLE": "table",
+    "MAT_TABLE": "mat-table"
+  },
+  "BUTTON": {
+    "PRIMARY": "Primary default",
+    "PRIMARY_OUTLINE": "Primary outline default",
+    "PRIMARY_CONTRAST": "Contrast Primary default",
+    "PRIMARY_CONTRAST_OUTLINE": "Contrast primary outline default",
+    "SECONDARY": "Secondary default",
+    "SECONDARY_OUTLINE": "Secondary outline default",
+    "SECONDARY_CONTRAST": "Contrast Secondary default",
+    "SECONDARY_CONTRAST_OUTLINE": "Contrast secondary outline default",
+    "TERTIARY": "Tertiary default",
+    "DISABLED_LABEL": "Disabled",
+    "DISABLED_OUTLINE": "Outline disabled",
+    "DISABLED_CONTRAST": "Contrast disabled",
+    "DISABLED_CONTRAST_OUTLINE": "Contrast outline disabled",
+    "CANCEL": "Cancel"
+  },
+  "INPUT": {
+    "SIMPLE_INPUT": "Simple input",
+    "EDITABLE_INPUT_DISABLED": "Editable input disabled",
+    "EDITABLE_INPUT": "Editable input",
+    "EDITABLE_EMAIL": "Editable email",
+    "EDITABLE_EMAIL_DISABLED": "Editable email disabled",
+    "EDITABLE_EMAIL_MULTIPLE": "Editable multiple email",
+    "EDITABLE_EMAIL_MULTIPLE_DISABLED": "Editable multiple email disabled",
+    "MULTI_SELECT": "Multi select",
+    "LIST": "List",
+    "EDITABLE_LIST": "Editable list",
+    "EDITABLE_LIST_DISABLED": "Editable list disabled",
+    "AUTOCOMPLETE": "Auto-complete",
+    "SELECT_WITH_TREE": {
+      "TITLE": "Select with tree",
+      "PLACEHOLDER": "Schema",
+      "SEARCH_BAR_PLACEHOLDER": "Enter the first few letters of your search"
+    },
+    "SEARCH_PLACEHOLDER": "Search in countries",
+    "TEXTAREA": "Textarea",
+    "EDITABLE_TEXTAREA": "Editable textarea",
+    "EDITABLE_TEXTAREA_DISABLED": "Editable textarea disabled",
+    "LEVEL": "Level",
+    "EDITABLE_LEVEL": "Editable level",
+    "EDITABLE_LEVEL_DISABLED": "Editable level disabled"
+  },
+  "SAMPLE_DIALOG": {
+    "OPEN": "Open the sample dialog"
+  },
+  "COLORS": {
+    "PRIMARY": "Primary color",
+    "PRIMARY.INFO": "The primary color is used via the CSS variable <code>--vitamui-primary</code> (for the 500 variation) and its variations: <code>--vitamui-primary-50</code>, <code>--vitamui-primary-100</code>, ..., <code>--vitamui-primary-900</code>.<br/>The variations follow an algorithm that add/remove 10 of luminosity between each variation.<br/>The main color (500) can be overridden though several means (configuration file, graphical identity of an organisation, ...), and the variations are then automatically recomputed in that case.",
+    "SECONDARY": "Secondary color",
+    "SECONDARY.INFO": "The secondary color is used via the CSS variable <code>--vitamui-secondary</code> (for the 500 variation) and its variations: <code>--vitamui-secondary-50</code>, <code>--vitamui-secondary-100</code>, ..., <code>--vitamui-secondary-900</code>.<br/>The variations follow an algorithm that add/remove 10 of luminosity between each variation.<br/>The main color (500) can be overridden though several means (configuration file, graphical identity of an organisation, ...), and the variations are then automatically recomputed in that case.",
+    "TERTIARY": "Tertiary color",
+    "TERTIARY.INFO": "The tertiary color is used via the CSS variable <code>--vitamui-tertiary</code> (for the 500 variation) and its variations: <code>--vitamui-tertiary-50</code>, <code>--vitamui-tertiary-100</code>, ..., <code>--vitamui-tertiary-900</code>.<br/>The variations follow an algorithm that add/remove 10 of luminosity between each variation.<br/>The main color (500) can be overridden though several means (configuration file, graphical identity of an organisation, ...), and the variations are then automatically recomputed in that case.",
+    "ADDITIONAL": "Additional color",
+    "ADDITIONAL.INFO": "The additional color is used via the CSS variable <code>--vitamui-additional</code> (for the 500 variation) and its variations: <code>--vitamui-additional-50</code>, <code>--vitamui-additional-100</code>, ..., <code>--vitamui-additional-900</code>.<br/>The variations are hard-coded without following any algorythm.",
+    "GREY": "Grey color",
+    "GREY.INFO": "The grey color is used via the CSS variable <code>--vitamui-grey</code> (for the 500 variation) and its variations: <code>--vitamui-grey-50</code>, <code>--vitamui-grey-100</code>, ..., <code>--vitamui-grey-900</code>.<br/>The variations are hard-coded without following any algorythm.",
+    "WHITE": "Color white",
+    "WHITE.INFO": "The white color is used via the CSS variable <code>--vitamui-white</code>.",
+    "PRIMARY_LIGHT": "Color \"primary-light\"",
+    "PRIMARY_LIGHT.INFO": "The primary-light color is used via the CSS variable <code>--vitamui-primary-light</code>.",
+    "GREEN": "Color green",
+    "GREEN.INFO": "The green color is used via the CSS variable <code>--vitamui-green</code> (for the 500 variation) and its variations: <code>--vitamui-green-50</code>, <code>--vitamui-green-300</code> and <code>--vitamui-green-900</code>.<br/>The variations are hard-coded without following any algorythm.",
+    "RED": "Color red",
+    "RED.INFO": "The red color is used via the CSS variable <code>--vitamui-red</code> (for the 500 variation) and its variations: <code>--vitamui-red-50</code>, <code>--vitamui-red-300</code> and <code>--vitamui-red-900</code>.<br/>The variations are hard-coded without following any algorythm.",
+    "ORANGE": "Color orange",
+    "ORANGE.INFO": "The orange color is used via the CSS variable <code>--vitamui-orange</code> (for the 500 variation) and its variations: <code>--vitamui-orange-50</code>, <code>--vitamui-orange-300</code> and <code>--vitamui-orange-900</code>.<br/>The variations are hard-coded without following any algorythm."
+  },
+  "ICONS": {
+    "TITLE": "Vitam-UI icons list",
+    "COLORS": "Available colors",
+    "SELECT_COLOR": "Select a color"
+  },
+  "ELEVATIONS": {
+    "TITLE": "Shadows & Elevations",
+    "ACCESSIBLE": "Accessible shadow",
+    "DARK": "Black Shadows",
+    "PRIMARY": "Primary Shadows",
+    "SECONDARY": "Secondaty Shadows",
+    "TERTIARY": "Tertiary Shadows"
+  },
+  "TRANSLATION": {
+    "TITLE": "Translation",
+    "CONVENTION": "Convention",
+    "USAGE": "Usage",
+    "WITH_PIPE": "The translate pipe : to favor",
+    "DO_NOT_SPLIT_WORDS": "Do not split sentences in multiple words translated individually",
+    "TRANSLATE_SERVICE": "The TranslateService methods",
+    "TRANSLATE_PIPE": "Text translated with the translate pipe. This is dynamically translated on language changes.",
+    "TRANSLATE_INSTANT": "Text translated with the method translateService.instant(). This is not dynamicly translated on language changes.",
+    "TRANSLATE_GET": {
+      "TRANSLATE_GET_1": "First text translated with the method translateService.get().",
+      "TRANSLATE_GET_2": "Second text translated with the method translateService.get()."
+    },
+    "TRANSLATE_PARAMETERS": "Text translated with multiple parameters : my first is {{ param1 }}, my second is {{ param2 }}.",
+    "TRANSLATE_NUMBER": {
+      "ZERO": "Text translated in singular and plural: I don't have any apple.",
+      "SINGULAR": "Text translated in singular and plural: I have one apple.",
+      "PLURAL": "Text translated in singular and plural: I have {{ number }} apples."
+    },
+    "TRANSLATE_HTML": "This translated text contains <strong>html code</strong>.",
+    "NUMBER_OF_APPLE": "Number of apples",
+    "TRANSLATE_FRENCH_ONLY": "Texte uniquement traduit en français.",
+    "ALWAYS_TRANSLATE": "Always translate the new labels : do not leave any hardcoded text.",
+    "KEY_NAMING": "To name keys, use uppercase and underscore. Always start with the application name, and at least include the containing component. Ex: CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE",
+    "KEY_NAMING_COMMON": "For reccuring texts, put them in the COMMON category. Ex: COMMON.BACK",
+    "FIRST_INPUT": "First parameter",
+    "SECOND_INPUT": "Second parameter"
+  },
+  "TYPOGRAPHY": {
+    "INFO": "Hover the mouse on textes to know which classes to use.",
+    "TOOLTIP": "Use the following classes:\n{{ classes }}",
+    "TITLES": "Headlines",
+    "TEXT": "Text",
+    "LINK_AND_BUTTON": "Link & button",
+    "COLORS": "Colors",
+    "UPPERCASE": "Uppercase",
+    "TEXT_ELLIPSIS_TITLE": "Text Ellipsis",
+    "TEXT_ELLIPSIS_CONTENT": "Long text ellipsis that is need on table when resizing so that it doesn't show on next column"
+  },
+  "MISCELLANEOUS": {
+    "INFINITE_SCROLL": "Infinite scroll"
+  },
+  "SPACING": {
+    "PADDING": "Padding",
+    "MARGIN": "Margin",
+    "GAP": "Gap"
+  },
+  "ERRORS": {
+    "CONTAINS_GB": "Should contain or be United Kingdom",
+    "CONTAINS_TextContent": "Should contain or be \"TextContent\"",
+    "INVALID_FILE_CONTENT": "Invalid file content. Expected content: \"{{expectedContent}}\"",
+    "INVALID_FILE_CONTENT_DETAIL": "Some files have invalid content: <ul>{{files}}</ul>"
+  }
+}
