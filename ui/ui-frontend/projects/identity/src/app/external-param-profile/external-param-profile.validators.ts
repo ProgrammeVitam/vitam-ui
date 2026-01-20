@@ -38,6 +38,7 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
+import { ApplicationId } from 'vitamui-library';
 import { ExternalParamProfileService } from './external-param-profile.service';
 
 @Injectable({
@@ -48,12 +49,12 @@ export class ExternalParamProfileValidators {
 
   constructor(private externalParamProfileService: ExternalParamProfileService) {}
 
-  nameExists = (tenantIdentifier: number, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => {
+  nameExists = (tenantIdentifier: number, nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
         switchMap(() =>
           control.value !== nameToIgnore
-            ? this.externalParamProfileService.exists(tenantIdentifier, applicationName, control.value)
+            ? this.externalParamProfileService.exists(tenantIdentifier, ApplicationId.EXTERNAL_PARAMS, control.value)
             : of(false),
         ),
         take(1),
