@@ -41,7 +41,7 @@
 }
 
 // The tabs containers
-::ng-deep .mat-tab-header {
+:host ::ng-deep .mat-tab-header {
   left: 40px;
   right: 40px;
   bottom: 37px;
@@ -51,7 +51,7 @@
 }
 
 // The tab
-::ng-deep.mat-tab-label {
+:host ::ng-deep.mat-tab-label {
   @extend .pastis-font-label-historique !optional;
   margin-right: 3px !important;
   background: rgba(255, 255, 255, 0.3);
@@ -62,26 +62,26 @@
 }
 
 //The tab hover
-::ng-deep.mat-tab-label:hover {
+:host ::ng-deep.mat-tab-label:hover {
   background: #ffffff !important;
 }
 
 // Tab hover and tab text hover
-::ng-deep.mat-tab-label:hover .mat-tab-label-content {
+:host ::ng-deep .mat-tab-label:hover .mat-tab-label-content {
   text-shadow: 0.5px 0 #5e5d5d;
   background: rgba(255, 255, 255, 0.3) !important;
   color: #5e5d5d !important;
 }
 
 // The active tab (Black and bold)
-::ng-deep .mat-tab-label-active {
+:host ::ng-deep .mat-tab-label-active {
   text-shadow: 0.5px 0 #5e5d5d;
   background: #ffffff !important;
   border-bottom: solid var(--vitamui-primary) 3px;
 }
 
 // The tab content
-::ng-deep .mat-tab-label-content {
+:host ::ng-deep .mat-tab-label-content {
   margin: 8px;
   display: flex;
   align-items: center;
@@ -89,31 +89,31 @@
 }
 
 // The content of the active tab
-::ng-deep .mat-tab-label-active .mat-tab-label-content {
+:host ::ng-deep .mat-tab-label-active .mat-tab-label-content {
   color: var(--vitamui-primary) !important;
   padding-top: 3px !important;
 }
 
 // The automatic tab pagination chevron
-::ng-deep .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
+:host ::ng-deep .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
   display: none !important;
 }
 
-::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
+:host ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
 .mat-tab-nav-bar.mat-primary .mat-ink-bar .pastis-ink-bar {
   height: 0;
 }
 
-.mat-tab-group {
+:host ::ng-deep .mat-tab-group {
   height: 100%;
 }
 
-.mat-tab-body .mat-tab-body-active {
+:host ::ng-deep .mat-tab-body .mat-tab-body-active {
   overflow-x: auto !important;
   overflow-y: auto !important;
 }
 
-.mat-tab-body-content {
+:host ::ng-deep .mat-tab-body-content {
   overflow-x: auto !important;
   overflow-y: auto !important;
 }
