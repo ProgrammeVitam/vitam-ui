@@ -113,13 +113,13 @@
       'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' +
         actionId +
         '_' +
-        (operation?.stepCancellable ? 'FORCED' : 'NON_FORCED') +
+        (operation?.stepCancellable ? 'NON_FORCED' : 'FORCED') +
         '_MODE_MESSAGE' | translate
     "
   ></vitamui-dialog-header>
 
   <mat-dialog-content>
-    <div *ngIf="operation?.stepCancellable">
+    <div *ngIf="!operation?.stepCancellable">
       <p>
         {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_FORCED_MODE_REASON' | translate }}
       </p>
@@ -133,7 +133,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="dialog-action">
-    <button [matDialogClose]="true" [disabled]="!reason.valid" class="btn primary btn-confirm-dialog">
+    <button [matDialogClose]="true" [disabled]="!operation?.stepCancellable && !reason.valid" class="btn primary btn-confirm-dialog">
       {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_CANCEL_ACTION' | translate }}
     </button>
     <button matDialogClose class="btn cancel link">{{ 'COMMON.CANCEL' | translate }}</button>
