@@ -118,7 +118,7 @@
           </div>
         </div>
         <div class="actions">
-          <button type="submit" class="btn primary mr-4" [disabled]="onValidate()">
+          <button type="submit" class="btn primary mr-4" [disabled]="isFormInvalid()">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button type="button" class="btn link cancel" (click)="onCancel()">

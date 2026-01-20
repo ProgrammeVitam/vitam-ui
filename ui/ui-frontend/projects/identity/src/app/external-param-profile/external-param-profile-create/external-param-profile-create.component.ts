@@ -38,7 +38,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Observable, Subscription } from 'rxjs';
-import { AccessContract, ApplicationId, ConfirmDialogService, ExternalParamProfile } from 'vitamui-library';
+import { AccessContract, ConfirmDialogService, ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 
@@ -83,15 +83,15 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
     this.externalParamProfileForm = this.formBuilder.group({
       enabled: true,
       accessContract: [null, Validators.required],
-      description: [null, Validators.required],
-      name: [null, Validators.required],
+      description: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(250)]],
+      name: [
+        null,
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
+        [this.externalParamProfileValidators.nameExists(+tenantIdentifier)],
+      ],
       usePlatformThreshold: true,
       bulkOperationsThreshold: [null, []],
     });
-
-    this.externalParamProfileForm
-      .get('name')
-      .setAsyncValidators(this.externalParamProfileValidators.nameExists(+tenantIdentifier, ApplicationId.EXTERNAL_PARAM_PROFILE_APP));
   }
 
   onSubmit() {
@@ -122,15 +122,15 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onValidate() {
-    return false;
+  isFormInvalid() {
+    return this.externalParamProfileForm.pending || this.externalParamProfileForm.invalid;
   }
 
   firstStepInvalid(): boolean {
-    return this.externalParamProfileForm.get('name').invalid || this.externalParamProfileForm.get('description').invalid;
-  }
+    const nameControl = this.externalParamProfileForm.controls.name;
+    const descriptionControl = this.externalParamProfileForm.controls.description;
+    const accessContractControl = this.externalParamProfileForm.controls.accessContract;
 
-  formValid(): boolean {
-    return this.externalParamProfileForm.pending || this.externalParamProfileForm.invalid;
+    return nameControl.invalid || nameControl.pending || descriptionControl.invalid || accessContractControl.invalid;
   }
 }
