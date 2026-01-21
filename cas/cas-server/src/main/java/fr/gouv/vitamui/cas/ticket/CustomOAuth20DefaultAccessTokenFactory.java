@@ -70,9 +70,9 @@ public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccess
     protected String generateAccessTokenId(final Service service, final Authentication authentication) {
         final Principal principal = authentication.getPrincipal();
         final List<Object> authToken = principal.getAttributes().get(CommonConstants.AUTHTOKEN_ATTRIBUTE);
-        if (authToken == null || authToken.size() == 0) {
+        if (authToken == null || authToken.isEmpty()) {
             throw new RuntimeException("Cannot create access token for null authtoken: " + principal);
         }
-        return (String) authToken.get(0);
+        return (String) authToken.getFirst();
     }
 }
