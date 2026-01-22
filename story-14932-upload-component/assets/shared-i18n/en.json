@@ -502,8 +502,7 @@
     "DRAG_AND_DROP_OR_BROWSE": "Drag and drop or browse",
     "ALLOWED_FORMATS_SINGULAR": "Allowed format: {{formats}}",
     "ALLOWED_FORMATS_PLURAL": "Allowed formats: {{formats}}",
-    "MAX_SIZE": "Max size: {{size}}",
-    "UPLOAD_FILE_ALREADY_IMPORTED": "File already imported!"
+    "MAX_SIZE": "Max size: {{size}}"
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Default)"
@@ -6022,10 +6021,13 @@
     "uniqueRuleId": "Code identical to the previous action",
     "missingIncludedNodes": "A value is required",
     "incorrectIdentifier": "This identifier contains one or many unauthorized characters",
+    "invalidFiles": "Some files are invalid",
     "maxSizeInBytes": "Maximum size exceeded ({{size}} / {{maxSize}})",
     "maxFiles": "Only one file allowed. Remove extra elements",
     "invalidExtension": "This extension is not allowed. Allowed extensions: {{extensions}}",
-    "filesHaveInvalidExtension": "Some files have invalid extensions: <ul>{{files}}</ul>"
+    "filesHaveInvalidExtension": "Some files have invalid extensions: <ul>{{files}}</ul>",
+    "duplicatedFile": "Duplicated file",
+    "duplicatedDirectory": "Duplicated directory"
   },
   "ACCESS_CONTRACT": {
     "HOME": {

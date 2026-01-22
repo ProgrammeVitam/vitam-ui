@@ -219,7 +219,8 @@
   "ERRORS": {
     "CONTAINS_GB": "Doit contenir ou être Royaume-Uni",
     "CONTAINS_TextContent": "Doit contenir ou être \"TextContent\"",
-    "INVALID_FILE_CONTENT": "Contenu du fichier invalide. Contenu attendu : \"{{expectedContent}}\"",
-    "INVALID_FILE_CONTENT_DETAIL": "Des fichiers ont du contenu invalide : <ul>{{files}}</ul>"
+    "INVALID_FILE_NAME": "Nom du fichier invalide. Nom attendu : \"{{expectedFileName}}\"",
+    "INVALID_CSV": "Fichier CSV invalide",
+    "INVALID_CSV_DETAIL": "Détail des erreurs identifiées : <ul>{{detail}}</ul>"
   }
 }
