@@ -46,8 +46,8 @@ import {
 } from '../../../models/logbook-event.interface';
 
 import { ApplicationId, ApplicationService } from 'vitamui-library';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ingest-information-tab',
@@ -118,8 +118,9 @@ export class IngestInformationTabComponent implements OnChanges {
   }
 
   getOpiUrl$(): Observable<string> {
-    return this.applicationService
-      .getUrl$({ appId: ApplicationId.ARCHIVE_SEARCH_APP })
-      .pipe(map((appUrl) => `${appUrl}?guidopi=${this.ingest.id}`));
+    return this.applicationService.getUrl$({ appId: ApplicationId.ARCHIVE_SEARCH_APP }).pipe(
+      map((appUrl) => `${appUrl}?guidopi=${this.ingest.id}`),
+      catchError(() => of('/')),
+    );
   }
 }
