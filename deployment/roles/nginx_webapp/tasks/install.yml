@@ -52,7 +52,7 @@
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
-- name: "Add UI certificates for {{ vitamui_struct.vitamui_component }}"
+- name: "Add UI certificates for {{ vitamui_struct.vitamui_component }} when secure is enabled"
   copy:
     src: "{{ item }}"
     dest: "{{ nginx_ssl_dir }}"
@@ -62,6 +62,7 @@
   with_fileglob:
     - "{{ inventory_dir }}/certs/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.crt"
     - "{{ inventory_dir }}/certs/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.key"
+  when: vitamui_struct.secure | default(secure) | bool
   notify: reload nginx
 
 - name: Put ssl configuration when secure is enabled
