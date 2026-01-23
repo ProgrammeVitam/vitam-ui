@@ -92,7 +92,7 @@
 
 - name: copy server certificate files when protocole https
   copy:
-    src: "{{ inventory_dir }}/certs/vitamui-services/server/hosts/{{ inventory_hostname }}/reverse.{{ item }}"
+    src: "{{ inventory_dir }}/certs/vitamui-services/server/reverse/reverse.{{ item }}"
     dest: "/etc/{{ apache_service }}/certs/reverse.{{ item }}"
     owner: "{{ apache_user }}"
     group: "{{ apache_group }}"
