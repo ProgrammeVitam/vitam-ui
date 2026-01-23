@@ -38,15 +38,19 @@ package fr.gouv.vitamui.cas.ticket;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import lombok.Getter;
+import lombok.val;
+import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessTokenFactory;
 import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 
@@ -59,20 +63,38 @@ import java.util.List;
 public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccessTokenFactory {
 
     public CustomOAuth20DefaultAccessTokenFactory(
-        final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicy,
+        final UniqueTicketIdGenerator accessTokenIdGenerator,
+        final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicyBuilder,
         final JwtBuilder jwtBuilder,
         final ServicesManager servicesManager,
-        final TicketTrackingPolicy descendantTicketsTrackingPolicy
-    ) {
-        super(expirationPolicy, jwtBuilder, servicesManager, descendantTicketsTrackingPolicy);
+        final TicketTrackingPolicy descendantTicketsTrackingPolicy) {
+        super(
+            accessTokenIdGenerator,
+            expirationPolicyBuilder,
+            jwtBuilder,
+            servicesManager,
+            descendantTicketsTrackingPolicy);
     }
 
-    protected String generateAccessTokenId(final Service service, final Authentication authentication) {
+    @Override
+    protected String generateAccessTokenId(final Service service, final Authentication authentication)
+        throws Throwable {
+        val request =
+            ((ServletRequestAttributes)
+                org.springframework.web.context.request.RequestContextHolder.getRequestAttributes())
+                .getRequest();
         final Principal principal = authentication.getPrincipal();
-        final List<Object> authToken = principal.getAttributes().get(CommonConstants.AUTHTOKEN_ATTRIBUTE);
-        if (authToken == null || authToken.isEmpty()) {
-            throw new RuntimeException("Cannot create access token for null authtoken: " + principal);
+        String authToken;
+        final List<Object> values = principal.getAttributes().get(CommonConstants.AUTHTOKEN_ATTRIBUTE);
+        if (values != null && values.size() > 0) {
+            authToken = (String) values.get(0);
+            request.setAttribute(CommonConstants.AUTHTOKEN_ATTRIBUTE, authToken);
+        } else {
+            authToken = (String) request.getAttribute(CommonConstants.AUTHTOKEN_ATTRIBUTE);
         }
-        return (String) authToken.getFirst();
+        if (StringUtils.isBlank(authToken)) {
+            return super.generateAccessTokenId(service, authentication);
+        }
+        return authToken;
     }
 }

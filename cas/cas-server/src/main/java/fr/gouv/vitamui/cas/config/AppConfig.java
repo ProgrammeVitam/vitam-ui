@@ -44,6 +44,7 @@ import fr.gouv.vitamui.cas.password.IamPasswordManagementService;
 import fr.gouv.vitamui.cas.passwordless.CustomPasswordlessUserAccountStore;
 import fr.gouv.vitamui.cas.surrogation.IamSurrogateAuthenticationService;
 import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
+import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -92,6 +93,8 @@ import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.TicketCatalog;
 import org.apereo.cas.ticket.TicketDefinition;
 import org.apereo.cas.ticket.TicketFactory;
+import org.apereo.cas.ticket.TicketGrantingTicketFactory;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
@@ -315,30 +318,31 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     // TODO: Seems no required in cas v7
-    //    @Bean
-    //    public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory(
-    //        @Qualifier(ServicesManager.BEAN_NAME) ServicesManager servicesManager,
-    //        @Qualifier(
-    //            "ticketGrantingTicketUniqueIdGenerator"
-    //        ) final UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator,
-    //        @Qualifier("grantingTicketExpirationPolicy") final ObjectProvider<
-    //            ExpirationPolicyBuilder
-    //        > grantingTicketExpirationPolicy,
-    //        final CipherExecutor protocolTicketCipherExecutor,
-    //        final Utils utils
-    //    ) {
-    //        return new DynamicTicketGrantingTicketFactory(
-    //            ticketGrantingTicketUniqueIdGenerator,
-    //            grantingTicketExpirationPolicy.getObject(),
-    //            protocolTicketCipherExecutor,
-    //            servicesManager,
-    //            utils
-    //        );
-    //    }
+    @Bean
+    public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory(
+        @Qualifier(ServicesManager.BEAN_NAME) ServicesManager servicesManager,
+        @Qualifier(
+            "ticketGrantingTicketUniqueIdGenerator"
+        ) final UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator,
+        @Qualifier("grantingTicketExpirationPolicy") final ObjectProvider<
+            ExpirationPolicyBuilder
+        > grantingTicketExpirationPolicy,
+        @Qualifier("protocolTicketCipherExecutor") final CipherExecutor protocolTicketCipherExecutor,
+        final Utils utils
+    ) {
+        return new DynamicTicketGrantingTicketFactory(
+            ticketGrantingTicketUniqueIdGenerator,
+            grantingTicketExpirationPolicy.getObject(),
+            protocolTicketCipherExecutor,
+            servicesManager,
+            utils
+        );
+    }
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public OAuth20AccessTokenFactory defaultAccessTokenFactory(
+        @Qualifier("accessTokenIdGenerator") final UniqueTicketIdGenerator accessTokenIdGenerator,
         @Qualifier("accessTokenExpirationPolicy") final ExpirationPolicyBuilder accessTokenExpirationPolicy,
         @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager,
         @Qualifier("accessTokenJwtBuilder") final JwtBuilder accessTokenJwtBuilder,
@@ -347,6 +351,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         ) final TicketTrackingPolicy descendantTicketsTrackingPolicy
     ) {
         return new CustomOAuth20DefaultAccessTokenFactory(
+            accessTokenIdGenerator,
             accessTokenExpirationPolicy,
             accessTokenJwtBuilder,
             servicesManager,
