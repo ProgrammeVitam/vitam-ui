@@ -26,7 +26,6 @@ function init () {
 
     # Check if gawk is present
     hash gawk
-
 }
 
 function read_ansible_var {

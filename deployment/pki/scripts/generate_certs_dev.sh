@@ -13,11 +13,11 @@ set -e
 
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../../dev-deployment" ; pwd )"
 
-function getHostCertificateCn {
+function getComponentCertificateCn {
     echo "dev.vitamui.com"
 }
 
-function getHostCertificateSan {
+function getComponentCertificateSan {
     echo "DNS:dev.vitamui.com,DNS:localhost"
 }
 
@@ -33,6 +33,7 @@ function generateCerts {
     pki_logger "Génération des certificats serveurs"
     # Zone interne
     generateServerCertAndStorePassphrase            security            vitamui-services
+
     #Zone externe
     generateServerAndClientCertAndStorePassphrase   iam                 vitamui-services
     generateServerAndClientCertAndStorePassphrase   cas-server          vitamui-services
@@ -42,6 +43,7 @@ function generateCerts {
     generateServerAndClientCertAndStorePassphrase   collect             vitamui-services
     generateServerAndClientCertAndStorePassphrase   pastis              vitamui-services
     generateServerAndClientCertAndStorePassphrase   api-gateway         vitamui-services
+
     #Zone UI
     generateServerAndClientCertAndStorePassphrase   ui-portal           vitamui-services
     generateServerAndClientCertAndStorePassphrase   ui-identity         vitamui-services
@@ -53,7 +55,7 @@ function generateCerts {
     generateServerAndClientCertAndStorePassphrase   ui-collect          vitamui-services
 
     #Reverse
-    generateServerCertAndStorePassphrase            reverse             hosts_vitamui_reverseproxy     vitamui-services
+    generateServerCertAndStorePassphrase            reverse             vitamui-services
 
     # Example of generated client cert for a customer allowing to perform request on external APIs
     generateClientCertAndStorePassphrase            customer_x          client-external
