@@ -43,8 +43,8 @@ server:
 {% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-    key-store-password: {{ password_keystore }}
-    key-password: {{ password_keystore }}
+    key-store-password: {{ password_keystore_server }}
+    key-password: {{ password_keystore_server }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
     client-auth: want
@@ -101,8 +101,8 @@ pastis:
     secure: {{ vitamui.iam.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore }}
+        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore_client }}
         type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks

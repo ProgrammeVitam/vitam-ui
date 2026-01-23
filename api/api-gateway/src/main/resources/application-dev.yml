@@ -1,11 +1,11 @@
 server:
   port: 8070
   ssl:
-    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_api-gateway.jks
+    key-store: ../../dev-deployment/environments/keystores/vitamui-services/server/api-gateway/keystore_api-gateway.jks
     key-store-password: changeme
     key-password: changeme
     client-auth: need
-    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
     trust-store-password: changeme
   max-http-request-header-size: 16KB
 

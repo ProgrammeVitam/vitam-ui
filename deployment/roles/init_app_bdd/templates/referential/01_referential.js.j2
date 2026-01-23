@@ -787,7 +787,7 @@ db.certificates.insertOne({
 
 {%- endmacro %}
 
-{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_referential"]|first }}/ui-referential.pem', 'ui_referential_context') }}
+{{ insertCertififcate('{{ inventory_dir }}/certs/vitamui-services/clients/ui-referential/ui-referential.pem', 'ui_referential_context') }}
 
 print("INFO 01_referential.js : END security update");
 

@@ -92,7 +92,7 @@
 
 - name: copy server certificate files when protocole https
   copy:
-    src: "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/reverse.{{ item }}"
+    src: "{{ inventory_dir }}/certs/vitamui-services/server/hosts/{{ inventory_hostname }}/reverse.{{ item }}"
     dest: "/etc/{{ apache_service }}/certs/reverse.{{ item }}"
     owner: "{{ apache_user }}"
     group: "{{ apache_group }}"
@@ -109,7 +109,7 @@
     owner: "{{ apache_user }}"
     mode: 0400
   with_fileglob:
-    - "{{ inventory_dir }}/certs/server/ca/*.crt"
+    - "{{ inventory_dir }}/certs/vitamui-services/ca/*.crt"
 
 - name: copy httpd configuration template
   template:

@@ -19,10 +19,10 @@ server:
   port: 8087
   tomcat.connection-timeout: 60000
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_referential.jks
+    key-store: ../../../dev-deployment/environments/keystores/vitamui-services/server/referential/keystore_referential.jks
     key-store-password: changeme
     key-password: changeme
-    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
     trust-store-password: changeme
     client-auth: want
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -49,10 +49,10 @@ referential:
     secure: true
     ssl-configuration:
       truststore:
-        key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
         key-password: changeme
       keystore:
-        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_referential.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/referential/keystore_referential.jks
         key-password: changeme
         type: JKS
       hostname-verification: false

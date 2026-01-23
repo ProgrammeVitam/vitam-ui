@@ -61,7 +61,7 @@
     "publish:pastis": "cp projects/pastis/package.json dist/pastis/browser/package.json && npm publish dist/pastis/browser/",
     "publish:portal": "cp projects/portal/package.json dist/portal/browser/package.json && npm publish dist/portal/browser/",
     "publish:referential": "cp projects/referential/package.json dist/referential/browser/package.json && npm publish dist/referential/browser/",
-    "start": "NODE_OPTIONS=--openssl-legacy-provider ng serve --proxy-config proxy.conf.js --disable-host-check --ssl --ssl-key ../../dev-deployment/environments/certs/server/hosts/localhost/reverse.key --ssl-cert ../../dev-deployment/environments/certs/server/hosts/localhost/reverse.crt",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider ng serve --proxy-config proxy.conf.js --disable-host-check --ssl --ssl-key ../../dev-deployment/environments/certs/vitamui-services/server/reverse/reverse.key --ssl-cert ../../dev-deployment/environments/certs/vitamui-services/server/reverse/reverse.crt",
     "start:archive-search": "npm run start -- archive-search",
     "start:collect": "npm run start -- collect",
     "start:design-system": "npm run start -- design-system",

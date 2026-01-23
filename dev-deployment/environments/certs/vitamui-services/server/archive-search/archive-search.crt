@@ -1,0 +1,141 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 12 (0xc)
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=fr, ST=idf, L=paris, O=vitamui, OU=authorities, CN=ca_intermediate_vitamui-services
+        Validity
+            Not Before: Jan 16 07:52:51 2026 GMT
+            Not After : Jan 15 07:52:51 2029 GMT
+        Subject: C=fr, ST=idf, L=paris, O=vitamui, CN=dev.vitamui.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (4096 bit)
+                Modulus:
+                    00:aa:59:38:cd:a7:0a:37:10:4a:6e:41:4f:1f:cf:
+                    14:98:7f:33:40:6a:ef:e2:ba:b3:4c:fc:b2:fd:f9:
+                    45:6a:50:2c:7d:27:e3:f5:af:ec:b2:f5:aa:2b:fa:
+                    58:e1:7e:e9:76:b2:69:03:b0:91:6e:62:42:a2:d3:
+                    1a:2a:7e:62:07:cd:be:c1:6a:c6:64:25:35:e3:f9:
+                    dc:10:27:dc:a8:f5:64:6f:fa:24:f5:74:77:6c:a6:
+                    db:0d:47:ca:0e:a3:92:cf:76:7f:34:64:a8:12:08:
+                    3e:00:04:e4:6a:7c:20:a9:7d:9a:24:2a:fb:f2:a5:
+                    93:cf:5e:15:9b:cb:05:9b:31:a8:5a:ea:4c:02:76:
+                    36:c5:90:fe:a0:8a:58:9b:a4:2f:be:5f:3a:7f:b9:
+                    5b:5d:e3:21:c4:43:4f:e7:df:b3:b5:ca:01:d4:88:
+                    41:93:cd:af:3d:be:d6:2f:59:12:e2:5d:84:60:0d:
+                    40:b9:99:da:d8:3c:1b:79:e6:57:a1:20:35:06:fc:
+                    c1:46:1e:04:2e:82:80:c9:88:e0:e1:a2:f9:51:93:
+                    8e:c2:ed:80:e1:53:e7:2d:8f:93:b4:8e:a2:78:0a:
+                    e0:53:5a:8e:9a:8f:9c:ba:1c:81:5f:bb:e9:67:70:
+                    c1:fe:8d:06:c7:8e:b8:23:06:6a:85:b0:f6:1b:fe:
+                    17:fe:6a:3c:96:fe:8b:f2:55:ad:fa:50:ba:f7:dd:
+                    db:9a:04:b0:d5:b3:bb:0c:3c:3e:41:2d:d7:41:ff:
+                    c2:bc:a8:6c:c8:89:01:77:82:d4:2e:79:f4:ef:04:
+                    50:ab:47:24:95:94:45:79:0d:db:a0:57:4b:0b:fb:
+                    e2:ac:f8:a0:3a:ce:ad:25:ea:ca:e3:07:23:2d:fc:
+                    4f:22:2c:1a:ea:7d:b4:2d:68:94:dd:fb:9e:7c:cf:
+                    39:c3:89:bf:82:91:4c:e1:e5:a2:16:cd:db:56:0a:
+                    a3:cd:fd:cb:57:0e:f6:ba:a9:86:9f:09:24:3b:fd:
+                    bd:de:11:eb:80:d4:d5:38:ea:1f:b8:12:ee:ab:af:
+                    ff:67:8b:cf:dd:21:34:5f:77:c3:f5:13:41:35:34:
+                    4c:47:7d:3a:92:50:c6:aa:d4:d2:3b:11:11:06:3a:
+                    ee:c7:f5:74:64:96:8f:46:5a:04:a3:30:05:87:8b:
+                    12:88:48:67:35:f4:84:35:43:4c:10:01:dc:70:f7:
+                    45:de:8e:3f:a0:88:91:f6:76:42:bc:55:e3:eb:92:
+                    83:f0:93:a6:b7:23:d6:a3:cc:2e:d5:3b:62:a5:ba:
+                    a7:ec:de:5f:2f:7f:0f:f8:81:eb:b2:6f:12:b3:70:
+                    f2:d2:55:b0:68:f8:7d:84:ea:62:ae:56:f8:d1:eb:
+                    eb:50:33
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            Netscape Comment: 
+                Certificat Serveur SSL
+            X509v3 Subject Key Identifier: 
+                8F:BD:D0:3C:DC:56:F6:EB:63:64:1C:42:A2:32:6B:53:DF:F0:37:D0
+            X509v3 Authority Key Identifier: 
+                keyid:81:75:BA:59:E8:E9:80:A5:11:E6:7A:4C:94:D9:DF:81:84:20:F1:59
+                DirName:/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_root_vitamui-services
+                serial:02
+            X509v3 Issuer Alternative Name: 
+                <EMPTY>
+
+            X509v3 Subject Alternative Name: 
+                DNS:dev.vitamui.com, DNS:localhost
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+            Netscape Cert Type: 
+                SSL Server
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication
+    Signature Algorithm: sha256WithRSAEncryption
+    Signature Value:
+        ba:1e:fe:63:13:03:4a:20:c7:d8:5f:87:ca:d6:25:f2:90:bf:
+        93:e2:22:45:04:fa:04:b4:57:48:bb:55:28:b4:c0:fe:81:15:
+        d1:e2:0c:87:a4:c7:1a:76:bd:13:67:99:e3:46:b8:5d:c5:8e:
+        3a:d8:b0:e7:7c:06:de:5f:2c:5f:73:e9:be:d8:4f:d9:02:30:
+        3a:6a:14:59:71:d3:9b:58:25:f0:8a:17:c5:5d:76:52:3c:a3:
+        38:13:54:d8:c9:c1:39:e3:ae:57:86:05:26:03:7a:e3:2d:a8:
+        0f:9d:91:35:31:c3:16:16:2b:df:f4:b3:3c:fd:fd:27:1f:58:
+        b2:50:62:77:6b:68:90:f3:74:97:65:06:cc:74:1a:84:06:d8:
+        b2:23:fd:37:d0:6c:37:42:85:1f:90:7e:9d:e3:96:58:87:fd:
+        e9:65:58:09:15:f3:4b:8a:ef:b3:d7:4a:56:88:0d:3f:62:2b:
+        c2:51:b5:aa:b8:f1:d1:e4:4c:40:da:58:19:3a:42:07:c7:26:
+        2b:59:1d:83:d6:da:41:77:e4:f9:56:8b:09:17:88:23:a1:7f:
+        b9:fb:bd:66:ad:90:51:83:77:20:29:4d:43:76:42:b0:f2:5d:
+        33:61:25:22:e3:38:58:dd:57:d2:5e:92:e5:5d:ee:d0:a7:76:
+        e4:a4:74:c9:45:9d:6c:2b:a6:ff:24:c7:2b:57:94:b3:7a:22:
+        d6:1a:35:05:46:55:0a:ee:0f:03:ad:31:40:8a:c6:2d:02:e1:
+        e2:cb:95:12:6d:a7:1d:24:9c:97:a3:2f:9c:b4:68:68:3d:ec:
+        98:d0:a1:3d:bc:65:64:df:4c:51:4b:47:3d:b0:c8:05:a9:41:
+        eb:8a:ae:5a:be:46:d6:c7:9b:df:7a:84:ed:bf:78:90:a7:15:
+        72:64:97:d2:a3:e5:cd:78:83:86:e8:66:ff:26:c6:a2:3c:b7:
+        44:bf:ba:93:d0:59:a8:16:01:ea:d8:d6:97:c7:90:2e:1a:9f:
+        fe:ae:2b:f8:5e:87:b3:c0:dc:af:bf:2a:84:5f:6a:4a:8c:ab:
+        2c:0e:e4:4c:c3:30:c4:49:40:6e:cc:1d:41:48:d7:ea:21:fe:
+        f7:01:8d:22:90:43:10:78:1a:3f:03:31:6b:71:25:6d:aa:5d:
+        e3:fa:bc:0e:82:5e:36:9e:00:44:3d:25:36:5b:31:4e:1d:28:
+        b6:02:6b:50:fb:b2:80:1b:b2:10:81:ae:da:20:d4:16:d4:ae:
+        39:ba:4a:16:4a:1d:31:a2:0c:de:b9:e6:d5:eb:f8:c7:2d:ea:
+        3e:a7:ec:e0:21:a6:0b:bd:0f:44:42:be:1e:96:e5:f0:1a:de:
+        1e:cc:27:1e:dd:5f:9d:5a
+-----BEGIN CERTIFICATE-----
+MIIGtDCCBJygAwIBAgIBDDANBgkqhkiG9w0BAQsFADB+MQswCQYDVQQGEwJmcjEM
+MAoGA1UECAwDaWRmMQ4wDAYDVQQHDAVwYXJpczEQMA4GA1UECgwHdml0YW11aTEU
+MBIGA1UECwwLYXV0aG9yaXRpZXMxKTAnBgNVBAMMIGNhX2ludGVybWVkaWF0ZV92
+aXRhbXVpLXNlcnZpY2VzMB4XDTI2MDExNjA3NTI1MVoXDTI5MDExNTA3NTI1MVow
+VzELMAkGA1UEBhMCZnIxDDAKBgNVBAgMA2lkZjEOMAwGA1UEBwwFcGFyaXMxEDAO
+BgNVBAoMB3ZpdGFtdWkxGDAWBgNVBAMMD2Rldi52aXRhbXVpLmNvbTCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBAKpZOM2nCjcQSm5BTx/PFJh/M0Bq7+K6
+s0z8sv35RWpQLH0n4/Wv7LL1qiv6WOF+6XayaQOwkW5iQqLTGip+YgfNvsFqxmQl
+NeP53BAn3Kj1ZG/6JPV0d2ym2w1Hyg6jks92fzRkqBIIPgAE5Gp8IKl9miQq+/Kl
+k89eFZvLBZsxqFrqTAJ2NsWQ/qCKWJukL75fOn+5W13jIcRDT+ffs7XKAdSIQZPN
+rz2+1i9ZEuJdhGANQLmZ2tg8G3nmV6EgNQb8wUYeBC6CgMmI4OGi+VGTjsLtgOFT
+5y2Pk7SOongK4FNajpqPnLocgV+76Wdwwf6NBseOuCMGaoWw9hv+F/5qPJb+i/JV
+rfpQuvfd25oEsNWzuww8PkEt10H/wryobMiJAXeC1C559O8EUKtHJJWURXkN26BX
+Swv74qz4oDrOrSXqyuMHIy38TyIsGup9tC1olN37nnzPOcOJv4KRTOHlohbN21YK
+o839y1cO9rqphp8JJDv9vd4R64DU1TjqH7gS7quv/2eLz90hNF93w/UTQTU0TEd9
+OpJQxqrU0jsREQY67sf1dGSWj0ZaBKMwBYeLEohIZzX0hDVDTBAB3HD3Rd6OP6CI
+kfZ2QrxV4+uSg/CTprcj1qPMLtU7YqW6p+zeXy9/D/iB67JvErNw8tJVsGj4fYTq
+Yq5W+NHr61AzAgMBAAGjggFiMIIBXjAlBglghkgBhvhCAQ0EGBYWQ2VydGlmaWNh
+dCBTZXJ2ZXVyIFNTTDAdBgNVHQ4EFgQUj73QPNxW9utjZBxCojJrU9/wN9AwgaAG
+A1UdIwSBmDCBlYAUgXW6WejpgKUR5npMlNnfgYQg8VmheqR4MHYxCzAJBgNVBAYT
+AmZyMQwwCgYDVQQIDANpZGYxDjAMBgNVBAcMBXBhcmlzMRAwDgYDVQQKDAd2aXRh
+bXVpMRQwEgYDVQQLDAthdXRob3JpdGllczEhMB8GA1UEAwwYY2Ffcm9vdF92aXRh
+bXVpLXNlcnZpY2VzggECMAkGA1UdEgQCMAAwJQYDVR0RBB4wHIIPZGV2LnZpdGFt
+dWkuY29tgglsb2NhbGhvc3QwDAYDVR0TAQH/BAIwADALBgNVHQ8EBAMCBaAwEQYJ
+YIZIAYb4QgEBBAQDAgZAMBMGA1UdJQQMMAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEB
+CwUAA4ICAQC6Hv5jEwNKIMfYX4fK1iXykL+T4iJFBPoEtFdIu1UotMD+gRXR4gyH
+pMcadr0TZ5njRrhdxY462LDnfAbeXyxfc+m+2E/ZAjA6ahRZcdObWCXwihfFXXZS
+PKM4E1TYycE5465XhgUmA3rjLagPnZE1McMWFivf9LM8/f0nH1iyUGJ3a2iQ83SX
+ZQbMdBqEBtiyI/030Gw3QoUfkH6d45ZYh/3pZVgJFfNLiu+z10pWiA0/YivCUbWq
+uPHR5ExA2lgZOkIHxyYrWR2D1tpBd+T5VosJF4gjoX+5+71mrZBRg3cgKU1DdkKw
+8l0zYSUi4zhY3VfSXpLlXe7Qp3bkpHTJRZ1sK6b/JMcrV5SzeiLWGjUFRlUK7g8D
+rTFAisYtAuHiy5USbacdJJyXoy+ctGhoPeyY0KE9vGVk30xRS0c9sMgFqUHriq5a
+vkbWx5vfeoTtv3iQpxVyZJfSo+XNeIOG6Gb/JsaiPLdEv7qT0FmoFgHq2NaXx5Au
+Gp/+riv4XoezwNyvvyqEX2pKjKssDuRMwzDESUBuzB1BSNfqIf73AY0ikEMQeBo/
+AzFrcSVtql3j+rwOgl42ngBEPSU2WzFOHSi2AmtQ+7KAG7IQga7aINQW1K45ukoW
+Sh0xogzeuebV6/jHLeo+p+zgIaYLvQ9EQr4eluXwGt4ezCce3V+dWg==
+-----END CERTIFICATE-----

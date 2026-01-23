@@ -12,7 +12,7 @@ set -e
 ######################################################################
 
 function get_autorities() {
-    echo "server client-external client-vitam"
+    echo "vitamui-services client-external client-vitam"
 }
 
 ######################################################################
