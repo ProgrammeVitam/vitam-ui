@@ -142,8 +142,7 @@ function generateServerCertAndStorePassphrase {
     local COMPONENT="${1}"
     local SERVER_TYPE="${2}"
 
-    pki_logger "DEBUG" "generateServerCertAndStorePassphrase called with $# args: 1=$1, 2=$2"
-    pki_logger "DEBUG" "Component: ${COMPONENT}, Type: ${SERVER_TYPE}"
+    pki_logger "DEBUG" "generateServerCertAndStorePassphrase called with $# args: COMPONENT=$1, SERVER_TYPE=$2"
 
     local TYPE_CERTIFICAT="server"
     local REVERSE_SAN=""
@@ -154,7 +153,10 @@ function generateServerCertAndStorePassphrase {
 
     if [ "${COMPONENT}" == "reverse" ]; then
         REVERSE_SAN=$(read_ansible_var "vitamui_reverse_external_dns" hosts_vitamui_reverseproxy[0])
+        pki_logger "DEBUG" "REVERSE_SAN=${REVERSE_SAN}"
     fi
+
+    pki_logger "DEBUG" "DC_NAME=${DC_NAME}, CONSUL_DOMAIN=${CONSUL_DOMAIN}"
 
     local SERVER_CERTIFICATE_PATH=$(getServerCertificatePath ${SERVER_TYPE} ${COMPONENT})
     if [ ! -f "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then
@@ -182,8 +184,7 @@ function generateClientCertAndStorePassphrase {
     local COMPONENT="${1}"
     local CLIENT_TYPE="${2}"
 
-    pki_logger "DEBUG" "generateClientCertAndStorePassphrase called with $# args: 1=$1, 2=$2"
-    pki_logger "DEBUG" "Component: ${COMPONENT}, Type: ${CLIENT_TYPE}"
+    pki_logger "DEBUG" "generateClientCertAndStorePassphrase called with $# args: COMPONENT=$1, CLIENT_TYPE=$2"
 
     local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${CLIENT_TYPE} ${COMPONENT})
     if [ ! -f "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then

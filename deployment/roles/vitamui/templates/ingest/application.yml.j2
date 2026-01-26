@@ -19,7 +19,7 @@ server:
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | bool %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.jks
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
     trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.jks
@@ -68,12 +68,12 @@ ingest:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.jks
         key-password: {{ password_keystore_client }}
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+        key-password: {{ truststores_vitamui }}
+      hostname-verification: {{ vitamui.security.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
   iam-client:
     server-host: {{ vitamui.iam.host }}
@@ -82,12 +82,12 @@ ingest:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.jks
         key-password: {{ password_keystore_client }}
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+        key-password: {{ truststores_vitamui }}
+      hostname-verification: {{ vitamui.iam.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}

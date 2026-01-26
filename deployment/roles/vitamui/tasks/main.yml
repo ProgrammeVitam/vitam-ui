@@ -135,20 +135,20 @@
 
 - block: # when secure is true
 
-    - name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (server)"
+    - name: "Copy {{ vitamui_struct.vitamui_component }} jks keystore (server)"
       copy:
         src: "{{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
-        dest: "{{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks"
+        dest: "{{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.jks"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
       tags: update_vitamui_certificates
       notify: restart service
 
-    - name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (client)"
+    - name: "Copy {{ vitamui_struct.vitamui_component }} jks keystore (client)"
       copy:
         src: "{{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
-        dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks"
+        dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.jks"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"

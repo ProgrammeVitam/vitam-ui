@@ -4,7 +4,7 @@ server:
   port: {{ vitamui_struct.server_port | default('8090') }}
 {% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.jks
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
     trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.jks
