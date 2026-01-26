@@ -1,0 +1,17 @@
+{
+  "service": {
+    "name": "vitamui-{{ vitamui_struct.vitamui_component }}",
+    "address": "{{ ip_service }}",
+    "port": {{ vitamui_struct.port_service }},
+    "enable_tag_override": false,
+    "tags": ["vitamui", "{{ vitamui_struct.vitamui_component }}"],
+    "checks": [
+      {
+        "name": "{{ vitamui_struct.vitamui_component }} service check",
+        "notes": "HTTP port opened",
+        "tcp": "{{ ip_service }}:{{ vitamui_struct.port_service }}",
+        "interval": "10s"
+      }
+    ]
+  }
+}

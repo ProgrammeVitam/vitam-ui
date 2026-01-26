@@ -4,3 +4,8 @@
   service:
     name: nginx
     state: reloaded
+
+- name: nginx_webapp - reload consul configuration
+  service:
+    name: "{{ consul.service_name | default('vitam-consul') }}"
+    state: reloaded

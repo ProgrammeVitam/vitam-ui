@@ -2,7 +2,5 @@
 
 upstream API-GATEWAY {
   ip_hash;
-{% for h in groups['hosts_vitamui_api_gateway'] %}
-  server {{ hostvars[h].ip_service }}:{{ vitamui.api_gateway.port_service }};
-{% endfor %}
+  server vitamui-api-gateway.service.{{ consul_domain }}:{{ vitamui.api_gateway.port_service }} max_fails=3 fail_timeout=10s;
 }

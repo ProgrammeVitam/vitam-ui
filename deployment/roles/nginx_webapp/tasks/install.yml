@@ -25,7 +25,7 @@
   set_fact:
     frontend_application_version: "{{ package_facts_result.ansible_facts.packages[ vitamui_struct.package_name | default(package_name) ][0].version }}"
 
-- name: Configure upsteam for API GW
+- name: Configure upstream for API GW
   template:
     src: frontend/upstream_gw.j2
     dest: "{{ nginx_conf_dir }}/upstream_gw"
@@ -79,3 +79,14 @@
   systemd:
     name: nginx
     state: started
+
+#### Consul configuration ####
+- name: "Deploy consul agent service declaration for {{ vitamui_struct.vitamui_component }} service"
+  template:
+    src: service-componentid.json.j2
+    dest: "{{ consul.conf_folder | default(consul_folder_conf) }}/service-{{ vitamui_struct.vitamui_component }}.json"
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitam_defaults.users.group }}"
+    mode: "{{ '0644' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
+  tags: consul_conf
+  notify: nginx_webapp - reload consul configuration
