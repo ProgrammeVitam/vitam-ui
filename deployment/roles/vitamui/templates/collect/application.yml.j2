@@ -66,19 +66,19 @@ collect:
   security-client:
     server-host: {{ vitamui.security.host }}
     server-port: {{ vitamui.security.port_service }}
-{% if vitamui.security.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.security.secure | default(secure) | lower }}
+{% if vitamui.security.secure | default(secure) | bool %}
+    secure: true
     ssl-configuration:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: true
+      hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
   iam-client:
     server-host: {{ vitamui.iam.host }}
     server-port: {{ vitamui.iam.port_service }}
-{% if vitamui.iam.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.iam.secure | default(secure) | lower }}
+{% if vitamui.iam.secure | default(secure) | bool %}
+    secure: true
     ssl-configuration:
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
@@ -87,7 +87,7 @@ collect:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: true
+      hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
 
 ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json
