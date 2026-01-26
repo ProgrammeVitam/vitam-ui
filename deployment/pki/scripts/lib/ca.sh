@@ -15,7 +15,6 @@ set -e
 function generate_ca_root {
     local MDP_CAROOT_KEY="${1}"
     local REPERTOIRE_SORTIE="${2}"
-    local CONFIG_DIR="${3}"
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
     export OPENSSL_CN=ca_root_${REPERTOIRE_SORTIE}
@@ -27,7 +26,7 @@ function generate_ca_root {
         mkdir -p ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE};
     fi
 
-    pki_logger "Create CA request..."
+    pki_logger "Create CA root request..."
     openssl req \
         -config ${REPERTOIRE_CONFIG}/ca-config \
         -new \
@@ -36,7 +35,7 @@ function generate_ca_root {
         -passout pass:${MDP_CAROOT_KEY} \
         -batch
 
-    pki_logger "Create CA certificate... $(pwd)"
+    pki_logger "Sign CA root certificate..."
     openssl ca \
         -config ${REPERTOIRE_CONFIG}/ca-config \
         -selfsign \
@@ -45,6 +44,12 @@ function generate_ca_root {
         -passin pass:${MDP_CAROOT_KEY} \
         -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.crt \
         -batch
+
+    pki_logger "Convert CA root certificate to PEM format..."
+    openssl x509 \
+        -in ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.crt \
+        -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.pem \
+        -outform PEM
 }
 
 # Génération de la CA intermédiaire
@@ -58,30 +63,36 @@ function generate_ca_interm {
     export OPENSSL_CN=ca_intermediate_${REPERTOIRE_SORTIE}
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
     export OPENSSL_CA_DIR=${REPERTOIRE_SORTIE}
-    pki_logger "OPENSSL_CA_DIR :  ${CAROOT_DIR}"
+    pki_logger "OPENSSL_CA_DIR : ${REPERTOIRE_SORTIE}"
     if [ ! -d ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE} ]; then
         pki_logger "Création du sous-répertoire ${REPERTOIRE_SORTIE}"
         mkdir -p ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE};
     fi
 
-    pki_logger "Generate intermediate request..."
+    pki_logger "Create CA intermediate request..."
     openssl req \
-    -config ${REPERTOIRE_CONFIG}/ca-config \
-    -new \
-    -newkey ${PARAM_KEY_CHIFFREMENT} \
-    -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.req \
-    -keyout ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.key \
-    -passout pass:${MDP_CAINTERMEDIATE_KEY} \
-    -batch
+        -config ${REPERTOIRE_CONFIG}/ca-config \
+        -new \
+        -newkey ${PARAM_KEY_CHIFFREMENT} \
+        -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.req \
+        -keyout ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.key \
+        -passout pass:${MDP_CAINTERMEDIATE_KEY} \
+        -batch
 
-    pki_logger "Sign..."
+    pki_logger "Sign CA intermediate certificate..."
     openssl ca \
-    -config ${REPERTOIRE_CONFIG}/ca-config \
-    -extensions extension_ca_intermediate \
-    -in ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.req \
-    -passin pass:${MDP_CAROOT_KEY} \
-    -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.crt \
-    -batch
+        -config ${REPERTOIRE_CONFIG}/ca-config \
+        -extensions extension_ca_intermediate \
+        -in ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.req \
+        -passin pass:${MDP_CAROOT_KEY} \
+        -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.crt \
+        -batch
+
+    pki_logger "Convert CA intermediate certificate to PEM format..."
+    openssl x509 \
+        -in ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.crt \
+        -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.pem \
+        -outform PEM
 }
 
 # Génération de la CA intermédiaire
@@ -155,7 +166,7 @@ function main() {
             # Génération du CA_ROOT_PASSWORD & stockage dans le vault-ca
             CA_ROOT_PASSWORD=$(generatePassphrase)
             setComponentPassphrase ca "ca_root_${ITEM}" "${CA_ROOT_PASSWORD}"
-            generate_ca_root ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
+            generate_ca_root ${CA_ROOT_PASSWORD} ${ITEM}
         else
             pki_logger "Le CA-root ${ITEM} existe déjà, il ne sera pas recréé..."
         fi

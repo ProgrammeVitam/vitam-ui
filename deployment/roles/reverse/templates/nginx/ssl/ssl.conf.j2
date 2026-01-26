@@ -3,6 +3,12 @@ ssl_certificate_key {{ nginx_ssl_dir }}/reverse.key;
 # Password file for ssl cert
 ssl_password_file {{ nginx_ssl_dir }}/reverse.key_pass;
 
+proxy_ssl_server_name on;
+
+proxy_ssl_verify on;
+proxy_ssl_verify_depth 2;
+proxy_ssl_trusted_certificate {{ nginx_ssl_dir }}/vitamui-ca-bundle.pem;
+
 ssl_prefer_server_ciphers on;
 ssl_session_cache shared:SSL:10m;
 

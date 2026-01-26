@@ -4,7 +4,6 @@ set -e
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../.." ; pwd )"
 
 function init () {
-
     REPERTOIRE_CERTIFICAT="${REPERTOIRE_ROOT}/environments/certs"
     REPERTOIRE_CA="${REPERTOIRE_ROOT}/pki/ca"
     CA_ROOT_TYPE="all"
@@ -198,7 +197,6 @@ function getComponentPassphrase {
     }
 }
 
-
 # Method allowing to check if a key is declared in a vault file (ONLY a single level of tree structure).
 # @param TYPE Type of vault.
 # @param KEY Key linked to the data to retrieve.
@@ -245,7 +243,6 @@ function hasComponentPassphrase {
         return 0
     }
 }
-
 
 # Method allowing to save a key/value in a vault file (ONLY a single level of tree structure).
 # @param TYPE Type of vault.

@@ -13,8 +13,12 @@ server {
   # UI IDENTITY_ADMIN
   location /identity-admin {
     rewrite /identity-admin/(.*) /$1 break;
-    set $ui_identity_admin_dns "vitamui-{{ vitamui.ui_identity_admin.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity_admin.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://$ui_identity_admin_dns;
+    set $ui_identity_admin_dns "vitamui-{{ vitamui.ui_identity_admin.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_identity_admin_dns;
+    proxy_set_header Host $ui_identity_admin_dns;
+    proxy_pass {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://$ui_identity_admin_dns:{{ vitamui.ui_identity_admin.port_service }};
+
     sub_filter '/identity/' '{{ url_prefix }}/identity-admin/';
     sub_filter_types text/html text/css;
     sub_filter_once off;
@@ -25,8 +29,12 @@ server {
   # UI IDENTITY
   location /identity {
     rewrite /identity/(.*) /$1 break;
-    set $ui_identity_url "vitamui-{{ vitamui.ui_identity.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://$ui_identity_url;
+    set $ui_identity_dns "vitamui-{{ vitamui.ui_identity.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_identity_dns;
+    proxy_set_header Host $ui_identity_dns;
+    proxy_pass {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://$ui_identity_dns:{{ vitamui.ui_identity.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
   }
 
@@ -34,8 +42,12 @@ server {
   # UI REFERENTIAL
   location /referential {
     rewrite /referential/(.*) /$1 break;
-    set $ui_referential_url "vitamui-{{ vitamui.ui_referential.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_referential.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://$ui_referential_url;
+    set $ui_referential_dns "vitamui-{{ vitamui.ui_referential.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_referential_dns;
+    proxy_set_header Host $ui_referential_dns;
+    proxy_pass {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://$ui_referential_dns:{{ vitamui.ui_referential.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -44,8 +56,12 @@ server {
   # UI INGEST
   location /ingest {
     rewrite /ingest/(.*) /$1 break;
-    set $ui_ingest_url "vitamui-{{ vitamui.ui_ingest.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_ingest.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://$ui_ingest_url;
+    set $ui_ingest_dns "vitamui-{{ vitamui.ui_ingest.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_ingest_dns;
+    proxy_set_header Host $ui_ingest_dns;
+    proxy_pass {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://$ui_ingest_dns:{{ vitamui.ui_ingest.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
@@ -65,8 +81,12 @@ server {
   # UI ARCHIVE_SEARCH
   location /archive-search {
     rewrite /archive-search/(.*) /$1 break;
-    set $ui_archive_search_url "vitamui-{{ vitamui.ui_archive_search.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_archive_search.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://$ui_archive_search_url;
+    set $ui_archive_search_dns "vitamui-{{ vitamui.ui_archive_search.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_archive_search_dns;
+    proxy_set_header Host $ui_archive_search_dns;
+    proxy_pass {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://$ui_archive_search_dns:{{ vitamui.ui_archive_search.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -75,8 +95,12 @@ server {
   # UI PASTIS
   location /pastis {
     rewrite /pastis/(.*) /$1 break;
-    set $ui_pastis_url "vitamui-{{ vitamui.ui_pastis.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_pastis.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://$ui_pastis_url;
+    set $ui_pastis_dns "vitamui-{{ vitamui.ui_pastis.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_pastis_dns;
+    proxy_set_header Host $ui_pastis_dns;
+    proxy_pass {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://$ui_pastis_dns:{{ vitamui.ui_pastis.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -85,8 +109,12 @@ server {
   # UI COLLECT
   location /collect {
     rewrite /collect/(.*) /$1 break;
-    set $ui_collect_url "vitamui-{{ vitamui.ui_collect.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_collect.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://$ui_collect_url;
+    set $ui_collect_dns "vitamui-{{ vitamui.ui_collect.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_collect_dns;
+    proxy_set_header Host $ui_collect_dns;
+    proxy_pass {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://$ui_collect_dns:{{ vitamui.ui_collect.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
@@ -106,8 +134,12 @@ server {
   # DESIGN SYSTEM
   location /design-system {
     rewrite /design-system/(.*) /$1 break;
-    set $ui_design_system_url "vitamui-{{ vitamui.ui_design_system.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_design_system.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://$ui_design_system_url;
+    set $ui_design_system_dns "vitamui-{{ vitamui.ui_design_system.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_design_system_dns;
+    proxy_set_header Host $ui_design_system_dns;
+    proxy_pass {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://$ui_design_system_dns:{{ vitamui.ui_design_system.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -118,15 +150,23 @@ server {
   }
 
   location ~ ^/cas/(login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
-    set $cas_server_url "{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}";
-    proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://$cas_server_url;
+    set $cas_server_dns "vitamui-{{ vitamui.cas_server.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $cas_server_dns;
+    proxy_set_header Host $cas_server_dns;
+    proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://$cas_server_dns:{{ vitamui.cas_server.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
   }
 
   # PORTAL
   location / {
-    set $ui_portal_url "vitamui-{{ vitamui.ui_portal.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_portal.port_service }}";
-    proxy_pass {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://$ui_portal_url;
+    set $ui_portal_dns "vitamui-{{ vitamui.ui_portal.vitamui_component }}.service.{{ consul_domain }}";
+
+    proxy_ssl_name $ui_portal_dns;
+    proxy_set_header Host $ui_portal_dns;
+    proxy_pass {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://$ui_portal_dns:{{ vitamui.ui_portal.port_service }};
+
     include {{ nginx_conf_dir }}/proxy_params;
   }
 

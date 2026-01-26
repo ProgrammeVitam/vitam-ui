@@ -212,7 +212,7 @@ function copyCAFromPki {
 
     mkdir -p "${REPERTOIRE_CERTIFICAT}/${CERT_TYPE}/ca"
     pki_logger "Copie des CA de ${CERT_TYPE}"
-    for CA in $(ls ${REPERTOIRE_CA}/${CERT_TYPE}/*.crt); do
+    for CA in $(ls ${REPERTOIRE_CA}/${CERT_TYPE}/*.crt ${REPERTOIRE_CA}/${CERT_TYPE}/*.pem); do
         cp -f "${CA}" "${REPERTOIRE_CERTIFICAT}/${CERT_TYPE}/ca/$(basename ${CA})"
     done
 }
