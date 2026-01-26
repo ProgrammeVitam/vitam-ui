@@ -102,6 +102,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITHOUT_OBJECTS)) {
         this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_WITHOUT_OBJECTS);
       }
+
+      if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_HOLDING_UNIT)) {
+        this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_HOLDING_UNIT);
+      }
+
+      if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_FILING_UNIT)) {
+        this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_FILING_UNIT);
+      }
     });
 
     const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
@@ -267,7 +275,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           this.addCriteria(
             ALL_ARCHIVE_UNIT_TYPES,
             { value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT },
-            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_PLAN'),
+            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_FILING_UNIT'),
             true,
             CriteriaOperator.EQ,
             false,
@@ -286,7 +294,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           this.addCriteria(
             ALL_ARCHIVE_UNIT_TYPES,
             { value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT },
-            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING'),
+            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING_UNIT'),
             true,
             CriteriaOperator.EQ,
             false,
