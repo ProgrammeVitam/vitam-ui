@@ -208,8 +208,8 @@ logging:
     org.springframework.context.annotation: 'OFF'
     org.springframework.boot.devtools: 'OFF'
     org.apereo.inspektr.audit.support: 'INFO'
-    org.springframework.webflow: DEBUG
-    org.apereo: DEBUG
+    org.springframework.webflow: TRACE
+    org.apereo: TRACE
 
 # Cas CORS (necessary for mobile app)
 cas.http-web-request.cors.enabled: true
