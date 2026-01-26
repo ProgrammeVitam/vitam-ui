@@ -30,8 +30,8 @@ server:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-    trust-store-password: {{ password_truststore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+    trust-store-password: {{ truststores_vitamui }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
@@ -72,13 +72,16 @@ iam:
   security-client:
     server-host: {{ vitamui.security.host }}
     server-port: {{ vitamui.security.port_service }}
-{% if vitamui.security.secure | default(secure) | bool == true %}
+{% if vitamui.security.secure | default(secure) | bool %}
     secure: true
     ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore_client }}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
-      hostname-verification: true
+      hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
 
 list-enable-external-identifiers:
@@ -104,17 +107,16 @@ login:
 cas-client:
   server-host: {{ vitamui.cas_server.host }}
   server-port: {{ vitamui.cas_server.port_service }}
-{% if vitamui.cas_server.secure | default(secure) | bool == true %}
+{% if vitamui.cas_server.secure | default(secure) | bool %}
   secure: true
   ssl-configuration:
     keystore:
       key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
       key-password: {{ password_keystore_client }}
-      type: JKS
     truststore:
       key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
       key-password: {{ password_truststore }}
-    hostname-verification: true
+    hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
 
 cas.reset.password.url: {{ vitamui.cas_server.base_url | default('/cas') }}{{ vitamui.cas_server.reset_password_url | default('/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day') }}

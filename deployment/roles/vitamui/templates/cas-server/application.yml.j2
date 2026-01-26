@@ -69,11 +69,10 @@ iam-client:
     keystore:
       key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
       key-password: {{ password_keystore_client }}
-      type: JKS
     truststore:
       key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
       key-password: {{ password_truststore }}
-    hostname-verification: true
+    hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
 
 cas.authn.accept.users:
