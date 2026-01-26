@@ -255,28 +255,26 @@ function main() {
     # Remove old keystores & servers directories
     find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
 
-    # Generate the server keystores
-    for COMPONENT in $(ls ${REPERTOIRE_CERTIFICAT}/vitamui-services/server/); do
+    # Generate the server keystores for vitamui-services
+    for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/vitamui-services/server/ | grep -v -e "README" -e "^ui-" ); do
+        mkdir -p ${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}
 
-            mkdir -p ${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}
+        pki_logger "-------------------------------------------"
+        pki_logger "Creation du keystore de ${COMPONENT}"
+        JKS_KEYSTORE=${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}/keystore_${COMPONENT}.jks
+        P12_KEYSTORE=${REPERTOIRE_CERTIFICAT}/vitamui-services/server/${COMPONENT}/${COMPONENT}.p12
+        CRT_KEY_PASSWORD=$(getComponentPassphrase certs "server_vitamui_services_${COMPONENT}_key")
+        JKS_PASSWORD=$(getKeystorePassphrase "keystores_server_vitamui_services_${COMPONENT}")
 
-            pki_logger "-------------------------------------------"
-            pki_logger "Creation du keystore de ${COMPONENT}"
-            JKS_KEYSTORE=${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}/keystore_${COMPONENT}.jks
-            P12_KEYSTORE=${REPERTOIRE_CERTIFICAT}/vitamui-services/server/${COMPONENT}/${COMPONENT}.p12
-            CRT_KEY_PASSWORD=$(getComponentPassphrase certs "server_vitamui_services_${COMPONENT}_key")
-            JKS_PASSWORD=$(getKeystorePassphrase "keystores_server_vitamui_services_${COMPONENT}")
-
-            generateHostKeystore    ${COMPONENT} \
-                                    ${JKS_KEYSTORE} \
-                                    ${P12_KEYSTORE} \
-                                    ${CRT_KEY_PASSWORD} \
-                                    ${JKS_PASSWORD} \
-                                    ${TMP_P12_PASSWORD}
+        generateHostKeystore ${COMPONENT} \
+                             ${JKS_KEYSTORE} \
+                             ${P12_KEYSTORE} \
+                             ${CRT_KEY_PASSWORD} \
+                             ${JKS_PASSWORD} \
+                             ${TMP_P12_PASSWORD}
     done
 
-    # Keystores generation foreach client type (storage, external)
-    # for CLIENT_TYPE in external storage; do
+    # Generate client keystores foreach client type
     for CLIENT_TYPE in external vitam vitamui-services; do
 
         # # Set grantedstore path and delete the store if already exists
@@ -299,7 +297,8 @@ function main() {
 
         mkdir -p ${STORE_DIR}
         # # client-${CLIENT_TYPE} keystores generation
-        for COMPONENT in $( ls ${CERT_SRC_DIR} 2>/dev/null | grep -vF -e "README" -e "external" ); do
+        # Do not generate keystores for ui- components, we don't need them
+        for COMPONENT in $( ls ${CERT_SRC_DIR} 2>/dev/null | grep -v -e "README" -e "external" -e "^ui-" ); do
 
             # Generate the p12 keystore
             pki_logger "-------------------------------------------"
