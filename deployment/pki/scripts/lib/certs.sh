@@ -106,8 +106,10 @@ function generateClientCertificate {
     local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${CLIENT_TYPE} ${CLIENT_NAME})
     mkdir -p "${CLIENT_CERTIFICATE_PATH}"
     pki_logger "Generation de la clé..."
+    # TODO: Workaround with -nodes to avoid passphrase. Remove this line when we have a solution for providing the passphrase to ansible during deployment
+    # -passout pass:"${MDP_KEY}" \
     openssl req -newkey "${PARAM_KEY_CHIFFREMENT}" \
-        -passout pass:"${MDP_KEY}" \
+        -nodes \
         -keyout "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.key" \
         -out "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.req" \
         -config "${REPERTOIRE_CONFIG}/crt-config" \
