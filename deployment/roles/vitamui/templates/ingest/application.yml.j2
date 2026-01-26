@@ -17,7 +17,7 @@ spring:
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | bool == true %}
+{% if vitamui_struct.secure | default(secure) | bool %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore_server }}
@@ -64,19 +64,19 @@ ingest:
   security-client:
     server-host: {{ vitamui.security.host }}
     server-port: {{ vitamui.security.port_service }}
-{% if vitamui.security.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.security.secure | default(secure) | lower }}
+{% if vitamui.security.secure | default(secure) | bool %}
+    secure: true
     ssl-configuration:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
         key-password: {{ truststores_vitamui }}
-      hostname-verification: true
+      hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
   iam-client:
     server-host: {{ vitamui.iam.host }}
     server-port: {{ vitamui.iam.port_service }}
-{% if vitamui.iam.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.iam.secure | default(secure) | lower }}
+{% if vitamui.iam.secure | default(secure) | bool %}
+    secure: true
     ssl-configuration:
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
@@ -85,7 +85,7 @@ ingest:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
         key-password: {{ truststores_vitamui }}
-      hostname-verification: true
+      hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}
