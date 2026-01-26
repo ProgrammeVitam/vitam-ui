@@ -24,7 +24,7 @@ http {
 
     # Force consul agent resolution
     resolver            127.0.0.1 valid=10s;
-    resolver_timeout      5s;
+    resolver_timeout    10s;
 
     sendfile            on;
     tcp_nopush          on;
@@ -50,7 +50,7 @@ http {
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
 
-    include {{ nginx_conf_dir }}/upstream*;
+    # include {{ nginx_conf_dir }}/upstream*;
 
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include

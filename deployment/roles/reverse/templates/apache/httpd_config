@@ -1,14 +1,11 @@
 <VirtualHost {{ ip_service }}:{{ reverse_proxy_port | default(443) }}>
 
+ServerName {{ vitamui_reverse_external_dns }}
 {% if vitamui_reverse_external_protocol | default('https') | lower == 'https' %}
+    ServerAlias reverse.service.{{ consul_domain }}
     SSLEngine on
     SSLCertificateFile /etc/{{ apache_service }}/certs/reverse.crt
     SSLCertificateKeyFile /etc/{{ apache_service }}/certs/reverse.key
-    ServerName {{ vitamui_reverse_external_dns }}
-    ServerAlias reverse.service.{{ consul_domain }}
-    ServerAlias {{ ip_service }}
-{% else %}
-    ServerName {{ vitamui_reverse_external_dns }}
 {% endif %}
 
 {% if authorization_header_name is defined and authorization_header_name | length %}
@@ -44,68 +41,65 @@
     SubstituteMaxLineLength 12M
 
     # UI IDENTITY ADMIN
-{% for host in groups['hosts_ui_identity_admin'] %}
-    ProxyPassMatch ^/identity-admin/(.*)$ {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_identity_admin.port_service }}/$1 {{ reverse_connection_params }}
-    ProxyPassReverse /identity-admin {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_identity_admin.port_service }}
+    ProxyPassMatch ^/identity-admin/(.*)$ {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_identity_admin.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity_admin.port_service }}/$1 {{ reverse_connection_params }}
+    ProxyPassReverse /identity-admin {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_identity_admin.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity_admin.port_service }}
 
     <Location /identity-admin/>
         SetOutputFilter proxy-html
         ProxyHTMLURLMap /identity/ /identity-admin/
         RequestHeader unset Accept-Encoding
     </Location>
-{% endfor %}
 
     # UI IDENTITY
-{% for host in groups['hosts_ui_identity'] %}
-    ProxyPassMatch ^/identity/(.*)$ {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_identity.port_service }}/$1
-    ProxyPassReverse /identity {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_identity.port_service }}
-{% endfor %}
+    ProxyPassMatch ^/identity/(.*)$ {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_identity.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity.port_service }}/$1
+    ProxyPassReverse /identity {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_identity.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity.port_service }}
 
+{% if groups.get('hosts_ui_referential', []) | length > 0 %}
     # UI REFERENTIAL
-{% for host in groups['hosts_ui_referential'] %}
-    ProxyPassMatch ^/referential/(.*)$ {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_referential.port_service }}/$1
-    ProxyPassReverse /referential {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_referential.port_service }}
-{% endfor %}
+    ProxyPassMatch ^/referential/(.*)$ {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_referential.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_referential.port_service }}/$1
+    ProxyPassReverse /referential {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_referential.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_referential.port_service }}
+{% endif %}
 
+{% if groups.get('hosts_ui_ingest', []) | length > 0 %}
     # UI INGEST
-{% for host in groups['hosts_ui_ingest'] %}
-    ProxyPassMatch ^/ingest/(.*)$ {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_ingest.port_service }}/$1
-    ProxyPassReverse /ingest {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_ingest.port_service }}
-{% endfor %}
+    ProxyPassMatch ^/ingest/(.*)$ {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_ingest.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_ingest.port_service }}/$1
+    ProxyPassReverse /ingest {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_ingest.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_ingest.port_service }}
+{% endif %}
 
+{% if groups.get('hosts_ui_pastis', []) | length > 0 %}
     # UI PASTIS
-{% for host in groups['hosts_ui_pastis'] %}
-    ProxyPassMatch ^/pastis/(.*)$ {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_pastis.port_service }}/$1
-    ProxyPassReverse /pastis {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_pastis.port_service }}
-{% endfor %}
+    ProxyPassMatch ^/pastis/(.*)$ {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_pastis.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_pastis.port_service }}/$1
+    ProxyPassReverse /pastis {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_pastis.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_pastis.port_service }}
+{% endif %}
 
+{% if groups.get('hosts_ui_archive_search', []) | length > 0 %}
     # UI ARCHIVE SEARCH
-{% for host in groups['hosts_ui_archive_search'] %}
-    ProxyPassMatch ^/archive-search/(.*)$ {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_archive_search.port_service }}/$1
-    ProxyPassReverse /archive-search {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_archive_search.port_service }}
-{% endfor %}
+    ProxyPassMatch ^/archive-search/(.*)$ {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_archive_search.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_archive_search.port_service }}/$1
+    ProxyPassReverse /archive-search {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_archive_search.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_archive_search.port_service }}
+{% endif %}
 
+{% if groups.get('hosts_ui_collect', []) | length > 0 %}
     # UI COLLECT
-{% for host in groups['hosts_ui_collect'] %}
-    ProxyPassMatch ^/collect/(.*)$ {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_collect.port_service }}/$1
-    ProxyPassReverse /collect {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_collect.port_service }}
-{% endfor %}
+    ProxyPassMatch ^/collect/(.*)$ {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_collect.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_collect.port_service }}/$1
+    ProxyPassReverse /collect {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_collect.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_collect.port_service }}
+{% endif %}
 
+{% if groups.get('hosts_cas_server', []) | length > 0 %}
     # CAS SERVER
-{% for host in groups['hosts_cas_server'] %}
-    ProxyPassMatch ^/cas/((login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc).*)$ {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.cas_server.port_service }}/cas/$1 {{ reverse_connection_params }}
-    ProxyPassReverse /cas {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.cas_server.port_service }}
-{% endfor %}
+    ProxyPassMatch ^/cas/((login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc).*)$ {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}/cas/$1 {{ reverse_connection_params }}
+    ProxyPassReverse /cas {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}
+{% endif %}
 
+{% if groups.get('hosts_ui_portal', []) | length > 0 %}
     # PORTAL
-{% for host in groups['hosts_ui_portal'] %}
-    ProxyPass / {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_portal.port_service }}/ {{ reverse_connection_params }}
-    ProxyPassReverse / {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_portal.port_service }}/
-{% endfor %}
+    ProxyPass / {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_portal.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_portal.port_service }}/ {{ reverse_connection_params }}
+    ProxyPassReverse / {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_portal.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_portal.port_service }}/
+{% endif %}
 
-{% for host in groups.get('hosts_ui_design_system', []) %}
-    ProxyPass / {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_design_system.port_service }}/ {{ reverse_connection_params }}
-    ProxyPassReverse / {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ui_design_system.port_service }}/
-{% endfor %}
+{% if groups.get('hosts_ui_design_system', []) | length > 0 %}
+    # UI DESIGN SYSTEM
+    ProxyPass / {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_design_system.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_design_system.port_service }}/ {{ reverse_connection_params }}
+    ProxyPassReverse / {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://vitamui-{{ vitamui.ui_design_system.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_design_system.port_service }}/
+{% endif %}
 
 </VirtualHost>

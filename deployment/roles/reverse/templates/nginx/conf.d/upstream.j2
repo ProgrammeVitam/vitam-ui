@@ -24,43 +24,43 @@ upstream PORTAL {
   ip_hash;
   server vitamui-ui-portal.service.{{ consul_domain }}:{{ vitamui.ui_portal.port_service }} max_fails=3 fail_timeout=10s;
 }
-{% if groups.get('hosts_ui_referential', []) | length > 0 %}
 
+{% if groups.get('hosts_ui_referential', []) | length > 0 %}
 upstream REFERENTIAL {
   ip_hash;
   server vitamui-ui-referential.service.{{ consul_domain }}:{{ vitamui.ui_referential.port_service }} max_fails=3 fail_timeout=10s;
 }
 {% endif %}
-{% if groups.get('hosts_ui_ingest', []) | length > 0 %}
 
+{% if groups.get('hosts_ui_ingest', []) | length > 0 %}
 upstream INGEST {
   ip_hash;
   server vitamui-ui-ingest.service.{{ consul_domain }}:{{ vitamui.ui_ingest.port_service }} max_fails=3 fail_timeout=10s;
 }
 {% endif %}
-{% if groups.get('hosts_ui_archive_search', []) | length > 0 %}
 
+{% if groups.get('hosts_ui_archive_search', []) | length > 0 %}
 upstream ARCHIVE_SEARCH {
   ip_hash;
   server vitamui-ui-archive-search.service.{{ consul_domain }}:{{ vitamui.ui_archive_search.port_service }} max_fails=3 fail_timeout=10s;
 }
 {% endif %}
-{% if groups.get('hosts_ui_collect', []) | length > 0 %}
 
+{% if groups.get('hosts_ui_collect', []) | length > 0 %}
 upstream COLLECT {
   ip_hash;
   server vitamui-ui-collect.service.{{ consul_domain }}:{{ vitamui.ui_collect.port_service }} max_fails=3 fail_timeout=10s;
 }
 {% endif %}
-{% if groups.get('hosts_ui_pastis', []) | length > 0 %}
 
+{% if groups.get('hosts_ui_pastis', []) | length > 0 %}
 upstream PASTIS {
   ip_hash;
   server vitamui-ui-pastis.service.{{ consul_domain }}:{{ vitamui.ui_pastis.port_service }} max_fails=3 fail_timeout=10s;
 }
 {% endif %}
-{% if groups.get('hosts_ui_design_system', []) | length > 0 %}
 
+{% if groups.get('hosts_ui_design_system', []) | length > 0 %}
 upstream DESIGN_SYSTEM {
   ip_hash;
   server vitamui-ui-design-system.service.{{ consul_domain }}:{{ vitamui.ui_design_system.port_service }} max_fails=3 fail_timeout=10s;
