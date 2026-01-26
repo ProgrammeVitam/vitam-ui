@@ -92,11 +92,15 @@
           <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
             <div class="vitamui-mat-select-options">
               <ng-container *ngIf="enableSelectAll && multiple">
-                <mat-option [id]="String(0)" (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
-                  <span class="text normal secondary bold">
+                <div class="mat-mdc-option" (click)="toggleSelectAll($event)">
+                  <mat-pseudo-checkbox
+                    [state]="isAllSelected() ? 'checked' : 'unchecked'"
+                    class="mat-mdc-option-pseudo-checkbox"
+                  ></mat-pseudo-checkbox>
+                  <span class="mat-mdc-option-text text normal secondary bold">
                     {{ selectAllLabel }}
                   </span>
-                </mat-option>
+                </div>
                 <mat-divider></mat-divider>
               </ng-container>
 
