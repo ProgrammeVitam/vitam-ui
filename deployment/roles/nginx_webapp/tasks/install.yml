@@ -52,28 +52,44 @@
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
-- name: "Add UI certificates for {{ vitamui_struct.vitamui_component }} when secure is enabled"
+- name: "Add client certificates for {{ vitamui_struct.vitamui_component }}"
   copy:
-    src: "{{ item }}"
-    dest: "{{ nginx_ssl_dir }}"
+    src: "{{ inventory_dir }}/certs/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.{{ item }}"
+    dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.{{ item }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
-  with_fileglob:
-    - "{{ inventory_dir }}/certs/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.crt"
-    - "{{ inventory_dir }}/certs/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.key"
-  when: vitamui_struct.secure | default(secure) | bool
+  loop:
+    - crt
+    - key
+  tags: update_vitamui_certificates
   notify: reload nginx
 
-- name: Put ssl configuration when secure is enabled
-  template:
-    src: ssl-ui.conf.j2
-    dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}-ssl.conf"
-    group: "{{ frontend_group }}"
-    owner: "{{ frontend_user }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+- block:
+
+    - name: "Add server certificates for {{ vitamui_struct.vitamui_component }} when secure is enabled"
+      copy:
+        src: "{{ inventory_dir }}/certs/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.{{ item }}"
+        dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_server.{{ item }}"
+        group: "{{ frontend_group }}"
+        owner: "{{ frontend_user }}"
+        mode: "{{ vitam_defaults.folder.conf_permission }}"
+      loop:
+        - crt
+        - key
+      tags: update_vitamui_certificates
+      notify: reload nginx
+
+    - name: "Put ssl configuration for {{ vitamui_struct.vitamui_component }} when secure is enabled"
+      template:
+        src: ssl-ui.conf.j2
+        dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}-ssl.conf"
+        group: "{{ frontend_group }}"
+        owner: "{{ frontend_user }}"
+        mode: "{{ vitamui_defaults.folder.conf_permission }}"
+      notify: reload nginx
+
   when: vitamui_struct.secure | default(secure) | bool
-  notify: reload nginx
 
 - name: Ensure nginx is started
   systemd:

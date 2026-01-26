@@ -1,5 +1,6 @@
-ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
-ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;
+ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_server.crt;
+ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_server.key;
+# ssl_password_file {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_server.key_pass;
 
 ssl_prefer_server_ciphers on;
 ssl_session_cache shared:SSL:10m;
