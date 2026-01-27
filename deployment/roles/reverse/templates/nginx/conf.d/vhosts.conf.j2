@@ -18,9 +18,9 @@ server {
     sub_filter_once off;
     proxy_set_header Accept-Encoding "";
 
-    set $ui_identity_admin_dns "vitamui-{{ vitamui.ui_identity_admin.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://$ui_identity_admin_dns:{{ vitamui.ui_identity_admin.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://IDENTITY_ADMIN;
+    # set $ui_identity_admin_dns "vitamui-{{ vitamui.ui_identity_admin.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://$ui_identity_admin_dns:{{ vitamui.ui_identity_admin.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_identity_admin.secure | default(secure) | bool else 'http' }}://IDENTITY_ADMIN;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 
@@ -28,9 +28,9 @@ server {
   location /identity {
     rewrite /identity/(.*) /$1 break;
 
-    set $ui_identity_dns "vitamui-{{ vitamui.ui_identity.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://$ui_identity_dns:{{ vitamui.ui_identity.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://IDENTITY;
+    # set $ui_identity_dns "vitamui-{{ vitamui.ui_identity.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://$ui_identity_dns:{{ vitamui.ui_identity.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_identity.secure | default(secure) | bool else 'http' }}://IDENTITY;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% if groups.get('hosts_ui_referential', []) | length > 0 %}
@@ -39,9 +39,9 @@ server {
   location /referential {
     rewrite /referential/(.*) /$1 break;
 
-    set $ui_referential_dns "vitamui-{{ vitamui.ui_referential.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://$ui_referential_dns:{{ vitamui.ui_referential.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://REFERENTIAL;
+    # set $ui_referential_dns "vitamui-{{ vitamui.ui_referential.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://$ui_referential_dns:{{ vitamui.ui_referential.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_referential.secure | default(secure) | bool else 'http' }}://REFERENTIAL;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -51,9 +51,9 @@ server {
   location /ingest {
     rewrite /ingest/(.*) /$1 break;
 
-    set $ui_ingest_dns "vitamui-{{ vitamui.ui_ingest.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://$ui_ingest_dns:{{ vitamui.ui_ingest.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://INGEST;
+    # set $ui_ingest_dns "vitamui-{{ vitamui.ui_ingest.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://$ui_ingest_dns:{{ vitamui.ui_ingest.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_ingest.secure | default(secure) | bool else 'http' }}://INGEST;
     include {{ nginx_conf_dir }}/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
@@ -74,9 +74,9 @@ server {
   location /archive-search {
     rewrite /archive-search/(.*) /$1 break;
 
-    set $ui_archive_search_dns "vitamui-{{ vitamui.ui_archive_search.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://$ui_archive_search_dns:{{ vitamui.ui_archive_search.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://ARCHIVE_SEARCH;
+    # set $ui_archive_search_dns "vitamui-{{ vitamui.ui_archive_search.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://$ui_archive_search_dns:{{ vitamui.ui_archive_search.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_archive_search.secure | default(secure) | bool else 'http' }}://ARCHIVE_SEARCH;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -86,9 +86,9 @@ server {
   location /pastis {
     rewrite /pastis/(.*) /$1 break;
 
-    set $ui_pastis_dns "vitamui-{{ vitamui.ui_pastis.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://$ui_pastis_dns:{{ vitamui.ui_pastis.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://PASTIS;
+    # set $ui_pastis_dns "vitamui-{{ vitamui.ui_pastis.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://$ui_pastis_dns:{{ vitamui.ui_pastis.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_pastis.secure | default(secure) | bool else 'http' }}://PASTIS;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -98,9 +98,9 @@ server {
   location /collect {
     rewrite /collect/(.*) /$1 break;
 
-    set $ui_collect_dns "vitamui-{{ vitamui.ui_collect.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://$ui_collect_dns:{{ vitamui.ui_collect.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://COLLECT;
+    # set $ui_collect_dns "vitamui-{{ vitamui.ui_collect.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://$ui_collect_dns:{{ vitamui.ui_collect.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_collect.secure | default(secure) | bool else 'http' }}://COLLECT;
     include {{ nginx_conf_dir }}/proxy_params;
 
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
@@ -121,9 +121,9 @@ server {
   location /design-system {
     rewrite /design-system/(.*) /$1 break;
 
-    set $ui_design_system_dns "vitamui-{{ vitamui.ui_design_system.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass http://$ui_design_system_dns:{{ vitamui.ui_design_system.port_service }};
-    # proxy_pass http://DESIGN_SYSTEM;
+    # set $ui_design_system_dns "vitamui-{{ vitamui.ui_design_system.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass http://$ui_design_system_dns:{{ vitamui.ui_design_system.port_service }};
+    proxy_pass http://DESIGN_SYSTEM;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -142,9 +142,9 @@ server {
 
   # PORTAL
   location / {
-    set $ui_portal_dns "vitamui-{{ vitamui.ui_portal.vitamui_component }}.service.{{ consul_domain }}";
-    proxy_pass {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://$ui_portal_dns:{{ vitamui.ui_portal.port_service }};
-    # proxy_pass {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://PORTAL;
+    # set $ui_portal_dns "vitamui-{{ vitamui.ui_portal.vitamui_component }}.service.{{ consul_domain }}";
+    # proxy_pass {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://$ui_portal_dns:{{ vitamui.ui_portal.port_service }};
+    proxy_pass {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://PORTAL;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 

@@ -7,7 +7,7 @@
     "tags": ["vitamui", "{{ vitamui_struct.vitamui_component }}"],
     "checks": [
       {
-        "name": "{{ vitamui_struct.vitamui_component }} service check",
+        "name": "Service 'vitamui-{{ vitamui_struct.vitamui_component }}' check",
         "notes": "HTTP port opened",
         "tcp": "{{ ip_service }}:{{ vitamui_struct.port_service }}",
         "interval": "10s"
