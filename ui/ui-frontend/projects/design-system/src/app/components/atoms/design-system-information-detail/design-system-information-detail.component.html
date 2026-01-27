@@ -1,0 +1,6 @@
+@for (color of colors; track color) {
+  <div class="flex-row gap-5 mb-3">
+    <vitamui-information-detail [error]="errorWithoutEvDetData" [color]="color"></vitamui-information-detail>
+    <vitamui-information-detail [error]="errorWithEvDetData" [color]="color"></vitamui-information-detail>
+  </div>
+}

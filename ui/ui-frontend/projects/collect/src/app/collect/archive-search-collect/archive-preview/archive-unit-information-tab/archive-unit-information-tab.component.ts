@@ -34,10 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, computed, EventEmitter, input, InputSignal, OnChanges, Output, Signal, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TenantSelectionService, Unit } from 'vitamui-library';
+import {
+  TenantSelectionService,
+  Unit,
+  getErrorsOnArchiveUnit,
+  getErrorOnTechnicalObjectsGroup,
+  getErrorOnObjectsGroup,
+  ValidationError,
+} from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({
@@ -47,18 +53,29 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   standalone: false,
 })
 export class ArchiveUnitInformationTabComponent implements OnChanges {
-  @Input() archiveUnit: Unit;
+  OBJECTS_TAB_INDEX = 3;
 
+  archiveUnit: InputSignal<Unit> = input(null);
   @Output() showNormalPanel = new EventEmitter<any>();
+  @Output() openObjectsTab = new EventEmitter<any>();
 
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
   hasDownloadDocumentRole = false;
 
+  archiveUnitErrors: Signal<ValidationError[]> = computed(() => {
+    return getErrorsOnArchiveUnit(this.archiveUnit());
+  });
+  technicalObjectsGroupErrors: Signal<ValidationError[]> = computed(() => {
+    return getErrorOnTechnicalObjectsGroup(this.archiveUnit());
+  });
+  objectsGroupErrors: Signal<ValidationError[]> = computed(() => {
+    return getErrorOnObjectsGroup(this.archiveUnit());
+  });
+
   constructor(
     private archiveService: ArchiveCollectService,
     private tenantSelectionService: TenantSelectionService,
-    private translateService: TranslateService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -72,31 +89,15 @@ export class ArchiveUnitInformationTabComponent implements OnChanges {
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit['#object']);
+    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit()['#object']);
   }
 
   showArchiveUniteFullPath() {
     this.fullPath = true;
   }
 
-  get hasErrorMessages(): boolean {
-    return this.archiveUnit['#errors']?.length > 0 || this.archiveUnit['#ogInfo']?.['#errors']?.length > 0;
-  }
-
-  get errorMessages(): string[] | undefined {
-    if (!this.hasErrorMessages) return;
-    const unitValidationErrors = this.archiveUnit['#errors']?.map((error) => error.outMessg) ?? [];
-    const nbObjectGroupValidationErrors = this.archiveUnit['#ogInfo']?.['#errors']?.length ?? 0;
-
-    const result = [...unitValidationErrors];
-    if (nbObjectGroupValidationErrors > 0) {
-      result.push(
-        this.translateService.instant('COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_GROUP_VALIDATION_ERRORS', {
-          nbErrors: nbObjectGroupValidationErrors,
-        }),
-      );
-    }
-    return result;
+  goToObjectsTab() {
+    this.openObjectsTab.emit({ index: this.OBJECTS_TAB_INDEX, tab: null });
   }
 
   private checkDownloadPermissions() {

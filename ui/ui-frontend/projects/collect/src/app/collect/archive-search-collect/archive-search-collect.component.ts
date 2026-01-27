@@ -79,6 +79,8 @@ import {
   TermsFacet,
   Transaction,
   TransactionStatus,
+  ArchiveUnit,
+  addErrorStatusBadgeIfArchiveUnitHasErrors,
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
@@ -1329,6 +1331,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     if (archiveUnit) {
       return archiveUnit['#unitType'];
     }
+  }
+
+  getProperArchiveUnitIcon(archiveUnit: ArchiveUnit) {
+    return !archiveUnit?.['#object'] ? 'folder' : 'file';
+  }
+
+  addStatusBadgeforArchiveUnitWithErrors(archiveUnit: ArchiveUnit) {
+    return addErrorStatusBadgeIfArchiveUnitHasErrors(archiveUnit);
   }
 
   private addCriteria(

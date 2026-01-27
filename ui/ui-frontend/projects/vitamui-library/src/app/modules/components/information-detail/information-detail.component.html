@@ -1,0 +1,15 @@
+<div [class]="color" class="style d-flex flex-column align-items-start p-2">
+  <div class="text caption vitamui-grey-600">
+    {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.KEY_AND_OUT_DETAIL' | translate: { outDetail: error.outDetail } }}
+  </div>
+  <div class="text medium bold">{{ error.outMessg }}</div>
+  @if (error.evDetData !== undefined && error.evDetData !== null) {
+    <div class="d-flex" (click)="toggleEvDetDataDisplay()">
+      <i class="vitamui-icon vitamui-icon-chevron-{{ getProperChevron() }} secondary" [style.font-size.px]="24"></i>
+      <span class="text link normal secondary"
+        ><a>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SHOW_HIDE_DETAIL' | translate }}</a></span
+      >
+    </div>
+    <div class="word-break pr-2 pl-4" [hidden]="hideEvDetData">{{ error.evDetData }}</div>
+  }
+</div>

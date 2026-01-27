@@ -37,7 +37,7 @@
 import createSpyObj = jasmine.createSpyObj;
 import { Clipboard } from '@angular/cdk/clipboard';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -71,6 +71,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
   const archiveCollectServiceSpy = createSpyObj<ArchiveCollectService>('ArchiveService', [
     'downloadObjectFromUnit',
     'getObjectGroupDetailsById',
+    'hasCollectRole',
   ]);
 
   const tenantSelectionServiceSpy = jasmine.createSpyObj('TenantSelectionService', {
@@ -105,6 +106,18 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     DateCreatedByApplication: 'DateCreatedByApplication',
   };
 
+  const archiveUnit: Unit = {
+    '#allunitups': [],
+    '#id': 'archiveUnitTestID',
+    '#object': 'objectId',
+    '#unitType': UnitType.INGEST,
+    '#unitups': [],
+    '#opi': '',
+    '#tenant': 1,
+    Title_: { fr: 'Teste', en: 'Test' },
+    Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CollectObjectGroupDetailsTabComponent],
@@ -127,24 +140,9 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         provideHttpClientTesting(),
       ],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CollectObjectGroupDetailsTabComponent);
     component = fixture.componentInstance;
-    const archiveUnit: Unit = {
-      '#allunitups': [],
-      '#id': 'archiveUnitTestID',
-      '#object': 'objectId',
-      '#unitType': UnitType.INGEST,
-      '#unitups': [],
-      '#opi': '',
-      '#tenant': 1,
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-    component.archiveUnit = archiveUnit;
-    component.versionsWithQualifiersOrdered = [];
     fixture.detectChanges();
   });
 
@@ -180,7 +178,12 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(clipboardSpy.copy).toHaveBeenCalledWith('à copié');
   });
 
-  it('onClickDownloadObject', () => {
+  it('onClickDownloadObject', fakeAsync(() => {
+    TestBed.flushEffects();
+    tick();
+
+    fixture.componentRef.setInput('archiveUnit', archiveUnit);
+
     const event = {
       stopPropagation: () => {},
     } as Event;
@@ -193,7 +196,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       1,
     );
     expect(preventDefaultSpy).toHaveBeenCalled();
-  });
+  }));
 
   it('Should return null', () => {
     expect(component.getFileName(null)).toBeNull();
@@ -213,6 +216,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       qualifier: ObjectQualifierType.BINARYMASTER,
     } as VersionWithQualifierDto;
     expect(component).toBeTruthy();
+    component.versionsWithQualifiersOrdered = [];
     component.versionsWithQualifiersOrdered.push(versionWithQualifier);
 
     // When
@@ -225,7 +229,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   it('should return true', () => {
     // Given
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
@@ -236,7 +240,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       DescriptionLevel: DescriptionLevel.ITEM,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
 
     // When
     const response = component.unitHasObject();
@@ -247,7 +251,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   it('should return true', () => {
     // Given
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
@@ -258,7 +262,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       DescriptionLevel: DescriptionLevel.RECORD_GRP,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
 
     // When
     const response = component.unitHasObject();
@@ -269,7 +273,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   it('should return true', () => {
     // Given
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#unitType': UnitType.INGEST,
@@ -279,7 +283,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       DescriptionLevel: DescriptionLevel.ITEM,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
 
     // When
     const response = component.unitHasObject();
@@ -339,11 +343,11 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(encoding).toEqual('Encoding');
   });
 
-  it('Should return the CreatingOs value', () => {
+  it('Should return the CreatingOs value', fakeAsync(() => {
     const response = component.getCreatingOs(fileInfo);
     expect(response).not.toBeNull();
     expect(response).toEqual('CreatingOs');
-  });
+  }));
 
   it('Should return the FormatLitteral value', () => {
     const formatLitteral = component.getFormatLitteral(formatIdentificationDto);

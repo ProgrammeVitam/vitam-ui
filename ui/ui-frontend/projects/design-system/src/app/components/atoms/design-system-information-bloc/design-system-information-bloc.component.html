@@ -1,0 +1,15 @@
+@for (decoration of decorations; track decoration) {
+  @for (color of colors; track color) {
+    <div class="flex-row gap-5 mb-3">
+      @for (icon of icons; track icon) {
+        <vitamui-information-bloc [color]="color" [icon]="icon" [decoration]="decoration"></vitamui-information-bloc>
+        <vitamui-information-bloc
+          [color]="color"
+          [icon]="icon"
+          [withObjectsTabLink]="true"
+          [decoration]="decoration"
+        ></vitamui-information-bloc>
+      }
+    </div>
+  }
+}

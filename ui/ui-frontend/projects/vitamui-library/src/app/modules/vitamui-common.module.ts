@@ -79,6 +79,8 @@ import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
+import { InformationBlocComponent } from './components/information-bloc/information-bloc.component';
+import { InformationDetailComponent } from './components/information-detail/information-detail.component';
 import { DataComponent } from './components/data/data.component';
 import { ApplicationCardComponent } from './components/application-card/application-card.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
@@ -139,6 +141,8 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ArchiveUnitModule,
     AutocompletePositionDirectiveModule,
     BadgeComponent,
+    InformationBlocComponent,
+    InformationDetailComponent,
     CdkStepperModule,
     ChipComponent,
     ElementsComponent,
@@ -200,6 +204,8 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ArchiveUnitModule,
     AutocompletePositionDirectiveModule,
     BadgeComponent,
+    InformationBlocComponent,
+    InformationDetailComponent,
     ChipComponent,
     ElementsComponent,
     ClickOutsideDirective,

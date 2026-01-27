@@ -1,25 +1,25 @@
 <div class="gap-2 align-items-stretch">
-  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate" [value]="archiveUnit | unitI18n: 'Title'" />
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate" [value]="archiveUnit() | unitI18n: 'Title'" />
 
-  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate" [value]="archiveUnit['#opi']" />
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate" [value]="archiveUnit()['#opi']" />
 
-  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate" [value]="archiveUnit['#id']" />
+  <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate" [value]="archiveUnit()['#id']" />
 
   <vitamui-common-data
     [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate"
-    [value]="archiveUnit | unitI18n: 'Description'"
+    [value]="archiveUnit() | unitI18n: 'Description'"
   />
 
   <div class="hgap-4 align-items-baseline">
     <vitamui-common-data
       class="w-50"
       [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate"
-      [value]="archiveUnit['#originating_agency']"
+      [value]="archiveUnit()['#originating_agency']"
     />
     <vitamui-common-data
       class="w-50"
       [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate"
-      [value]="archiveUnit?.originating_agencyName"
+      [value]="archiveUnit()?.originating_agencyName"
     />
   </div>
 
@@ -35,7 +35,7 @@
     <vitamui-common-data
       class="w-50"
       [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate"
-      [value]="'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate"
+      [value]="'UNIT_UPDATE.' + archiveUnit().DescriptionLevel.toUpperCase() | translate"
     />
   </div>
 
@@ -43,24 +43,35 @@
     <vitamui-common-data
       class="w-50"
       [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate"
-      [value]="archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy'"
+      [value]="archiveUnit()?.StartDate | dateTime: 'dd/MM/yyyy'"
     />
     <vitamui-common-data
       class="w-50"
       [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate"
-      [value]="archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy'"
+      [value]="archiveUnit()?.EndDate | dateTime: 'dd/MM/yyyy'"
     />
   </div>
 
-  @if (hasErrorMessages) {
-    <vitamui-common-data [label]="'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate" [value]="errorMessages" />
+  @if (technicalObjectsGroupErrors().length || objectsGroupErrors().length) {
+    <vitamui-information-bloc
+      [withObjectsTabLink]="true"
+      [decoration]="'bordered'"
+      (openObjectsTab)="goToObjectsTab()"
+    ></vitamui-information-bloc>
+  }
+
+  @if (archiveUnitErrors().length) {
+    <div class="text normal bold danger">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}</div>
+    @for (error of archiveUnitErrors(); track $index) {
+      <vitamui-information-detail [error]="error" [hideEvDetData]="true"></vitamui-information-detail>
+    }
   }
 </div>
 
 <button
   class="btn primary download-btn"
-  [disabled]="!archiveUnit['#object'] || !hasDownloadDocumentRole"
-  (click)="onDownloadObjectFromUnit(archiveUnit)"
+  [disabled]="!archiveUnit()['#object'] || !hasDownloadDocumentRole"
+  (click)="onDownloadObjectFromUnit(archiveUnit())"
 >
   <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
   <i class="vitamui-icon vitamui-icon-deposit"></i>

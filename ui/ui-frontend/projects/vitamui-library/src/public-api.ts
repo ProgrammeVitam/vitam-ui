@@ -113,6 +113,8 @@ export * from './app/modules/archive-unit/components/archive-unit-viewer/archive
 export * from './app/modules/archive-unit/components/physical-archive-viewer/physical-archive-viewer.component';
 export * from './app/modules/components/accordion/accordion.component';
 export * from './app/modules/components/badge/badge.component';
+export * from './app/modules/components/information-bloc/information-bloc.component';
+export * from './app/modules/components/information-detail/information-detail.component';
 export * from './app/modules/components/chip/chip.component';
 export * from './app/modules/components/elements/elements.component';
 export * from './app/modules/components/collapse/collapse.component';

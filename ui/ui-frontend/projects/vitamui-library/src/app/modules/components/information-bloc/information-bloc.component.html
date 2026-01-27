@@ -1,0 +1,14 @@
+<div [class]="decoration" class="style d-flex flex-row align-items-center hgap-2 pl-4 pr-4 pt-2 pb-2">
+  <i class="vitamui-icon vitamui-icon-{{ icon }}"></i>
+  <div>
+    <div>{{ messageKey | translate }}</div>
+    @if (withObjectsTabLink) {
+      <div>
+        {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SEE_DETAIL_IN' | translate
+        }}<span class="text link"
+          ><a (click)="openObjectsTab.emit()">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECTS_TAB' | translate }}</a></span
+        >
+      </div>
+    }
+  </div>
+</div>

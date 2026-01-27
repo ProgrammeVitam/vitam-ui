@@ -34,41 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { VitamuiIcons } from '../../vitamui-icons.enum';
-import { UnitType } from './unit-type.enum';
-import { Unit, ValidationError } from './unit.interface';
-import { ArchiveUnit } from '../../archive-unit';
+import { Component } from '@angular/core';
+import { InformationDetailComponent } from 'vitamui-library';
+import { ValidationError } from '../../../../../../vitamui-library/src/app/modules';
 
-export function unitToVitamuiIcon(unit: Unit): VitamuiIcons {
-  const hasObject = unit['#object'] && unit['#object'].length > 0;
-  return unitTypeToVitamuiIcon(unit['#unitType'], hasObject);
-}
-
-export function unitTypeToVitamuiIcon(unitType: string, hasObject: boolean): VitamuiIcons {
-  if (unitType === UnitType.HOLDING_UNIT) {
-    return VitamuiIcons.HOLDING_UNIT;
-  }
-  if (unitType === UnitType.FILING_UNIT) {
-    return VitamuiIcons.FILING_UNIT;
-  }
-  if (unitType === UnitType.INGEST && hasObject) {
-    return VitamuiIcons.INGEST_WITH_OBJECT;
-  }
-  return VitamuiIcons.INGEST_WITHOUT_OBJECT;
-}
-
-export function addErrorStatusBadgeIfArchiveUnitHasErrors(archiveUnit: ArchiveUnit) {
-  return archiveUnit['#errors']?.length > 0 || archiveUnit['#ogInfo']?.['#errors']?.length > 0 ? 'red' : '';
-}
-
-export function getErrorsOnArchiveUnit(archiveUnit: ArchiveUnit): ValidationError[] {
-  return archiveUnit['#errors'] || [];
-}
-
-export function getErrorOnTechnicalObjectsGroup(archiveUnit: ArchiveUnit): ValidationError[] {
-  return archiveUnit['#ogInfo']?.['#errors'].filter((error: ValidationError) => error.obId === null) || [];
-}
-
-export function getErrorOnObjectsGroup(archiveUnit: ArchiveUnit): ValidationError[] {
-  return archiveUnit['#ogInfo']?.['#errors'].filter((error: ValidationError) => error.obId !== null) || [];
+@Component({
+  imports: [InformationDetailComponent],
+  templateUrl: './design-system-information-detail.component.html',
+  styleUrl: './design-system-information-detail.component.scss',
+})
+export class DesignSystemInformationDetailComponent {
+  errorWithoutEvDetData: ValidationError = {
+    evId: 'aeaaaaaaaaec255qad23sam3yx4rtvyaaaaq',
+    obId: 'aebqaaaaagec255qad23sam3yx4rsfiaaaba',
+    evTypeProc: 'COLLECT_SIP_INGEST',
+    outDetail: 'LFC.CHECK_DIGEST.CALC_CHECK.INVALID.KO',
+    outMessg: "Échec de la vérification de l'empreinte du fichier",
+    evIdProc: 'aeeaaaaaagec255qad37gam3yx4roaqaaaaq',
+    evDateTime: '2026-01-16T08:43:15.287',
+  };
+  errorWithEvDetData: ValidationError = {
+    evId: 'aeaaaaaaaaec255qad23sam3yx4rtvyaaaaq',
+    obId: 'aebqaaaaagec255qad23sam3yx4rsfiaaaba',
+    evTypeProc: 'COLLECT_SIP_INGEST',
+    outDetail: 'LFC.CHECK_DIGEST.CALC_CHECK.INVALID.KO',
+    outMessg: "Échec de la vérification de l'empreinte du fichier",
+    evIdProc: 'aeeaaaaaagec255qad37gam3yx4roaqaaaaq',
+    evDateTime: '2026-01-16T08:43:15.287',
+    evDetData:
+      '{"evDetTechData":"metadata contains fields declared in ontology with a wrong format : Error \'Invalid date format: bad_date\' on field \'LastModified\'."}',
+  };
+  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'neutral'];
 }

@@ -1,0 +1,31 @@
+:host {
+  .style {
+    border-radius: 5px;
+    &.primary {
+      background-color: var(--vitamui-primary-50);
+    }
+    &.secondary {
+      background-color: var(--vitamui-secondary-50);
+    }
+    &.danger {
+      background-color: var(--vitamui-red-50);
+    }
+    &.success {
+      background-color: var(--vitamui-green-50);
+    }
+    &.warning {
+      background-color: var(--vitamui-orange-50);
+    }
+    &.neutral {
+      background-color: var(--vitamui-grey-50);
+    }
+  }
+}
+
+.word-break {
+  word-break: break-all;
+}
+
+.detData {
+  padding-left: 14px;
+}
