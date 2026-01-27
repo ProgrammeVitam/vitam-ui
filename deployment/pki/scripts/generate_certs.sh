@@ -43,7 +43,6 @@ function generateCerts {
     generateServerAndClientCertAndStorePassphrase   ui-archive-search   vitamui-services
     generateServerAndClientCertAndStorePassphrase   ui-collect          vitamui-services
     generateServerAndClientCertAndStorePassphrase   ui-pastis           vitamui-services
-    generateServerCertAndStorePassphrase            ui-design-system    vitamui-services
 
     #Reverse
     generateServerCertAndStorePassphrase            reverse             vitamui-services

@@ -143,12 +143,7 @@ server {
   # DESIGN SYSTEM
   location /design-system {
     rewrite /design-system/(.*) /$1 break;
-    # set $ui_design_system_dns "vitamui-{{ vitamui.ui_design_system.vitamui_component }}.service.{{ consul_domain }}";
-    # proxy_ssl_name $ui_design_system_dns;
-    # proxy_set_header Host $ui_design_system_dns;
-    # proxy_pass {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://$ui_design_system_dns:{{ vitamui.ui_design_system.port_service }};
-
-    proxy_pass {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://DESIGN_SYSTEM;
+    proxy_pass http://DESIGN_SYSTEM;
     include {{ nginx_conf_dir }}/proxy_params;
   }
 {% endif %}
@@ -160,8 +155,6 @@ server {
 
   location ~ ^/cas/(login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
     set $cas_server_dns "vitamui-{{ vitamui.cas_server.vitamui_component }}.service.{{ consul_domain }}";
-    # proxy_ssl_name $cas_server_dns;
-    # proxy_set_header Host $cas_server_dns;
     proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://$cas_server_dns:{{ vitamui.cas_server.port_service }};
 
     #proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://CAS; # error: upstream SSL certificate does not match "CAS" while SSL handshaking to upstream
