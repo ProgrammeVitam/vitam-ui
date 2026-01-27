@@ -255,7 +255,7 @@ function main() {
     # Remove old keystores & servers directories
     find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
 
-    # Generate the server keystores for vitamui-services
+    # Generate the server keystores for vitamui-services except ui- components
     for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/vitamui-services/server/ | grep -v -e "README" -e "^ui-" ); do
         mkdir -p ${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}
 

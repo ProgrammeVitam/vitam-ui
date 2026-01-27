@@ -63,8 +63,7 @@ spring:
             corsConfigurations:
               '[/**]':
                 allowedOrigins:
-                - "{{ url_prefix }}"
-                - "http://localhost"
+                  - "{{ url_prefix }}"
                 allowedMethods: "*"
                 allowedHeaders: "*"
           routes:

@@ -36,12 +36,13 @@ server {
     {% endfor %}
     deny all; # Deny access to all other IP addresses
 
-    set $api_gateway_dns "vitamui-{{ vitamui.api_gateway.vitamui_component }}.service.{{ consul_domain }}";
+    # set $api_gateway_dns "vitamui-{{ vitamui.api_gateway.vitamui_component }}.service.{{ consul_domain }}";
 
-    proxy_ssl_name $api_gateway_dns;
-    proxy_set_header Host $api_gateway_dns;
-    proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://$api_gateway_dns:{{ vitamui.api_gateway.port_service }};
+    # proxy_ssl_name $api_gateway_dns;
+    # proxy_set_header Host $api_gateway_dns;
+    # proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://$api_gateway_dns:{{ vitamui.api_gateway.port_service }};
 
+    proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://API-GATEWAY;
     {% if vitamui_struct.vitamui_component != 'ui-design-system' %}
     proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.crt;
     proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.key;

@@ -11,7 +11,7 @@
     owner: "{{ reverse_user }}"
     mode: "{{ vitamui_defaults.folder.conf_permission }}"
   with_items:
-    # - upstream
+    - upstream
     - vhosts.conf
   notify: reload nginx
 

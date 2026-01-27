@@ -7,62 +7,82 @@
 
 upstream IDENTITY {
   ip_hash;
-  server vitamui-ui-identity.service.{{ consul_domain }}:{{ vitamui.ui_identity.port_service }} max_fails=3 fail_timeout=10s;
+{% for h in groups['hosts_ui_identity'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_identity.port_service }};
+{% endfor %}
 }
 
 upstream IDENTITY_ADMIN {
   ip_hash;
-  server vitamui-ui-identity-admin.service.{{ consul_domain }}:{{ vitamui.ui_identity_admin.port_service }} max_fails=3 fail_timeout=10s;
+{% for h in groups['hosts_ui_identity_admin'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_identity_admin.port_service }};
+{% endfor %}
 }
 
 upstream CAS {
   ip_hash;
-  server vitamui-cas-server.service.{{ consul_domain }}:{{ vitamui.cas_server.port_service }} max_fails=3 fail_timeout=10s;
+{% for h in groups['hosts_cas_server'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.cas_server.port_service }};
+{% endfor %}
 }
 
 upstream PORTAL {
   ip_hash;
-  server vitamui-ui-portal.service.{{ consul_domain }}:{{ vitamui.ui_portal.port_service }} max_fails=3 fail_timeout=10s;
+{% for h in groups['hosts_ui_portal'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_portal.port_service }};
+{% endfor %}
 }
-
 {% if groups.get('hosts_ui_referential', []) | length > 0 %}
+
 upstream REFERENTIAL {
   ip_hash;
-  server vitamui-ui-referential.service.{{ consul_domain }}:{{ vitamui.ui_referential.port_service }} max_fails=3 fail_timeout=10s;
+  {% for h in groups['hosts_ui_referential'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_referential.port_service }};
+  {% endfor %}
 }
 {% endif %}
-
 {% if groups.get('hosts_ui_ingest', []) | length > 0 %}
+
 upstream INGEST {
   ip_hash;
-  server vitamui-ui-ingest.service.{{ consul_domain }}:{{ vitamui.ui_ingest.port_service }} max_fails=3 fail_timeout=10s;
+  {% for h in groups['hosts_ui_ingest'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_ingest.port_service }};
+  {% endfor %}
 }
 {% endif %}
-
 {% if groups.get('hosts_ui_archive_search', []) | length > 0 %}
+
 upstream ARCHIVE_SEARCH {
   ip_hash;
-  server vitamui-ui-archive-search.service.{{ consul_domain }}:{{ vitamui.ui_archive_search.port_service }} max_fails=3 fail_timeout=10s;
+  {% for h in groups['hosts_ui_archive_search'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_archive_search.port_service }};
+  {% endfor %}
 }
 {% endif %}
-
 {% if groups.get('hosts_ui_collect', []) | length > 0 %}
+
 upstream COLLECT {
   ip_hash;
-  server vitamui-ui-collect.service.{{ consul_domain }}:{{ vitamui.ui_collect.port_service }} max_fails=3 fail_timeout=10s;
+  {% for h in groups['hosts_ui_collect'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_collect.port_service }};
+  {% endfor %}
 }
 {% endif %}
-
 {% if groups.get('hosts_ui_pastis', []) | length > 0 %}
+
 upstream PASTIS {
   ip_hash;
-  server vitamui-ui-pastis.service.{{ consul_domain }}:{{ vitamui.ui_pastis.port_service }} max_fails=3 fail_timeout=10s;
+  {% for h in groups['hosts_ui_pastis'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_pastis.port_service }};
+  {% endfor %}
 }
 {% endif %}
-
 {% if groups.get('hosts_ui_design_system', []) | length > 0 %}
+
 upstream DESIGN_SYSTEM {
   ip_hash;
-  server vitamui-ui-design-system.service.{{ consul_domain }}:{{ vitamui.ui_design_system.port_service }} max_fails=3 fail_timeout=10s;
+  {% for h in groups['hosts_ui_design_system'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ui_design_system.port_service }};
+  {% endfor %}
 }
 {% endif %}
