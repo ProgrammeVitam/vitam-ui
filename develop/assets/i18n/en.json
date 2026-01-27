@@ -21,6 +21,8 @@
       "buttons.TITLE": "Buttons",
       "chips.TITLE": "Chips",
       "badges.TITLE": "Badges",
+      "information-bloc.TITLE": "Information bloc",
+      "information-detail.TITLE": "Information detail",
       "icons.TITLE": "Icons",
       "slide-toggle.TITLE": "Slide toggle / Switch",
       "tooltip.TITLE": "Tooltip"
