@@ -46,7 +46,7 @@ vitam_certs:
   vitamui:
     filename: keystore_vitamui.p12
     password: "{{ keystores_client_vitam_vitamui }}"
-    truststore_filename: truststore_vitam.jks
+    truststore_filename: truststore_vitam.p12
     password_truststore: "{{ truststores_client_vitam }}"
 
 
@@ -55,8 +55,8 @@ external_archiving_systems:
 
   ## Every external archiving system must have a unique id (only used alphanumeric chars, "_" or "-").
   ## Please ensure corresponding keystore/truststore files are provided :
-  ##  > environments/external_archiving_systems_keystores/keystore_<archiving_system_id>.jks
-  ##  > environments/external_archiving_systems_keystores/truststore_<archiving_system_id>.jks
+  ##  > environments/external_archiving_systems_keystores/keystore_<archiving_system_id>.p12
+  ##  > environments/external_archiving_systems_keystores/truststore_<archiving_system_id>.p12
   ## Please ensure keystore/truststore passwords are defined (in an ansible vault file):
   ##  > external_archiving_systems.keystore_password.<archiving_system_id>: <changeme>
   ##  > external_archiving_systems.truststore_password.<archiving_system_id>: <changeme>
