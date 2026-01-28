@@ -90,7 +90,8 @@ public class LogbookManagementOperationController {
             request.getReason()
         );
         ProcessDetailDto processDetailDto = logbookManagementOperationService.cancelOperationProcessExecution(
-            operationId
+            operationId,
+            request.isStepCancellable()
         );
         if (processDetailDto != null) {
             operationResponseDto = processDetailDto.getOperations();
