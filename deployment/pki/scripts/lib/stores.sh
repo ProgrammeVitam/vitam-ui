@@ -110,10 +110,10 @@ function generateTrustStore {
     # Set truststore path and delete the store if already exists
     if [ "${TRUSTORE_TYPE}" == "client" ]; then
         TRUST_STORE=${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}/truststore_${CLIENT_TYPE}.p12
-        TRUST_STORE_PASSWORD=$(getKeystorePassphrase "truststores_client_${CLIENT_TYPE}")
+        TRUST_STORE_PASSWORD=$(getKeystorePassphrase "truststore_client_${CLIENT_TYPE}")
     elif [ "${TRUSTORE_TYPE}" == "vitamui-services" ]; then
         TRUST_STORE=${REPERTOIRE_KEYSTORES}/vitamui-services/truststore_vitamui.p12
-        TRUST_STORE_PASSWORD=$(getKeystorePassphrase "truststores_vitamui")
+        TRUST_STORE_PASSWORD=$(getKeystorePassphrase "truststore_vitamui")
     else
         pki_logger "ERROR" "Invalid trustore type: ${TRUSTORE_TYPE}"
         return 1
@@ -266,7 +266,7 @@ function main() {
         KEYSTORE=${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}/keystore_${COMPONENT}.p12
         P12_KEYSTORE=${CERTIFICATE_DIR}/vitamui-services/server/${COMPONENT}/${COMPONENT}.p12
         CRT_KEY_PASSWORD=$(getComponentPassphrase certs "server_vitamui_services_${COMPONENT}_key")
-        KEYSTORE_PASSWORD=$(getKeystorePassphrase "keystores_server_vitamui_services_${COMPONENT}")
+        KEYSTORE_PASSWORD=$(getKeystorePassphrase "keystore_server_vitamui_services_${COMPONENT}")
 
         generateHostKeystore ${COMPONENT} \
                              ${KEYSTORE} \
@@ -303,7 +303,7 @@ function main() {
             else
                 P12_KEYSTORE=${STORE_DIR}/keystore_${COMPONENT}.p12
             fi
-            P12_PASSWORD=$(getKeystorePassphrase "keystores_client_${CLIENT_TYPE}_${COMPONENT}")
+            P12_PASSWORD=$(getKeystorePassphrase "keystore_client_${CLIENT_TYPE}_${COMPONENT}")
 
             if [ "${DEV_MODE}" != "true" ]; then
                 if [ -f ${P12_KEYSTORE} ]; then
@@ -325,7 +325,7 @@ function main() {
             else
                 KEYSTORE=${STORE_DIR}/keystore_${COMPONENT}.p12
             fi
-            KEYSTORE_PASSWORD=$(getKeystorePassphrase "keystores_client_${CLIENT_TYPE}_${COMPONENT}")
+            KEYSTORE_PASSWORD=$(getKeystorePassphrase "keystore_client_${CLIENT_TYPE}_${COMPONENT}")
             addP12InKeystore ${KEYSTORE} \
                         ${KEYSTORE_PASSWORD} \
                         ${P12_KEYSTORE} \

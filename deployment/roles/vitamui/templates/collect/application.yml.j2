@@ -37,7 +37,7 @@ server:
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
     trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-    trust-store-password: {{ truststores_vitamui }}
+    trust-store-password: {{ truststore_vitamui }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
@@ -84,7 +84,7 @@ collect:
         key-password: {{ password_keystore_client }}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-        key-password: {{ truststores_vitamui }}
+        key-password: {{ truststore_vitamui }}
       hostname-verification: {{ vitamui.security.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
   iam-client:
@@ -98,7 +98,7 @@ collect:
         key-password: {{ password_keystore_client }}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-        key-password: {{ truststores_vitamui }}
+        key-password: {{ truststore_vitamui }}
       hostname-verification: {{ vitamui.iam.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
 

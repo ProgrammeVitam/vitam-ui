@@ -71,7 +71,7 @@ iam-client:
       key-password: {{ password_keystore_client }}
     truststore:
       key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-      key-password: {{ truststores_vitamui }}
+      key-password: {{ truststore_vitamui }}
     hostname-verification: {{ vitamui.iam.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
 

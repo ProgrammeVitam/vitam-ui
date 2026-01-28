@@ -29,7 +29,7 @@ server:
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
     trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-    trust-store-password: {{ truststores_vitamui }}
+    trust-store-password: {{ truststore_vitamui }}
 {% endif %}
   max-http-request-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
