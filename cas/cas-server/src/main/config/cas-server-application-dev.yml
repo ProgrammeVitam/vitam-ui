@@ -111,7 +111,7 @@ cas.service-registry.mongo.collection: services
 #cas.service-registry.mongo.user-id: mongod_dbuser_cas
 #cas.service-registry.mongo.password: mongod_dbpwd_cas
 
-cas.ticket.registry.mongo.client-uri: mongodb://cas:cas@localhost:27018/cas?connectTimeoutMS=2000
+cas.ticket.registry.mongo.client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas?connectTimeoutMS=2000
 
 cas.authn.surrogate.separator: ","
 cas.authn.surrogate.mail.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnEmail
@@ -208,8 +208,8 @@ logging:
     org.springframework.context.annotation: 'OFF'
     org.springframework.boot.devtools: 'OFF'
     org.apereo.inspektr.audit.support: 'INFO'
-    org.springframework.webflow: TRACE
-    org.apereo: TRACE
+    org.springframework.webflow: INFO
+    org.apereo: INFO
 
 # Cas CORS (necessary for mobile app)
 cas.http-web-request.cors.enabled: true

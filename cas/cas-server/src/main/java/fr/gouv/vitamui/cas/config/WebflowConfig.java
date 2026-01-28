@@ -50,6 +50,7 @@ import fr.gouv.vitamui.cas.webflow.actions.CustomerSelectedAction;
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
 import fr.gouv.vitamui.cas.webflow.actions.I18NSendPasswordResetInstructionsAction;
 import fr.gouv.vitamui.cas.webflow.actions.ListCustomersAction;
+import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
 import fr.gouv.vitamui.cas.webflow.configurer.CustomCasSimpleMultifactorWebflowConfigurer;
 import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
 import fr.gouv.vitamui.cas.x509.CustomRequestHeaderX509CertificateExtractor;
@@ -80,6 +81,7 @@ import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.factory.DefaultTicketFactory;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.util.spring.beans.BeanCondition;
 import org.apereo.cas.util.spring.beans.BeanSupplier;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
@@ -210,11 +212,13 @@ public class WebflowConfig {
         );
     }
 
-    // TODO: non present into xelians code.
-    //    @Bean
-    //    public TriggerChangePasswordAction triggerChangePasswordAction() {
-    //        return new TriggerChangePasswordAction(ticketRegistrySupport, utils);
-    //    }
+    @Bean
+    public TriggerChangePasswordAction triggerChangePasswordAction(
+        TicketRegistrySupport ticketRegistrySupport,
+        Utils utils
+    ) {
+        return new TriggerChangePasswordAction(ticketRegistrySupport, utils);
+    }
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
