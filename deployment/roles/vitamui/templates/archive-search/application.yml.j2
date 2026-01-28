@@ -24,10 +24,10 @@ server:
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | bool %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.p12
     trust-store-password: {{ truststores_vitamui }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
@@ -71,10 +71,10 @@ archive-search:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
         key-password: {{ password_keystore_client }}
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
         key-password: {{ truststores_vitamui }}
       hostname-verification: {{ vitamui.security.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
@@ -85,10 +85,10 @@ archive-search:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
         key-password: {{ password_keystore_client }}
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
         key-password: {{ truststores_vitamui }}
       hostname-verification: {{ vitamui.iam.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}

@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
 set -e
 
-######################################################################
-############################# Includes  ##############################
-######################################################################
+################################################################################
+################################## Includes  ###################################
+################################################################################
 
 . "$(dirname $0)/pki/scripts/lib/commons.sh"
 
-######################################################################
-############################# Functions ##############################
-######################################################################
+################################################################################
+################################## Functions ###################################
+################################################################################
 
-# Pour incorporer un certificat dans un store
-function addCrtInJks {
+# Import a certificate into a keystore
+function addCrtInKeystore {
     local STORE="${1}"
     local MDP_STORE="${2}"
     local CERTIFICAT="${3}"
     local ALIAS="${4}"
 
     keytool -import -keystore ${STORE} \
+        -storetype PKCS12 \
         -file ${CERTIFICAT} \
         -storepass ${MDP_STORE} \
         -keypass ${MDP_STORE} \
@@ -26,14 +27,15 @@ function addCrtInJks {
         -alias ${ALIAS}
 }
 
-# Pour incorporer une CA dans un store
-function addCaInJks {
+# Import a CA certificate into a keystore
+function addCaInKeystore {
     local STORE="${1}"
     local MDP_STORE="${2}"
     local CERTIFICAT="${3}"
     local ALIAS="${4}"
 
     keytool -import -trustcacerts -keystore ${STORE} \
+        -storetype PKCS12 \
         -file ${CERTIFICAT} \
         -storepass ${MDP_STORE} \
         -keypass ${MDP_STORE} \
@@ -41,7 +43,7 @@ function addCaInJks {
         -alias ${ALIAS}
 }
 
-# Génération d'un p12 et d'un pem depuis un certificat
+# Generate a p12 and a pem from a certificate
 function crtKeyToP12 {
     local BASEFILE="${1}"
     local KEY_PASS="${2}"
@@ -59,27 +61,27 @@ function crtKeyToP12 {
 
     if [ "${BASEFILE}/${KEYPAIR_NAME}.p12" != "${TARGET_FILE}" ]; then
         mkdir -p $(dirname ${TARGET_FILE})
-        mv "${BASEFILE}/${KEYPAIR_NAME}.p12" "${TARGET_FILE}"
+        mv -v "${BASEFILE}/${KEYPAIR_NAME}.p12" "${TARGET_FILE}"
     fi
 }
 
-# Pour incorporer un certificat p12 dans un keystore jks
-function addP12InJks {
-    local JKS_KEYSTORE="${1}"
-    local JKS_KEYSTORE_PASSWORD="${2}"
+# Import a p12 certificate into a keystore
+function addP12InKeystore {
+    local KEYSTORE="${1}"
+    local KEYSTORE_PASSWORD="${2}"
     local P12_KEYSTORE="${3}"
     local P12_STORE_PASSWORD="${4}"
 
-    mkdir -p "$(dirname ${JKS_KEYSTORE})"
+    mkdir -p "$(dirname ${KEYSTORE})"
 
     keytool -importkeystore \
         -srckeystore ${P12_KEYSTORE} -srcstorepass ${P12_STORE_PASSWORD} -srcstoretype PKCS12 \
-        -destkeystore ${JKS_KEYSTORE} -storepass ${JKS_KEYSTORE_PASSWORD} \
-        -keypass ${JKS_KEYSTORE_PASSWORD} -deststorepass ${JKS_KEYSTORE_PASSWORD} \
-        -destkeypass ${JKS_KEYSTORE_PASSWORD} -deststoretype JKS
+        -destkeystore ${KEYSTORE} -storepass ${KEYSTORE_PASSWORD} \
+        -keypass ${KEYSTORE_PASSWORD} -deststorepass ${KEYSTORE_PASSWORD} \
+        -destkeypass ${KEYSTORE_PASSWORD} -deststoretype PKCS12
 }
 
-# Renvoie la clé du keystore pour un composant donné
+# Get the keystore passphrase for a given component
 function getKeystorePassphrase {
     local KEY="${1}"
     local RETURN_CODE=0
@@ -95,7 +97,7 @@ function getKeystorePassphrase {
     fi
 }
 
-# Generate a trustore
+# Generate a truststore
 function generateTrustStore {
     local TRUSTORE_TYPE=${1}
     local CLIENT_TYPE=${2}
@@ -107,22 +109,22 @@ function generateTrustStore {
 
     # Set truststore path and delete the store if already exists
     if [ "${TRUSTORE_TYPE}" == "client" ]; then
-        JKS_TRUST_STORE=${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}/truststore_${CLIENT_TYPE}.jks
+        TRUST_STORE=${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}/truststore_${CLIENT_TYPE}.p12
         TRUST_STORE_PASSWORD=$(getKeystorePassphrase "truststores_client_${CLIENT_TYPE}")
     elif [ "${TRUSTORE_TYPE}" == "vitamui-services" ]; then
-        JKS_TRUST_STORE=${REPERTOIRE_KEYSTORES}/vitamui-services/truststore_vitamui.jks
+        TRUST_STORE=${REPERTOIRE_KEYSTORES}/vitamui-services/truststore_vitamui.p12
         TRUST_STORE_PASSWORD=$(getKeystorePassphrase "truststores_vitamui")
     else
         pki_logger "ERROR" "Invalid trustore type: ${TRUSTORE_TYPE}"
         return 1
     fi
 
-    if [ -f "${JKS_TRUST_STORE}" ]; then
-        rm -f "${JKS_TRUST_STORE}"
+    if [ -f "${TRUST_STORE}" ]; then
+        rm -vf "${TRUST_STORE}"
     fi
 
     # Add the public client ca certificates to the truststore
-    pki_logger "Ajout des certificats client dans le truststore"
+    pki_logger "Add client certificates to the truststore"
     if [ "${TRUSTORE_TYPE}" == "client" ]; then
 
         if [ "${CLIENT_TYPE}" == "vitamui-services" ]; then
@@ -132,30 +134,30 @@ function generateTrustStore {
         fi
 
         for CRT_FILE in $(ls ${CLIENT_CA_DIR}/*.crt); do
-            pki_logger "Ajout de ${CRT_FILE} dans le truststore ${CLIENT_TYPE}"
+            pki_logger "Add ${CRT_FILE} to the truststore ${CLIENT_TYPE}"
             ALIAS="client-${CLIENT_TYPE}-$(basename ${CRT_FILE})"
-            addCrtInJks ${JKS_TRUST_STORE} \
-                        ${TRUST_STORE_PASSWORD} \
-                        ${CRT_FILE} \
-                        ${ALIAS}
+            addCrtInKeystore ${TRUST_STORE} \
+                            ${TRUST_STORE_PASSWORD} \
+                            ${CRT_FILE} \
+                            ${ALIAS}
         done
 
     fi
 
     # Add the server certificates to the truststore
-    pki_logger "Ajout des certificats serveur dans le truststore"
+    pki_logger "Add server certificates to the truststore"
     for CRT_FILE in $(ls ${CERTIFICATE_DIR}/vitamui-services/ca/*.crt); do
-        pki_logger "Ajout de ${CRT_FILE} dans le truststore ${CLIENT_TYPE}"
+        pki_logger "Add ${CRT_FILE} to the truststore ${CLIENT_TYPE}"
         ALIAS="server-$(basename ${CRT_FILE})"
-        addCrtInJks ${JKS_TRUST_STORE} \
-                    ${TRUST_STORE_PASSWORD} \
-                    ${CRT_FILE} \
-                    ${ALIAS}
+        addCrtInKeystore ${TRUST_STORE} \
+                        ${TRUST_STORE_PASSWORD} \
+                        ${CRT_FILE} \
+                        ${ALIAS}
     done
 
     # Add the client CA certificates to the server truststore (to trust incoming client certs)
     if [ "${TRUSTORE_TYPE}" == "vitamui-services" ]; then
-        pki_logger "Ajout des CA clients dans le truststore serveur"
+        pki_logger "Add client CA certificates to the server truststore"
         for CLIENT_CA_TYPE in vitam vitamui-services external; do
              if [ "${CLIENT_CA_TYPE}" == "vitamui-services" ]; then
                 CA_DIR="${CERTIFICATE_DIR}/${CLIENT_CA_TYPE}/ca"
@@ -165,12 +167,12 @@ function generateTrustStore {
 
              if [ -d "${CA_DIR}" ]; then
                 for CRT_FILE in $(ls ${CA_DIR}/*.crt 2>/dev/null); do
-                    pki_logger "Ajout de ${CRT_FILE} dans le truststore server"
+                    pki_logger "Add ${CRT_FILE} to the server truststore"
                     ALIAS="client-${CLIENT_CA_TYPE}-$(basename ${CRT_FILE})"
-                    addCrtInJks ${JKS_TRUST_STORE} \
-                                ${TRUST_STORE_PASSWORD} \
-                                ${CRT_FILE} \
-                                ${ALIAS}
+                    addCrtInKeystore ${TRUST_STORE} \
+                                    ${TRUST_STORE_PASSWORD} \
+                                    ${CRT_FILE} \
+                                    ${ALIAS}
                 done
              fi
         done
@@ -180,52 +182,52 @@ function generateTrustStore {
         pki_logger "DEV_MODE is true"
         # Add the server certificates to the truststore
         for CRT_FILE in $(find ${CERTIFICATE_DIR}/vitamui-services/server -name "*.crt"); do
-            pki_logger "Ajout de ${CRT_FILE} dans le truststore ${CLIENT_TYPE}"
+            pki_logger "Add ${CRT_FILE} to the truststore ${CLIENT_TYPE}"
             ALIAS="server-$(basename ${CRT_FILE})"
-            addCrtInJks ${JKS_TRUST_STORE} \
-                        ${TRUST_STORE_PASSWORD} \
-                        ${CRT_FILE} \
-                        ${ALIAS}
+            addCrtInKeystore ${TRUST_STORE} \
+                            ${TRUST_STORE_PASSWORD} \
+                            ${CRT_FILE} \
+                            ${ALIAS}
         done
     fi
 }
 
 function generateHostKeystore {
     local COMPONENT="${1}"
-    local JKS_KEYSTORE="${2}"
+    local KEYSTORE="${2}"
     local P12_KEYSTORE="${3}"
     local CRT_KEY_PASSWORD="${4}"
-    local JKS_PASSWORD="${5}"
+    local KEYSTORE_PASSWORD="${5}"
     local TMP_P12_PASSWORD="${6}"
 
-    if [ -f ${JKS_KEYSTORE} ]; then
-        rm -f ${JKS_KEYSTORE}
+    if [ -f ${KEYSTORE} ]; then
+        rm -f ${KEYSTORE}
     fi
 
-    pki_logger "Génération du p12"
+    pki_logger "Generate p12"
     crtKeyToP12 $(dirname ${P12_KEYSTORE}) \
                 ${CRT_KEY_PASSWORD} \
                 ${COMPONENT} \
                 ${TMP_P12_PASSWORD} \
                 ${P12_KEYSTORE}
 
-    pki_logger "Génération du jks"
-    addP12InJks ${JKS_KEYSTORE} \
-                ${JKS_PASSWORD} \
+    pki_logger "Generate keystore"
+    addP12InKeystore ${KEYSTORE} \
+                ${KEYSTORE_PASSWORD} \
                 ${P12_KEYSTORE} \
                 ${TMP_P12_PASSWORD}
 
     if [ "${DEV_MODE}" != "true" ]; then
         if [ -f ${P12_KEYSTORE} ]; then
-            pki_logger " /!\ Suppression du p12: ${P12_KEYSTORE}"
-            rm -f ${P12_KEYSTORE}
+            pki_logger " /!\ Delete p12: ${P12_KEYSTORE}"
+            rm -vf ${P12_KEYSTORE}
         fi
     fi
 }
 
-######################################################################
-#############################    Main    #############################
-######################################################################
+################################################################################
+##################################    Main    ##################################
+################################################################################
 
 function main() {
     cd $(dirname $0)
@@ -238,14 +240,14 @@ function main() {
         fi
     fi
 
-    pki_logger "Paramètres d'entrée:"
-    pki_logger "    -> Ecraser la configuration des keystores/PKI: ${ERASE}"
+    pki_logger "Input parameters:"
+    pki_logger "    -> Overwrite keystores: ${ERASE}"
 
     TMP_P12_PASSWORD="$(generatePassphrase)"
     REPERTOIRE_KEYSTORES="${REPERTOIRE_ROOT}/environments/keystores"
 
     if [ ! -d ${REPERTOIRE_KEYSTORES} ]; then
-        pki_logger "Création du répertoire des keystores ..."
+        pki_logger "Directory ${REPERTOIRE_KEYSTORES} does not exist, creating it..."
         mkdir -p ${REPERTOIRE_KEYSTORES};
     fi
 
@@ -253,38 +255,30 @@ function main() {
     initVault   keystores   ${ERASE}
 
     # Remove old keystores & servers directories
-    find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
+    find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -vrf {} \;
 
     # Generate the server keystores for vitamui-services except ui- components
     for COMPONENT in $( ls ${CERTIFICATE_DIR}/vitamui-services/server/ | grep -v -e "README" -e "^ui-" ); do
         mkdir -p ${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}
 
         pki_logger "-------------------------------------------"
-        pki_logger "Creation du keystore de ${COMPONENT}"
-        JKS_KEYSTORE=${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}/keystore_${COMPONENT}.jks
+        pki_logger "Create keystore for ${COMPONENT}"
+        KEYSTORE=${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}/keystore_${COMPONENT}.p12
         P12_KEYSTORE=${CERTIFICATE_DIR}/vitamui-services/server/${COMPONENT}/${COMPONENT}.p12
         CRT_KEY_PASSWORD=$(getComponentPassphrase certs "server_vitamui_services_${COMPONENT}_key")
-        JKS_PASSWORD=$(getKeystorePassphrase "keystores_server_vitamui_services_${COMPONENT}")
+        KEYSTORE_PASSWORD=$(getKeystorePassphrase "keystores_server_vitamui_services_${COMPONENT}")
 
         generateHostKeystore ${COMPONENT} \
-                             ${JKS_KEYSTORE} \
+                             ${KEYSTORE} \
                              ${P12_KEYSTORE} \
                              ${CRT_KEY_PASSWORD} \
-                             ${JKS_PASSWORD} \
+                             ${KEYSTORE_PASSWORD} \
                              ${TMP_P12_PASSWORD}
     done
 
     # Generate client keystores foreach client type
     for CLIENT_TYPE in external vitam vitamui-services; do
 
-        # # Set grantedstore path and delete the store if already exists
-        # JKS_GRANTED_STORE=${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}/grantedstore_${CLIENT_TYPE}.jks
-        # GRANTED_STORE_PASSWORD=$(getKeystorePassphrase "grantedstores_client_${CLIENT_TYPE}")
-
-        # # Delete the old granted store if already exists
-        # if [ -f ${JKS_GRANTED_STORE} ]; then
-        #     rm -f ${JKS_GRANTED_STORE}
-        # fi
         if [ "${CLIENT_TYPE}" == "vitamui-services" ]; then
             STORE_DIR="${REPERTOIRE_KEYSTORES}/${CLIENT_TYPE}/clients"
             CERT_SRC_DIR="${CERTIFICATE_DIR}/${CLIENT_TYPE}/clients"
@@ -296,13 +290,12 @@ function main() {
         fi
 
         mkdir -p ${STORE_DIR}
-        # # client-${CLIENT_TYPE} keystores generation
         # Do not generate keystores for ui- components, we don't need them
         for COMPONENT in $( ls ${CERT_SRC_DIR} 2>/dev/null | grep -v -e "README" -e "external" -e "^ui-" ); do
 
             # Generate the p12 keystore
             pki_logger "-------------------------------------------"
-            pki_logger "Creation du keystore client de ${COMPONENT}"
+            pki_logger "Generate client keystore for ${COMPONENT}"
             CERT_DIRECTORY=${CERT_SRC_DIR}/${COMPONENT}
             CRT_KEY_PASSWORD=$(getComponentPassphrase certs "${KEY_PREFIX}_${COMPONENT}_key")
             if [ "${CLIENT_TYPE}" == "vitamui-services" ]; then
@@ -314,27 +307,27 @@ function main() {
 
             if [ "${DEV_MODE}" != "true" ]; then
                 if [ -f ${P12_KEYSTORE} ]; then
-                    pki_logger " /!\ Suppression du p12: ${P12_KEYSTORE}"
-                    rm -f ${P12_KEYSTORE}
+                    pki_logger " /!\ Delete p12: ${P12_KEYSTORE}"
+                    rm -vf ${P12_KEYSTORE}
                 fi
             fi
 
-            pki_logger "Génération du p12"
+            pki_logger "Generate p12"
             crtKeyToP12 ${CERT_DIRECTORY} \
                         ${CRT_KEY_PASSWORD} \
                         ${COMPONENT} \
                         ${P12_PASSWORD} \
                         ${P12_KEYSTORE}
 
-            pki_logger "Génération du jks"
+            pki_logger "Generate keystore for ${COMPONENT}"
             if [ "${CLIENT_TYPE}" == "vitamui-services" ]; then
-                JKS_KEYSTORE=${STORE_DIR}/${COMPONENT}/keystore_${COMPONENT}.jks
+                KEYSTORE=${STORE_DIR}/${COMPONENT}/keystore_${COMPONENT}.p12
             else
-                JKS_KEYSTORE=${STORE_DIR}/keystore_${COMPONENT}.jks
+                KEYSTORE=${STORE_DIR}/keystore_${COMPONENT}.p12
             fi
-            JKS_PASSWORD=$(getKeystorePassphrase "keystores_client_${CLIENT_TYPE}_${COMPONENT}")
-            addP12InJks ${JKS_KEYSTORE} \
-                        ${JKS_PASSWORD} \
+            KEYSTORE_PASSWORD=$(getKeystorePassphrase "keystores_client_${CLIENT_TYPE}_${COMPONENT}")
+            addP12InKeystore ${KEYSTORE} \
+                        ${KEYSTORE_PASSWORD} \
                         ${P12_KEYSTORE} \
                         ${P12_PASSWORD}
         done

@@ -137,8 +137,8 @@
 
     - name: "Copy {{ vitamui_struct.vitamui_component }} jks keystore (server)"
       copy:
-        src: "{{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
-        dest: "{{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.jks"
+        src: "{{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12"
+        dest: "{{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
@@ -147,21 +147,21 @@
 
     - name: "Copy {{ vitamui_struct.vitamui_component }} jks keystore (client)"
       copy:
-        src: "{{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
-        dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.jks"
+        src: "{{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12"
+        dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
       when:
-        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == ''
+        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12 || echo nofile') == ''
       tags: update_vitamui_certificates
       notify: restart service
 
     # Copy the trustore for all vitamui components in order to communicate between them.
     - name: Copy vitamui-services truststore
       copy:
-        src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.jks"
-        dest: "{{ vitamui_folder_conf }}/truststore_vitamui.jks"
+        src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.p12"
+        dest: "{{ vitamui_folder_conf }}/truststore_vitamui.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
@@ -171,14 +171,14 @@
     # Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
     - name: Copy external truststore
       copy:
-        src: "{{ inventory_dir }}/keystores/client-external/truststore_external.jks"
-        dest: "{{ vitamui_folder_conf }}/truststore_external.jks"
+        src: "{{ inventory_dir }}/keystores/client-external/truststore_external.p12"
+        dest: "{{ vitamui_folder_conf }}/truststore_external.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
       when:
         - vitamui_certificate_type | default('none') | lower == 'external'
-        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-external/truststore_external.jks || echo nofile') == ''
+        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-external/truststore_external.p12 || echo nofile') == ''
       tags: update_vitamui_certificates
       notify: restart service
 
