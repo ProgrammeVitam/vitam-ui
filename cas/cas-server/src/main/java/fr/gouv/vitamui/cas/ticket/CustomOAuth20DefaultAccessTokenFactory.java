@@ -47,18 +47,13 @@ import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
-import org.apereo.cas.support.oauth.OAuth20GrantTypes;
-import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
-import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessTokenFactory;
 import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Specific factory for access tokens using the auth token as identifier.
@@ -81,25 +76,6 @@ public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccess
                 jwtBuilder,
                 servicesManager,
                 descendantTicketsTrackingPolicy);
-    }
-
-    @Override
-    public OAuth20AccessToken create(final Service service, final Authentication authentication,
-            final TicketGrantingTicket ticketGrantingTicket,
-            final Collection<String> scopes, final String clientId,
-            final String dpopConfirmation,
-            final Map<String, Map<String, Object>> claims,
-            final OAuth20ResponseTypes responseType,
-            final OAuth20GrantTypes grantType) throws Throwable {
-        Authentication authn = authentication;
-        if (ticketGrantingTicket != null && ticketGrantingTicket.getAuthentication() != null) {
-            authn = ticketGrantingTicket.getAuthentication();
-            LOGGER.debug("Using user authentication from TGT: {} instead of passed authentication: {}",
-                    authn.getPrincipal().getId(),
-                    authentication != null ? authentication.getPrincipal().getId() : "null");
-        }
-        return super.create(service, authn, ticketGrantingTicket, scopes, clientId, dpopConfirmation, claims,
-                responseType, grantType);
     }
 
     @Override
