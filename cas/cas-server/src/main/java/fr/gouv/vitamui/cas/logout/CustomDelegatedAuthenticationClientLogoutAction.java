@@ -29,6 +29,7 @@ package fr.gouv.vitamui.cas.logout;
 
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
 import org.apereo.cas.web.flow.actions.logout.DelegatedAuthenticationClientLogoutAction;
@@ -41,12 +42,8 @@ import java.util.Optional;
 /**
  * Propagate the logout from CAS to the authn delegated server.
  */
-
+@Slf4j
 public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAuthenticationClientLogoutAction {
-
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(
-        CustomDelegatedAuthenticationClientLogoutAction.class
-    );
 
     private final ProvidersService providersService;
 

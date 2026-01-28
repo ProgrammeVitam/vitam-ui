@@ -77,6 +77,7 @@ import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.PasswordResetUrlBuilder;
+import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.factory.DefaultTicketFactory;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
@@ -295,37 +296,33 @@ public class WebflowConfig {
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext,
         @Qualifier(LogoutManager.DEFAULT_BEAN_NAME) final LogoutManager logoutManager,
-        @Qualifier(
-            CasCookieBuilder.BEAN_NAME_TICKET_GRANTING_COOKIE_BUILDER
-        ) final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+        @Qualifier(CasCookieBuilder.BEAN_NAME_TICKET_GRANTING_COOKIE_BUILDER) final CasCookieBuilder ticketGrantingTicketCookieGenerator,
         @Qualifier("warnCookieGenerator") final CasCookieBuilder warnCookieGenerator,
-        @Qualifier(
-            CentralAuthenticationService.BEAN_NAME
-        ) final CentralAuthenticationService centralAuthenticationService,
-        @Qualifier(
-            SingleLogoutRequestExecutor.BEAN_NAME
-        ) final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor,
+        @Qualifier(CentralAuthenticationService.BEAN_NAME) final CentralAuthenticationService centralAuthenticationService,
         final Utils utils,
         final CasApi casApi,
-        final TicketRegistry ticketRegistry
+        final ServicesManager servicesManager,
+        final TicketRegistry ticketRegistry,
+        @Qualifier(CasWebflowConstants.ACTION_ID_FRONT_CHANNEL_LOGOUT) final Action frontChannelLogoutAction
     ) {
         return WebflowActionBeanSupplier.builder()
             .withApplicationContext(applicationContext)
             .withProperties(casProperties)
-            .withAction(
-                () ->
-                    new TerminateApiSessionAction(
-                        centralAuthenticationService,
-                        ticketGrantingTicketCookieGenerator,
-                        warnCookieGenerator,
-                        casProperties.getLogout(),
-                        logoutManager,
-                        applicationContext,
-                        defaultSingleLogoutRequestExecutor,
-                        utils,
-                        casApi,
-                        ticketRegistry
-                    )
+            .withAction(() ->
+                new TerminateApiSessionAction(
+                    centralAuthenticationService,
+                    ticketGrantingTicketCookieGenerator,
+                    warnCookieGenerator,
+                    casProperties.getLogout(),
+                    logoutManager,
+                    applicationContext,
+                    utils,
+                    casApi,
+                    servicesManager,
+                    casProperties,
+                    frontChannelLogoutAction,
+                    ticketRegistry
+                )
             )
             .withId(CasWebflowConstants.ACTION_ID_TERMINATE_SESSION)
             .build()

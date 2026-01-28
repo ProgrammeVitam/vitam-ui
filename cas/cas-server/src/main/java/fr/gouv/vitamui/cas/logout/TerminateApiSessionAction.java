@@ -28,13 +28,30 @@ package fr.gouv.vitamui.cas.logout;
 
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
+import org.apereo.cas.authentication.Authentication;
+import org.apereo.cas.authentication.AuthenticationResult;
+import org.apereo.cas.authentication.DefaultAuthenticationBuilder;
+import org.apereo.cas.authentication.DefaultAuthenticationResultBuilder;
+import org.apereo.cas.authentication.principal.DefaultPrincipalElectionStrategy;
 import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.authentication.principal.WebApplicationService;
+import org.apereo.cas.authentication.principal.WebApplicationServiceFactory;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
 import org.apereo.cas.logout.LogoutManager;
-import org.apereo.cas.logout.slo.SingleLogoutRequestExecutor;
+import org.apereo.cas.logout.slo.SingleLogoutExecutionRequest;
+import org.apereo.cas.logout.slo.SingleLogoutRequestContext;
+import org.apereo.cas.services.BaseRegisteredService;
+import org.apereo.cas.services.RegisteredService;
+import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.InvalidTicketException;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -42,9 +59,12 @@ import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -57,9 +77,10 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID
 public class TerminateApiSessionAction extends TerminateSessionAction {
 
     private final Utils utils;
-
     private final CasApi casApi;
-
+    private final ServicesManager servicesManager;
+    private final CasConfigurationProperties casProperties;
+    private final Action frontChannelLogoutAction;
     private final TicketRegistry ticketRegistry;
 
     public TerminateApiSessionAction(
@@ -69,48 +90,48 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
         final LogoutProperties logoutProperties,
         final LogoutManager logoutManager,
         final ConfigurableApplicationContext applicationContext,
-        final SingleLogoutRequestExecutor singleLogoutRequestExecutor,
         final Utils utils,
         final CasApi casApi,
+        final ServicesManager servicesManager,
+        final CasConfigurationProperties casProperties,
+        final Action frontChannelLogoutAction,
         final TicketRegistry ticketRegistry
     ) {
-        super(
-            centralAuthenticationService,
-            ticketGrantingTicketCookieGenerator,
-            warnCookieGenerator,
-            logoutProperties,
-            logoutManager,
-            applicationContext,
-            singleLogoutRequestExecutor
-        );
+        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, logoutProperties,
+            logoutManager, applicationContext, null);
         this.utils = utils;
         this.casApi = casApi;
+        this.servicesManager = servicesManager;
+        this.casProperties = casProperties;
+        this.frontChannelLogoutAction = frontChannelLogoutAction;
         this.ticketRegistry = ticketRegistry;
     }
 
     @Override
-    protected Event terminate(final RequestContext requestContext) throws Exception {
-        final var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-        var tgtId = WebUtils.getTicketGrantingTicketId(requestContext);
+    @SneakyThrows
+    public Event terminate(final RequestContext context) {
+        final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
+        final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
+
+        String tgtId = WebUtils.getTicketGrantingTicketId(context);
         if (StringUtils.isBlank(tgtId)) {
             tgtId = ticketGrantingTicketCookieGenerator.retrieveCookieValue(request);
         }
 
-        // if we found a ticket, properly log out the user via the IAM web services
+        TicketGrantingTicket ticket = null;
         if (StringUtils.isNotBlank(tgtId)) {
             try {
-                final var ticket = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
+                ticket = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
                 if (ticket != null) {
                     final Principal principal = ticket.getAuthentication().getPrincipal();
                     final Map<String, List<Object>> attributes = principal.getAttributes();
                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
                     final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
-                    final String superUserCustomerId = (String) utils.getAttributeValue(
-                        attributes,
-                        SUPER_USER_CUSTOMER_ID_ATTRIBUTE
-                    );
+                    final String superUserCustomerId = (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE);
 
-                    LOGGER.debug("calling logout for authToken={} and superUser={}", authToken, superUserEmail);
+                    LOGGER.debug("Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
+                        authToken, superUserEmail, superUserCustomerId);
+
                     casApi.logout(authToken, superUserEmail, superUserCustomerId);
                 }
             } catch (final InvalidTicketException e) {
@@ -118,79 +139,77 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
             }
         }
 
-        return super.terminate(requestContext);
+        final Event event = super.terminate(context);
+
+        // Remove IdP cookie
+        response.addCookie(utils.buildIdpCookie(null, casProperties.getTgc()));
+
+        // Fallback general logout
+        if (tgtId == null || ticket == null || ticket.isExpired()) {
+            List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout(tgtId != null ? tgtId : "nocookie");
+            WebUtils.putLogoutRequests(context, logoutRequests);
+        }
+
+        // Front channel logout in login flow
+        if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
+            LOGGER.debug("Computing front channel logout URLs");
+            frontChannelLogoutAction.execute(context);
+        }
+
+        return event;
+    }
+
+    protected List<SingleLogoutRequestContext> performGeneralLogout(final String tgtId) {
+        try {
+            // 1️⃣ Crée l'Authentication factice
+            Authentication fakeAuthentication = new DefaultAuthenticationBuilder()
+                .setPrincipal(new FakePrincipal(tgtId))
+                .build();
+
+            // 2️⃣ Crée un AuthenticationResult factice à partir de l'authentication
+            AuthenticationResult authenticationResult = new DefaultAuthenticationResultBuilder()
+                .collect(fakeAuthentication)
+                .build(new DefaultPrincipalElectionStrategy()); // PrincipalElectionStrategy trivial
+
+            // 3️⃣ Crée le TGT factice via l'API CAS 7
+            TicketGrantingTicket fakeTgt = centralAuthenticationService.createTicketGrantingTicket(authenticationResult);
+
+            Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
+            // Préparer le factory de services CAS
+            WebApplicationServiceFactory serviceFactory = new WebApplicationServiceFactory();
+
+            for (RegisteredService registeredService : registeredServices) {
+                if (!(registeredService instanceof BaseRegisteredService baseService)) continue;
+
+                String logoutUrl = baseService.getLogoutUrl();
+                if (logoutUrl != null) {
+                    WebApplicationService service = serviceFactory.createService(logoutUrl);
+
+                    // Génère le ST factice lié au TGT factice
+                    centralAuthenticationService.grantServiceTicket(
+                        fakeTgt.getId(),
+                        service,
+                        authenticationResult
+                    );
+                    // Pas besoin de collecter les ST dans une liste
+                }
+            }
+
+            // Ensuite le logout général
+            return logoutManager.performLogout(
+                SingleLogoutExecutionRequest.builder()
+                    .ticketGrantingTicket(fakeTgt)
+                    .build()
+            );
+        } catch (Throwable e) {
+            LOGGER.error("Unable to perform general logout", e);
+            return new ArrayList<>();
+        }
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    private static class FakePrincipal implements Principal {
+        private final String id;
     }
 }
-// TODO: Our old terminate impl.
-/**
- *
- * public Event terminate(final RequestContext context) {
- *         final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
- *         String tgtId = WebUtils.getTicketGrantingTicketId(context);
- *         if (StringUtils.isBlank(tgtId)) {
- *             tgtId = ticketGrantingTicketCookieGenerator.retrieveCookieValue(request);
- *         }
- *
- *         // if we found a ticket, properly log out the user in the IAM web services
- *         TicketGrantingTicket ticket = null;
- *         if (StringUtils.isNotBlank(tgtId)) {
- *             try {
- *                 ticket = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
- *                 if (ticket != null) {
- *                     final Principal principal = ticket.getAuthentication().getPrincipal();
- *                     final Map<String, List<Object>> attributes = principal.getAttributes();
- *                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
- *                     final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
- *                     final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
- *                     final String superUserCustomerId = (String) utils.getAttributeValue(
- *                         attributes,
- *                         SUPER_USER_CUSTOMER_ID_ATTRIBUTE
- *                     );
- *
- *                     final HttpContext httpContext;
- *                     if (StringUtils.isNotBlank(superUserCustomerId)) {
- *                         httpContext = utils.buildContext(superUserEmail);
- *                     } else {
- *                         httpContext = utils.buildContext(principalEmail);
- *                     }
- *
- *                     LOGGER.debug(
- *                         "calling logout for authToken={} and superUser={}, superUserCustomerId={}",
- *                         authToken,
- *                         superUserEmail,
- *                         superUserCustomerId
- *                     );
- *                     casRestClient.logout(httpContext, authToken, superUserEmail, superUserCustomerId);
- *                 }
- *             } catch (final InvalidTicketException e) {
- *                 LOGGER.warn("No TGT found for the CAS cookie: {}", tgtId);
- *             }
- *         }
- *
- *         final Event event = super.terminate(context);
- *
- *         final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
- *         // remove the idp cookie
- *         response.addCookie(utils.buildIdpCookie(null, casProperties.getTgc()));
- *
- *         // fallback cases:
- *         // no CAS cookie -> general logout
- *         if (tgtId == null) {
- *             final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout("nocookie");
- *             WebUtils.putLogoutRequests(context, logoutRequests);
- *             // no ticket or expired -> general logout
- *         } else if (ticket == null || ticket.isExpired()) {
- *             final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout(tgtId);
- *             WebUtils.putLogoutRequests(context, logoutRequests);
- *         }
- *
- *         // if we are in the login webflow, compute the logout URLs
- *         if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
- *             LOGGER.debug("Computing front channel logout URLs");
- *             frontChannelLogoutAction.execute(context);
- *         }
- *
- *         return event;
- *     }
- *
- */
