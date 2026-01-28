@@ -43,7 +43,6 @@ L = paris
 O = vitamui
 CN = ${ENV::OPENSSL_CN}
 
-
 # Certificates creation parameters : extensions
 
 [ extension_server ]

@@ -44,7 +44,7 @@ function addCaInJks {
 # Génération d'un p12 et d'un pem depuis un certificat
 function crtKeyToP12 {
     local BASEFILE="${1}"
-    local MDP_KEY="${2}"
+    local KEY_PASS="${2}"
     local KEYPAIR_NAME="${3}"
     local MDP_P12="${4}"
     local TARGET_FILE="${5}"
@@ -53,7 +53,7 @@ function crtKeyToP12 {
         -inkey "${BASEFILE}/${KEYPAIR_NAME}.key" \
         -in "${BASEFILE}/${KEYPAIR_NAME}.crt" \
         -name "${KEYPAIR_NAME}" \
-        -passin pass:"${MDP_KEY}" \
+        -passin pass:"${KEY_PASS}" \
         -out "${BASEFILE}/${KEYPAIR_NAME}.p12" \
         -passout pass:"${MDP_P12}"
 
@@ -126,9 +126,9 @@ function generateTrustStore {
     if [ "${TRUSTORE_TYPE}" == "client" ]; then
 
         if [ "${CLIENT_TYPE}" == "vitamui-services" ]; then
-             CLIENT_CA_DIR="${REPERTOIRE_CERTIFICAT}/${CLIENT_TYPE}/ca"
+             CLIENT_CA_DIR="${CERTIFICATE_DIR}/${CLIENT_TYPE}/ca"
         else
-             CLIENT_CA_DIR="${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/ca"
+             CLIENT_CA_DIR="${CERTIFICATE_DIR}/client-${CLIENT_TYPE}/ca"
         fi
 
         for CRT_FILE in $(ls ${CLIENT_CA_DIR}/*.crt); do
@@ -144,7 +144,7 @@ function generateTrustStore {
 
     # Add the server certificates to the truststore
     pki_logger "Ajout des certificats serveur dans le truststore"
-    for CRT_FILE in $(ls ${REPERTOIRE_CERTIFICAT}/vitamui-services/ca/*.crt); do
+    for CRT_FILE in $(ls ${CERTIFICATE_DIR}/vitamui-services/ca/*.crt); do
         pki_logger "Ajout de ${CRT_FILE} dans le truststore ${CLIENT_TYPE}"
         ALIAS="server-$(basename ${CRT_FILE})"
         addCrtInJks ${JKS_TRUST_STORE} \
@@ -158,9 +158,9 @@ function generateTrustStore {
         pki_logger "Ajout des CA clients dans le truststore serveur"
         for CLIENT_CA_TYPE in vitam vitamui-services external; do
              if [ "${CLIENT_CA_TYPE}" == "vitamui-services" ]; then
-                CA_DIR="${REPERTOIRE_CERTIFICAT}/${CLIENT_CA_TYPE}/ca"
+                CA_DIR="${CERTIFICATE_DIR}/${CLIENT_CA_TYPE}/ca"
              else
-                CA_DIR="${REPERTOIRE_CERTIFICAT}/client-${CLIENT_CA_TYPE}/ca"
+                CA_DIR="${CERTIFICATE_DIR}/client-${CLIENT_CA_TYPE}/ca"
              fi
 
              if [ -d "${CA_DIR}" ]; then
@@ -179,7 +179,7 @@ function generateTrustStore {
     if [ "${DEV_MODE}" == "true" ]; then
         pki_logger "DEV_MODE is true"
         # Add the server certificates to the truststore
-        for CRT_FILE in $(find ${REPERTOIRE_CERTIFICAT}/vitamui-services/server -name "*.crt"); do
+        for CRT_FILE in $(find ${CERTIFICATE_DIR}/vitamui-services/server -name "*.crt"); do
             pki_logger "Ajout de ${CRT_FILE} dans le truststore ${CLIENT_TYPE}"
             ALIAS="server-$(basename ${CRT_FILE})"
             addCrtInJks ${JKS_TRUST_STORE} \
@@ -256,13 +256,13 @@ function main() {
     find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
 
     # Generate the server keystores for vitamui-services except ui- components
-    for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/vitamui-services/server/ | grep -v -e "README" -e "^ui-" ); do
+    for COMPONENT in $( ls ${CERTIFICATE_DIR}/vitamui-services/server/ | grep -v -e "README" -e "^ui-" ); do
         mkdir -p ${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}
 
         pki_logger "-------------------------------------------"
         pki_logger "Creation du keystore de ${COMPONENT}"
         JKS_KEYSTORE=${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}/keystore_${COMPONENT}.jks
-        P12_KEYSTORE=${REPERTOIRE_CERTIFICAT}/vitamui-services/server/${COMPONENT}/${COMPONENT}.p12
+        P12_KEYSTORE=${CERTIFICATE_DIR}/vitamui-services/server/${COMPONENT}/${COMPONENT}.p12
         CRT_KEY_PASSWORD=$(getComponentPassphrase certs "server_vitamui_services_${COMPONENT}_key")
         JKS_PASSWORD=$(getKeystorePassphrase "keystores_server_vitamui_services_${COMPONENT}")
 
@@ -287,11 +287,11 @@ function main() {
         # fi
         if [ "${CLIENT_TYPE}" == "vitamui-services" ]; then
             STORE_DIR="${REPERTOIRE_KEYSTORES}/${CLIENT_TYPE}/clients"
-            CERT_SRC_DIR="${REPERTOIRE_CERTIFICAT}/${CLIENT_TYPE}/clients"
+            CERT_SRC_DIR="${CERTIFICATE_DIR}/${CLIENT_TYPE}/clients"
             KEY_PREFIX="client_${CLIENT_TYPE}"
         else
             STORE_DIR="${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}"
-            CERT_SRC_DIR="${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients"
+            CERT_SRC_DIR="${CERTIFICATE_DIR}/client-${CLIENT_TYPE}/clients"
             KEY_PREFIX="client_client-${CLIENT_TYPE}"
         fi
 
