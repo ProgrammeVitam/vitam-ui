@@ -111,11 +111,14 @@ public class LogbookManagementOperationService extends AbstractService {
         return operation;
     }
 
-    public ProcessDetailDto cancelOperationProcessExecution(VitamContext vitamContext, String operationId)
-        throws VitamClientException, JsonProcessingException {
+    public ProcessDetailDto cancelOperationProcessExecution(
+        VitamContext vitamContext,
+        String operationId,
+        boolean stepCancellable
+    ) throws VitamClientException, JsonProcessingException {
         ProcessDetailDto operation;
         LOGGER.info("Cancel the operation Id=  {}", operationId);
-        vitamOperationCommonService.cancelOperationProcessExecution(vitamContext, operationId);
+        vitamOperationCommonService.cancelOperationProcessExecution(vitamContext, operationId, stepCancellable);
         ProcessQuery processQuery = new ProcessQuery();
         processQuery.setId(operationId);
         operation = searchOperationsDetails(vitamContext, processQuery);
@@ -141,10 +144,10 @@ public class LogbookManagementOperationService extends AbstractService {
         }
     }
 
-    public ProcessDetailDto cancelOperationProcessExecution(String operationId) {
+    public ProcessDetailDto cancelOperationProcessExecution(String operationId, boolean stepCancellable) {
         VitamContext vitamContext = buildVitamContext();
         try {
-            return this.cancelOperationProcessExecution(vitamContext, operationId);
+            return this.cancelOperationProcessExecution(vitamContext, operationId, stepCancellable);
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to cancel operation process execution", e);
         }
