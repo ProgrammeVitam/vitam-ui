@@ -107,7 +107,10 @@ export class PatternComponent implements ControlValueAccessor {
 
   remove(pattern: string) {
     this.patterns = this.patterns.filter((p) => p !== pattern);
-    this.availableOptions.find((o) => o.key === pattern).disabled = false;
+    const option = this.availableOptions.find((o) => o.key === pattern);
+    if (option) {
+      option.disabled = false;
+    }
     this.onChange(this.patterns);
     if (this.enabledOptions().length > 0 && this.control.disabled) {
       this.control.enable();
