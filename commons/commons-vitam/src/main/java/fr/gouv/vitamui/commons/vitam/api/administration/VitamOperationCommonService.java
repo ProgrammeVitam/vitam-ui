@@ -70,8 +70,13 @@ public class VitamOperationCommonService {
         return adminExternalClient.updateOperationActionProcess(vitamContext, actionId, operationId);
     }
 
-    public RequestResponse<ItemStatus> cancelOperationProcessExecution(VitamContext vitamContext, String operationId)
-        throws VitamClientException, IllegalArgumentException {
-        return adminExternalClient.cancelOperationProcessExecution(vitamContext, operationId);
+    public RequestResponse<ItemStatus> cancelOperationProcessExecution(
+        VitamContext vitamContext,
+        String operationId,
+        boolean stepCancellable
+    ) throws VitamClientException, IllegalArgumentException {
+        return stepCancellable
+            ? adminExternalClient.cancelOperationProcessExecution(vitamContext, operationId)
+            : adminExternalClient.cancelOperationProcessExecution(vitamContext, operationId, true);
     }
 }

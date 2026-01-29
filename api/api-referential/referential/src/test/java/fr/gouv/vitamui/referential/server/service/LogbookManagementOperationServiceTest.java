@@ -144,12 +144,16 @@ public class LogbookManagementOperationServiceTest {
         String identifier = "identifier";
 
         when(
-            vitamOperationCommonService.cancelOperationProcessExecution(any(VitamContext.class), any(String.class))
+            vitamOperationCommonService.cancelOperationProcessExecution(
+                any(VitamContext.class),
+                any(String.class),
+                any(Boolean.class)
+            )
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         //When //Then
         assertThatCode(
-            () -> logbookManagementOperationService.cancelOperationProcessExecution(vitamContext, identifier)
+            () -> logbookManagementOperationService.cancelOperationProcessExecution(vitamContext, identifier, false)
         ).isInstanceOf(VitamClientException.class);
     }
 
