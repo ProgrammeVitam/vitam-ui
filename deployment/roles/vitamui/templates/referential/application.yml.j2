@@ -31,8 +31,8 @@ server:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-    trust-store-password: {{ password_truststore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+    trust-store-password: {{ truststores_vitamui }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
@@ -76,8 +76,8 @@ referential:
     secure: {{ vitamui.security.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+        key-password: {{ truststores_vitamui }}
       hostname-verification: true
 {% endif %}
   iam-client:
@@ -91,8 +91,8 @@ referential:
         key-password: {{ password_keystore_client }}
         type: JKS
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
+        key-password: {{ truststores_vitamui }}
       hostname-verification: true
 {% endif %}
 

@@ -164,13 +164,10 @@
   copy:
     src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.jks"
     dest: "{{ vitamui_folder_conf }}/truststore_vitamui.jks"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  when:
-    - vitamui_struct.secure | default(secure) | lower == 'true'
-    - vitamui_certificate_type | default('none') | lower == 'vitamui-services'
-    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.jks || echo nofile') == ''
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  when: vitamui_struct.secure | default(secure) | bool
   tags: update_vitamui_certificates
   notify: restart service
 

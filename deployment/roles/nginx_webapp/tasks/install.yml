@@ -25,7 +25,7 @@
   set_fact:
     frontend_application_version: "{{ package_facts_result.ansible_facts.packages[ vitamui_struct.package_name | default(package_name) ][0].version }}"
 
-- name: Configure upsteam for API GW
+- name: Configure upstream for API GW
   template:
     src: frontend/upstream_gw.j2
     dest: "{{ nginx_conf_dir }}/upstream_gw"
@@ -52,16 +52,17 @@
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   notify: reload nginx
 
-- name: "Add UI certificates for {{ vitamui_struct.vitamui_component }}"
+- name: "Add client certificates for {{ vitamui_struct.vitamui_component }}"
   copy:
-    src: "{{ item }}"
-    dest: "{{ nginx_ssl_dir }}"
+    src: "{{ inventory_dir }}/certs/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.{{ item }}"
+    dest: "{{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.{{ item }}"
     group: "{{ frontend_group }}"
     owner: "{{ frontend_user }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
-  with_fileglob:
-    - "{{ inventory_dir }}/certs/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.crt"
-    - "{{ inventory_dir }}/certs/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/{{ vitamui_struct.vitamui_component }}.key"
+  loop:
+    - crt
+    - key
+  tags: update_vitamui_certificates
   notify: reload nginx
 
 - name: Put ssl configuration when secure is enabled
