@@ -7,32 +7,34 @@
     </div>
     @if (!updateMode) {
       <div class="actions hgap-1">
-        @if (mine && !message().deletedAt) {
+        @if (!message().deletedAt) {
+          @if (mine) {
+            <button
+              class="btn btn-circle default link secondary xsmall tonal"
+              (click)="updateMode = true"
+              [vitamuiTooltip]="'DISCUSSION.MESSAGE.UPDATE' | translate"
+              vitamuiTooltipClass="secondary"
+            >
+              <i class="vitamui-icon vitamui-icon-edit"></i>
+            </button>
+            <button
+              class="btn btn-circle default link secondary xsmall tonal"
+              (click)="deleteMessage()"
+              [vitamuiTooltip]="'DISCUSSION.MESSAGE.DELETE' | translate"
+              vitamuiTooltipClass="secondary"
+            >
+              <i class="vitamui-icon vitamui-icon-delete"></i>
+            </button>
+          }
           <button
             class="btn btn-circle default link secondary xsmall tonal"
-            (click)="updateMode = true"
-            [vitamuiTooltip]="'DISCUSSION.MESSAGE.UPDATE' | translate"
+            (click)="markUnread.emit(message())"
+            [vitamuiTooltip]="'DISCUSSION.MESSAGE.MARK_AS_UNREAD' | translate"
             vitamuiTooltipClass="secondary"
           >
-            <i class="vitamui-icon vitamui-icon-edit"></i>
-          </button>
-          <button
-            class="btn btn-circle default link secondary xsmall tonal"
-            (click)="deleteMessage()"
-            [vitamuiTooltip]="'DISCUSSION.MESSAGE.DELETE' | translate"
-            vitamuiTooltipClass="secondary"
-          >
-            <i class="vitamui-icon vitamui-icon-delete"></i>
+            <i class="vitamui-icon vitamui-icon-ic24-dialog"></i>
           </button>
         }
-        <button
-          class="btn btn-circle default link secondary xsmall tonal"
-          (click)="markUnread.emit(message())"
-          [vitamuiTooltip]="'DISCUSSION.MESSAGE.MARK_AS_UNREAD' | translate"
-          vitamuiTooltipClass="secondary"
-        >
-          <i class="vitamui-icon vitamui-icon-ic24-dialog"></i>
-        </button>
       </div>
     }
   </div>

@@ -51,7 +51,6 @@ export interface Discussion {
   title: string;
   entities: { entityId: string; entityType: string }[];
   id: string;
-  identifier: string;
   createdAt: Date;
   lastMessageAt: Date;
   messages: Message[];
@@ -77,6 +76,11 @@ export interface Message {
 export interface DiscussionEntity {
   id: string;
   type: string;
+  /**
+   * The "main" entity is the one that'll be used to search the discussions related to the current "page", while all entities are used when discussions are created.
+   * For example, in Collect, the main entity would be the Transaction but there would also be a Project entity in the list.
+   */
+  main?: boolean;
 }
 
 @Injectable({
@@ -188,10 +192,10 @@ export class DiscussionService {
     return payload instanceof DiscussionUpdate;
   }
 
-  createDiscussion({ type: entityType, id: entityId }: DiscussionEntity, title: string, text: string): Promise<Discussion> {
+  createDiscussion(discussionEntities: DiscussionEntity[], title: string, text: string): Promise<Discussion> {
     return firstValueFrom(
       this.httpClient.post<Discussion>(this.apiUrl, {
-        entities: [{ entityType, entityId }],
+        entities: discussionEntities.map((de) => ({ entityType: de.type, entityId: de.id })),
         title,
         text,
       }),

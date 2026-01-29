@@ -124,9 +124,12 @@ export class DiscussionPanelComponent {
     }
   }
 
-  discussionEntity = input.required<DiscussionEntity>();
+  discussionEntities = input.required<DiscussionEntity[]>();
+  mainDiscussionEntity: Signal<DiscussionEntity> = computed(() =>
+    this.discussionEntities().length > 1 ? this.discussionEntities().find((de) => de.main) : this.discussionEntities()[0],
+  );
   discussions: Signal<DiscussionDto[]> = toSignal(
-    toObservable(this.discussionEntity).pipe(
+    toObservable(this.mainDiscussionEntity).pipe(
       filter((entity) => !!entity),
       switchMap((entity) => this.discussionService.findDiscussions(entity)),
       map((discussions) =>
@@ -149,7 +152,7 @@ export class DiscussionPanelComponent {
   });
 
   async createDiscussion({ title, text }: { title: string; text: string }) {
-    const discussion = await this.discussionService.createDiscussion(this.discussionEntity(), title, text);
+    const discussion = await this.discussionService.createDiscussion(this.discussionEntities(), title, text);
     this.openDiscussion(discussion.id);
   }
 

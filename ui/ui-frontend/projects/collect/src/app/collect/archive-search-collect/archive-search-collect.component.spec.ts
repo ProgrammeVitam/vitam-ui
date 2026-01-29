@@ -47,6 +47,9 @@ import { of } from 'rxjs';
 import {
   BASE_URL,
   ConfigService,
+  DiscussionIconComponent,
+  DiscussionPanelComponent,
+  DiscussionService,
   ExternalParameters,
   ExternalParametersService,
   InjectorModule,
@@ -60,7 +63,7 @@ import {
   UnitType,
   VitamTenantConfigService,
 } from 'vitamui-library';
-import { tenantConfigServiceMock } from 'vitamui-library/testing';
+import { DiscussionServiceMock, tenantConfigServiceMock } from 'vitamui-library/testing';
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
@@ -155,7 +158,16 @@ describe('ArchiveSearchCollectComponent', () => {
     await TestBed.configureTestingModule({
       declarations: declarations,
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), MatMenuModule, MatSidenavModule, RouterTestingModule],
+      imports: [
+        BrowserAnimationsModule,
+        DiscussionIconComponent,
+        DiscussionPanelComponent,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        MatMenuModule,
+        MatSidenavModule,
+        RouterTestingModule,
+      ],
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
@@ -172,6 +184,10 @@ describe('ArchiveSearchCollectComponent', () => {
         {
           provide: VitamTenantConfigService,
           useValue: tenantConfigServiceMock,
+        },
+        {
+          provide: DiscussionService,
+          useClass: DiscussionServiceMock,
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

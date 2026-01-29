@@ -5,7 +5,7 @@
   Click to open discussion panel on the bottom of the screen
 </div>
 
-<vitamui-discussion-panel #discussionPanel [discussionEntity]="{ id: 'mock', type: 'mock' }"></vitamui-discussion-panel>
+<vitamui-discussion-panel #discussionPanel [discussionEntities]="[{ id: 'mock', type: 'mock' }]"></vitamui-discussion-panel>
 
 @let discussion = (discussions$ | async)[0];
 @let closedDiscussion = (discussions$ | async).filter((d) => d.discussion.status === 'RESOLVED')[0];

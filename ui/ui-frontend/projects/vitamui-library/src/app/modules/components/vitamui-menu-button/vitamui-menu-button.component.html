@@ -2,27 +2,27 @@
   #trigger="matMenuTrigger"
   [matMenuTriggerFor]="moreMenu"
   class="btn"
-  [ngClass]="menuButtonOutline ? `outline-${menuColor}` : menuColor"
-  [class.btn-circle]="icon && !label"
-  [class.hidden]="!simpleOverlay && trigger.menuOpen"
-  [disabled]="disabled"
+  [ngClass]="menuButtonOutline() ? `outline-${menuColor()}` : menuColor()"
+  [class.btn-circle]="icon() && !label()"
+  [class.hidden]="!simpleOverlay() && trigger.menuOpen"
+  [disabled]="disabled()"
   aria-label="more menu"
-  [class]="menuButtonSize"
+  [class]="menuButtonSize()"
 >
-  @if (icon) {
-    <i class="vitamui-icon {{ icon }}" [class.mr-3]="label"></i>
+  @if (icon()) {
+    <i class="vitamui-icon {{ icon() }}" [class.mr-3]="label()"></i>
   }
-  {{ label }}
+  {{ label() }}
 </button>
 
 <mat-menu
   #moreMenu="matMenu"
-  xPosition="{{ overlayPos === 'start' ? 'after' : 'before' }}"
-  [overlapTrigger]="!simpleOverlay"
-  class="more-action-menu {{ overlayPos }} {{ menuColor }} {{ simpleOverlay ? 'simple' : '' }}"
+  xPosition="{{ overlayPos() === 'start' ? 'after' : 'before' }}"
+  [overlapTrigger]="!simpleOverlay()"
+  class="more-action-menu {{ overlayPos() }} {{ menuColor() }} {{ simpleOverlay() ? 'simple' : '' }}"
 >
-  @if (!simpleOverlay) {
-    <div class="d-flex" [class.justify-content-end]="overlayPos === 'end'">
+  @if (!simpleOverlay()) {
+    <div class="d-flex" [class.justify-content-end]="overlayPos() === 'end'">
       <button mat-menu-item disableRipple class="menu-cancel-button">
         <i class="vitamui-icon vitamui-icon-close"></i>
       </button>

@@ -34,7 +34,20 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-title-breadcrumb [data]="breadcrumbData">
-        <h5>{{ 'APPLICATION.COLLECT_APP.NAME' | translate }} : {{ projectName }}</h5>
+        <h5>
+          {{ 'APPLICATION.COLLECT_APP.NAME' | translate }} : {{ projectName }}
+          @if (discussionEntities?.length) {
+            <button class="btn large secondary btn-circle" (click)="discussionPanel.opened.set(true); discussionPanel.expanded.set(true)">
+              <vitamui-discussion-icon
+                class="clickable"
+                [discussions]="discussionPanel.discussions()"
+                [vitamuiTooltip]="'DISCUSSION.OPEN' | translate"
+                vitamuiTooltipClass="secondary"
+              ></vitamui-discussion-icon>
+            </button>
+            <vitamui-discussion-panel #discussionPanel [discussionEntities]="discussionEntities"></vitamui-discussion-panel>
+          }
+        </h5>
       </vitamui-title-breadcrumb>
     </div>
     @if (foundAccessContract) {
@@ -54,10 +67,12 @@
             }
           </div>
         </div>
+
         <div class="row justify-content-around">
           <div class="col-8 form-control">
             <app-title-and-description-criteria-search-collect></app-title-and-description-criteria-search-collect>
           </div>
+
           <div class="col-3 form-control text-right">
             <button type="button" class="btn primary" [disabled]="!searchCriteriaKeys?.length" (click)="submit(true)">
               {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}

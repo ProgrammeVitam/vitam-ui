@@ -38,8 +38,8 @@ import { Discussion, DiscussionDto, DiscussionEntity, Message } from 'vitamui-li
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export class DiscussionServiceMock {
-  #discussionId: 0;
-  #messageId: 0;
+  #discussionId = 0;
+  #messageId = 0;
 
   #discussion({ title, read, closed, me }: { title: string; read: boolean; closed: boolean; me: boolean }): DiscussionDto {
     this.#discussionId++;
@@ -47,7 +47,6 @@ export class DiscussionServiceMock {
     return {
       discussion: {
         id: `${this.#discussionId}`,
-        identifier: `${this.#discussionId}`,
         title,
         entities: [{ entityType: 'mockType', entityId: 'mockId' }],
         createdAt: now,
@@ -101,7 +100,6 @@ export class DiscussionServiceMock {
     const newDiscussion: DiscussionDto = {
       discussion: {
         id: `${this.#discussionId}`,
-        identifier: `${this.#discussionId}`,
         title: title,
         entities: [{ entityType, entityId }],
         createdAt: date,
