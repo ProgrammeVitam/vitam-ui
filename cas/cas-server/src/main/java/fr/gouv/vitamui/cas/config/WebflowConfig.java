@@ -303,7 +303,8 @@ public class WebflowConfig {
         final CasApi casApi,
         final ServicesManager servicesManager,
         final TicketRegistry ticketRegistry,
-        @Qualifier(CasWebflowConstants.ACTION_ID_FRONT_CHANNEL_LOGOUT) final Action frontChannelLogoutAction
+        @Qualifier(CasWebflowConstants.ACTION_ID_FRONT_CHANNEL_LOGOUT) final Action frontChannelLogoutAction,
+        @Qualifier(SingleLogoutRequestExecutor.BEAN_NAME) final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor
     ) {
         return WebflowActionBeanSupplier.builder()
             .withApplicationContext(applicationContext)
@@ -321,7 +322,8 @@ public class WebflowConfig {
                     servicesManager,
                     casProperties,
                     frontChannelLogoutAction,
-                    ticketRegistry
+                    ticketRegistry,
+                    defaultSingleLogoutRequestExecutor
                 )
             )
             .withId(CasWebflowConstants.ACTION_ID_TERMINATE_SESSION)

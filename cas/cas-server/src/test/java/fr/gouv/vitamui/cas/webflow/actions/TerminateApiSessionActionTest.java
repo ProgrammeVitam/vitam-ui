@@ -116,7 +116,7 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
         ) {
             super(cas, ticketCookie, warnCookie, logoutProps, logoutManager,
                 ctx, utils, casApi, servicesManager, casProperties,
-                frontChannelLogoutAction, ticketRegistry);
+                frontChannelLogoutAction, ticketRegistry, null);
         }
 
         // Expose protected method as public for testing

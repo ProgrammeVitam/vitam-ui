@@ -49,6 +49,7 @@ import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.logout.slo.SingleLogoutExecutionRequest;
 import org.apereo.cas.logout.slo.SingleLogoutRequestContext;
+import org.apereo.cas.logout.slo.SingleLogoutRequestExecutor;
 import org.apereo.cas.services.BaseRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -67,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
@@ -95,10 +97,11 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
         final ServicesManager servicesManager,
         final CasConfigurationProperties casProperties,
         final Action frontChannelLogoutAction,
-        final TicketRegistry ticketRegistry
+        final TicketRegistry ticketRegistry,
+        final SingleLogoutRequestExecutor singleLogoutRequestExecutor
     ) {
         super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, logoutProperties,
-            logoutManager, applicationContext, null);
+            logoutManager, applicationContext, singleLogoutRequestExecutor);
         this.utils = utils;
         this.casApi = casApi;
         this.servicesManager = servicesManager;
@@ -126,8 +129,8 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
                     final Principal principal = ticket.getAuthentication().getPrincipal();
                     final Map<String, List<Object>> attributes = principal.getAttributes();
                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
-                    final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
-                    final String superUserCustomerId = (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE);
+                    final String superUserEmail = Optional.ofNullable((String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE)).orElse("");
+                    final String superUserCustomerId = Optional.ofNullable((String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE)).orElse("");
 
                     LOGGER.debug("Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
                         authToken, superUserEmail, superUserCustomerId);
