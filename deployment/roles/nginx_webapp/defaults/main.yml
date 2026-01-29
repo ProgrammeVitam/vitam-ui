@@ -14,3 +14,5 @@ nginx_ssl_dir: /etc/nginx/conf.d/ssl
 secure: "{{ vitamui_defaults.services.secure | default(true) | bool }}"
 
 package_name: "vitamui-{{ vitamui_struct.vitamui_component }}-rsc"
+
+consul_folder_conf: "{{ vitam_defaults.folder.root_path }}/conf/consul"

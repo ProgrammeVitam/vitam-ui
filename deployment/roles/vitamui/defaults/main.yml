@@ -10,6 +10,7 @@ jvm_opts:
 start_timeout: "{{ vitamui_defaults.services.start_timeout | default(300) }}"
 at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"
 secure: "{{ vitamui_defaults.services.secure | default(true) | bool }}"
+ssl_hostname_verification: "{{ vitamui_defaults.services.ssl_hostname_verification | default(true) | bool }}"
 jvm_log: "{{ vitamui_defaults.services.jvm_log | default(false) | bool }}"
 accesslogs: "{{ vitamui_defaults.services.accesslogs | default('true') | lower }}"
 access_retention_days: "{{ vitamui_defaults.services.access_retention_days | default(365) }}"

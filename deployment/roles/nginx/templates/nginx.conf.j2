@@ -23,7 +23,8 @@ http {
     error_log               {{ nginx_log_dir }}/error.log;
 
     # Force consul agent resolution
-    resolver            127.0.0.1;
+    resolver            127.0.0.1 valid=10s ipv6=off;
+    resolver_timeout    5s;
 
     sendfile            on;
     tcp_nopush          on;

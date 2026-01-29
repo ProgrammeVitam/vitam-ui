@@ -7,6 +7,7 @@
 
 upstream IDENTITY {
   ip_hash;
+  # server vitamui-{{ vitamui.ui_identity.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity.port_service }};
 {% for h in groups['hosts_ui_identity'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_identity.port_service }};
 {% endfor %}
@@ -14,6 +15,7 @@ upstream IDENTITY {
 
 upstream IDENTITY_ADMIN {
   ip_hash;
+  # server vitamui-{{ vitamui.ui_identity_admin.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_identity_admin.port_service }};
 {% for h in groups['hosts_ui_identity_admin'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_identity_admin.port_service }};
 {% endfor %}
@@ -21,6 +23,7 @@ upstream IDENTITY_ADMIN {
 
 upstream CAS {
   ip_hash;
+  # server vitamui-{{ vitamui.cas_server.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.cas_server.port_service }};
 {% for h in groups['hosts_cas_server'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.cas_server.port_service }};
 {% endfor %}
@@ -28,61 +31,67 @@ upstream CAS {
 
 upstream PORTAL {
   ip_hash;
+  # server vitamui-{{ vitamui.ui_portal.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_portal.port_service }};
 {% for h in groups['hosts_ui_portal'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_portal.port_service }};
 {% endfor %}
 }
+{% if groups.get('hosts_ui_referential', []) | length > 0 %}
 
-{% if groups['hosts_ui_referential']|length > 0 %}
 upstream REFERENTIAL {
   ip_hash;
-{% for h in groups['hosts_ui_referential'] %}
+  # server vitamui-{{ vitamui.ui_referential.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_referential.port_service }};
+  {% for h in groups['hosts_ui_referential'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_referential.port_service }};
-{% endfor %}
+  {% endfor %}
 }
 {% endif %}
+{% if groups.get('hosts_ui_ingest', []) | length > 0 %}
 
-{% if groups['hosts_ui_ingest']|length > 0 %}
 upstream INGEST {
   ip_hash;
-{% for h in groups['hosts_ui_ingest'] %}
+  # server vitamui-{{ vitamui.ui_ingest.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_ingest.port_service }};
+  {% for h in groups['hosts_ui_ingest'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_ingest.port_service }};
-{% endfor %}
+  {% endfor %}
 }
 {% endif %}
+{% if groups.get('hosts_ui_archive_search', []) | length > 0 %}
 
-{% if groups['hosts_ui_archive_search']|length > 0 %}
 upstream ARCHIVE_SEARCH {
   ip_hash;
-{% for h in groups['hosts_ui_archive_search'] %}
+  # server vitamui-{{ vitamui.ui_archive_search.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_archive_search.port_service }};
+  {% for h in groups['hosts_ui_archive_search'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_archive_search.port_service }};
-{% endfor %}
+  {% endfor %}
 }
 {% endif %}
+{% if groups.get('hosts_ui_collect', []) | length > 0 %}
 
-{% if groups['hosts_ui_collect']|length > 0 %}
 upstream COLLECT {
   ip_hash;
-{% for h in groups['hosts_ui_collect'] %}
+  # server vitamui-{{ vitamui.ui_collect.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_collect.port_service }};
+  {% for h in groups['hosts_ui_collect'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_collect.port_service }};
-{% endfor %}
+  {% endfor %}
 }
 {% endif %}
+{% if groups.get('hosts_ui_pastis', []) | length > 0 %}
 
-{% if groups['hosts_ui_pastis']|length > 0 %}
 upstream PASTIS {
   ip_hash;
-{% for h in groups['hosts_ui_pastis'] %}
+  # server vitamui-{{ vitamui.ui_pastis.vitamui_component }}.service.{{ consul_domain }}:{{ vitamui.ui_pastis.port_service }};
+  {% for h in groups['hosts_ui_pastis'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_pastis.port_service }};
-{% endfor %}
+  {% endfor %}
 }
 {% endif %}
+{% if groups.get('hosts_ui_design_system', []) | length > 0 %}
 
-{% if groups.get('hosts_ui_design_system', [])|length > 0 %}
 upstream DESIGN_SYSTEM {
   ip_hash;
-{% for h in groups.get('hosts_ui_design_system', []) %}
+  {% for h in groups['hosts_ui_design_system'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_design_system.port_service }};
-{% endfor %}
+  {% endfor %}
 }
 {% endif %}

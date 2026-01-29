@@ -25,11 +25,11 @@ server:
   port: {{ vitamui_struct.port_service }}
 {% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-    trust-store-password: {{ password_truststore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.p12
+    trust-store-password: {{ truststore_vitamui }}
 {% endif %}
   max-http-request-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:

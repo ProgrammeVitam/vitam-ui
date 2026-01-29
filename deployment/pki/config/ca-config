@@ -7,7 +7,7 @@ default_ca      = ca_root
 
 [ ca_root ]
 dir             = ./pki
-certs           = $dir/ca/client-external
+certs           = $dir/ca/${ENV::OPENSSL_CA_DIR}
 new_certs_dir   = $dir/tempcerts
 database        = $dir/config/${ENV::OPENSSL_CA_DIR}/index.txt
 certificate     = $dir/ca/${ENV::OPENSSL_CA_DIR}/ca-root.crt
@@ -43,7 +43,6 @@ L = paris
 O = vitamui
 OU = authorities
 CN = ${ENV::OPENSSL_CN}
-
 
 # Certificates creation parameters : extensions
 

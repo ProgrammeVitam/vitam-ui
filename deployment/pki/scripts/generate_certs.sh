@@ -23,7 +23,6 @@ function generateCerts {
     pki_logger "Génération des certificats serveurs"
     # Zone interne
     generateServerCertAndStorePassphrase            security            vitamui-services
-    generateServerAndClientCertAndStorePassphrase   api-gateway         vitamui-services
 
     #Zone externe
     generateServerAndClientCertAndStorePassphrase   iam                 vitamui-services
@@ -33,6 +32,7 @@ function generateCerts {
     generateServerAndClientCertAndStorePassphrase   archive-search      vitamui-services
     generateServerAndClientCertAndStorePassphrase   collect             vitamui-services
     generateServerAndClientCertAndStorePassphrase   pastis              vitamui-services
+    generateServerAndClientCertAndStorePassphrase   api-gateway         vitamui-services
 
     #Zone UI
     generateServerAndClientCertAndStorePassphrase   ui-portal           vitamui-services
@@ -43,10 +43,9 @@ function generateCerts {
     generateServerAndClientCertAndStorePassphrase   ui-archive-search   vitamui-services
     generateServerAndClientCertAndStorePassphrase   ui-collect          vitamui-services
     generateServerAndClientCertAndStorePassphrase   ui-pastis           vitamui-services
-    generateServerCertAndStorePassphrase            ui-design-system    vitamui-services
 
     #Reverse
-    generateServerCertAndStorePassphrase            reverse             hosts_vitamui_reverseproxy    vitamui-services
+    generateServerCertAndStorePassphrase            reverse             vitamui-services
 
     # Example of generated client cert for a customer allowing to perform request on external APIs
     # generateClientCertAndStorePassphrase customer_x              client-external

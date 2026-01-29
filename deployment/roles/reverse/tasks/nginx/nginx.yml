@@ -28,6 +28,7 @@
     - reverse.crt
     - reverse.key
     - dhparam.pem
+    - vitamui-services-ca-bundle.pem
   notify: reload nginx
 
 - name: Ensure nginx is started

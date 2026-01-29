@@ -17,7 +17,7 @@ spring:
 server:
 {% if vitamui_struct.secure | default(secure) | bool == true %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12
     key-store-password: {{ password_keystore_server }}
     key-password: {{ password_keystore_server }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
@@ -63,17 +63,16 @@ vitamui.cas.identity: cas
 iam-client:
   server-host: {{ vitamui.iam.host }}
   server-port: {{ vitamui.iam.port_service }}
-{% if vitamui.iam.secure | default(secure) | bool == true %}
-  secure: {{ vitamui.iam.secure | default(secure) | lower }}
+{% if vitamui.iam.secure | default(secure) | bool %}
+  secure: true
   ssl-configuration:
     keystore:
-      key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
+      key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
       key-password: {{ password_keystore_client }}
-      type: JKS
     truststore:
-      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-      key-password: {{ password_truststore }}
-    hostname-verification: true
+      key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
+      key-password: {{ truststore_vitamui }}
+    hostname-verification: {{ vitamui.iam.ssl_hostname_verification | default(ssl_hostname_verification) | lower }}
 {% endif %}
 
 cas.authn.accept.users:

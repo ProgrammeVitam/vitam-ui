@@ -48,9 +48,9 @@
   file:
     path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/{{ vitamui_struct.vitamui_component }}"
     state: directory
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
   with_items:
     - app
     - bin
@@ -66,9 +66,9 @@
   file:
     path: "{{ vitamui_folder_conf }}/sysconfig"
     state: directory
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
   notify: restart service
   when: install_mode != "container"
 
@@ -83,9 +83,9 @@
   template:
     src: java_opts.j2
     dest: "{{ vitamui_folder_conf }}/sysconfig/java_opts"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   tags:
     - update_vitamui_jvmopts
     - update_vitamui_configuration
@@ -95,7 +95,7 @@
 - name: get passwd for vitamui
   getent:
     database: passwd
-    key: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    key: "{{ vitamui_defaults.users.vitamui }}"
 
 - name: Deploy systemd service file
   template:
@@ -112,9 +112,9 @@
   template:
     src: logback.xml.j2
     dest: "{{ vitamui_folder_conf }}/logback.xml"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   tags: update_vitamui_configuration
   notify: restart service
 
@@ -122,9 +122,9 @@
   template:
     src: "{{ item }}"
     dest: "{{ vitamui_folder_conf }}/{{ item | basename | regex_replace('\\.j2$') }}"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   with_fileglob:
     - "{{ role_path }}/templates/{{ vitamui_struct.vitamui_component }}/*"
   #no_log: "{{ hide_passwords_during_deploy }}"
@@ -133,61 +133,56 @@
     - update_vitamui_certificates # Mandatory to update configuration file containing keystore password
   notify: restart service
 
-- name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (server)"
-  copy:
-    src: "{{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
-    dest: "{{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  when:
-    - vitamui_struct.secure | default(secure) | lower == 'true'
-    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == ''
-  tags: update_vitamui_certificates
-  notify: restart service
+- block: # when secure is true
 
-- name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (client)"
-  copy:
-    src: "{{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
-    dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  when:
-    - vitamui_struct.secure | default(secure) | lower == 'true'
-    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == ''
-  tags: update_vitamui_certificates
-  notify: restart service
+    - name: "Copy {{ vitamui_struct.vitamui_component }} jks keystore (server)"
+      copy:
+        src: "{{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12"
+        dest: "{{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12"
+        owner: "{{ vitamui_defaults.users.vitamui }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: "{{ vitamui_defaults.folder.folder_permission }}"
+      tags: update_vitamui_certificates
+      notify: restart service
 
-# Copy the trustore for all vitamui components in order to communicate between them.
-- name: Copy vitamui-services truststore
-  copy:
-    src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.jks"
-    dest: "{{ vitamui_folder_conf }}/truststore_vitamui.jks"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  when:
-    - vitamui_struct.secure | default(secure) | lower == 'true'
-    - vitamui_certificate_type | default('none') | lower == 'vitamui-services'
-    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.jks || echo nofile') == ''
-  tags: update_vitamui_certificates
-  notify: restart service
+    - name: "Copy {{ vitamui_struct.vitamui_component }} jks keystore (client)"
+      copy:
+        src: "{{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12"
+        dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12"
+        owner: "{{ vitamui_defaults.users.vitamui }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: "{{ vitamui_defaults.folder.folder_permission }}"
+      when:
+        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12 || echo nofile') == ''
+      tags: update_vitamui_certificates
+      notify: restart service
 
-# Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
-- name: Copy external truststore
-  copy:
-    src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks"
-    dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  when:
-    - vitamui_struct.secure | default(secure) | lower == 'true'
-    - vitamui_certificate_type | default('none') | lower == 'external'
-    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks || echo nofile') == ''
-  tags: update_vitamui_certificates
-  notify: restart service
+    # Copy the trustore for all vitamui components in order to communicate between them.
+    - name: Copy vitamui-services truststore
+      copy:
+        src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.p12"
+        dest: "{{ vitamui_folder_conf }}/truststore_vitamui.p12"
+        owner: "{{ vitamui_defaults.users.vitamui }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: "{{ vitamui_defaults.folder.folder_permission }}"
+      tags: update_vitamui_certificates
+      notify: restart service
+
+    # Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
+    - name: Copy external truststore
+      copy:
+        src: "{{ inventory_dir }}/keystores/client-external/truststore_external.p12"
+        dest: "{{ vitamui_folder_conf }}/truststore_external.p12"
+        owner: "{{ vitamui_defaults.users.vitamui }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: "{{ vitamui_defaults.folder.folder_permission }}"
+      when:
+        - vitamui_certificate_type | default('none') | lower == 'external'
+        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-external/truststore_external.p12 || echo nofile') == ''
+      tags: update_vitamui_certificates
+      notify: restart service
+
+  when: vitamui_struct.secure | default(secure) | bool
 
 - name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}"
   include_tasks: "{{ vitamui_struct.vitamui_component }}.yml"

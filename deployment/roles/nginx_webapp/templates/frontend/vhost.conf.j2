@@ -36,10 +36,15 @@ server {
     {% endfor %}
     deny all; # Deny access to all other IP addresses
 
-    proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://API-GATEWAY;
-    proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
-    proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;
+    set $api_gateway_dns "vitamui-{{ vitamui.api_gateway.vitamui_component }}.service.{{ consul_domain }}";
+    proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://$api_gateway_dns:{{ vitamui.api_gateway.port_service }};
+    # proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://API-GATEWAY;
+    {% if vitamui_struct.vitamui_component != 'ui-design-system' %}
+    proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.crt;
+    proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.key;
     proxy_ssl_session_reuse off;
+    # proxy_ssl_password_file {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}_client.key_pass;
+    {% endif %}
 
     {% if vitamui_struct.vitamui_component in [ 'ui-ingest', 'ui-collect' ] %}
     # http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering
