@@ -1,8 +1,12 @@
 #jinja2: lstrip_blocks: True
 server {
 
-  listen {{ ip_service }}:443 ssl;
+{% if vitamui_reverse_external_protocol | lower == 'https' %}
+  listen {{ ip_service }}:{{ reverse_proxy_port }} ssl;
   include {{ nginx_ssl_dir }}/ssl.conf;
+{% else %}
+  listen {{ ip_service }}:{{ reverse_proxy_port }};
+{% endif %}
 
   server_name {{ vitamui_reverse_external_dns }};
 
