@@ -921,14 +921,10 @@
                     </execution>
                 </executions>
             </plugin>
-
-
-
             <plugin>
                 <groupId>com.gitlab.haynes</groupId>
                 <artifactId>libsass-maven-plugin</artifactId>
                 <version>${libsass-maven-plugin.version}</version>
-                <!--
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -937,7 +933,6 @@
                         </goals>
                     </execution>
                 </executions>
-                -->
                 <configuration>
                     <inputPath>${project.basedir}/src/main/config/sass</inputPath>
                     <outputPath>${project.basedir}/src/main/resources/static/css</outputPath>
