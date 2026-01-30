@@ -36,9 +36,11 @@
  */
 package fr.gouv.vitamui.cas.webflow.configurer;
 
+import fr.gouv.vitamui.cas.webflow.actions.CheckSubrogationAction;
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
 import fr.gouv.vitamui.cas.webflow.actions.ListCustomersAction;
 import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
+import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -65,9 +67,11 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
 
     private static final String VIEW_STATE_PASSWORD_FORM = "viewPwfForm";
     private static final String VIEW_STATE_LOGIN_CUSTOMER_FORM = "viewStateCustomerForm";
+    private static final String VIEW_STATE_SUBROGATION_FORM = "viewSubrogationForm";
     private static final String ACTION_STATE_TRIGGER_CHANGE_PASSWORD = "triggerChangePassword"; // NOSONAR
     private static final String ACTION_STATE_INTERMEDIATE_SUBMIT = "intermediateSubmit";
     private static final String ACTION_STATE_LIST_CUSTOMERS = "listCustomers";
+    private static final String ACTION_STATE_CHECK_SUBROGATION = "checkSubrogation";
     private static final String ACTION_STATE_SELECTED_CUSTOMER_SUBMIT = "selectedCustomerSubmit";
     public static final String TRANSITION_TO_CUSTOMER_SELECTION_VIEW = "customerSelectionView";
     public static final String TRANSITION_TO_CUSTOMER_SELECTED = "customerSelected";
@@ -89,6 +93,44 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         final CasConfigurationProperties casProperties
     ) {
         super(flowBuilderServices, flowDefinitionRegistry, applicationContext, casProperties);
+    }
+
+    @Override
+    protected void doInitialize() {
+        super.doInitialize();
+        val flow = getLoginFlow();
+        if (flow != null) {
+            createCheckSubrogationAction(flow);
+            createSubrogationFormView(flow);
+        }
+    }
+
+    private void createCheckSubrogationAction(final Flow flow) {
+        val checkSubrogation = createActionState(flow, ACTION_STATE_CHECK_SUBROGATION, "checkSubrogationAction");
+        createTransitionForState(checkSubrogation, CheckSubrogationAction.SUBROGATION, VIEW_STATE_SUBROGATION_FORM);
+        createTransitionForState(
+            checkSubrogation,
+            CheckSubrogationAction.PROCEED,
+            CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM
+        );
+
+        val initLoginState = getTransitionableState(flow, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
+        createTransitionForState(
+            initLoginState,
+            CasWebflowConstants.TRANSITION_ID_SUCCESS,
+            ACTION_STATE_CHECK_SUBROGATION,
+            true
+        );
+    }
+
+    protected void createSubrogationFormView(final Flow flow) {
+        var propertiesToBind = Map.of(USERNAME, Map.of("required", "false"));
+        var binder = createStateBinderConfiguration(propertiesToBind);
+
+        var state = createViewState(flow, VIEW_STATE_SUBROGATION_FORM, TEMPLATE_EMAIL_FORM, binder);
+        createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
+
+        createTransitionForState(state, CasWebflowConstants.TRANSITION_ID_SUBMIT, ACTION_STATE_INTERMEDIATE_SUBMIT);
     }
 
     @Override

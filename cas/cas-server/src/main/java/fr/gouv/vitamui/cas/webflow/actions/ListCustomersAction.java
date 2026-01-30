@@ -39,7 +39,6 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -66,8 +65,6 @@ import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigure
 
 /**
  * This class lists users matching provided login email:
- * - if subrogation mode : customerId is already provided in scope ==> continue
- * to dispatcher
  * - if a single user is found ==> continue to dispatcher
  * - if multiple users found ==> redirect to customer selection page
  * - if no user found : act as if it exists (to avoid account existence
@@ -98,52 +95,7 @@ public class ListCustomersAction extends AbstractAction {
     protected Event doExecute(final RequestContext requestContext) throws IOException {
         var flowScope = requestContext.getFlowScope();
 
-        if (isSubrogationMode(flowScope)) {
-            return processSubrogationRequest(flowScope);
-        } else {
-            return processEmailInput(requestContext, flowScope);
-        }
-    }
-
-    private Event processSubrogationRequest(MutableAttributeMap<Object> flowScope) throws IOException {
-        // We came from subrogation validation (emailForm)
-        String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
-        String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
-        String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
-        String superUserCustomerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
-
-        LOGGER.debug(
-            "Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
-            surrogateEmail,
-            surrogateCustomerId,
-            superUserEmail,
-            superUserCustomerId
-        );
-
-        ParameterChecker.checkParameter(
-            "Missing subrogation params",
-            surrogateEmail,
-            surrogateCustomerId,
-            superUserEmail,
-            superUserCustomerId
-        );
-
-        // Filter by both email (domain) & customerId
-        Optional<IdentityProviderDto> providerDto = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            providersService.getProviders(),
-            superUserEmail,
-            superUserCustomerId
-        );
-        if (providerDto.isEmpty()) {
-            LOGGER.error(
-                "No provider found for superUserEmail / superUserCustomerId: {}",
-                superUserEmail,
-                superUserCustomerId
-            );
-            return new Event(this, BAD_CONFIGURATION);
-        }
-
-        return handleSingleAuthenticationProvider(flowScope, superUserEmail, superUserCustomerId);
+        return processEmailInput(requestContext, flowScope);
     }
 
     private Event processEmailInput(RequestContext requestContext, MutableAttributeMap<Object> flowScope) {
@@ -298,9 +250,5 @@ public class ListCustomersAction extends AbstractAction {
     private List<UserDto> getUsers(String email) {
         // TODO: email context ?
         return casApi.getUsersByEmail(email, null);
-    }
-
-    private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {
-        return flowScope.contains(Constants.FLOW_SURROGATE_EMAIL);
     }
 }

@@ -44,6 +44,7 @@ import fr.gouv.vitamui.cas.passwordless.CustomPasswordlessDetermineDelegatedAuth
 import fr.gouv.vitamui.cas.passwordless.CustomVerifyPasswordlessAccountAuthenticationAction;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.webflow.actions.CheckMfaTokenAction;
+import fr.gouv.vitamui.cas.webflow.actions.CheckSubrogationAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomDelegatedClientAuthenticationAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomSendTokenAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomerSelectedAction;
@@ -161,6 +162,11 @@ public class WebflowConfig {
         return new DefaultTransientSessionTicketFactory(
             new PmTransientSessionTicketExpirationPolicyBuilder(casProperties)
         );
+    }
+
+    @Bean
+    public Action checkSubrogationAction(final CasApi casApi) {
+        return new CheckSubrogationAction(casApi);
     }
 
     // TODO: Check because email generation is not the same than xelians.
@@ -555,7 +561,7 @@ public class WebflowConfig {
     }
 
     /*
-        TODO: chez xelians, voir si nécessaire.
+     * TODO: chez xelians, voir si nécessaire.
      */
 
     @Bean
