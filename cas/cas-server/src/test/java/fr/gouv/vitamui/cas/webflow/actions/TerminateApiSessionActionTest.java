@@ -88,7 +88,9 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
         when(fakeTgt.getAuthentication()).thenReturn(fakeAuth);
         when(fakeAuth.getPrincipal()).thenReturn(() -> "tgtId");
         when(cas.createTicketGrantingTicket(any())).thenReturn(fakeTgt);
-        when(cas.grantServiceTicket(anyString(), any(WebApplicationService.class), any())).thenReturn(mock(ServiceTicket.class));
+        when(cas.grantServiceTicket(anyString(), any(WebApplicationService.class), any())).thenReturn(
+            mock(ServiceTicket.class)
+        );
 
         List<SingleLogoutRequestContext> result = action.performGeneralLogoutPublic("tgtId");
         Assert.assertNotNull(result);
@@ -100,6 +102,7 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
     }
 
     private static class TestableTerminateApiSessionAction extends TerminateApiSessionAction {
+
         public TestableTerminateApiSessionAction(
             CentralAuthenticationService cas,
             CasCookieBuilder ticketCookie,
@@ -114,9 +117,21 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
             Action frontChannelLogoutAction,
             TicketRegistry ticketRegistry
         ) {
-            super(cas, ticketCookie, warnCookie, logoutProps, logoutManager,
-                ctx, utils, casApi, servicesManager, casProperties,
-                frontChannelLogoutAction, ticketRegistry, null);
+            super(
+                cas,
+                ticketCookie,
+                warnCookie,
+                logoutProps,
+                logoutManager,
+                ctx,
+                utils,
+                casApi,
+                servicesManager,
+                casProperties,
+                frontChannelLogoutAction,
+                ticketRegistry,
+                null
+            );
         }
 
         // Expose protected method as public for testing
@@ -124,5 +139,4 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
             return performGeneralLogout(tgtId);
         }
     }
-
 }

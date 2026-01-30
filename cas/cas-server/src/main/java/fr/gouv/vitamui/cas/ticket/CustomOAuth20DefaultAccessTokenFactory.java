@@ -65,25 +65,26 @@ import java.util.List;
 public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccessTokenFactory {
 
     public CustomOAuth20DefaultAccessTokenFactory(
-            final UniqueTicketIdGenerator accessTokenIdGenerator,
-            final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicyBuilder,
-            final JwtBuilder jwtBuilder,
-            final ServicesManager servicesManager,
-            final TicketTrackingPolicy descendantTicketsTrackingPolicy) {
+        final UniqueTicketIdGenerator accessTokenIdGenerator,
+        final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicyBuilder,
+        final JwtBuilder jwtBuilder,
+        final ServicesManager servicesManager,
+        final TicketTrackingPolicy descendantTicketsTrackingPolicy
+    ) {
         super(
-                accessTokenIdGenerator,
-                expirationPolicyBuilder,
-                jwtBuilder,
-                servicesManager,
-                descendantTicketsTrackingPolicy);
+            accessTokenIdGenerator,
+            expirationPolicyBuilder,
+            jwtBuilder,
+            servicesManager,
+            descendantTicketsTrackingPolicy
+        );
     }
 
     @Override
     protected String generateAccessTokenId(final Service service, final Authentication authentication)
-            throws Throwable {
-        val request = ((ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder
-                .getRequestAttributes())
-                .getRequest();
+        throws Throwable {
+        val request =
+            ((ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.getRequestAttributes()).getRequest();
         final Principal principal = authentication.getPrincipal();
         String authToken;
         final List<Object> values = principal.getAttributes().get(CommonConstants.AUTHTOKEN_ATTRIBUTE);

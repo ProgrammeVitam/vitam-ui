@@ -100,8 +100,15 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
         final TicketRegistry ticketRegistry,
         final SingleLogoutRequestExecutor singleLogoutRequestExecutor
     ) {
-        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, logoutProperties,
-            logoutManager, applicationContext, singleLogoutRequestExecutor);
+        super(
+            centralAuthenticationService,
+            ticketGrantingTicketCookieGenerator,
+            warnCookieGenerator,
+            logoutProperties,
+            logoutManager,
+            applicationContext,
+            singleLogoutRequestExecutor
+        );
         this.utils = utils;
         this.casApi = casApi;
         this.servicesManager = servicesManager;
@@ -129,11 +136,19 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
                     final Principal principal = ticket.getAuthentication().getPrincipal();
                     final Map<String, List<Object>> attributes = principal.getAttributes();
                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
-                    final String superUserEmail = Optional.ofNullable((String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE)).orElse("");
-                    final String superUserCustomerId = Optional.ofNullable((String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE)).orElse("");
+                    final String superUserEmail = Optional.ofNullable(
+                        (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE)
+                    ).orElse("");
+                    final String superUserCustomerId = Optional.ofNullable(
+                        (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE)
+                    ).orElse("");
 
-                    LOGGER.debug("Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
-                        authToken, superUserEmail, superUserCustomerId);
+                    LOGGER.debug(
+                        "Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
+                        authToken,
+                        superUserEmail,
+                        superUserCustomerId
+                    );
 
                     casApi.logout(authToken, superUserEmail, superUserCustomerId);
                 }
@@ -175,7 +190,9 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
                 .build(new DefaultPrincipalElectionStrategy()); // PrincipalElectionStrategy trivial
 
             // 3️⃣ Crée le TGT factice via l'API CAS 7
-            TicketGrantingTicket fakeTgt = centralAuthenticationService.createTicketGrantingTicket(authenticationResult);
+            TicketGrantingTicket fakeTgt = centralAuthenticationService.createTicketGrantingTicket(
+                authenticationResult
+            );
 
             Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
             // Préparer le factory de services CAS
@@ -189,20 +206,14 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
                     WebApplicationService service = serviceFactory.createService(logoutUrl);
 
                     // Génère le ST factice lié au TGT factice
-                    centralAuthenticationService.grantServiceTicket(
-                        fakeTgt.getId(),
-                        service,
-                        authenticationResult
-                    );
+                    centralAuthenticationService.grantServiceTicket(fakeTgt.getId(), service, authenticationResult);
                     // Pas besoin de collecter les ST dans une liste
                 }
             }
 
             // Ensuite le logout général
             return logoutManager.performLogout(
-                SingleLogoutExecutionRequest.builder()
-                    .ticketGrantingTicket(fakeTgt)
-                    .build()
+                SingleLogoutExecutionRequest.builder().ticketGrantingTicket(fakeTgt).build()
             );
         } catch (Throwable e) {
             LOGGER.error("Unable to perform general logout", e);
@@ -213,6 +224,7 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
     @Getter
     @RequiredArgsConstructor
     private static class FakePrincipal implements Principal {
+
         private final String id;
     }
 }

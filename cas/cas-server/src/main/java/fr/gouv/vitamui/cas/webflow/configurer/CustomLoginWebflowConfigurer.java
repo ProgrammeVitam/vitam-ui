@@ -83,50 +83,58 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
     public static final String CUSTOMER_ID = "customerId";
 
     public CustomLoginWebflowConfigurer(
-            final FlowBuilderServices flowBuilderServices,
-            final FlowDefinitionRegistry flowDefinitionRegistry,
-            final ConfigurableApplicationContext applicationContext,
-            final CasConfigurationProperties casProperties) {
+        final FlowBuilderServices flowBuilderServices,
+        final FlowDefinitionRegistry flowDefinitionRegistry,
+        final ConfigurableApplicationContext applicationContext,
+        final CasConfigurationProperties casProperties
+    ) {
         super(flowBuilderServices, flowDefinitionRegistry, applicationContext, casProperties);
     }
 
     @Override
     protected void createTicketGrantingTicketCheckAction(final Flow flow) {
         var action = createActionState(
-                flow,
-                CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
-                CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK);
+            flow,
+            CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
+            CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK
+        );
         createTransitionForState(
-                action,
-                CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_NOT_EXISTS,
-                CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK);
+            action,
+            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_NOT_EXISTS,
+            CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK
+        );
         createTransitionForState(
-                action,
-                CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_INVALID,
-                CasWebflowConstants.STATE_ID_TERMINATE_SESSION);
+            action,
+            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_INVALID,
+            CasWebflowConstants.STATE_ID_TERMINATE_SESSION
+        );
         // CUSTO: instead of STATE_ID_HAS_SERVICE_CHECK, send to
         // STATE_ID_TRIGGER_CHANGE_PASSWORD
         createTransitionForState(
-                action,
-                CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_VALID,
-                ACTION_STATE_TRIGGER_CHANGE_PASSWORD);
+            action,
+            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_VALID,
+            ACTION_STATE_TRIGGER_CHANGE_PASSWORD
+        );
 
         createTriggerChangePasswordAction(flow);
     }
 
     private void createTriggerChangePasswordAction(final Flow flow) {
         final ActionState action = createActionState(
-                flow,
-                ACTION_STATE_TRIGGER_CHANGE_PASSWORD,
-                "triggerChangePasswordAction");
+            flow,
+            ACTION_STATE_TRIGGER_CHANGE_PASSWORD,
+            "triggerChangePasswordAction"
+        );
         createTransitionForState(
-                action,
-                TriggerChangePasswordAction.EVENT_ID_CHANGE_PASSWORD,
-                CasWebflowConstants.STATE_ID_MUST_CHANGE_PASSWORD);
+            action,
+            TriggerChangePasswordAction.EVENT_ID_CHANGE_PASSWORD,
+            CasWebflowConstants.STATE_ID_MUST_CHANGE_PASSWORD
+        );
         createTransitionForState(
-                action,
-                TriggerChangePasswordAction.EVENT_ID_CONTINUE,
-                CasWebflowConstants.STATE_ID_HAS_SERVICE_CHECK);
+            action,
+            TriggerChangePasswordAction.EVENT_ID_CONTINUE,
+            CasWebflowConstants.STATE_ID_HAS_SERVICE_CHECK
+        );
     }
 
     @Override
@@ -140,9 +148,10 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         // CUSTO: CasWebflowConstants.STATE_ID_REAL_SUBMIT becomes
         // ACTION_STATE_LIST_CUSTOMERS
         var transition = createTransitionForState(
-                state,
-                CasWebflowConstants.TRANSITION_ID_SUBMIT,
-                ACTION_STATE_LIST_CUSTOMERS);
+            state,
+            CasWebflowConstants.TRANSITION_ID_SUBMIT,
+            ACTION_STATE_LIST_CUSTOMERS
+        );
         var attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
         attributes.put("validate", Boolean.TRUE);
@@ -160,9 +169,10 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_SUCCESS, VIEW_STATE_PASSWORD_FORM);
         createTransitionForState(action, DispatcherAction.TRANSITION_SELECT_CUSTOMER, VIEW_STATE_LOGIN_CUSTOMER_FORM);
         createTransitionForState(
-                action,
-                CasWebflowConstants.TRANSITION_ID_STOP,
-                CasWebflowConstants.STATE_ID_STOP_WEBFLOW);
+            action,
+            CasWebflowConstants.TRANSITION_ID_STOP,
+            CasWebflowConstants.STATE_ID_STOP_WEBFLOW
+        );
         createTransitionForState(action, DispatcherAction.DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
         createTransitionForState(action, DispatcherAction.BAD_CONFIGURATION, TEMPLATE_BAD_CONFIGURATION);
         createEndState(flow, TEMPLATE_BAD_CONFIGURATION, TEMPLATE_BAD_CONFIGURATION);
@@ -170,28 +180,31 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
 
     protected void createPwdFormView(final Flow flow) {
         var propertiesToBind = Map.of(
-                USERNAME,
-                Map.of("required", "true"),
-                PASSWORD,
-                Map.of("converter", StringToCharArrayConverter.ID));
+            USERNAME,
+            Map.of("required", "true"),
+            PASSWORD,
+            Map.of("converter", StringToCharArrayConverter.ID)
+        );
         var binder = createStateBinderConfiguration(propertiesToBind);
 
         var state = createViewState(flow, VIEW_STATE_PASSWORD_FORM, TEMPLATE_PASSWORD_FORM, binder);
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
         var transition = createTransitionForState(
-                state,
-                CasWebflowConstants.TRANSITION_ID_SUBMIT,
-                CasWebflowConstants.STATE_ID_REAL_SUBMIT);
+            state,
+            CasWebflowConstants.TRANSITION_ID_SUBMIT,
+            CasWebflowConstants.STATE_ID_REAL_SUBMIT
+        );
         var attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
         attributes.put("validate", Boolean.TRUE);
         attributes.put("history", History.INVALIDATE);
 
         createTransitionForState(
-                state,
-                CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD,
-                CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO);
+            state,
+            CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD,
+            CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
+        );
     }
 
     private void createListCustomersAction(final Flow flow) {
@@ -206,9 +219,10 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         var binder = createStateBinderConfiguration(propertiesToBind);
         var state = createViewState(flow, VIEW_STATE_LOGIN_CUSTOMER_FORM, TEMPLATE_CUSTOMER_FORM, binder);
         var transition = createTransitionForState(
-                state,
-                CasWebflowConstants.TRANSITION_ID_SUBMIT,
-                ACTION_STATE_SELECTED_CUSTOMER_SUBMIT);
+            state,
+            CasWebflowConstants.TRANSITION_ID_SUBMIT,
+            ACTION_STATE_SELECTED_CUSTOMER_SUBMIT
+        );
         var attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
         attributes.put("validate", Boolean.TRUE);

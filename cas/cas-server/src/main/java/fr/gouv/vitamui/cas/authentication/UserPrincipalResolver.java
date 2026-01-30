@@ -511,7 +511,9 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(CENTER_CODES, Collections.singletonList(authUser.getCenterCodes()));
         final Set<String> roles = new HashSet<>();
         if (authUser.getProfileGroup() != null) {
-            authUser.getProfileGroup().getProfiles()
+            authUser
+                .getProfileGroup()
+                .getProfiles()
                 .forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
         }
         attributes.put(ROLES_ATTRIBUTE, new ArrayList<>(roles));
