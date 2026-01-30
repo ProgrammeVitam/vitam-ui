@@ -40,6 +40,8 @@ function generateCerts {
     generateHostCertAndStorePassphrase   pastis-external         hosts_vitamui_pastis_external
 
     pki_logger "Génération des certificats clients"
+    generateClientCertAndStorePassphrase cas-server              client-external
+
     #Zone UI
     generateClientCertAndStorePassphrase ui-portal               client-external
     generateClientCertAndStorePassphrase ui-identity             client-external

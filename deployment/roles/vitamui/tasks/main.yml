@@ -133,6 +133,19 @@
     - update_vitamui_certificates # Mandatory to update configuration file containing keystore password
   notify: restart service
 
+- name: "Copy {{ vitamui_struct.vitamui_component }} jks keystore (client-external)"
+  copy:
+    src: "{{ inventory_dir }}/keystores/client-external/keystore_{{ vitamui_struct.vitamui_component }}.p12"
+    dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  when:
+    - vitamui_struct.vitamui_component == 'cas-server'
+    - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-external/keystore_{{ vitamui_struct.vitamui_component }}.p12 || echo nofile') == ''
+  tags: update_vitamui_certificates
+  notify: restart service
+
 - name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (server)"
   copy:
     src: "{{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"

@@ -25,9 +25,9 @@ db.certificates.insertOne({
     {% endif %}
 {%- endmacro %}
 
-{{ process('{{ pki_dir }}/server/hosts/%host%/cas-server.pem', 'cas_context', 'hosts_cas_server') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/iam-internal.pem', 'iam_internal_context', 'hosts_vitamui_iam_internal') }}
 
+{{ insertCertificate('{{ pki_dir }}/client-external/clients/cas-server/cas-server.pem', 'cas_context') }}
 {{ insertCertificate('{{ pki_dir }}/client-external/clients/ui-portal/ui-portal.pem', 'ui_portal_context') }}
 {{ insertCertificate('{{ pki_dir }}/client-external/clients/ui-identity/ui-identity.pem', 'ui_identity_context') }}
 {{ insertCertificate('{{ pki_dir }}/client-external/clients/ui-identity-admin/ui-identity-admin.pem', 'ui_admin_identity_context') }}
