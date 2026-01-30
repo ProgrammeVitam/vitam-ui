@@ -444,21 +444,13 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return new InitPasswordConstraintsConfiguration();
     }
 
-    // TODO: Voir si nécessaire chez nous (pbs compatibilité same user on multi
-    // providers)
     @Bean
     public PasswordlessUserAccountStore passwordlessUserAccountStore(
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
-        final CasApi casApi,
-        @Value("${cas.authn.surrogate.separator}") final String surrogationSeparator
+        final CasApi casApi
     ) {
-        return new CustomPasswordlessUserAccountStore(
-            providersService,
-            identityProviderHelper,
-            casApi,
-            surrogationSeparator
-        );
+        return new CustomPasswordlessUserAccountStore(providersService, identityProviderHelper, casApi);
     }
 
     @Bean

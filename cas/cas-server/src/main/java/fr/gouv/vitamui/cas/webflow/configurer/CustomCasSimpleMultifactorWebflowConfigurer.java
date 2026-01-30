@@ -113,7 +113,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             createTransitionForState(
                 sendSimpleToken,
                 CasWebflowConstants.TRANSITION_ID_SUCCESS,
-                CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM
+                CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID
             );
             // CUSTO:
             createTransitionForState(sendSimpleToken, "missingPhone", "missingPhone");
@@ -128,7 +128,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             var binder = createStateBinderConfiguration(propertiesToBind);
             var viewLoginFormState = createViewState(
                 flow,
-                CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM,
+                CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID,
                 TEMPLATE_SIMPLE_MFA_LOGIN,
                 binder
             );
@@ -188,7 +188,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             createTransitionForState(
                 realSubmitState,
                 CasWebflowConstants.TRANSITION_ID_ERROR,
-                CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM
+                CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID
             );
         });
 

@@ -40,6 +40,7 @@ import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.logout.CustomDelegatedAuthenticationClientLogoutAction;
 import fr.gouv.vitamui.cas.logout.TerminateApiSessionAction;
 import fr.gouv.vitamui.cas.password.PmTransientSessionTicketExpirationPolicyBuilder;
+import fr.gouv.vitamui.cas.passwordless.CustomPasswordlessAuthenticationWebflowConfigurer;
 import fr.gouv.vitamui.cas.passwordless.CustomPasswordlessDetermineDelegatedAuthenticationAction;
 import fr.gouv.vitamui.cas.passwordless.CustomVerifyPasswordlessAccountAuthenticationAction;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -248,7 +249,7 @@ public class WebflowConfig {
             casProperties
         );
         c.setLogoutFlowDefinitionRegistry(logoutFlowRegistry);
-        c.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        c.setOrder(10);
         return c;
     }
 
@@ -619,5 +620,23 @@ public class WebflowConfig {
         final ConfigurableApplicationContext applicationContext
     ) {
         return new FixX509WebflowConfigurer(flowBuilderServices, loginFlowRegistry, applicationContext, casProperties);
+    }
+
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public CasWebflowConfigurer passwordlessAuthenticationWebflowConfigurer(
+        @Qualifier(
+            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
+        ) final FlowDefinitionRegistry loginFlowDefinitionRegistry,
+        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
+        final ConfigurableApplicationContext applicationContext,
+        final CasConfigurationProperties casProperties
+    ) {
+        return new CustomPasswordlessAuthenticationWebflowConfigurer(
+            flowBuilderServices,
+            loginFlowDefinitionRegistry,
+            applicationContext,
+            casProperties
+        );
     }
 }

@@ -33,18 +33,17 @@ package fr.gouv.vitamui.cas.passwordless;
 import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
+import fr.gouv.vitamui.iam.openapiclient.domain.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.api.PasswordlessRequestParser;
 import org.apereo.cas.api.PasswordlessUserAccount;
 import org.apereo.cas.api.PasswordlessUserAccountStore;
@@ -57,9 +56,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This class can dispatch the user: - either to the password page - or to an external IdP
- * (authentication delegation) - or to the bad configuration page if the user is not linked to any
- * identity provider - or to the disabled account page if the user is disabled.
+ * This class identifies the user for passwordless flow:
+ * - either to the password page (if internal)
+ * - or to an external IdP (if delegated)
  */
 @RequiredArgsConstructor
 @Slf4j
@@ -73,33 +72,24 @@ public class CustomPasswordlessUserAccountStore extends Constants implements Pas
 
     private final CasApi casApi;
 
-    private final String surrogationSeparator;
-
     @Override
     public Optional<PasswordlessUserAccount> findUser(final String u) {
         val requestContext = RequestContextHolder.getRequestContext();
         val request = WebUtils.getHttpServletRequestFromExternalWebflowContext();
         val username = requestContext.getRequestParameters().getRequired(PasswordlessRequestParser.PARAMETER_USERNAME);
-        LOGGER.debug("Username: {}", username);
-        String dispatchedUser = username;
+        LOGGER.debug("Username identification: {}", username);
+
         val flowScope = requestContext.getFlowScope();
         flowScope.put(PROVIDED_USERNAME, username);
         flowScope.put(LOGIN_USER_EMAIL_PARAM, username);
 
-        String surrogate = null;
-        if (username.contains(surrogationSeparator)) {
-            dispatchedUser = StringUtils.substringAfter(username, surrogationSeparator).trim();
-            surrogate = StringUtils.substringBefore(username, surrogationSeparator).trim();
-        }
-        flowScope.put(DISPATCHED_USERNAME, dispatchedUser);
-        LOGGER.debug("Dispatched user: {} / surrogate: {}", dispatchedUser, surrogate);
-
-        // if the user is disabled, send him to a specific page (ignore not found users: it will fail
+        // if the user is disabled, send him to a specific page (ignore not found users:
+        // it will fail
         // when checking login/password)
         UserDto dispatcherUserDto = null;
 
         try {
-            final var enabledUsers = findEnabledUsers(dispatchedUser);
+            final var enabledUsers = findEnabledUsers(username);
             final var hasNoEnabledUser = enabledUsers.isEmpty();
             if (hasNoEnabledUser) {
                 return userDisabled(request);
@@ -109,26 +99,13 @@ public class CustomPasswordlessUserAccountStore extends Constants implements Pas
             return userDisabled(request);
         } catch (final NotFoundException ignored) {}
 
-        if (surrogate != null) {
-            try {
-                final var enabledUsers = findEnabledUsers(surrogate);
-                final var hasNoEnabledUser = enabledUsers.isEmpty();
-                if (hasNoEnabledUser) {
-                    LOGGER.error("Bad status for surrogate: {}", surrogate);
-                    return userDisabled(request);
-                }
-            } catch (final InvalidFormatException e) {
-                return userDisabled(request);
-            } catch (final NotFoundException ignored) {}
-        }
-
         final List<IdentityProviderDto> providers = providersService.getProviders();
         boolean isInternal;
         Pac4jClientIdentityProviderDto provider;
 
         if (dispatcherUserDto == null) {
             provider = (Pac4jClientIdentityProviderDto) identityProviderHelper
-                .findAutoProvisioningProviderByEmail(providers, dispatchedUser)
+                .findAutoProvisioningProviderByEmail(providers, username)
                 .orElse(null);
         } else {
             provider = (Pac4jClientIdentityProviderDto) identityProviderHelper
@@ -147,7 +124,7 @@ public class CustomPasswordlessUserAccountStore extends Constants implements Pas
         }
 
         val account = new PasswordlessUserAccount();
-        account.setUsername(dispatchedUser);
+        account.setUsername(username);
         if (isInternal) {
             account.setRequestPassword(true);
             if (dispatcherUserDto != null && dispatcherUserDto.isOtp()) {
@@ -177,13 +154,12 @@ public class CustomPasswordlessUserAccountStore extends Constants implements Pas
     }
 
     /**
-     * TODO: handle same username/login across multiple providers.
      * Finds every enabled users by username/login.
      *
      * @param username to find across providers
      * @return a list of enabled users
      */
-    private List<fr.gouv.vitamui.iam.openapiclient.domain.UserDto> findEnabledUsers(String username) {
+    private List<UserDto> findEnabledUsers(String username) {
         final var users = casApi.getUsersByEmail(username, null);
         final var enabledUsers = users
             .stream()
@@ -191,7 +167,7 @@ public class CustomPasswordlessUserAccountStore extends Constants implements Pas
             .toList();
 
         if (enabledUsers.size() > 1) {
-            LOGGER.warn("Multiple users with same username/login found");
+            LOGGER.warn("Multiple users with same username/login found for {}", username);
         }
 
         return enabledUsers;

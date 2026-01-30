@@ -111,7 +111,7 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         createTransitionForState(
             checkSubrogation,
             CheckSubrogationAction.PROCEED,
-            CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM
+            CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID
         );
 
         val initLoginState = getTransitionableState(flow, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
@@ -184,15 +184,21 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         var propertiesToBind = Map.of(USERNAME, Map.of("required", "true"));
         var binder = createStateBinderConfiguration(propertiesToBind);
 
-        var state = createViewState(flow, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM, TEMPLATE_EMAIL_FORM, binder);
+        var state = createViewState(
+            flow,
+            CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID,
+            TEMPLATE_EMAIL_FORM,
+            binder
+        );
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
-        // CUSTO: CasWebflowConstants.STATE_ID_REAL_SUBMIT becomes
-        // ACTION_STATE_LIST_CUSTOMERS
+        // CUSTO: instead of ACTION_STATE_LIST_CUSTOMERS, we use the passwordless verify
+        // state
+        // to unified the identification logic.
         var transition = createTransitionForState(
             state,
             CasWebflowConstants.TRANSITION_ID_SUBMIT,
-            ACTION_STATE_LIST_CUSTOMERS
+            CasWebflowConstants.STATE_ID_PASSWORDLESS_VERIFY_ACCOUNT
         );
         var attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);

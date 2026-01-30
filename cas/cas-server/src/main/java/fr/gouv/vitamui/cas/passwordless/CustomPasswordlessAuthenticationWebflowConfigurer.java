@@ -40,7 +40,8 @@ import org.springframework.webflow.engine.Flow;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 
 /**
- * Change the passwordless webflow to handle custom use cases: user disabled + bad configuration.
+ * Change the passwordless webflow to handle custom use cases: user disabled +
+ * bad configuration.
  */
 public class CustomPasswordlessAuthenticationWebflowConfigurer extends PasswordlessAuthenticationWebflowConfigurer {
 
@@ -62,6 +63,14 @@ public class CustomPasswordlessAuthenticationWebflowConfigurer extends Passwordl
     }
 
     @Override
+    protected void doInitialize() {
+        val flow = getLoginFlow();
+        if (flow != null) {
+            createStateVerifyPasswordlessAccount(flow);
+        }
+    }
+
+    @Override
     protected void createStateVerifyPasswordlessAccount(final Flow flow) {
         val verifyAccountState = createActionState(
             flow,
@@ -80,26 +89,16 @@ public class CustomPasswordlessAuthenticationWebflowConfigurer extends Passwordl
         createTransitionForState(verifyAccountState, USER_DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
         //
 
-        if (applicationContext.containsBean(CasWebflowConstants.ACTION_ID_DETERMINE_PASSWORDLESS_DELEGATED_AUTHN)) {
-            createTransitionForState(
-                verifyAccountState,
-                CasWebflowConstants.TRANSITION_ID_SUCCESS,
-                CasWebflowConstants.STATE_ID_PASSWORDLESS_DETERMINE_DELEGATED_AUTHN
-            );
-        } else {
-            createTransitionForState(
-                verifyAccountState,
-                CasWebflowConstants.TRANSITION_ID_SUCCESS,
-                CasWebflowConstants.STATE_ID_PASSWORDLESS_DETERMINE_MFA
-            );
-        }
-
-        val state = getTransitionableState(flow, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        val transition = state.getTransition(CasWebflowConstants.TRANSITION_ID_SUCCESS);
+        // CUSTO: Success of identification MUST lead back to Vitam-UI custom flow (list
+        // orga)
         createTransitionForState(
             verifyAccountState,
-            CasWebflowConstants.TRANSITION_ID_PROMPT,
-            transition.getTargetStateId()
+            CasWebflowConstants.TRANSITION_ID_SUCCESS,
+            "listCustomers" // ACTION_STATE_LIST_CUSTOMERS in CustomLoginWebflowConfigurer
         );
+
+        // CUSTO: Also handle 'prompt' event which is signaled by passwordless
+        // verification
+        createTransitionForState(verifyAccountState, CasWebflowConstants.TRANSITION_ID_PROMPT, "listCustomers");
     }
 }
