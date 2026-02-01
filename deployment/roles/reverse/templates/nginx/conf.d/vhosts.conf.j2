@@ -103,12 +103,12 @@ server {
     client_max_body_size 0;
   }
 {% endif %}
+{% if groups.get('hosts_ui_design_system', []) | length > 0 %}
 
-{% if groups.get('hosts_ui_design_system', [])|length > 0 %}
   # DESIGN SYSTEM
   location /design-system {
     rewrite /design-system/(.*) /$1 break;
-    proxy_pass {{ 'https' if vitamui.ui_design_system.secure | default(secure) | bool else 'http' }}://DESIGN_SYSTEM;
+    proxy_pass http://DESIGN_SYSTEM;
 
     include {{ nginx_conf_dir }}/proxy_params;
   }

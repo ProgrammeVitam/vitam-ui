@@ -24,6 +24,7 @@ server {
     }
     try_files $uri $uri/ /index.html;
   }
+{% if vitamui_struct.vitamui_component != 'ui-design-system' %}
 
   {% if vitamui_struct.vitamui_component == 'ui-identity-admin' %}
   location /identity-api {
@@ -59,4 +60,5 @@ server {
     client_max_body_size 0;
     {% endif %}
   }
+{% endif %}
 }
