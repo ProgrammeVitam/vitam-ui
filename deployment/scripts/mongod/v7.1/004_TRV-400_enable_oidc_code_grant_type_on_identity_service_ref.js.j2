@@ -27,7 +27,7 @@ db.services.insertOne({
   _id: NumberInt(3),
   _class: "org.apereo.cas.services.OidcRegisteredService",
   clientId: "{{ vitamui.ui_identity_admin.clientId | default('identity-admin') }}",
-  serviceId: "{{ vitamui.ui_identity_admin.serviceId | default('^' + vitamui.ui_identity_admin.base_url | default(url_prefix+'/identity_admin') + '/.*') }}",
+  serviceId: "{{ vitamui.ui_identity_admin.serviceId | default('^' + vitamui.ui_identity_admin.base_url | default(url_prefix+'/identity-admin') + '/.*') }}",
   name: "{{ vitamui.ui_identity_admin.name | default('Identity Admin Access Management Application') }}",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],
