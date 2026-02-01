@@ -77,12 +77,12 @@ upstream PASTIS {
 {% endfor %}
 }
 {% endif %}
+{% if groups.get('hosts_ui_design_system', []) | length > 0 %}
 
-{% if groups.get('hosts_ui_design_system', [])|length > 0 %}
 upstream DESIGN_SYSTEM {
   ip_hash;
-{% for h in groups.get('hosts_ui_design_system', []) %}
+  {% for h in groups['hosts_ui_design_system'] %}
   server {{ hostvars[h].ip_service }}:{{ vitamui.ui_design_system.port_service }};
-{% endfor %}
+  {% endfor %}
 }
 {% endif %}

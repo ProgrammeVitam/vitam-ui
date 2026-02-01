@@ -66,37 +66,46 @@ vitamui:
   ui_identity:
     vitamui_component: ui-identity
     port_service: 8002
+    secure: false
   ui_identity_admin:
     vitamui_component: ui-identity-admin
     port_service: 8401
+    secure: false
     package_name: vitamui-ui-identity-rsc
   ui_referential:
     vitamui_component: ui-referential
     port_service: 8005
+    secure: false
   ui_portal:
     vitamui_component: ui-portal
     port_service: 8003
+    secure: false
     has_tenant_list: true
     has_lang_selection: true
     has_site_selection: false
   ui_ingest:
     vitamui_component: ui-ingest
     port_service: 8008
+    secure: false
   ui_archive_search:
     vitamui_component: ui-archive-search
     port_service: 8009
+    secure: false
   ui_collect:
     vitamui_component: ui-collect
     port_service: 8010
+    secure: false
 #    offline_services: # Disables online search engines in collect
 #      - agencies
 #      - archive-unit-profiles
   ui_pastis:
     vitamui_component: ui-pastis
     port_service: 9015
+    secure: false
   ui_design_system:
     vitamui_component: ui-design-system
     port_service: 9016
+    secure: false
 
   # Applications
   api_gateway:

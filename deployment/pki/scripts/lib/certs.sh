@@ -150,8 +150,10 @@ function generateClientCertificate {
     local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${CLIENT_TYPE} ${CLIENT_NAME})
     mkdir -p "${CLIENT_CERTIFICATE_PATH}"
     pki_logger "Generation de la clé..."
+    # Workaround to avoid passphrase with -nodes option problem while loading passphrase to nginx
     openssl req -newkey "${PARAM_KEY_CHIFFREMENT}" \
         -passout pass:"${MDP_KEY}" \
+        -nodes \
         -keyout "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.key" \
         -out "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.req" \
         -config "${REPERTOIRE_CONFIG}/crt-config" \
