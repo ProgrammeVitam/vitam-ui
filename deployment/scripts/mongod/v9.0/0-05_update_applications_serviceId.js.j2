@@ -13,11 +13,6 @@ db.services.updateOne({ "_id": NumberInt(2) }, {
         serviceId: "{{ vitamui.ui_identity.serviceId | default('^' + vitamui.ui_identity.base_url | default(url_prefix+'/identity') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
     }
 });
-db.services.updateOne({ "_id": NumberInt(3) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_identity_admin.serviceId | default('^' + vitamui.ui_identity_admin.base_url | default(url_prefix+'/identity_admin') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
-    }
-});
 db.services.updateOne({ "_id": NumberInt(4) }, {
     "$set": {
         serviceId: "{{ vitamui.ui_referential.serviceId | default('^' + vitamui.ui_referential.base_url | default(url_prefix+'/referential') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
