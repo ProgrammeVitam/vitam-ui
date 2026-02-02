@@ -119,10 +119,14 @@ function generateClientCertificate {
         -in "${CLIENT_CERTIFICATE_PATH}/${COMPOSANT}.req" \
         -extensions extension_${TYPE_CERTIFICAT} -batch
 
-    pki_logger "Generating ${TYPE_CERTIFICAT} pem for ${COMPOSANT}..."
-    openssl x509 \
-        -in "${CLIENT_CERTIFICATE_PATH}/${COMPOSANT}.crt" \
-        -out "${CLIENT_CERTIFICATE_PATH}/${COMPOSANT}.pem"
+    pki_logger "Generating ${TYPE_CERTIFICAT} pem only for cas-server and ui-* components..."
+    # Mandatory for loading the certificates in database 'security -> certificates' for authentification purposes
+    if [ "${COMPOSANT}" == "cas-server" ] || [[ "${COMPOSANT}" == ui-* ]]; then
+        pki_logger "Generating ${TYPE_CERTIFICAT} pem for ${COMPOSANT}..."
+        openssl x509 \
+            -in "${CLIENT_CERTIFICATE_PATH}/${COMPOSANT}.crt" \
+            -out "${CLIENT_CERTIFICATE_PATH}/${COMPOSANT}.pem"
+    fi
 
     purge_directory "${CLIENT_CERTIFICATE_PATH}"
     purge_directory "${CONFIG_DIR}/${PKI_CONTEXT}"
