@@ -120,7 +120,7 @@ function generateTrustStore {
     fi
 
     if [ -f "${TRUST_STORE}" ]; then
-        rm -vf "${TRUST_STORE}"
+        rm -vf "${TRUST_STORE:?}"
     fi
 
     # Add the public client ca certificates to the truststore
@@ -201,7 +201,7 @@ function generateHostKeystore {
     local TMP_P12_PASSWORD="${6}"
 
     if [ -f ${KEYSTORE} ]; then
-        rm -f ${KEYSTORE}
+        rm -vf ${KEYSTORE:?}
     fi
 
     pki_logger "Generate p12"
@@ -220,7 +220,7 @@ function generateHostKeystore {
     if [ "${DEV_MODE}" != "true" ]; then
         if [ -f ${P12_KEYSTORE} ]; then
             pki_logger " /!\ Delete p12: ${P12_KEYSTORE}"
-            rm -vf ${P12_KEYSTORE}
+            rm -vf ${P12_KEYSTORE:?}
         fi
     fi
 }
@@ -255,7 +255,7 @@ function main() {
     initVault   keystores   ${ERASE}
 
     # Remove old keystores & servers directories
-    find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -vrf {} \;
+    find ${REPERTOIRE_KEYSTORES:?} -mindepth 1 -maxdepth 1 -type d -exec rm -vrf {} \;
 
     # Generate the server keystores for vitamui-services except ui- components
     for COMPONENT in $(ls ${CERTIFICATE_DIR}/vitamui-services/server/ | grep -v -e "README" -e "^ui-" ); do
@@ -307,7 +307,7 @@ function main() {
             if [ "${DEV_MODE}" != "true" ]; then
                 if [ -f ${P12_KEYSTORE} ]; then
                     pki_logger " /!\ Delete p12: ${P12_KEYSTORE}"
-                    rm -vf ${P12_KEYSTORE}
+                    rm -vf ${P12_KEYSTORE:?}
                 fi
             fi
 

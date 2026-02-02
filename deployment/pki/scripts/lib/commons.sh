@@ -45,9 +45,9 @@ function purge_directory {
         return 1
     fi
 
-    find "${DIR_TO_PURGE}" -type f -name "*.attr" -exec rm -f {} \;
-    find "${DIR_TO_PURGE}" -type f -name "*.old"  -exec rm -f {} \;
-    find "${DIR_TO_PURGE}" -type f -name "*.req"  -exec rm -f {} \;
+    find "${DIR_TO_PURGE:?}" -type f -name "*.attr" -exec rm -vf {} \;
+    find "${DIR_TO_PURGE:?}" -type f -name "*.old"  -exec rm -vf {} \;
+    find "${DIR_TO_PURGE:?}" -type f -name "*.req"  -exec rm -vf {} \;
 }
 
 function generatePassphrase {
