@@ -79,7 +79,7 @@
   file:
     path: "{{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ item }}.jks"
     state: absent
-  loop: "{{ found_external_truststores.files | map(attribute='path') | map('basename') | map('regex_replace', '^truststore_fexternal_archiving_system_(.*)\\.jks$', '\\1') | list | difference(external_system_ids) }}"
+  loop: "{{ found_external_truststores.files | map(attribute='path') | map('basename') | map('regex_replace', '^truststore_external_archiving_system_(.*)\\.jks$', '\\1') | list | difference(external_system_ids) }}"
   tags:
     - update_vitamui_configuration
     - update_vitamui_certificates
