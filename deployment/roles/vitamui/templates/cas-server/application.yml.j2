@@ -73,7 +73,7 @@ iam-client:
     truststore:
       key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
       key-password: {{ truststores_vitamui }}
-    hostname-verification: true
+    hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
 
 cas.authn.accept.users:
