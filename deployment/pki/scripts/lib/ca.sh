@@ -1,105 +1,113 @@
 #!/usr/bin/env bash
 set -e
 
-######################################################################
-############################# Includes  ##############################
-######################################################################
+################################################################################
+################################## Includes  ###################################
+################################################################################
 
 . "$(dirname $0)/lib/commons.sh"
 
-######################################################################
-############################# Functions ##############################
-######################################################################
+################################################################################
+################################## Functions ###################################
+################################################################################
 
-# Génération de la CA root
+# Generate root CA
 function generate_ca_root {
-    local MDP_CAROOT_KEY="${1}"
-    local REPERTOIRE_SORTIE="${2}"
-    local CONFIG_DIR="${3}"
+    local CA_ROOT_PASS="${1}"
+    local AUTHORITY="${2}"
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN=ca_root_${REPERTOIRE_SORTIE}
+    export OPENSSL_CN=ca_root_${AUTHORITY}
+    pki_logger "OPENSSL_CN : ${OPENSSL_CN}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CA_DIR=${REPERTOIRE_SORTIE}
+    export OPENSSL_CA_DIR="${AUTHORITY}"
+    pki_logger "OPENSSL_CA_DIR : ${OPENSSL_CA_DIR}"
 
-    if [ ! -d ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE} ]; then
-        pki_logger "Création du sous-répertoire ${REPERTOIRE_SORTIE}"
-        mkdir -p ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE};
+    local CA_DIR=${CA_DIR}/${OPENSSL_CA_DIR}
+    if [ ! -d ${CA_DIR} ]; then
+        pki_logger "Create directory ${CA_DIR}"
+        mkdir -p ${CA_DIR};
     fi
 
-    pki_logger "Create CA request..."
+    pki_logger "Create CA-root request..."
     openssl req \
-        -config ${REPERTOIRE_CONFIG}/ca-config \
+        -config ${CONFIG_DIR}/ca-config \
         -new \
-        -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.req \
-        -keyout ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.key \
-        -passout pass:${MDP_CAROOT_KEY} \
+        -out ${CA_DIR}/ca-root.req \
+        -keyout ${CA_DIR}/ca-root.key \
+        -passout pass:${CA_ROOT_PASS} \
         -batch
 
-    pki_logger "Create CA certificate... $(pwd)"
+    pki_logger "Sign CA-root certificate..."
     openssl ca \
-        -config ${REPERTOIRE_CONFIG}/ca-config \
+        -config ${CONFIG_DIR}/ca-config \
         -selfsign \
         -extensions extension_ca_root \
-        -in ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.req \
-        -passin pass:${MDP_CAROOT_KEY} \
-        -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.crt \
+        -in ${CA_DIR}/ca-root.req \
+        -passin pass:${CA_ROOT_PASS} \
+        -out ${CA_DIR}/ca-root.crt \
         -batch
 }
 
-# Génération de la CA intermédiaire
-function generate_ca_interm {
-    local MDP_CAINTERMEDIATE_KEY="${1}"
-    local MDP_CAROOT_KEY="${2}"
-    local REPERTOIRE_SORTIE="${3}"
-    local TYPE_CA="${4}"
+# Generate intermediate CA
+function generate_ca_intermediate {
+    local CA_INTERMEDIATE_PASS="${1}"
+    local CA_ROOT_PASS="${2}"
+    local AUTHORITY="${3}"
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN=ca_intermediate_${REPERTOIRE_SORTIE}
+    export OPENSSL_CN=ca_intermediate_${AUTHORITY}
+    pki_logger "OPENSSL_CN : ${OPENSSL_CN}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CA_DIR=${REPERTOIRE_SORTIE}
-    pki_logger "OPENSSL_CA_DIR :  ${CAROOT_DIR}"
-    if [ ! -d ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE} ]; then
-        pki_logger "Création du sous-répertoire ${REPERTOIRE_SORTIE}"
-        mkdir -p ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE};
+    export OPENSSL_CA_DIR=${AUTHORITY}
+    pki_logger "OPENSSL_CA_DIR : ${OPENSSL_CA_DIR}"
+
+    local CA_DIR=${CA_DIR}/${OPENSSL_CA_DIR}
+    if [ ! -d ${CA_DIR} ]; then
+        pki_logger "Create directory ${OPENSSL_CA_DIR}"
+        mkdir -p ${CA_DIR};
     fi
 
-    pki_logger "Generate intermediate request..."
+    pki_logger "Create CA-intermediate request..."
     openssl req \
-    -config ${REPERTOIRE_CONFIG}/ca-config \
-    -new \
-    -newkey ${PARAM_KEY_CHIFFREMENT} \
-    -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.req \
-    -keyout ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.key \
-    -passout pass:${MDP_CAINTERMEDIATE_KEY} \
-    -batch
+        -config ${CONFIG_DIR}/ca-config \
+        -new \
+        -newkey ${CRYPTO_SPEC} \
+        -out ${CA_DIR}/ca-intermediate.req \
+        -keyout ${CA_DIR}/ca-intermediate.key \
+        -passout pass:${CA_INTERMEDIATE_PASS} \
+        -batch
 
-    pki_logger "Sign..."
+    pki_logger "Sign CA-intermediate certificate..."
     openssl ca \
-    -config ${REPERTOIRE_CONFIG}/ca-config \
-    -extensions extension_ca_intermediate \
-    -in ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.req \
-    -passin pass:${MDP_CAROOT_KEY} \
-    -out ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-intermediate.crt \
-    -batch
+        -config ${CONFIG_DIR}/ca-config \
+        -extensions extension_ca_intermediate \
+        -in ${CA_DIR}/ca-intermediate.req \
+        -passin pass:${CA_ROOT_PASS} \
+        -out ${CA_DIR}/ca-intermediate.crt \
+        -batch
 }
 
-# Génération de la CA intermédiaire
+# Initialize CA configuration
 function init_config_ca {
     local CA_DIR="${1}"
 
     # Suppression de la configuration existante.
-    rm -Rf "${REPERTOIRE_CONFIG}/${CA_DIR}"
-    mkdir -p "${REPERTOIRE_CONFIG}/${CA_DIR}"
-    touch "${REPERTOIRE_CONFIG}/${CA_DIR}/index.txt"
-    echo '01' > "${REPERTOIRE_CONFIG}/${CA_DIR}/serial"
-    touch "${REPERTOIRE_CONFIG}/${CA_DIR}/crlnumber"
+    rm -Rf "${CONFIG_DIR}/${CA_DIR}"
+    mkdir -p "${CONFIG_DIR}/${CA_DIR}"
+    touch "${CONFIG_DIR}/${CA_DIR}/index.txt"
+    echo '01' > "${CONFIG_DIR}/${CA_DIR}/serial"
+    touch "${CONFIG_DIR}/${CA_DIR}/crlnumber"
 }
 
 function get_autorities() {
     # To override
     echo ""
 }
+
+################################################################################
+##################################    Main    ##################################
+################################################################################
 
 function main() {
 
@@ -115,69 +123,69 @@ function main() {
         fi
     fi
 
-    pki_logger "Paramètres d'entrée:"
-    pki_logger "    -> Ecraser les CA existants: ${ERASE}"
+    pki_logger "Input parameters:"
+    pki_logger "    -> Erase existing CAs: ${ERASE}"
 
     # Cleaning or creating vault file for CA
     initVault   ca    ${ERASE}
 
     if [ "${ERASE}" == "true" ]; then
-        if [ -d ${REPERTOIRE_CA} ]; then
+        if [ -d ${CA_DIR} ]; then
             # We remove all generated CA
-            find "${REPERTOIRE_CA}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
+            find "${CA_DIR}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
         fi
-        if [ -d ${REPERTOIRE_CONFIG} ]; then
+        if [ -d ${CONFIG_DIR} ]; then
             # We remove all configurations linked to CA (except main config files)
-            find "${REPERTOIRE_CONFIG}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
+            find "${CONFIG_DIR}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
         fi
     fi
 
-    pki_logger "Lancement de la procédure de création des CA"
+    pki_logger "Starting CA creation process"
     pki_logger "=============================================="
-    if [ ! -d ${REPERTOIRE_CA} ]; then
-        pki_logger "Répertoire ${REPERTOIRE_CA} absent ; création..."
-        mkdir -p ${REPERTOIRE_CA};
+    if [ ! -d ${CA_DIR} ]; then
+        pki_logger "Directory ${CA_DIR} does not exist, creating it..."
+        mkdir -p ${CA_DIR};
     fi
     if [ ! -d ${TEMP_CERTS} ]; then
-        pki_logger "Création du répertoire de travail temporaire tempcerts sous ${TEMP_CERTS}..."
+        pki_logger "Directory ${TEMP_CERTS} does not exist, creating it..."
         mkdir -p ${TEMP_CERTS}
     fi
 
-    # Création des CA par autorités
-    autorities="$(get_autorities)"
-    for ITEM in ${autorities[@]}
+    # Create CA per authorities
+    AUTHORITIES="$(get_autorities)"
+    for AUTHORITY in ${AUTHORITIES[@]}
     do
-        mkdir -p ${REPERTOIRE_CA}/${ITEM}
-        init_config_ca ${ITEM}
+        mkdir -p ${CA_DIR}/${AUTHORITY}
+        init_config_ca ${AUTHORITY}
 
-        if [ ! -f ${REPERTOIRE_CA}/${ITEM}/ca-root.crt ]; then
-            pki_logger "Création de CA-root pour ${ITEM}..."
-            # Génération du CA_ROOT_PASSWORD & stockage dans le vault-ca
-            CA_ROOT_PASSWORD=$(generatePassphrase)
-            setComponentPassphrase ca "ca_root_${ITEM}" "${CA_ROOT_PASSWORD}"
-            generate_ca_root ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
+        if [ ! -f ${CA_DIR}/${AUTHORITY}/ca-root.crt ]; then
+            pki_logger "Creation of CA-root for ${AUTHORITY}..."
+            # Generate CA_ROOT_PASS & store it in the vault-ca
+            CA_ROOT_PASS=$(generatePassphrase)
+            setComponentPassphrase ca "ca_root_${AUTHORITY}" "${CA_ROOT_PASS}"
+            generate_ca_root ${CA_ROOT_PASS} ${AUTHORITY}
         else
-            pki_logger "Le CA-root ${ITEM} existe déjà, il ne sera pas recréé..."
+            pki_logger "CA-root for ${AUTHORITY} already exists, it will not be recreated..."
         fi
-        if [ ! -f ${REPERTOIRE_CA}/${ITEM}/ca-intermediate.crt ]; then
-            pki_logger "Création du CA-intermediate pour ${ITEM}..."
-            # Génération du CA_INTERMEDIATE_PASSWORD & stockage dans le vault-ca
-            CA_INTERMEDIATE_PASSWORD=$(generatePassphrase)
-            setComponentPassphrase ca "ca_intermediate_${ITEM}" "${CA_INTERMEDIATE_PASSWORD}"
-            generate_ca_interm ${CA_INTERMEDIATE_PASSWORD} ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
+        if [ ! -f ${CA_DIR}/${AUTHORITY}/ca-intermediate.crt ]; then
+            pki_logger "Creation of CA-intermediate for ${AUTHORITY}..."
+            # Generate CA_INTERMEDIATE_PASS & store it in the vault-ca
+            CA_INTERMEDIATE_PASS=$(generatePassphrase)
+            setComponentPassphrase ca "ca_intermediate_${AUTHORITY}" "${CA_INTERMEDIATE_PASS}"
+            generate_ca_intermediate ${CA_INTERMEDIATE_PASS} ${CA_ROOT_PASS} ${AUTHORITY}
 
-            purge_directory "${REPERTOIRE_CONFIG}/${ITEM}"
-            purge_directory "${REPERTOIRE_CA}/${ITEM}"
+            purge_directory "${CONFIG_DIR}/${AUTHORITY}"
+            purge_directory "${CA_DIR}/${AUTHORITY}"
         else
-            pki_logger "Le CA-intermediate ${ITEM} existe déjà, il ne sera pas recréé..."
+            pki_logger "CA-intermediate for ${AUTHORITY} already exists, it will not be recreated..."
         fi
         pki_logger "----------------------------------------------"
     done
     if [ -d ${TEMP_CERTS} ]; then
         pki_logger "=============================================="
-        pki_logger "Nettoyage du répertoire de travail temporaire tempcerts"
+        pki_logger "Cleaning of temporary tempcerts directories"
         rm -Rf ${TEMP_CERTS}
     fi
     pki_logger "=============================================="
-    pki_logger "Fin de la procédure de création des CA"
+    pki_logger "End of CA creation procedure"
 }
