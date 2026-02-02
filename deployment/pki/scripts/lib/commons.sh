@@ -4,13 +4,12 @@ set -e
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../.." ; pwd )"
 
 function init () {
-
-    REPERTOIRE_CERTIFICAT="${REPERTOIRE_ROOT}/environments/certs"
-    REPERTOIRE_CA="${REPERTOIRE_ROOT}/pki/ca"
+    CERTIFICATE_DIR="${REPERTOIRE_ROOT}/environments/certs"
+    CA_DIR="${REPERTOIRE_ROOT}/pki/ca"
     CA_ROOT_TYPE="all"
-    REPERTOIRE_CONFIG="${REPERTOIRE_ROOT}/pki/config"
+    CONFIG_DIR="${REPERTOIRE_ROOT}/pki/config"
     TEMP_CERTS="${REPERTOIRE_ROOT}/pki/tempcerts"
-    PARAM_KEY_CHIFFREMENT="rsa:4096"
+    CRYPTO_SPEC="rsa:4096"
     ENVIRONMENT_VARIABLES="${REPERTOIRE_ROOT}/environments/group_vars/all"
 
     if [ -f "${REPERTOIRE_ROOT}/vault_pass.txt" ]; then
@@ -98,7 +97,7 @@ function getVaultFile() {
 
     case $TYPE in
         "ca" | "certs")
-            echo -n "${REPERTOIRE_CERTIFICAT}/vault-${TYPE}.yml"
+            echo -n "${CERTIFICATE_DIR}/vault-${TYPE}.yml"
             ;;
         "keystores")
             echo -n "${ENVIRONMENT_VARIABLES}/vault-${TYPE}.yml"
@@ -198,7 +197,6 @@ function getComponentPassphrase {
     }
 }
 
-
 # Method allowing to check if a key is declared in a vault file (ONLY a single level of tree structure).
 # @param TYPE Type of vault.
 # @param KEY Key linked to the data to retrieve.
@@ -245,7 +243,6 @@ function hasComponentPassphrase {
         return 0
     }
 }
-
 
 # Method allowing to save a key/value in a vault file (ONLY a single level of tree structure).
 # @param TYPE Type of vault.
