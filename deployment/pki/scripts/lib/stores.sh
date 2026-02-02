@@ -255,8 +255,8 @@ function main() {
     # Remove old keystores & servers directories
     find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
 
-    # Generate the server keystores
-    for COMPONENT in $(ls ${CERTIFICATE_DIR}/vitamui-services/server/); do
+    # Generate the server keystores for vitamui-services except ui- components
+    for COMPONENT in $(ls ${CERTIFICATE_DIR}/vitamui-services/server/ | grep -v -e "README" -e "^ui-" ); do
 
             mkdir -p ${REPERTOIRE_KEYSTORES}/vitamui-services/server/${COMPONENT}
 
@@ -298,8 +298,8 @@ function main() {
         fi
 
         mkdir -p ${STORE_DIR}
-        # # client-${CLIENT_TYPE} keystores generation
-        for COMPONENT in $( ls ${CERT_SRC_DIR} 2>/dev/null | grep -vF -e "README" -e "external" ); do
+        # Do not generate keystores for ui- components, we don't need them
+        for COMPONENT in $( ls ${CERT_SRC_DIR} 2>/dev/null | grep -v -e "README" -e "external" -e "^ui-" ); do
 
             # Generate the p12 keystore
             pki_logger "-------------------------------------------"
