@@ -144,8 +144,15 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     super.ngOnInit();
 
     this.control.addValidators([this.maxSizeInBytesValidator, this.maxFilesValidator]);
+    this.control.addAsyncValidators(async () => {
+      // We're returning the promise that is created in computeErrors. We do NOT want to run computeErrors directly here as otherwise, it would only run if SYNC validators have no error (and we want to have all errors in that case)
+      return await this.globalErrors;
+    });
     this.control.valueChanges.subscribe((files) => this.filesChanged.emit(files));
   }
+
+  // This is a promise that will resolve to the global errors after custom validation is run
+  private globalErrors: Promise<ValidationErrors>;
 
   private isInitialization = true;
 
@@ -175,8 +182,10 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   private async updateFiles(files: FileList | File[]) {
-    this.control.setValue([...(this.control.value || []), ...Array.from(files)]);
+    // 1. We MUST first add display files
     await this.addDisplayFiles(files);
+    // 2. Then add them to the control. Because computeErrors is run on displayFiles and must be run before asyncValidation is triggered
+    this.control.setValue([...(this.control.value || []), ...Array.from(files)]);
   }
 
   private async addDisplayFiles(newFiles: FileList | File[]) {
@@ -185,15 +194,26 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     await this.computeErrors();
   }
 
-  private async computeErrors() {
-    // Compute errors on root files
-    for (const displayFile of this.displayFiles) {
-      displayFile.errors = await this.computeDisplayFileErrors(displayFile);
-    }
+  private async computeErrors(): Promise<ValidationErrors | null> {
+    // We store a promise that will resolve to global errors in order to use it in async validation
+    this.globalErrors = new Promise(async (resolve) => {
+      const globalErrors = [];
+      // Compute errors on root files
+      for (const displayFile of this.displayFiles) {
+        const errors = await this.computeDisplayFileErrors(displayFile);
+        displayFile.errors = errors.fileErrors;
+        globalErrors.push(...errors.globalErrors);
+      }
 
-    this.computeDuplicationError();
+      // Compute duplication errors
+      globalErrors.push(...this.computeDuplicationError());
 
-    this.sortDisplayFiles();
+      this.sortDisplayFiles();
+
+      resolve(this.resumeGlobalErrors(globalErrors));
+    });
+
+    return this.globalErrors;
   }
 
   /**
@@ -215,7 +235,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     });
   }
 
-  private computeDuplicationError() {
+  private computeDuplicationError(): any[] {
     const fileNameCounts = this.displayFiles
       .map((df) => df.name.toLowerCase())
       .reduce(
@@ -225,18 +245,18 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
         },
         {} as Record<string, number>,
       );
-    this.displayFiles.forEach((displayFile) => {
-      if (fileNameCounts[displayFile.name.toLowerCase()] > 1) {
+    return this.displayFiles
+      .filter((displayFile) => fileNameCounts[displayFile.name.toLowerCase()] > 1)
+      .map((displayFile) => {
         displayFile.errors = {
           ...(displayFile.errors || {}),
           [displayFile.directory ? 'duplicatedDirectory' : 'duplicatedFile']: true,
         };
-        this.addGlobalErrors({ invalidFiles: { files: `<li>${displayFile.name}</li>` } });
-      }
-    });
+        return { invalidFiles: { files: `<li>${displayFile.name}</li>` } };
+      });
   }
 
-  private async computeDisplayFileErrors(displayFile: DisplayFile): Promise<ValidationErrors> {
+  private async computeDisplayFileErrors(displayFile: DisplayFile): Promise<{ fileErrors: ValidationErrors; globalErrors: any[] }> {
     if (displayFile.directory) {
       return this.computeDirectoryErrors(displayFile);
     } else {
@@ -244,7 +264,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     }
   }
 
-  private async computeDirectoryErrors(displayFile: DisplayFile): Promise<ValidationErrors | undefined> {
+  private async computeDirectoryErrors(displayFile: DisplayFile): Promise<{ fileErrors: ValidationErrors; globalErrors: any[] }> {
     console.group(`Computing errors on directory "${displayFile.name}"`);
 
     const validators: ((displayFile: DisplayFile) => Promise<FileValidationErrors | undefined>)[] = [this.directoryForbiddenValidator];
@@ -254,7 +274,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     return errors;
   }
 
-  private async computeFileErrors(file: File): Promise<ValidationErrors | undefined> {
+  private async computeFileErrors(file: File): Promise<{ fileErrors: ValidationErrors; globalErrors: any[] }> {
     console.group(`Computing errors on file "${file.name}"`);
 
     const customFileValidators = this.fileValidators
@@ -275,8 +295,9 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   private async runValidators<T extends File | DisplayFile>(
     validators: ((element: T) => Promise<FileValidationErrors | undefined>)[],
     element: T,
-  ) {
+  ): Promise<{ fileErrors: ValidationErrors; globalErrors: any[] }> {
     let errors: ValidationErrors = {};
+    const globalErrors: any[] = [];
     for (const validator of validators) {
       const validationErrors = await validator.call(this, element);
       const fileErrors = validationErrors?.fileErrors || {};
@@ -285,36 +306,42 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
       // We're adding errors to the file
       errors = { ...errors, ...fileErrors };
 
-      // We're adding some errors to the control to make it invalid
-      this.addGlobalErrors(controlErrors);
+      // We're adding global errors
+      if (controlErrors) {
+        globalErrors.push(controlErrors);
+      }
     }
-    return Object.keys(errors).length > 0 ? errors : undefined;
+    return { fileErrors: Object.keys(errors).length > 0 ? errors : undefined, globalErrors };
   }
 
-  private addGlobalErrors(controlErrors: any) {
-    for (let entry of Object.entries(controlErrors)) {
-      const errorKey = entry[0];
-      let errorDetail = entry[1];
+  private resumeGlobalErrors(globalErrors: any[]): ValidationErrors {
+    let errors: ValidationErrors = {};
+    globalErrors.forEach((globalError) => {
+      for (let entry of Object.entries(globalError)) {
+        const errorKey = entry[0];
+        let errorDetail = entry[1];
 
-      const alreadyExistingErrorDetail = this.control.errors ? this.control.errors[errorKey] : undefined;
+        const alreadyExistingErrorDetail = errors[errorKey];
 
-      // We're combining errors if other files have generated the same error
-      if (errorDetail instanceof Object && alreadyExistingErrorDetail instanceof Object) {
-        errorDetail = Object.fromEntries(
-          Object.entries(errorDetail).map(([key, value]) => {
-            if (typeof value === 'string') {
-              return [key, (alreadyExistingErrorDetail[key] || '') + value];
-            }
-            return [key, value];
-          }),
-        );
+        // We're combining errors if other files have generated the same error
+        if (errorDetail instanceof Object && alreadyExistingErrorDetail instanceof Object) {
+          errorDetail = Object.fromEntries(
+            Object.entries(errorDetail).map(([key, value]) => {
+              if (typeof value === 'string') {
+                return [key, (alreadyExistingErrorDetail[key] || '') + value];
+              }
+              return [key, value];
+            }),
+          );
+        }
+
+        errors = {
+          ...errors,
+          [errorKey]: errorDetail,
+        };
       }
-
-      this.control.setErrors({
-        ...this.control.errors,
-        [errorKey]: errorDetail,
-      });
-    }
+    });
+    return errors;
   }
 
   private async fileExtensionValidator(file: File): Promise<FileValidationErrors | undefined> {
@@ -352,9 +379,12 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   async removeFile(displayFile: DisplayFile) {
-    this.control.setValue(this.control.value.filter((file: CustomFile) => !displayFile.files.includes(file)));
+    // 1. We MUST first remove display files
     this.displayFiles = this.displayFiles.filter((df) => df !== displayFile);
+    // 2. Then compute errors (because it's based on display files)
     await this.computeErrors();
+    // 3. And finally add files to the control. Because computeErrors must be run before asyncValidation is triggered
+    this.control.setValue(this.control.value.filter((file: CustomFile) => !displayFile.files.includes(file)));
   }
 
   /**
