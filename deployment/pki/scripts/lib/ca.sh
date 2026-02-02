@@ -92,8 +92,8 @@ function generate_ca_intermediate {
 function init_config_ca {
     local CA_DIR="${1}"
 
-    # Suppression de la configuration existante.
-    rm -Rf "${CONFIG_DIR}/${CA_DIR}"
+    # Deleting existing configuration but fail if variables are undefined
+    rm -vRf "${CONFIG_DIR:?}/${CA_DIR:?}"
     mkdir -p "${CONFIG_DIR}/${CA_DIR}"
     touch "${CONFIG_DIR}/${CA_DIR}/index.txt"
     echo '01' > "${CONFIG_DIR}/${CA_DIR}/serial"
@@ -132,11 +132,11 @@ function main() {
     if [ "${ERASE}" == "true" ]; then
         if [ -d ${CA_DIR} ]; then
             # We remove all generated CA
-            find "${CA_DIR}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
+            find "${CA_DIR:?}/" -mindepth 1 -maxdepth 1 -type d -exec rm -vRf {} \;
         fi
         if [ -d ${CONFIG_DIR} ]; then
             # We remove all configurations linked to CA (except main config files)
-            find "${CONFIG_DIR}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
+            find "${CONFIG_DIR:?}/" -mindepth 1 -maxdepth 1 -type d -exec rm -vRf {} \;
         fi
     fi
 
@@ -184,7 +184,7 @@ function main() {
     if [ -d ${TEMP_CERTS} ]; then
         pki_logger "=============================================="
         pki_logger "Cleaning of temporary tempcerts directories"
-        rm -Rf ${TEMP_CERTS}
+        rm -vRf ${TEMP_CERTS:?}
     fi
     pki_logger "=============================================="
     pki_logger "End of CA creation procedure"

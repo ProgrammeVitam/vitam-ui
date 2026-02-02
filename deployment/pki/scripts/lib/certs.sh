@@ -284,10 +284,10 @@ function main {
     if [ "${ERASE}" == "true" ]; then
         if [ -d ${CERTIFICATE_DIR} ]; then
             # We remove all generated certs
-            find ${CERTIFICATE_DIR} -type f -name *.crt -exec rm -f {} \;
-            find ${CERTIFICATE_DIR} -type f -name *.key -exec rm -f {} \;
-            find ${CERTIFICATE_DIR} -type f -name *.pem -exec rm -f {} \;
-            find ${CERTIFICATE_DIR} -type d -empty -delete
+            find ${CERTIFICATE_DIR:?} -type f -name *.crt -exec rm -vf {} \;
+            find ${CERTIFICATE_DIR:?} -type f -name *.key -exec rm -vf {} \;
+            find ${CERTIFICATE_DIR:?} -type f -name *.pem -exec rm -vf {} \;
+            find ${CERTIFICATE_DIR:?} -type d -empty -delete
         fi
     fi
     if [ ! -d ${CERTIFICATE_DIR} ]; then
@@ -304,7 +304,7 @@ function main {
     if [ -d ${TEMP_CERTS} ]; then
         pki_logger "=============================================="
         pki_logger "Cleaning of temporary tempcerts directories"
-        rm -Rf ${TEMP_CERTS}
+        rm -vRf ${TEMP_CERTS:?}
     fi
     pki_logger "=============================================="
     pki_logger "End of certificates creation procedure"
