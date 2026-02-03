@@ -100,7 +100,7 @@ public class DispatcherAction extends AbstractAction {
 
     private Event processSubrogationRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
         throws IOException {
-        // We came from subrogation varidation
+        // We came from subrogation validation
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
