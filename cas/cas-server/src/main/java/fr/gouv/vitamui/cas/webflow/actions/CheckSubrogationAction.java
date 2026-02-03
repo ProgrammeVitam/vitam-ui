@@ -28,7 +28,7 @@ public class CheckSubrogationAction extends AbstractAction {
     private static final Pattern EMAIL_VALID_REGEXP = Pattern.compile(
         "^[_A-Za-z0-9]+(((\\.|-)[_A-Za-z0-9]+))*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
     );
-    private static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^[0-9]+$");
+    private static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^\\w+$");
 
     private final CasApi casApi;
 
