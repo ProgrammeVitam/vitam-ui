@@ -107,18 +107,18 @@ public class ListCustomersAction extends AbstractAction {
 
         LOGGER.debug("User provided login of '{}'", username);
 
-        List<UserDto> existingUsersList = getUsers(username);
+        List<UserDto> existingUsersList = casApi.getUsersByEmail(username, null);
 
-        if (existingUsersList.size() == 1) {
-            return processSingleUserForInputEmail(flowScope, username, existingUsersList.get(0));
-        } else if (existingUsersList.isEmpty()) {
-            // To avoid account existence disclosure, unknown users are silently ignored.
-            // Once they enter their credentials, they will get a generic "login or password
-            // invalid" error message.
-            return processNoUserFoundMatchingInputEmail(flowScope, username);
-        } else {
+        if (existingUsersList.size() > 1) {
             return processMultipleUsersForInputEmail(flowScope, username, existingUsersList);
+        } else if (!existingUsersList.isEmpty()) {
+            return processSingleUserForInputEmail(flowScope, username, existingUsersList.getFirst());
         }
+
+        // To avoid account existence disclosure, unknown users are silently ignored.
+        // Once they enter their credentials, they will get a generic "login or password
+        // invalid" error message.
+        return processNoUserFoundMatchingInputEmail(flowScope, username);
     }
 
     private Event processSingleUserForInputEmail(MutableAttributeMap<Object> flowScope, String username, UserDto user) {
@@ -159,7 +159,11 @@ public class ListCustomersAction extends AbstractAction {
                 username
             );
             // User not found, but email domain matches existing provider
-            return handleSingleAuthenticationProvider(flowScope, username, identityProviders.get(0).getCustomerId());
+            return handleSingleAuthenticationProvider(
+                flowScope,
+                username,
+                identityProviders.getFirst().getCustomerId()
+            );
         }
 
         List<String> availableCustomerIds = identityProviders
@@ -245,10 +249,5 @@ public class ListCustomersAction extends AbstractAction {
         flowScope.put(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST, customerToSelect);
 
         return new Event(this, TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
-    }
-
-    private List<UserDto> getUsers(String email) {
-        // TODO: email context ?
-        return casApi.getUsersByEmail(email, null);
     }
 }
