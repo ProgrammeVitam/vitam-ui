@@ -38,6 +38,8 @@ import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.error.VitamError;
+import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -312,25 +314,46 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenStreamUpload() throws VitamClientException {
+    void shouldThrowExceptionWhenStreamUpload() throws VitamClientException, JsonProcessingException {
         // GIVEN
-        Mockito.when(collectService.uploadProjectZip(any(), any(), any(), any())).thenThrow(VitamClientException.class);
+        VitamClientException exception = new VitamClientException("error message");
+        List<VitamErrorDetails> errorDetailsList = List.of(new VitamErrorDetails("ERROR_KEY", null));
+        exception.setVitamError(
+            new VitamError<>("BAD_REQUEST")
+                .setHttpCode(400)
+                .setContext("Collect")
+                .setMessage("error message")
+                .setErrorsDetails(errorDetailsList)
+        );
+        Mockito.when(collectService.uploadProjectZip(any(), any(), any(), any())).thenThrow(exception);
         InputStream csvFileInputStream =
             ProjectService.class.getClassLoader()
                 .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
 
-        // THEN
-        assertThrows(
-            InternalServerException.class,
-            () ->
-                projectService.streamingUpload(
-                    csvFileInputStream,
-                    "FAKE_TRANSACTION_ID",
-                    null,
-                    "FAKE_VALUE",
-                    vitamContext
-                )
+        JsonNode expectedResponse = objectMapper.readTree(
+            "{\n" +
+            "  \"httpCode\" : 400,\n" +
+            "  \"code\" : \"BAD_REQUEST\",\n" +
+            "  \"context\" : \"Collect\",\n" +
+            "  \"message\" : \"error message\",\n" +
+            "  \"errorsDetails\" : [ {\n" +
+            "    \"key\" : \"ERROR_KEY\"\n" +
+            "  } ]\n" +
+            "}"
         );
+
+        // THEN
+
+        JsonNode response = projectService.streamingUpload(
+            csvFileInputStream,
+            "FAKE_TRANSACTION_ID",
+            null,
+            "FAKE_VALUE",
+            vitamContext
+        );
+
+        assertNotNull(response);
+        assertEquals(response, expectedResponse);
     }
 
     @Test

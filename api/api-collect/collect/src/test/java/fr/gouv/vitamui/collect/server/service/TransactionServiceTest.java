@@ -34,6 +34,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.error.VitamError;
+import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -41,7 +43,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
-import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
@@ -57,14 +58,13 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -240,7 +240,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldUpdateArchiveUnitsFromFileWithSuccess() throws InvalidParseOperationException {
+    void shouldUpdateArchiveUnitsFromFileWithSuccess() throws InvalidParseOperationException, VitamClientException {
         // GIVEN
         TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
@@ -250,11 +250,11 @@ class TransactionServiceTest {
         String fakeContent = "Path;Name;blablabla";
         InputStream csvContent = new ByteArrayInputStream(fakeContent.getBytes());
 
-        when(collectService.updateCollectArchiveUnits(vitamContext, TRANSACTION_ID, csvContent)).thenReturn(
-            "BELIEVE ME, I AM 200"
+        when(collectService.updateCollectArchiveUnitsWithCsv(vitamContext, TRANSACTION_ID, csvContent)).thenReturn(
+            fakeResponse
         );
         // WHEN
-        String resultedOperation = transactionService.updateArchiveUnitsFromFile(
+        List<VitamErrorDetails> resultedOperation = transactionService.updateArchiveUnitsFromCsvFile(
             csvContent,
             TRANSACTION_ID,
             vitamContext
@@ -264,34 +264,38 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenUpdateArchiveUnitsFromFile() throws VitamClientException {
+    void shouldThrowExceptionWhenUpdateArchiveUnitsFromFile()
+        throws VitamClientException, InvalidParseOperationException {
         // GIVEN
-        when(collectService.updateCollectArchiveUnits(any(), any(), any())).thenReturn("ERROR_400");
-        // THEN
-        assertThrows(
-            RequestTimeOutException.class,
-            () -> transactionService.updateArchiveUnitsFromFile(any(), any(), any())
+        List<VitamErrorDetails> resultsDto = List.of(new VitamErrorDetails("ERROR_KEY", null));
+        RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
+        fakeResponse.setHttpCode(200);
+        fakeResponse.addResult(JsonHandler.toJsonNode(resultsDto));
+        VitamClientException exception = new VitamClientException("error message");
+        exception.setVitamError(
+            new VitamError<>("BAD_REQUEST")
+                .setHttpCode(400)
+                .setContext("Collect")
+                .setMessage("error message")
+                .setErrorsDetails(resultsDto)
         );
-    }
 
-    @Test
-    void update_units_should_return_response_when_vitamUpdateUnits_return_response() {
-        // Given
-        String initialString = "csv file to update collect units";
-        final String transactionId = "transactionId";
-        final String fileName = "fileName";
-        final String vitamResponse = "vitamResponseDetails";
-        InputStream csvFile = new ByteArrayInputStream(initialString.getBytes());
+        String fakeContent = "Path;Name;blablabla";
+        InputStream csvContent = new ByteArrayInputStream(fakeContent.getBytes());
 
-        // When
-        when(
-            collectService.updateCollectArchiveUnits(any(VitamContext.class), eq(transactionId), any(InputStream.class))
-        ).thenReturn(vitamResponse);
+        // WHEN
+        when(collectService.updateCollectArchiveUnitsWithCsv(vitamContext, TRANSACTION_ID, csvContent))
+            .thenThrow(exception)
+            .thenReturn(fakeResponse);
 
-        // Then
-        assertThatCode(() -> {
-            transactionService.updateArchiveUnitsFromFile(csvFile, transactionId, new VitamContext(0));
-        }).doesNotThrowAnyException();
+        List<VitamErrorDetails> response = transactionService.updateArchiveUnitsFromCsvFile(
+            csvContent,
+            TRANSACTION_ID,
+            vitamContext
+        );
+
+        // THEN
+        assertThat(response).isEqualTo(resultsDto);
     }
 
     @Test

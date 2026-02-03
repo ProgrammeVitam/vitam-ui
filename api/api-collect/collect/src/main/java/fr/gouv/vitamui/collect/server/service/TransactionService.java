@@ -30,10 +30,12 @@
 package fr.gouv.vitamui.collect.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -44,7 +46,6 @@ import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
@@ -86,6 +88,8 @@ public class TransactionService {
     private static final String ACTION = "$action";
 
     private final CollectService collectService;
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public void validateTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
         try {
@@ -175,15 +179,27 @@ public class TransactionService {
         }
     }
 
-    public String updateArchiveUnitsFromFile(InputStream inputStream, String transactionId, VitamContext vitamContext)
-        throws RequestTimeOutException {
-        LOGGER.debug("[Internal] call update Archive Units From File for transaction Id {}  ", transactionId);
-        final String result = collectService.updateCollectArchiveUnits(vitamContext, transactionId, inputStream);
-        if (result.equals(ERROR_400)) {
-            LOGGER.debug(UNABLE_TO_PROCESS_UNIT_UPDATE);
-            throw new RequestTimeOutException(REQUEST_TIMEOUT_EXCEPTION_MESSAGE, REQUEST_TIMEOUT_EXCEPTION_MESSAGE);
+    public List<VitamErrorDetails> updateArchiveUnitsFromCsvFile(
+        InputStream inputStream,
+        String transactionId,
+        VitamContext vitamContext
+    ) {
+        try {
+            LOGGER.debug("[Internal] call update Archive Units From CSV File for transaction Id {}  ", transactionId);
+            collectService.updateCollectArchiveUnitsWithCsv(vitamContext, transactionId, inputStream);
+            return List.of();
+        } catch (VitamClientException e) {
+            LOGGER.debug(UNABLE_TO_PROCESS_UNIT_UPDATE, e);
+            if (
+                e.getVitamError().getHttpCode() == HttpStatus.BAD_REQUEST.value() &&
+                e.getVitamError() != null &&
+                !e.getVitamError().getErrorsDetails().isEmpty()
+            ) {
+                return e.getVitamError().getErrorsDetails();
+            } else {
+                throw new InternalServerException(e.getMessage(), e);
+            }
         }
-        return result;
     }
 
     public String reclassification(

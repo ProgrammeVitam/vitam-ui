@@ -65,6 +65,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -218,7 +219,7 @@ public class ProjectService {
         }
     }
 
-    public void streamingUpload(
+    public JsonNode streamingUpload(
         InputStream inputStream,
         String transactionId,
         String attachmentId,
@@ -228,10 +229,18 @@ public class ProjectService {
         LOGGER.debug("TransactionId: {}", transactionId);
         LOGGER.debug("OriginalFileName: {}", originalFileName);
         try {
-            collectService.uploadProjectZip(vitamContext, transactionId, attachmentId, inputStream);
+            return collectService.uploadProjectZip(vitamContext, transactionId, attachmentId, inputStream).toJsonNode();
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
-            throw new InternalServerException(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
+            if (
+                e.getVitamError().getHttpCode() == HttpStatus.BAD_REQUEST.value() &&
+                e.getVitamError() != null &&
+                !e.getVitamError().getErrorsDetails().isEmpty()
+            ) {
+                return e.getVitamError().toJsonNode();
+            } else {
+                throw new InternalServerException(e.getMessage(), e);
+            }
         }
     }
 

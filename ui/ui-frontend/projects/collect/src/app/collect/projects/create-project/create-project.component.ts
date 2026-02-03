@@ -70,6 +70,8 @@ import {
   Workflow,
   ZipFile,
   ZipFileStatus,
+  VitamError,
+  VitamErrorDetails,
 } from 'vitamui-library';
 
 export enum ImportType {
@@ -120,6 +122,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   archivalAgreementOptions: Option[] = [];
   agenciesOptions: Option[] = [];
 
+  errorsDetails: VitamErrorDetails[];
+
+  translationPrefix = 'COLLECT.UPDATE_UNITS_METADATA.ERRORS.';
+
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
     this.translationService.instant('ACQUISITION_INFORMATION.PROTOCOL'),
@@ -142,6 +148,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   ];
 
   @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
+  @ViewChild('displayCsvErrorsDialog', { static: true })
+  displayCsvErrorsDialog: TemplateRef<CreateProjectComponent>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -508,10 +516,18 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       )
       .subscribe({
         next: (_result) => {
-          this.snackBarService.open({
-            message: 'COLLECT.UPLOAD.TERMINATED',
-            duration: 10_000,
-          });
+          this.dialogRef.close(true);
+          let vitamError: VitamError = JSON.parse(_result.body);
+          if (vitamError.httpCode === 200) {
+            this.snackBarService.open({
+              message: 'COLLECT.UPLOAD.TERMINATED',
+              duration: 10_000,
+            });
+          } else {
+            this.errorsDetails = vitamError.errorsDetails;
+            const dialogToOpen = this.displayCsvErrorsDialog;
+            this.dialogRefToClose = this.dialog.open(dialogToOpen);
+          }
         },
         error: (error) => {
           this.logger.error(error);
@@ -522,6 +538,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
           return throwError(error);
         },
       });
+  }
+
+  translateErrorKeys(errorDetails: VitamErrorDetails) {
+    return this.translationService.instant(this.translationPrefix + errorDetails.key, errorDetails.args);
   }
 
   getNodeTitle(selectedNode?: any): string {

@@ -587,3 +587,25 @@
     </cdk-step>
   </vitamui-stepper>
 </form>
+
+<ng-template #displayCsvErrorsDialog>
+  <vitamui-dialog-header class="mb-4" [subhead]="'COLLECT.MODAL.TITLE' | translate"></vitamui-dialog-header>
+  <vitamui-dialog-content-with-state
+    [state]="'invalid'"
+    [title]="'COLLECT.UPDATE_UNITS_METADATA.IMPORTED_CSV_FILE_INCLUDES_ERRORS' | translate"
+  >
+    <div>
+      <div class="text bold medium">{{ 'COLLECT.UPDATE_UNITS_METADATA.LIST_IDENTIFIED_ERRORS' | translate }}</div>
+      <ul class="scroll-area pl-5 mt-0">
+        @for (errorsDetail of errorsDetails; track errorsDetails) {
+          <li>{{ translateErrorKeys(errorsDetail) }}</li>
+        }
+      </ul>
+    </div>
+  </vitamui-dialog-content-with-state>
+  <mat-dialog-actions>
+    <button type="button" (click)="onClose()" class="btn primary">
+      {{ 'COLLECT.UPDATE_UNITS_METADATA.CLOSE' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>

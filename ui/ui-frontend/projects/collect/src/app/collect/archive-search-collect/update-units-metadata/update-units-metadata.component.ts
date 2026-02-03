@@ -36,9 +36,10 @@
  */
 import { Component, Inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { Logger, SnackBarService, Transaction } from 'vitamui-library';
+import { Subscription, throwError } from 'rxjs';
+import { Logger, SnackBarService, Transaction, VitamErrorDetails } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-update-units-metadata',
@@ -50,11 +51,17 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   isLoadingData = false;
 
   fileToUpload: File = undefined;
+  errorsDetails: VitamErrorDetails[];
 
   subscriptions: Subscription;
 
+  translationPrefix = 'COLLECT.UPDATE_UNITS_METADATA.ERRORS.';
+
   @ViewChild('confirmDeleteUpdateUnitsMetadataDialog', { static: true })
   confirmDeleteUpdateUnitsMetadataDialog: TemplateRef<UpdateUnitsMetadataComponent>;
+
+  @ViewChild('displayCsvErrorsDialog', { static: true })
+  displayCsvErrorsDialog: TemplateRef<UpdateUnitsMetadataComponent>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -68,6 +75,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     private dialogRefToClose: MatDialogRef<UpdateUnitsMetadataComponent>,
     private archiveCollectService: ArchiveCollectService,
     private snackBarService: SnackBarService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnDestroy(): void {
@@ -82,24 +90,32 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     });
 
     this.subscriptions = this.archiveCollectService
-      .updateUnitsMetadata(this.fileToUpload, this.fileToUpload.name, this.data.selectedTransaction.id)
+      .updateUnitsMetadataByCsvFile(this.fileToUpload, this.fileToUpload.name, this.data.selectedTransaction.id)
       .subscribe(
         (data) => {
           this.isLoadingData = false;
-          if (data) {
+          if (data.length === 0) {
             this.dialogRef.close(true);
             this.snackBarService.open({
               message: 'COLLECT.UPDATE_UNITS_METADATA.SUCCESS_MESSAGE',
               duration: 100_000,
             });
+          } else {
+            this.errorsDetails = data;
+            this.dialogRefToClose = this.dialog.open(this.displayCsvErrorsDialog);
           }
         },
         (error: any) => {
           this.isLoadingData = false;
           this.dialogRef.close(true);
           this.logger.error('Error message :', error);
+          return throwError(error);
         },
       );
+  }
+
+  translateErrorKeys(errorDetails: VitamErrorDetails) {
+    return this.translateService.instant(this.translationPrefix + errorDetails.key, errorDetails.args);
   }
 
   onCancel() {
@@ -109,6 +125,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   onCloseAction() {
     this.dialogRefToClose.close(true);
+    this.dialogRef.close(true);
   }
 
   onConfirmAction() {

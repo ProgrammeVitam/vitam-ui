@@ -26,6 +26,7 @@
  */
 package fr.gouv.vitamui.collect.server.rest;
 
+import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
@@ -59,6 +60,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.DOWNLOAD_SIP_PATH;
@@ -155,12 +157,12 @@ public class TransactionController {
     }
 
     @Secured(ServicesData.COLLECT_UPDATE_BULK_ARCHIVE_UNIT_ROLE)
-    @Operation(summary = "Upload on streaming metadata file and update archive units")
+    @Operation(summary = "Upload on streaming metadata file and update archive units by CSV file")
     @PutMapping(
         value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
         consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public String updateArchiveUnitsMetadataFromFile(
+    public List<VitamErrorDetails> updateArchiveUnitsMetadataFromCsvFile(
         final @PathVariable("transactionId") String transactionId,
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
@@ -170,7 +172,7 @@ public class TransactionController {
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[External] Calling update archive units metadata for transaction Id  {} ", transactionId);
-        return transactionService.updateArchiveUnitsFromFile(
+        return transactionService.updateArchiveUnitsFromCsvFile(
             inputStream,
             transactionId,
             externalParametersService.buildVitamContextFromExternalParam()

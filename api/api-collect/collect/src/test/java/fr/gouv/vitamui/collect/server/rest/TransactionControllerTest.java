@@ -30,7 +30,7 @@
 package fr.gouv.vitamui.collect.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionService;
@@ -50,6 +50,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_PATH;
 import static org.mockito.ArgumentMatchers.any;
@@ -105,7 +106,7 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
     }
 
     @Test
-    void when_abortTransaction_ok() throws InvalidParseOperationException, VitamClientException {
+    void when_abortTransaction_ok() throws VitamClientException {
         Mockito.when(externalParametersService.buildVitamContextFromExternalParam()).thenReturn(new VitamContext(0));
         Mockito.doNothing().when(transactionService).abortTransaction(eq("transactionId"), any(VitamContext.class));
         this.transactionController.abortTransaction("transactionId");
@@ -113,8 +114,7 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
     }
 
     @Test
-    void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko()
-        throws InvalidParseOperationException, VitamClientException {
+    void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko() throws VitamClientException {
         Mockito.when(externalParametersService.buildVitamContextFromExternalParam()).thenReturn(new VitamContext(0));
         Mockito.doNothing().when(transactionService).reopenTransaction(eq("transactionId"), any(VitamContext.class));
         this.transactionController.reopenTransaction("transactionId");
@@ -122,25 +122,28 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
     }
 
     @Test
-    void testUpdateUnitsMetadataThenReturnVitamOperationDetails()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testUpdateUnitsMetadataThenReturnVitamOperationDetails() throws PreconditionFailedException {
         // Given
         String fileName = "FileName";
         String transactionId = "transactionId";
-        String expectedResponse = "operationStatus";
+        List<VitamErrorDetails> expectedResponse = List.of();
         String initialString = "csv file to update collect units";
         InputStream csvFile = new ByteArrayInputStream(initialString.getBytes());
 
         // When
         Mockito.when(externalParametersService.buildVitamContextFromExternalParam()).thenReturn(new VitamContext(0));
         Mockito.when(
-            transactionService.updateArchiveUnitsFromFile(
+            transactionService.updateArchiveUnitsFromCsvFile(
                 any(InputStream.class),
                 eq(transactionId),
                 any(VitamContext.class)
             )
         ).thenReturn(expectedResponse);
-        String response = transactionController.updateArchiveUnitsMetadataFromFile(transactionId, csvFile, fileName);
+        List<VitamErrorDetails> response = transactionController.updateArchiveUnitsMetadataFromCsvFile(
+            transactionId,
+            csvFile,
+            fileName
+        );
 
         // Then
         Assertions.assertEquals(response, expectedResponse);

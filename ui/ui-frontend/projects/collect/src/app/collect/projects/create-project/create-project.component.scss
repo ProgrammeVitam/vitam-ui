@@ -177,3 +177,9 @@ vitamui-common-accordion ::ng-deep {
     background: var(--vitamui-background);
   }
 }
+
+.scroll-area {
+  overflow-y: auto;
+  max-height: 264px;
+  scrollbar-width: thin;
+}
