@@ -34,7 +34,7 @@
   </div>
 
   @if (technicalObjectsGroupErrors().length) {
-    <div class="d-flex flex-column gap-2 align-items-stretch">
+    <div class="d-flex flex-column gap-2 align-items-stretch mt-1">
       <div class="text normal bold danger">
         {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}
       </div>
@@ -49,6 +49,7 @@
   <vitamui-common-physical-archive-viewer
     *ngIf="versionWithQualifier.qualifier === 'PhysicalMaster'"
     [archive]="versionWithQualifier"
+    [errorMessages]="errorMessagesGot"
   ></vitamui-common-physical-archive-viewer>
 
   <div
@@ -65,6 +66,9 @@
         {{
           ('COLLECT.UNIT_OBJECT_QUALIFIER_TYPE.' + versionWithQualifier?.qualifier | translate) + ' (' + versionWithQualifier?.version + ')'
         }}
+        @if (errorMessagesGot && errorMessagesGot[versionWithQualifier['#id']]) {
+          <div class="status-badge-red status-badge-mini ml-2 mt-1"></div>
+        }
       </div>
       <div class="line object-size">{{ versionWithQualifier.Size | bytes }}</div>
     </div>

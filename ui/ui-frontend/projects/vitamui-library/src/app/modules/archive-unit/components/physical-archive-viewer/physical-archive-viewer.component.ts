@@ -36,7 +36,7 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ObjectQualifierType, VersionWithQualifierDto } from '../../../models';
+import { ObjectQualifierType, ValidationError, VersionWithQualifierDto } from '../../../models';
 
 interface Measurement {
   name: string;
@@ -68,6 +68,7 @@ type MeasurementDisplayMode = 'SYMBOL' | 'NAME';
 })
 export class PhysicalArchiveViewerComponent implements OnInit {
   @Input() archive: VersionWithQualifierDto;
+  @Input() errorMessages: Record<string, ValidationError[]>;
 
   // Component configuration
   private measurementDisplayMode: MeasurementDisplayMode = 'NAME';
@@ -109,6 +110,10 @@ export class PhysicalArchiveViewerComponent implements OnInit {
 
   private isAllowedDisplayValue(displayValue: DisplayValue): boolean {
     return this.displayAll || this.items.includes(displayValue.originalKey);
+  }
+
+  hasErrors() {
+    return this.errorMessages && this.errorMessages[this.archive['#id']] !== undefined;
   }
 
   private translateMeasurementDisplayValue(displayValue: DisplayValue): DisplayValue {
