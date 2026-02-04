@@ -23,6 +23,9 @@
     </div>
     <div class="line shrink object-name">
       {{ ('ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + archive.qualifier | translate) + ' (' + archive.version + ')' }}
+      @if (hasErrors()) {
+        <div class="status-badge-red status-badge-mini ml-2 mt-1"></div>
+      }
     </div>
     <div *ngIf="archive.qualifier !== 'PhysicalMaster'" class="line object-size">
       {{ archive.Size | bytes }}
