@@ -51,13 +51,6 @@
       [value]="archiveUnit()?.EndDate | dateTime: 'dd/MM/yyyy'"
     />
   </div>
-
-  @if (archiveUnitErrors().length) {
-    <div class="text normal bold danger">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}</div>
-    @for (error of archiveUnitErrors(); track $index) {
-      <vitamui-information-detail [error]="error" [hideEvDetData]="true"></vitamui-information-detail>
-    }
-  }
 </div>
 
 <button
@@ -69,10 +62,19 @@
   <i class="vitamui-icon vitamui-icon-deposit"></i>
 </button>
 
-@if (technicalObjectsGroupErrors().length || objectsGroupErrors().length) {
-  <vitamui-information-bloc
-    [withObjectsTabLink]="true"
-    [decoration]="'bordered'"
-    (openObjectsTab)="goToObjectsTab()"
-  ></vitamui-information-bloc>
-}
+<div class="gap-3 align-items-stretch">
+  @if (technicalObjectsGroupErrors().length || objectsGroupErrors().length) {
+    <vitamui-information-bloc
+      [withObjectsTabLink]="true"
+      [decoration]="'bordered'"
+      (openObjectsTab)="goToObjectsTab()"
+    ></vitamui-information-bloc>
+  }
+
+  @if (archiveUnitErrors().length) {
+    <div class="text normal bold danger">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}</div>
+    @for (error of archiveUnitErrors(); track $index) {
+      <vitamui-information-detail [error]="error" [hideEvDetData]="true"></vitamui-information-detail>
+    }
+  }
+</div>
