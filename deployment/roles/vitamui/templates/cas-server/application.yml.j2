@@ -335,3 +335,23 @@ password:
 {% endfor %}
 {% endif %}
 {% endif %}
+
+# FIXME: Only for testing purpose. Should setup parametrization ?
+
+cas.authn:
+  oauth.session-replication.cookie.crypto:
+    encryption.key: Fd-b-pjoN82hBdUti9HqzJXgvfs7pFtVYeaKIRhDdNE
+    signing.key: EsCugv7mIHZ3ecx-A5nf_75KsrmVGAWNMXwyEPXDV1jf0nmLrpu0Py6aO62yx4yd_W9_6nhMaGxhE9FQoeP7HQ
+  pac4j.core.session-replication.cookie:
+    name: DISSESSIONAD
+    crypto:
+      encryption.key: 9XnxhG7lfRQS9I5_86j3XQHZc19jZsamU97pDtut__o
+      signing.key: oFaBMTNLfKgCyqJPjxvZbdFhmxBKFgJP2_-rMDatBN91ZlU3eIpq2SYD_5ILHBSa616VEe5c0yUpACWne6TIlg
+    cas:
+      - login-url: ${login.url}
+  passwordless.tokens.crypto:
+    encryption.key: Bo_9H0xCT220Ogn4hvyrbH-x7j5hTAMcs3M8PdDiJ7w
+    signing.key: b_ZI3StT4vGnTrWIG4e7fdwNzbgQGN9IsqVo29HLqtstClu1ekzQ_d67K6wtQJLQPSU-RVCF31HuB2OfDkq0mA
+  pm.reset.crypto:
+    encryption.key: IG2rGK-5ctqoSWMv52XkZZ9BoMqRBcpjdzwLGJ6yiN0
+    signing.key: xPVQOgj1-ywI-O_5fv5pTkg_bBS6CCXh7Yr9zMQoy2bmCjAJfLoVfycKYw-gERmBDozEGeT72HquVOT1dAZO5Q
