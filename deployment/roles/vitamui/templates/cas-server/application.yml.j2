@@ -25,12 +25,13 @@ server:
 {% endif %}
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
+  servlet:
 {% if vitamui.cas_server.base_url is defined %}
-  context-path: /
-  servlet.session.cookie.path: /
+    context-path: /
+    session.cookie.path: /
 {% else %}
-  context-path: /cas
-  servlet.session.cookie.path: /cas
+    context-path: /cas
+    session.cookie.path: /cas
 {% endif %}
   tomcat:
     basedir: {{ vitamui_folder_conf }}/tomcat
@@ -166,12 +167,14 @@ cas:
 management.endpoints.enabled-by-default: true
 management.endpoints.web.exposure.include: '*'
 cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
-management.metrics.export.prometheus.enabled: true
+management.prometheus.metrics.export.enabled: true
 
 {% if sms.enabled|lower == "true" %}
 # for SMS:
 cas.sms-provider.sms-mode.access-token: {{ sms.token }}
-mfa.sms.sender: "{{ sms.sender }}"
+cas.authn.mfa.simple.sms:
+  from: "{{ sms.sender }}"
+  attribute-name: "{{ sms.attribute_name | default('mobile') }}"
 {% endif %}
 
 vitamui.portal.url: {{ vitamui.ui_portal.base_url | default(url_prefix) }}
