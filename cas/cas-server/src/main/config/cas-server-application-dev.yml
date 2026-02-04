@@ -176,7 +176,7 @@ cas.sms-provider.sms-mode.access-token: changeme
 
 vitamui.portal.url: https://dev.vitamui.com:4200/
 
-token.api.cas: tokcas_ie6UZsEcHIWrfv2x
+cas.secret.token: tokcas_ie6UZsEcHIWrfv2x
 
 ip.header: X-Real-IP
 

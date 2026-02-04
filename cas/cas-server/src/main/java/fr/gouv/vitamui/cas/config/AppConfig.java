@@ -298,7 +298,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public Utils utils(
-        @Value("${token.api.cas}") @NotNull final String tokenApiCas,
+        @Value("${cas.secret.token}") @NotNull final String tokenApiCas,
         @Value("${vitamui.cas.tenant.identifier}") final Integer casTenantIdentifier,
         @Value("${vitamui.cas.identity}") final String casIdentity,
         final JavaMailSender mailSender,
