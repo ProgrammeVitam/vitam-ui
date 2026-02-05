@@ -1,7 +1,7 @@
 <div
   class="drag-and-drop-area p-5"
   vitamuiCommonDragAndDrop
-  [enableFolderDragAndDrop]="directoryMode"
+  [enableFolderDragAndDrop]="true"
   (fileToUploadEmitter)="handleFilesSelection($event)"
   [class.error]="hasErrors()"
 >
@@ -16,34 +16,31 @@
     <input #directorySelector type="file" (change)="handleFilesSelection($event.target.files)" [multiple]="multiple" webkitdirectory />
   }
 
-  @if (content) {
-    <ng-container *ngTemplateOutlet="content"></ng-container>
-  } @else {
-    <ng-container *ngTemplateOutlet="defaultContent"></ng-container>
-  }
+  <div class="gap-2 align-items-stretch">
+    @if (content) {
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="defaultContent"></ng-container>
+    }
 
-  @if (fileList) {
-    <ng-container *ngTemplateOutlet="fileList"></ng-container>
-  } @else {
-    <ng-container *ngTemplateOutlet="defaultFileList"></ng-container>
-  }
+    @if (fileList) {
+      <ng-container *ngTemplateOutlet="fileList"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="defaultFileList"></ng-container>
+    }
+  </div>
 </div>
 
 <vitamui-form-errors [control]="control"></vitamui-form-errors>
 
 <ng-template #defaultFileList>
-  <div class="vitamui-chip-list">
-    <div *ngFor="let file of displayFiles" class="vitamui-chip">
-      <div [title]="file.name" class="vitamui-chip-content">
-        <i class="vitamui-icon {{ file.directory ? 'vitamui-icon-folder' : 'vitamui-icon-file' }}"></i>
-        {{ file.name }}
-        <span class="file-size">{{ file.size | bytes }}</span>
-      </div>
-      <div (click)="removeFile(file)" class="vitamui-remove-chip">
-        <i class="material-icons">clear</i>
-      </div>
+  @if (displayFiles.length) {
+    <div class="files-wrapper gap-2 align-items-stretch">
+      @for (file of displayFiles; track file) {
+        <vitamui-display-file [file]="file" (removeFile)="removeFile($event)"></vitamui-display-file>
+      }
     </div>
-  </div>
+  }
 </ng-template>
 
 <ng-template #defaultContent>
@@ -72,7 +69,7 @@
         }
       </div>
 
-      @if (extensions || maxSizeInBytes) {
+      @if (extensions || maxSizeInBytes || information) {
         <div class="text normal text-center vitamui-grey-600">
           @if (extensions) {
             <div>
@@ -83,6 +80,13 @@
             <div>
               {{ 'FILE_SELECTOR.MAX_SIZE' | translate: { size: maxSizeInBytes | bytes: 0 } }}
             </div>
+          }
+          @if (information) {
+            @for (info of information; track info) {
+              <div>
+                {{ info }}
+              </div>
+            }
           }
         </div>
       }

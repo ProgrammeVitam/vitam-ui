@@ -1,0 +1,49 @@
+.file-to-upload {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid var(--vitamui-primary);
+
+  .file-container {
+    min-width: 0;
+
+    .file-icon {
+      width: 25px;
+      min-width: 25px; // Firefox requires also min-width otherwise real width may be less than asked...
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .file-name {
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-size {
+      white-space: nowrap;
+    }
+  }
+
+  .remove-file {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-left: 1px solid var(--vitamui-primary-300);
+    padding: 0 10px;
+
+    .vitamui-icon-close {
+      font-size: 10px; // Hack because icon is bigger than expected
+    }
+  }
+
+  &.error {
+    border: 1px solid var(--vitamui-red);
+
+    .remove-file {
+      border-left: 1px solid var(--vitamui-red);
+    }
+  }
+}
