@@ -502,8 +502,7 @@
     "DRAG_AND_DROP_OR_BROWSE": "Glisser-déposer ou parcourir",
     "ALLOWED_FORMATS_SINGULAR": "Format accepté : {{formats}}",
     "ALLOWED_FORMATS_PLURAL": "Formats acceptés : {{formats}}",
-    "MAX_SIZE": "Poids maximal : {{size}}",
-    "UPLOAD_FILE_ALREADY_IMPORTED": "Dossier déjà importé !"
+    "MAX_SIZE": "Poids maximal : {{size}}"
   },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Défaut)"
@@ -6046,7 +6045,14 @@
     "uniqueRuleId": "Code identique à l'action précédente",
     "missingIncludedNodes": "Une valeur est requise",
     "incorrectIdentifier": "Cet identifiant contient un ou des caractères non autorisés",
-    "maxSizeInBytes": "Poids maximum dépassé ({{size}} / {{maxSize}})"
+    "invalidFiles": "Des fichiers sont invalides",
+    "maxSizeInBytes": "Poids maximum dépassé ({{size}} / {{maxSize}})",
+    "maxFiles": "Un seul fichier possible. Veuillez supprimer le ou les éléments en trop",
+    "invalidExtension": "Ce format n'est pas autorisé. Formats autorisés : {{extensions}}",
+    "filesHaveInvalidExtension": "Des fichiers ont des extensions non autorisées : <ul>{{files}}</ul>",
+    "duplicatedFile": "Fichier dupliqué",
+    "duplicatedDirectory": "Dossier dupliqué",
+    "directoryForbidden": "Les dossiers ne sont pas autorisés"
   },
   "ACCESS_CONTRACT": {
     "HOME": {

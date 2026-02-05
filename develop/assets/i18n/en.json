@@ -220,6 +220,9 @@
   },
   "ERRORS": {
     "CONTAINS_GB": "Should contain or be United Kingdom",
-    "CONTAINS_TextContent": "Should contain or be \"TextContent\""
+    "CONTAINS_TextContent": "Should contain or be \"TextContent\"",
+    "INVALID_FILE_NAME": "Invalid file name. Expected name: \"{{expectedFileName}}\"",
+    "INVALID_CSV": "Invalid CSV file",
+    "INVALID_CSV_DETAIL": "Identified errors detail: <ul>{{detail}}</ul>"
   }
 }
