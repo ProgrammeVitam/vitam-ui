@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -127,7 +127,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     const params: ImportDialogParam = {
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.ACCESS_CONTRACT_SUBTITLE'),
-      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_DETAIL_INFO'),
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.SCHEMA_FORMAT_CSV_SEMICOLON'),
       allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.ACCESS_CONTRACTS,
       successMessage: 'SNACKBAR.ACCESS_CONTRACT_IMPORTED',

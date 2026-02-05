@@ -34,12 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ApplicationId, FileTypes, SnackBarService } from 'vitamui-library';
-import { finalize, Subject } from 'rxjs';
+import { ApplicationId, FileTypes, FileValidationErrors, FileValidatorFunction, SnackBarService } from 'vitamui-library';
+import { finalize, firstValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
+import { ImportDialogParam, ReferentialTypes } from './import-dialog-param.interface';
+import { FormControl, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { ReferentialImportService } from './referential-import.service';
 
 @Component({
@@ -51,21 +53,26 @@ import { ReferentialImportService } from './referential-import.service';
 export class ImportDialogComponent implements OnDestroy {
   dialogParams = inject<ImportDialogParam>(MAT_DIALOG_DATA);
   dialogRef = inject<MatDialogRef<ImportDialogComponent>>(MatDialogRef);
-  private referentialImportService = inject(ReferentialImportService);
-  private snackBarService = inject(SnackBarService);
+  private readonly referentialImportService = inject(ReferentialImportService);
+  private readonly snackBarService = inject(SnackBarService);
+  translateService = inject(TranslateService);
 
-  public fileToUpload: File;
-  public hasWrongFormat = false;
   public isLoading = false;
-  public errorsDuringImport: ImportError[] = [];
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
+  extensions: string[] = [];
+  usesCsvValidator: boolean;
+
+  fileControl = new FormControl<File[]>(undefined, [Validators.required]);
+
+  constructor() {
+    this.setExtensions();
+    this.enableCsvValidator();
+  }
 
   public submitFile(): void {
     this.isLoading = true;
-    this.errorsDuringImport = [];
-    this.hasWrongFormat = false;
     this.referentialImportService
-      .importReferential(this.dialogParams.referential, this.fileToUpload)
+      .importReferential(this.dialogParams.referential, this.fileControl.value[0])
       .pipe(takeUntil(this.destroy))
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
@@ -83,17 +90,8 @@ export class ImportDialogComponent implements OnDestroy {
 
           this.dialogRef.close({ successfulImport: true });
         },
-        error: (error) => {
+        error: (_) => {
           let showSnackbar = true;
-          if (error.error) {
-            const errorJson = JSON.parse(error.error);
-            if (errorJson.args) {
-              (errorJson.args as []).forEach((arg) => {
-                this.errorsDuringImport.push(JSON.parse(arg));
-                showSnackbar = false;
-              });
-            }
-          }
           if (showSnackbar && this.dialogParams.errorMessage) {
             this.snackBarService.open({
               message: this.dialogParams.errorMessage,
@@ -108,29 +106,55 @@ export class ImportDialogComponent implements OnDestroy {
     this.dialogRef.close();
   }
 
-  public handleFiles(files: File[]): void {
-    if (!files.length) {
-      return;
-    }
-    this.fileToUpload = null;
-    this.errorsDuringImport = [];
+  csvValidator: FileValidatorFunction = async (file: File, hasErrors: boolean): Promise<FileValidationErrors> => {
+    if (hasErrors) return null;
 
-    const file = files[0];
-    if (this.isAllowedFileType(file.type)) {
-      this.fileToUpload = file;
-    } else {
-      this.hasWrongFormat = true;
+    let errorsDuringImport: string[] = [];
+
+    try {
+      await firstValueFrom(this.referentialImportService.getCSVCheckResults(this.dialogParams.referential, file));
+      return null;
+    } catch (error: any) {
+      if (error) {
+        if (error.error.args) {
+          (error.error.args as string[]).forEach((arg) => {
+            const jsonArg = JSON.parse(arg);
+            errorsDuringImport.push(
+              this.translateService.instant('IMPORT_DIALOG.IMPORT_ERROR_MESSAGE.' + jsonArg.error, {
+                line: jsonArg.line,
+                column: jsonArg.column,
+                data: jsonArg.data,
+              }),
+            );
+          });
+        }
+      }
+      return {
+        fileErrors: {
+          invalidCsv: true,
+        },
+        controlErrors: {
+          invalidCsvDetail: {
+            detail: errorsDuringImport.map((error) => `<li>${error}</li>`).join(''),
+          },
+        },
+      };
     }
+  };
+
+  public setExtensions() {
+    const allowedFiles = this.dialogParams.allowedFiles;
+    this.extensions = [
+      ...(allowedFiles.includes(FileTypes.JSON) ? ['.json'] : []),
+      ...(allowedFiles.includes(FileTypes.XML) ? ['.xml'] : []),
+      ...(allowedFiles.includes(FileTypes.CSV) || allowedFiles.includes(FileTypes.VND) ? ['.csv'] : []),
+    ];
   }
 
-  public removeFile(): void {
-    this.hasWrongFormat = false;
-    this.fileToUpload = null;
-    this.errorsDuringImport = [];
-  }
-
-  private isAllowedFileType(type: string): boolean {
-    return this.dialogParams.allowedFiles.includes(type as FileTypes);
+  public enableCsvValidator() {
+    this.usesCsvValidator = [ReferentialTypes.ACCESS_CONTRACTS, ReferentialTypes.INGEST_CONTRACT, ReferentialTypes.SCHEMA_UNIT].includes(
+      this.dialogParams.referential,
+    );
   }
 
   ngOnDestroy() {

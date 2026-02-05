@@ -361,13 +361,7 @@ public class AccessContractService extends AbstractService {
     }
 
     public ResponseEntity<Void> importAccessContracts(VitamContext context, MultipartFile file) {
-        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(ACCESS_CONTRACT);
-
-        if (isIdentifierMandatory == null) {
-            throw new InternalServerException("The result of the API call should not be null");
-        }
-
-        AccessContractCSVUtils.checkImportFile(file, isIdentifierMandatory);
+        checkCSV(file);
         LOGGER.debug("access contracts file {} has been validated before parsing it", file.getOriginalFilename());
 
         List<AccessContractCSVDto> accessContractCSVDtos = convertCsvFileToAccessContractsDto(file);
@@ -407,6 +401,16 @@ public class AccessContractService extends AbstractService {
                 )
             )
         );
+    }
+
+    public void checkCSV(MultipartFile file) {
+        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(ACCESS_CONTRACT);
+
+        if (isIdentifierMandatory == null) {
+            throw new InternalServerException("The result of the API call should not be null");
+        }
+
+        AccessContractCSVUtils.checkImportFile(file, isIdentifierMandatory);
     }
 
     private List<AccessContractCSVDto> convertCsvFileToAccessContractsDto(MultipartFile file) {

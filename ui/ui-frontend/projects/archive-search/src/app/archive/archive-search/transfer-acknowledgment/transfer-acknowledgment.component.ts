@@ -34,13 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ApplicationId, BytesPipe, Logger, SnackBarService } from 'vitamui-library';
+import {
+  ApplicationId,
+  DialogHeaderComponent,
+  FileSelectorComponent,
+  FileValidationErrors,
+  Logger,
+  PipesModule,
+  readFileContent,
+  SnackBarService,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { XMLParser } from 'fast-xml-parser';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CdkStep } from '@angular/cdk/stepper';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const FILE_MAX_SIZE = 10737418240;
 const ATR_EXTENSION = '.xml';
@@ -48,82 +62,77 @@ const ATR_EXTENSION = '.xml';
 @Component({
   selector: 'app-transfer-acknowledgment',
   templateUrl: './transfer-acknowledgment.component.html',
-  styleUrls: ['./transfer-acknowledgment.component.scss'],
-  standalone: false,
+  imports: [
+    CdkStep,
+    DialogHeaderComponent,
+    FileSelectorComponent,
+    MatDialogActions,
+    MatDialogContent,
+    MatProgressSpinner,
+    PipesModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
 })
-export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
+export class TransferAcknowledgmentComponent implements OnDestroy {
   dialog = inject(MatDialog);
-  private dialogRef = inject<MatDialogRef<TransferAcknowledgmentComponent>>(MatDialogRef);
-  private dialogRefToClose = inject<MatDialogRef<TransferAcknowledgmentComponent>>(MatDialogRef);
+  dialogRef = inject<MatDialogRef<TransferAcknowledgmentComponent>>(MatDialogRef);
+  dialogRefToClose = inject<MatDialogRef<TransferAcknowledgmentComponent>>(MatDialogRef);
+
+  archiveSearchService = inject(ArchiveService);
+  snackBarService = inject(SnackBarService);
+
+  data = inject(MAT_DIALOG_DATA);
+
   logger = inject(Logger);
-  data = inject<{
-    accessContract: string;
-    tenantIdentifier: string;
-  }>(MAT_DIALOG_DATA);
-  private archiveSearchService = inject(ArchiveService);
-  private translate = inject(TranslateService);
-  private bytesPipe = inject(BytesPipe);
-  private snackBarService = inject(SnackBarService);
 
-  stepIndex = 0;
-  fileSize = 0;
+  tenantIdentifier: string;
 
-  isAtrNotValid = false;
-  isDisabled = true;
-  hasFileSizeError = false;
-  hasError = false;
-  isLoadingData = false;
   isSubmitBtnDisabled = false;
 
-  fileToUpload: File = null;
   transfertDetails: any = {};
 
-  message: string;
-  fileName: string;
-  fileSizeString: string;
-  accessContract: string;
-  tenantIdentifier: string;
-  transfertDetailsCode: string;
-
   transferAcknowledgementSubscription: Subscription;
+
+  atrControl = new FormControl<File[]>(undefined, [Validators.required]);
 
   @ViewChild('confirmDeleteTransferAcknowledgmentDialog', { static: true })
   confirmDeleteTransferAcknowledgmentDialog: TemplateRef<TransferAcknowledgmentComponent>;
 
-  @ViewChild('atrXmlFile', { static: false }) atrXmlFile: any;
+  constructor() {
+    this.tenantIdentifier = this.data.tenantIdentifier;
+  }
 
-  async parseXmlToTransferDetails(xmlFileContent: string) {
-    this.isLoadingData = true;
+  atrContentValidator = async (file: File): Promise<FileValidationErrors> => {
+    const xmlFileContent = await readFileContent(file);
 
     const parser = new XMLParser();
     try {
       const parsedXml: { ArchiveTransferReply: any } = parser.parse(xmlFileContent, true);
       if (parsedXml.ArchiveTransferReply === undefined || parsedXml.ArchiveTransferReply === null) {
-        this.isAtrNotValid = true;
-        this.isLoadingData = false;
+        return {
+          fileErrors: { atrNotValid: true },
+          controlErrors: { invalidFiles: true },
+        };
       } else {
         this.transfertDetails.messageRequestIdentifier = parsedXml.ArchiveTransferReply?.MessageRequestIdentifier;
         this.transfertDetails.date = parsedXml.ArchiveTransferReply?.Date;
         this.transfertDetails.archivalAgreement = parsedXml.ArchiveTransferReply?.ArchivalAgreement;
         this.transfertDetails.archivalAgency = parsedXml.ArchiveTransferReply.ArchivalAgency?.Identifier;
         this.transfertDetails.transferringAgency = parsedXml.ArchiveTransferReply.TransferringAgency?.Identifier;
-        this.transfertDetails.archiveTransferReply = parsedXml.ArchiveTransferReply.ReplyCode;
-        this.isAtrNotValid = false;
-        this.stepIndex = this.stepIndex + 1;
-        this.isLoadingData = false;
+        this.transfertDetails.archiveTransferReply = parsedXml.ArchiveTransferReply.ReplyCode?.replace(/(\r\n|\n|\r)/gm, '')?.trim();
       }
     } catch (error: any) {
-      this.message = this.translate.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
-      this.hasError = true;
-      this.isLoadingData = false;
       this.logger.error('Error with parsing the xml file :', error);
+      return {
+        fileErrors: { fileBadFormat: true },
+        controlErrors: { invalidFiles: true },
+      };
     }
-  }
-
-  ngOnInit(): void {
-    this.accessContract = this.data.accessContract;
-    this.tenantIdentifier = this.data.tenantIdentifier;
-  }
+    return null;
+  };
 
   ngOnDestroy(): void {
     this.transferAcknowledgementSubscription?.unsubscribe();
@@ -147,79 +156,12 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     this.dialogRef.close(true);
   }
 
-  initializeParameters() {
-    this.isDisabled = false;
-    this.hasError = false;
-    this.hasFileSizeError = false;
-    this.message = null;
-    this.isAtrNotValid = false;
-    this.transfertDetails = {};
-    this.transfertDetailsCode = null;
-  }
-
-  private isFileList(files: FileList | File[]): files is FileList {
-    return files instanceof FileList;
-  }
-
-  private initializeFileToUpload(files: FileList | File[]): boolean {
-    if (files) {
-      const file = this.isFileList(files) ? files.item(0) : files[0];
-      if (file) {
-        this.fileToUpload = file;
-        this.fileName = file.name;
-        this.fileSize = file.size;
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  handleFile(files: FileList | File[]) {
-    this.initializeParameters();
-    if (!this.initializeFileToUpload(files)) {
-      return;
-    }
-
-    this.fileSizeString = this.bytesPipe.transform(this.fileSize);
-
-    if (!this.checkFileExtension(this.fileName)) {
-      this.message = this.translate.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
-      this.hasError = true;
-    } else {
-      if (this.fileSize > FILE_MAX_SIZE) {
-        this.logger.error(this.translate.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE'));
-        this.hasFileSizeError = true;
-      }
-    }
-  }
-
-  addTransferAtrFile() {
-    this.atrXmlFile.nativeElement.click();
-  }
-
-  checkFileExtension(fileName: string): boolean {
-    return fileName.endsWith(ATR_EXTENSION);
-  }
-
-  goToNextStep() {
-    this.stepIndex = this.stepIndex + 1;
-    this.transfertDetailsCode = this.transfertDetails.archiveTransferReply.replace(/(\r\n|\n|\r)/gm, '').trim();
-  }
-
-  // Step 1 :
-  validateAndParseXmlFile() {
-    if (this.fileToUpload && !this.hasError && !this.hasFileSizeError) {
-      this.isLoadingData = true;
-      this.fileToUpload.text().then((xmlFileContent) => this.parseXmlToTransferDetails(xmlFileContent));
-    }
-  }
-
   // Step 3 :
   applyTransferAcknowledgment() {
     this.isSubmitBtnDisabled = true;
+    const atrFile = this.atrControl.value[0];
     this.transferAcknowledgementSubscription = this.archiveSearchService
-      .transferAcknowledgment(this.tenantIdentifier, this.fileToUpload)
+      .transferAcknowledgment(this.data.tenantIdentifier, atrFile)
       .subscribe(
         (operationId) => {
           this.dialogRef.close(true);
@@ -243,4 +185,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
         },
       );
   }
+
+  protected readonly FILE_MAX_SIZE = FILE_MAX_SIZE;
+  protected readonly ATR_EXTENSION = ATR_EXTENSION;
 }

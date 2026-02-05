@@ -20,8 +20,6 @@
       "CANCEL_UPDATE_TO_CONFIRM": "Êtes-vous sûr de vouloir annuler l'opération de mise à jour des métadonnées ?",
       "ADD_FILE": "Glisser-déposer",
       "BROWSE": "ou Parcourir",
-      "ACCEPTED_FORMAT": "format accepté : csv",
-      "FILE_BAD_FORMAT": "Le fichier déposé n'est pas au bon format",
       "SUCCESS_MESSAGE": "L'opération de mise à jour des métadonnées a bien été traitée",
       "WAIT_MESSAGE": "L'opération est en cours, merci de ne pas éteindre ou rafraîchir votre navigateur",
       "ACTION_DELETE": "Supprimer des unités archivistiques",
@@ -251,7 +249,8 @@
       "OR": "ou",
       "BROWSE": "parcourir",
       "BROWSE_DIRECTORIES": "parcourir des dossiers",
-      "BROWSE_FILES": "parcourir des fichiers"
+      "BROWSE_FILES": "parcourir des fichiers",
+      "POSSIBLE_METADATA_FILE_ADDITION": "Ajout possible d’un fichier de métadonnées (metadata.csv ou metadata.jsonl)"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {

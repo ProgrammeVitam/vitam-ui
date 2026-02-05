@@ -4,11 +4,9 @@
   <!-- Step 1 -->
   <cdk-step>
     <mat-dialog-content>
-      <div>
-        <h4>
-          {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_SUB_TITLE' | translate }}
-          <i class="vitamui-icon vitamui-icon-info" [vitamuiTooltip]="'COLLECT.UPDATE_UNITS_METADATA.ACTION_DESCRIPTION' | translate"></i>
-        </h4>
+      <div class="text large bold my-2">
+        {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_SUB_TITLE' | translate }}
+        <i class="vitamui-icon vitamui-icon-info" [vitamuiTooltip]="'COLLECT.UPDATE_UNITS_METADATA.ACTION_DESCRIPTION' | translate"></i>
       </div>
 
       @if (isLoadingData) {
@@ -16,7 +14,8 @@
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
         </div>
       } @else {
-        <vitamui-file-selector [extensions]="['.csv']" [multiple]="false" (filesChanged)="handleFiles($event)"> </vitamui-file-selector>
+        <vitamui-file-selector [extensions]="['.csv', '.jsonl']" [multiple]="false" (filesChanged)="handleFiles($event)">
+        </vitamui-file-selector>
       }
     </mat-dialog-content>
     <mat-dialog-actions>

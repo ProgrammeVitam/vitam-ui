@@ -39,17 +39,18 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { LoggerModule, Node } from 'vitamui-library';
-import { FilingPlanService } from './filing-plan.service';
 import {
   AccessContractService,
   BASE_URL,
   FileType,
   InjectorModule,
+  LoggerModule,
+  SnackBarService,
   UnitType,
   VitamUICommonModule,
-  SnackBarService,
 } from '../../../app/modules';
+import { FilingPlanService } from './filing-plan.service';
+import { Node } from '../../models/node.interface';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { EMPTY, firstValueFrom, of } from 'rxjs';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

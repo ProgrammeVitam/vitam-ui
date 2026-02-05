@@ -37,7 +37,7 @@
   @if (displayFiles.length) {
     <div class="files-wrapper gap-2 align-items-stretch">
       @for (file of displayFiles; track file) {
-        <vitamui-display-file [file]="file" (removeFile)="removeFile($event)"></vitamui-display-file>
+        <vitamui-display-file [file]="file" (removeFile)="removeFile($event)" [errorMessageMap]="errorMessageMap"></vitamui-display-file>
       }
     </div>
   }
