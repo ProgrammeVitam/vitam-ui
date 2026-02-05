@@ -232,7 +232,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         );
 
         try {
-            casApi.changePassword(userLogin.getUserEmail(), userLogin.getCustomerId(), password);
+            casApi.changePassword(userLogin.getUserEmail(), password, userLogin.getCustomerId());
             return true;
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
