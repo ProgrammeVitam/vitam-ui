@@ -24,12 +24,11 @@ ingest:
     secure: true
     ssl-configuration:
       truststore:
-        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
         key-password: changeme
       keystore:
-        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/server/archive-search/keystore_archive-search.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_ingest.p12
         key-password: changeme
-        type: JKS
       hostname-verification: false
 
 swagger:

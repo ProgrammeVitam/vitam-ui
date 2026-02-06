@@ -22,10 +22,10 @@ server:
   host:
   port: 8083
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/vitamui-services/server/iam/keystore_iam.jks
+    key-store: ../../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_iam.p12
     key-store-password: changeme
     key-password: changeme
-    trust-store: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+    trust-store: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
     trust-store-password: changeme
     client-auth: want
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -53,12 +53,11 @@ cas-client:
   secure: true
   ssl-configuration:
     truststore:
-      key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+      key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
       key-password: changeme
     keystore:
-      key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/iam/keystore_iam.jks
+      key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/keystore_iam.p12
       key-password: changeme
-      type: JKS
     hostname-verification: false
 
 cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
@@ -112,13 +111,11 @@ provisioning-client:
         secure: false
         ssl-configuration:
           keystore:
-            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/iam/keystore_iam.jks
+            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/keystore_iam.p12
             key-password: changeme
-            type: JKS
           truststore:
-            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
             key-password: changeme
-            type: JKS
           hostname-verification: false
     - idp-identifier: 2
       uri: https://localhost:8090/provisioning/v1/users
@@ -126,13 +123,11 @@ provisioning-client:
         secure: true
         ssl-configuration:
           keystore:
-            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/iam/keystore_iam.jks
+            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/keystore_iam.p12
             key-password: changeme
-            type: JKS
           truststore:
-            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+            key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
             key-password: changeme
-            type: JKS
           hostname-verification: false
 
 address:

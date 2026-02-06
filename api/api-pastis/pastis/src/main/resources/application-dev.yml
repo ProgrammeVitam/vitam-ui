@@ -35,10 +35,10 @@ server:
   host:
   port: 8015
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/vitamui-services/server/pastis/keystore_pastis.jks
+    key-store: ../../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_pastis.p12
     key-store-password: changeme
     key-password: changeme
-    trust-store: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+    trust-store: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
     trust-store-password: changeme
     client-auth: want
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
@@ -62,12 +62,11 @@ pastis:
     secure: true
     ssl-configuration:
       truststore:
-        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
         key-password: changeme
       keystore:
-        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/pastis/keystore_pastis.jks
+        key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/keystore_pastis.p12
         key-password: changeme
-        type: JKS
       hostname-verification: false
 
 # Jaeger

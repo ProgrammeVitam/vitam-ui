@@ -1,7 +1,7 @@
 ---
-ca_root_vitamui_services: changeme
-ca_intermediate_vitamui_services: changeme
-ca_root_client_external: changeme
-ca_intermediate_client_external: changeme
-ca_root_client_vitam: changeme
-ca_intermediate_client_vitam: changeme
+certKey_ca_root_vitamui_services: changeme
+certKey_ca_intermediate_vitamui_services: changeme
+certKey_ca_root_client_external: changeme
+certKey_ca_intermediate_client_external: changeme
+certKey_ca_root_client_vitam: changeme
+certKey_ca_intermediate_client_vitam: changeme

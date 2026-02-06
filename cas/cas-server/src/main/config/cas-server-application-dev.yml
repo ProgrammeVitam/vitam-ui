@@ -9,13 +9,13 @@ spring:
 server:
   ssl:
     #client-auth: want
-    key-store: ../../dev-deployment/environments/keystores/vitamui-services/server/cas-server/keystore_cas-server.jks
+    key-store: ../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_cas-server.p12
     key-store-password: changeme
     key-password: changeme
     enabled-protocols: TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
-    #trust-store: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
-    #trust-store-password: changeme
+    trust-store: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
+    trust-store-password: changeme
   host: dev.vitamui.com
   port: 8080
   servlet:
@@ -49,11 +49,10 @@ iam-client:
   secure: true
   ssl-configuration:
     keystore:
-      key-path: ../../dev-deployment/environments/keystores/vitamui-services/clients/cas-server/keystore_cas-server.jks
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/clients/keystore_cas-server.p12
       key-password: changeme
-      type: JKS
     truststore:
-      key-path: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
       key-password: changeme
     hostname-verification: false
 
