@@ -22,7 +22,7 @@
       "SUCCESS_MESSAGE": "L'opération de mise à jour des métadonnées a bien été traitée",
       "WAIT_MESSAGE": "L'opération est en cours, merci de ne pas éteindre ou rafraîchir votre navigateur",
       "ACTION_DELETE": "Supprimer des unités archivistiques",
-      "IMPORTED_CSV_FILE_INCLUDES_ERRORS": "Le fichier csv importé comprend des erreurs. Tout ou partie du fichier csv ne sera pas pris en compte",
+      "IMPORTED_CSV_FILE_INCLUDES_ERRORS": "Le fichier csv importé comprend des erreurs. Tout ou partie du fichier csv ne sera pas pris en compte.",
       "LIST_IDENTIFIED_ERRORS": "Liste des erreurs identifiées",
       "CLOSE": "Fermer",
       "ERRORS": {
