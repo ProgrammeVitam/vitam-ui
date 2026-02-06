@@ -22,7 +22,7 @@
       "SUCCESS_MESSAGE": "The metadata update operation was successfully processed",
       "WAIT_MESSAGE": "The operation is in progress, please do not shut down or refresh your browser",
       "ACTION_DELETE": "Delete archive unit",
-      "IMPORTED_CSV_FILE_INCLUDES_ERRORS": "The imported csv file includes errors. All or part of the csv file won't be taken into account",
+      "IMPORTED_CSV_FILE_INCLUDES_ERRORS": "The imported csv file includes errors. All or part of the csv file won't be taken into account.",
       "LIST_IDENTIFIED_ERRORS": "List of identified errors",
       "CLOSE": "Close",
       "ERRORS": {
