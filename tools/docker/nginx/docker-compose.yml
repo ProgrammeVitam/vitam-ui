@@ -6,4 +6,4 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ../../../../vitam-ui/ui/ui-frontend/dist:/usr/share/nginx/html/vitamui:z
-      - ../../../dev-deployment/environments/certs/server/hosts/localhost:/etc/nginx/certs/localhost
+      - ../../../dev-deployment/environments/certs/vitamui-services:/etc/nginx/certs/vitamui-services

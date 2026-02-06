@@ -254,7 +254,6 @@ Based on the test container, bellow an example of OIDC authentication provider f
 
 ```
 
-
 ## SAML V2 authentication delegation
 
 To set up Saml V2 authentication with vitamui, please follow these steps:
@@ -263,11 +262,11 @@ To set up Saml V2 authentication with vitamui, please follow these steps:
 - Obtain the SAML federation configuration file from your IDP provider (e.g., FederationMetadata.xml).
     - Import the provider certificate into the cas_server keystore:
       ```sh
-        keytool -importcert -keystore environments/keystores/server/my_server/keystore_cas-server.jks -storepass xxx -alias orga-saml -file environments/certs/orga-SAML.crt
+        keytool -importcert -keystore environments/keystores/vitamui-services/servers/keystore_cas-server.p12 -storepass xxx -alias orga-saml -file environments/certs/orga-SAML.crt -storetype PKCS12
         ```
         - In Vitamui interface, we create an external provider of SAML type with the following information:
         - Email attribute: change the value of the attribute `nameid-format` to `emailAddress` instead of `transient` in the sp-metadata file to send the user email from the idp after authentication
-        - Upload the CAS keystore file (with the associated password) (keystore_cas-server.jks)
+        - Upload the CAS keystore file (with the associated password) (keystore_cas-server.p12)
         - Upload the IDP metadata file (e.g., FederationMetadata.xml)
         - After provider creation, we need to download the metadata file of the vitamui provider (spmetadata.xml), and provide it to the external IDP provider, this file is used to declare our vitamui provider as a service.
 
@@ -394,7 +393,7 @@ provisioning-client:
         secure: false
         ssl-configuration:
           truststore:
-            key-path: /vitamui/conf/iam/truststore_server.jks
+            key-path: /vitamui/conf/iam/truststore_server.p12
             key-password: AJ2Ft14CQHiU3eegIAlPqxPRp5uLNMizGadu8SficFja7nQN
           hostname-verification: false
 ```
@@ -458,7 +457,7 @@ et rendez-vous sur l'url http://localhost:8025/
 # SAML metadata generation
 
 1) Retrieval of the IdP metadata, IdP metadata are ignored, so test metdata can be used instead
-2) Creation of a keystore for the IdP: `keytool -genkeypair -alias idp-test -keypass password -keystore idp-test-keystore.jks -storepass password -keyalg RSA -keysize 2048 -validity 3650`
+2) Creation of a keystore for the IdP: `keytool -genkeypair -alias idp-test -keypass password -keystore idp-test-keystore.p12 -storepass password -keyalg RSA -keysize 2048 -validity 3650`
 3) Generation of the SP metadata using the `GenerateSpMetadata` class (in `api-iam-server`) and saving into a file
 
 
@@ -466,18 +465,18 @@ et rendez-vous sur l'url http://localhost:8025/
 
 Generate the certificate:
 
-`keytool -genkeypair -alias cas-client-keystore -keyalg RSA -validity 1825 -keystore cas-client-keystore.jks -storetype JKS -keypass keyspwd -storepass keyspwd`
-`keytool -genkeypair -alias cas-server-keystore -keyalg RSA -validity 1825 -keystore cas-server-keystore.jks -storetype JKS -keypass keyspwd -storepass keyspwd`
+`keytool -genkeypair -alias cas-client-keystore -keyalg RSA -validity 1825 -keystore cas-client-keystore.p12 -storetype p12 -keypass keyspwd -storepass keyspwd`
+`keytool -genkeypair -alias cas-server-keystore -keyalg RSA -validity 1825 -keystore cas-server-keystore.p12 -storetype p12 -keypass keyspwd -storepass keyspwd`
 
 Extract the public key:
 
-`keytool -exportcert -alias cas-client-keystore -keystore cas-client-keystore.jks -file cas-client-public.der`
-`keytool -exportcert -alias cas-server-keystore -keystore cas-server-keystore.jks -file cas-server-public.der`
+`keytool -exportcert -alias cas-client-keystore -keystore cas-client-keystore.p12 -file cas-client-public.der`
+`keytool -exportcert -alias cas-server-keystore -keystore cas-server-keystore.p12 -file cas-server-public.der`
 
 Import the keys:
 
-`keytool -importcert -alias cas-client-public -keystore api-iam-admin-server-truststore.jks -file cas-client-public.der`
-`keytool -importcert -alias api-iam-admin-server-public -keystore cas-client-truststore.jks -file api-iam-admin-server-public.der`
+`keytool -importcert -alias cas-client-public -keystore api-iam-admin-server-truststore.p12 -file cas-client-public.der`
+`keytool -importcert -alias api-iam-admin-server-public -keystore cas-client-truststore.p12 -file api-iam-admin-server-public.der`
 
 
 # URL
