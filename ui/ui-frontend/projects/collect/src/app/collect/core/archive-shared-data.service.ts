@@ -48,13 +48,14 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaRemoveAction,
   Unit,
+  ManagementRuleSharedDataService,
 } from 'vitamui-library';
 import { NodeData } from '../archive-search-collect/archive-search-criteria/models/nodedata.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveSharedDataService {
+export class ArchiveSharedDataService implements ManagementRuleSharedDataService {
   private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
   private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private selectedUnitSubject = new BehaviorSubject<Unit>(null);

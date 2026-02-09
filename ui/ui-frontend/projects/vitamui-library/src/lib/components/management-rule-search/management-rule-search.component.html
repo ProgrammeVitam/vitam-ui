@@ -1,0 +1,141 @@
+<div class="container">
+  <form [formGroup]="criteriaForm" class="gap-4 align-items-stretch">
+    <!-- Identifier -->
+    <div class="hgap-4">
+      <vitamui-select
+        class="w-100"
+        formControlName="ruleIdentifier"
+        [options]="ruleOptions"
+        [multiple]="true"
+        [placeholder]="config.fieldIdPlaceholder | translate"
+        [searchBarPlaceHolder]="config.fieldIdSearchPlaceholder | translate"
+      >
+      </vitamui-select>
+      <div class="w-100">
+        @if (criteriaForm.controls.ruleEliminationIdentifier) {
+          <vitamui-common-editable-input
+            class="w-100"
+            formControlName="ruleEliminationIdentifier"
+            [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ELIMINATION_TECHNICAL_ID' | translate"
+          >
+          </vitamui-common-editable-input>
+        }
+      </div>
+    </div>
+
+    <!-- Dates -->
+    <div class="gap-2 align-items-stretch">
+      <div class="text medium bold primary uppercase">
+        {{ config.fieldEndDateLabel | translate }}
+      </div>
+
+      <div class="hgap-4">
+        <vitamui-datepicker
+          class="w-100"
+          [label]="(endDateInterval ? config.fieldEndDateBeginLabel : config.fieldEndDateEqualLabel) | translate"
+          formControlName="ruleStartDate"
+          [max]="ruleEndDateCtrl.value"
+          outputType="Date"
+          format="dd/MM/yyyy"
+        ></vitamui-datepicker>
+
+        <div class="w-100 hgap-4">
+          @if (!endDateInterval) {
+            @if (ruleStartDateCtrl.value) {
+              <button class="btn btn-circle default medium secondary" (click)="addBeginDtCriteria()">
+                <i class="material-icons">check</i>
+              </button>
+            }
+
+            <button class="btn link" (click)="updateEndDateInterval(true)">
+              {{ config.createIntervalLabel | translate }}
+            </button>
+          } @else {
+            <vitamui-datepicker
+              [label]="config.fieldEndDateEndLabel | translate"
+              formControlName="ruleEndDate"
+              [min]="ruleStartDateCtrl.value"
+              outputType="Date"
+              format="dd/MM/yyyy"
+              class="w-100"
+            ></vitamui-datepicker>
+            @if (ruleStartDateCtrl.value && ruleEndDateCtrl.value) {
+              <button class="btn btn-circle default medium secondary" (click)="addIntervalDtCriteria()">
+                <i class="material-icons">check</i>
+              </button>
+            }
+
+            <button class="btn link" (click)="updateEndDateInterval(false)">
+              {{ config.deleteIntervalLabel | translate }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex">
+      <div class="gap-2 w-100">
+        <div class="text medium bold primary uppercase">
+          {{ config.translationPrefix + 'ORIGIN.TITLE' | translate }}
+        </div>
+
+        @for (checkbox of originCheckboxes; track checkbox.key) {
+          <vitamui-management-rule-checkbox
+            [label]="config.translationPrefix + checkbox.labelKey"
+            [field]="checkbox.key"
+            [checked]="additionalCriteria.get(checkbox.key)"
+            [config]="checkboxConfig[checkbox.key]"
+            [ruleType]="ruleType"
+            [searchCriteriaType]="searchCriteriaType"
+            (changed)="onCheckboxChange(checkbox.key, $event)"
+          >
+          </vitamui-management-rule-checkbox>
+        }
+      </div>
+
+      <div class="gap-2 w-100 flex-row">
+        @if (finalActionCheckboxes?.length) {
+          <div class="gap-2 w-100">
+            <div class="text medium bold primary uppercase">
+              {{ config.translationPrefix + 'ORIGIN.TITLE' | translate }}
+            </div>
+
+            @for (checkbox of finalActionCheckboxes; track checkbox.key) {
+              <vitamui-management-rule-checkbox
+                [label]="config.translationPrefix + checkbox.labelKey"
+                [field]="checkbox.key"
+                [checked]="additionalCriteria.get(checkbox.key)"
+                [config]="checkboxConfig[checkbox.key]"
+                [ruleType]="ruleType"
+                [searchCriteriaType]="searchCriteriaType"
+                (changed)="onCheckboxChange(checkbox.key, $event)"
+              >
+              </vitamui-management-rule-checkbox>
+            }
+          </div>
+        }
+
+        @if (finalActionTypeCheckboxes?.length) {
+          <div class="gap-2 w-100">
+            <div class="text medium bold primary uppercase">
+              {{ config.translationPrefix + 'FINAL_ACTION.TITLE' | translate }}
+            </div>
+
+            @for (checkbox of finalActionTypeCheckboxes; track checkbox.key) {
+              <vitamui-management-rule-checkbox
+                [label]="config.translationPrefix + checkbox.labelKey"
+                [field]="checkbox.key"
+                [checked]="additionalCriteria.get(checkbox.key)"
+                [config]="checkboxConfig[checkbox.key]"
+                [ruleType]="ruleType"
+                [searchCriteriaType]="searchCriteriaType"
+                (changed)="onCheckboxChange(checkbox.key, $event)"
+              >
+              </vitamui-management-rule-checkbox>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </form>
+</div>

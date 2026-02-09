@@ -72,11 +72,6 @@ import { UnlockRulesInheritanceComponent } from './archive-search/additional-act
 import { UpdateUnitRulesComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { ManagementRulesComponent } from './archive-search/additional-actions-search/management-rules/management-rules.component';
 import { TransferRequestModalComponent } from './archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
-import { AccessRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/access-rule-search/access-rule-search.component';
-import { AppraisalRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/appraisal-rule-search/appraisal-rule-search.component';
-import { DisseminationRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/dissemination-rule-search/dissemination-rule-search.component';
-import { ReuseRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/reuse-rule-search/reuse-rule-search.component';
-import { StorageRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/storage-rule-search/storage-rule-search.component';
 import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
 import { SearchAccessRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
 import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
@@ -127,10 +122,8 @@ import { ConfirmActionModule } from './archive-search/search-criteria-list/confi
     MatTableModule,
   ],
   declarations: [
-    AccessRuleSearchComponent,
     AddManagementRulesComponent,
     AddUpdatePropertyComponent,
-    AppraisalRuleSearchComponent,
     ArchiveComponent,
     ArchivePreviewComponent,
     ArchiveSearchComponent,
@@ -147,11 +140,9 @@ import { ConfirmActionModule } from './archive-search/search-criteria-list/confi
     CriteriaSearchComponent,
     DeleteUnitRulesComponent,
     DipRequestCreateComponent,
-    DisseminationRuleSearchComponent,
     FilingHoldingSchemeComponent,
     LeavesTreeComponent,
     ManagementRulesComponent,
-    ReuseRuleSearchComponent,
     SearchAccessRulesFacetsComponent,
     SearchAppraisalRulesFacetsComponent,
     SearchCriteriaListComponent,
@@ -160,7 +151,6 @@ import { ConfirmActionModule } from './archive-search/search-criteria-list/confi
     SearchReuseRulesFacetsComponent,
     SearchStorageRulesFacetsComponent,
     SimpleCriteriaSearchComponent,
-    StorageRuleSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     TransferAcknowledgmentComponent,
     TransferRequestModalComponent,

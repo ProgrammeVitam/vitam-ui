@@ -59,6 +59,7 @@ import { ErrorDialogComponent } from './components/dialog/error-dialog/error-dia
 import { TranslateWithOptionalTypeSuffixPipe } from '../app/modules/pipes/translate-with-optional-type-suffix.pipe';
 import { SaveBannerComponent } from './components/save-banner/save-banner.component';
 import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
+import { ManagementRuleSearchComponent } from './components/management-rule-search/management-rule-search.component';
 
 const components = [
   AlertDialogComponent,
@@ -68,6 +69,7 @@ const components = [
   ErrorDialogComponent,
   FilingPlanModule,
   FormFieldValueWrapperComponent,
+  ManagementRuleSearchComponent,
   NextStepComponent,
   PatternComponent,
   PreviousStepComponent,

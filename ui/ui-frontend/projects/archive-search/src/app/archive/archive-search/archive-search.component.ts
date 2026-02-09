@@ -55,23 +55,31 @@ import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 import {
+  ACCESS_RULE,
   AccessContract,
   AccessContractService,
   AlertDialogComponent,
   ALL_DESCENDANTS_FACET,
+  APPRAISAL_RULE,
   ArchiveSearchResultFacets,
+  ConfigService,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaSearchCriteria,
   CriteriaValue,
   Direction,
+  DISSEMINATION_RULE,
   FilingHoldingSchemeNode,
   Logger,
+  MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+  NODES,
   ORIGIN_WAITING_RECALCULATE,
+  ORIGINATING_AGENCY_FACETS,
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
   ReclassificationDialogComponent,
+  REUSE_RULE,
   Rule,
   RuleService,
   SearchCriteriaAddAction,
@@ -84,20 +92,14 @@ import {
   SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
+  STORAGE_RULE,
   TermsFacet,
+  toManagementRuleType,
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamuiRoles,
-  STORAGE_RULE,
-  APPRAISAL_RULE,
-  ACCESS_RULE,
-  DISSEMINATION_RULE,
-  REUSE_RULE,
   WAITING_RECALCULATE,
-  NODES,
-  ORIGINATING_AGENCY_FACETS,
-  ConfigService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -124,6 +126,12 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss'],
   standalone: false,
+  providers: [
+    {
+      provide: MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+      useExisting: ArchiveSharedDataService,
+    },
+  ],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked, AfterViewInit {
   readonly UnitType = UnitType;
@@ -478,6 +486,20 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   ngAfterContentChecked(): void {
     this.cdr.detectChanges();
+  }
+
+  toManagementRuleType = toManagementRuleType;
+
+  toUpdateOn(category: SearchCriteriaCategory) {
+    const { name } = category;
+
+    if (name === 'ACCESS_RULE') return this.archiveSharedDataService.accessFromMainSearchCriteriaObservable;
+    if (name === 'APPRAISAL_RULE') return this.archiveSharedDataService.appraisalFromMainSearchCriteriaObservable;
+    if (name === 'DISSEMINATION_RULE') return this.archiveSharedDataService.disseminationFromMainSearchCriteriaObservable;
+    if (name === 'REUSE_RULE') return this.archiveSharedDataService.reuseFromMainSearchCriteriaObservable;
+    if (name === 'STORAGE_RULE') return this.archiveSharedDataService.storageFromMainSearchCriteriaObservable;
+
+    throw new Error(`Unknown management rule category ${name}`);
   }
 
   showHidePanel(show: boolean) {

@@ -47,13 +47,14 @@ import {
   SearchCriteriaHistory,
   SearchCriteriaRemoveAction,
   Unit,
+  ManagementRuleSharedDataService,
 } from 'vitamui-library';
 import { NodeData } from '../archive/models/nodedata.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveSharedDataService {
+export class ArchiveSharedDataService implements ManagementRuleSharedDataService {
   private sourceNode = new BehaviorSubject<NodeData>(null);
   private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private selectedUnitSubject = new BehaviorSubject<Unit>(null);
@@ -94,6 +95,12 @@ export class ArchiveSharedDataService {
   searchCriteria$ = this.searchCriteriaSubject.asObservable();
 
   unitUpdatedWithComputedObjectGroup = new BehaviorSubject<Unit>(null);
+
+  appraisalFromMainSearchCriteriaObservable = this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
+  storageFromMainSearchCriteriaObservable = this.searchStorageCriteriaActionFromMainSubject.asObservable();
+  accessFromMainSearchCriteriaObservable = this.searchAccessCriteriaActionFromMainSubject.asObservable();
+  reuseFromMainSearchCriteriaObservable = this.searchReuseCriteriaActionFromMainSubject.asObservable();
+  disseminationFromMainSearchCriteriaObservable = this.searchDisseminationCriteriaActionFromMainSubject.asObservable();
 
   constructor(private queryParamsService: QueryParamsService) {}
 
@@ -262,40 +269,20 @@ export class ArchiveSharedDataService {
     this.searchAppraisalCriteriaActionFromMainSubject.next(searchCriteriaAction);
   }
 
-  receiveAppraisalFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
-    return this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
-  }
-
   sendStorageFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
     this.searchStorageCriteriaActionFromMainSubject.next(searchCriteriaAction);
-  }
-
-  receiveStorageFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
-    return this.searchStorageCriteriaActionFromMainSubject.asObservable();
   }
 
   sendAccessFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
     this.searchAccessCriteriaActionFromMainSubject.next(searchCriteriaAction);
   }
 
-  receiveAccessFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
-    return this.searchAccessCriteriaActionFromMainSubject.asObservable();
-  }
-
   sendReuseFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
     this.searchReuseCriteriaActionFromMainSubject.next(searchCriteriaAction);
   }
 
-  receiveReuseFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
-    return this.searchReuseCriteriaActionFromMainSubject.asObservable();
-  }
-
   sendDisseminationFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
     this.searchDisseminationCriteriaActionFromMainSubject.next(searchCriteriaAction);
-  }
-
-  receiveDisseminationFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
-    return this.searchDisseminationCriteriaActionFromMainSubject.asObservable();
   }
 
   sendRemoveFromChildSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
