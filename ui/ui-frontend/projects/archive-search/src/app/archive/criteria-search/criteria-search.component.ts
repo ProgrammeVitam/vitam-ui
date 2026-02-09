@@ -89,7 +89,7 @@ export class CriteriaSearchComponent {
   getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
     if (criteriaValue.valueTranslated) {
       return this.translateService.instant(
-        `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
+        `ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.value.id}`,
       );
     }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {
