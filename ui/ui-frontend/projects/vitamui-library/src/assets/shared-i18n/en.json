@@ -6250,7 +6250,7 @@
     "END_DATE_MAXIMUM": "Maximum end date",
     "END_DATE_BETWEEN": "Between",
     "END_DATE_AND": "and",
-    "END_DATE_EQUAL": "Applicable end date",
+    "END_DATE_APPLICABLE": "Applicable end date",
     "FINAL_ACTION": {
       "COPY": "Copy",
       "ELIMINATION": "Destruction",

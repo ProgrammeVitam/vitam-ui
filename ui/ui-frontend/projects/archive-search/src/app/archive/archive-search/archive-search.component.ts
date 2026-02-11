@@ -493,11 +493,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   toUpdateOn(category: SearchCriteriaCategory) {
     const { name } = category;
 
-    if (name === 'ACCESS_RULE') return this.archiveSharedDataService.accessFromMainSearchCriteriaObservable;
-    if (name === 'APPRAISAL_RULE') return this.archiveSharedDataService.appraisalFromMainSearchCriteriaObservable;
-    if (name === 'DISSEMINATION_RULE') return this.archiveSharedDataService.disseminationFromMainSearchCriteriaObservable;
-    if (name === 'REUSE_RULE') return this.archiveSharedDataService.reuseFromMainSearchCriteriaObservable;
-    if (name === 'STORAGE_RULE') return this.archiveSharedDataService.storageFromMainSearchCriteriaObservable;
+    if (name === ACCESS_RULE) return this.archiveSharedDataService.accessFromMainSearchCriteriaObservable;
+    if (name === APPRAISAL_RULE) return this.archiveSharedDataService.appraisalFromMainSearchCriteriaObservable;
+    if (name === DISSEMINATION_RULE) return this.archiveSharedDataService.disseminationFromMainSearchCriteriaObservable;
+    if (name === REUSE_RULE) return this.archiveSharedDataService.reuseFromMainSearchCriteriaObservable;
+    if (name === STORAGE_RULE) return this.archiveSharedDataService.storageFromMainSearchCriteriaObservable;
 
     throw new Error(`Unknown management rule category ${name}`);
   }

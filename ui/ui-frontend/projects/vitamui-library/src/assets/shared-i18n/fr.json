@@ -6250,7 +6250,7 @@
     "END_DATE_MAXIMUM": "Date d'échéance maximale",
     "END_DATE_BETWEEN": "Entre le",
     "END_DATE_AND": "et le",
-    "END_DATE_EQUAL": "Date de fin applicable",
+    "END_DATE_APPLICABLE": "Date de fin applicable",
     "FINAL_ACTION": {
       "COPY": "Copie",
       "ELIMINATION": "Elimination",
