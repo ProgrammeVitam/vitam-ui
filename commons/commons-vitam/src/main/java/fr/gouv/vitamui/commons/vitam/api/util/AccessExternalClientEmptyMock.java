@@ -6,6 +6,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.external.client.AbstractMockClient;
 import fr.gouv.vitam.common.model.JsonLineIterator;
+import fr.gouv.vitam.common.model.OriginatingAgencyReassignmentRequest;
 import fr.gouv.vitam.common.model.PreservationRequest;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -223,6 +224,14 @@ public class AccessExternalClientEmptyMock extends AbstractMockClient implements
     }
 
     public RequestResponse<JsonNode> transferReply(VitamContext vitamContext, InputStream transferReply) {
+        throw new NotImplementedException("");
+    }
+
+    @Override
+    public RequestResponse<JsonNode> launchOriginatingAgencyReassignment(
+        VitamContext vitamContext,
+        OriginatingAgencyReassignmentRequest originatingAgencyReassignmentRequest
+    ) throws VitamClientException {
         throw new NotImplementedException("");
     }
 }
