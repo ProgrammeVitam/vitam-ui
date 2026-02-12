@@ -26,13 +26,13 @@ logging:
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | bool == true %}
+{% if vitamui_struct.secure | default(secure) | bool %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12
-    key-store-password: {{ password_keystore_server }}
-    key-password: {{ password_keystore_server }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-    trust-store-password: {{ truststores_vitamui }}
+    key-store-password: {{ keystore_vitamui_services_servers_referential }}
+    # key-password: {{ keystore_vitamui_services_servers_referential }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+    trust-store-password: {{ truststore_vitamui_services }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
@@ -76,8 +76,8 @@ referential:
     secure: true
     ssl-configuration:
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-        key-password: {{ truststores_vitamui }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+        key-password: {{ truststore_vitamui_services }}
       hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
   iam-client:
@@ -88,10 +88,10 @@ referential:
     ssl-configuration:
       keystore:
         key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
-        key-password: {{ password_keystore_client }}
+        key-password: {{ keystore_vitamui_services_clients_referential }}
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-        key-password: {{ truststores_vitamui }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+        key-password: {{ truststore_vitamui_services }}
       hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
 

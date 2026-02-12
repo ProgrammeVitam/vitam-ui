@@ -133,11 +133,27 @@
     - update_vitamui_certificates # Mandatory to update configuration file containing keystore password
   notify: restart service
 
+- name: Copy client-vitam certificates for vitamui communication
+  copy:
+    src: "{{ item }}"
+    dest: "{{ vitamui_folder_conf }}/{{ item | basename }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  loop:
+    - "{{ inventory_dir }}/keystores/client-vitam/clients/{{ vitam_cert.keystore_filename }}"
+    - "{{ inventory_dir }}/keystores/client-vitam/{{ vitam_cert.truststore_filename }}"
+  when: vitam_cert is defined
+  tags:
+    - update_vitamui_configuration
+    - update_vitamui_certificates
+  notify: restart service
+
 - block: # when secure is true
 
     - name: "Copy {{ vitamui_struct.vitamui_component }} keystore (server)"
       copy:
-        src: "{{ inventory_dir }}/keystores/vitamui-services/server/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12"
+        src: "{{ inventory_dir }}/keystores/vitamui-services/servers/keystore_{{ vitamui_struct.vitamui_component }}.p12"
         dest: "{{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
@@ -147,38 +163,38 @@
 
     - name: "Copy {{ vitamui_struct.vitamui_component }} keystore (client) if exists (for mTLS communication between components)"
       copy:
-        src: "{{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12"
+        src: "{{ inventory_dir }}/keystores/vitamui-services/clients/keystore_{{ vitamui_struct.vitamui_component }}.p12"
         dest: "{{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
       when:
-        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/clients/{{ vitamui_struct.vitamui_component }}/keystore_{{ vitamui_struct.vitamui_component }}.p12 || echo nofile') == ''
+        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/vitamui-services/clients/keystore_{{ vitamui_struct.vitamui_component }}.p12 || echo nofile') == ''
       tags: update_vitamui_certificates
       notify: restart service
 
     # Copy the trustore for all vitamui components in order to communicate between them.
     - name: Copy vitamui-services truststore
       copy:
-        src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui.p12"
-        dest: "{{ vitamui_folder_conf }}/truststore_vitamui.p12"
+        src: "{{ inventory_dir }}/keystores/vitamui-services/truststore_vitamui-services.p12"
+        dest: "{{ vitamui_folder_conf }}/truststore_vitamui-services.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
       tags: update_vitamui_certificates
       notify: restart service
 
-    # Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
-    - name: Copy external truststore
+    # Copy the client-external truststore to authorize external applications to communicate with vitamui components.
+    - name: Copy client-external truststore
       copy:
-        src: "{{ inventory_dir }}/keystores/client-external/truststore_external.p12"
-        dest: "{{ vitamui_folder_conf }}/truststore_external.p12"
+        src: "{{ inventory_dir }}/keystores/client-external/truststore_client-external.p12"
+        dest: "{{ vitamui_folder_conf }}/truststore_client-external.p12"
         owner: "{{ vitamui_defaults.users.vitamui }}"
         group: "{{ vitamui_defaults.users.group }}"
         mode: "{{ vitamui_defaults.folder.folder_permission }}"
       when:
-        - vitamui_certificate_type | default('none') | lower == 'external'
-        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-external/truststore_external.p12 || echo nofile') == ''
+        - vitamui_struct.certificate_authority | default('none') | lower == 'client-external'
+        - lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-external/truststore_client-external.p12 || echo nofile') == ''
       tags: update_vitamui_certificates
       notify: restart service
 

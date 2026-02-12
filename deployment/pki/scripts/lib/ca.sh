@@ -162,7 +162,7 @@ function main() {
             pki_logger "Creation of CA-root for ${AUTHORITY}..."
             # Generate CA_ROOT_PASS & store it in the vault-ca
             CA_ROOT_PASS=$(generatePassphrase)
-            setComponentPassphrase ca "ca_root_${AUTHORITY}" "${CA_ROOT_PASS}"
+            setPassphrase ca "ca_root_${AUTHORITY}" "${CA_ROOT_PASS}"
             generate_ca_root ${CA_ROOT_PASS} ${AUTHORITY}
         else
             pki_logger "CA-root for ${AUTHORITY} already exists, it will not be recreated..."
@@ -171,7 +171,7 @@ function main() {
             pki_logger "Creation of CA-intermediate for ${AUTHORITY}..."
             # Generate CA_INTERMEDIATE_PASS & store it in the vault-ca
             CA_INTERMEDIATE_PASS=$(generatePassphrase)
-            setComponentPassphrase ca "ca_intermediate_${AUTHORITY}" "${CA_INTERMEDIATE_PASS}"
+            setPassphrase ca "ca_intermediate_${AUTHORITY}" "${CA_INTERMEDIATE_PASS}"
             generate_ca_intermediate ${CA_INTERMEDIATE_PASS} ${CA_ROOT_PASS} ${AUTHORITY}
 
             purge_directory "${CONFIG_DIR}/${AUTHORITY}"
