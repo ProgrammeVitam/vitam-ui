@@ -15,11 +15,11 @@ spring:
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
 
 server:
-{% if vitamui_struct.secure | default(secure) | bool == true %}
+{% if vitamui_struct.secure | default(secure) | bool %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12
-    key-store-password: {{ password_keystore_server }}
-    key-password: {{ password_keystore_server }}
+    key-store-password: {{ keystore_vitamui_services_servers_cas_server }}
+    key-password: {{ keystore_vitamui_services_servers_cas_server }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
 {% endif %}
@@ -63,15 +63,15 @@ vitamui.cas.identity: cas
 iam-client:
   server-host: {{ vitamui.iam.host }}
   server-port: {{ vitamui.iam.port_service }}
-{% if vitamui.iam.secure | default(secure) | bool == true %}
-  secure: {{ vitamui.iam.secure | default(secure) | lower }}
+{% if vitamui.iam.secure | default(secure) | bool %}
+  secure: true
   ssl-configuration:
     keystore:
       key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
-      key-password: {{ password_keystore_client }}
+      key-password: {{ keystore_vitamui_services_clients_cas_server }}
     truststore:
-      key-path: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-      key-password: {{ truststores_vitamui }}
+      key-path: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+      key-password: {{ truststore_vitamui_services }}
     hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
 

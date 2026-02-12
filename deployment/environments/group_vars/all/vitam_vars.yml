@@ -44,10 +44,10 @@ vitam_vars:
 
 vitam_certs:
   vitamui:
-    filename: keystore_vitamui.p12
-    password: "{{ keystores_client_vitam_vitamui }}"
-    truststore_filename: truststore_vitam.p12
-    password_truststore: "{{ truststores_client_vitam }}"
+    keystore_filename: keystore_vitamui.p12
+    keystore_password: "{{ keystore_client_vitam_clients_vitamui }}"
+    truststore_filename: truststore_client-vitam.p12
+    truststore_password: "{{ truststore_client_vitam }}"
 
 
 # Define connection settings for external / third-party Vitam instances (for COLLECT)

@@ -23,18 +23,18 @@ logging:
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | bool == true %}
+{% if vitamui_struct.secure | default(secure) | bool %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12
-    key-store-password: {{ password_keystore_server }}
-    key-password: {{ password_keystore_server }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.p12
-    trust-store-password: {{ truststores_vitamui }}
+    key-store-password: {{ keystore_vitamui_services_servers_security }}
+    # key-password: {{ keystore_vitamui_services_servers_security }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+    trust-store-password: {{ truststore_vitamui_services }}
 {% endif %}
   max-http-request-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     accesslog:
-      enabled: "{{ vitamui_struct.accesslogs | default('true') }}"
+      enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
       max-days: {{ vitamui_struct.access_retention_days | default(access_retention_days) }}
       directory: "{{ vitamui_folder_log }}"
       prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"

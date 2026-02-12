@@ -13,9 +13,9 @@ set -e
 
 # Generate the path of a server certificate
 function getServerCertificatePath {
-    local TYPE_CERTIFICAT="${1}"
+    local AUTHORITY="${1}"
     local COMPONENT="${2}"
-    echo "${CERTIFICATE_DIR}/${TYPE_CERTIFICAT}/server/${COMPONENT}"
+    echo "${CERTIFICATE_DIR}/${AUTHORITY}/servers/${COMPONENT}"
 }
 
 # Generate the Subject Alternate Name for a server certificate
@@ -43,7 +43,7 @@ function generateServerCertificate {
     local KEY_PASS="${2}"
     local INTERMEDIATE_CA_KEY="${3}"
     local TYPE_CERTIFICAT="${4}"
-    local PKI_CONTEXT="${5}"
+    local AUTHORITY="${5}"
     local SERVICE_HOSTNAME="${6}"
     local SERVICE_DC_HOSTNAME="${7}"
     local REVERSE_SAN="${8}"
@@ -53,10 +53,10 @@ function generateServerCertificate {
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
     export OPENSSL_CN="$(getComponentCertificateCn $SERVICE_HOSTNAME)"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CRT_DIR=${PKI_CONTEXT}
+    export OPENSSL_CRT_DIR=${AUTHORITY}
 
-    pki_logger "Starting process to generate ${TYPE_CERTIFICAT} certificate signed with CA ${PKI_CONTEXT} for ${COMPOSANT}..."
-    local SERVER_CERTIFICATE_PATH=$(getServerCertificatePath ${PKI_CONTEXT} ${COMPOSANT})
+    pki_logger "Starting process to generate ${TYPE_CERTIFICAT} certificate signed with CA ${AUTHORITY} for ${COMPOSANT}..."
+    local SERVER_CERTIFICATE_PATH=$(getServerCertificatePath ${AUTHORITY} ${COMPOSANT})
     mkdir -p "${SERVER_CERTIFICATE_PATH}"
     pki_logger "Generating ${TYPE_CERTIFICAT} key for ${COMPOSANT}..."
     openssl req -newkey "${CRYPTO_SPEC}" \
@@ -75,14 +75,14 @@ function generateServerCertificate {
         -extensions extension_${TYPE_CERTIFICAT} -batch
 
     purge_directory "${SERVER_CERTIFICATE_PATH}"
-    purge_directory "${CONFIG_DIR}/${PKI_CONTEXT}"
+    purge_directory "${CONFIG_DIR}/${AUTHORITY}"
 }
 
 # Generate the path of a client certificate
 function getClientCertificatePath {
-    local PKI_CONTEXT="${1}"
+    local AUTHORITY="${1}"
     local COMPOSANT="${2}"
-    echo "${CERTIFICATE_DIR}/${PKI_CONTEXT}/clients/${COMPOSANT}"
+    echo "${CERTIFICATE_DIR}/${AUTHORITY}/clients/${COMPOSANT}"
 }
 
 # Generate a client certificate
@@ -91,15 +91,15 @@ function generateClientCertificate {
     local KEY_PASS="${2}"
     local CA_INTERMEDIATE_PASS="${3}"
     local TYPE_CERTIFICAT="${4}"
-    local PKI_CONTEXT="${5}"
+    local AUTHORITY="${5}"
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
     export OPENSSL_CN="${COMPOSANT}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CRT_DIR=${PKI_CONTEXT}
+    export OPENSSL_CRT_DIR=${AUTHORITY}
 
     pki_logger "Starting process to generate ${TYPE_CERTIFICAT} certificate for ${COMPOSANT}..."
-    local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${PKI_CONTEXT} ${COMPOSANT})
+    local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${AUTHORITY} ${COMPOSANT})
     mkdir -p "${CLIENT_CERTIFICATE_PATH}"
     pki_logger "Generating ${TYPE_CERTIFICAT} key for ${COMPOSANT}..."
     # TODO: Workaround with -nodes parameter to avoid passphrase.
@@ -112,7 +112,7 @@ function generateClientCertificate {
         -config "${CONFIG_DIR}/crt-config" \
         -batch
 
-    pki_logger "Generating ${TYPE_CERTIFICAT} crt signed with ${PKI_CONTEXT} for ${COMPOSANT}..."
+    pki_logger "Generating ${TYPE_CERTIFICAT} crt signed with ${AUTHORITY} for ${COMPOSANT}..."
     openssl ca -config "${CONFIG_DIR}/crt-config" \
         -passin pass:"${CA_INTERMEDIATE_PASS}" \
         -out "${CLIENT_CERTIFICATE_PATH}/${COMPOSANT}.crt" \
@@ -129,29 +129,29 @@ function generateClientCertificate {
     fi
 
     purge_directory "${CLIENT_CERTIFICATE_PATH}"
-    purge_directory "${CONFIG_DIR}/${PKI_CONTEXT}"
+    purge_directory "${CONFIG_DIR}/${AUTHORITY}"
 }
 
 # Generate a server and a client certificate and store passphrase
 function generateServerAndClientCertAndStorePassphrase {
     local COMPONENT="${1}"
-    local PKI_CONTEXT="${2}"
-    generateServerCertAndStorePassphrase "${COMPONENT}" "${PKI_CONTEXT}"
-    generateClientCertAndStorePassphrase "${COMPONENT}" "${PKI_CONTEXT}"
+    local AUTHORITY="${2}"
+    generateServerCertAndStorePassphrase "${COMPONENT}" "${AUTHORITY}"
+    generateClientCertAndStorePassphrase "${COMPONENT}" "${AUTHORITY}"
 }
 
 # Generate a server certificate and store passphrase
 function generateServerCertAndStorePassphrase {
     local COMPONENT="${1}"
-    local PKI_CONTEXT="${2}"
+    local AUTHORITY="${2}"
 
-    pki_logger "DEBUG" "generateServerCertAndStorePassphrase called with $# args: COMPONENT=$1, PKI_CONTEXT=$2"
+    pki_logger "DEBUG" "generateServerCertAndStorePassphrase called with $# args: COMPONENT=$1, AUTHORITY=$2"
 
-    local TYPE_CERTIFICAT="server"
+    local TYPE_CERTIFICAT="servers"
     local REVERSE_SAN=""
 
     # Retrieve the passphrase of the CA_INTERMEDIATE from the vault-ca
-    CA_INTERMEDIATE_PASS=$(getComponentPassphrase ca "ca_intermediate_${PKI_CONTEXT}")
+    CA_INTERMEDIATE_PASS=$(getPassphrase ca "ca_intermediate_${AUTHORITY}")
     DC_NAME=$(getDcName)
 
     if [ "${COMPONENT}" == "reverse" ]; then
@@ -161,7 +161,7 @@ function generateServerCertAndStorePassphrase {
 
     pki_logger "DEBUG" "DC_NAME=${DC_NAME}, CONSUL_DOMAIN=${CONSUL_DOMAIN}"
 
-    local SERVER_CERTIFICATE_PATH=$(getServerCertificatePath ${PKI_CONTEXT} ${COMPONENT})
+    local SERVER_CERTIFICATE_PATH=$(getServerCertificatePath ${AUTHORITY} ${COMPONENT})
     if [ ! -f "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then
          # Generate the passphrase
          local KEY_PASS=$(generatePassphrase)
@@ -170,30 +170,30 @@ function generateServerCertAndStorePassphrase {
                                    ${KEY_PASS} \
                                    ${CA_INTERMEDIATE_PASS} \
                                    ${TYPE_CERTIFICAT} \
-                                   ${PKI_CONTEXT} \
+                                   ${AUTHORITY} \
                                    "vitamui-${COMPONENT}.service.${CONSUL_DOMAIN}" \
                                    "vitamui-${COMPONENT}.service.${DC_NAME}.${CONSUL_DOMAIN}" \
                                    "${REVERSE_SAN}"
         # Store the key to the vault
-        setComponentPassphrase certs "server_${PKI_CONTEXT}_${COMPONENT}_key" "${KEY_PASS}"
+        setPassphrase certs "${AUTHORITY}_${TYPE_CERTIFICAT}_${COMPONENT}" "${KEY_PASS}"
     else
-        pki_logger "Le certificat SERVER - ${PKI_CONTEXT} - ${COMPONENT}.crt existe déjà, il ne sera pas recréé..."
+        pki_logger "Le certificat ${AUTHORITY} - ${TYPE_CERTIFICAT} - ${COMPONENT}.crt existe déjà, il ne sera pas recréé..."
     fi
 }
 
 # Generate client certificate and store the passphrase
 function generateClientCertAndStorePassphrase {
     local COMPONENT="${1}"
-    local PKI_CONTEXT="${2}"
+    local AUTHORITY="${2}"
 
-    pki_logger "DEBUG" "generateClientCertAndStorePassphrase called with $# args: COMPONENT=$1, PKI_CONTEXT=$2"
+    pki_logger "DEBUG" "generateClientCertAndStorePassphrase called with $# args: COMPONENT=$1, AUTHORITY=$2"
 
-    local TYPE_CERTIFICAT="client"
+    local TYPE_CERTIFICAT="clients"
 
-    local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${PKI_CONTEXT} ${COMPONENT})
+    local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${AUTHORITY} ${COMPONENT})
     if [ ! -f "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then
         # Get the CA_INTERMEDIATE passphrase from the vault-ca
-        local CA_INTERMEDIATE_PASS=$(getComponentPassphrase ca "ca_intermediate_${PKI_CONTEXT}")
+        local CA_INTERMEDIATE_PASS=$(getPassphrase ca "ca_intermediate_${AUTHORITY}")
 
         # Generate the key
         local KEY_PASS=$(generatePassphrase)
@@ -202,22 +202,22 @@ function generateClientCertAndStorePassphrase {
                                   ${KEY_PASS} \
                                   ${CA_INTERMEDIATE_PASS} \
                                   ${TYPE_CERTIFICAT} \
-                                  ${PKI_CONTEXT}
+                                  ${AUTHORITY}
         # Store the key to the vault
-        setComponentPassphrase certs "client_${PKI_CONTEXT}_${COMPONENT}_key" "${KEY_PASS}"
+        setPassphrase certs "${AUTHORITY}_${TYPE_CERTIFICAT}_${COMPONENT}" "${KEY_PASS}"
     else
-        pki_logger "Le certificat CLIENT - ${PKI_CONTEXT} - ${COMPONENT} existe déjà, il ne sera pas recréé..."
+        pki_logger "Le certificat ${AUTHORITY} - ${TYPE_CERTIFICAT} - ${COMPONENT} existe déjà, il ne sera pas recréé..."
     fi
 }
 
-# Copy the CA from pki/<PKI_CONTEXT>/ca to environments/certs/<PKI_CONTEXT>/ca
+# Copy the CA from pki/<AUTHORITY>/ca to environments/certs/<AUTHORITY>/ca
 function copyCAFromPki {
-    local PKI_CONTEXT="${1}"
+    local AUTHORITY="${1}"
 
-    mkdir -p "${CERTIFICATE_DIR}/${PKI_CONTEXT}/ca"
-    pki_logger "Copying CA of ${PKI_CONTEXT}"
-    for CA in $(ls ${CA_DIR}/${PKI_CONTEXT}/*.crt); do
-        cp -vf "${CA}" "${CERTIFICATE_DIR}/${PKI_CONTEXT}/ca/$(basename ${CA})"
+    mkdir -p "${CERTIFICATE_DIR}/${AUTHORITY}/ca"
+    pki_logger "Copying CA of ${AUTHORITY}"
+    for CA in $(ls ${CA_DIR}/${AUTHORITY}/*.crt); do
+        cp -vf "${CA}" "${CERTIFICATE_DIR}/${AUTHORITY}/ca/$(basename ${CA})"
     done
 }
 

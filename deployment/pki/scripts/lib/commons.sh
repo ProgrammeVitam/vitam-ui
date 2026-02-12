@@ -99,8 +99,8 @@ function getVaultFile() {
         "ca" | "certs")
             echo -n "${CERTIFICATE_DIR}/vault-${TYPE}.yml"
             ;;
-        "keystores")
-            echo -n "${ENVIRONMENT_VARIABLES}/vault-${TYPE}.yml"
+        "keystores" | "truststores")
+            echo -n "${ENVIRONMENT_VARIABLES}/vault-keystores.yml"
             ;;
         *)
             pki_logger "ERROR" "Unable to determinate vault file for the type: ${TYPE}"
@@ -119,7 +119,7 @@ function getVaultPass() {
         "ca" | "certs")
             echo -n "${ANSIBLE_VAULT_PKI_PASSWD}"
             ;;
-        "keystores")
+        "keystores" | "truststores")
             echo -n "${ANSIBLE_VAULT_PASSWD}"
             ;;
         *)
@@ -140,10 +140,13 @@ function getKeyPrefix() {
             echo -n "certKey_"
             ;;
         "keystores")
-            echo -n "stores_"
+            echo -n "keystore_"
+            ;;
+        "truststores")
+            echo -n "truststore_"
             ;;
         *)
-            pki_logger "ERROR" "Unable to determinate the template of the key for the type: ${TYPE}"
+            pki_logger "ERROR" "Unable to determinate the prefix for the type: ${TYPE}"
             return 1;
             ;;
     esac
@@ -153,7 +156,7 @@ function getKeyPrefix() {
 # @param TYPE Type of vault.
 # @param KEY Key linked to the data to retrieve.
 # @return The value linked to the provided key, if it exists.
-function getComponentPassphrase {
+function getPassphrase {
     local TYPE="${1}"
     local KEY="${2}"
 
@@ -163,45 +166,31 @@ function getComponentPassphrase {
     local KEY_PREFIX=$(getKeyPrefix "$TYPE")
 
     if [ ! -f "${VAULT_FILE}" ]; then
-        pki_logger "ERROR" "The vault file is not found. Please, initialize it before call me ! Vault file: ${VAULT_FILE}"
+        pki_logger "ERROR" "The vault file is not found. Please, initialize it before calling me ! Vault file: ${VAULT_FILE}"
         return 1
     fi
 
-    # Decrypt vault file
-    ansible-vault decrypt ${VAULT_FILE} ${VAULT_PASS}
-    # Try/catch/finally stuff with bash (to make sure the vault stay encrypted)
-    {
-        # Try
-        # Generate bash vars with the yml file:
-        #       $certKey_blah
-        #       $certKey_blahblah
-        #       $certKey_........
-        eval $(parse_yaml ${VAULT_FILE} "$KEY_PREFIX") && \
-        # Get the value of the variable we are interested in
-        # And store it into another var: $CERT_KEY
-        eval $(echo "CERT_KEY=\$$KEY_PREFIX$(normalize_key ${KEY})") && \
-        # Print the $CERT_KEY var
-        echo "${CERT_KEY}"
-    } || {
-        # Catch
-        RETURN_CODE=1
-        pki_logger "ERROR" "Error while reading certificate passphrase for ${KEY} in certificates vault: ${VAULT_FILE}"
-    } && {
-        # Finally
-        if [ "${CERT_KEY}" == "" ]; then
-            pki_logger "ERROR" "Error while retrieving the key:TYPE=${TYPE} KEY=${KEY} : in ${VAULT_FILE} with KEY_PREFIX=$KEY_PREFIX"
-            RETURN_CODE=1
-        fi
-        ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
-        return ${RETURN_CODE}
-    }
+    local KEY_TO_SEARCH="${KEY_PREFIX}$(normalize_key ${KEY})"
+
+    local VAULT_CONTENT=$(ansible-vault view ${VAULT_FILE} ${VAULT_PASS})
+    if [ $? -ne 0 ]; then
+        pki_logger "ERROR" "Error while reading the vault file ${VAULT_FILE}"
+        return 1
+    fi
+    if echo "$VAULT_CONTENT" | grep -q "^${KEY_TO_SEARCH}:"; then
+        local VALUE=$(echo "$VAULT_CONTENT" | grep "^${KEY_TO_SEARCH}:" | awk '{print $2}')
+        echo "${VALUE}"
+    else
+        pki_logger "ERROR" "Error while retrieving the key KEY_TO_SEARCH=${KEY_TO_SEARCH} of TYPE=${TYPE} in ${VAULT_FILE}"
+        return 1
+    fi
 }
 
 # Method allowing to check if a key is declared in a vault file (ONLY a single level of tree structure).
 # @param TYPE Type of vault.
 # @param KEY Key linked to the data to retrieve.
 # @return True if the value exists, false otherwise.
-function hasComponentPassphrase {
+function hasPassphrase {
     local TYPE="${1}"
     local KEY="${2}"
 
@@ -210,45 +199,29 @@ function hasComponentPassphrase {
     local KEY_PREFIX=$(getKeyPrefix "$TYPE")
 
     if [ ! -f "${VAULT_FILE}" ]; then
-        pki_logger "ERROR" "The vault file is not found. Please, initialize it before call me ! Vault file: ${VAULT_FILE}"
+        pki_logger "ERROR" "The vault file is not found. Please, initialize it before calling me ! Vault file: ${VAULT_FILE}"
         return 1
     fi
 
-    # Decrypt vault file
-    ansible-vault decrypt ${VAULT_FILE} ${VAULT_PASS}
-    # Try/catch/finally stuff with bash (to make sure the vault stay encrypted)
-    {
-        # Try
-        # Generate bash vars with the yml file:
-        #       $certKey_blah
-        #       $certKey_blahblah
-        #       $certKey_........
-        eval $(parse_yaml ${VAULT_FILE} "$KEY_PREFIX") && \
-        # Get the value of the variable we are interested in
-        # And store it into another var: $CERT_KEY
-        eval $(echo "CERT_KEY=\$$KEY_PREFIX$(normalize_key ${KEY})")
+    local KEY_TO_SEARCH="${KEY_PREFIX}$(normalize_key ${KEY})"
 
-        if [ "${CERT_KEY}" == "" ]; then
-            echo "false"
-        else
-            echo "true"
-        fi
-    } || {
-        # Catch
-        RETURN_CODE=1
-        pki_logger "ERROR" "Error while reading certificate passphrase for ${KEY} in certificates vault: ${VAULT_FILE}"
-    } && {
-        # Finally
-        ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
-        return 0
-    }
+    local VAULT_CONTENT=$(ansible-vault view ${VAULT_FILE} ${VAULT_PASS})
+    if [ $? -ne 0 ]; then
+        pki_logger "ERROR" "Error while reading the vault file ${VAULT_FILE}"
+        return 1
+    fi
+    if echo "$VAULT_CONTENT" | grep -q "^${KEY_TO_SEARCH}:"; then
+        echo "true"
+    else
+        echo "false"
+    fi
 }
 
 # Method allowing to save a key/value in a vault file (ONLY a single level of tree structure).
 # @param TYPE Type of vault.
 # @param KEY Key of the data.
 # @param VALUE Value of the data.
-function setComponentPassphrase {
+function setPassphrase {
     local TYPE="${1}"
     local KEY="${2}"
     local VALUE="${3}"
@@ -258,6 +231,7 @@ function setComponentPassphrase {
     local RETURN_CODE=0
     local VAULT_FILE=$(getVaultFile "$TYPE")
     local VAULT_PASS=$(getVaultPass "$TYPE")
+    local KEY_PREFIX=$(getKeyPrefix "$TYPE")
 
     if [ ! -f "${VAULT_FILE}" ]; then
         pki_logger "ERROR" "The vault file is not found. Please, initialize it before call me ! Vault file: ${VAULT_FILE}"
@@ -269,7 +243,7 @@ function setComponentPassphrase {
 
     # Try/catch/finally stuff with bash (to make sure the vault stay encrypted)
     {
-        local NORMALIZED_KEY=$(normalize_key "${KEY}")
+        local NORMALIZED_KEY=${KEY_PREFIX}$(normalize_key "${KEY}")
         # If the key is already present, we remove it (i.e all line beginning with $NORMALIZED_KEY will be removed)
         sed -i "/^${NORMALIZED_KEY}/d" "${VAULT_FILE}"
         # Add key to vault
@@ -286,6 +260,25 @@ function setComponentPassphrase {
         ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
         return ${RETURN_CODE}
     }
+}
+
+# Method allowing to retrieve a key in a vault file (ONLY a single level of tree structure) or to set it if it does not exist.
+# @param TYPE Type of vault (ca, certs, keystores or truststores).
+# @param KEY Key linked to the data to retrieve or set.
+# @return The value linked or set to the provided key
+function getOrSetPassphrase {
+    local TYPE="${1}"
+    local KEY="${2}"
+
+    local EXISTS=$(hasPassphrase "${TYPE}" "${KEY}")
+    if [ "${EXISTS}" == "false" ]; then
+        # We generate a random key
+        local PASSPHRASE=$(generatePassphrase)
+        setPassphrase "${TYPE}" "${KEY}" "${PASSPHRASE}"
+        echo "${PASSPHRASE}"
+    else
+        echo $(getPassphrase "${TYPE}" "${KEY}")
+    fi
 }
 
 function pki_logger {
