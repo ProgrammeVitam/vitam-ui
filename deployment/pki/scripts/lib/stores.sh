@@ -17,7 +17,7 @@ function generateTruststore {
     local AUTHORITY_NAME=${2}
 
     local TRUSTSTORE_PATH="${KEYSTORES_DIRECTORY}/${AUTHORITY_NAME}/truststore_${AUTHORITY_NAME}.p12"
-    local TRUSTSTORE_PASSWORD=$(getOrSetPassphrase truststores "${AUTHORITY_NAME}")
+    local TRUSTSTORE_PASSWORD=$(setPassphrase truststores "${AUTHORITY_NAME}")
 
     if [ -f "${TRUSTSTORE_PATH}" ]; then
         rm -vf "${TRUSTSTORE_PATH:?}"
@@ -97,8 +97,8 @@ function main() {
     # Remove old keystores clients & server directories
     find ${KEYSTORES_DIRECTORY:?} -mindepth 1 -maxdepth 1 -type d -exec rm -vrf {} \; #TODO: pk on supprime tout si on a pas mis le erase à true ?
 
-    # For each authorities under environments/certs directory (client-vitam, client-external, vitamui-services)
-    for AUTHORITY_PATH in $( ls -d ${CERTIFICATE_DIR}/* ); do
+    # For each authorities under environments/certs directory (client-external, client-vitam, vitamui-services)
+    for AUTHORITY_PATH in $( ls -d ${CERTIFICATE_DIR}/{client-external,client-vitam,vitamui-services} ); do
         pki_logger "-------------------------------------------"
         local AUTHORITY_NAME=$(basename ${AUTHORITY_PATH})
         pki_logger "Creating keystores for AUTHORITY: ${AUTHORITY_NAME}"
@@ -123,7 +123,7 @@ function main() {
                 local COMPONENT_CRT_DIR=${CERTIFICATE_DIR}/${AUTHORITY_NAME}/${TYPE_NAME}/${COMPONENT}
                 local TARGET_KEYSTORE=${KEYSTORES_DIRECTORY}/${AUTHORITY_NAME}/${TYPE_NAME}/keystore_${COMPONENT}.p12
                 local CRT_KEY_PASSWORD=$(getPassphrase certs "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
-                local KEYSTORE_PASSWORD=$(getOrSetPassphrase keystores "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
+                local KEYSTORE_PASSWORD=$(setPassphrase keystores "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
 
                 generateKeystore    "${COMPONENT_CRT_DIR}" \
                                     "${CRT_KEY_PASSWORD}" \

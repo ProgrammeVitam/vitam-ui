@@ -220,14 +220,20 @@ function hasPassphrase {
 # Method allowing to save a key/value in a vault file (ONLY a single level of tree structure).
 # @param TYPE Type of vault.
 # @param KEY Key of the data.
-# @param VALUE Value of the data.
+# @param VALUE Value of the data. If not provided, a random value will be generated.
+# @return The value of the key.
 function setPassphrase {
     local TYPE="${1}"
     local KEY="${2}"
     local VALUE="${3}"
 
-    # KWA TODO: explain & comonize the sed usage ;
-    # KWA TODO: change replacement string in sed : /_/ ==> /__/
+    if [ -z "${VALUE}" ]; then
+        # We generate a random key if no value is provided
+        local PASSPHRASE=$(generatePassphrase)
+    else
+        local PASSPHRASE="${VALUE}"
+    fi
+
     local RETURN_CODE=0
     local VAULT_FILE=$(getVaultFile "$TYPE")
     local VAULT_PASS=$(getVaultPass "$TYPE")
@@ -247,7 +253,7 @@ function setPassphrase {
         # If the key is already present, we remove it (i.e all line beginning with $NORMALIZED_KEY will be removed)
         sed -i "/^${NORMALIZED_KEY}/d" "${VAULT_FILE}"
         # Add key to vault
-        echo "${NORMALIZED_KEY}: ${VALUE}" >> "${VAULT_FILE}"
+        echo "${NORMALIZED_KEY}: ${PASSPHRASE}" >> "${VAULT_FILE}"
         # The same for the example file
         sed -i "/^${NORMALIZED_KEY}/d" "${VAULT_FILE}.example"
         echo "${NORMALIZED_KEY}: changeme" >> "${VAULT_FILE}.example"
@@ -258,6 +264,7 @@ function setPassphrase {
     } && {
         # Finally
         ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
+        echo "${PASSPHRASE}"
         return ${RETURN_CODE}
     }
 }
@@ -265,17 +272,14 @@ function setPassphrase {
 # Method allowing to retrieve a key in a vault file (ONLY a single level of tree structure) or to set it if it does not exist.
 # @param TYPE Type of vault (ca, certs, keystores or truststores).
 # @param KEY Key linked to the data to retrieve or set.
-# @return The value linked or set to the provided key
+# @return The value linked or set for the provided key
 function getOrSetPassphrase {
     local TYPE="${1}"
     local KEY="${2}"
 
     local EXISTS=$(hasPassphrase "${TYPE}" "${KEY}")
     if [ "${EXISTS}" == "false" ]; then
-        # We generate a random key
-        local PASSPHRASE=$(generatePassphrase)
-        setPassphrase "${TYPE}" "${KEY}" "${PASSPHRASE}"
-        echo "${PASSPHRASE}"
+        echo $(setPassphrase "${TYPE}" "${KEY}")
     else
         echo $(getPassphrase "${TYPE}" "${KEY}")
     fi

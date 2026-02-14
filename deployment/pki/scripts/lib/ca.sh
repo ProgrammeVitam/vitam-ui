@@ -17,7 +17,7 @@ function generate_ca_root {
     local AUTHORITY="${2}"
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN=ca_root_${AUTHORITY}
+    export OPENSSL_CN="ca-root_${AUTHORITY}"
     pki_logger "OPENSSL_CN : ${OPENSSL_CN}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
     export OPENSSL_CA_DIR="${AUTHORITY}"
@@ -56,7 +56,7 @@ function generate_ca_intermediate {
     local AUTHORITY="${3}"
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN=ca_intermediate_${AUTHORITY}
+    export OPENSSL_CN="ca-intermediate_${AUTHORITY}"
     pki_logger "OPENSSL_CN : ${OPENSSL_CN}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
     export OPENSSL_CA_DIR=${AUTHORITY}
@@ -161,8 +161,7 @@ function main() {
         if [ ! -f ${CA_DIR}/${AUTHORITY}/ca-root.crt ]; then
             pki_logger "Creation of CA-root for ${AUTHORITY}..."
             # Generate CA_ROOT_PASS & store it in the vault-ca
-            CA_ROOT_PASS=$(generatePassphrase)
-            setPassphrase ca "ca_root_${AUTHORITY}" "${CA_ROOT_PASS}"
+            CA_ROOT_PASS=$(setPassphrase ca "ca_root_${AUTHORITY}")
             generate_ca_root ${CA_ROOT_PASS} ${AUTHORITY}
         else
             pki_logger "CA-root for ${AUTHORITY} already exists, it will not be recreated..."
@@ -170,8 +169,7 @@ function main() {
         if [ ! -f ${CA_DIR}/${AUTHORITY}/ca-intermediate.crt ]; then
             pki_logger "Creation of CA-intermediate for ${AUTHORITY}..."
             # Generate CA_INTERMEDIATE_PASS & store it in the vault-ca
-            CA_INTERMEDIATE_PASS=$(generatePassphrase)
-            setPassphrase ca "ca_intermediate_${AUTHORITY}" "${CA_INTERMEDIATE_PASS}"
+            CA_INTERMEDIATE_PASS=$(setPassphrase ca "ca_intermediate_${AUTHORITY}")
             generate_ca_intermediate ${CA_INTERMEDIATE_PASS} ${CA_ROOT_PASS} ${AUTHORITY}
 
             purge_directory "${CONFIG_DIR}/${AUTHORITY}"
