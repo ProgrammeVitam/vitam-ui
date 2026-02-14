@@ -45,14 +45,14 @@ function generateCerts {
     generateServerAndClientCertAndStorePassphrase   api-gateway         vitamui-services
 
     #Zone UI
-    generateServerAndClientCertAndStorePassphrase   ui-portal           vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ui-identity         vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ui-identity-admin   vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ui-referential      vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ui-ingest           vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ui-archive-search   vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ui-pastis           vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ui-collect          vitamui-services
+    generateClientCertAndStorePassphrase            ui-portal           vitamui-services
+    generateClientCertAndStorePassphrase            ui-identity         vitamui-services
+    generateClientCertAndStorePassphrase            ui-identity-admin   vitamui-services
+    generateClientCertAndStorePassphrase            ui-referential      vitamui-services
+    generateClientCertAndStorePassphrase            ui-ingest           vitamui-services
+    generateClientCertAndStorePassphrase            ui-archive-search   vitamui-services
+    generateClientCertAndStorePassphrase            ui-pastis           vitamui-services
+    generateClientCertAndStorePassphrase            ui-collect          vitamui-services
 
     #Reverse
     generateServerCertAndStorePassphrase            reverse             vitamui-services
