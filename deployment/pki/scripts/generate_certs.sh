@@ -13,18 +13,16 @@ set -e
 
 function generateCerts {
 
-    # Copy CA
-    pki_logger "Recopie des clés publiques des CA"
-    copyCAFromPki client-external
-    copyCAFromPki client-vitam
-    copyCAFromPki vitamui-services
+    pki_logger "Copying CA certificates"
+    for AUTHORITY_NAME in $(get_autorities); do
+        copyCAFromPki "${AUTHORITY_NAME}"
+    done
 
-    # Generate hosts certificates
-    pki_logger "Génération des certificats serveurs"
-    # Zone interne
+    # VitamUI Services
+    # Server Only for https
     generateServerCertAndStorePassphrase            security            vitamui-services
 
-    #Zone externe
+    # Server and Client for https or mTLS
     generateServerAndClientCertAndStorePassphrase   iam                 vitamui-services
     generateServerAndClientCertAndStorePassphrase   referential         vitamui-services
     generateServerAndClientCertAndStorePassphrase   cas-server          vitamui-services
@@ -34,7 +32,7 @@ function generateCerts {
     generateServerAndClientCertAndStorePassphrase   pastis              vitamui-services
     generateServerAndClientCertAndStorePassphrase   api-gateway         vitamui-services
 
-    #Zone UI
+    # Zone UI - Client Only for mTLS
     generateClientCertAndStorePassphrase            ui-portal           vitamui-services
     generateClientCertAndStorePassphrase            ui-identity         vitamui-services
     generateClientCertAndStorePassphrase            ui-identity-admin   vitamui-services
@@ -44,7 +42,7 @@ function generateCerts {
     generateClientCertAndStorePassphrase            ui-collect          vitamui-services
     generateClientCertAndStorePassphrase            ui-pastis           vitamui-services
 
-    #Reverse
+    # Reverse - Server Only for https
     generateServerCertAndStorePassphrase            reverse             vitamui-services
 
     # Example of generated client cert for a customer allowing to perform request on external APIs
