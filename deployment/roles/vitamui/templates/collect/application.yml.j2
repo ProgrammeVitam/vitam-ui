@@ -79,9 +79,6 @@ collect:
 {% if vitamui.security.secure | default(secure) | bool %}
     secure: true
     ssl-configuration:
-      # keystore:
-      #   key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
-      #   key-password: {{ keystore_vitamui_services_clients_collect }}
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
         key-password: {{ truststore_vitamui_services }}

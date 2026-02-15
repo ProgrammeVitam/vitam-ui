@@ -13,9 +13,11 @@ set -e
 
 # Generate a truststore for a given authority
 function generateTruststore {
-    local AUTHORITY_PATH=${1}
-    local AUTHORITY_NAME=${2}
+    local AUTHORITY_NAME=${1}
 
+    pki_logger "Creating truststore for CA certificates: ${AUTHORITY_NAME}"
+
+    local AUTHORITY_PATH="${CERTIFICATE_DIR}/${AUTHORITY_NAME}/ca"
     local TRUSTSTORE_PATH="${KEYSTORES_DIRECTORY}/${AUTHORITY_NAME}/truststore_${AUTHORITY_NAME}.p12"
     local TRUSTSTORE_PASSWORD=$(setPassphrase truststores "${AUTHORITY_NAME}")
 
@@ -42,26 +44,30 @@ function generateTruststore {
 
 }
 
+# Generate a keystore for a given component with a given authority and type
 function generateKeystore {
-    local CERTIFICATE_DIR="${1}"
-    local COMPONENT="$(basename ${CERTIFICATE_DIR})"
-    local CRT_KEY_PASSWORD="${2}"
-    local KEYSTORE_PATH="${3}"
-    local KEYSTORE_PASSWORD="${4}"
+    local AUTHORITY_NAME="${1}"
+    local TYPE_NAME="${2}"
+    local COMPONENT="${3}"
 
-    if [ -f ${KEYSTORE_PATH} ]; then
-        rm -vf ${KEYSTORE_PATH:?}
+    pki_logger "Creating keystore for COMPONENT: ${AUTHORITY_NAME}/${TYPE_NAME}/${COMPONENT}"
+
+    local COMPONENT_CRT_DIR=${CERTIFICATE_DIR}/${AUTHORITY_NAME}/${TYPE_NAME}/${COMPONENT}
+    local TARGET_KEYSTORE=${KEYSTORES_DIRECTORY}/${AUTHORITY_NAME}/${TYPE_NAME}/keystore_${COMPONENT}.p12
+    local CRT_KEY_PASSWORD=$(getPassphrase certs "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
+    local KEYSTORE_PASSWORD=$(setPassphrase keystores "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
+
+    if [ -f ${TARGET_KEYSTORE} ]; then
+        rm -vf ${TARGET_KEYSTORE:?}
     fi
 
-    pki_logger "Generate keystore: ${KEYSTORE_PATH}"
-
-    mkdir -p "$(dirname "${KEYSTORE_PATH}")"
+    mkdir -p "$(dirname "${TARGET_KEYSTORE}")"
     openssl pkcs12 -export \
-        -inkey "${CERTIFICATE_DIR}/${COMPONENT}.key" \
-        -in "${CERTIFICATE_DIR}/${COMPONENT}.crt" \
+        -inkey "${COMPONENT_CRT_DIR}/${COMPONENT}.key" \
+        -in "${COMPONENT_CRT_DIR}/${COMPONENT}.crt" \
         -name "${COMPONENT}" \
         -passin pass:"${CRT_KEY_PASSWORD}" \
-        -out "${KEYSTORE_PATH}" \
+        -out "${TARGET_KEYSTORE}" \
         -passout pass:"${KEYSTORE_PASSWORD}"
 
 }
@@ -71,6 +77,7 @@ function generateKeystore {
 ################################################################################
 
 function main() {
+
     cd $(dirname $0)
     init
     ERASE="false"
@@ -95,46 +102,42 @@ function main() {
     initVault   keystores   ${ERASE}
 
     # Remove old keystores clients & server directories
-    find ${KEYSTORES_DIRECTORY:?} -mindepth 1 -maxdepth 1 -type d -exec rm -vrf {} \; #TODO: pk on supprime tout si on a pas mis le erase à true ?
+    find ${KEYSTORES_DIRECTORY:?} -mindepth 1 -maxdepth 1 -type d -exec rm -vrf {} \;
 
-    # For each authorities under environments/certs directory (client-external, client-vitam, vitamui-services)
-    for AUTHORITY_PATH in $( ls -d ${CERTIFICATE_DIR}/{client-external,client-vitam,vitamui-services} ); do
-        pki_logger "-------------------------------------------"
-        local AUTHORITY_NAME=$(basename ${AUTHORITY_PATH})
-        pki_logger "Creating keystores for AUTHORITY: ${AUTHORITY_NAME}"
+    # Generate stores for each authorities
+    for AUTHORITY_NAME in $(get_autorities); do
+        AUTHORITY_PATH="${CERTIFICATE_DIR}/${AUTHORITY_NAME}"
 
-        # Could be clients or servers
-        for TYPE_PATH in $( ls -d ${AUTHORITY_PATH}/{ca,clients,servers} 2>/dev/null || true ); do
-            local TYPE_NAME=$(basename ${TYPE_PATH})
+        # Verify the directory exists before processing
+        if [ -d "$AUTHORITY_PATH" ]; then
+            pki_logger "-------------------------------------------"
+            pki_logger "Creating keystores or truststore for AUTHORITY: ${AUTHORITY_NAME}"
 
-            if [ "${TYPE_NAME}" == "ca" ]; then
-                # Generate truststore for CA certificates
-                pki_logger "Generating truststore for CA certificates: ${AUTHORITY_NAME}"
-                generateTruststore "${TYPE_PATH}" "${AUTHORITY_NAME}"
-                continue
-            fi
+            # Could be ca, clients or servers
+            for TYPE_PATH in $( ls -d ${AUTHORITY_PATH}/{ca,clients,servers} 2>/dev/null || true ); do
+                local TYPE_NAME=$(basename ${TYPE_PATH})
 
-            pki_logger "Creating keystores for TYPE: ${AUTHORITY_NAME}/${TYPE_NAME}"
+                if [ "${TYPE_NAME}" == "ca" ]; then
+                    # Generate truststore for CA certificates
+                    generateTruststore "${AUTHORITY_NAME}"
+                    continue
+                fi
 
-            # Generate keystore for each components except for ui-
-            for COMPONENT in $( ls ${TYPE_PATH} | grep -v -e "README" -e "^ui-" ); do
-                pki_logger "Creating keystore for COMPONENT: ${AUTHORITY_NAME}/${TYPE_NAME}/${COMPONENT}"
+                pki_logger "Creating keystores for TYPE: ${AUTHORITY_NAME}/${TYPE_NAME}"
 
-                local COMPONENT_CRT_DIR=${CERTIFICATE_DIR}/${AUTHORITY_NAME}/${TYPE_NAME}/${COMPONENT}
-                local TARGET_KEYSTORE=${KEYSTORES_DIRECTORY}/${AUTHORITY_NAME}/${TYPE_NAME}/keystore_${COMPONENT}.p12
-                local CRT_KEY_PASSWORD=$(getPassphrase certs "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
-                local KEYSTORE_PASSWORD=$(setPassphrase keystores "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
-
-                generateKeystore    "${COMPONENT_CRT_DIR}" \
-                                    "${CRT_KEY_PASSWORD}" \
-                                    "${TARGET_KEYSTORE}" \
-                                    "${KEYSTORE_PASSWORD}"
-
+                # Generate keystore for each components except for ui-
+                for COMPONENT in $( ls ${TYPE_PATH} | grep -v -e "README" -e "^ui-" ); do
+                    generateKeystore    "${AUTHORITY_NAME}" \
+                                        "${TYPE_NAME}" \
+                                        "${COMPONENT}"
+                done
             done
-        done
+        else
+            pki_logger "Skipping: $AUTHORITY_PATH not found"
+        fi
     done
 
     pki_logger "-------------------------------------------"
-    pki_logger "End of stores generation"
+    pki_logger "End of stores generation procedure"
 
 }

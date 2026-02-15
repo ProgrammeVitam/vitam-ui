@@ -3,6 +3,7 @@ set -e
 
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../.." ; pwd )"
 
+# Method allowing to initialize the variables.
 function init () {
     CERTIFICATE_DIR="${REPERTOIRE_ROOT}/environments/certs"
     CA_DIR="${REPERTOIRE_ROOT}/pki/ca"
@@ -27,16 +28,27 @@ function init () {
     hash gawk
 }
 
+# Method allowing to determine the list of authorities.
+# @return The list of managed authorities.
+function get_autorities() {
+    echo "vitamui-services client-external client-vitam"
+}
+
+# Method allowing to read an ansible variable.
+# @param ANSIBLE_VAR Name of the ansible variable to read.
+# @param ANSIBLE_HOST Host to read the ansible variable from.
+# @return The value of the ansible variable.
 function read_ansible_var {
     local ANSIBLE_VAR="${1}"
     local ANSIBLE_HOST="${2}"
 
     ANSIBLE_CONFIG="${REPERTOIRE_ROOT}/pki/scripts/lib/ansible.cfg" \
-    ansible ${ANSIBLE_HOST} -i ${ENVIRONNEMENT_FILE} ${ANSIBLE_VAULT_PASSWD} -m debug -a "var=${ANSIBLE_VAR}" \
+    ansible ${ANSIBLE_HOST} -i ${ENVIRONMENT_FILE} ${ANSIBLE_VAULT_PASSWD} -m debug -a "var=${ANSIBLE_VAR}" \
     | grep "${ANSIBLE_VAR}" | gawk -F ":" '{gsub("\\s","",$2); print $2}'
 }
 
-# Delete useless files
+# Method allowing to delete useless files (attr, old, req).
+# @param DIR_TO_PURGE Directory to purge.
 function purge_directory {
     local DIR_TO_PURGE="${1}"
 
@@ -50,6 +62,8 @@ function purge_directory {
     find "${DIR_TO_PURGE:?}" -type f -name "*.req"  -exec rm -vf {} \;
 }
 
+# Method allowing to generate a random passphrase.
+# @return The generated passphrase (changeme in dev mode).
 function generatePassphrase {
     if [ "${DEV_MODE}" == "true" ]; then
         echo "changeme"
@@ -58,6 +72,9 @@ function generatePassphrase {
     fi
 }
 
+# Method allowing to normalize a key (replace special characters / . - \ by underscores).
+# @param KEY Key to normalize.
+# @return The normalized key.
 function normalize_key {
     local KEY="${1}"
 
@@ -75,13 +92,13 @@ function initVault {
     local VAULT_PASS=$(getVaultPass "$TYPE")
 
     if [ ! -f "${VAULT_FILE}" ]; then
-        pki_logger "Création du fichier ${VAULT_FILE}"
+        pki_logger "Creating vault file ${VAULT_FILE}"
         mkdir -p "${VAULT_FILE%/*}"
         echo '---' > ${VAULT_FILE}
         ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
         echo '---' > "${VAULT_FILE}.example"
     elif [ "$ERASE_VAULT" == "true" ]; then
-        pki_logger "Réinitialisation du fichier ${VAULT_FILE}"
+        pki_logger "Resetting vault file ${VAULT_FILE}"
         ansible-vault decrypt ${VAULT_FILE} ${VAULT_PASS}
         echo '---' > ${VAULT_FILE}
         ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
@@ -89,7 +106,7 @@ function initVault {
     fi
 }
 
-# Method allowing to determinate the path of a vault file accoring its type
+# Method allowing to determinate the path of a vault file according its type
 # @param TYPE Type of vault
 # @return The path of the vault file.
 function getVaultFile() {
@@ -285,6 +302,9 @@ function getOrSetPassphrase {
     fi
 }
 
+# Method allowing to log a message.
+# @param ERR_LEVEL Error level of the message (INFO, DEBUG, ERROR).
+# @param MESSAGE Message to log.
 function pki_logger {
     if (( ${#} >= 2 )); then
         local ERR_LEVEL="${1}"
@@ -296,6 +316,10 @@ function pki_logger {
     echo "[${ERR_LEVEL}] [$(basename ${0}): ${FUNCNAME[ 1 ]}] ${MESSAGE}" 1>&2
 }
 
+# Method allowing to parse a YAML file.
+# @param FILE Path to the YAML file to parse.
+# @param PREFIX Prefix to use for the variables.
+# @return The parsed YAML file.
 # https://gist.github.com/pkuczynski/8665367
 function parse_yaml {
     local prefix=$2

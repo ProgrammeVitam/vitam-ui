@@ -13,23 +13,27 @@ set -e
 
 # Generate root CA
 function generate_ca_root {
-    local CA_ROOT_PASS="${1}"
-    local AUTHORITY="${2}"
+    local AUTHORITY_NAME="${1}"
+
+    pki_logger "Creating CA-root for authority ${AUTHORITY_NAME}..."
+
+    # set passphrase for ca-root and store it in the vault-ca
+    local CA_ROOT_PASS=$(setPassphrase ca "ca_root_${AUTHORITY_NAME}")
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN="ca-root_${AUTHORITY}"
+    export OPENSSL_CN="ca-root_${AUTHORITY_NAME}"
     pki_logger "OPENSSL_CN : ${OPENSSL_CN}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CA_DIR="${AUTHORITY}"
+    export OPENSSL_CA_DIR="${AUTHORITY_NAME}"
     pki_logger "OPENSSL_CA_DIR : ${OPENSSL_CA_DIR}"
 
     local CA_DIR=${CA_DIR}/${OPENSSL_CA_DIR}
     if [ ! -d ${CA_DIR} ]; then
-        pki_logger "Create directory ${CA_DIR}"
+        pki_logger "Creating directory ${CA_DIR}"
         mkdir -p ${CA_DIR};
     fi
 
-    pki_logger "Create CA-root request..."
+    pki_logger "Creating CA-root request for authority ${AUTHORITY_NAME}..."
     openssl req \
         -config ${CONFIG_DIR}/ca-config \
         -new \
@@ -38,7 +42,7 @@ function generate_ca_root {
         -passout pass:${CA_ROOT_PASS} \
         -batch
 
-    pki_logger "Sign CA-root certificate..."
+    pki_logger "Signing CA-root certificate for authority ${AUTHORITY_NAME}..."
     openssl ca \
         -config ${CONFIG_DIR}/ca-config \
         -selfsign \
@@ -51,24 +55,29 @@ function generate_ca_root {
 
 # Generate intermediate CA
 function generate_ca_intermediate {
-    local CA_INTERMEDIATE_PASS="${1}"
-    local CA_ROOT_PASS="${2}"
-    local AUTHORITY="${3}"
+    local AUTHORITY_NAME="${1}"
+
+    pki_logger "Creating CA-intermediate for authority ${AUTHORITY_NAME}..."
+
+    # get passphrase for ca-root from the vault-ca
+    local CA_ROOT_PASS=$(getPassphrase ca "ca_root_${AUTHORITY_NAME}")
+    # set passphrase for ca-intermediate and store it in the vault-ca
+    local CA_INTERMEDIATE_PASS=$(setPassphrase ca "ca_intermediate_${AUTHORITY_NAME}")
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN="ca-intermediate_${AUTHORITY}"
+    export OPENSSL_CN="ca-intermediate_${AUTHORITY_NAME}"
     pki_logger "OPENSSL_CN : ${OPENSSL_CN}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CA_DIR=${AUTHORITY}
+    export OPENSSL_CA_DIR=${AUTHORITY_NAME}
     pki_logger "OPENSSL_CA_DIR : ${OPENSSL_CA_DIR}"
 
     local CA_DIR=${CA_DIR}/${OPENSSL_CA_DIR}
     if [ ! -d ${CA_DIR} ]; then
-        pki_logger "Create directory ${OPENSSL_CA_DIR}"
+        pki_logger "Creating directory ${OPENSSL_CA_DIR}"
         mkdir -p ${CA_DIR};
     fi
 
-    pki_logger "Create CA-intermediate request..."
+    pki_logger "Creating CA-intermediate request for authority ${AUTHORITY_NAME}..."
     openssl req \
         -config ${CONFIG_DIR}/ca-config \
         -new \
@@ -78,7 +87,7 @@ function generate_ca_intermediate {
         -passout pass:${CA_INTERMEDIATE_PASS} \
         -batch
 
-    pki_logger "Sign CA-intermediate certificate..."
+    pki_logger "Signing CA-intermediate certificate for authority ${AUTHORITY_NAME}..."
     openssl ca \
         -config ${CONFIG_DIR}/ca-config \
         -extensions extension_ca_intermediate \
@@ -98,11 +107,6 @@ function init_config_ca {
     touch "${CONFIG_DIR}/${CA_DIR}/index.txt"
     echo '01' > "${CONFIG_DIR}/${CA_DIR}/serial"
     touch "${CONFIG_DIR}/${CA_DIR}/crlnumber"
-}
-
-function get_autorities() {
-    # To override
-    echo ""
 }
 
 ################################################################################
@@ -152,30 +156,23 @@ function main() {
     fi
 
     # Create CA per authorities
-    AUTHORITIES="$(get_autorities)"
-    for AUTHORITY in ${AUTHORITIES[@]}
-    do
-        mkdir -p ${CA_DIR}/${AUTHORITY}
-        init_config_ca ${AUTHORITY}
+    for AUTHORITY_NAME in $(get_autorities); do
+        mkdir -p ${CA_DIR}/${AUTHORITY_NAME}
+        init_config_ca ${AUTHORITY_NAME}
 
-        if [ ! -f ${CA_DIR}/${AUTHORITY}/ca-root.crt ]; then
-            pki_logger "Creation of CA-root for ${AUTHORITY}..."
-            # Generate CA_ROOT_PASS & store it in the vault-ca
-            CA_ROOT_PASS=$(setPassphrase ca "ca_root_${AUTHORITY}")
-            generate_ca_root ${CA_ROOT_PASS} ${AUTHORITY}
+        if [ ! -f ${CA_DIR}/${AUTHORITY_NAME}/ca-root.crt ]; then
+            # Generate ca-root for authority & store passphrase in the vault-ca
+            generate_ca_root ${AUTHORITY_NAME}
         else
-            pki_logger "CA-root for ${AUTHORITY} already exists, it will not be recreated..."
+            pki_logger "CA-root for authority ${AUTHORITY_NAME} already exists, it will not be recreated..."
         fi
-        if [ ! -f ${CA_DIR}/${AUTHORITY}/ca-intermediate.crt ]; then
-            pki_logger "Creation of CA-intermediate for ${AUTHORITY}..."
-            # Generate CA_INTERMEDIATE_PASS & store it in the vault-ca
-            CA_INTERMEDIATE_PASS=$(setPassphrase ca "ca_intermediate_${AUTHORITY}")
-            generate_ca_intermediate ${CA_INTERMEDIATE_PASS} ${CA_ROOT_PASS} ${AUTHORITY}
-
-            purge_directory "${CONFIG_DIR}/${AUTHORITY}"
-            purge_directory "${CA_DIR}/${AUTHORITY}"
+        if [ ! -f ${CA_DIR}/${AUTHORITY_NAME}/ca-intermediate.crt ]; then
+            # Generate ca-intermediate for authority & store passphrase in the vault-ca
+            generate_ca_intermediate ${AUTHORITY_NAME}
+            purge_directory "${CONFIG_DIR}/${AUTHORITY_NAME}"
+            purge_directory "${CA_DIR}/${AUTHORITY_NAME}"
         else
-            pki_logger "CA-intermediate for ${AUTHORITY} already exists, it will not be recreated..."
+            pki_logger "CA-intermediate for authority ${AUTHORITY_NAME} already exists, it will not be recreated..."
         fi
         pki_logger "----------------------------------------------"
     done
@@ -186,4 +183,5 @@ function main() {
     fi
     pki_logger "=============================================="
     pki_logger "End of CA creation procedure"
+
 }
