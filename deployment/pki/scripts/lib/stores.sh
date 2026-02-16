@@ -125,8 +125,8 @@ function main() {
 
                 pki_logger "Creating keystores for TYPE: ${AUTHORITY_NAME}/${TYPE_NAME}"
 
-                # Generate keystore for each components except for ui-
-                for COMPONENT in $( ls ${TYPE_PATH} | grep -v -e "README" -e "^ui-" ); do
+                # Generate keystore for each components except for ui- & reverse
+                for COMPONENT in $( ls ${TYPE_PATH} | grep -v -e "README" -e "^ui-" -e "reverse" ); do
                     generateKeystore    "${AUTHORITY_NAME}" \
                                         "${TYPE_NAME}" \
                                         "${COMPONENT}"
