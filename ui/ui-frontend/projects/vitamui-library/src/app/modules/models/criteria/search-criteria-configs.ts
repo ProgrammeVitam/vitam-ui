@@ -314,3 +314,10 @@ export const VIRTUAL_PATHS_FACET: TermsFacet = {
   size: FACETS_DEFAULT_SIZE,
   order: 'ASC',
 };
+
+export const ORIGINATING_AGENCY_FACETS: TermsFacet = {
+  name: 'originating_agency_facet',
+  field: '#originating_agency',
+  size: 2,
+  order: 'ASC',
+};

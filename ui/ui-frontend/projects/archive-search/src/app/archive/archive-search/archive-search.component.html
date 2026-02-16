@@ -359,6 +359,21 @@
         <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
           {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
         </button>
+
+        @if ((configService.config$ | async)?.REASSIGNMENT_ENABLED) {
+          <button
+            *vitamuiCommonHasRole="{
+              appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+              tenantIdentifier: +tenantIdentifier,
+              role: 'ROLE_ORIGINATING_AGENCY_REASSIGNMENT',
+            }"
+            mat-menu-item
+            (click)="launchOriginatingAgencyReassignmentModal()"
+            [disabled]="selectedItemCount === 0"
+          >
+            {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ACTION' | translate }}
+          </button>
+        }
       </vitamui-menu-button>
     </ng-container>
   </vitamui-sup-header>

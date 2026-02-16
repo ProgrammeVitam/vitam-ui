@@ -52,8 +52,8 @@ import {
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, map, tap } from 'rxjs/operators';
+import { EMPTY, merge, Observable, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractService,
@@ -91,6 +91,8 @@ import {
   VitamuiRoles,
   WAITING_RECALCULATE,
   NODES,
+  ORIGINATING_AGENCY_FACETS,
+  ConfigService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -106,6 +108,7 @@ import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-cri
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ReassignmentDialogService } from './additional-actions-search/originating-agency-reassignment-dialog/reassignment-dialog.service';
 
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -128,6 +131,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100_000;
   RECLASSIFICATION_THRESHOLD = 10_000;
   DEFAULT_PUA_UPDATE_THRESHOLD = 100_000;
+  DEFAULT_ORIGINATING_AGENCY_REASSIGNMENT_THRESHOLD = 100_000;
 
   search$: Observable<number>;
 
@@ -237,6 +241,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private queryParamsService: QueryParamsService,
     private searchCriteriaService: SearchCriteriaService,
     private ruleService: RuleService,
+    private reassignmentDialogService: ReassignmentDialogService,
+    protected configService: ConfigService,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
@@ -1137,6 +1143,61 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
   }
 
+  async launchOriginatingAgencyReassignmentModal() {
+    await this.prepareToLaunchVitamAction();
+    const listAUHoldingUnit = this.prepareListOfUACriteriaSearch();
+    listAUHoldingUnit.push({
+      criteria: 'ALL_ARCHIVE_UNIT_TYPES',
+      values: [{ value: 'ARCHIVE_UNIT_HOLDING_UNIT', id: 'ARCHIVE_UNIT_HOLDING_UNIT' }],
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+      dataType: CriteriaDataType.STRING,
+    });
+
+    this.checkMultipleOriginatingServiceForSelection()
+      .pipe(
+        switchMap((isMultipleSP) => {
+          if (isMultipleSP) {
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.data = {
+              title: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.TITLE',
+              icon: 'cancel',
+              message: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.MESSAGE',
+              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+            };
+            this.dialog.open(AlertDialogComponent, dialogConfig);
+            return EMPTY;
+          }
+          return this.archiveService.getTotalTrackHitsByCriteria(listAUHoldingUnit);
+        }),
+        tap((value: number) => {
+          if (value !== 0) {
+            const dialogConfig = new MatDialogConfig();
+
+            dialogConfig.data = {
+              title: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+              icon: 'cancel',
+              message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+            };
+
+            this.dialog.open(AlertDialogComponent, dialogConfig);
+          } else {
+            this.launchBulkOperationWorkflow(
+              () =>
+                this.reassignmentDialogService.lanchReassignmentModal(
+                  this.prepareListOfUACriteriaSearch(),
+                  this.selectedItemCount,
+                  this.tenantIdentifier,
+                ),
+              this.DEFAULT_ORIGINATING_AGENCY_REASSIGNMENT_THRESHOLD,
+            );
+          }
+        }),
+      )
+      .subscribe();
+  }
+
   async launchComputedInheritedRulesModal() {
     await this.prepareToLaunchVitamAction();
     this.computeInheritedRulesService.launchComputedInheritedRulesModal(
@@ -1160,13 +1221,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   private bulkOperationErrorWorkflow(): void {
-    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog);
+    const dialogConfig = new MatDialogConfig();
 
-    this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {});
-    this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+    dialogConfig.data = {
+      title: 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE',
+      icon: 'cancel',
+      message: 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2',
+      cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+    };
+
+    this.dialog.open(AlertDialogComponent, dialogConfig);
   }
 
   private async launchBulkOperationWorkflow(operation: () => void, defaultBulkOperationThreshold: number) {
@@ -1193,6 +1257,26 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     } else {
       operation();
     }
+  }
+
+  private checkMultipleOriginatingServiceForSelection(): Observable<boolean> {
+    let facets: TermsFacet[] = [];
+    facets.push(ORIGINATING_AGENCY_FACETS);
+
+    const searchCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: 0,
+      size: 0,
+      facets: facets,
+      includedFields: ['#id'],
+    };
+
+    return this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((result: PagedResult) => {
+        const facet = result.facets.find((f) => f.name === 'originating_agency_facet');
+        return (facet?.buckets?.length ?? 0) > 1;
+      }),
+    );
   }
 
   async launchEliminationAnalysisModal(): Promise<void> {

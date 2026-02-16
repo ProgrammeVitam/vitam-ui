@@ -13,7 +13,7 @@
       "EXECUTE": "Éliminer les archives",
       "EXECUTE_ONE": "Éliminer l'archive",
       "ALERTE_MESSAGES": {
-        "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+        "ACTION_ALERTE_TITLE": "Mauvais type d'unité archivistique",
         "ACTION_ALERTE_FIRST_MESSAGE": "Veuillez sélectionner uniquement des unités archivistiques de type arbre de positionnement"
       }
     },
@@ -24,6 +24,24 @@
     },
     "PUA": {
       "UPDATE": "Mettre à jour les PUA"
+    },
+    "ORIGINATING_AGENCY_REASSIGNMENT": {
+      "ACTION": "Réattribution du service producteur",
+      "TITLE": "Réattribuer une séléction d'unité archivistique à un service producteur",
+      "SUBTITLE": "Action sur {{count}} unités archivistiques",
+      "ORIGINATING_AGENCY": "Service producteur",
+      "PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS": "Propager le nouveau service producteur aux groupes d'objet technique",
+      "INFO": "Dans le cas où votre groupe d'objet technique\n est rattaché à plusieurs unités archivistiques,\n la propagation peut avoir des effets indésirables.",
+      "CURRENT_ORIGINATING_AGENCY_LABEL": "Indiquer le service producteur actuel",
+      "NEW_ORIGINATING_AGENCY_LABEL": "Sélectionner le nouveau service producteur",
+      "CONFIRM": "RÉATTRIBUER",
+      "ERROR_MULTIPLE_SP_MODAL": {
+        "TITLE": "Plusieurs services producteurs sélectionnés",
+        "MESSAGE": "La réattribution du service producteur se fait uniquement sur une sélection d’unités archivistiques ayant le même service producteur source pour être réattribuer au même service producteur cible"
+      },
+      "ALERTE_MESSAGES": {
+        "ACTION_ALERTE_TITLE": "Mauvais type d'unité archivistique"
+      }
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
@@ -39,7 +57,7 @@
         "CANCEL": "Annuler",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l'opération demandée dépasse le seuil de plateforme autorisé.",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l'action à réaliser ?",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L'action demandée n'est pas possible sur cette sélection",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "Dépassement du seuil de plateforme",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L'opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l'opération"
       },
       "PUA_UPDATE": {

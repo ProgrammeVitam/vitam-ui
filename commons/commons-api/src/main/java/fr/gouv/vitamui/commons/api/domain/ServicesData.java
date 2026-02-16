@@ -447,6 +447,7 @@ public class ServicesData {
     public static final String ROLE_COMPUTED_INHERITED_RULES = ROLE_PREFIX + "COMPUTED_INHERITED_RULES";
     public static final String ROLE_RECLASSIFICATION = ROLE_PREFIX + "RECLASSIFICATION";
     public static final String ROLE_TRANSFER_ACKNOWLEDGMENT = ROLE_PREFIX + "TRANSFER_ACKNOWLEDGMENT";
+    public static final String ROLE_ORIGINATING_AGENCY_REASSIGNMENT = ROLE_PREFIX + "ORIGINATING_AGENCY_REASSIGNMENT";
 
     //------------------------------------ Collect  Roles -----------------------------------------
 

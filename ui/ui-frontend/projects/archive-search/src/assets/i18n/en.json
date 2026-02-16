@@ -13,7 +13,7 @@
       "EXECUTE": "Delete the archives",
       "EXECUTE_ONE": "Delete the archive",
       "ALERTE_MESSAGES": {
-        "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
+        "ACTION_ALERTE_TITLE": "Wrong archival unit type",
         "ACTION_ALERTE_FIRST_MESSAGE": "Please select only archival units of the positioning tree type"
       }
     },
@@ -24,6 +24,24 @@
     },
     "PUA": {
       "UPDATE": "Update AUP"
+    },
+    "ORIGINATING_AGENCY_REASSIGNMENT": {
+      "ACTION": "Originating agency reassignment",
+      "TITLE": "Reassign a selection of archival units to an originating agency",
+      "SUBTITLE": "Action on {{count}} archival units",
+      "ORIGINATING_AGENCY": "Originating agency",
+      "PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS": "Propagate the new originating agency to technical object groups",
+      "INFO": "In cases where your technical object group is linked\n to multiple archival units, propagating the new originating agency\n may lead to unintended effects.",
+      "CURRENT_ORIGINATING_AGENCY_LABEL": "Specify the current originating agency",
+      "NEW_ORIGINATING_AGENCY_LABEL": "Select the new originating agency",
+      "CONFIRM": "REASSIGN",
+      "ERROR_MULTIPLE_SP_MODAL": {
+        "TITLE": "Multiple originating agencies selected",
+        "MESSAGE": "Originating agency reassignment can only be performed on a selection of archival units sharing the same source originating agency to be reassigned to the same target originating agency"
+      },
+      "ALERTE_MESSAGES": {
+        "ACTION_ALERTE_TITLE": "Wrong archival unit type"
+      }
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
@@ -39,7 +57,7 @@
         "CANCEL": "Cancel",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, the operation reaches the platform allowed threshold.",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Validate rule change(s)?",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "This action is not allowed on the selected items",
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "Platform threshold exceeded",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "The operation reaches the allowed threshold. Please modify the selection and retry"
       },
       "PUA_UPDATE": {

@@ -70,6 +70,7 @@ import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface'
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { RuleTypeEnum } from './models/rule-type-enum';
+import { ReassignRequestDto } from './models/reassign-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -416,6 +417,11 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
   asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto: MultiJsonPatchDto): Observable<{ operationId: String }> {
     return this.archiveApiService.asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto);
+  }
+
+  launchReassignmentAction(reassignDto: ReassignRequestDto): Observable<String> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.archiveApiService.launchReassignmentAction(reassignDto, headers);
   }
 }
 

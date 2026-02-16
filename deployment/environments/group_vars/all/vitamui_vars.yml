@@ -91,6 +91,7 @@ vitamui:
     vitamui_component: ui-archive-search
     port_service: 8009
     secure: false
+    reassignment_enabled: true # Set to true to enable the reassignment feature in archive search
   ui_collect:
     vitamui_component: ui-collect
     port_service: 8010

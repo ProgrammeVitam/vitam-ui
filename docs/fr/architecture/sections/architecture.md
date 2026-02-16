@@ -1011,7 +1011,7 @@ La liste de profils crées par défaut pour chaque tenant :
             - ROLE_GET_RULES
 
     -   Nom: Archiviste administrateur
-        Description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
+        Description: Profil ayant tous les droits de recherche et consultation des archives dont la modification, l'élimination, le transfert et la réattribution
         Application: ARCHIVE_SEARCH_MANAGEMENT_APP
         Rôles:
             - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
@@ -1024,6 +1024,7 @@ La liste de profils crées par défaut pour chaque tenant :
             - ROLE_TRANSFER_REQUEST
             - ROLE_TRANSFER_ACKNOWLEDGMENT
             - ROLE_GET_RULES
+            - ROLE_ORIGINATING_AGENCY_REASSIGNMENT
 
     -   Nom: Registre des fonds
         Description: Visualisation de l'ensemble des données du registre des fonds
