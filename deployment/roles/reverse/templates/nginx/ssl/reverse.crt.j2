@@ -1,1 +1,1 @@
-{{ lookup('file', "{{ inventory_dir }}/certs/vitamui-services/servers/reverse/reverse.crt" ) }}
+{{ lookup('file', lookup('first_found', ["{{ inventory_dir }}/files/reverse/reverse.crt", "{{ inventory_dir }}/certs/vitamui-services/servers/reverse/reverse.crt"])) }}
