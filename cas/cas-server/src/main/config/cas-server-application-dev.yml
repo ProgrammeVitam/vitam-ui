@@ -245,7 +245,7 @@ password:
           messages:
             - Uppercases (a-z)
             - Lowercases (A-Z)
-            - Digital (0-9)
+            - Digits (0-9)
             - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
       de:
         messages:
@@ -255,7 +255,7 @@ password:
           messages:
             - Großbuchstaben (a-z)
             - Kleinbuchstaben (A-Z)
-            - Digital (0-9)
+            - Ziffern (0-9)
             - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
     customs:
       fr:

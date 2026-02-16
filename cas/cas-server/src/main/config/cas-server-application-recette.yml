@@ -188,7 +188,7 @@ password:
           messages:
             - lowercases (a-z)
             - uppercases (A-Z)
-            - digital (0-9)
+            - digits (0-9)
             - special characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
     customs:
       fr:
