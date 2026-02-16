@@ -221,7 +221,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
             if (certProviders.isEmpty()) {
                 LOGGER.warn(
-                    "Cert authentication failed - No varid certificate identity provider found for: {}",
+                    "Cert authentication failed - No valid certificate identity provider found for: {}",
                     userDomain
                 );
                 return NullPrincipal.getInstance();
@@ -272,7 +272,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 final var mails = principal.getAttributes().get(mailAttribute);
                 if (CollectionUtils.isEmpty(mails) || CommonHelper.isBlank((String) mails.getFirst())) {
                     LOGGER.error(
-                        "Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no varue",
+                        "Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value",
                         providerName,
                         mailAttribute
                     );
@@ -296,7 +296,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 final var identifiers = principal.getAttributes().get(identifierAttribute);
                 if (CollectionUtils.isEmpty(identifiers) || CommonHelper.isBlank((String) identifiers.getFirst())) {
                     LOGGER.error(
-                        "Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no varue",
+                        "Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value",
                         providerName,
                         identifierAttribute
                     );
