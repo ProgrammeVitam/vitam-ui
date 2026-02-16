@@ -1,17 +1,4 @@
-- name: Copy vitam certificates
-  copy:
-    src: "{{ item }}"
-    dest: "{{ vitamui_folder_conf }}/{{ item | basename }}"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
-  with_fileglob:
-    - "{{ inventory_dir }}/keystores/client-vitam/*.*"
-  when: vitam_cert is defined
-  tags:
-    - update_vitamui_configuration
-    - update_vitamui_certificates
-  notify: restart service
+---
 
 - name: List external Vitam systems
   set_fact:
@@ -33,7 +20,7 @@
 - name: List existing external archiving system truststores
   find:
     paths: "{{ vitamui_folder_conf }}"
-    patterns: "truststore_external_archiving_system_*.jks"
+    patterns: "truststore_external_archiving_system_*.p12"
     file_type: file
   register: found_external_truststores
   tags:
@@ -44,9 +31,9 @@
   copy:
     src: "{{ inventory_dir }}/keystores_external_archiving_systems/keystore_{{ item }}.p12"
     dest: "{{ vitamui_folder_conf }}/keystore_external_archiving_system_{{ item }}.p12"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   with_items: "{{ external_system_ids }}"
   tags:
     - update_vitamui_configuration
@@ -55,11 +42,11 @@
 
 - name: Copy external archiving system truststores
   copy:
-    src: "{{ inventory_dir }}/keystores_external_archiving_systems/truststore_{{ item }}.jks"
-    dest: "{{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ item }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
-    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+    src: "{{ inventory_dir }}/keystores_external_archiving_systems/truststore_{{ item }}.p12"
+    dest: "{{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ item }}.p12"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   with_items: "{{ external_system_ids }}"
   tags:
     - update_vitamui_configuration
@@ -77,9 +64,9 @@
 
 - name: Delete obsolete external archiving system truststores
   file:
-    path: "{{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ item }}.jks"
+    path: "{{ vitamui_folder_conf }}/truststore_external_archiving_system_{{ item }}.p12"
     state: absent
-  loop: "{{ found_external_truststores.files | map(attribute='path') | map('basename') | map('regex_replace', '^truststore_external_archiving_system_(.*)\\.jks$', '\\1') | list | difference(external_system_ids) }}"
+  loop: "{{ found_external_truststores.files | map(attribute='path') | map('basename') | map('regex_replace', '^truststore_external_archiving_system_(.*)\\.p12$', '\\1') | list | difference(external_system_ids) }}"
   tags:
     - update_vitamui_configuration
     - update_vitamui_certificates

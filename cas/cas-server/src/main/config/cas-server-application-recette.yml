@@ -9,7 +9,7 @@ spring:
 
 server:
   ssl:
-    key-store: ../../../../dev-deployment/environments/keystores/vitamui-services/server/cas-server/keystore_cas-server.jks
+    key-store: ../../../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_cas-server.p12
     key-store-password: changeme
     key-password: changeme
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -29,11 +29,10 @@ iam-client:
   secure: true
   ssl-configuration:
     keystore:
-      key-path: ../../dev-deployment/environments/keystores/vitamui-services/server/cas-server/keystore_cas-server.jks
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_cas-server.p12
       key-password: changeme
-      type: JKS
     truststore:
-      key-path: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui.jks
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
       key-password: changeme
     hostname-verification: false
 

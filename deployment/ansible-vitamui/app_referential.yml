@@ -6,6 +6,4 @@
     - vitamui
   vars:
     vitamui_struct: "{{ vitamui.referential }}"
-    password_keystore_server: "{{ keystores_server_vitamui_services_referential }}"
-    password_keystore_client: "{{ keystores_client_vitamui_services_referential }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"

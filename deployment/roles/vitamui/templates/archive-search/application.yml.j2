@@ -22,13 +22,13 @@ cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure | default(secure) | bool == true %}
+{% if vitamui_struct.secure | default(secure) | bool %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-    key-store-password: {{ password_keystore_server }}
-    key-password: {{ password_keystore_server }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui.jks
-    trust-store-password: {{ truststores_vitamui }}
+    key-store: {{ vitamui_folder_conf }}/keystore_server_{{ vitamui_struct.vitamui_component }}.p12
+    key-store-password: {{ keystore_vitamui_services_servers_archive_search }}
+    # key-password: {{ keystore_vitamui_services_servers_archive_search }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+    trust-store-password: {{ truststore_vitamui_services }}
     client-auth: want
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
@@ -71,8 +71,8 @@ archive-search:
     secure: true
     ssl-configuration:
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
-        key-password: {{ truststores_vitamui }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+        key-password: {{ truststore_vitamui_services }}
       hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
   iam-client:
@@ -82,11 +82,11 @@ archive-search:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.service_name | default(service_name) }}.jks
-        key-password: {{ password_keystore_client }}
+        key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
+        key-password: {{ keystore_vitamui_services_clients_archive_search }}
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_vitamui.jks
-        key-password: {{ truststores_vitamui }}
+        key-path: {{ vitamui_folder_conf }}/truststore_vitamui-services.p12
+        key-password: {{ truststore_vitamui_services }}
       hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
 

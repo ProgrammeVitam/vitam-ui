@@ -1,25 +1,18 @@
 #!/usr/bin/env bash
 set -e
 
-######################################################################
-############################# Includes  ##############################
-######################################################################
+################################################################################
+################################## Includes  ###################################
+################################################################################
 
 . "$(dirname $0)/lib/commons.sh"
 
-######################################################################
-############################# Functions ##############################
-######################################################################
+################################################################################
+################################## Functions ###################################
+################################################################################
 
-# Génération du chemin d'un certificat serveur
-function getHostCertificatePath {
-    local TYPE_CERTIFICAT="${1}"
-    local COMPONENT="${2}"
-    echo "${REPERTOIRE_CERTIFICAT}/${TYPE_CERTIFICAT}/server/${COMPONENT}"
-}
-
-# Génération du SubjectAlternate Name pour les certificats serveur.
-function getHostCertificateSan {
+# Generate the Subject Alternate Name for a server certificate
+function getComponentCertificateSan {
     local SERVICE_HOSTNAME="${1}"
     local SERVICE_DC_HOSTNAME="${2}"
     local REVERSE_SAN="${3}"
@@ -31,288 +24,191 @@ function getHostCertificateSan {
     fi
 }
 
-# Génération du CN Name pour les certificats serveur.
-function getHostCertificateCn {
+# Generate the CN Name for a server certificate
+function getComponentCertificateCn {
     local SERVICE_HOSTNAME="${1}"
     echo "${SERVICE_HOSTNAME}"
 }
 
-# Génération d'un certificat serveur
+# Generate a server certificate
 function generateServerCertificate {
-    local COMPOSANT="${1}"
-    local CERT_KEY="${2}"
-    local INTERMEDIATE_CA_KEY="${3}"
-    local TYPE_CERTIFICAT="${4}"
-    local SERVER_TYPE="${5}"
-    local SERVICE_HOSTNAME="${6}"
-    local SERVICE_DC_HOSTNAME="${7}"
-    local REVERSE_SAN="${8}"
+    local AUTHORITY="${1}"
+    local TYPE_CERTIFICAT="${2}"
+    local COMPONENT="${3}"
+    local SERVICE_HOSTNAME="${4}"
+    local SERVICE_DC_HOSTNAME="${5}"
+    local REVERSE_SAN="${6}"
 
     # Correctly set Subject Alternate Name (env var is read inside the openssl configuration file)
-    export OPENSSL_SAN="$(getHostCertificateSan $SERVICE_HOSTNAME $SERVICE_DC_HOSTNAME $REVERSE_SAN)"
+    export OPENSSL_SAN="$(getComponentCertificateSan $SERVICE_HOSTNAME $SERVICE_DC_HOSTNAME $REVERSE_SAN)"
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN="$(getHostCertificateCn $SERVICE_HOSTNAME)"
+    export OPENSSL_CN="$(getComponentCertificateCn $SERVICE_HOSTNAME)"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CRT_DIR=${SERVER_TYPE}
+    export OPENSSL_CRT_DIR=${AUTHORITY}
 
-    pki_logger "Création du certificat ${SERVER_TYPE} pour ${COMPOSANT}..."
-    local HOST_CERTIFICATE_PATH=$(getHostCertificatePath ${SERVER_TYPE} ${COMPOSANT})
-    mkdir -p "${HOST_CERTIFICATE_PATH}"
-    pki_logger "Generation de la clé..."
-    openssl req -newkey "${PARAM_KEY_CHIFFREMENT}" \
-        -passout pass:"${CERT_KEY}" \
-        -keyout "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.key" \
-        -out "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.req" \
+    pki_logger "Starting process to generate ${TYPE_CERTIFICAT} certificate signed with CA ${AUTHORITY} for component ${COMPONENT}..."
+    mkdir -p "${CERTIFICATE_DIR}/${AUTHORITY}/servers/${COMPONENT}"
+
+    # Retrieve the passphrase of the CA_INTERMEDIATE from the vault-ca
+    local CA_INTERMEDIATE_PASS=$(getPassphrase ca "ca_intermediate_${AUTHORITY}")
+    # set passphrase for the key
+    local KEY_PASS=$(setPassphrase certs "${AUTHORITY}_${TYPE_CERTIFICAT}_${COMPONENT}")
+
+    local SERVER_CERTIFICATE_PATH="${CERTIFICATE_DIR}/${AUTHORITY}/servers/${COMPONENT}"
+
+    pki_logger "Generating ${TYPE_CERTIFICAT} key for component ${COMPONENT}..."
+    openssl req -newkey "${CRYPTO_SPEC}" \
+        -passout pass:"${KEY_PASS}" \
+        -keyout "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.key" \
+        -out "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.req" \
         -nodes \
-        -config "${REPERTOIRE_CONFIG}/crt-config" \
+        -config "${CONFIG_DIR}/crt-config" \
         -batch
 
-    pki_logger "Generation du certificat signé avec CA ${SERVER_TYPE}..."
-    openssl ca -config "${REPERTOIRE_CONFIG}/crt-config" \
-        -passin pass:"${INTERMEDIATE_CA_KEY}" \
-        -out "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.crt" \
-        -in "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.req" \
+    pki_logger "Generating ${TYPE_CERTIFICAT} crt for component ${COMPONENT}..."
+    openssl ca -config "${CONFIG_DIR}/crt-config" \
+        -passin pass:"${CA_INTERMEDIATE_PASS}" \
+        -out "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.crt" \
+        -in "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.req" \
         -extensions extension_${TYPE_CERTIFICAT} -batch
 
-    openssl x509 \
-        -in "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.crt" \
-        -out "${HOST_CERTIFICATE_PATH}/${COMPOSANT}.pem"
-
-    purge_directory "${HOST_CERTIFICATE_PATH}"
-    purge_directory "${REPERTOIRE_CONFIG}/${SERVER_TYPE}"
+    purge_directory "${SERVER_CERTIFICATE_PATH}"
+    purge_directory "${CONFIG_DIR}/${AUTHORITY}"
 }
 
-# Génération du chemin d'un certificat de timestamping
-function getTimestampCertificatePath {
-    local TYPE_CERTIFICAT="${1}"
-    local HOSTNAME="${2}"
-    echo "${REPERTOIRE_CERTIFICAT}/${TYPE_CERTIFICAT}/vitam"
-}
-
-# Génération d'un certificat de timestamping ; le nom du certificat est dérivé de son usage
-function generateTimestampCertificate {
-    local USAGE="${1}"
-    local CERT_KEY="${2}"
-    local INTERMEDIATE_CA_KEY="${3}"
-    local TYPE_CERTIFICAT="${4}"
-    local CN_VALEUR="${USAGE}"
-
-    # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN="${CN_VALEUR}"
-    # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CRT_DIR=${TYPE_CERTIFICAT}
-
-    pki_logger "Création du certificat ${TYPE_CERTIFICAT} pour usage ${USAGE}"
-    local TIMESTAMP_CERTIFICATE_PATH=$(getTimestampCertificatePath ${TYPE_CERTIFICAT})
-    mkdir -p "${TIMESTAMP_CERTIFICATE_PATH}"
-    pki_logger "Generation de la clé..."
-    openssl req -newkey "${PARAM_KEY_CHIFFREMENT}" \
-        -passout pass:"${CERT_KEY}" \
-        -keyout "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.key" \
-        -out "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.req" \
-        -nodes \
-        -config "${REPERTOIRE_CONFIG}/crt-config" \
-        -batch
-
-    pki_logger "Generation du certificat signé avec CA ${TYPE_CERTIFICAT}..."
-    openssl ca -config "${REPERTOIRE_CONFIG}/crt-config" \
-        -passin pass:"${INTERMEDIATE_CA_KEY}" \
-        -out "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.crt" \
-        -in "${TIMESTAMP_CERTIFICATE_PATH}/${USAGE}.req" \
-        -extensions extension_${TYPE_CERTIFICAT} -batch
-
-    purge_directory "${TIMESTAMP_CERTIFICATE_PATH}"
-    purge_directory "${REPERTOIRE_CONFIG}/${TYPE_CERTIFICAT}"
-}
-
-
-# Génération du chemin d'un certificat client
-function getClientCertificatePath {
-    local CLIENT_TYPE="${1}"
-    local CLIENT_NAME="${2}"
-    echo "${REPERTOIRE_CERTIFICAT}/${CLIENT_TYPE}/clients/${CLIENT_NAME}"
-}
-
-# Génération d'un certificat client
+# Generate a client certificate
 function generateClientCertificate {
-    local CLIENT_NAME="${1}"
-    local MDP_KEY="${2}"
-    local MDP_CAINTERMEDIATE_KEY="${3}"
-    local CLIENT_TYPE="${4}"
-    local TYPE_CERTIFICAT="client"
+    local AUTHORITY="${1}"
+    local TYPE_CERTIFICAT="${2}"
+    local COMPONENT="${3}"
 
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN="${CLIENT_NAME}"
+    export OPENSSL_CN="${COMPONENT}"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
-    export OPENSSL_CRT_DIR=${CLIENT_TYPE}
+    export OPENSSL_CRT_DIR=${AUTHORITY}
 
-    pki_logger "Création du certificat ${TYPE_CERTIFICAT} pour ${CLIENT_NAME}"
-    local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${CLIENT_TYPE} ${CLIENT_NAME})
-    mkdir -p "${CLIENT_CERTIFICATE_PATH}"
-    pki_logger "Generation de la clé..."
-    # Workaround to avoid passphrase with -nodes option problem while loading passphrase to nginx
-    openssl req -newkey "${PARAM_KEY_CHIFFREMENT}" \
-        -passout pass:"${MDP_KEY}" \
+    pki_logger "Starting process to generate ${TYPE_CERTIFICAT} certificate for component ${COMPONENT}..."
+    mkdir -p "${CERTIFICATE_DIR}/${AUTHORITY}/clients/${COMPONENT}"
+
+    # Retrieve the passphrase of the CA_INTERMEDIATE from the vault-ca
+    local CA_INTERMEDIATE_PASS=$(getPassphrase ca "ca_intermediate_${AUTHORITY}")
+    # set passphrase for the key
+    local KEY_PASS=$(setPassphrase certs "${AUTHORITY}_${TYPE_CERTIFICAT}_${COMPONENT}")
+
+    local CLIENT_CERTIFICATE_PATH="${CERTIFICATE_DIR}/${AUTHORITY}/${TYPE_CERTIFICAT}/${COMPONENT}"
+
+    pki_logger "Generating ${TYPE_CERTIFICAT} key for component ${COMPONENT}..."
+    # TODO: Workaround with -nodes parameter to avoid passphrase.
+    # Remove this parameter when we have a solution for providing the passphrase to ansible during deployment.
+    openssl req -newkey "${CRYPTO_SPEC}" \
+        -passout pass:"${KEY_PASS}" \
         -nodes \
-        -keyout "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.key" \
-        -out "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.req" \
-        -config "${REPERTOIRE_CONFIG}/crt-config" \
+        -keyout "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.key" \
+        -out "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.req" \
+        -config "${CONFIG_DIR}/crt-config" \
         -batch
 
-    pki_logger "Generation du certificat signé avec ${CLIENT_TYPE}..."
-    openssl ca -config "${REPERTOIRE_CONFIG}/crt-config" \
-        -passin pass:"${MDP_CAINTERMEDIATE_KEY}" \
-        -out "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.crt" \
-        -in "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.req" \
+    pki_logger "Generating ${TYPE_CERTIFICAT} crt signed with ${AUTHORITY} for component ${COMPONENT}..."
+    openssl ca -config "${CONFIG_DIR}/crt-config" \
+        -passin pass:"${CA_INTERMEDIATE_PASS}" \
+        -out "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.crt" \
+        -in "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.req" \
         -extensions extension_${TYPE_CERTIFICAT} -batch
 
-    pki_logger "Generation du certificat pem pour client "
-    openssl x509 \
-        -in "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.crt" \
-        -out "${CLIENT_CERTIFICATE_PATH}/${CLIENT_NAME}.pem"
+    # Generating pem only for cas-server and ui-* components...
+    # Mandatory for loading the certificates in database 'security -> certificates' for authentification purposes
+    if [ "${COMPONENT}" == "cas-server" ] || [[ "${COMPONENT}" == ui-* ]]; then
+        pki_logger "Generating ${TYPE_CERTIFICAT} pem for component ${COMPONENT}..."
+        openssl x509 \
+            -in "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.crt" \
+            -out "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.pem"
+    fi
 
     purge_directory "${CLIENT_CERTIFICATE_PATH}"
-    purge_directory "${REPERTOIRE_CONFIG}/${CLIENT_TYPE}"
+    purge_directory "${CONFIG_DIR}/${AUTHORITY}"
 }
 
-# Génération des certificats serveur et client pour un composant donné
+# Generate a server and a client certificate and store passphrase
 function generateServerAndClientCertAndStorePassphrase {
     local COMPONENT="${1}"
-    if [ "$#" -eq 2 ]; then
-        local PKI_CONTEXT="${2}"
-        generateServerCertAndStorePassphrase "${COMPONENT}" "${PKI_CONTEXT}"
-        generateClientCertAndStorePassphrase "${COMPONENT}" "${PKI_CONTEXT}"
-    else
-        local HOSTS_GROUP="${2}"
-        local PKI_CONTEXT="${3}"
-        generateServerCertAndStorePassphrase "${COMPONENT}" "${HOSTS_GROUP}" "${PKI_CONTEXT}"
-        generateClientCertAndStorePassphrase "${COMPONENT}" "${PKI_CONTEXT}"
-    fi
+    local AUTHORITY="${2}"
+    generateServerCertAndStorePassphrase "${COMPONENT}" "${AUTHORITY}"
+    generateClientCertAndStorePassphrase "${COMPONENT}" "${AUTHORITY}"
 }
 
-# Génération des certificats serveur et stockage de la passphrase pour tous les hosts d'un host group donné
+# Generate a server certificate and store passphrase
 function generateServerCertAndStorePassphrase {
     local COMPONENT="${1}"
-    local HOSTS_GROUP=""
-    local SERVER_TYPE=""
+    local AUTHORITY="${2}"
 
-    pki_logger "DEBUG" "generateServerCertAndStorePassphrase called with $# args: 1=$1, 2=$2, 3=$3"
-    if [ "$#" -eq 3 ]; then
-        HOSTS_GROUP="${2}"
-        SERVER_TYPE="${3}"
-    elif [ "$#" -eq 2 ]; then
-        SERVER_TYPE="${2}"
-    fi
-    pki_logger "DEBUG" "Component: ${COMPONENT}, Group: ${HOSTS_GROUP}, Type: ${SERVER_TYPE}"
-
-    local TYPE_CERTIFICAT="server"
+    local TYPE_CERTIFICAT="servers"
     local REVERSE_SAN=""
-    local SERVER=""
 
-    # Récupération du password de la CA_INTERMEDIATE dans le vault-ca
-    CA_INTERMEDIATE_PASSWORD=$(getComponentPassphrase ca "ca_intermediate_${SERVER_TYPE}")
-    DC_NAME=$(getDcName)
-
-    if [ -n "${HOSTS_GROUP}" ]; then
-        SERVER=$(ansible -i ${ENVIRONNEMENT_FILE} --list-hosts ${HOSTS_GROUP} ${ANSIBLE_VAULT_PASSWD} | sed "1 d" | head -n 1 | xargs)
-    fi
+    pki_logger "Creating server certificate for COMPONENT: ${AUTHORITY}/${COMPONENT}"
+    pki_logger "DEBUG" "DC_NAME=${DC_NAME}, CONSUL_DOMAIN=${CONSUL_DOMAIN}"
 
     if [ "${COMPONENT}" == "reverse" ]; then
-        if [ -n "${SERVER}" ]; then
-                REVERSE_SAN=$(read_ansible_var "vitamui_reverse_external_dns" ${SERVER})
-        fi
+        REVERSE_SAN=$(read_ansible_var "vitamui_reverse_external_dns" hosts_vitamui_reverseproxy[0])
+        pki_logger "DEBUG" "REVERSE_SAN=${REVERSE_SAN}"
     fi
 
-    local SERVER_CERTIFICATE_PATH=$(getHostCertificatePath ${SERVER_TYPE} ${COMPONENT})
-    if [ ! -f "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then
-         # Generate the key
-         local CERT_KEY=$(generatePassphrase)
-         # Create the certificate
-         generateServerCertificate ${COMPONENT} \
-                                    ${CERT_KEY} \
-                                    ${CA_INTERMEDIATE_PASSWORD} \
-                                    ${TYPE_CERTIFICAT} \
-                                    ${SERVER_TYPE} \
-                                    "vitamui-${COMPONENT}.service.${CONSUL_DOMAIN}" \
-                                    "vitamui-${COMPONENT}.service.${DC_NAME}.${CONSUL_DOMAIN}" \
-                                    "${REVERSE_SAN}"
-        # Store the key to the vault
-        setComponentPassphrase certs "server_vitamui_services_${COMPONENT}_key" \
-                                        "${CERT_KEY}"
+    local CERTIFICATE_FILE="${CERTIFICATE_DIR}/${AUTHORITY}/${TYPE_CERTIFICAT}/${COMPONENT}/${COMPONENT}.crt"
+    if [ ! -f "${CERTIFICATE_FILE}" ]; then
+         # Create the server certificate
+         generateServerCertificate ${AUTHORITY} \
+                                   ${TYPE_CERTIFICAT} \
+                                   ${COMPONENT} \
+                                   "vitamui-${COMPONENT}.service.${CONSUL_DOMAIN}" \
+                                   "vitamui-${COMPONENT}.service.${DC_NAME}.${CONSUL_DOMAIN}" \
+                                   "${REVERSE_SAN}"
     else
-        pki_logger "Le certificat SERVER - ${SERVER_TYPE} - ${COMPONENT}.crt existe déjà, il ne sera pas recréé..."
+        pki_logger "Certificate ${CERTIFICATE_FILE} already exists, it will not be recreated..."
     fi
 }
 
-# Génération d'un certificat timestamp (utilise la fonction de génération de certificats serveur)
-function generateTimestampCertAndStorePassphrase {
-    local USAGE="${1}"
-
-    # Récupération du password de la CA_INTERMEDIATE dans le vault-ca
-    CA_INTERMEDIATE_PASSWORD=$(getComponentPassphrase ca "ca_intermediate_timestamping")
-    local TIMESTAMP_CERTIFICAT_TYPE="timestamping"
-    local TIMESTAMP_CERTIFICATE_PATH=$(getTimestampCertificatePath ${TIMESTAMP_CERTIFICAT_TYPE})
-    if [ ! -f "${SERVER_CERTIFICATE_PATH}/${USAGE}.crt" ]; then
-        # Generate the key
-        local CERT_KEY=$(generatePassphrase)
-        # Create the certificate
-        generateTimestampCertificate ${USAGE} \
-                                    ${CERT_KEY} \
-                                    ${CA_INTERMEDIATE_PASSWORD}
-                                    ${TIMESTAMP_CERTIFICAT_TYPE}
-        # Store the key to the vault
-        setComponentPassphrase certs "timestamping_${USAGE}_key" \
-                                    "${CERT_KEY}"
-    else
-        pki_logger "Le certificat ${TIMESTAMP_CERTIFICAT_TYPE} - ${USAGE}.crt existe déjà, il ne sera pas recréé..."
-    fi
-}
-
-# Génération du certificat client et stockage de la passphrase
+# Generate client certificate and store the passphrase
 function generateClientCertAndStorePassphrase {
     local COMPONENT="${1}"
-    local CLIENT_TYPE="${2}"
+    local AUTHORITY="${2}"
 
-    local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${CLIENT_TYPE} ${COMPONENT})
-    if [ ! -f "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then
-        # Récupération du password de la CA_INTERMEDIATE dans le vault-ca
-        CA_INTERMEDIATE_PASSWORD=$(getComponentPassphrase ca "ca_intermediate_${CLIENT_TYPE}")
+    local TYPE_CERTIFICAT="clients"
 
-        # Generate the key
-        local CERT_KEY=$(generatePassphrase)
-        # Create the certificate
-        generateClientCertificate ${COMPONENT} \
-                                ${CERT_KEY} \
-                                ${CA_INTERMEDIATE_PASSWORD} \
-                                ${CLIENT_TYPE}
-        # Store the key to the vault
-        setComponentPassphrase certs "client_${CLIENT_TYPE}_${COMPONENT}_key" \
-                                    "${CERT_KEY}"
+    pki_logger "Creating client certificate for COMPONENT: ${AUTHORITY}/${COMPONENT}"
+
+    local CERTIFICATE_FILE="${CERTIFICATE_DIR}/${AUTHORITY}/${TYPE_CERTIFICAT}/${COMPONENT}/${COMPONENT}.crt"
+    if [ ! -f "${CERTIFICATE_FILE}" ]; then
+        # Create the client certificate
+        generateClientCertificate ${AUTHORITY} \
+                                  ${TYPE_CERTIFICAT} \
+                                  ${COMPONENT}
     else
-        pki_logger "Le certificat CLIENT - ${CLIENT_TYPE} - ${COMPONENT} existe déjà, il ne sera pas recréé..."
+        pki_logger "Certificate ${CERTIFICATE_FILE} already exists, it will not be recreated..."
     fi
 }
 
-# Recopie de la CA de pki/CA vers environments/cert/cert-type/CA
+# Copy the CA from pki/<AUTHORITY>/ca to environments/certs/<AUTHORITY>/ca
 function copyCAFromPki {
-    local CERT_TYPE="${1}"
+    local AUTHORITY="${1}"
 
-    mkdir -p "${REPERTOIRE_CERTIFICAT}/${CERT_TYPE}/ca"
-    pki_logger "Copie des CA de ${CERT_TYPE}"
-    for CA in $(ls ${REPERTOIRE_CA}/${CERT_TYPE}/*.crt); do
-        cp -f "${CA}" "${REPERTOIRE_CERTIFICAT}/${CERT_TYPE}/ca/$(basename ${CA})"
+    mkdir -p "${CERTIFICATE_DIR}/${AUTHORITY}/ca"
+    pki_logger "Copying CA of ${AUTHORITY}"
+    for CA in $(ls ${CA_DIR}/${AUTHORITY}/*.crt); do
+        cp -vf "${CA}" "${CERTIFICATE_DIR}/${AUTHORITY}/ca/$(basename ${CA})"
     done
 }
 
+# Method to get the CONSUL_DOMAIN of the environment.
+# @return The CONSUL_DOMAIN of the environment.
 function getConsulDomain {
     echo $(read_ansible_var "consul_domain" "hosts_cas_server[0]")
 }
 
+# Method to get the DC_NAME of the environment (vitamui_site_name or vitam_site_name).
+# @return The DC_NAME of the environment.
 function getDcName {
-    # Get DC_NAME
-    VITAMUI_SITE_NAME=$(read_ansible_var "vitamui_site_name" "hosts_vitamui_consul_server[0]")
+    local VITAMUI_SITE_NAME=$(read_ansible_var "vitamui_site_name" "hosts_vitamui_consul_server[0]")
     if [[ -z "$VITAMUI_SITE_NAME" || "$VITAMUI_SITE_NAME" =~ "VARIABLEISNOTDEFINED" ]]; then
-        VITAM_SITE_NAME=$(read_ansible_var "vitam_site_name" "hosts_cas_server[0]")
+        local VITAM_SITE_NAME=$(read_ansible_var "vitam_site_name" "hosts_cas_server[0]")
         echo $VITAM_SITE_NAME
     else
         echo $VITAMUI_SITE_NAME
@@ -324,9 +220,9 @@ function generateCerts {
     pki_logger "Generation of certificates"
 }
 
-######################################################################
-#############################    Main    #############################
-######################################################################
+################################################################################
+##################################    Main    ##################################
+################################################################################
 
 function main {
 
@@ -336,7 +232,7 @@ function main {
 
     ERASE="false"
 
-    # Vérification des paramètres
+    # Parameters check
     if [ "${1}" == "" ]; then
         pki_logger "ERROR" "This script needs to know on which environment you want to apply to !"
         exit 1
@@ -346,39 +242,40 @@ function main {
             ERASE="true"
         fi
     fi
-    ENVIRONNEMENT="${1}"
-    ENVIRONNEMENT_FILE="${1}"
+    ENVIRONMENT_FILE="${1}"
 
-    if [ ! -f "${ENVIRONNEMENT_FILE}" ]; then
-        pki_logger "ERROR" "Cannot find environment file: ${ENVIRONNEMENT_FILE}"
+    if [ ! -f "${ENVIRONMENT_FILE}" ]; then
+        pki_logger "ERROR" "Cannot find environment file: ${ENVIRONMENT_FILE}"
         exit 1
     fi
 
-    pki_logger "Paramètres d'entrée:"
-    pki_logger "    -> Environnement: ${ENVIRONNEMENT}"
-    pki_logger "    -> Ecraser les certificats existants: ${ERASE}"
+    pki_logger "Input parameters:"
+    pki_logger "    -> Environment: ${ENVIRONMENT_FILE}"
+    pki_logger "    -> Erase existing certificates: ${ERASE}"
 
-    # Get consul_domain
+    # Get CONSUL_DOMAIN
     CONSUL_DOMAIN=$(getConsulDomain)
+    # Get DC_NAME
+    DC_NAME=$(getDcName)
 
     # Cleaning or creating vault file for certs
     initVault   certs   ${ERASE}
 
     if [ "${ERASE}" == "true" ]; then
-        if [ -d ${REPERTOIRE_CERTIFICAT} ]; then
+        if [ -d ${CERTIFICATE_DIR} ]; then
             # We remove all generated certs
-            find ${REPERTOIRE_CERTIFICAT} -type f -name *.crt -exec rm -f {} \;
-            find ${REPERTOIRE_CERTIFICAT} -type f -name *.key -exec rm -f {} \;
-            find ${REPERTOIRE_CERTIFICAT} -type f -name *.pem -exec rm -f {} \;
-            find ${REPERTOIRE_CERTIFICAT} -type d -empty -delete
+            find ${CERTIFICATE_DIR:?} -type f -name *.crt -exec rm -vf {} \;
+            find ${CERTIFICATE_DIR:?} -type f -name *.key -exec rm -vf {} \;
+            find ${CERTIFICATE_DIR:?} -type f -name *.pem -exec rm -vf {} \;
+            find ${CERTIFICATE_DIR:?} -type d -empty -delete
         fi
     fi
-    if [ ! -d ${REPERTOIRE_CERTIFICAT} ]; then
-        pki_logger "Création du répertoire des certicats sous ${REPERTOIRE_CERTIFICAT}..."
-        mkdir -p ${REPERTOIRE_CERTIFICAT}
+    if [ ! -d ${CERTIFICATE_DIR} ]; then
+        pki_logger "Directory ${CERTIFICATE_DIR} does not exist, creating it..."
+        mkdir -p ${CERTIFICATE_DIR}
     fi
     if [ ! -d ${TEMP_CERTS} ]; then
-        pki_logger "Création du répertoire de travail temporaire tempcerts sous ${TEMP_CERTS}..."
+        pki_logger "Directory ${TEMP_CERTS} does not exist, creating it..."
         mkdir -p ${TEMP_CERTS}
     fi
 
@@ -386,9 +283,10 @@ function main {
 
     if [ -d ${TEMP_CERTS} ]; then
         pki_logger "=============================================="
-        pki_logger "Nettoyage du répertoire de travail temporaire tempcerts"
-        rm -Rf ${TEMP_CERTS}
+        pki_logger "Cleaning of temporary tempcerts directories"
+        rm -vRf ${TEMP_CERTS:?}
     fi
     pki_logger "=============================================="
-    pki_logger "Fin de la procédure de création des certificats"
+    pki_logger "End of certificates creation procedure"
+
 }

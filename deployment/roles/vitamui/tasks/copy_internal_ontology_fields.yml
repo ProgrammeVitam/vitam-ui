@@ -1,3 +1,5 @@
+---
+
 - name: Check if internal ontology file exist
   local_action: stat path={{ inventory_dir }}/ontology/internal_ontology_fields.json
   register: ontology_fields

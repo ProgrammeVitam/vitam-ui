@@ -362,7 +362,7 @@ Revenons en détails sur les scripts de génération des différents éléments 
 
 * generate_certs*.sh
   * Paramètre(s):
-    * ENVIRONNEMENT_FILE [Obligatoire]: Chemin vers le fichier d'environnement pour lequel les certificats vont être générés
+    * ENVIRONMENT_FILE [Obligatoire]: Chemin vers le fichier d'environnement pour lequel les certificats vont être générés
     * ERASE [Facultatif]: Booléen indiquant si les certificats et fichiers associés existants doivent être supprimés avant génération - Valeur par défaut: **false**
   * Description:
     Permet de générer les certificats (serveur, client) mentionnés dans le script de génération. Attention, tout certificat existant n'est pas regénéré, l'utilisation du paramètre **ERASE** sera recommandée lors de la première génération de la PKI. Deux types de fichiers seront modifiés lors de cette exécution:

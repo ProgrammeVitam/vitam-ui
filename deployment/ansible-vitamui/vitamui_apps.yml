@@ -8,7 +8,6 @@
     - vitamui
   vars:
     vitamui_struct: "{{ vitamui.security }}"
-    password_keystore_server: "{{ keystores_server_vitamui_services_security }}"
   tags: security
 
 # External apps
@@ -19,8 +18,6 @@
     - vitamui
   vars:
     vitamui_struct: "{{ vitamui.iam }}"
-    password_keystore_server: "{{ keystores_server_vitamui_services_iam }}"
-    password_keystore_client: "{{ keystores_client_vitamui_services_iam }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"
   tags: iam
 
@@ -32,6 +29,4 @@
     - vitamui
   vars:
     vitamui_struct: "{{ vitamui.cas_server }}"
-    password_keystore_server: "{{ keystores_server_vitamui_services_cas_server }}"
-    password_keystore_client: "{{ keystores_client_vitamui_services_cas_server }}"
   tags: cas-server
