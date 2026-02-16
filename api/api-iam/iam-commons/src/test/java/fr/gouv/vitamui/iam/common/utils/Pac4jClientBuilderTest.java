@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.common.utils;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.oidc.client.OidcClient;
