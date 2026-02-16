@@ -30,12 +30,12 @@
  */
 package fr.gouv.vitamui.cas.passwordless;
 
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.flow.PasswordlessAuthenticationWebflowConfigurer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
+import org.springframework.webflow.engine.ActionState;
 import org.springframework.webflow.engine.Flow;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 
@@ -64,15 +64,25 @@ public class CustomPasswordlessAuthenticationWebflowConfigurer extends Passwordl
 
     @Override
     protected void doInitialize() {
-        val flow = getLoginFlow();
+        final var flow = this.getLoginFlow();
         if (flow != null) {
-            createStateVerifyPasswordlessAccount(flow);
+            // Not needed because our login already collects username
+            // this.createStateInitialPasswordless(flow);
+            // this.createStateGetUserIdentifier(flow);
+
+            this.createStateVerifyPasswordlessAccount(flow);
+
+            // Not needed ?
+            this.createStateDisplayPasswordless(flow);
+            this.createStateDetermineDelegatedAuthenticationAction(flow);
+            this.createStateDetermineMultifactorAuthenticationAction(flow);
+            this.createStateAcceptPasswordless(flow);
         }
     }
 
     @Override
     protected void createStateVerifyPasswordlessAccount(final Flow flow) {
-        val verifyAccountState = createActionState(
+        final var verifyAccountState = createActionState(
             flow,
             CasWebflowConstants.STATE_ID_PASSWORDLESS_VERIFY_ACCOUNT,
             CasWebflowConstants.ACTION_ID_VERIFY_PASSWORDLESS_ACCOUNT_AUTHN
@@ -82,23 +92,57 @@ public class CustomPasswordlessAuthenticationWebflowConfigurer extends Passwordl
             CasWebflowConstants.TRANSITION_ID_ERROR,
             CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID
         );
-        // CUSTO:
-        createTransitionForState(verifyAccountState, BAD_CONFIGURATION, BAD_CONFIGURATION_VIEW);
-        createEndState(flow, BAD_CONFIGURATION_VIEW, BAD_CONFIGURATION_VIEW);
 
-        createTransitionForState(verifyAccountState, USER_DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
-        //
+        onVerifyPasswordlessAccountBadConfigurationCustomEvent(verifyAccountState, flow);
+        onVerifyPasswordlessAccountUserDisabledCustomEvent(verifyAccountState);
 
-        // CUSTO: Success of identification MUST lead back to Vitam-UI custom flow (list
-        // orga)
+        // On 'success' event emitted by CustomVerifyPasswordlessAccount
+        // try to do delegation or multifactor authentication
+        if (applicationContext.containsBean(CasWebflowConstants.ACTION_ID_DETERMINE_PASSWORDLESS_DELEGATED_AUTHN)) {
+            createTransitionForState(
+                verifyAccountState,
+                CasWebflowConstants.TRANSITION_ID_SUCCESS,
+                CasWebflowConstants.STATE_ID_PASSWORDLESS_DETERMINE_DELEGATED_AUTHN
+            );
+        } else {
+            createTransitionForState(
+                verifyAccountState,
+                CasWebflowConstants.TRANSITION_ID_SUCCESS,
+                CasWebflowConstants.STATE_ID_PASSWORDLESS_DETERMINE_MFA
+            );
+        }
+
+        // On 'prompt' event emitted by CustomVerifyPasswordlessAccount
+        // continue our current login flow at step 'listCustomers'
+        onVerifyPasswordlessAccountPromptEvent(verifyAccountState);
+
+        final var state = getTransitionableState(flow, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
+        final var transition = state.getTransition(CasWebflowConstants.TRANSITION_ID_SUCCESS);
         createTransitionForState(
             verifyAccountState,
+            CasWebflowConstants.TRANSITION_ID_PROMPT,
+            transition.getTargetStateId()
+        );
+    }
+
+    private void onVerifyPasswordlessAccountBadConfigurationCustomEvent(ActionState verifyAccountState, Flow flow) {
+        createTransitionForState(verifyAccountState, BAD_CONFIGURATION, BAD_CONFIGURATION_VIEW);
+        createEndState(flow, BAD_CONFIGURATION_VIEW, BAD_CONFIGURATION_VIEW);
+    }
+
+    private void onVerifyPasswordlessAccountUserDisabledCustomEvent(ActionState verifyAccountState) {
+        createTransitionForState(verifyAccountState, USER_DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
+    }
+
+    private void onAcceptPasswordlessSuccessEvent(ActionState acceptState) {
+        createTransitionForState(
+            acceptState,
             CasWebflowConstants.TRANSITION_ID_SUCCESS,
             "listCustomers" // ACTION_STATE_LIST_CUSTOMERS in CustomLoginWebflowConfigurer
         );
+    }
 
-        // CUSTO: Also handle 'prompt' event which is signaled by passwordless
-        // verification
+    private void onVerifyPasswordlessAccountPromptEvent(ActionState verifyAccountState) {
         createTransitionForState(verifyAccountState, CasWebflowConstants.TRANSITION_ID_PROMPT, "listCustomers");
     }
 }
