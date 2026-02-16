@@ -448,7 +448,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
         }
 
-        if (isAuthenticatedUser(user)) {
+        if (isTrueAuthUserDtoInstance(user)) {
             addAuthenticatedUserAttributes(user, attributes);
         }
 
@@ -487,7 +487,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         return null;
     }
 
-    private boolean isAuthenticatedUser(AuthUserDto authUser) {
+    private boolean isTrueAuthUserDtoInstance(AuthUserDto authUser) {
         return authUser.getProfileGroup() != null;
     }
 
