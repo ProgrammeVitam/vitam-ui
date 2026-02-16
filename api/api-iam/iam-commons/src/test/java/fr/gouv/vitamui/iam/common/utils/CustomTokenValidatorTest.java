@@ -70,7 +70,6 @@ public class CustomTokenValidatorTest {
         configuration = mock(OidcConfiguration.class);
         final OIDCProviderMetadata metadata = mock(OIDCProviderMetadata.class);
         when(metadata.getIssuer()).thenReturn(new Issuer(ISSUER));
-        // when(configuration.findProviderMetadata()).thenReturn(metadata);
         when(configuration.getClientId()).thenReturn(CLIENT_ID);
         when(configuration.getSecret()).thenReturn(CLIENT_SECRET);
         when(metadata.getIDTokenJWSAlgs()).thenReturn(Arrays.asList(JWSAlgorithm.HS256));
