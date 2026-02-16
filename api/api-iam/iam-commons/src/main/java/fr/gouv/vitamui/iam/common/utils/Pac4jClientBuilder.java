@@ -67,7 +67,6 @@ import java.util.Optional;
 @Slf4j
 public class Pac4jClientBuilder {
 
-    // @Value("${login.url}")
     @Value("${login.url}")
     @NotNull
     private String casLoginUrl;
