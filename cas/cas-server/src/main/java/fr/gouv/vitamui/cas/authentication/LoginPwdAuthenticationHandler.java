@@ -101,7 +101,7 @@ public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthe
         final UsernamePasswordCredential transformedCredential,
         final String originalPassword
     ) throws GeneralSecurityException, PreventedException {
-        final var login = getLogin(originalPassword);
+        final var login = buildLoginRequestFromFlowScopeData(originalPassword);
 
         try {
             final var user = casApi.login(login);
@@ -167,7 +167,7 @@ public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthe
         return (pwdExpirationDate == null || pwdExpirationDate.isBefore(OffsetDateTime.now()));
     }
 
-    private LoginRequestDto getLogin(String originalPassword) {
+    private LoginRequestDto buildLoginRequestFromFlowScopeData(String originalPassword) {
         var requestContext = RequestContextHolder.getRequestContext();
         var flowScope = requestContext.getFlowScope();
 
