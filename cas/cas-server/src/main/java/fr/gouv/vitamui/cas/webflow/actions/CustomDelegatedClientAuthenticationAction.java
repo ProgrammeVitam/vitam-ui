@@ -160,7 +160,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 credential.setSurrogateUsername(surrogateEmail);
                 WebUtils.putCredential(context, credential);
 
-                // TODO: surrogate context ?
                 CustomerDto surrogateCustomer = casApi
                     .getCustomersByIds(List.of(surrogateCustomerId))
                     .stream()

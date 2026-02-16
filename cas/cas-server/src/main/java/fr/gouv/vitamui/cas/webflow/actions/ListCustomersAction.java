@@ -227,7 +227,6 @@ public class ListCustomersAction extends AbstractAction {
             availableCustomerIds
         );
 
-        // TODO: context username ?
         List<CustomerDto> customers = casApi.getCustomersByIds(availableCustomerIds);
 
         LOGGER.debug("Available customers: {}", customers);

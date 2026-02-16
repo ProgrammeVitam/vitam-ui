@@ -93,7 +93,6 @@ public class ProvidersService {
     }
 
     protected void loadData() {
-        // TODO: context usage ?
         final String embedded = ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA;
         List<fr.gouv.vitamui.iam.openapiclient.domain.IdentityProviderDto> temporaryProviders =
             identityProvidersApi.getAll(null, embedded);

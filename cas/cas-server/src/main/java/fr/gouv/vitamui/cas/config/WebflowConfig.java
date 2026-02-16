@@ -157,7 +157,6 @@ public class WebflowConfig {
         );
     }
 
-    // TODO: Non present into xelians code
     @Bean
     public DefaultTransientSessionTicketFactory pmTicketFactory(final CasConfigurationProperties casProperties) {
         return new DefaultTransientSessionTicketFactory(
@@ -170,8 +169,6 @@ public class WebflowConfig {
         return new CheckSubrogationAction(casApi);
     }
 
-    // TODO: Check because email generation is not the same than xelians.
-    // TODO: Check ticket registry and factory usages
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public Action sendPasswordResetInstructionsAction(
@@ -187,16 +184,12 @@ public class WebflowConfig {
         @Qualifier(TicketRegistry.BEAN_NAME) final TicketRegistry ticketRegistry,
         @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver,
         @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
-        // @Qualifier(TicketFactory.BEAN_NAME) final TicketFactory ticketFactory,
         @Qualifier(PasswordResetUrlBuilder.BEAN_NAME) final PasswordResetUrlBuilder passwordResetUrlBuilder,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
         @Qualifier("messageSource") final HierarchicalMessageSource messageSource,
-        // @Value("${vitamui.portal.url}") final String vitamuiPortalUrl,
         @Value("${theme.vitamui-platform-name:VITAM-UI}") final String vitamuiPlatformName
-        // final CasApi casApi,
-        // final CustomersApi customersApi
     ) {
         final var pmTicketFactory = new DefaultTicketFactory();
         pmTicketFactory.addTicketFactory(TransientSessionTicket.class, pmTicketFactory(casProperties));
@@ -560,10 +553,6 @@ public class WebflowConfig {
     public Action surrogateInitialAuthenticationAction() {
         return new CustomSurrogateInitialAuthenticationAction();
     }
-
-    /*
-     * TODO: chez xelians, voir si nécessaire.
-     */
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)

@@ -303,10 +303,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         @Value("${vitamui.cas.identity}") final String casIdentity,
         final JavaMailSender mailSender,
         final CasConfigurationProperties casProperties
-        // TODO: Voir ce qui change entre nous et xelians
-        // , final TicketRegistry ticketRegistry,
-        // @Qualifier(CasCookieBuilder.BEAN_NAME_TICKET_GRANTING_COOKIE_BUILDER) final
-        // CasCookieBuilder ticketGrantingTicketCookieGenerator
     ) {
         return new Utils(
             tokenApiCas,
@@ -317,7 +313,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         );
     }
 
-    // TODO: Seems no required in cas v7
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory(
         @Qualifier(ServicesManager.BEAN_NAME) ServicesManager servicesManager,
@@ -525,7 +520,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final ConfigurableApplicationContext applicationContext,
         @Qualifier(LogoutExecutionPlan.BEAN_NAME) final LogoutExecutionPlan logoutExecutionPlan,
         final ObjectProvider<List<DelegatedClientAuthenticationRequestCustomizer>> customizersProvider,
-        final List<DelegatedClientIdentityProviderAuthorizer> delegatedClientIdentityProviderAuthorizers // TODO: Vérifier pourquoi on arrive pas à instancier 1 seul authorizer
+        final List<DelegatedClientIdentityProviderAuthorizer> delegatedClientIdentityProviderAuthorizers
     ) {
         final var customizers = Optional.ofNullable(customizersProvider.getIfAvailable())
             .orElseGet(ArrayList::new)
