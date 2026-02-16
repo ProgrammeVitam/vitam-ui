@@ -49,6 +49,7 @@ import org.apereo.cas.api.PasswordlessUserAccount;
 import org.apereo.cas.api.PasswordlessUserAccountStore;
 import org.apereo.cas.configuration.support.TriStateBoolean;
 import org.apereo.cas.web.support.WebUtils;
+import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import java.util.Collections;
@@ -82,6 +83,7 @@ public class CustomPasswordlessUserAccountStore extends Constants implements Pas
         val flowScope = requestContext.getFlowScope();
         flowScope.put(PROVIDED_USERNAME, username);
         flowScope.put(LOGIN_USER_EMAIL_PARAM, username);
+        this.cleanFlowScope(flowScope);
 
         // if the user is disabled, send him to a specific page (ignore not found users:
         // it will fail
@@ -171,5 +173,12 @@ public class CustomPasswordlessUserAccountStore extends Constants implements Pas
         }
 
         return enabledUsers;
+    }
+
+    private void cleanFlowScope(MutableAttributeMap<Object> flowScope) {
+        flowScope.remove(FLOW_LOGIN_EMAIL);
+        flowScope.remove(FLOW_LOGIN_CUSTOMER_ID);
+        flowScope.remove(FLOW_SURROGATE_EMAIL);
+        flowScope.remove(FLOW_SURROGATE_CUSTOMER_ID);
     }
 }
