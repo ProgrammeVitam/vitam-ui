@@ -13,6 +13,8 @@ pipeline {
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL = credentials("service-repository-url")
+        S3_REGION   = "fr-par"
+        S3_ENDPOINT = "https://s3.fr-par.scw.cloud"
     }
 
     options {
@@ -172,39 +174,84 @@ pipeline {
             when {
                 environment(name: 'GOAL', value: 'publish')
             }
-            steps {
-                script {
-                    checkout([$class                           : 'GitSCM',
-                              branches                         : [[name: 'scaleway_j11']],
-                              doGenerateSubmoduleConfigurations: false,
-                              extensions                       : [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'vitam-build.git']],
-                              submoduleCfg                     : [],
-                              userRemoteConfigs                : [[credentialsId: 'app-jenkins', url: "$SERVICE_GIT_URL"]]
-                    ])
-                    sshagent(credentials: ['jenkins_sftp_to_repository']) {
-                        sh 'vitam-build.git/push_vitamui_repo.sh contrib ${SERVICE_REPO_SSHURL} rpm'
-                        sh 'vitam-build.git/push_vitamui_repo.sh contrib ${SERVICE_REPO_SSHURL} deb'
+            stages {
+                stage("Configure rclone") {
+                    steps {
+                        withCredentials([
+                            string(credentialsId: 'scw-s3-access-key', variable: 'S3_ACCESS_KEY'),
+                            string(credentialsId: 'scw-s3-secret-key', variable: 'S3_SECRET_KEY')
+                        ]) {
+                            sh '''
+                                set -e
+
+                                echo "Installing rclone locally (no sudo)..."
+                                echo "Downloading rclone binary..."
+                                RCLONE_VERSION="1.73.0"
+                                curl -LO https://downloads.rclone.org/v${RCLONE_VERSION}/rclone-v${RCLONE_VERSION}-linux-amd64.zip
+                                unzip -q rclone-v${RCLONE_VERSION}-linux-amd64.zip
+                                mkdir -p bin
+                                mv rclone-v${RCLONE_VERSION}-linux-amd64/rclone bin/
+                                chmod +x bin/rclone
+                                export PATH=$PWD/bin:$PATH
+                                rclone version
+                                export PATH=$PWD/bin:$PATH
+                                echo "Creating temporary rclone config..."
+                                cat > rclone.conf <<EOF
+[scw]
+type = s3
+provider = Other
+access_key_id = ${S3_ACCESS_KEY}
+secret_access_key = ${S3_SECRET_KEY}
+endpoint = ${S3_ENDPOINT}
+region = ${S3_REGION}
+acl = private
+EOF
+                                echo "Rclone configured"
+
+                            '''
+                        }
                     }
                 }
-            }
-        }
-
-        stage("Update symlink") {
-            when {
-                anyOf {
-                    branch "develop"
-                    branch "master_*"
-                    tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
+                stage("push to repository") {
+                    steps {
+                        script {
+                            checkout([$class                           : 'GitSCM',
+                                    branches                         : [[name: 's3-push-packages']],
+                                    doGenerateSubmoduleConfigurations: false,
+                                    extensions                       : [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'vitam-build.git']],
+                                    submoduleCfg                     : [],
+                                    userRemoteConfigs                : [[credentialsId: 'app-jenkins', url: "$SERVICE_GIT_URL"]]
+                            ])
+                            sh 'vitam-build.git/push_vitamui_repo.sh contrib ${SERVICE_REPO_SSHURL} rpm'
+                            sh 'vitam-build.git/push_vitamui_repo.sh contrib ${SERVICE_REPO_SSHURL} deb'
+                        }
+                    }
                 }
-                environment(name: 'GOAL', value: 'publish')
-            }
-            steps {
-                sshagent(credentials: ['jenkins_sftp_to_repository']) {
-                    sh 'vitam-build.git/push_symlink_repo.sh contrib ${SERVICE_REPO_SSHURL}'
+                stage("Update symlink") {
+                    when {
+                        anyOf {
+                            branch "develop"
+                            branch "master_*"
+                            tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
+                        }
+                        environment(name: 'GOAL', value: 'publish')
+                    }
+                    steps {
+                        sh 'vitam-build.git/push_symlink_repo.sh contrib ${SERVICE_REPO_SSHURL}'
+                    }
+                }
+                stage("remove rclone config") {
+                    steps {
+                        sh '''
+                            rm -f rclone.conf
+                            echo "rclone config removed successfully."
+                        '''
+                        }
                 }
             }
         }
     }
+
 
     post {
         // Clean after build
