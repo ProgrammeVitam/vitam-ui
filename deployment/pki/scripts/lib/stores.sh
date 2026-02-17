@@ -125,8 +125,14 @@ function main() {
 
                 pki_logger "Creating keystores for TYPE: ${AUTHORITY_NAME}/${TYPE_NAME}"
 
+                EXCLUDES=(-e "README" -e "reverse")
+
+                if [ "$DEV_MODE" != "true" ]; then
+                    EXCLUDES+=(-e "^ui-")
+                fi
+
                 # Generate keystore for each components except for ui- & reverse
-                for COMPONENT in $( ls ${TYPE_PATH} | grep -v -e "README" -e "^ui-" -e "reverse" ); do
+                for COMPONENT in $( grep -v "${EXCLUDES[@]}" < <(printf "%s\n" "${TYPE_PATH}"/* | xargs -n1 basename) ); do
                     generateKeystore    "${AUTHORITY_NAME}" \
                                         "${TYPE_NAME}" \
                                         "${COMPONENT}"
