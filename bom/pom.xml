@@ -76,7 +76,7 @@
         <spring-security-cas.version>6.2.8</spring-security-cas.version>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
-        <testcontainers.version>1.19.8</testcontainers.version>
+        <testcontainers.version>1.21.4</testcontainers.version>
         <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
         <vitam.version>9.1.0-SNAPSHOT</vitam.version>
         <xdocreport.version>2.0.3</xdocreport.version>
