@@ -198,7 +198,7 @@ customer-init:
         - ROLE_LOGBOOKS
 
     - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
+      description: Profil ayant tous les droits de recherche et consultation des archives dont la modification, l'élimination, le transfert et la réattribution
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
@@ -217,6 +217,7 @@ customer-init:
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
         - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_ORIGINATING_AGENCY_REASSIGNMENT
 
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination

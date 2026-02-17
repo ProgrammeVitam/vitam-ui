@@ -68,7 +68,7 @@ public class SearchCriteriaDto implements Serializable {
     private boolean trackTotalHits;
     private boolean computeMgtRulesFacets;
     private Long threshold;
-    private List<Facet> facets = new ArrayList<>();
+    private List<TermsFacet> facets = new ArrayList<>();
 
     public List<String> extractNodesCriteria() {
         return this.getCriteriaList()

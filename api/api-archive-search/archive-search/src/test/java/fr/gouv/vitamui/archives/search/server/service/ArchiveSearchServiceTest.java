@@ -47,6 +47,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.archives.search.common.dto.ReassignRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationAction;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationQueryActionType;
@@ -76,6 +77,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -116,6 +118,7 @@ public class ArchiveSearchServiceTest {
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
     public final String UPDATE_RULES_ASYNC_RESPONSE = "data/update_rules_async_response.json";
+    public final String REASSIGN_UNITS_RESPONSE = "data/reassign_units_response.json";
     public final String UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE =
         "data/update_unit_descriptive_metadata_response.json";
     public final String FILLING_HOLDING_SCHEME_EXPECTED_QUERY = "data/fillingholding/expected_query.json";
@@ -469,5 +472,42 @@ public class ArchiveSearchServiceTest {
             .isInstanceOf(VitamClientException.class)
             .hasMessage("exception thrown by client");
         verify(persistentIdentifierService).findObjectsByPersistentIdentifier(eq(arkId), eq(defaultVitamContext));
+    }
+
+    @Test
+    void shouldReturnOperationIdWhenReassignmentIsSuccessful() throws Exception {
+        // Given
+        when(unitCommonService.reassignment(any(), any(), anyString(), anyString())).thenReturn(
+            responseFromFile(REASSIGN_UNITS_RESPONSE)
+        );
+
+        SearchCriteriaDto searchCriteria = new SearchCriteriaDto();
+
+        SearchCriteriaEltDto criteriaList = new SearchCriteriaEltDto();
+        criteriaList.setCriteria("GUID");
+        criteriaList.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        criteriaList.setOperator(String.valueOf(ArchiveSearchConsts.CriteriaOperators.EQ));
+        criteriaList.setDataType(String.valueOf(ArchiveSearchConsts.CriteriaDataType.STRING));
+        criteriaList.setValues(List.of(new CriteriaValue("aeaqaaaaaeecmnlhaesx6am4mvglqjqaaaaq")));
+
+        searchCriteria.setCriteriaList(List.of(criteriaList));
+        searchCriteria.setPageNumber(0);
+        searchCriteria.setSize(1);
+
+        ReassignRequestDto reassignRequestDto = new ReassignRequestDto();
+        reassignRequestDto.setSourceOriginatingAgency("agency1");
+        reassignRequestDto.setTargetOriginatingAgency("agency2");
+        reassignRequestDto.setPropagateToObjectGroups(true);
+        reassignRequestDto.setSearchCriteria(searchCriteria);
+
+        //When
+        String expectingGuid = archiveSearchService.reassignOriginatingAgency(reassignRequestDto);
+
+        //Then
+        assertThatCode(() -> {
+            archiveSearchService.reassignOriginatingAgency(reassignRequestDto);
+        }).doesNotThrowAnyException();
+
+        assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
     }
 }

@@ -29,6 +29,7 @@ package fr.gouv.vitamui.archives.search.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReassignRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -300,5 +301,13 @@ public class ArchivesSearchController {
             archiveSearchService.findObjectsByPersistentIdentifier(arkId);
         LOGGER.debug("[EXTERNAL] : persistentIdentifierResponse = {}", persistentIdentifierResponse);
         return persistentIdentifierResponse;
+    }
+
+    @PostMapping(RestApi.REASSIGNMENT_ACTION)
+    @Secured(ServicesData.ROLE_ORIGINATING_AGENCY_REASSIGNMENT)
+    public String reassignOriginatingAgency(final @RequestBody ReassignRequestDto reassignRequestDto)
+        throws VitamClientException {
+        LOGGER.debug("Calling reassign action By Criteria {} ", reassignRequestDto);
+        return archiveSearchService.reassignOriginatingAgency(reassignRequestDto);
     }
 }

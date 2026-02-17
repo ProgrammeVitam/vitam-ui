@@ -69,4 +69,7 @@
     "OFFLINE_SERVICES": {{ vitamui.ui_collect.offline_services | to_json(indent=2, sort_keys=True) }}
   }
   {% endif %}
+  {% if (vitamui_struct.vitamui_component == "ui-archive-search") %}
+  ,"REASSIGNMENT_ENABLED": {{vitamui.ui_archive_search.reassignment_enabled | default(false) | bool | lower }}
+  {% endif %}
 }

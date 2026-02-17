@@ -46,6 +46,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.OriginatingAgencyReassignmentRequest;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
@@ -385,6 +386,25 @@ public class UnitCommonService {
     public RequestResponse<JsonNode> reclassification(final VitamContext vitamContext, final JsonNode dslQuery)
         throws VitamClientException {
         final RequestResponse<JsonNode> jsonResponse = accessExternalClient.reclassification(vitamContext, dslQuery);
+        VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return jsonResponse;
+    }
+
+    public RequestResponse<JsonNode> reassignment(
+        final VitamContext vitamContext,
+        final JsonNode dslQuery,
+        final String source,
+        final String target
+    ) throws VitamClientException {
+        OriginatingAgencyReassignmentRequest originatingAgencyReassignmentRequest =
+            new OriginatingAgencyReassignmentRequest();
+        originatingAgencyReassignmentRequest.setSourceOriginatingAgency(source);
+        originatingAgencyReassignmentRequest.setTargetOriginatingAgency(target);
+        originatingAgencyReassignmentRequest.setDslRequest(dslQuery);
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.launchOriginatingAgencyReassignment(
+            vitamContext,
+            originatingAgencyReassignmentRequest
+        );
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
     }

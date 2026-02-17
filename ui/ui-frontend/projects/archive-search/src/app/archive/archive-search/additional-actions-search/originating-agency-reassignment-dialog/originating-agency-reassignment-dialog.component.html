@@ -1,0 +1,52 @@
+<vitamui-dialog-header
+  [subhead]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.SUBTITLE' | translate: { count: itemSelected }"
+  [title]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.TITLE' | translate"
+></vitamui-dialog-header>
+
+<form [formGroup]="form" (ngSubmit)="reassign()">
+  <mat-dialog-content class="gap-3 align-items-stretch">
+    <p class="text bold primary m-0">{{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.CURRENT_ORIGINATING_AGENCY_LABEL' | translate }}</p>
+    <vitamui-select
+      [multiple]="false"
+      [enableSearch]="true"
+      [enableSelectAll]="false"
+      [placeholder]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ORIGINATING_AGENCY' | translate"
+      formControlName="sourceOriginatingAgency"
+      [options]="originatingAgenciesOptions"
+    ></vitamui-select>
+
+    <p class="text bold primary m-0">{{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.NEW_ORIGINATING_AGENCY_LABEL' | translate }}</p>
+    <vitamui-select
+      [multiple]="false"
+      [enableSearch]="true"
+      [enableSelectAll]="false"
+      [placeholder]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ORIGINATING_AGENCY' | translate"
+      formControlName="targetOriginatingAgency"
+      [options]="originatingAgenciesOptions"
+    ></vitamui-select>
+
+    <vitamui-slide-toggle formControlName="propagateToObjectGroups"
+      >{{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS' | translate }}
+      <i
+        class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon secondary"
+        tabindex="0"
+        [vitamuiTooltip]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.INFO' | translate"
+        [vitamuiTooltipPosition]="'RIGHT'"
+        [vitamuiTooltipShowDelay]="300"
+        [vitamuiTooltipDisabled]="false"
+        [vitamuiTooltipClass]="'secondary'"
+        [outline]="true"
+      >
+      </i>
+    </vitamui-slide-toggle>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button type="submit" [disabled]="form.invalid" class="btn primary">
+      {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.CONFIRM' | translate }}
+    </button>
+    <button type="button" class="btn link cancel" (click)="onCancel()">
+      {{ 'COMMON.UNDO' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

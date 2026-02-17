@@ -230,6 +230,7 @@ customer-init:
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
         - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_ORIGINATING_AGENCY_REASSIGNMENT
 
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination

@@ -56,6 +56,7 @@ import {
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
+import { ReassignRequestDto } from '../../archive/models/reassign-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -250,5 +251,20 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
     return this.http.patch<{
       operationId: String;
     }>(`${this.baseUrl}/archive-units/update/multiple`, multiJsonPatchDto, { headers });
+  }
+
+  /**
+   * Launches the reassignment of originating agency for a list of selected Units.
+   *
+   * @param fromAgency current originating agency of the selected Units
+   * @param toAgency new originating agency to assign
+   * @param propagateToObjectGroups reassign linked Technical Object Groups
+   * @param listOfUACriteriaSearch search criteria used to identify the Units to be reassigned
+   */
+  launchReassignmentAction(reassignDto: ReassignRequestDto, headers: HttpHeaders): Observable<String> {
+    return this.http.post(`${this.apiUrl}/reassignment`, reassignDto, {
+      responseType: 'text',
+      headers,
+    });
   }
 }

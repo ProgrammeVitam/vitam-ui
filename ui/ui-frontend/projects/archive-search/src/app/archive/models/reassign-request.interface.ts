@@ -34,39 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Ui, VitamConfiguration } from './application';
-import { Category } from './application/category.interface';
+import { SearchCriteriaDto } from 'vitamui-library';
 
-export interface AppConfiguration {
-  PORTAL_URL: string;
-  CAS_URL: string;
-  CAS_LOGOUT_URL: string;
-  LOGOUT_REDIRECT_UI_URL: string;
-  SEARCH_URL?: string;
-  THEME_COLORS: any;
-  THEME_COLORS_LUMINOSITY_STEP?: number;
-  PORTAL_MESSAGE: string;
-  PORTAL_TITLE: string;
-  PORTAL_LOGO: string;
-  HEADER_LOGO: string;
-  FOOTER_LOGO: string;
-  USER_LOGO: string;
-  LOGO: string;
-  PLATFORM_NAME: string;
-  CUSTOMER: string;
-  GATEWAY_ENABLED: boolean;
-  AUTHORIZATION_HEADER_NAME: string;
-  ALLOWED_URLS: string[];
-  OIDC_CONFIG: any;
-  CATEGORY_CONFIGURATION: Category[];
-  UI: Ui;
-  VITAM: VitamConfiguration;
-  VITAM_ADMIN_TENANT?: number;
-  COLLECT?: {
-    OFFLINE_SERVICES?: SearchProvider[];
-  };
-  [key: string]: any;
-  REASSIGNMENT_ENABLED: boolean;
+export interface ReassignRequestDto {
+  sourceOriginatingAgency: string;
+  targetOriginatingAgency: string;
+  propagateToObjectGroups: boolean;
+  searchCriteria: SearchCriteriaDto;
 }
-
-export type SearchProvider = 'agencies' | 'archive-unit-profiles';

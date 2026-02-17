@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.Query;
+import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -55,6 +56,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReassignRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
@@ -531,5 +533,40 @@ public class ArchiveSearchService {
                 ),
             fileName
         );
+    }
+
+    public String reassignOriginatingAgency(ReassignRequestDto reassignRequestDto) throws VitamClientException {
+        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        JsonNode dslQuery = prepareDslQuery(reassignRequestDto.getSearchCriteria(), vitamContext);
+        JsonNode reassignmentDsl = buildReassignmentDsl(
+            dslQuery,
+            reassignRequestDto.getSearchCriteria().getThreshold()
+        );
+        RequestResponse<JsonNode> jsonNodeRequestResponse = unitCommonService.reassignment(
+            vitamContext,
+            reassignmentDsl,
+            reassignRequestDto.getSourceOriginatingAgency(),
+            reassignRequestDto.getTargetOriginatingAgency()
+        );
+        return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
+    }
+
+    private JsonNode buildReassignmentDsl(JsonNode searchDsl, Long threshold) {
+        ObjectNode reassignmentDsl = JsonHandler.createObjectNode();
+        reassignmentDsl.set(
+            BuilderToken.GLOBAL.ROOTS.exactToken(),
+            searchDsl.get(BuilderToken.GLOBAL.ROOTS.exactToken())
+        );
+        reassignmentDsl.set(
+            BuilderToken.GLOBAL.QUERY.exactToken(),
+            searchDsl.get(BuilderToken.GLOBAL.QUERY.exactToken())
+        );
+        if (threshold != null) {
+            reassignmentDsl.set(
+                BuilderToken.GLOBAL.THRESOLD.exactToken(),
+                objectMapper.convertValue(threshold, JsonNode.class)
+            );
+        }
+        return reassignmentDsl;
     }
 }
