@@ -1,13 +1,13 @@
 const fs = require('fs');
 
 const applications = [
-  { name: 'portal', pfx: 'portal' },
-  { name: 'identity', pfx: 'identity-admin' },
-  { name: 'referential', pfx: 'referential' },
-  { name: 'archive-search', pfx: 'archive-search' },
-  { name: 'pastis', pfx: 'pastis' },
-  { name: 'collect', pfx: 'collect' },
-  { name: 'ingest', pfx: 'ingest' },
+  { name: 'portal', crt: 'portal' },
+  { name: 'identity', crt: 'identity-admin' },
+  { name: 'referential', crt: 'referential' },
+  { name: 'archive-search', crt: 'archive-search' },
+  { name: 'pastis', crt: 'pastis' },
+  { name: 'collect', crt: 'collect' },
+  { name: 'ingest', crt: 'ingest' },
 ];
 
 module.exports = applications.map((application) => ({
@@ -16,7 +16,8 @@ module.exports = applications.map((application) => ({
     protocol: 'https:',
     host: 'localhost',
     port: 8070,
-    pfx: fs.readFileSync(`../../dev-deployment/environments/keystores/vitamui-services/clients/ui-${application.pfx}/keystore_ui-${application.pfx}.p12`),
+    cert: fs.readFileSync(`../../dev-deployment/environments/certs/vitamui-services/clients/ui-${application.crt}/ui-${application.crt}.crt`),
+    key: fs.readFileSync(`../../dev-deployment/environments/certs/vitamui-services/clients/ui-${application.crt}/ui-${application.crt}.key`),
     passphrase: 'changeme',
   },
   changeOrigin: true,
