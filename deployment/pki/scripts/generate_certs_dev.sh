@@ -12,6 +12,7 @@ set -e
 ######################################################################
 
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../../dev-deployment" ; pwd )"
+DEV_MODE="true"
 
 function getComponentCertificateCn {
     echo "dev.vitamui.com"
