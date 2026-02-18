@@ -90,9 +90,9 @@
     group: "{{ apache_group }}"
     mode: 0550
 
-- name: copy server certificate files when protocole https
+- name: copy server certificate files when protocol is https
   copy:
-    src: "{{ inventory_dir }}/certs/vitamui-services/servers/reverse/reverse.{{ item }}"
+    src: "{{ lookup('first_found', [ inventory_dir + '/files/reverse/reverse.' + item, inventory_dir + '/certs/vitamui-services/servers/reverse/reverse.' + item ]) }}"
     dest: "/etc/{{ apache_service }}/certs/reverse.{{ item }}"
     owner: "{{ apache_user }}"
     group: "{{ apache_group }}"
