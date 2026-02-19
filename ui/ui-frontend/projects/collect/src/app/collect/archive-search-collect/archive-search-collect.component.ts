@@ -84,6 +84,11 @@ import {
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
+  STORAGE_RULE,
+  APPRAISAL_RULE,
+  ACCESS_RULE,
+  DISSEMINATION_RULE,
+  REUSE_RULE,
   WAITING_RECALCULATE,
   NODES,
 } from 'vitamui-library';
@@ -194,6 +199,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   search$: Observable<number>;
 
   displayedColumns = ['checkbox', 'type', 'name_description', 'start_date', 'end_date', 'originating_agency'];
+  criteriaCategoriesList = [STORAGE_RULE, APPRAISAL_RULE, ACCESS_RULE, DISSEMINATION_RULE, REUSE_RULE];
 
   @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
   confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchCollectComponent>;
@@ -785,6 +791,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         });
       }
     });
+    this.criteriaCategoriesList.forEach((category) => {
+      this.removeCriteriaCategory(category);
+    });
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
     this.included = false;
@@ -1190,19 +1199,16 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           false,
         );
 
-        // Collect criteria for URL update (only FIELDS and NODES categories)
-        if ([SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES].includes(category)) {
-          criteriaToAddToUrl.push({
-            keyElt: criteria.criteria,
-            valueElt: value,
-            labelElt: value.value,
-            keyTranslated: criteria.keyTranslated,
-            operator: criteria.operator,
-            category,
-            valueTranslated: criteria.valueTranslated,
-            dataType: criteria.dataType,
-          });
-        }
+        criteriaToAddToUrl.push({
+          keyElt: criteria.criteria,
+          valueElt: value,
+          labelElt: value.value,
+          keyTranslated: criteria.keyTranslated,
+          operator: criteria.operator,
+          category,
+          valueTranslated: criteria.valueTranslated,
+          dataType: criteria.dataType,
+        });
       });
     });
 
