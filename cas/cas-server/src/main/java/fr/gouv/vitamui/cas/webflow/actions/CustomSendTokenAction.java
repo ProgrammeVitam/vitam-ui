@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.util.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.bucket4j.consumer.BucketConsumer;
 import org.apereo.cas.configuration.model.support.mfa.simple.CasSimpleMultifactorAuthenticationProperties;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
@@ -53,10 +54,8 @@ import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 /**
  * The custom action to send SMS for the MFA simple token.
  */
-
+@Slf4j
 public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
-
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CustomSendTokenAction.class);
 
     private static final String MESSAGE_MFA_TOKEN_SENT = "cas.mfa.simple.label.tokensent";
 

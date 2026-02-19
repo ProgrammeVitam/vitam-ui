@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
 import org.apereo.cas.ticket.InvalidTicketException;
@@ -52,10 +53,9 @@ import java.time.temporal.ChronoUnit;
 /**
  * Check the MFA token.
  */
+@Slf4j
 @RequiredArgsConstructor
 public class CheckMfaTokenAction extends AbstractAction {
-
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CheckMfaTokenAction.class);
 
     private final TicketRegistry ticketRegistry;
 

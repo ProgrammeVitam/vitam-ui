@@ -3,6 +3,7 @@ package fr.gouv.vitamui.cas.web;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.oidc.OidcConstants;
@@ -21,12 +22,9 @@ import java.util.Optional;
  * Propagates custom parameters from OIDC to CAS.
  */
 
+@Slf4j
 @RequiredArgsConstructor
 public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasClientRedirectActionBuilder {
-
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(
-        CustomOidcCasClientRedirectActionBuilder.class
-    );
 
     private final OidcRequestSupport oidcRequestSupport;
 

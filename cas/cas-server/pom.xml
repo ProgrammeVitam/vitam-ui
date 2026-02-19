@@ -35,8 +35,8 @@
         <mongo.version>4.11.1</mongo.version>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
         <rpm.skip>false</rpm.skip>
-        <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <spring.boot.version>3.2.1</spring.boot.version>
+        <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <spring.cloud.consul.version>4.1.0</spring.cloud.consul.version>
         <swagger.version>2.2.2</swagger.version>
         <lombok.version>1.18.36</lombok.version>
@@ -146,25 +146,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- ... -->
-
-        <!-- VITAMUI -->
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-client-legacy</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>fr.gouv.vitam</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents.client5</groupId>
-                    <artifactId>httpclient5</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -291,28 +272,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apereo.cas</groupId>-->
-<!--            <artifactId>cas-server-support-pac4j-webflow</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>io.dropwizard.metrics</groupId>-->
-<!--                    <artifactId>metrics-core</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apereo.inspektr</groupId>-->
-<!--                    <artifactId>inspektr-audit</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apereo.inspektr</groupId>-->
-<!--                    <artifactId>inspektr-common</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apereo.inspektr</groupId>-->
-<!--                    <artifactId>inspektr-support-spring</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-api</artifactId>
@@ -798,6 +757,19 @@
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
