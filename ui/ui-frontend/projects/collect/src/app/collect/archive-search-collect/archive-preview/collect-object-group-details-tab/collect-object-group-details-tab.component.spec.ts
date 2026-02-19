@@ -179,7 +179,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
   });
 
   it('onClickDownloadObject', fakeAsync(() => {
-    TestBed.flushEffects();
+    TestBed.tick();
     tick();
 
     fixture.componentRef.setInput('archiveUnit', archiveUnit);
