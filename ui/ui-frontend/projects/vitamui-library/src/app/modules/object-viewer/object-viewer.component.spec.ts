@@ -60,7 +60,7 @@ import { PathStrategyDisplayObjectService } from './services/path-strategy-displ
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 import { TypeService } from './services/type.service';
 import { Unit, UnitType } from '../models';
-import { DescriptionLevel } from '../models/units/description-level.enum';
+import { DescriptionLevel } from '../../../lib/models/description-level.enum';
 
 class FakeTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {

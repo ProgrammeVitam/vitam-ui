@@ -49,7 +49,7 @@ import {
 import { newNode } from '../models/nodes/filing-holding-scheme.handler.spec';
 import { LeavesTreeApiService } from './leaves-tree-api.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
-import { DescriptionLevel } from '../models/units/description-level.enum';
+import { DescriptionLevel } from '../../../lib/models/description-level.enum';
 
 export function newToggledNode(
   currentId: string,

@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DescriptionLevel } from './description-level.enum';
 import { UnitType } from './unit-type.enum';
 import { ApiUnitObject } from './object-group.interface';
+import { DescriptionLevel } from '../../../../lib/models/description-level.enum';
 
 export interface Unit {
   '#id': string;

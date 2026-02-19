@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Id, UnitType } from '../index';
-import { DescriptionLevel } from '../units/description-level.enum';
+import { DescriptionLevel } from '../../../../lib/models/description-level.enum';
 
 export interface FilingHoldingSchemeNode extends Id {
   title: string;

@@ -38,7 +38,7 @@ import { ResultFacet } from '../criteria';
 import { Unit, UnitType } from '../units';
 import { FilingHoldingSchemeHandler, ORPHANS_NODE_ID } from './filing-holding-scheme.handler';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
-import { DescriptionLevel } from '../units/description-level.enum';
+import { DescriptionLevel } from '../../../../lib/models/description-level.enum';
 
 export function newNode(
   currentId: string,
