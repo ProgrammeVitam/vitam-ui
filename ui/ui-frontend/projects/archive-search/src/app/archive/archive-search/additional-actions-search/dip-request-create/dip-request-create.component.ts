@@ -88,7 +88,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     private snackBarService: SnackBarService,
   ) {
     this.agencyOptionsResource = rxResource<VitamuiSelectOptions, void>({
-      loader: () =>
+      stream: () =>
         this.agencyService.getAll().pipe(
           map(
             (agencies) =>
