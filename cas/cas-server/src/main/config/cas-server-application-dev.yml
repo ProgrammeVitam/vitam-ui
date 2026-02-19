@@ -101,17 +101,15 @@ cas.authn.passwordless.tokens.crypto.signing.key: oCCE4aUdQ73MJudKh-GnuBz464OOch
 cas.server.prefix: https://dev.vitamui.com:8080/cas
 login.url: ${cas.server.prefix}/login
 
-cas.service-registry.mongo.client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
-
-#cas.service-registry.mongo.port: 27018
-#cas.service-registry.mongo.database-name: cas
-#cas.service-registry.mongo.authentication-database-name: cas
-#cas.service-registry.mongo.replica-set: rs0
-cas.service-registry.mongo.collection: services
-#cas.service-registry.mongo.user-id: mongod_dbuser_cas
-#cas.service-registry.mongo.password: mongod_dbpwd_cas
-
-cas.ticket.registry.mongo.client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas?connectTimeoutMS=2000
+cas.service-registry.mongo:
+  client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
+#  port: 27018
+#  database-name: cas
+#  authentication-database-name: cas
+#  replica-set: rs0
+  collection: services
+#  user-id: mongod_dbuser_cas
+#  password: mongod_dbpwd_cas
 
 cas.authn.surrogate.separator: ","
 cas.authn.surrogate.mail.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnEmail

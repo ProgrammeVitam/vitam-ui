@@ -121,10 +121,6 @@
             <artifactId>iam-client</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>fr.gouv.vitam</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>

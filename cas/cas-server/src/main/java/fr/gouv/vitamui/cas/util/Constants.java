@@ -62,8 +62,6 @@ public abstract class Constants {
     public static final String FLOW_LOGIN_CUSTOMER_ID = "loginCustomerId";
     public static final String FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST = "availableCustomerList";
 
-    public static final String DISPATCHED_USERNAME = "dispatchedUsername";
-
     // web:
     public static final String PORTAL_URL = "portalUrl";
 
