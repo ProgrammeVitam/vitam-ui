@@ -17,7 +17,7 @@
         <java.version>21</java.version>
         <maven.compiler.release>21</maven.compiler.release>
 
-        <cas.version>7.0.10</cas.version>
+        <cas.version>7.0.10.1</cas.version>
         <logback.version>1.4.14</logback.version>
         <logstash.logback.encoder.version>8.0</logstash.logback.encoder.version>
         <mongo.driver.sync.version>4.11.1</mongo.driver.sync.version>
