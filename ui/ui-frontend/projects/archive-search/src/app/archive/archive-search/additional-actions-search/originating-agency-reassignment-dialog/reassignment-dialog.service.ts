@@ -81,7 +81,7 @@ export class ReassignmentDialogService {
       )
       .subscribe((opi) => {
         this.snackBarService.open({
-          message: 'ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED',
+          message: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.REASSIGNMENT_LAUNCHED',
           buttons: [
             {
               appId: ApplicationId.LOGBOOK_OPERATION_APP,

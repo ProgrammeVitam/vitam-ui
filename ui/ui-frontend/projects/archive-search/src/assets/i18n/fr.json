@@ -32,8 +32,8 @@
       "ORIGINATING_AGENCY": "Service producteur",
       "PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS": "Propager le nouveau service producteur aux groupes d'objet technique",
       "INFO": "Dans le cas où votre groupe d'objet technique\n est rattaché à plusieurs unités archivistiques,\n la propagation peut avoir des effets indésirables.",
-      "CURRENT_ORIGINATING_AGENCY_LABEL": "Indiquer le service producteur actuel",
-      "NEW_ORIGINATING_AGENCY_LABEL": "Sélectionner le nouveau service producteur",
+      "SOURCE_ORIGINATING_AGENCY_LABEL": "Indiquer le service producteur actuel",
+      "TARGET_ORIGINATING_AGENCY_LABEL": "Sélectionner le nouveau service producteur",
       "CONFIRM": "RÉATTRIBUER",
       "ERROR_MULTIPLE_SP_MODAL": {
         "TITLE": "Plusieurs services producteurs sélectionnés",
@@ -41,7 +41,8 @@
       },
       "ALERTE_MESSAGES": {
         "ACTION_ALERTE_TITLE": "Mauvais type d'unité archivistique"
-      }
+      },
+      "REASSIGNMENT_LAUNCHED": "La demande de réattribution a bien été lancée"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
