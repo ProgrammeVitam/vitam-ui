@@ -34,11 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Inject, Input, ViewChild, DOCUMENT } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
-import { DOCUMENT } from '@angular/common';
 
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

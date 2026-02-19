@@ -104,7 +104,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private snackBarService: SnackBarService,
   ) {
-    this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
+    this.agency = this.router.currentNavigation()?.extras?.state?.agency;
   }
 
   ngOnInit() {

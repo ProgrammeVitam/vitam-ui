@@ -34,11 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Inject, Input, ViewChild, DOCUMENT } from '@angular/core';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 
-import { DOCUMENT } from '@angular/common';
 import { EditableFieldComponent } from '../editable-field.component';
 
 export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {

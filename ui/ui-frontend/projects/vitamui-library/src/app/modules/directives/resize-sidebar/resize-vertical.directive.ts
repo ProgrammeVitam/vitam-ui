@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, HostListener, Inject, Input, OnInit } from '@angular/core';
+
+import { Directive, ElementRef, HostListener, Inject, Input, OnInit, DOCUMENT } from '@angular/core';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector

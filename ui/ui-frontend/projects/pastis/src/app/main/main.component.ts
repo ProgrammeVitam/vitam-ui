@@ -125,7 +125,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.pendingSub = this.sideNavService.isPending.subscribe((status) => {
       this.pending = status;
     });
-    const navigation = this.router.getCurrentNavigation();
+    const navigation = this.router.currentNavigation();
     this.uploadedProfileByFile = navigation?.extras.state?.payload;
   }
 

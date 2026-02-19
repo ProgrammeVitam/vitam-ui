@@ -285,11 +285,11 @@ describe('CustomerListComponent', () => {
       ],
     }).compileComponents();
 
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     spyOn(customerListService, 'search').and.callThrough();
     spyOn(customerListService, 'loadMore').and.callThrough();
 
-    const customerDataService = TestBed.get(CustomerDataService);
+    const customerDataService = TestBed.inject(CustomerDataService);
     spyOn(customerDataService, 'addTenants').and.callThrough();
     spyOn(customerDataService, 'updateTenant').and.callThrough();
     spyOn(customerDataService, 'tenantsUpdated$').and.callThrough();
@@ -321,7 +321,7 @@ describe('CustomerListComponent', () => {
   });
 
   it('should have a list of clients', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     expect(customerListService.search).toHaveBeenCalledTimes(1);
     expect(page.rows).toBeTruthy();
     expect(page.rows.length).toBe(5);
@@ -344,14 +344,14 @@ describe('CustomerListComponent', () => {
   });
 
   it('should hide the "load more" button ', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     customerListService.canLoadMore = false;
     fixture.detectChanges();
     expect(page.loadMoreButton.length).toBe(0);
   });
 
   it('should call loadMore()', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     component.infiniteScrollDisabled = true;
     fixture.detectChanges();
     page.loadMoreButton[0].click();
@@ -359,7 +359,7 @@ describe('CustomerListComponent', () => {
   });
 
   it('should call loadMore() on scroll', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     expect(page.infiniteScroll).toBeTruthy();
     const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
     directive.vitamuiScroll.next();
@@ -368,7 +368,7 @@ describe('CustomerListComponent', () => {
 
   it('should open the owner creation dialog', () => {
     page.ownerBtn[2].click();
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     expect(matDialogSpy.open.calls.count()).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(OwnerCreateComponent, {
       data: { customer: customers[2] },
@@ -392,7 +392,7 @@ describe('CustomerListComponent', () => {
       },
       readonly: false,
     };
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of({ owner: newOwner }) });
     const addOwnerBtn = page.rows[0].querySelector('.btn.btn-circle.primary');
     addOwnerBtn.click();
@@ -400,14 +400,14 @@ describe('CustomerListComponent', () => {
   });
 
   it('should not add anything to the owners list', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(undefined) });
     page.ownerBtn[0].click();
     expect(customers[0].owners.length).toBe(0);
   });
 
   it('should update the customer', () => {
-    const customerService = TestBed.get(CustomerService);
+    const customerService = TestBed.inject(CustomerService);
     customerService.updated.next({ id: '12', name: 'Updated customer' });
     expect(component.dataSource[1].name).toBe('Updated customer');
   });

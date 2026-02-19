@@ -66,7 +66,7 @@ export class ViewAgencyComponent implements OnInit {
     private tenantSelectionService: TenantSelectionService,
     private agencyService: AgencyService,
   ) {
-    this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
+    this.agency = this.router.currentNavigation()?.extras?.state?.agency;
   }
 
   ngOnInit() {
