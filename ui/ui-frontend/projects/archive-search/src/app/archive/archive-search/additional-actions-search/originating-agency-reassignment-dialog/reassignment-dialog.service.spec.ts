@@ -115,7 +115,7 @@ describe('ReassignmentDialogService', () => {
 
     expect(snackBarSpy.open).toHaveBeenCalledWith(
       jasmine.objectContaining({
-        message: 'ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED',
+        message: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.REASSIGNMENT_LAUNCHED',
         buttons: [
           jasmine.objectContaining({
             path: `/tenant/${tenantId}?guid=aeaqaaaabieci5gnciz5kam2cby53jaaaabq`,

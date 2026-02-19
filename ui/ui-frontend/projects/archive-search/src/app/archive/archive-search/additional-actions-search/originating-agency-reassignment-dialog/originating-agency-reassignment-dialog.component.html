@@ -5,7 +5,7 @@
 
 <form [formGroup]="form" (ngSubmit)="reassign()">
   <mat-dialog-content class="gap-3 align-items-stretch">
-    <p class="text bold primary m-0">{{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.CURRENT_ORIGINATING_AGENCY_LABEL' | translate }}</p>
+    <p class="text bold primary m-0">{{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.SOURCE_ORIGINATING_AGENCY_LABEL' | translate }}</p>
     <vitamui-select
       [multiple]="false"
       [enableSearch]="true"
@@ -15,7 +15,9 @@
       [options]="originatingAgenciesOptions"
     ></vitamui-select>
 
-    <p class="text bold primary m-0">{{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.NEW_ORIGINATING_AGENCY_LABEL' | translate }}</p>
+    <p class="text bold primary m-0 mt-1">
+      {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.TARGET_ORIGINATING_AGENCY_LABEL' | translate }}
+    </p>
     <vitamui-select
       [multiple]="false"
       [enableSearch]="true"

@@ -32,8 +32,8 @@
       "ORIGINATING_AGENCY": "Originating agency",
       "PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS": "Propagate the new originating agency to technical object groups",
       "INFO": "In cases where your technical object group is linked\n to multiple archival units, propagating the new originating agency\n may lead to unintended effects.",
-      "CURRENT_ORIGINATING_AGENCY_LABEL": "Specify the current originating agency",
-      "NEW_ORIGINATING_AGENCY_LABEL": "Select the new originating agency",
+      "SOURCE_ORIGINATING_AGENCY_LABEL": "Specify the current originating agency",
+      "TARGET_ORIGINATING_AGENCY_LABEL": "Select the new originating agency",
       "CONFIRM": "REASSIGN",
       "ERROR_MULTIPLE_SP_MODAL": {
         "TITLE": "Multiple originating agencies selected",
@@ -41,7 +41,8 @@
       },
       "ALERTE_MESSAGES": {
         "ACTION_ALERTE_TITLE": "Wrong archival unit type"
-      }
+      },
+      "REASSIGNMENT_LAUNCHED": "The reassignment request has been successfully initiated"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
