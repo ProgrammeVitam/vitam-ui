@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, Injector } from '@angular/core';
 import { MenuOverlayRef } from './menu-overlay-ref';
 import { MenuComponent } from './menu.component';
@@ -45,8 +45,6 @@ export class MenuOverlayService {
   private overlayRef: OverlayRef;
 
   private dialogRef: MenuOverlayRef;
-
-  private portalInjector: PortalInjector;
 
   constructor(
     private overlay: Overlay,
@@ -67,7 +65,16 @@ export class MenuOverlayService {
     this.dialogRef = new MenuOverlayRef(this.overlayRef);
     injectionTokens.set(MenuOverlayRef, this.dialogRef);
 
-    this.portalInjector = new PortalInjector(this.injector, injectionTokens);
-    this.overlayRef.attach(new ComponentPortal(MenuComponent, null, this.portalInjector));
+    const providers = Object.entries(injectionTokens).map(([token, value]) => ({
+      provide: token,
+      useValue: value,
+    }));
+
+    const portalInjector = Injector.create({
+      providers: providers,
+      parent: this.injector,
+    });
+
+    this.overlayRef.attach(new ComponentPortal(MenuComponent, null, portalInjector));
   }
 }
