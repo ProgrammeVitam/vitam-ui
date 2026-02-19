@@ -3,7 +3,7 @@
 
 :root {
   .mat-mdc-snack-bar-container {
-    --mdc-snackbar-container-color: transparent;
+    --mat-snackbar-container-color: transparent;
 
     .mdc-snackbar__surface {
       @include elevation.shadow-0;

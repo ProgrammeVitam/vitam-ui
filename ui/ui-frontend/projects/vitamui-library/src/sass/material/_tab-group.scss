@@ -1,18 +1,18 @@
 :root {
   .mat-mdc-tab-group,
   .mat-mdc-tab-nav-bar {
-    --mat-tab-header-active-label-text-color: var(--vitamui-primary);
-    --mat-tab-header-active-ripple-color: var(--vitamui-primary-50);
+    --mat-tab-active-label-text-color: var(--vitamui-primary);
+    --mat-tab-active-ripple-color: var(--vitamui-primary-50);
 
-    --mat-tab-header-inactive-label-text-color: var(--vitamui-grey-600);
-    --mat-tab-header-inactive-ripple-color: var(--vitamui-primary-50);
+    --mat-tab-inactive-label-text-color: var(--vitamui-grey-600);
+    --mat-tab-inactive-ripple-color: var(--vitamui-primary-50);
   }
 
   .mat-mdc-tab-header {
-    --mat-tab-header-label-text-size: 16px;
-    --mat-tab-header-label-text-tracking: 0;
-    --mat-tab-header-label-text-line-height: 24px;
-    --mat-tab-header-label-text-weight: 700;
+    --mat-tab-label-text-size: 16px;
+    --mat-tab-label-text-tracking: 0;
+    --mat-tab-label-text-line-height: 24px;
+    --mat-tab-label-text-weight: 700;
   }
 
   .mdc-tab,
