@@ -102,7 +102,7 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/identity/src/test.ts",
             "karmaConfig": "karma.conf.ci.js",
@@ -230,7 +230,7 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/portal/src/test.ts",
             "karmaConfig": "karma.conf.ci.js",
@@ -364,7 +364,7 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/referential/src/test.ts",
             "polyfills": "projects/referential/src/polyfills.ts",
@@ -429,7 +429,7 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/vitamui-library/src/test.ts",
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
@@ -527,7 +527,7 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/design-system/src/test.ts",
             "karmaConfig": "karma.conf.ci.js",
@@ -645,7 +645,7 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/ingest/src/test.ts",
             "polyfills": "projects/ingest/src/polyfills.ts",
@@ -765,7 +765,7 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/archive-search/src/test.ts",
             "karmaConfig": "karma.conf.ci.js",
@@ -885,7 +885,7 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/collect/src/test.ts",
             "karmaConfig": "karma.conf.ci.js",
@@ -1015,7 +1015,7 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/pastis/src/test.ts",
             "polyfills": "projects/pastis/src/polyfills.ts",
