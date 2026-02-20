@@ -18,12 +18,12 @@
   - block:
     # https://www.mongodb.com/docs/manual/reference/method/rs.stepDown/
     - name: Step down the member (elect a new primary member)
-      command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --eval 'rs.stepDown();'"
+      command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password | quote }} --quiet --eval 'rs.stepDown();'"
       no_log: "{{ hide_passwords_during_deploy }}"
       ignore_errors: true # as we are brutally disconnected by the server (because reboot)
 
     - name: Wait until this member is not primary anymore
-      command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --file {{ vitamui_defaults.folder.root_path }}/script//{{ mongo_type }}/wait_until_not_master.js"
+      command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password | quote }} --quiet --file {{ vitamui_defaults.folder.root_path }}/script//{{ mongo_type }}/wait_until_not_master.js"
       no_log: "{{ hide_passwords_during_deploy }}"
       ignore_errors: true # To properly catch output on the next task
       register: output_not_master
@@ -38,7 +38,7 @@
       - groups['hosts_vitamui_mongod'] | length > 1
 
   - name: Graceful shutdown of node
-    command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --file {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/shutdown.js"
+    command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password | quote }} --quiet --file {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/shutdown.js"
     no_log: "{{ hide_passwords_during_deploy }}"
     ignore_errors: true # as we are brutally disconnected by the server (because of shutdown)
 
@@ -92,7 +92,7 @@
       timeout: "{{ vitamui_defaults.services.start_timeout }}"
 
   - name: Wait for node to join the cluster and reach "secondary" or "primary" status
-    command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --file {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/wait_until_proper_node_state.js"
+    command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password | quote }} --quiet --file {{ vitamui_defaults.folder.root_path }}/script/{{ mongo_type }}/wait_until_proper_node_state.js"
     no_log: "{{ hide_passwords_during_deploy }}"
     ignore_errors: true # To properly catch output on the next task
     register: output_node_state

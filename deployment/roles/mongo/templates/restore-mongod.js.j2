@@ -7,13 +7,13 @@
 use admin
 
 // Authenticate as root user
-db.auth("{{ mongodb.admin.user }}", "{{ mongodb.admin.password }}")
+db.auth("{{ mongodb.admin.user }}", {{ mongodb.admin.password | to_json }})
 
 // Create system user
-db.createUser({user: "{{ mongodb.system.user }}", pwd: "{{ mongodb.system.password }}", roles: [ "__system" ]})
+db.createUser({user: "{{ mongodb.system.user }}", pwd: {{ mongodb.system.password | to_json }}, roles: [ "__system" ]})
 
 // Authenticate as system user
-db.auth("{{ mongodb.system.user }}", "{{ mongodb.system.password }}")
+db.auth("{{ mongodb.system.user }}", {{ mongodb.system.password | to_json }})
 
 // Update system.version collections
 db.system.version.deleteOne( { "_id": "minOpTimeRecovery" } )
@@ -40,7 +40,7 @@ db.dropDatabase()
 // Remove system user
 use admin
 // Authenticate as root user
-db.auth("{{ mongodb.admin.user }}","{{ mongodb.admin.password }}")
+db.auth("{{ mongodb.admin.user }}", {{ mongodb.admin.password | to_json }})
 db.removeUser("{{ mongodb.system.user }}")
 
 

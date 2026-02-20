@@ -13,5 +13,5 @@
 # When authentication is required, we set mongodb admin credentials
 - name: Set mongodb authentication credentials
   set_fact:
-    mongo_credentials: " -u {{ login }} -p {{ password }} --quiet"
+    mongo_credentials: " -u {{ login }} -p {{ password | quote }} --quiet"
   no_log: true
