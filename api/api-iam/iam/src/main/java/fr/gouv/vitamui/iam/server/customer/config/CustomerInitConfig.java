@@ -39,7 +39,6 @@ package fr.gouv.vitamui.iam.server.customer.config;
 
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.spring.YamlPropertySourceFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,7 +59,10 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @Component
-@PropertySource(factory = YamlPropertySourceFactory.class, value = "file:${customer.init.config.file}")
+@PropertySource(
+    factory = fr.gouv.vitamui.commons.spring.YamlPropertySourceFactory.class,
+    value = "file:${customer.init.config.file}"
+)
 @ConfigurationProperties("customer-init")
 public class CustomerInitConfig implements InitializingBean {
 
