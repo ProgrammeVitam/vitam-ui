@@ -5,19 +5,6 @@
 const formId = '#main-form'; // Vitam form id value
 // const formId = '#fm1'; // Xelians form id value
 
-function showGeoPosition(position) {
-  let loc =
-    position.coords.latitude +
-    ',' +
-    position.coords.longitude +
-    ',' +
-    position.coords.accuracy +
-    ',' +
-    position.timestamp;
-  console.log('Tracking geolocation for ' + loc);
-  $('[name="geolocation"]').val(loc);
-}
-
 function preserveAnchorTagOnForm() {
   $(formId).submit(function () {
     var location = self.document.location;
