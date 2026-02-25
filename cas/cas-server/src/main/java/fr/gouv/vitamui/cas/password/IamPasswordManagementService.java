@@ -386,6 +386,5 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             .filter(user -> user.getCustomerId().equals(customerId))
             .findFirst()
             .orElse(null);
-        // return casApi.getUser(email, customerId, null, null, null);
     }
 }
