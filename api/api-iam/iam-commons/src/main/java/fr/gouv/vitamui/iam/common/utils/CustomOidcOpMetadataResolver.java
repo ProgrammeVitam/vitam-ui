@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.common.utils;
 
 import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.oidc.metadata.OidcOpMetadataResolver;
+import org.pac4j.oidc.profile.creator.TokenValidator;
 
 /** Custom OIDC metadata resolver. */
 public class CustomOidcOpMetadataResolver extends OidcOpMetadataResolver {
@@ -11,9 +12,7 @@ public class CustomOidcOpMetadataResolver extends OidcOpMetadataResolver {
     }
 
     @Override
-    protected void internalLoad() {
-        super.internalLoad();
-
-        this.tokenValidator = new CustomTokenValidator(configuration, this.loaded);
+    protected TokenValidator createTokenValidator() {
+        return new CustomTokenValidator(configuration, this.loaded);
     }
 }
