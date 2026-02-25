@@ -3210,6 +3210,7 @@
     "EXT_VITAMUI_CREATE_GROUP": "Group creation",
     "EXT_VITAMUI_CREATE_GROUP.OK": "Success of the group creation",
     "EXT_VITAMUI_UPDATE_GROUP": "Modification of the group",
+    "EXT_VITAMUI_UPDATE_GROUP.OK": "Success of the group modification",
     "EXT_VITAMUI_CREATE_IDP": "Creation of the IDP of the organization",
     "EXT_VITAMUI_CREATE_IDP.OK": "Success of the creation of the IDP of the organization",
     "EXT_VITAMUI_UPDATE_IDP": "Modification of the organization's IDP",
