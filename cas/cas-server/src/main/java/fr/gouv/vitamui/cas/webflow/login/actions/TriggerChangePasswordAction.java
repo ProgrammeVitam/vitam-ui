@@ -32,12 +32,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.pm.web.flow.PasswordManagementWebflowConfigurer;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
+
+import static org.apereo.cas.pm.PasswordManagementService.PARAMETER_DO_CHANGE_PASSWORD;
 
 /**
  * Check if the password change must be started, even authenticated.
@@ -56,7 +60,7 @@ public class TriggerChangePasswordAction extends AbstractAction {
     private final Utils utils;
 
     protected Event doExecute(final RequestContext context) {
-        final String doChangePassword = context.getRequestParameters().get("doChangePassword");
+        final String doChangePassword = context.getRequestParameters().get(PARAMETER_DO_CHANGE_PASSWORD);
         LOGGER.debug("doChangePassword: {}", doChangePassword);
         if (doChangePassword != null) {
             // we force to change the password and as the user is already authenticated,
