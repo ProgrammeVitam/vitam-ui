@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.cas.webflow.actions;
+package fr.gouv.vitamui.cas.webflow.login.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cas.webflow.configurer;
+package fr.gouv.vitamui.cas.webflow.mfa;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
@@ -53,7 +53,7 @@ import java.util.Optional;
 /**
  * Custom webflow for simple MFA.
  */
-public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMultifactorWebflowConfigurer {
+public class VitamMfaWebflowConfigurer extends AbstractCasMultifactorWebflowConfigurer {
 
     /**
      * Webflow event id.
@@ -61,7 +61,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
     public static final String MFA_SIMPLE_EVENT_ID = "mfa-simple";
     public static final String TEMPLATE_SIMPLE_MFA_LOGIN = "simple-mfa/casSimpleMfaLoginView";
 
-    public CustomCasSimpleMultifactorWebflowConfigurer(
+    public VitamMfaWebflowConfigurer(
         final FlowBuilderServices flowBuilderServices,
         final FlowDefinitionRegistry loginFlowDefinitionRegistry,
         final FlowDefinitionRegistry flowDefinitionRegistry,
@@ -113,7 +113,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             createTransitionForState(
                 sendSimpleToken,
                 CasWebflowConstants.TRANSITION_ID_SUCCESS,
-                CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID
+                CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM
             );
             // CUSTO:
             createTransitionForState(sendSimpleToken, "missingPhone", "missingPhone");
@@ -128,7 +128,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             var binder = createStateBinderConfiguration(propertiesToBind);
             var viewLoginFormState = createViewState(
                 flow,
-                CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID,
+                CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM,
                 TEMPLATE_SIMPLE_MFA_LOGIN,
                 binder
             );
@@ -188,7 +188,7 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
             createTransitionForState(
                 realSubmitState,
                 CasWebflowConstants.TRANSITION_ID_ERROR,
-                CasWebflowConstants.STATE_ID_PASSWORDLESS_GET_USERID
+                CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM
             );
         });
 

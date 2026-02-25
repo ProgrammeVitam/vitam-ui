@@ -1,44 +1,35 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
- * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
- * contact@programmevitam.fr
+ * contact.vitam@culture.gouv.fr
  *
- * This software is a computer program whose purpose is to implement
- * implement a digital archiving front-office system for the secure and
- * efficient high volumetry VITAM solution.
+ * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
+ * high volumetry securely and efficiently.
  *
- * This software is governed by the CeCILL-C license under French law and
- * abiding by the rules of distribution of free software.  You can  use,
- * modify and/ or redistribute the software under the terms of the CeCILL-C
- * license as circulated by CEA, CNRS and INRIA at the following URL
- * "http://www.cecill.info".
+ * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
+ * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
- * As a counterpart to the access to the source code and  rights to copy,
- * modify and redistribute granted by the license, users are provided only
- * with a limited warranty  and the software's author,  the holder of the
- * economic rights,  and the successive licensors  have only  limited
- * liability.
+ * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
+ * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
+ * successive licensors have only limited liability.
  *
- * In this respect, the user's attention is drawn to the risks associated
- * with loading,  using,  modifying and/or developing or reproducing the
- * software by the user in light of its specific status of free software,
- * that may mean  that it is complicated to manipulate,  and  that  also
- * therefore means  that it is reserved for developers  and  experienced
- * professionals having in-depth computer knowledge. Users are therefore
- * encouraged to load and test the software's suitability as regards their
- * requirements in conditions enabling the security of their systems and/or
- * data to be ensured and,  more generally, to use and operate it in the
- * same conditions as regards security.
+ * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific status of free software, that may mean
+ * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
+ * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
  *
- * The fact that you are presently reading this means that you have had
- * knowledge of the CeCILL-C license and that you accept its terms.
+ * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
+ * accept its terms.
  */
-package fr.gouv.vitamui.cas.webflow.actions;
+package fr.gouv.vitamui.cas.webflow.login.actions;
 
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -60,8 +51,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
-import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
+import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
+import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
 
 /**
  * This class lists users matching provided login email:
@@ -95,7 +86,52 @@ public class ListCustomersAction extends AbstractAction {
     protected Event doExecute(final RequestContext requestContext) throws IOException {
         var flowScope = requestContext.getFlowScope();
 
-        return processEmailInput(requestContext, flowScope);
+        if (isSubrogationMode(flowScope)) {
+            return processSubrogationRequest(flowScope);
+        } else {
+            return processEmailInput(requestContext, flowScope);
+        }
+    }
+
+    private Event processSubrogationRequest(MutableAttributeMap<Object> flowScope) throws IOException {
+        // We came from subrogation validation (emailForm)
+        String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
+        String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
+        String superUserCustomerId = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+
+        LOGGER.debug(
+            "Subrogation of '{}' (customerId '{}') by super admin '{}' (customerId '{}')",
+            surrogateEmail,
+            surrogateCustomerId,
+            superUserEmail,
+            superUserCustomerId
+        );
+
+        ParameterChecker.checkParameter(
+            "Missing subrogation params",
+            surrogateEmail,
+            surrogateCustomerId,
+            superUserEmail,
+            superUserCustomerId
+        );
+
+        // Filter by both email (domain) & customerId
+        Optional<IdentityProviderDto> providerDto = identityProviderHelper.findByUserIdentifierAndCustomerId(
+            providersService.getProviders(),
+            superUserEmail,
+            superUserCustomerId
+        );
+        if (providerDto.isEmpty()) {
+            LOGGER.error(
+                "No provider found for superUserEmail / superUserCustomerId: {}",
+                superUserEmail,
+                superUserCustomerId
+            );
+            return new Event(this, BAD_CONFIGURATION);
+        }
+
+        return handleSingleAuthenticationProvider(flowScope, superUserEmail, superUserCustomerId);
     }
 
     private Event processEmailInput(RequestContext requestContext, MutableAttributeMap<Object> flowScope) {
@@ -248,5 +284,9 @@ public class ListCustomersAction extends AbstractAction {
         flowScope.put(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST, customerToSelect);
 
         return new Event(this, TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
+    }
+
+    private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {
+        return flowScope.contains(Constants.FLOW_SURROGATE_EMAIL);
     }
 }

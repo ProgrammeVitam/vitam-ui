@@ -296,10 +296,7 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-saml-core-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-passwordless-webflow</artifactId>
-        </dependency>
+        <!-- FIXME: Still required for internal CAS modules -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-passwordless-api</artifactId>

@@ -24,47 +24,50 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+package fr.gouv.vitamui.cas.webflow.mfa.actions;
 
-package fr.gouv.vitamui.cas.x509;
-
-import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
-import org.apereo.cas.authentication.Credential;
-import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
-import org.apereo.cas.web.flow.resolver.impl.CasWebflowEventResolutionConfigurationContext;
-import org.apereo.cas.web.flow.resolver.impl.DefaultCasDelegatingWebflowEventResolver;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
+import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
+import org.apereo.cas.ticket.InvalidTicketException;
+import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.web.support.WebUtils;
+import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
-/** Custom webflow event resolver to handle when the x509 authn is mandatory. */
-public class X509CasDelegatingWebflowEventResolver extends DefaultCasDelegatingWebflowEventResolver {
+/**
+ * Check the MFA token.
+ */
+@Slf4j
+@RequiredArgsConstructor
+public class CheckMfaTokenAction extends AbstractAction {
 
-    private final boolean x509AuthnMandatory;
-
-    public X509CasDelegatingWebflowEventResolver(
-        final CasWebflowEventResolutionConfigurationContext configurationContext,
-        final CasWebflowEventResolver selectiveResolver,
-        final boolean x509AuthnMandatory
-    ) {
-        super(configurationContext, selectiveResolver);
-        this.x509AuthnMandatory = x509AuthnMandatory;
-    }
+    private final TicketRegistry ticketRegistry;
 
     @Override
-    protected Event buildEventFromException(
-        final Throwable exception,
-        final RequestContext requestContext,
-        final List<Credential> credential,
-        final Service service
-    ) {
-        if (x509AuthnMandatory) {
-            if (credential != null && credential.stream().anyMatch(X509CertificateCredential.class::isInstance)) {
-                throw new IllegalArgumentException("Authentication failure for mandatory X509 login");
-            }
-        }
+    protected Event doExecute(final RequestContext requestContext) {
+        var credential = WebUtils.getCredential(requestContext);
+        var tokenCredential = (CasSimpleMultifactorTokenCredential) credential;
+        var token = CasSimpleMultifactorAuthenticationTicket.PREFIX + "-" + tokenCredential.getToken();
+        LOGGER.debug("Checking token: {}", token);
+        WebUtils.putCredential(requestContext, new CasSimpleMultifactorTokenCredential(token));
 
-        return super.buildEventFromException(exception, requestContext, credential, service);
+        try {
+            var acct = this.ticketRegistry.getTicket(token, CasSimpleMultifactorAuthenticationTicket.class);
+            if (acct != null) {
+                var creationTime = acct.getCreationTime();
+                var now_less_one_minute = ZonedDateTime.now().minus(60, ChronoUnit.SECONDS);
+                // considered expired after 60 seconds
+                if (creationTime.isBefore(now_less_one_minute)) {
+                    return error();
+                }
+            }
+        } catch (InvalidTicketException e) {}
+        return success();
     }
 }

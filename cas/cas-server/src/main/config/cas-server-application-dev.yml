@@ -95,9 +95,6 @@ cas.authn.pac4j:
   cas:
     - login-url: https://dev.vitamui.com:8080/cas/login
 
-cas.authn.passwordless.tokens.crypto.encryption.key: DMY3EEDdsXJ6aNH9WsuAlZbeLTGTE_FyqGBaDq6jM10
-cas.authn.passwordless.tokens.crypto.signing.key: oCCE4aUdQ73MJudKh-GnuBz464OOchYyrrZDdmAHpDpHopEHE3u9Cm3OAR9Dv-AY7cbUHLiD40jkQCY13N3BCg
-
 cas.server.prefix: https://dev.vitamui.com:8080/cas
 login.url: ${cas.server.prefix}/login
 

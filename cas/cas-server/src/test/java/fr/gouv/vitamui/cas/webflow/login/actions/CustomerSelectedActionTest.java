@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.cas.webflow.actions;
+package fr.gouv.vitamui.cas.webflow.login.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.model.CustomerModel;
@@ -14,7 +14,7 @@ import org.springframework.webflow.execution.Event;
 import java.io.IOException;
 import java.util.List;
 
-import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
+import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -24,47 +24,51 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+package fr.gouv.vitamui.cas.webflow.login.actions;
 
-package fr.gouv.vitamui.cas.x509;
-
-import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
-import org.apereo.cas.authentication.Credential;
-import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
-import org.apereo.cas.web.flow.resolver.impl.CasWebflowEventResolutionConfigurationContext;
-import org.apereo.cas.web.flow.resolver.impl.DefaultCasDelegatingWebflowEventResolver;
+import fr.gouv.vitamui.cas.model.CustomerModel;
+import fr.gouv.vitamui.cas.util.Constants;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import java.io.IOException;
 import java.util.List;
 
-/** Custom webflow event resolver to handle when the x509 authn is mandatory. */
-public class X509CasDelegatingWebflowEventResolver extends DefaultCasDelegatingWebflowEventResolver {
+import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 
-    private final boolean x509AuthnMandatory;
-
-    public X509CasDelegatingWebflowEventResolver(
-        final CasWebflowEventResolutionConfigurationContext configurationContext,
-        final CasWebflowEventResolver selectiveResolver,
-        final boolean x509AuthnMandatory
-    ) {
-        super(configurationContext, selectiveResolver);
-        this.x509AuthnMandatory = x509AuthnMandatory;
-    }
+/**
+ * This class persists user selected customerId into flow scope and redirect to
+ * dispatcher
+ */
+@Slf4j
+@RequiredArgsConstructor
+public class CustomerSelectedAction extends AbstractAction {
 
     @Override
-    protected Event buildEventFromException(
-        final Throwable exception,
-        final RequestContext requestContext,
-        final List<Credential> credential,
-        final Service service
-    ) {
-        if (x509AuthnMandatory) {
-            if (credential != null && credential.stream().anyMatch(X509CertificateCredential.class::isInstance)) {
-                throw new IllegalArgumentException("Authentication failure for mandatory X509 login");
-            }
-        }
+    protected Event doExecute(final RequestContext requestContext) throws IOException {
+        var flowScope = requestContext.getFlowScope();
 
-        return super.buildEventFromException(exception, requestContext, credential, service);
+        String loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
+        String customerId = requestContext.getRequestParameters().get(Constants.SELECT_CUSTOMER_ID_PARAM);
+
+        List<CustomerModel> customerModels = (List<CustomerModel>) flowScope.getRequired(
+            Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST
+        );
+
+        CustomerModel customerModel = customerModels
+            .stream()
+            .filter(c -> c.getCustomerId().equals(customerId))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid customerId '" + customerId + "'"));
+
+        LOGGER.debug("Valid customer selected: {} for user: {}", customerModel, loginEmail);
+
+        flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, customerId);
+        flowScope.remove(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST);
+
+        return new Event(this, TRANSITION_TO_CUSTOMER_SELECTED);
     }
 }

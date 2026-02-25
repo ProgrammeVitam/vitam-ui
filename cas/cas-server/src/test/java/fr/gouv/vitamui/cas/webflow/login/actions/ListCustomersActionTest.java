@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.cas.webflow.actions;
+package fr.gouv.vitamui.cas.webflow.login.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static fr.gouv.vitamui.cas.webflow.actions.ListCustomersAction.BAD_CONFIGURATION;
-import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
-import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
+import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
+import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
+import static fr.gouv.vitamui.cas.webflow.login.actions.ListCustomersAction.BAD_CONFIGURATION;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -76,6 +76,9 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         doReturn(List.of(getIdentityProvider("c1", false, ".*@vitamui.com")))
             .when(identityProviderHelper)
             .findAllProvidersByUserIdentifier(any(), any());
+        doReturn(Optional.of(providerDto1))
+            .when(identityProviderHelper)
+            .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -104,12 +107,15 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         )
             .when(identityProviderHelper)
             .findAllProvidersByUserIdentifier(any(), any());
+        doReturn(Optional.of(providerDto1))
+            .when(identityProviderHelper)
+            .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
 
         // When
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
-        assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
+        // Then (Subrogation mode is deterministic and bypasses customer selection)
+        assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
     }
 
     @Test

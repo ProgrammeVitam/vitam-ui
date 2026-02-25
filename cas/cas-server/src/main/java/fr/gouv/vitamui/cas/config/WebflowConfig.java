@@ -40,30 +40,24 @@ import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.logout.CustomDelegatedAuthenticationClientLogoutAction;
 import fr.gouv.vitamui.cas.logout.TerminateApiSessionAction;
 import fr.gouv.vitamui.cas.password.PmTransientSessionTicketExpirationPolicyBuilder;
-import fr.gouv.vitamui.cas.passwordless.CustomPasswordlessAuthenticationWebflowConfigurer;
-import fr.gouv.vitamui.cas.passwordless.CustomPasswordlessDetermineDelegatedAuthenticationAction;
-import fr.gouv.vitamui.cas.passwordless.CustomVerifyPasswordlessAccountAuthenticationAction;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.cas.webflow.actions.CheckMfaTokenAction;
-import fr.gouv.vitamui.cas.webflow.actions.CheckSubrogationAction;
-import fr.gouv.vitamui.cas.webflow.actions.CustomDelegatedClientAuthenticationAction;
-import fr.gouv.vitamui.cas.webflow.actions.CustomSendTokenAction;
-import fr.gouv.vitamui.cas.webflow.actions.CustomerSelectedAction;
-import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
-import fr.gouv.vitamui.cas.webflow.actions.I18NSendPasswordResetInstructionsAction;
-import fr.gouv.vitamui.cas.webflow.actions.ListCustomersAction;
-import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
-import fr.gouv.vitamui.cas.webflow.configurer.CustomCasSimpleMultifactorWebflowConfigurer;
-import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
+import fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer;
+import fr.gouv.vitamui.cas.webflow.login.actions.CheckSubrogationAction;
+import fr.gouv.vitamui.cas.webflow.login.actions.CustomDelegatedClientAuthenticationAction;
+import fr.gouv.vitamui.cas.webflow.login.actions.CustomerSelectedAction;
+import fr.gouv.vitamui.cas.webflow.login.actions.DispatcherAction;
+import fr.gouv.vitamui.cas.webflow.login.actions.I18NSendPasswordResetInstructionsAction;
+import fr.gouv.vitamui.cas.webflow.login.actions.ListCustomersAction;
+import fr.gouv.vitamui.cas.webflow.login.actions.TriggerChangePasswordAction;
+import fr.gouv.vitamui.cas.webflow.mfa.VitamMfaWebflowConfigurer;
+import fr.gouv.vitamui.cas.webflow.mfa.actions.CheckMfaTokenAction;
+import fr.gouv.vitamui.cas.webflow.mfa.actions.CustomSendTokenAction;
 import fr.gouv.vitamui.cas.x509.CustomRequestHeaderX509CertificateExtractor;
-import fr.gouv.vitamui.cas.x509.FixX509WebflowConfigurer;
 import fr.gouv.vitamui.cas.x509.X509CasDelegatingWebflowEventResolver;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.api.PasswordlessRequestParser;
-import org.apereo.cas.api.PasswordlessUserAccountStore;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.MultifactorAuthenticationProviderSelector;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
@@ -235,7 +229,7 @@ public class WebflowConfig {
         ) final FlowDefinitionRegistry logoutFlowRegistry,
         @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices
     ) {
-        final var c = new CustomLoginWebflowConfigurer(
+        final var c = new VitamLoginWebflowConfigurer(
             flowBuilderServices,
             loginFlowRegistry,
             applicationContext,
@@ -391,7 +385,7 @@ public class WebflowConfig {
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext
     ) {
-        final var cfg = new CustomCasSimpleMultifactorWebflowConfigurer(
+        final var cfg = new VitamMfaWebflowConfigurer(
             flowBuilderServices,
             loginFlowRegistry,
             mfaSimpleAuthenticatorFlowRegistry,
@@ -553,79 +547,83 @@ public class WebflowConfig {
     public Action surrogateInitialAuthenticationAction() {
         return new CustomSurrogateInitialAuthenticationAction();
     }
+    //    @Bean
+    //    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    //    public Action verifyPasswordlessAccountAuthenticationAction(
+    //        @Qualifier(PasswordlessRequestParser.BEAN_NAME) final PasswordlessRequestParser passwordlessRequestParser,
+    //        final ConfigurableApplicationContext applicationContext,
+    //        final CasConfigurationProperties casProperties,
+    //        @Qualifier(
+    //            PasswordlessUserAccountStore.BEAN_NAME
+    //        ) final PasswordlessUserAccountStore passwordlessUserAccountStore
+    //    ) {
+    //        return WebflowActionBeanSupplier.builder()
+    //            .withApplicationContext(applicationContext)
+    //            .withProperties(casProperties)
+    //            .withAction(
+    //                () ->
+    //                    new CustomVerifyPasswordlessAccountAuthenticationAction(
+    //                        casProperties,
+    //                        passwordlessUserAccountStore,
+    //                        passwordlessRequestParser
+    //                    )
+    //            )
+    //            .withId(CasWebflowConstants.ACTION_ID_VERIFY_PASSWORDLESS_ACCOUNT_AUTHN)
+    //            .build()
+    //            .get();
+    //    }
 
-    @Bean
-    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public Action verifyPasswordlessAccountAuthenticationAction(
-        @Qualifier(PasswordlessRequestParser.BEAN_NAME) final PasswordlessRequestParser passwordlessRequestParser,
-        final ConfigurableApplicationContext applicationContext,
-        final CasConfigurationProperties casProperties,
-        @Qualifier(
-            PasswordlessUserAccountStore.BEAN_NAME
-        ) final PasswordlessUserAccountStore passwordlessUserAccountStore
-    ) {
-        return WebflowActionBeanSupplier.builder()
-            .withApplicationContext(applicationContext)
-            .withProperties(casProperties)
-            .withAction(
-                () ->
-                    new CustomVerifyPasswordlessAccountAuthenticationAction(
-                        casProperties,
-                        passwordlessUserAccountStore,
-                        passwordlessRequestParser
-                    )
-            )
-            .withId(CasWebflowConstants.ACTION_ID_VERIFY_PASSWORDLESS_ACCOUNT_AUTHN)
-            .build()
-            .get();
-    }
+    //    @Bean
+    //    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    //    public Action determineDelegatedAuthenticationAction(
+    //        final ConfigurableApplicationContext applicationContext,
+    //        final CasConfigurationProperties casProperties,
+    //        final ProvidersService providersService
+    //    ) {
+    //        return WebflowActionBeanSupplier.builder()
+    //            .withApplicationContext(applicationContext)
+    //            .withProperties(casProperties)
+    //            .withAction(
+    //                () -> new CustomPasswordlessDetermineDelegatedAuthenticationAction(casProperties, providersService)
+    //            )
+    //            .withId(CasWebflowConstants.ACTION_ID_DETERMINE_PASSWORDLESS_DELEGATED_AUTHN)
+    //            .build()
+    //            .get();
+    //    }
 
-    @Bean
-    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public Action determineDelegatedAuthenticationAction(
-        final ConfigurableApplicationContext applicationContext,
-        final CasConfigurationProperties casProperties,
-        final ProvidersService providersService
-    ) {
-        return WebflowActionBeanSupplier.builder()
-            .withApplicationContext(applicationContext)
-            .withProperties(casProperties)
-            .withAction(
-                () -> new CustomPasswordlessDetermineDelegatedAuthenticationAction(casProperties, providersService)
-            )
-            .withId(CasWebflowConstants.ACTION_ID_DETERMINE_PASSWORDLESS_DELEGATED_AUTHN)
-            .build()
-            .get();
-    }
+    //    @Bean
+    //    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    //    public CasWebflowConfigurer x509WebflowConfigurer(
+    //        @Qualifier(
+    //            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
+    //        ) final FlowDefinitionRegistry loginFlowRegistry,
+    //        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
+    //        final CasConfigurationProperties casProperties,
+    //        final ConfigurableApplicationContext applicationContext
+    //    ) {
+    //        return new VitamX509WebflowConfigurer(
+    //            flowBuilderServices,
+    //            loginFlowRegistry,
+    //            applicationContext,
+    //            casProperties
+    //        );
+    //    }
 
-    @Bean
-    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public CasWebflowConfigurer x509WebflowConfigurer(
-        @Qualifier(
-            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
-        ) final FlowDefinitionRegistry loginFlowRegistry,
-        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
-        final CasConfigurationProperties casProperties,
-        final ConfigurableApplicationContext applicationContext
-    ) {
-        return new FixX509WebflowConfigurer(flowBuilderServices, loginFlowRegistry, applicationContext, casProperties);
-    }
-
-    @Bean
-    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public CasWebflowConfigurer passwordlessAuthenticationWebflowConfigurer(
-        @Qualifier(
-            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
-        ) final FlowDefinitionRegistry loginFlowDefinitionRegistry,
-        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
-        final ConfigurableApplicationContext applicationContext,
-        final CasConfigurationProperties casProperties
-    ) {
-        return new CustomPasswordlessAuthenticationWebflowConfigurer(
-            flowBuilderServices,
-            loginFlowDefinitionRegistry,
-            applicationContext,
-            casProperties
-        );
-    }
+    //    @Bean
+    //    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    //    public CasWebflowConfigurer passwordlessAuthenticationWebflowConfigurer(
+    //        @Qualifier(
+    //            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
+    //        ) final FlowDefinitionRegistry loginFlowDefinitionRegistry,
+    //        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
+    //        final ConfigurableApplicationContext applicationContext,
+    //        final CasConfigurationProperties casProperties
+    //    ) {
+    //        return new VitamPasswordlessWebflowConfigurer(
+    //            flowBuilderServices,
+    //            loginFlowDefinitionRegistry,
+    //            applicationContext,
+    //            casProperties
+    //        );
+    //    }
 }

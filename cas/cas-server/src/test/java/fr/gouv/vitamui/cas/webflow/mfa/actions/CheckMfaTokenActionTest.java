@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.cas.webflow.actions;
+package fr.gouv.vitamui.cas.webflow.mfa.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;

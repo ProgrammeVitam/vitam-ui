@@ -41,7 +41,6 @@ import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
 import fr.gouv.vitamui.cas.delegation.CustomDelegatedIdentityProviders;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.password.IamPasswordManagementService;
-import fr.gouv.vitamui.cas.passwordless.CustomPasswordlessUserAccountStore;
 import fr.gouv.vitamui.cas.surrogation.IamSurrogateAuthenticationService;
 import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
@@ -63,7 +62,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.api.PasswordlessUserAccountStore;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
@@ -439,14 +437,14 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return new InitPasswordConstraintsConfiguration();
     }
 
-    @Bean
-    public PasswordlessUserAccountStore passwordlessUserAccountStore(
-        final ProvidersService providersService,
-        final IdentityProviderHelper identityProviderHelper,
-        final CasApi casApi
-    ) {
-        return new CustomPasswordlessUserAccountStore(providersService, identityProviderHelper, casApi);
-    }
+    //    @Bean
+    //    public PasswordlessUserAccountStore passwordlessUserAccountStore(
+    //        final ProvidersService providersService,
+    //        final IdentityProviderHelper identityProviderHelper,
+    //        final CasApi casApi
+    //    ) {
+    //        return new CustomPasswordlessUserAccountStore(providersService, identityProviderHelper, casApi);
+    //    }
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
