@@ -43,15 +43,13 @@ import {
   FACETS_DEFAULT_SIZE,
   FilingHoldingSchemeNode,
   ORPHANS_NODE_ID,
-  VIRTUAL_PATHS_FACET,
-} from '../models';
-import {
   PagedResult,
   ResultFacet,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-} from '../models/criteria/search-criteria.interface';
+  VIRTUAL_PATHS_FACET,
+} from '../models';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { FacetsUtils } from '../models/criteria/facets.utils';
 

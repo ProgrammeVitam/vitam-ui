@@ -38,7 +38,7 @@ import { isEmpty } from 'lodash-es';
 import { EMPTY, firstValueFrom, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FACETS_DEFAULT_SIZE, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, LeavesLoadingCriteria, UnitType } from '../models';
-import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
+import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { DEFAULT_LEAVES_FIRST_PAGE_SIZE, DEFAULT_UNIT_PAGE_SIZE, LeavesTreeApiService } from './leaves-tree-api.service';
 import { ConfigurationsApiService } from './configurations-api.service';
