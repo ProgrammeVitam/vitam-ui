@@ -5,36 +5,6 @@
 const formId = '#main-form'; // Vitam form id value
 // const formId = '#fm1'; // Xelians form id value
 
-function requestGeoPosition() {
-  // console.log('Requesting GeoLocation data from the browser...');
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(showGeoPosition, logGeoLocationError, {
-      maximumAge: 600000,
-      timeout: 8000,
-      enableHighAccuracy: true,
-    });
-  } else {
-    // console.log('Browser does not support Geo Location');
-  }
-}
-
-function logGeoLocationError(error) {
-  switch (error.code) {
-    case error.PERMISSION_DENIED:
-      // console.log('User denied the request for GeoLocation.');
-      break;
-    case error.POSITION_UNAVAILABLE:
-      // console.log('Location information is unavailable.');
-      break;
-    case error.TIMEOUT:
-      // console.log('The request to get user location timed out.');
-      break;
-    default:
-      // console.log('An unknown error occurred.');
-      break;
-  }
-}
-
 function showGeoPosition(position) {
   let loc =
     position.coords.latitude +
@@ -121,10 +91,6 @@ function disableEmptyInputFormSubmission() {
 
 function resourceLoadedSuccessfully() {
   $(document).ready(function () {
-    if (trackGeoLocation) {
-      requestGeoPosition();
-    }
-
     if ($(':focus').length === 0) {
       $('input:visible:enabled:first').focus();
     }
