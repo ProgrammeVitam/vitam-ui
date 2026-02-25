@@ -87,7 +87,6 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
     }
 
-    // FIXME: Is necessary ? Have any sens ? Need to validate this behavior.
     @Test
     public void shouldTriggerOrganizationSelectionWhenSubrogatedUserHasManyOrganizationOrIdentityProviders()
         throws IOException {
