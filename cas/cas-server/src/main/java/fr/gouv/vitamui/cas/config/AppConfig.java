@@ -592,6 +592,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             restTemplate
                 .getInterceptors()
                 .add((request, body, execution) -> {
+                    final var serviceUsername = "admin@change-it.fr";
                     final var context = SecurityContextHolder.getContext();
                     final boolean hasPrincipal =
                         context != null &&
@@ -620,10 +621,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
                         } else if (principal instanceof String principalString) {
                             httpContext = utils.buildContext(principalString);
                         } else {
-                            httpContext = utils.buildContext("admin@change-it.fr");
+                            httpContext = utils.buildContext(serviceUsername);
                         }
                     } else {
-                        httpContext = utils.buildContext("admin@change-it.fr");
+                        httpContext = utils.buildContext(serviceUsername);
                     }
 
                     if (httpContext.getUserToken() != null) {
