@@ -37,7 +37,15 @@
 import { isEmpty } from 'lodash-es';
 import { EMPTY, firstValueFrom, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FACETS_DEFAULT_SIZE, FilingHoldingSchemeHandler, FilingHoldingSchemeNode, LeavesLoadingCriteria, UnitType } from '../models';
+import {
+  FACETS_DEFAULT_SIZE,
+  FilingHoldingSchemeHandler,
+  FilingHoldingSchemeNode,
+  LeavesLoadingCriteria,
+  ORPHANS_NODE_ID,
+  Unit,
+  UnitType,
+} from '../models';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { DEFAULT_LEAVES_FIRST_PAGE_SIZE, DEFAULT_UNIT_PAGE_SIZE, LeavesTreeApiService } from './leaves-tree-api.service';
@@ -222,8 +230,13 @@ export class LeavesTreeService {
           node.realDirectNodeMatchingPage,
           leavesLoadingCriteria.nodeMatchingChildrenPageSize,
         ),
+        childrenOfSignedDocumentAU: this.leavesTreeApiService.retrieveChildrenOfSignedDocumentAU(
+          this.searchCriterias,
+          node.realDirectNodeMatchingPage,
+          leavesLoadingCriteria.nodeMatchingChildrenPageSize,
+        ),
       }).subscribe({
-        next: ({ realDirectChildrenAny, realDirectChildrenMatching }) => {
+        next: ({ realDirectChildrenAny, realDirectChildrenMatching, childrenOfSignedDocumentAU }) => {
           let realChildrenMap = new Map<string, FilingHoldingSchemeNode>();
           let virtualChildrenMap = new Map<string, FilingHoldingSchemeNode>();
           let hasMoreAnyElts = false;
@@ -236,6 +249,20 @@ export class LeavesTreeService {
             directContainersNodes.forEach((containerNode) => {
               realChildrenMap.set(containerNode.id, containerNode);
             });
+          }
+
+          if (childrenOfSignedDocumentAU && node.id === ORPHANS_NODE_ID) {
+            const filteredchildsOfSignedDocuments = childrenOfSignedDocumentAU.results.filter(
+              (unit: Unit) => unit.SigningInformation !== undefined && unit['#unitups'] !== undefined,
+            );
+            realDirectChildrenMatching.results = [...realDirectChildrenMatching.results, ...filteredchildsOfSignedDocuments];
+            console.log(realDirectChildrenMatching);
+          } else {
+            const filteredchildsOfSignedDocuments = childrenOfSignedDocumentAU.results.filter((unit: Unit) =>
+              unit['#allunitups'].includes(node.id),
+            );
+            realDirectChildrenMatching.results = [...realDirectChildrenMatching.results, ...filteredchildsOfSignedDocuments];
+            console.log(realDirectChildrenMatching);
           }
 
           if (realDirectChildrenAny) {

@@ -70,6 +70,7 @@ const UNIT_TYPE_FIELD = '#unitType';
 const UNIT_DESCRIPTION_LEVEL_FIELD = 'DescriptionLevel';
 const UNIT_OBJECTS_FIELD = '#object';
 const INGEST_TYPE = 'INGEST';
+const SIGNING_INFORMATION = 'SigningInformation';
 
 export class LeavesTreeApiService {
   constructor(private searchArchiveUnitsService: SearchArchiveUnitsInterface) {}
@@ -225,6 +226,7 @@ export class LeavesTreeApiService {
         UNIT_TYPE_FIELD,
         UNIT_DESCRIPTION_LEVEL_FIELD,
         UNIT_OBJECTS_FIELD,
+        UNITSUPS,
         ALLUNITSUPS,
       ],
       facets: [],
@@ -486,6 +488,40 @@ export class LeavesTreeApiService {
         UNIT_OBJECTS_FIELD,
         ALLUNITSUPS,
         virtualPathOriginField,
+      ],
+      facets: [],
+      sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },
+    };
+    return this.sendSearchArchiveUnitsByCriteria(criteria).pipe(
+      map((pagedResult) => {
+        return pagedResult;
+      }),
+    );
+  }
+
+  retrieveChildrenOfSignedDocumentAU(searchCriteria: SearchCriteriaDto, pageNumber: number, pageSize: number) {
+    let newCriteriaList = [...searchCriteria.criteriaList];
+    newCriteriaList.push({
+      criteria: UNITSUPS,
+      operator: CriteriaOperator.EXISTS,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      values: [],
+      dataType: CriteriaDataType.STRING,
+    });
+    const criteria: SearchCriteriaDto = {
+      pageNumber: pageNumber,
+      size: pageSize,
+      criteriaList: newCriteriaList,
+      includedFields: [
+        UNIT_ID_FIELD,
+        TITLE_FIELD,
+        TITLE_WITH_LANG_FIELD,
+        UNIT_TYPE_FIELD,
+        UNIT_DESCRIPTION_LEVEL_FIELD,
+        UNIT_OBJECTS_FIELD,
+        ALLUNITSUPS,
+        UNITSUPS,
+        SIGNING_INFORMATION,
       ],
       facets: [],
       sortingCriteria: { criteria: TITLE_FIELD, sorting: 'ASC' },

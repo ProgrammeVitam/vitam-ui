@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id, UnitType } from '../index';
+import { Id, SigningInformation, UnitType } from '../index';
 import { DescriptionLevel } from '../units/description-level.enum';
 
 export interface FilingHoldingSchemeNode extends Id {
@@ -49,6 +49,7 @@ export interface FilingHoldingSchemeNode extends Id {
   children: FilingHoldingSchemeNode[];
   vitamId: string;
   virtualPath?: string;
+  signingInformation?: SigningInformation;
 
   // DISPLAY
   disabledChild?: boolean; // TODO: try to remove - used in VitamuiTreeNodeComponent to set indeterminate
