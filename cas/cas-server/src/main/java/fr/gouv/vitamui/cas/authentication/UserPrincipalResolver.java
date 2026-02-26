@@ -376,7 +376,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         LOGGER.debug("Computed embedded: {}", embedded);
 
-        // FIXME: Dirty default value too not change getUser handling.
+        // FIXME: The new vitam client not allow null providerId but handles correctly empty strings...
+        // TODO: Need to investigate and fix this behavior
         if (userProviderId == null) {
             userProviderId = DEFAULT_PROVIDER;
         }
