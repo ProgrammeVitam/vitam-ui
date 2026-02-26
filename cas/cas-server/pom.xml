@@ -20,7 +20,6 @@
         <cas.version>7.0.10.1</cas.version>
         <logback.version>1.4.14</logback.version>
         <logstash.logback.encoder.version>8.0</logstash.logback.encoder.version>
-        <mongo.driver.sync.version>4.11.1</mongo.driver.sync.version>
         <jquery.ui.version>1.14.1</jquery.ui.version>
         <pac4j.version>6.1.1</pac4j.version>
 
