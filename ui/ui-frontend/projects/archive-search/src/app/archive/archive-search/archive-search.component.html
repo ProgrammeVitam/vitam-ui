@@ -120,97 +120,20 @@
             role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
           }"
         >
-          <div class="card-criteria" *ngIf="category.name === 'STORAGE_RULE'">
+          <div class="card-criteria">
             <div class="row justify-content-end text-on-right-side">
-              <a class="hide-ink" (click)="removeCriteriaByCategory('STORAGE_RULE')">{{
+              <a class="hide-ink" (click)="removeCriteriaByCategory(category.name)">{{
                 'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
               }}</a>
             </div>
-            <app-storage-rule-search
+            <vitamui-management-rule-search
               [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
               [tenantIdentifier]="tenantIdentifier"
               [rules]="rulesToExport$"
-            ></app-storage-rule-search>
-          </div>
-        </ng-container>
-        <ng-container
-          *vitamuiCommonHasRole="{
-            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
-            tenantIdentifier: +tenantIdentifier,
-            role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
-          }"
-        >
-          <div class="card-criteria" *ngIf="category.name === 'APPRAISAL_RULE'">
-            <div class="row justify-content-end text-on-right-side">
-              <a class="hide-ink" (click)="removeCriteriaByCategory('APPRAISAL_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
-            </div>
-            <app-appraisal-rule-search
-              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
-              [tenantIdentifier]="tenantIdentifier"
-              [rules]="rulesToExport$"
-            ></app-appraisal-rule-search>
-          </div>
-        </ng-container>
-        <ng-container
-          *vitamuiCommonHasRole="{
-            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
-            tenantIdentifier: +tenantIdentifier,
-            role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
-          }"
-        >
-          <div class="card-criteria" *ngIf="category.name === 'ACCESS_RULE'">
-            <div class="row justify-content-end text-on-right-side">
-              <a class="hide-ink" (click)="removeCriteriaByCategory('ACCESS_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
-            </div>
-            <app-access-rule-search
-              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
-              [tenantIdentifier]="tenantIdentifier"
-              [rules]="rulesToExport$"
-            ></app-access-rule-search>
-          </div>
-        </ng-container>
-        <ng-container
-          *vitamuiCommonHasRole="{
-            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
-            tenantIdentifier: +tenantIdentifier,
-            role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
-          }"
-        >
-          <div class="card-criteria" *ngIf="category.name === 'REUSE_RULE'">
-            <div class="row justify-content-end text-on-right-side">
-              <a class="hide-ink" (click)="removeCriteriaByCategory('REUSE_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
-            </div>
-            <app-reuse-rule-search
-              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
-              [tenantIdentifier]="tenantIdentifier"
-              [rules]="rulesToExport$"
-            ></app-reuse-rule-search>
-          </div>
-        </ng-container>
-        <ng-container
-          *vitamuiCommonHasRole="{
-            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
-            tenantIdentifier: +tenantIdentifier,
-            role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
-          }"
-        >
-          <div class="card-criteria" *ngIf="category.name === 'DISSEMINATION_RULE'">
-            <div class="row justify-content-end text-on-right-side">
-              <a class="hide-ink" (click)="removeCriteriaByCategory('DISSEMINATION_RULE')">{{
-                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
-            </div>
-            <app-dissemination-rule-search
-              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
-              [tenantIdentifier]="tenantIdentifier"
-              [rules]="rulesToExport$"
-            ></app-dissemination-rule-search>
+              [type]="toManagementRuleType(category)"
+              [updateOn]="toUpdateOn(category)"
+            >
+            </vitamui-management-rule-search>
           </div>
         </ng-container>
       </mat-tab>

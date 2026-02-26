@@ -209,3 +209,7 @@ export * from './app/modules/url/query-params.service';
 export * from './app/modules/date/date.service';
 export * from './app/modules/date/date';
 export * from './app/modules/models/criteria/search-criteria.service';
+export * from './lib/models/management-rule-shared-data-service.interface';
+
+export * from './lib/components/management-rule-search/management-rule-search.component';
+export * from './lib/components/management-rule-search/management-rule-search.config';

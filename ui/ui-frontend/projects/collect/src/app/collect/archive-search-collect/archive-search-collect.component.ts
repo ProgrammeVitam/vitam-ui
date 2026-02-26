@@ -91,6 +91,8 @@ import {
   REUSE_RULE,
   WAITING_RECALCULATE,
   NODES,
+  toManagementRuleType,
+  MANAGEMENT_RULE_SHARED_DATA_SERVICE,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -111,6 +113,12 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './archive-search-collect.component.html',
   styleUrls: ['./archive-search-collect.component.scss'],
   standalone: false,
+  providers: [
+    {
+      provide: MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+      useExisting: ArchiveSharedDataService,
+    },
+  ],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
   readonly UnitType = UnitType;
@@ -428,6 +436,20 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS), take(1)) // For some reason, we have to use that complex observable to trigger the submit() at the correct time (i.e.: the criteria have been set from the URL query params, if any)
         .subscribe((_criteria) => setTimeout(() => this.submit()));
     });
+  }
+
+  toManagementRuleType = toManagementRuleType;
+
+  toUpdateOn(category: SearchCriteriaCategory) {
+    const { name } = category;
+
+    if (name === ACCESS_RULE) return this.archiveSharedDataService.accessFromMainSearchCriteriaObservable;
+    if (name === APPRAISAL_RULE) return this.archiveSharedDataService.appraisalFromMainSearchCriteriaObservable;
+    if (name === DISSEMINATION_RULE) return this.archiveSharedDataService.disseminationFromMainSearchCriteriaObservable;
+    if (name === REUSE_RULE) return this.archiveSharedDataService.reuseFromMainSearchCriteriaObservable;
+    if (name === STORAGE_RULE) return this.archiveSharedDataService.storageFromMainSearchCriteriaObservable;
+
+    throw new Error(`Unknown management rule category ${name}`);
   }
 
   private checkUpdateUnitPermissions() {
