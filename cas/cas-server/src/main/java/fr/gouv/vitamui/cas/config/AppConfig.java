@@ -44,10 +44,9 @@ import fr.gouv.vitamui.cas.password.IamPasswordManagementService;
 import fr.gouv.vitamui.cas.surrogation.IamSurrogateAuthenticationService;
 import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
+import fr.gouv.vitamui.cas.util.IamApiDecorator;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -60,7 +59,6 @@ import io.micrometer.observation.ObservationRegistry;
 import jakarta.validation.constraints.NotNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
@@ -69,7 +67,6 @@ import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.authentication.principal.DelegatedAuthenticationCredentialExtractor;
 import org.apereo.cas.authentication.principal.DelegatedAuthenticationPreProcessor;
-import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -130,18 +127,15 @@ import org.springframework.data.mongodb.observability.ContextProviderFactory;
 import org.springframework.data.mongodb.observability.MongoObservationCommandListener;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.EMAIL_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_EXTERNAL;
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -242,6 +236,27 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return defaultPrincipalResolver;
     }
 
+    /**
+     * We must define our customizer to replace X_ORIGIN header from IamApiClient.java for CAS usage.
+     *
+     * @return a rest template customizer.
+     */
+    @Bean
+    @Qualifier("restTemplateCustomizer")
+    public RestTemplateCustomizer restTemplateCustomizer() {
+        return restTemplate ->
+            restTemplate
+                .getInterceptors()
+                .add((request, body, execution) -> {
+                    // Hack for CAS - CAS is considered as an external server requiring proper roles
+                    request.getHeaders().set(X_ORIGIN_HEADER_NAME, X_ORIGIN_HEADER_EXTERNAL);
+
+                    LOGGER.debug("Final request URI: {}, headers: {}", request.getURI(), request.getHeaders());
+
+                    return execution.execute(request, body);
+                });
+    }
+
     @Bean
     public IamApiClientsFactory iamApiClientsFactory(
         final IamClientConfigurationProperties iamClientProperties,
@@ -255,18 +270,29 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public CasApi casApi(final IamApiClientsFactory iamApiClientsFactory) {
-        return iamApiClientsFactory.getCasApi();
+    public IamApiDecorator iamApiDecorator(Utils utils) {
+        return new IamApiDecorator(utils);
     }
 
     @Bean
-    public CustomersApi customersApi(final IamApiClientsFactory iamApiClientsFactory) {
-        return iamApiClientsFactory.getCustomersApi();
+    public CasApi casApi(final IamApiClientsFactory iamApiClientsFactory, final IamApiDecorator iamApiDecorator) {
+        return iamApiDecorator.decorate(iamApiClientsFactory.getCasApi());
     }
 
     @Bean
-    public IdentityProvidersApi identityProvidersApi(final IamApiClientsFactory iamApiClientsFactory) {
-        return iamApiClientsFactory.getIdentityProvidersApi();
+    public CustomersApi customersApi(
+        final IamApiClientsFactory iamApiClientsFactory,
+        final IamApiDecorator iamApiDecorator
+    ) {
+        return iamApiDecorator.decorate(iamApiClientsFactory.getCustomersApi());
+    }
+
+    @Bean
+    public IdentityProvidersApi identityProvidersApi(
+        final IamApiClientsFactory iamApiClientsFactory,
+        final IamApiDecorator iamApiDecorator
+    ) {
+        return iamApiDecorator.decorate(iamApiClientsFactory.getIdentityProvidersApi());
     }
 
     @Bean
@@ -437,15 +463,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return new InitPasswordConstraintsConfiguration();
     }
 
-    //    @Bean
-    //    public PasswordlessUserAccountStore passwordlessUserAccountStore(
-    //        final ProvidersService providersService,
-    //        final IdentityProviderHelper identityProviderHelper,
-    //        final CasApi casApi
-    //    ) {
-    //        return new CustomPasswordlessUserAccountStore(providersService, identityProviderHelper, casApi);
-    //    }
-
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public AuthenticationEventExecutionPlanConfigurer passwordManagementAuthenticationExecutionPlanConfigurer() {
@@ -574,82 +591,5 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             clientSettingsBuilder
                 .contextProvider(ContextProviderFactory.create(registry))
                 .addCommandListener(new MongoObservationCommandListener(registry));
-    }
-
-    /**
-     * Ne fonctionne pas entièrement, nécessite un équivalent complet pour la
-     * nouvelle API.
-     *
-     * TODO: A remplacer ou améloirer.
-     *
-     * @param utils
-     * @return
-     */
-    @Bean
-    @Qualifier("restTemplateCustomizer")
-    public RestTemplateCustomizer restTemplateCustomizer(final Utils utils) {
-        return restTemplate ->
-            restTemplate
-                .getInterceptors()
-                .add((request, body, execution) -> {
-                    final var serviceUsername = "admin@change-it.fr";
-                    final var context = SecurityContextHolder.getContext();
-                    final boolean hasPrincipal =
-                        context != null &&
-                        context.getAuthentication() != null &&
-                        context.getAuthentication().getPrincipal() != null;
-                    final HttpContext httpContext;
-
-                    if (hasPrincipal) {
-                        Object principal = context.getAuthentication().getPrincipal();
-                        if (principal instanceof Principal principalObj) {
-                            final Map<String, List<Object>> attributes = principalObj.getAttributes();
-                            final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
-                            final String superUserEmail = (String) utils.getAttributeValue(
-                                attributes,
-                                SUPER_USER_ATTRIBUTE
-                            );
-                            final String superUserCustomerId = (String) utils.getAttributeValue(
-                                attributes,
-                                SUPER_USER_CUSTOMER_ID_ATTRIBUTE
-                            );
-                            if (StringUtils.isNotBlank(superUserCustomerId)) {
-                                httpContext = utils.buildContext(superUserEmail);
-                            } else {
-                                httpContext = utils.buildContext(principalEmail);
-                            }
-                        } else if (principal instanceof String principalString) {
-                            httpContext = utils.buildContext(principalString);
-                        } else {
-                            httpContext = utils.buildContext(serviceUsername);
-                        }
-                    } else {
-                        httpContext = utils.buildContext(serviceUsername);
-                    }
-
-                    if (httpContext.getUserToken() != null) {
-                        request.getHeaders().add(CommonConstants.X_USER_TOKEN_HEADER, httpContext.getUserToken());
-                    }
-                    if (httpContext.getTenantIdentifier() != null) {
-                        request
-                            .getHeaders()
-                            .add(CommonConstants.X_TENANT_ID_HEADER, httpContext.getTenantIdentifier().toString());
-                    }
-                    if (httpContext.getRequestId() != null) {
-                        request.getHeaders().add(CommonConstants.X_REQUEST_ID_HEADER, httpContext.getRequestId());
-                    }
-                    if (httpContext.getApplicationId() != null) {
-                        request
-                            .getHeaders()
-                            .add(CommonConstants.X_APPLICATION_ID_HEADER, httpContext.getApplicationId());
-                    }
-
-                    // Hack for CAS - CAS is considered as an external server requiring proper roles
-                    request
-                        .getHeaders()
-                        .add(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_EXTERNAL);
-
-                    return execution.execute(request, body);
-                });
     }
 }

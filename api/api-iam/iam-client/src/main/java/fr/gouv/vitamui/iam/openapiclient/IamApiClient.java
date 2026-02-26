@@ -29,16 +29,22 @@ package fr.gouv.vitamui.iam.openapiclient;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.commons.rest.client.HttpContextHolder;
 import fr.gouv.vitamui.iam.openapiclient.invoker.ApiClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.function.Supplier;
 
+@Slf4j
 public class IamApiClient extends ApiClient {
 
     public IamApiClient(RestTemplate restTemplate) {
@@ -52,55 +58,85 @@ public class IamApiClient extends ApiClient {
         HttpHeaders headerParams,
         MultiValueMap<String, String> cookieParams
     ) {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            final HttpContext context;
-            if (
-                authentication instanceof PreAuthenticatedAuthenticationToken &&
-                authentication.getPrincipal() instanceof HttpContext
-            ) {
-                // Needed for the initial call to usersApi.getMe() during authentication
-                context = (HttpContext) authentication.getPrincipal();
-            } else if (authentication.getCredentials() instanceof HttpContext) {
-                // The other calls get normal authentication credentials
-                context = (HttpContext) authentication.getCredentials();
-            } else {
-                context = null;
-            }
-            if (context != null) {
-                updateParamsForAuth(headerParams, context);
-            }
-        }
+        resolveContext()
+            .ifPresentOrElse(
+                context -> {
+                    applyHeaders(context, headerParams);
+                    log.debug("IAM headers applied. Context={}", context);
+                },
+                () -> log.warn("No HttpContext available for authNames={}", Arrays.toString(authNames))
+            );
     }
 
-    private void updateParamsForAuth(HttpHeaders headerParams, HttpContext context) {
-        final Integer tenantIdentifier = context.getTenantIdentifier();
-        final String userToken = context.getUserToken();
-        final String applicationId = context.getApplicationId();
-        final String identity = context.getIdentity();
-        final String requestId = context.getRequestId();
-        final String accessContractId = context.getAccessContract();
-        headerParams.set(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_INTERNAL);
-        if (tenantIdentifier != null) {
-            headerParams.put(
-                CommonConstants.X_TENANT_ID_HEADER,
-                Collections.singletonList(String.valueOf(tenantIdentifier))
-            );
+    private Optional<HttpContext> resolveContext() {
+        return resolveFromHolder().or(this::resolveFromSecurityContext);
+    }
+
+    /**
+     * First priority: context manually set in HttpContextHolder.
+     */
+    private Optional<HttpContext> resolveFromHolder() {
+        return HttpContextHolder.get();
+    }
+
+    /**
+     * Fallback: try to resolve HttpContext from Spring Security.
+     */
+    private Optional<HttpContext> resolveFromSecurityContext() {
+        Authentication authentication = Optional.ofNullable(SecurityContextHolder.getContext())
+            .map(SecurityContext::getAuthentication)
+            .orElse(null);
+
+        if (authentication == null) {
+            return Optional.empty();
         }
-        if (userToken != null) {
-            headerParams.put(CommonConstants.X_USER_TOKEN_HEADER, Collections.singletonList(userToken));
+
+        // Special case: initial usersApi.getMe() call during authentication
+        if (
+            authentication instanceof PreAuthenticatedAuthenticationToken &&
+            authentication.getPrincipal() instanceof HttpContext context
+        ) {
+            return Optional.of(context);
         }
-        if (applicationId != null) {
-            headerParams.put(CommonConstants.X_APPLICATION_ID_HEADER, Collections.singletonList(applicationId));
+
+        // Standard case: HttpContext stored in credentials
+        if (authentication.getCredentials() instanceof HttpContext context) {
+            return Optional.of(context);
         }
-        if (identity != null) {
-            headerParams.put(CommonConstants.X_IDENTITY_HEADER, Collections.singletonList(identity));
-        }
-        if (requestId != null) {
-            headerParams.put(CommonConstants.X_REQUEST_ID_HEADER, Collections.singletonList(requestId));
-        }
-        if (accessContractId != null) {
-            headerParams.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContractId));
+
+        return Optional.empty();
+    }
+
+    /**
+     * Apply IAM-related headers based on the resolved HttpContext.
+     */
+    private void applyHeaders(HttpContext context, HttpHeaders headers) {
+        headers.set(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_INTERNAL);
+
+        putIfNotNull(
+            headers,
+            CommonConstants.X_TENANT_ID_HEADER,
+            () -> Optional.ofNullable(context.getTenantIdentifier()).map(String::valueOf).orElse(null)
+        );
+
+        putIfNotNull(headers, CommonConstants.X_USER_TOKEN_HEADER, context::getUserToken);
+
+        putIfNotNull(headers, CommonConstants.X_APPLICATION_ID_HEADER, context::getApplicationId);
+
+        putIfNotNull(headers, CommonConstants.X_IDENTITY_HEADER, context::getIdentity);
+
+        putIfNotNull(headers, CommonConstants.X_REQUEST_ID_HEADER, context::getRequestId);
+
+        putIfNotNull(headers, CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, context::getAccessContract);
+    }
+
+    /**
+     * Add header only if the supplied value is not null.
+     */
+    private void putIfNotNull(HttpHeaders headers, String headerName, Supplier<String> valueSupplier) {
+        String value = valueSupplier.get();
+        if (value != null) {
+            headers.set(headerName, value);
         }
     }
 }
