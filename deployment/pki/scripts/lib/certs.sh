@@ -130,16 +130,16 @@ function generateClientCertificate {
 
 # Generate a server and a client certificate and store passphrase
 function generateServerAndClientCertAndStorePassphrase {
-    local COMPONENT="${1}"
-    local AUTHORITY="${2}"
-    generateServerCertAndStorePassphrase "${COMPONENT}" "${AUTHORITY}"
-    generateClientCertAndStorePassphrase "${COMPONENT}" "${AUTHORITY}"
+    local AUTHORITY="${1}"
+    local COMPONENT="${2}"
+    generateServerCertAndStorePassphrase "${AUTHORITY}" "${COMPONENT}"
+    generateClientCertAndStorePassphrase "${AUTHORITY}" "${COMPONENT}"
 }
 
 # Generate a server certificate and store passphrase
 function generateServerCertAndStorePassphrase {
-    local COMPONENT="${1}"
-    local AUTHORITY="${2}"
+    local AUTHORITY="${1}"
+    local COMPONENT="${2}"
 
     local TYPE_CERTIFICAT="servers"
     local REVERSE_SAN=""
@@ -168,8 +168,8 @@ function generateServerCertAndStorePassphrase {
 
 # Generate client certificate and store the passphrase
 function generateClientCertAndStorePassphrase {
-    local COMPONENT="${1}"
-    local AUTHORITY="${2}"
+    local AUTHORITY="${1}"
+    local COMPONENT="${2}"
 
     local TYPE_CERTIFICAT="clients"
 
