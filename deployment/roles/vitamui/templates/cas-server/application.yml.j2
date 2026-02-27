@@ -336,24 +336,30 @@ password:
 {% endif %}
 {% endif %}
 
-# FIXME: Only for testing purpose. Should setup parametrization ?
+# Crypto configurations
 
-cas.authn:
-  oauth.session-replication.cookie.crypto:
-    encryption.key: Fd-b-pjoN82hBdUti9HqzJXgvfs7pFtVYeaKIRhDdNE
-    signing.key: EsCugv7mIHZ3ecx-A5nf_75KsrmVGAWNMXwyEPXDV1jf0nmLrpu0Py6aO62yx4yd_W9_6nhMaGxhE9FQoeP7HQ
-  pac4j.core.session-replication.cookie:
-    name: DISSESSIONAD
-    crypto:
-      encryption.key: 9XnxhG7lfRQS9I5_86j3XQHZc19jZsamU97pDtut__o
-      signing.key: oFaBMTNLfKgCyqJPjxvZbdFhmxBKFgJP2_-rMDatBN91ZlU3eIpq2SYD_5ILHBSa616VEe5c0yUpACWne6TIlg
-  passwordless.tokens.crypto:
-    encryption.key: Bo_9H0xCT220Ogn4hvyrbH-x7j5hTAMcs3M8PdDiJ7w
-    signing.key: b_ZI3StT4vGnTrWIG4e7fdwNzbgQGN9IsqVo29HLqtstClu1ekzQ_d67K6wtQJLQPSU-RVCF31HuB2OfDkq0mA
-  pm.reset.crypto:
-    encryption.key: IG2rGK-5ctqoSWMv52XkZZ9BoMqRBcpjdzwLGJ6yiN0
-    signing.key: xPVQOgj1-ywI-O_5fv5pTkg_bBS6CCXh7Yr9zMQoy2bmCjAJfLoVfycKYw-gERmBDozEGeT72HquVOT1dAZO5Q
+{% macro crypto_block(prefix, keys, key_size=None) %}
+{% if keys is defined %}
+{{ prefix }}:
+  encryption.key: {{ keys.encryption_key | default('') }}
+  signing.key: {{ keys.signing_key | default('') }}
+  {% if key_size is not none %}
+  encryption.key-size: {{ key_size | default(128) }}
+  {% endif %}
+{% endif %}
+{% endmacro %}
 
-cas.webflow.crypto.signing.key: =oebPIRe18A0cAeBdZCHkVlLPa_Kbthxo70iRpAhbk84dQGQj_8AOEMvEg3y7GAKYxtpF5nn6nx7vj5iU-eHStg
-cas.webflow.crypto.encryption.key: 3FzNquczUjhmeJyqu251Ow
-cas.webflow.crypto.encryption.key-size: 128
+{# OAuth #}
+{{ crypto_block('oauth.session-replication.cookie.crypto', vitamui.cas_server.crypto.oauth) }}
+
+{# Pac4j #}
+{{ crypto_block('pac4j.core.session-replication.cookie', vitamui.cas_server.crypto.pac4j) }}
+{% if vitamui.cas_server.crypto.pac4j.cookie_name is defined %}
+pac4j.core.session-replication.cookie.name: {{ vitamui.cas_server.crypto.pac4j.cookie_name }}
+{% endif %}
+
+{# PM Reset #}
+{{ crypto_block('pm.reset.crypto', vitamui.cas_server.crypto.pm_reset) }}
+
+{# Webflow #}
+{{ crypto_block('cas.webflow.crypto', vitamui.cas_server.crypto.webflow, key_size=vitamui.cas_server.crypto.webflow.encryption_key_size) }}

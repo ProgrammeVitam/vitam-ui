@@ -22,3 +22,18 @@ vitamui:
   cas_server:
     # Secret internal token for CAS to vitam-ui communication
     secret_token: changeit_cas_secret_token
+    crypto:
+      oauth:
+        encryption_key: "my_oauth_encryption_key"
+        signing_key: "my_oauth_signing_key"
+      pac4j:
+        cookie_name: "DISSESSIONAD"
+        encryption_key: "my_pac4j_encryption_key"
+        signing_key: "my_pac4j_signing_key"
+      pm_reset:
+        encryption_key: "my_pm_reset_encryption_key"
+        signing_key: "my_pm_reset_signing_key"
+      webflow:
+        signing_key: "my_webflow_signing_key"
+        encryption_key: "my_webflow_encryption_key"
+        encryption_key_size: 128
