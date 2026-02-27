@@ -137,11 +137,11 @@ vitamui:
       enabled: true
     crypto:
       tgc:
-        enabled: no
+        enabled: yes
       oauth:
-        enabled: no
+        enabled: yes
       pac4j:
-        enabled: no
+        enabled: yes
         # cookie_name: "DISSESSIONAD" # Special case not required
       pm_reset:
         enabled: yes # FIXME: key set generated at CAS startup ! Need overriding.
