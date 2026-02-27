@@ -339,12 +339,12 @@ password:
 {% if keys is defined %}
 {% set is_enabled = keys.enabled | default(false) %}
 {{ prefix }}:
-  enabled: {{ is_enabled }}
+  enabled: {{ is_enabled | string | lower }}
   {% if is_enabled %}
   {% if keys.key.encryption is defined %}
   encryption.key: {{ keys.key.encryption }}
-  encryption.key-size: {{ keys.key.size | default(128) }}
   {% endif %}
+  encryption.key-size: {{ keys.key.size | default(128) }}
   {% if keys.key.signing is defined %}
   signing.key: {{ keys.key.signing }}
   {% endif %}
