@@ -21,7 +21,6 @@
         <!-- Spring & Spring Cloud Versions -->
         <spring.boot.version>3.2.1</spring.boot.version>
         <spring.cloud.consul.version>4.1.0</spring.cloud.consul.version>
-        <spring.data.mongo.version>4.2.2</spring.data.mongo.version>
 
         <!-- CAS & Security Versions -->
         <cas.version>7.0.10.1</cas.version>
@@ -37,7 +36,6 @@
         <jakarta.mail.version>2.0.1</jakarta.mail.version>
         <groovy.version>4.0.17</groovy.version>
         <reactor.version>3.6.2</reactor.version>
-        <mongo.version>4.11.1</mongo.version>
         <micrometer.version>1.12.1</micrometer.version>
         <swagger.version>2.2.2</swagger.version>
         <font-awesome.version>6.5.1</font-awesome.version>
@@ -163,6 +161,10 @@
         <!-- ========================================================== -->
         <!-- Spring Boot & Spring Cloud (Consul)                        -->
         <!-- ========================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
@@ -557,17 +559,6 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
-            <version>${mongo.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-core</artifactId>
-            <version>${mongo.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>bson</artifactId>
-            <version>${mongo.version}</version>
         </dependency>
 
         <!-- Metrics & Tracing -->
