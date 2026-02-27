@@ -85,9 +85,6 @@ cas.host.name: cas
 cas.tgc.path: /cas
 {% endif %}
 cas.tgc.secure: true
-cas.tgc.crypto.enabled: false
-cas.webflow.crypto.enabled: true
-cas.authn.pm.reset.crypto.enabled: true
 
 ##
 # CAS Web Application Session Configuration
@@ -338,28 +335,37 @@ password:
 
 # Crypto configurations
 
-{% macro crypto_block(prefix, keys, key_size=None) %}
+{% macro crypto_block(prefix, keys) %}
 {% if keys is defined %}
+{% set is_enabled = keys.enabled | default(false) %}
 {{ prefix }}:
-  encryption.key: {{ keys.encryption_key | default('') }}
-  signing.key: {{ keys.signing_key | default('') }}
-  {% if key_size is not none %}
-  encryption.key-size: {{ key_size | default(128) }}
+  enabled: {{ is_enabled }}
+  {% if is_enabled %}
+  {% if keys.key.encryption is defined %}
+  encryption.key: {{ keys.key.encryption }}
+  encryption.key-size: {{ keys.key.size | default(128) }}
+  {% endif %}
+  {% if keys.key.signing is defined %}
+  signing.key: {{ keys.key.signing }}
+  {% endif %}
   {% endif %}
 {% endif %}
 {% endmacro %}
 
+{# TGC #}
+{{ crypto_block('cas.tgc.crypto', vitamui.cas_server.crypto.tgc) }}
+
 {# OAuth #}
-{{ crypto_block('oauth.session-replication.cookie.crypto', vitamui.cas_server.crypto.oauth) }}
+{{ crypto_block('cas.authn.oauth.session-replication.cookie.crypto', vitamui.cas_server.crypto.oauth) }}
 
 {# Pac4j #}
-{{ crypto_block('pac4j.core.session-replication.cookie', vitamui.cas_server.crypto.pac4j) }}
-{% if vitamui.cas_server.crypto.pac4j.cookie_name is defined %}
-pac4j.core.session-replication.cookie.name: {{ vitamui.cas_server.crypto.pac4j.cookie_name }}
+{{ crypto_block('cas.authn.pac4j.core.session-replication.cookie', vitamui.cas_server.crypto.pac4j) }}
+{% if vitamui.cas_server.crypto.pac4j.enabled | default(false) and vitamui.cas_server.crypto.pac4j.cookie_name is defined %}
+cas.authn.pac4j.core.session-replication.cookie.name: {{ vitamui.cas_server.crypto.pac4j.cookie_name }}
 {% endif %}
 
 {# PM Reset #}
-{{ crypto_block('pm.reset.crypto', vitamui.cas_server.crypto.pm_reset) }}
+{{ crypto_block('cas.authn.pm.reset.crypto', vitamui.cas_server.crypto.pm_reset) }}
 
 {# Webflow #}
-{{ crypto_block('cas.webflow.crypto', vitamui.cas_server.crypto.webflow, key_size=vitamui.cas_server.crypto.webflow.encryption_key_size) }}
+{{ crypto_block('cas.webflow.crypto', vitamui.cas_server.crypto.webflow) }}

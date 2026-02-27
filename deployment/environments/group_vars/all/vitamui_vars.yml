@@ -136,20 +136,23 @@ vitamui:
     cors:
       enabled: true
     crypto:
+      tgc:
+        enabled: no
       oauth:
-        encryption_key: "Fd-b-pjoN82hBdUti9HqzJXgvfs7pFtVYeaKIRhDdNE"
-        signing_key: "EsCugv7mIHZ3ecx-A5nf_75KsrmVGAWNMXwyEPXDV1jf0nmLrpu0Py6aO62yx4yd_W9_6nhMaGxhE9FQoeP7HQ"
+        enabled: no
       pac4j:
-        cookie_name: "DISSESSIONAD"
-        encryption_key: "9XnxhG7lfRQS9I5_86j3XQHZc19jZsamU97pDtut__o"
-        signing_key: "oFaBMTNLfKgCyqJPjxvZbdFhmxBKFgJP2_-rMDatBN91ZlU3eIpq2SYD_5ILHBSa616VEe5c0yUpACWne6TIlg"
+        enabled: no
+        # cookie_name: "DISSESSIONAD" # Special case not required
       pm_reset:
-        encryption_key: "IG2rGK-5ctqoSWMv52XkZZ9BoMqRBcpjdzwLGJ6yiN0"
-        signing_key: "xPVQOgj1-ywI-O_5fv5pTkg_bBS6CCXh7Yr9zMQoy2bmCjAJfLoVfycKYw-gERmBDozEGeT72HquVOT1dAZO5Q"
+        enabled: yes # FIXME: key set generated at CAS startup ! Need overriding.
       webflow:
-        signing_key: "=oebPIRe18A0cAeBdZCHkVlLPa_Kbthxo70iRpAhbk84dQGQj_8AOEMvEg3y7GAKYxtpF5nn6nx7vj5iU-eHStg"
-        encryption_key: "3FzNquczUjhmeJyqu251Ow"
-        encryption_key_size: 128
+        enabled: yes # FIXME: key set generated at CAS startup ! Need overriding.
+#      <crypto_bloc>:
+#       enabled: <boolean>
+#       key:
+#         encryption: <string: cipher key size according @encryption-size>
+#         encryption-size: <int: default 128>
+#         signing: <string: cipher key>
 
   security:
     host: "vitamui-security.service.{{ consul_domain }}"
