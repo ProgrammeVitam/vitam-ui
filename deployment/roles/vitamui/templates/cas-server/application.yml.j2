@@ -352,20 +352,6 @@ password:
 {% endif %}
 {% endmacro %}
 
-{# TGC #}
-{{ crypto_block('cas.tgc.crypto', vitamui.cas_server.crypto.tgc) }}
-
-{# OAuth #}
-{{ crypto_block('cas.authn.oauth.session-replication.cookie.crypto', vitamui.cas_server.crypto.oauth) }}
-
-{# Pac4j #}
-{{ crypto_block('cas.authn.pac4j.core.session-replication.cookie', vitamui.cas_server.crypto.pac4j) }}
-{% if vitamui.cas_server.crypto.pac4j.cookie_name is defined %}
-cas.authn.pac4j.core.session-replication.cookie.name: {{ vitamui.cas_server.crypto.pac4j.cookie_name }}
-{% endif %}
-
-{# PM Reset #}
-{{ crypto_block('cas.authn.pm.reset.crypto', vitamui.cas_server.crypto.pm_reset) }}
-
-{# Webflow #}
-{{ crypto_block('cas.webflow.crypto', vitamui.cas_server.crypto.webflow) }}
+{% for crypto_item in vitamui.cas_server.crypto %}
+{{ crypto_block(crypto_item.prefix, crypto_item.config) }}
+{% endfor %}

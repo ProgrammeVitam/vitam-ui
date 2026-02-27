@@ -136,23 +136,28 @@ vitamui:
     cors:
       enabled: true
     crypto:
-      tgc:
-        enabled: yes
-      oauth:
-        enabled: yes
-      pac4j:
-        enabled: yes
-        # cookie_name: "DISSESSIONAD" # Special case not required
-      pm_reset:
-        enabled: yes # FIXME: key set generated at CAS startup ! Need overriding.
-      webflow:
-        enabled: yes # FIXME: key set generated at CAS startup ! Need overriding.
-#      <crypto_bloc>:
-#       enabled: <boolean>
-#       key:
-#         encryption: <string: cipher key size according @encryption-size>
-#         encryption-size: <int: default 128>
-#         signing: <string: cipher key>
+      - prefix: cas.tgc.crypto
+        config:
+          enabled: yes
+      - prefix: cas.authn.oauth.session-replication.cookie.crypto
+        config:
+          enabled: yes
+      - prefix: cas.authn.pac4j.core.session-replication.cookie
+        config:
+          enabled: yes
+      - prefix: cas.authn.pm.reset.crypto
+        config:
+          enabled: yes
+      - prefix: cas.webflow.crypto
+        config:
+          enabled: yes
+#     - prefix: <string>
+#       config:
+#         enabled: <boolean>
+#         key:
+#           encryption: <string: cipher key size according @encryption-size>
+#           encryption-size: <int: default 128>
+#           signing: <string: cipher key>
 
   security:
     host: "vitamui-security.service.{{ consul_domain }}"
