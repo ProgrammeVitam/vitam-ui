@@ -527,7 +527,7 @@ public class IamLogbookService {
     /**
      * Track the password revocation event (because of a user reactivation).
      *
-     * @param user      the user identifier for whom the password is revoked
+     * @param user the user identifier for whom the password is revoked
      * @param superUser the super user
      */
     @Transactional
@@ -555,9 +555,9 @@ public class IamLogbookService {
     /**
      * Track the user blocked when login.
      *
-     * @param user      the blocked user
+     * @param user the blocked user
      * @param oldStatus the old user status
-     * @param duration  of user's blocked
+     * @param duration of user's blocked
      */
     public void blockUserEvent(final User user, final UserStatusEnum oldStatus, final Duration duration) {
         LOGGER.debug("block user: {} / oldStatus: {}", user.toString(), oldStatus);
@@ -578,10 +578,10 @@ public class IamLogbookService {
     /**
      * Track a login event.
      *
-     * @param user                the authenticated user
+     * @param user the authenticated user
      * @param surrogateIdentifier the surrogate identifier
-     * @param ip                  the user IP
-     * @param errorMessage        the error message
+     * @param ip the user IP
+     * @param errorMessage the error message
      */
     public void loginEvent(
         final User user,
@@ -733,9 +733,8 @@ public class IamLogbookService {
 
     /**
      *
-     * @param externalParamProfileDto object containing infos for parameterize
-     *                                logbooks infos
-     * @param logbooks                logbooks
+     * @param externalParamProfileDto object containing infos for parameterize logbooks infos
+     * @param logbooks logbooks
      */
     public void updateExternalParamProfileEvent(
         final ExternalParamProfileDto externalParamProfileDto,
