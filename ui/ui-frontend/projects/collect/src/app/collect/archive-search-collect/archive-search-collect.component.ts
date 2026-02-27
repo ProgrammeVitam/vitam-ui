@@ -39,29 +39,39 @@ import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } f
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, finalize, merge, Observable, Subject, Subscription, zip } from 'rxjs';
-import { debounceTime, filter, map, mergeMap, share, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, finalize, merge, Observable, of, Subject, Subscription, zip } from 'rxjs';
+import { debounceTime, filter, map, mergeMap, share, switchMap, take, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import {
+  ACCESS_RULE,
   AccessContract,
+  addErrorStatusBadgeIfArchiveUnitHasErrors,
   ALL_DESCENDANTS_FACET,
   ApplicationId,
+  APPRAISAL_RULE,
   ArchiveSearchResultFacets,
+  ArchiveUnit,
   BreadCrumbData,
+  ConfirmDialogComponent,
+  ConfirmDialogData,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaSearchCriteria,
   CriteriaValue,
   Direction,
+  DISSEMINATION_RULE,
   ExternalParameters,
   ExternalParametersService,
   FilingHoldingSchemeNode,
   GlobalEventService,
+  MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+  NODES,
   ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
   QueryParamsService,
   ReclassificationDialogComponent,
+  REUSE_RULE,
   Rule,
   RuleService,
   SearchCriteriaAddAction,
@@ -76,23 +86,15 @@ import {
   SearchCriteriaTypeEnum,
   SidenavPage,
   SnackBarService,
+  STORAGE_RULE,
   TermsFacet,
+  toManagementRuleType,
   Transaction,
   TransactionStatus,
-  ArchiveUnit,
-  addErrorStatusBadgeIfArchiveUnitHasErrors,
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
-  STORAGE_RULE,
-  APPRAISAL_RULE,
-  ACCESS_RULE,
-  DISSEMINATION_RULE,
-  REUSE_RULE,
   WAITING_RECALCULATE,
-  NODES,
-  toManagementRuleType,
-  MANAGEMENT_RULE_SHARED_DATA_SERVICE,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -103,6 +105,8 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TransactionsService } from '../transactions/transactions.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
+import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -1284,14 +1288,34 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   validateTransaction() {
-    this.transactionService
-      .validate(this.transaction, { isAutomaticIngest: this.isAutomaticIngest })
+    const hasBatchError = this.hasBatchInError(this.transaction);
+    const validationMode = hasBatchError ? TransactionValidationMode.VALIDATE_IGNORE : TransactionValidationMode.VALIDATE;
+    const confirmation$ = hasBatchError
+      ? this.dialog
+          .open<ConfirmDialogComponent, ConfirmDialogData>(ConfirmDialogComponent, {
+            disableClose: false,
+            data: {
+              title: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM_FORCE_TRANSACTION_VALIDATION_MESSAGE',
+              subTitle: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM_TRANSACTION_VALIDATION',
+              confirmLabel: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM_TRANSACTION_VALIDATION',
+              cancelLabel: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL',
+            },
+          })
+          .afterClosed()
+          .pipe(filter((confirmed) => !!confirmed))
+      : of(true);
+
+    confirmation$
       .pipe(
-        finalize(() => {
-          this.snackBarService.open({
-            message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
-            duration: 10_000,
-          });
+        switchMap(() => {
+          return this.transactionService.validate(this.transaction, validationMode, { isAutomaticIngest: this.isAutomaticIngest }).pipe(
+            finalize(() => {
+              this.snackBarService.open({
+                message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
+                duration: 10_000,
+              });
+            }),
+          );
         }),
       )
       .subscribe((transaction: Transaction) => {
@@ -1432,6 +1456,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.archiveSharedDataService.emitNumberOfAUsWithoutAttachment(response.totalResults);
         }
       });
+  }
+
+  private hasBatchInError(transaction: Transaction): boolean {
+    return transaction.batches?.some((b) => b.BatchStatus === BatchStatus.KO) ?? false;
   }
 
   protected readonly TransactionStatus = TransactionStatus;

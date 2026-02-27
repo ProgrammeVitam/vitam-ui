@@ -34,19 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { DialogModule } from '@angular/cdk/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
+import { ConfirmDialogData } from '../../../models/confirm-dialog-data.interface';
+import { ConfirmDialogModule } from '../../../../app/modules';
 
 @Component({
-  selector: 'vitamui-common-confirm-dialog',
+  selector: 'vitamui-confirm-dialog',
+  imports: [TranslateModule, DialogModule, MatDialogModule, ConfirmDialogModule],
   templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss'],
-  standalone: false,
 })
 export class ConfirmDialogComponent {
-  @Input() dialogTitle: string;
-  @Input() dialogSubTitle: string;
-  @Input() cancelLabel: string;
-  @Input() confirmLabel: string;
-
-  constructor() {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public data?: ConfirmDialogData,
+  ) {}
 }

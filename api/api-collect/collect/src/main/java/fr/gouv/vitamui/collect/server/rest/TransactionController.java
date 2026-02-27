@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.collect.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -57,6 +58,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -121,12 +123,18 @@ public class TransactionController {
 
     @Secured(ServicesData.ROLE_CLOSE_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + VALIDATE_PATH)
-    public void validateTransaction(final @PathVariable("id") String id)
-        throws PreconditionFailedException, VitamClientException {
+    public void validateTransaction(
+        final @PathVariable("id") String id,
+        @RequestParam("validationMode") final TransactionValidationMode validationMode
+    ) throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug(TRANSACTION_ID, id);
-        transactionService.validateTransaction(id, externalParametersService.buildVitamContextFromExternalParam());
+        transactionService.validateTransaction(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam(),
+            validationMode
+        );
     }
 
     @Operation(summary = "Get transaction by id")

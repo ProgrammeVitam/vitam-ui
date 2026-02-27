@@ -26,12 +26,15 @@
  */
 package fr.gouv.vitamui.collect.common.dto;
 
+import fr.gouv.vitam.collect.common.dto.BatchDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -58,4 +61,5 @@ public class CollectTransactionDto extends IdDto {
     private String lastUpdate;
     private String status;
     private String projectId;
+    private List<BatchDto> batches;
 }

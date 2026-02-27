@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -49,6 +49,7 @@ import {
   Unit,
   VitamError,
 } from 'vitamui-library';
+import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -71,8 +72,9 @@ export class TransactionApiService extends PaginatedHttpClient<Transaction> {
     return this.http.get<Transaction>(this.apiUrl + '/' + transactionId);
   }
 
-  validateTransaction(id: string) {
-    return this.http.put<Transaction>(this.apiUrl + '/' + id + '/validate', {});
+  validateTransaction(id: string, validationMode: TransactionValidationMode) {
+    const params = new HttpParams().set('validationMode', validationMode);
+    return this.http.put<Transaction>(this.apiUrl + '/' + id + '/validate', {}, { params });
   }
 
   sendTransaction(id: string) {

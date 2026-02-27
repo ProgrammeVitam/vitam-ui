@@ -48,7 +48,7 @@ import { AuthService } from './auth.service';
 import { ChipComponent } from './components/chip/chip.component';
 import { CollapseModule } from './components/collapse/collapse.module';
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
-import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
+import { ConfirmDialogModule } from './components/common-confirm-dialog/confirm-dialog.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { FileSelectorComponent } from './components/file-selector/file-selector.component';

@@ -34,24 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id } from '../id.interface';
-import { Batch } from './batch';
-import { TransactionStatus } from './transaction-status';
-
-export interface Transaction extends Id {
-  status: TransactionStatus;
-  projectId: string;
-  archivalAgreement: string;
-  messageIdentifier: string;
-  archivalAgencyIdentifier: string;
-  transferringAgencyIdentifier: string;
-  originatingAgencyIdentifier: string;
-  submissionAgencyIdentifier: string;
-  archiveProfile: string;
-  legalStatus: string;
-  comment: string;
-  acquisitionInformation?: string;
-  creationDate?: Date;
-  lastUpdate?: Date;
-  batches?: Batch[];
+export interface Batch {
+  BatchId: string;
+  BatchStatus: string;
+  evTypeProc?: string;
 }
