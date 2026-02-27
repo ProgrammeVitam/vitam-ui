@@ -360,7 +360,7 @@ password:
 
 {# Pac4j #}
 {{ crypto_block('cas.authn.pac4j.core.session-replication.cookie', vitamui.cas_server.crypto.pac4j) }}
-{% if vitamui.cas_server.crypto.pac4j.enabled | default(false) and vitamui.cas_server.crypto.pac4j.cookie_name is defined %}
+{% if vitamui.cas_server.crypto.pac4j.cookie_name is defined %}
 cas.authn.pac4j.core.session-replication.cookie.name: {{ vitamui.cas_server.crypto.pac4j.cookie_name }}
 {% endif %}
 
