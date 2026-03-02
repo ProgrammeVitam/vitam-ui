@@ -27,7 +27,7 @@
     },
     "ORIGINATING_AGENCY_REASSIGNMENT": {
       "ACTION": "Réattribution du service producteur",
-      "TITLE": "Réattribuer une séléction d'unité archivistique à un service producteur",
+      "TITLE": "Réattribuer une sélection d'unités archivistiques à un service producteur",
       "SUBTITLE": "Action sur {{count}} unités archivistiques",
       "ORIGINATING_AGENCY": "Service producteur",
       "PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS": "Propager le nouveau service producteur aux groupes d'objet technique",
