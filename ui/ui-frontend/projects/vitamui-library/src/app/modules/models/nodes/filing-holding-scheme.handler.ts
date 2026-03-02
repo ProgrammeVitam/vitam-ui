@@ -401,6 +401,7 @@ export class FilingHoldingSchemeHandler {
       // DEPRECATED OR UNUSED :
       type: unit['#unitType'],
       hidden: false,
+      signingInformation: unit.SigningInformation,
     };
   }
 
