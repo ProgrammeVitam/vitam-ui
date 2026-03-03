@@ -215,7 +215,7 @@ Visualiser la fin du script de génération pour comprendre quels services sont 
 
 #### Mise en place de certificats personnalisés pour reverse proxy
 
-Si vous avez des certificats personnalisés pour le reverse proxy, vous pouvez remplacer ceux générés sous `environments/certs/server/hosts/<hostname>/reverse.{crt,key}` par ceux fournis par votre autorité de certification.
+Si vous avez des certificats fournis par votre autorité de certification pour le reverse proxy, vous pouvez les placer directement sous `environments/files/reverse/reverse.{crt,key}`. Ils auront la priorité lors du déploiement sur ceux générés par la PKI VitamUI sous `environments/certs/vitamui-services/server/reverse/`.
 
 > Info: reverse.crt est la concatenation du certificat et de la CA.
 
