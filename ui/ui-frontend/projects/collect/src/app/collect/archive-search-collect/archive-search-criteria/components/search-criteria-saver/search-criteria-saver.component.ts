@@ -42,7 +42,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, CriteriaSearchCriteria, Direction, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  CriteriaSearchCriteria,
+  Direction,
+  SearchCriteriaHistory,
+  SearchCriteriaTypeEnum,
+  ORIGIN_WAITING_RECALCULATE,
+  WAITING_RECALCULATE,
+} from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
@@ -118,6 +126,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.searchCriteriaHistory.name = this.searchCriteriaForm.value.name;
+    this.archiveExchangeDataService.emitSearchCriteriaHistory(this.searchCriteriaHistory);
     this.saveSearchCriteriaHistorySubscription = this.searchCriteriaSaverService
       .saveSearchCriteriaHistory(this.searchCriteriaHistory)
       .subscribe(
@@ -171,6 +180,17 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     }
   }
 
+  modifyCriteriaForWaitingRecalculate(searchCriteria: SearchCriteriaHistory) {
+    searchCriteria.searchCriteriaList.forEach((searchCriteria) => {
+      if (searchCriteria.criteria === WAITING_RECALCULATE) {
+        searchCriteria.criteria = ORIGIN_WAITING_RECALCULATE;
+        searchCriteria.values.forEach((value) => {
+          value.id = ORIGIN_WAITING_RECALCULATE;
+        });
+      }
+    });
+  }
+
   createNewCriteria() {
     this.ToUpdate = false;
   }
@@ -184,6 +204,7 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   update() {
     this.criteriaToUpdate.searchCriteriaList = this.searchCriteriaHistory.searchCriteriaList;
     this.criteriaToUpdate.savingDate = new Date().toISOString();
+    this.modifyCriteriaForWaitingRecalculate(this.criteriaToUpdate);
     this.updateSearchCriteriaHistorySubscription = this.searchCriteriaSaverService
       .updateSearchCriteriaHistory(this.criteriaToUpdate)
       .subscribe(

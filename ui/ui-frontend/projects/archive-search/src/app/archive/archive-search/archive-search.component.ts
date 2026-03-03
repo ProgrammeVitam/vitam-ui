@@ -83,6 +83,11 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
+  STORAGE_RULE,
+  APPRAISAL_RULE,
+  ACCESS_RULE,
+  DISSEMINATION_RULE,
+  REUSE_RULE,
   ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
@@ -194,6 +199,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   selectedArchive$: Observable<Unit>;
 
   displayedColumns = ['checkbox', 'type', 'name_description', 'start_date', 'end_date', 'originating_agency'];
+  criteriaCategoriesList = [STORAGE_RULE, APPRAISAL_RULE, ACCESS_RULE, DISSEMINATION_RULE, REUSE_RULE];
 
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
@@ -745,19 +751,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           false,
         );
 
-        // Collect criteria for URL update (only FIELDS and NODES categories)
-        if ([SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES].includes(category)) {
-          criteriaToAddToUrl.push({
-            keyElt: criteria.criteria,
-            valueElt: value,
-            labelElt: value.value,
-            keyTranslated: criteria.keyTranslated,
-            operator: criteria.operator,
-            category,
-            valueTranslated: criteria.valueTranslated,
-            dataType: criteria.dataType,
-          });
-        }
+        criteriaToAddToUrl.push({
+          keyElt: criteria.criteria,
+          valueElt: value,
+          labelElt: value.value,
+          keyTranslated: criteria.keyTranslated,
+          operator: criteria.operator,
+          category,
+          valueTranslated: criteria.valueTranslated,
+          dataType: criteria.dataType,
+        });
       });
     });
 
@@ -875,6 +878,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.removeCriteria(criteriaKey, value.value, true);
         });
       }
+    });
+    this.criteriaCategoriesList.forEach((category) => {
+      this.removeCriteriaCategory(category);
     });
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
