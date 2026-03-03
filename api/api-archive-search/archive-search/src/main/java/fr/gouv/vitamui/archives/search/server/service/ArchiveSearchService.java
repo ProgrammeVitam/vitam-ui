@@ -536,6 +536,8 @@ public class ArchiveSearchService {
     }
 
     public String reassignOriginatingAgency(ReassignRequestDto reassignRequestDto) throws VitamClientException {
+        Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
+        thresholdOpt.ifPresent(reassignRequestDto.getSearchCriteria()::setThreshold);
         VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
         JsonNode dslQuery = prepareDslQuery(reassignRequestDto.getSearchCriteria(), vitamContext);
         JsonNode reassignmentDsl = buildReassignmentDsl(
