@@ -326,9 +326,9 @@
       "LOAD_MORE_RESULTS": "Load more results..."
     },
     "STATUS": {
-      "STORED_AND_UPDATED": "Partially eliminated or transferred",
+      "STORED_AND_UPDATED": "Partially eliminated, transferred or reassigned",
       "STORED_AND_COMPLETED": "In stock and complete",
-      "UNSTORED": "Completely eliminated or transferred"
+      "UNSTORED": "Completely eliminated, transferred or reassigned"
     },
     "FACETS": {
       "SHOW_SEARCH_FILTERS": "Show search filters",
@@ -356,7 +356,8 @@
       "OPERATIONS_ALL_RADIO": "All",
       "OPERATION_ELIMINATIONS": "Eliminations",
       "OPERATION_TRANSFERTS": "Transfers",
-      "OPERATION_PRESERVATIONS": "Preservations"
+      "OPERATION_PRESERVATIONS": "Preservations",
+      "OPERATION_REASSIGNMENTS": "Reassignments"
     },
     "PREVIEW": {
       "OPERATION_LIST": "Operation list",
@@ -385,6 +386,7 @@
           "PRESERVATION": "Preservation",
           "TRANSFER_REPLY": "Transfer",
           "ELIMINATION": "Elimination",
+          "REASSIGNMENT": "Reassignment",
           "DELETE_GOT_VERSIONS": "Deleting object group versions"
         }
       }

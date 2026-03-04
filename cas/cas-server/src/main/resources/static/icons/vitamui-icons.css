@@ -29,6 +29,10 @@ i.vitamui-icon {
   content: "\e97a";
   color: #757575;
 }
+.vitamui-icon-ic24-rattribution:before {
+  content: "\e97b";
+  color: #757575;
+}
 .vitamui-icon-ic24-arborescence:before {
   content: "\e961";
 }

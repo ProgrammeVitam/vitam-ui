@@ -100,9 +100,11 @@ public class AccessRegisterVitamQueryHelper {
     private static final String STATUS = "Status";
     private static final String ARCHIVAL_AGREEMENT = "ArchivalAgreement";
     private static final String ELIMINATION = "ELIMINATION";
+    private static final String REASSIGNMENT = "REASSIGNMENT";
     private static final String ARCHIVAL_PROFILE = "ArchivalProfile";
     private static final String TRANSFER_REPLY = "TRANSFER_REPLY";
     private static final String EVENTS_OPTYPE = "Events.OpType";
+    private static final String OPTYPE = "OpType";
     private static final String END_DATE = "EndDate";
     private static final String ALL = "all";
 
@@ -144,11 +146,13 @@ public class AccessRegisterVitamQueryHelper {
             select.setLimitFilter((long) pageNumber * size, size);
         }
 
+        addExclusionToQuery(andQuery, OPTYPE, REASSIGNMENT);
         addOrderToQuery(select, orderBy, direction);
         addFiltersToQuery(andQuery, criteria.getFilters());
         addEndDateToQuery(andQuery, criteria.getEndDateInterval());
         addEventsToQuery(andQuery, criteria.getElimination(), ELIMINATION);
         addEventsToQuery(andQuery, criteria.getTransferReply(), TRANSFER_REPLY);
+        addEventsToQuery(andQuery, criteria.getReassignment(), REASSIGNMENT);
         addOpiToQuery(orQuery, criteria.getOpi());
         addOriginatingAgencyToQuery(orQuery, criteria.getOriginatingAgency());
 
@@ -308,5 +312,10 @@ public class AccessRegisterVitamQueryHelper {
         } catch (InvalidCreateOperationException e) {
             LOGGER.error("Can not find binding for EndDate key: \n {}", e);
         }
+    }
+
+    private static void addExclusionToQuery(BooleanQuery andQuery, String field, String value)
+        throws InvalidCreateOperationException {
+        andQuery.add(ne(field, value));
     }
 }

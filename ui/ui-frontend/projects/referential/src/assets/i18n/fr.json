@@ -326,9 +326,9 @@
       "LOAD_MORE_RESULTS": "Afficher plus de résultats..."
     },
     "STATUS": {
-      "STORED_AND_UPDATED": "Partiellement éliminée ou transférée",
+      "STORED_AND_UPDATED": "Partiellement éliminée, transférée ou réattribuée",
       "STORED_AND_COMPLETED": "En stock et complète",
-      "UNSTORED": "Totalement éliminée ou transférée"
+      "UNSTORED": "Totalement éliminée, transférée ou réattribuée"
     },
     "FACETS": {
       "SHOW_SEARCH_FILTERS": "Afficher les filtres de recherche",
@@ -356,7 +356,8 @@
       "OPERATIONS_ALL_RADIO": "Tous",
       "OPERATION_ELIMINATIONS": "Éliminations",
       "OPERATION_TRANSFERTS": "Transferts",
-      "OPERATION_PRESERVATIONS": "Préservations"
+      "OPERATION_PRESERVATIONS": "Préservations",
+      "OPERATION_REASSIGNMENTS": "Réattributions"
     },
     "PREVIEW": {
       "OPERATION_LIST": "Liste des opérations",
@@ -385,6 +386,7 @@
           "PRESERVATION": "Préservation",
           "TRANSFER_REPLY": "Transfert",
           "ELIMINATION": "Élimination",
+          "REASSIGNMENT": "Réattribution",
           "DELETE_GOT_VERSIONS": "Suppression des versions des groupes d'objets"
         }
       }
