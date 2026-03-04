@@ -42,6 +42,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
+import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
@@ -254,7 +255,7 @@ class TransactionServiceTest {
             fakeResponse
         );
         // WHEN
-        List<VitamErrorDetails> resultedOperation = transactionService.updateArchiveUnitsFromCsvFile(
+        VitamErrorResponseDto resultedOperation = transactionService.updateArchiveUnitsFromCsvFile(
             csvContent,
             TRANSACTION_ID,
             vitamContext
@@ -267,19 +268,19 @@ class TransactionServiceTest {
     void shouldThrowExceptionWhenUpdateArchiveUnitsFromFile()
         throws VitamClientException, InvalidParseOperationException {
         // GIVEN
-        List<VitamErrorDetails> resultsDto = List.of(new VitamErrorDetails("ERROR_KEY", null));
+        List<VitamErrorDetails> errorDetail = List.of(new VitamErrorDetails("ERROR_KEY", null));
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
         fakeResponse.setHttpCode(200);
-        fakeResponse.addResult(JsonHandler.toJsonNode(resultsDto));
+        fakeResponse.addResult(JsonHandler.toJsonNode(errorDetail));
         VitamClientException exception = new VitamClientException("error message");
         exception.setVitamError(
             new VitamError<>("BAD_REQUEST")
                 .setHttpCode(400)
                 .setContext("Collect")
                 .setMessage("error message")
-                .setErrorsDetails(resultsDto)
+                .setErrorsDetails(errorDetail)
         );
-
+        VitamErrorResponseDto expectedResponse = new VitamErrorResponseDto(exception.getVitamError());
         String fakeContent = "Path;Name;blablabla";
         InputStream csvContent = new ByteArrayInputStream(fakeContent.getBytes());
 
@@ -288,14 +289,14 @@ class TransactionServiceTest {
             .thenThrow(exception)
             .thenReturn(fakeResponse);
 
-        List<VitamErrorDetails> response = transactionService.updateArchiveUnitsFromCsvFile(
+        VitamErrorResponseDto response = transactionService.updateArchiveUnitsFromCsvFile(
             csvContent,
             TRANSACTION_ID,
             vitamContext
         );
 
         // THEN
-        assertThat(response).isEqualTo(resultsDto);
+        assertThat(response).isEqualTo(expectedResponse);
     }
 
     @Test

@@ -27,17 +27,28 @@
 
 package fr.gouv.vitamui.collect.common.dto;
 
+import fr.gouv.vitam.common.error.VitamError;
+import fr.gouv.vitam.common.error.VitamErrorDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VitamErrorsDetailsDto {
+public class VitamErrorResponseDto {
 
-    private String key;
-    private HashMap<String, String> args;
+    public VitamErrorResponseDto(VitamError<?> vitamError) {
+        this.code = vitamError.getCode();
+        this.httpCode = vitamError.getHttpCode();
+        this.message = vitamError.getMessage();
+        this.errorsDetails = vitamError.getErrorsDetails();
+    }
+
+    private String code;
+    private int httpCode;
+    private String message;
+    private List<VitamErrorDetails> errorsDetails;
 }

@@ -30,8 +30,8 @@
 package fr.gouv.vitamui.collect.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
@@ -126,7 +126,7 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
         // Given
         String fileName = "FileName";
         String transactionId = "transactionId";
-        List<VitamErrorDetails> expectedResponse = List.of();
+        VitamErrorResponseDto expectedResponse = new VitamErrorResponseDto("BAD_REQUEST", 400, "Message", List.of());
         String initialString = "csv file to update collect units";
         InputStream csvFile = new ByteArrayInputStream(initialString.getBytes());
 
@@ -139,7 +139,7 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
                 any(VitamContext.class)
             )
         ).thenReturn(expectedResponse);
-        List<VitamErrorDetails> response = transactionController.updateArchiveUnitsMetadataFromCsvFile(
+        VitamErrorResponseDto response = transactionController.updateArchiveUnitsMetadataFromCsvFile(
             transactionId,
             csvFile,
             fileName

@@ -47,7 +47,7 @@ import {
   SearchResponse,
   Transaction,
   Unit,
-  VitamErrorDetails,
+  VitamError,
 } from 'vitamui-library';
 
 @Injectable({
@@ -94,8 +94,8 @@ export class TransactionApiService extends PaginatedHttpClient<Transaction> {
     });
   }
 
-  updateUnitsMetadataByCsvFile(transactionId: string, file: Blob, headers: HttpHeaders): Observable<VitamErrorDetails[]> {
-    return this.http.put<VitamErrorDetails[]>(`${this.apiUrl}/${transactionId}/update-units-metadata`, file, {
+  updateUnitsMetadataByCsvFile(transactionId: string, file: Blob, headers: HttpHeaders): Observable<VitamError> {
+    return this.http.put<VitamError>(`${this.apiUrl}/${transactionId}/update-units-metadata`, file, {
       responseType: 'json',
       headers,
     });

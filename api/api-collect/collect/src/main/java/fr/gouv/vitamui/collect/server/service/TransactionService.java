@@ -35,7 +35,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -43,6 +42,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
+import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -62,7 +62,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.List;
 
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
@@ -179,7 +178,7 @@ public class TransactionService {
         }
     }
 
-    public List<VitamErrorDetails> updateArchiveUnitsFromCsvFile(
+    public VitamErrorResponseDto updateArchiveUnitsFromCsvFile(
         InputStream inputStream,
         String transactionId,
         VitamContext vitamContext
@@ -187,15 +186,11 @@ public class TransactionService {
         try {
             LOGGER.debug("[Internal] call update Archive Units From CSV File for transaction Id {}  ", transactionId);
             collectService.updateCollectArchiveUnitsWithCsv(vitamContext, transactionId, inputStream);
-            return List.of();
+            return new VitamErrorResponseDto();
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_PROCESS_UNIT_UPDATE, e);
-            if (
-                e.getVitamError().getHttpCode() == HttpStatus.BAD_REQUEST.value() &&
-                e.getVitamError() != null &&
-                !e.getVitamError().getErrorsDetails().isEmpty()
-            ) {
-                return e.getVitamError().getErrorsDetails();
+            if (e.getVitamError() != null && e.getVitamError().getHttpCode() == HttpStatus.BAD_REQUEST.value()) {
+                return new VitamErrorResponseDto(e.getVitamError());
             } else {
                 throw new InternalServerException(e.getMessage(), e);
             }

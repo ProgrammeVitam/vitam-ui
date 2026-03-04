@@ -26,10 +26,10 @@
  */
 package fr.gouv.vitamui.collect.server.rest;
 
-import fr.gouv.vitam.common.error.VitamErrorDetails;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
+import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionService;
@@ -60,7 +60,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
-import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.DOWNLOAD_SIP_PATH;
@@ -162,7 +161,7 @@ public class TransactionController {
         value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
         consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public List<VitamErrorDetails> updateArchiveUnitsMetadataFromCsvFile(
+    public VitamErrorResponseDto updateArchiveUnitsMetadataFromCsvFile(
         final @PathVariable("transactionId") String transactionId,
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName

@@ -37,6 +37,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ class UpdateArchiveUnitsMetadataServiceTest {
         throws VitamClientException, InvalidParseOperationException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
-        final List<VitamErrorDetails> resultsDto = List.of();
+        final VitamErrorResponseDto resultsDto = new VitamErrorResponseDto();
         RequestResponseOK<JsonNode> vitamResponse = new RequestResponseOK<>();
         vitamResponse.setHttpCode(200);
         vitamResponse.addResult(JsonHandler.toJsonNode(resultsDto));
@@ -82,7 +83,7 @@ class UpdateArchiveUnitsMetadataServiceTest {
         Mockito.when(
             collectService.updateCollectArchiveUnitsWithCsv(eq(vitamContext), eq(transactionId), any())
         ).thenReturn(vitamResponse);
-        List<VitamErrorDetails> response = transactionService.updateArchiveUnitsFromCsvFile(
+        VitamErrorResponseDto response = transactionService.updateArchiveUnitsFromCsvFile(
             csvFileInputStream,
             transactionId,
             vitamContext
@@ -105,6 +106,7 @@ class UpdateArchiveUnitsMetadataServiceTest {
                 .setMessage("error message")
                 .setErrorsDetails(errorDetailsList)
         );
+        VitamErrorResponseDto expectedResponse = new VitamErrorResponseDto(exception.getVitamError());
         final String transactionId = "transactionId";
         InputStream csvFileInputStream =
             UpdateArchiveUnitsMetadataServiceTest.class.getClassLoader()
@@ -115,14 +117,14 @@ class UpdateArchiveUnitsMetadataServiceTest {
             collectService.updateCollectArchiveUnitsWithCsv(eq(vitamContext), eq(transactionId), any())
         ).thenThrow(exception);
 
-        List<VitamErrorDetails> response = transactionService.updateArchiveUnitsFromCsvFile(
+        VitamErrorResponseDto response = transactionService.updateArchiveUnitsFromCsvFile(
             csvFileInputStream,
             transactionId,
             vitamContext
         );
 
         //Then
-        assertThat(response).isEqualTo(errorDetailsList);
+        assertThat(response).isEqualTo(expectedResponse);
     }
 
     @Test
