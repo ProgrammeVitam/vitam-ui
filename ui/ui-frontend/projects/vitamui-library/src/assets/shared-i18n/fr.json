@@ -2971,6 +2971,7 @@
     "CHECK_DIGEST": "Vérification de l'intégrité des objets",
     "OG_OBJECTS_ANTIVIRUS_CHECK": "Vérification antivirus",
     "STP_COLLECT_INGEST_FINALISATION.STARTED": "Début du processus de finalisation de l'entrée dans Collecte",
+    "STP_COLLECT_INGEST_FINALISATION.STARTED.OK": "Succès de début du processus de finalisation de l'entrée dans Collecte",
     "STP_COLLECT_INGEST_FINALISATION": "Processus de finalisation de l'entrée dans Collecte",
     "COLLECT_SIP_INGEST": "Processus d’entrée du SIP dans Collecte",
     "COLLECT_SIP_INGEST.WARNING": "Avertissement lors du processus d’entrée du SIP dans Collecte",
