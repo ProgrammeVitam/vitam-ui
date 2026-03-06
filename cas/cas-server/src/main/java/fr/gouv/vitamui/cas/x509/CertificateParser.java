@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.x509;
 
-import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.cryptacular.x509.GeneralNameType;
 
@@ -54,14 +53,14 @@ public class CertificateParser {
 
     public static String extract(final X509Certificate cert, final X509AttributeMapping mapping)
         throws CertificateParsingException {
-        val name = mapping.getName();
+        final var name = mapping.getName();
         String value = null;
         if (X509CertificateAttributes.ISSUER_DN.name().equalsIgnoreCase(name)) {
             value = cert.getIssuerDN().getName();
         } else if (X509CertificateAttributes.SUBJECT_DN.name().equalsIgnoreCase(name)) {
             value = cert.getSubjectDN().getName();
         } else if (X509CertificateAttributes.SUBJECT_ALTERNATE_NAME.name().equalsIgnoreCase(name)) {
-            val altNames = cert.getSubjectAlternativeNames();
+            final var altNames = cert.getSubjectAlternativeNames();
             final StringBuilder subjectAltNamesBuilder = new StringBuilder();
             if (altNames != null && altNames.size() > 0) {
                 for (final var attribute : altNames) {
@@ -80,13 +79,13 @@ public class CertificateParser {
         if (value == null) {
             throw new CertificateParsingException("Cannot find X509 value for: " + name);
         }
-        val parsing = mapping.getParsing();
-        val expansion = mapping.getExpansion();
+        var parsing = mapping.getParsing();
+        var expansion = mapping.getExpansion();
         if (StringUtils.isNotBlank(parsing)) {
-            val pattern = Pattern.compile(parsing);
-            val matcher = pattern.matcher(value);
+            var pattern = Pattern.compile(parsing);
+            var matcher = pattern.matcher(value);
             if (matcher.matches()) {
-                val groupCount = matcher.groupCount();
+                var groupCount = matcher.groupCount();
                 if (groupCount == 0) {
                     throw new CertificateParsingException("Parsing fails for X509 value: " + value);
                 }

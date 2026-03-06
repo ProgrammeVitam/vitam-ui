@@ -67,6 +67,8 @@ public abstract class Constants {
 
     public static final String VITAM_UI_FAVICON = "vitamuiFavicon";
 
+    public static final String VITAMUI_LOGO_LARGE = "vitamuiLogoLarge";
+
     public static final String PASSWORD_CUSTOM_CONSTRAINTS = "passwordCustomConstraints";
 
     public static final String PASSWORD_DEFAULT_CONSTRAINTS = "passwordAnssiConstraints";

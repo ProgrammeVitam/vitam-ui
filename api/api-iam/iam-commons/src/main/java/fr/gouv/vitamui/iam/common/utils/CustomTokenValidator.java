@@ -42,6 +42,7 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.openid.connect.sdk.Nonce;
 import com.nimbusds.openid.connect.sdk.claims.IDTokenClaimsSet;
+import com.nimbusds.openid.connect.sdk.op.OIDCProviderMetadata;
 import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.oidc.profile.creator.TokenValidator;
 
@@ -57,8 +58,11 @@ public class CustomTokenValidator extends TokenValidator {
 
     private static final List<String> AGENTCONNECT_ACR_VALUES = Arrays.asList("eidas1", "eidas2", "eidas3");
 
-    public CustomTokenValidator(final OidcConfiguration configuration) {
-        super(configuration);
+    private final OidcConfiguration configuration;
+
+    public CustomTokenValidator(final OidcConfiguration configuration, final OIDCProviderMetadata metadata) {
+        super(configuration, metadata);
+        this.configuration = configuration;
     }
 
     public IDTokenClaimsSet validate(final JWT idToken, final Nonce expectedNonce)

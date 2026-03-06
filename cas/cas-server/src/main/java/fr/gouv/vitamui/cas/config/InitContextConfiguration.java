@@ -37,14 +37,13 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.util.Constants;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.xml.bind.DatatypeConverter;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,16 +52,13 @@ import java.nio.file.Paths;
 /**
  * Custom context initializer to pre-fill logo and favicon.
  */
+@Slf4j
 @RequiredArgsConstructor
 public class InitContextConfiguration implements ServletContextInitializer {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(InitContextConfiguration.class);
 
     private final String vitamuiLogoLargePath;
 
     private final String vitamuiFaviconPath;
-
-    private static final String VITAMUI_LOGO_LARGE = "vitamuiLogoLarge";
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
@@ -76,7 +72,7 @@ public class InitContextConfiguration implements ServletContextInitializer {
                     // default PNG
                     base64Logo = "data:image/png;base64," + base64Logo;
                 }
-                servletContext.setAttribute(VITAMUI_LOGO_LARGE, base64Logo);
+                servletContext.setAttribute(Constants.VITAMUI_LOGO_LARGE, base64Logo);
             } catch (final IOException e) {
                 LOGGER.warn("Can't find vitam ui large logo", e);
             }

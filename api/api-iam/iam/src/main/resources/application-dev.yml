@@ -33,6 +33,15 @@ server:
     client-certificate-header-name: x-ssl-cert
   error:
     path: /error
+  tomcat:
+    connection-timeout: 60000
+    accesslog:
+      enabled: true
+      max-days: 365
+      directory: "/vitamui/log/iam"
+      prefix: "accesslog-iam"
+      file-date-format: ".yyyy-MM-dd"
+      suffix: ".log"
 
 management:
   server:
@@ -62,7 +71,7 @@ cas-client:
 
 cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
 cas.tenant.identifier: -1
-cas.secret.token: tokcas_ie6UZsEcHIWrfv2x
+cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
 login:
   url: http://dev.vitamui.com:8080/cas/login

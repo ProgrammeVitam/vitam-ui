@@ -31,7 +31,7 @@ public class CustomSurrogateInitialAuthenticationActionTest extends BaseWebflowA
         CustomSurrogateInitialAuthenticationAction instance = new CustomSurrogateInitialAuthenticationAction();
 
         // When
-        instance.doExecute(context);
+        instance.execute(context);
 
         // Then
         assertThat(flowParameters.get("credential")).isEqualTo(usernamePasswordCredential);
@@ -54,7 +54,7 @@ public class CustomSurrogateInitialAuthenticationActionTest extends BaseWebflowA
         CustomSurrogateInitialAuthenticationAction instance = new CustomSurrogateInitialAuthenticationAction();
 
         // When
-        instance.doExecute(context);
+        instance.execute(context);
 
         // Then
         Object credential = flowParameters.get("credential");

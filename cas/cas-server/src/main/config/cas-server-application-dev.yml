@@ -38,8 +38,14 @@ management:
     port: 7080
     ssl:
       enabled: false
-#management.metrics.export.prometheus.enabled: true
-
+  elastic:
+    metrics:
+      export:
+        enabled: false
+  prometheus:
+    metrics:
+      export:
+        enabled: false
 
 vitamui.cas.tenant.identifier: -1
 vitamui.cas.identity: cas
@@ -78,19 +84,29 @@ cas.authn.oauth.crypto.signing.key: kSs5OT5bTV6E9Ba0biGZ3taVlmlBFmoMyvG4JB0pSiZJ
 cas.authn.oauth.access-token.crypto.encryption.key: RGAYHpTTKJ-YMbh7Yrt3Xd6VQH_myXYISwThfo-9OKI
 cas.authn.oauth.access-token.crypto.signing.key: j8AZtUo6i4BI2n3bu2Elr9d3aIOL35vec0AjUBubP6rgj5arKWB9lRcWq9bjxGIwoAbFv-1MRmiScXlIIX0BGg
 
+cas.authn.oauth.session-replication.cookie.crypto.encryption.key: 2macKckIM22PrUn9cHkyVe1lB4jc12hXsbUa8e7Ih8Q
+cas.authn.oauth.session-replication.cookie.crypto.signing.key: vhnibDmTxFA0q_jO3XedyoHgKkPQPmfVeWLVj9byRfLiVFqZi38ZsEy4Qt0Vu2rZFXceBgp5nb55iWgxo2EzCQ
+cas.authn.pac4j:
+  core.session-replication.cookie:
+    name: DISSESSIONAD
+    crypto:
+      encryption.key: T4LxS93IaaD-F-7kz66VEc2BD3g8uGGYKPECFkV9vBU
+      signing.key: fRYHy2_3_qApascjXEaXuTL5o52nrohztttpiGKFkWpXYUHaV85lS8Ph10OGfkpUUZlkyhhq6oPOXOlGIAQbiQ
+  cas:
+    - login-url: https://dev.vitamui.com:8080/cas/login
+
 cas.server.prefix: https://dev.vitamui.com:8080/cas
 login.url: ${cas.server.prefix}/login
 
-cas.service-registry.mongo.client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
-
-#cas.service-registry.mongo.port: 27018
-#cas.service-registry.mongo.database-name: cas
-#cas.service-registry.mongo.authentication-database-name: cas
-#cas.service-registry.mongo.replica-set: rs0
-cas.service-registry.mongo.collection: services
-#cas.service-registry.mongo.user-id: mongod_dbuser_cas
-#cas.service-registry.mongo.password: mongod_dbpwd_cas
-
+cas.service-registry.mongo:
+  client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
+#  port: 27018
+#  database-name: cas
+#  authentication-database-name: cas
+#  replica-set: rs0
+  collection: services
+#  user-id: mongod_dbuser_cas
+#  password: mongod_dbpwd_cas
 
 cas.authn.surrogate.separator: ","
 cas.authn.surrogate.mail.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnEmail
@@ -155,7 +171,7 @@ cas.sms-provider.sms-mode.access-token: changeme
 
 vitamui.portal.url: https://dev.vitamui.com:4200/
 
-cas.secret.token: tokcas_ie6UZsEcHIWrfv2x
+cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
 ip.header: X-Real-IP
 
@@ -187,6 +203,8 @@ logging:
     org.springframework.context.annotation: 'OFF'
     org.springframework.boot.devtools: 'OFF'
     org.apereo.inspektr.audit.support: 'INFO'
+    org.springframework.webflow: INFO
+    org.apereo: INFO
 
 # Cas CORS (necessary for mobile app)
 cas.http-web-request.cors.enabled: true
@@ -206,24 +224,34 @@ password:
     defaults:
       fr:
         messages:
-          - minimum ${password.length} caractères
+          - Avoir une taille d'au moins ${password.length} caractères
         special-chars:
-          title: 'minimum 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes :'
+          title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
           messages:
-            - minuscules (a-z)
-            - majuscules (A-Z)
-            - numériques (0-9)
-            - caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+            - Minuscules (a-z)
+            - Majuscules (A-Z)
+            - Numériques (0-9)
+            - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
       en:
         messages:
-          - minimum ${password.length} characters
+          - Have a size of at least ${password.length} characters
         special-chars:
-          title: 'minimum 2 characters from each category, for at least 3 of the following categories :'
+          title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
           messages:
-            - lowercases (a-z)
-            - uppercases (A-Z)
-            - digital (0-9)
-            - special characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+            - Uppercases (a-z)
+            - Lowercases (A-Z)
+            - Digits (0-9)
+            - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        messages:
+          - Mindestens ${password.length} Zeichen lang sein
+        special-chars:
+          title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+          messages:
+            - Großbuchstaben (a-z)
+            - Kleinbuchstaben (A-Z)
+            - Ziffern (0-9)
+            - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
     customs:
       fr:
         title: 'Pour des raisons de sécurité, votre mot de passe doit:'
@@ -237,7 +265,12 @@ password:
           - At least ${password.length} characters
           - Lowercase and uppercase
           - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
-
+      de:
+        title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+        messages:
+          - Mindestens ${password.length} Zeichen
+          - Klein- und Großbuchstaben
+          - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 
 ---
 spring:

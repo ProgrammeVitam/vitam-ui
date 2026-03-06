@@ -1,11 +1,20 @@
+/* global trackGeoLocation, jqueryReady */
+
+/* exported resourceLoadedSuccessfully */
+
+const formId = '#main-form'; // Vitam form id value
+// const formId = '#fm1'; // Xelians form id value
+
 function preserveAnchorTagOnForm() {
-  $('#main-form').submit(function () {
+  $(formId).submit(function () {
     var location = self.document.location;
     var hash = decodeURIComponent(location.hash);
+
     if (hash !== undefined && hash !== '' && hash.indexOf('#') === -1) {
       hash = '#' + hash;
     }
-    var action = $('#main-form').attr('action');
+
+    var action = $(formId).attr('action');
     if (action === undefined) {
       action = location.href;
     } else {
@@ -16,9 +25,10 @@ function preserveAnchorTagOnForm() {
       }
     }
     action += hash;
-    $('#main-form').attr('action', action);
+    $(formId).attr('action', action);
   });
 }
+
 
 function preventFormResubmission() {
   $('form').submit(function () {
@@ -33,17 +43,18 @@ function preventFormResubmission() {
 
 // Customization VITAMUI =======================
 function disableEmptyInputFormSubmission() {
-  var fields = $('#main-form input[name="username"],[name="password"]');
+  var fields = $(`${formId} input[name="username"],[name="password"]`);
   if (fields.length === 2) {
     fields.on('input', function (event) {
-      var enableSubmission = $('#main-form input[name="username"]').val().trim() &&
-        $('#main-form input[name="password"]').val().trim();
+      var enableSubmission =
+        $(`${formId} input[name="username"]`).val().trim() &&
+        $(`${formId} input[name="password"]`).val().trim();
 
       if (enableSubmission) {
-        $('#main-form input[name=submit]').removeAttr('disabled');
+        $(`${formId} input[name=submit]`).removeAttr('disabled');
         event.stopPropagation();
       } else {
-        $('#main-form input[name=submit]').attr('disabled', 'true');
+        $(`${formId} input[name=submit]`).attr('disabled', 'true');
       }
     });
   }
@@ -51,15 +62,14 @@ function disableEmptyInputFormSubmission() {
   /**
    * Handle auto-complete events to the extent possible.
    */
-  if ($('#main-form input[name="username"]').length > 0) {
+  if ($(`${formId} input[name="username"]`).length > 0) {
     setTimeout(function () {
       var uid = $('#username').val();
       if (uid != null && uid != '') {
         $('#username').change();
         $('#username').focus();
-        $('#main-form input[name=submit]').removeAttr('disabled');
+        $(`${formId} input[name=submit]`).removeAttr('disabled');
       }
-
     }, 100);
   }
 }
@@ -68,8 +78,6 @@ function disableEmptyInputFormSubmission() {
 
 function resourceLoadedSuccessfully() {
   $(document).ready(function () {
-
-
     if ($(':focus').length === 0) {
       $('input:visible:enabled:first').focus();
     }
@@ -81,8 +89,9 @@ function resourceLoadedSuccessfully() {
     preventFormResubmission();
 
     $('#capslock-on').hide();
-    $('#main-form input[name="username"],[name="password"]').trigger('input');
-    $('#main-form input[name="username"]').focus();
+    $(`${formId} input[name="username"],[name="password"]`).trigger('input');
+    $(`${formId} input[name="username"]`).focus();
+
     $('#password').keypress(function (e) {
       var s = String.fromCharCode(e.which);
       if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
@@ -91,38 +100,38 @@ function resourceLoadedSuccessfully() {
         $('#capslock-on').hide();
       }
     });
-    if (typeof (jqueryReady) == 'function') {
-      console.log("jqueryReady is a function")
+    if (typeof jqueryReady == 'function') {
+      console.log('jqueryReady is a function');
       jqueryReady();
     } else {
-      console.log("jqueryReady not a function")
+      console.log('jqueryReady not a function');
     }
   });
 }
 
 function displayMainFormSubmitButton() {
   $(document).ready(function () {
-    $("#main-form-submit").css("display", "flex");
+    $('#main-form-submit').css('display', 'flex');
   });
 }
 
 function displayMainFormValidateButton() {
   $(document).ready(function () {
-    $("#main-form-validate").css("display", "flex");
+    $('#main-form-validate').css('display', 'flex');
   });
 }
 
 function disableMainFormSubmitButton() {
-  $("#main-form-submit").attr("disabled", "true");
+  $('#main-form-submit').attr('disabled', 'true');
 }
 
 function enableMainFormSubmitButton() {
-  $("#main-form-submit").removeAttr("disabled");
+  $('#main-form-submit').removeAttr('disabled');
 }
 
 function hiddeMainFormReturnButton() {
   $(document).ready(function () {
-    $("#main-form-return").hide();
+    $('#main-form-return').hide();
   });
 }
 
@@ -132,7 +141,7 @@ function sanitizeUrl(inputUrl) {
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    "'": '&#39;'
+    "'": '&#39;',
   };
   return inputUrl.replace(true ? /[&<>'"]/g : /[&<>]/g, function (c) {
     return ESC_MAP[c];

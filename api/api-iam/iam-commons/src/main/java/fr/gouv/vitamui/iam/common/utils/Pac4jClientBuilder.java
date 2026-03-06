@@ -45,6 +45,7 @@ import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.pac4j.core.client.IndirectClient;
@@ -53,8 +54,6 @@ import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.config.SAML2Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 
@@ -62,16 +61,11 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * A pac4j client builder.
- *
- *
- */
+/** A pac4j client builder. */
 @Getter
 @Setter
+@Slf4j
 public class Pac4jClientBuilder {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Pac4jClientBuilder.class);
 
     @Value("${login.url}")
     @NotNull
@@ -153,13 +147,14 @@ public class Pac4jClientBuilder {
                     oidcConfiguration.setUseNonce(useNonce != null ? useNonce : true);
                     final Boolean usePkce = provider.getUsePkce();
                     oidcConfiguration.setDisablePkce(usePkce != null ? !usePkce : true);
-                    oidcConfiguration.setStateGenerator((context, store) -> new Nonce().toString());
-                    oidcConfiguration.setTokenValidator(new CustomTokenValidator(oidcConfiguration));
+                    oidcConfiguration.setStateGenerator(ctx -> new Nonce().toString());
+                    oidcConfiguration.setOpMetadataResolver(new CustomOidcOpMetadataResolver(oidcConfiguration));
 
                     final OidcClient oidcClient = new OidcClient(oidcConfiguration);
                     setCallbackUrl(oidcClient, technicalName);
 
                     oidcClient.init();
+                    oidcClient.getConfiguration().getOpMetadataResolver().load();
                     return Optional.of(oidcClient);
                 }
             }
@@ -172,7 +167,7 @@ public class Pac4jClientBuilder {
             } else if (message.equals("Error parsing idp Metadata")) {
                 throw new InvalidFormatException(message, ErrorsConstants.ERRORS_VALID_IDP_METADATA);
             }
-            LOGGER.error("Cannot build pac4j client with provider identifier: " + provider.getIdentifier(), e);
+            log.error("Cannot build pac4j client with provider identifier: " + provider.getIdentifier(), e);
         }
         return Optional.empty();
     }
