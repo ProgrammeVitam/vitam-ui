@@ -76,8 +76,8 @@
         <vitam.version>9.1.0-SNAPSHOT</vitam.version>
 
         <!-- Web Pack -->
-        <node.version>v18.20.3</node.version>
-        <npm.version>10.7.0</npm.version>
+        <node.version>v22.22.0</node.version>
+        <npm.version>10.9.4</npm.version>
 
         <!--Spring dependencies version override-->
         <!--Snakeyaml version override to 2.x to fix CVE-2022-1471-->
