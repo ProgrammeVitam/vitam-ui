@@ -38,6 +38,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
+import fr.gouv.vitamui.commons.api.dtos.Facet;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.dtos.TermsFacet;
@@ -129,13 +130,32 @@ public final class MetadataSearchCriteriaUtils {
         fillWaitingToComputeCriteria(searchQuery);
 
         SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
-        selectMultiQuery.addFacets(
-            FacetHelper.terms(FACETS_COUNT_BY_NODE, ALL_UNIT_UPS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
-        );
+        if (CollectionUtils.isNotEmpty(searchQuery.getFacets())) {
+            addFacetIfPresent(searchQuery.getFacets(), "COUNT_BY_NODE", () -> {
+                try {
+                    selectMultiQuery.addFacets(
+                        FacetHelper.terms(FACETS_COUNT_BY_NODE, ALL_UNIT_UPS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
+                    );
+                } catch (InvalidCreateOperationException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
-        selectMultiQuery.addFacets(
-            FacetHelper.terms(FACETS_VIRTUAL_TREE, ARCHIVE_UNIT_VIRTUAL_PATHS, DEFAULT_FACET_SIZE, FacetOrder.ASC)
-        );
+            addFacetIfPresent(searchQuery.getFacets(), "FACETS_VIRTUAL_TREE", () -> {
+                try {
+                    selectMultiQuery.addFacets(
+                        FacetHelper.terms(
+                            FACETS_VIRTUAL_TREE,
+                            ARCHIVE_UNIT_VIRTUAL_PATHS,
+                            DEFAULT_FACET_SIZE,
+                            FacetOrder.ASC
+                        )
+                    );
+                } catch (InvalidCreateOperationException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
 
         if (searchQuery.isComputeMgtRulesFacets()) {
             selectMultiQuery.addFacets(
@@ -153,6 +173,13 @@ public final class MetadataSearchCriteriaUtils {
             );
         }
         return selectMultiQuery;
+    }
+
+    private static void addFacetIfPresent(List<Facet> facets, String facetName, Runnable action) {
+        boolean hasFacet = facets.stream().anyMatch(facet -> facetName.equals(facet.getName()));
+        if (hasFacet) {
+            action.run();
+        }
     }
 
     public static SelectMultiQuery getBasicQuery(SearchCriteriaDto searchQuery) throws VitamClientException {
