@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
@@ -51,7 +51,7 @@ import { TranslateService } from '@ngx-translate/core';
   providers: [ManagementContractToFormGroupConverterService],
   standalone: false,
 })
-export class ManagementContractIdentificationTabComponent implements OnChanges {
+export class ManagementContractIdentificationTabComponent implements OnChanges, OnDestroy {
   @Input() managementContract: ManagementContract;
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -107,6 +107,10 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   }
 
   resetForm(managementContract: ManagementContract): void {
+    // Nettoyer les souscriptions existantes pour éviter les faux positifs
+    this.subscriptions.unsubscribe();
+    this.subscriptions = new Subscription();
+
     this.contractForm = this.managementContractToFormGroupConverterService.convert(managementContract);
 
     const persistentIdentifierPolicies = managementContract.persistentIdentifierPolicyList || [];
@@ -116,23 +120,25 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
 
     this.updated.emit(false);
 
-    this.contractForm.get('policyTypeOption').valueChanges.subscribe((value) => {
-      let persistentIdentifierPolicyFormArray: FormArray = this.formBuilder.array([]);
+    this.subscriptions.add(
+      this.contractForm.get('policyTypeOption').valueChanges.subscribe((value) => {
+        let persistentIdentifierPolicyFormArray: FormArray = this.formBuilder.array([]);
 
-      if (value === PersistentIdentifierPolicyTypeEnum.ARK) {
-        persistentIdentifierPolicyFormArray = this.managementContractToFormGroupConverterService
-          .convert(managementContract)
-          .get('persistentIdentifierPolicies') as FormArray;
-        if (persistentIdentifierPolicyFormArray.controls.length === 0) {
+        if (value === PersistentIdentifierPolicyTypeEnum.ARK) {
           persistentIdentifierPolicyFormArray = this.managementContractToFormGroupConverterService
-            .getDefaultManagementContractForm()
+            .convert(managementContract)
             .get('persistentIdentifierPolicies') as FormArray;
+          if (persistentIdentifierPolicyFormArray.controls.length === 0) {
+            persistentIdentifierPolicyFormArray = this.managementContractToFormGroupConverterService
+              .getDefaultManagementContractForm()
+              .get('persistentIdentifierPolicies') as FormArray;
+          }
+          persistentIdentifierPolicyFormArray.patchValue([{ policyTypeOption: this.policyTypeOptions[1].key }]);
         }
-        persistentIdentifierPolicyFormArray.patchValue([{ policyTypeOption: this.policyTypeOptions[1].key }]);
-      }
-      this.contractForm.removeControl('persistentIdentifierPolicies');
-      this.contractForm.setControl('persistentIdentifierPolicies', persistentIdentifierPolicyFormArray);
-    });
+        this.contractForm.removeControl('persistentIdentifierPolicies');
+        this.contractForm.setControl('persistentIdentifierPolicies', persistentIdentifierPolicyFormArray);
+      }),
+    );
 
     this.subscriptions.add(
       this.contractForm.valueChanges.subscribe(() => {
@@ -187,5 +193,9 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
     }
 
     return true;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }
