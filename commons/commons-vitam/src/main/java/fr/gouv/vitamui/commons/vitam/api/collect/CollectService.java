@@ -35,7 +35,7 @@ import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.dto.UploadSipResult;
 import fr.gouv.vitam.collect.external.client.CollectExternalClient;
-import fr.gouv.vitam.collect.external.external.exception.CollectExternalClientException;
+import fr.gouv.vitam.collect.external.exception.CollectExternalClientException;
 import fr.gouv.vitam.common.CharsetUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;

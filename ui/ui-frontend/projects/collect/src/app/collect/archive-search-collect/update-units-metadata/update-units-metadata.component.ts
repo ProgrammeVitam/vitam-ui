@@ -52,6 +52,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   fileToUpload: File = undefined;
   errorsDetails: VitamErrorDetails[];
+  errorMessage: string;
 
   subscriptions: Subscription;
 
@@ -91,27 +92,31 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
     this.subscriptions = this.archiveCollectService
       .updateUnitsMetadataByCsvFile(this.fileToUpload, this.fileToUpload.name, this.data.selectedTransaction.id)
-      .subscribe(
-        (data) => {
+      .subscribe({
+        next: (data) => {
           this.isLoadingData = false;
-          if (data.length === 0) {
+          if (data.httpCode === 200) {
             this.dialogRef.close(true);
             this.snackBarService.open({
               message: 'COLLECT.UPDATE_UNITS_METADATA.SUCCESS_MESSAGE',
               duration: 100_000,
             });
           } else {
-            this.errorsDetails = data;
+            if (data.errorsDetails !== null) {
+              this.errorsDetails = data.errorsDetails;
+            } else {
+              this.errorMessage = data.message;
+            }
             this.dialogRefToClose = this.dialog.open(this.displayCsvErrorsDialog);
           }
         },
-        (error: any) => {
+        error: (error: any) => {
           this.isLoadingData = false;
           this.dialogRef.close(true);
           this.logger.error('Error message :', error);
           return throwError(error);
         },
-      );
+      });
   }
 
   translateErrorKeys(errorDetails: VitamErrorDetails) {

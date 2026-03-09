@@ -597,7 +597,7 @@
     <div>
       <div class="text bold medium">{{ 'COLLECT.UPDATE_UNITS_METADATA.LIST_IDENTIFIED_ERRORS' | translate }}</div>
       <ul class="scroll-area pl-5 mt-0">
-        @for (errorsDetail of errorsDetails; track errorsDetails) {
+        @for (errorsDetail of errorsDetails; track errorsDetail) {
           <li>{{ translateErrorKeys(errorsDetail) }}</li>
         }
       </ul>
