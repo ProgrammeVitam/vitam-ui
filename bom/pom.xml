@@ -35,7 +35,8 @@
         <http.client.version>5.4.4</http.client.version>
         <http.core.version>5.3.4</http.core.version>
         <istack-commons-runtime.version>4.0.0-M2</istack-commons-runtime.version>
-        <jackson.version>2.17.0</jackson.version>
+        <jackson.version>2.21.1</jackson.version>
+        <jackson-annotation.version>2.21</jackson-annotation.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
         <jakarta.el.version>5.0.1</jakarta.el.version>
         <jakarta.mail.version>2.0.1</jakarta.mail.version>
@@ -61,7 +62,7 @@
         <opencsv.version>5.4</opencsv.version>
         <org.apache.odftoolkit.version>0.8.2-incubating</org.apache.odftoolkit.version>
         <org.odftoolkit.version>0.8.7</org.odftoolkit.version>
-        <pac4j.version>6.1.1</pac4j.version>
+        <pac4j.version>6.3.3</pac4j.version>
         <podam.version>7.2.5.RELEASE</podam.version>
         <poi.version>5.5.1</poi.version>
         <selma.version>1.0</selma.version>
@@ -656,7 +657,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
+                <version>${jackson-annotation.version}</version>
             </dependency>
 
             <dependency>
