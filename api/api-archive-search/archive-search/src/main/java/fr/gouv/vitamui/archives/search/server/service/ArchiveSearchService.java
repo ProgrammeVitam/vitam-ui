@@ -548,7 +548,8 @@ public class ArchiveSearchService {
             vitamContext,
             reassignmentDsl,
             reassignRequestDto.getSourceOriginatingAgency(),
-            reassignRequestDto.getTargetOriginatingAgency()
+            reassignRequestDto.getTargetOriginatingAgency(),
+            reassignRequestDto.isPropagateToObjectGroups()
         );
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
     }
