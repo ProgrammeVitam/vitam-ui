@@ -393,14 +393,18 @@ public class UnitCommonService {
     public RequestResponse<JsonNode> reassignment(
         final VitamContext vitamContext,
         final JsonNode dslQuery,
-        final String source,
-        final String target
+        final String sourceOriginatingAgency,
+        final String targetOriginatingAgency,
+        final boolean propagateToObjectGroups
     ) throws VitamClientException {
         OriginatingAgencyReassignmentRequest originatingAgencyReassignmentRequest =
-            new OriginatingAgencyReassignmentRequest();
-        originatingAgencyReassignmentRequest.setSourceOriginatingAgency(source);
-        originatingAgencyReassignmentRequest.setTargetOriginatingAgency(target);
-        originatingAgencyReassignmentRequest.setDslRequest(dslQuery);
+            new OriginatingAgencyReassignmentRequest(
+                dslQuery,
+                sourceOriginatingAgency,
+                targetOriginatingAgency,
+                propagateToObjectGroups
+            );
+
         final RequestResponse<JsonNode> jsonResponse = accessExternalClient.launchOriginatingAgencyReassignment(
             vitamContext,
             originatingAgencyReassignmentRequest

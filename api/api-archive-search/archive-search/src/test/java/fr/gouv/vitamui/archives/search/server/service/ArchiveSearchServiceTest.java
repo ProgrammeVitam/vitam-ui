@@ -77,6 +77,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -477,7 +478,7 @@ public class ArchiveSearchServiceTest {
     @Test
     void shouldReturnOperationIdWhenReassignmentIsSuccessful() throws Exception {
         // Given
-        when(unitCommonService.reassignment(any(), any(), anyString(), anyString())).thenReturn(
+        when(unitCommonService.reassignment(any(), any(), anyString(), anyString(), anyBoolean())).thenReturn(
             responseFromFile(REASSIGN_UNITS_RESPONSE)
         );
 
