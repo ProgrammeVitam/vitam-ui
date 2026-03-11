@@ -53,7 +53,7 @@ import { StartupService } from './startup.service';
 import { SKIP_ERROR_NOTIFICATION } from './utils';
 import { VitamuiHttpHeaders } from './vitamui-http-headers.enum';
 
-const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export', 'documents', 'ingest'];
+const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export', 'documents', 'ingest', 'upload'];
 // @ts-ignore
 const HTTP_STATUS_CODE_BAD_REQUEST = 400;
 const HTTP_STATUS_CODE_UNAUTHORIZED = 401;
