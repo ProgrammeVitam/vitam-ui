@@ -92,7 +92,7 @@ public class CustomTokenValidatorTest {
     public void testRegularValidation() throws Exception {
         final String idToken = generator.generate(claims);
 
-        final IDTokenClaimsSet claimsSet = validator.validate(SignedJWT.parse(idToken), nonce);
+        final IDTokenClaimsSet claimsSet = validator.validateIdToken(SignedJWT.parse(idToken), nonce);
         checkClaims(claimsSet);
     }
 
@@ -102,7 +102,7 @@ public class CustomTokenValidatorTest {
         claims.put("acr", "eidas1");
         final String idToken = generator.generate(claims);
 
-        final IDTokenClaimsSet claimsSet = validator.validate(SignedJWT.parse(idToken), nonce);
+        final IDTokenClaimsSet claimsSet = validator.validateIdToken(SignedJWT.parse(idToken), nonce);
         checkClaims(claimsSet);
     }
 
@@ -112,7 +112,7 @@ public class CustomTokenValidatorTest {
         final String idToken = generator.generate(claims);
 
         try {
-            validator.validate(SignedJWT.parse(idToken), nonce);
+            validator.validateIdToken(SignedJWT.parse(idToken), nonce);
             fail("should fail");
         } catch (final BadJWTException e) {
             assertEquals(

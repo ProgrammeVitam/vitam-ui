@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.11</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -80,11 +80,8 @@
         <npm.version>10.9.4</npm.version>
 
         <!--Spring dependencies version override-->
-        <!--Snakeyaml version override to 2.x to fix CVE-2022-1471-->
-        <snakeyaml.version>2.4</snakeyaml.version>
-
-        <!-- override it to fix mockito java 21 issue -->
-        <byte-buddy.version>1.15.5</byte-buddy.version>
+        <!-- override it to fix CVE-2025-48924 -->
+        <commons-lang3.version>3.20.0</commons-lang3.version>
 
         <!--Plugins version -->
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>

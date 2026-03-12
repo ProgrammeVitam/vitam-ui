@@ -65,9 +65,10 @@ public class CustomTokenValidator extends TokenValidator {
         this.configuration = configuration;
     }
 
-    public IDTokenClaimsSet validate(final JWT idToken, final Nonce expectedNonce)
+    @Override
+    public IDTokenClaimsSet validateIdToken(final JWT idToken, final Nonce expectedNonce)
         throws BadJOSEException, JOSEException {
-        final IDTokenClaimsSet claimsSet = super.validate(idToken, expectedNonce);
+        final IDTokenClaimsSet claimsSet = super.validateIdToken(idToken, expectedNonce);
 
         final String acrParam = configuration.getCustomParam("acr_values");
         if (AGENTCONNECT_ACR_VALUES.contains(acrParam)) {
