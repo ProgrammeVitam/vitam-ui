@@ -17,10 +17,11 @@
     flex-wrap: nowrap;
     margin-left: 0;
     margin-right: 0;
+  }
 
-    .read-only-field {
-      flex-direction: column;
-    }
+  .read-only-field {
+    min-height: 0;
+    margin-bottom: 0;
   }
 
   .btn-circle {

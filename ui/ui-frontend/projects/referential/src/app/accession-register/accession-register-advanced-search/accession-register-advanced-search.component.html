@@ -117,6 +117,29 @@
                 </mat-radio-group>
               </div>
             </div>
+            <div class="row py-1">
+              <div class="col-2 register-title">
+                <strong>{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_REASSIGNMENTS' | translate }}</strong>
+                <i class="vitamui-icon vitamui-icon-ic24-rattribution register-icon"></i>
+              </div>
+              <div class="col-3">
+                <mat-radio-group
+                  aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_REASSIGNMENTS' | translate }}"
+                  id="reassignments"
+                  formControlName="reassignment"
+                >
+                  <mat-radio-button class="mr-2" value="true">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button class="mr-2" value="false">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_NO_RADIO' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button value="all">{{
+                    'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_ALL_RADIO' | translate
+                  }}</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
           </div>
         </div>
         <div class="row">

@@ -1,5 +1,13 @@
 {
-  "$query": {},
+  "$query": {
+    "$and": [
+      {
+        "$ne": {
+          "OpType": "REASSIGNMENT"
+        }
+      }
+    ]
+  },
   "$filter": {
     "$offset": 12,
     "$limit": 1

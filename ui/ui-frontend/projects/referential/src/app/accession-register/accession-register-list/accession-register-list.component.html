@@ -1,7 +1,7 @@
 <div>
   <div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
     <div class="vitamui-table">
-      <div class="vitamui-table-head title-text result-layout">
+      <div class="vitamui-table-head table-subhead result-layout">
         <div class="col-11">
           <ng-template [ngIf]="getTotalElements()">
             {{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: getTotalElements() } }}
