@@ -269,13 +269,14 @@ export class VitamUICommonModule {
       providers: [
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideAppInitializer(() => {
-          const initializerFn = loadConfigFactory(inject(ConfigService), inject(ENVIRONMENT));
-          return initializerFn();
-        }),
-        provideAppInitializer(() => {
-          const initializerFn = startupServiceFactory(inject(StartupService), inject(AuthService));
-          return initializerFn();
+        provideAppInitializer(async () => {
+          const configService = inject(ConfigService);
+          const environment = inject(ENVIRONMENT);
+          const startupService = inject(StartupService);
+          const authService = inject(AuthService);
+
+          await loadConfigFactory(configService, environment)();
+          return await startupServiceFactory(startupService, authService)();
         }),
         { provide: HTTP_INTERCEPTORS, useClass: VitamUIHttpInterceptor, multi: true },
       ],

@@ -34,10 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { OAuthService, OAuthSuccessEvent } from 'angular-oauth2-oidc';
-import { Observable, from, zip } from 'rxjs';
-import { map, skipWhile, take, tap } from 'rxjs/operators';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { from, Observable } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
+import { map, tap } from 'rxjs/operators';
+
+const OIDC_PARAMS = ['code', 'state', 'id_token', 'access_token', 'token_type', 'session_state', 'nonce'];
 
 export class OidcAuthenticatorService implements AuthenticatorService {
   constructor(
@@ -47,85 +49,66 @@ export class OidcAuthenticatorService implements AuthenticatorService {
 
   public login(): Observable<boolean> {
     const url = new URL(this.location.href);
-    const isSubrogation = !!url.searchParams.get('isSubrogation');
-    if (isSubrogation) {
-      return from(
-        this.surrogateUser(
-          url.searchParams.get('superUserEmail'),
-          url.searchParams.get('superUserCustomerId'),
-          url.searchParams.get('surrogateEmail'),
-          url.searchParams.get('surrogateCustomerId'),
-        ),
-      );
-    }
-    const hasUsername = !!url.searchParams.get('username');
-    if (hasUsername) {
-      return from(this.initLoginWithUserName(url.searchParams.get('username')));
+    const returnUrl = this.cleanOidcParams(this.location.pathname + this.location.search);
+
+    if (url.searchParams.get('isSubrogation')) {
+      return from(this.startSubrogationFlow(url, returnUrl));
     }
 
-    const urlCleaner = this.oAuthService.events.pipe(
-      skipWhile((type) => !(type instanceof OAuthSuccessEvent)),
-      take(1),
-      tap(() => this.cleanUrlAfterLogin()),
-      map(() => true),
-    );
-    return zip(from(this.oAuthService.loadDiscoveryDocumentAndLogin()), urlCleaner).pipe(
-      map(([authenticated, urlCleaned]) => authenticated && urlCleaned),
-    );
+    if (url.searchParams.get('username')) {
+      return from(this.startLoginWithUsername(url, returnUrl));
+    }
+
+    return this.startStandardLogin(returnUrl);
   }
 
-  private surrogateUser(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string): Promise<boolean> {
-    return this.oAuthService.loadDiscoveryDocument().then(() => {
-      const postLogoutUri = this.oAuthService.postLogoutRedirectUri;
-      const redirectUri = postLogoutUri + this.getUrlSeparator(postLogoutUri);
-      this.oAuthService.redirectUri = redirectUri;
-      this.oAuthService.initCodeFlow('', {
-        superUserEmail: superUser,
-        superUserCustomerId,
-        surrogateEmail: surrogate,
-        surrogateCustomerId,
-        redirect_uri: redirectUri,
-      });
-      return true;
+  private async startSubrogationFlow(url: URL, returnUrl: string): Promise<boolean> {
+    await this.oAuthService.loadDiscoveryDocument();
+    this.oAuthService.redirectUri = this.buildAbsoluteRedirectUri();
+    this.oAuthService.initCodeFlow(returnUrl, {
+      superUserEmail: url.searchParams.get('superUserEmail'),
+      superUserCustomerId: url.searchParams.get('superUserCustomerId'),
+      surrogateEmail: url.searchParams.get('surrogateEmail'),
+      surrogateCustomerId: url.searchParams.get('surrogateCustomerId'),
     });
+    return true;
   }
 
-  private initLoginWithUserName(username: string): Promise<boolean> {
-    return this.oAuthService.loadDiscoveryDocument().then(() => {
-      const postLogoutUri = this.oAuthService.postLogoutRedirectUri;
-      const redirectUri = postLogoutUri + this.getUrlSeparator(postLogoutUri);
-      this.oAuthService.redirectUri = redirectUri;
-      this.oAuthService.initCodeFlow('', { username, redirect_uri: redirectUri });
-      return true;
-    });
+  private async startLoginWithUsername(url: URL, returnUrl: string): Promise<boolean> {
+    await this.oAuthService.loadDiscoveryDocument();
+    this.oAuthService.redirectUri = this.buildAbsoluteRedirectUri();
+    this.oAuthService.initCodeFlow(returnUrl, { username: url.searchParams.get('username') });
+    return true;
+  }
+
+  private startStandardLogin(returnUrl: string): Observable<boolean> {
+    if (this.oAuthService.hasValidAccessToken()) {
+      return from(this.oAuthService.loadDiscoveryDocument()).pipe(map(() => true));
+    }
+
+    return from(this.oAuthService.loadDiscoveryDocumentAndLogin({ state: returnUrl })).pipe(
+      tap((authenticated) => {
+        if (authenticated) {
+          this.cleanUrlAfterLogin();
+        }
+      }),
+    );
   }
 
   public logout(): void {
     this.oAuthService.revokeTokenAndLogout();
   }
 
-  public logoutSubrogationAndRedirectToLoginPage(username: string) {
-    const oldPostLogoutRedirectUri = this.oAuthService.postLogoutRedirectUri;
-    const separator = this.getUrlSeparator(oldPostLogoutRedirectUri);
-    const usernamePayload = 'username=' + username;
-    this.oAuthService.postLogoutRedirectUri = oldPostLogoutRedirectUri + separator + usernamePayload;
+  public logoutSubrogationAndRedirectToLoginPage(username: string): void {
+    this.oAuthService.postLogoutRedirectUri += this.getUrlSeparator(this.oAuthService.postLogoutRedirectUri) + 'username=' + username;
     this.oAuthService.revokeTokenAndLogout();
   }
 
-  public initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string) {
-    const oldPostLogoutRedirectUri = this.oAuthService.postLogoutRedirectUri;
-    const separator = this.getUrlSeparator(oldPostLogoutRedirectUri);
-    const subrogationPayload =
-      'isSubrogation=true' +
-      '&superUserEmail=' +
-      superUser +
-      '&superUserCustomerId=' +
-      superUserCustomerId +
-      '&surrogateEmail=' +
-      surrogate +
-      '&surrogateCustomerId=' +
-      surrogateCustomerId;
-    this.oAuthService.postLogoutRedirectUri = oldPostLogoutRedirectUri + separator + subrogationPayload;
+  public initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string): void {
+    const sep = this.getUrlSeparator(this.oAuthService.postLogoutRedirectUri);
+    this.oAuthService.postLogoutRedirectUri +=
+      sep +
+      `isSubrogation=true&superUserEmail=${superUser}&superUserCustomerId=${superUserCustomerId}&surrogateEmail=${surrogate}&surrogateCustomerId=${surrogateCustomerId}`;
     this.oAuthService.revokeTokenAndLogout();
   }
 
@@ -133,28 +116,33 @@ export class OidcAuthenticatorService implements AuthenticatorService {
     this.oAuthService.revokeTokenAndLogout();
   }
 
-  private getUrlSeparator(url: string): string {
-    const questionMarkIndex = url.indexOf('?');
-    if (url.length === questionMarkIndex + 1) {
-      return '';
-    }
-    return questionMarkIndex > -1 ? '&' : '?';
+  private cleanOidcParams(path: string): string {
+    const u = new URL(path, this.location.origin);
+    OIDC_PARAMS.forEach((p) => u.searchParams.delete(p));
+    return u.pathname + (u.search || '');
   }
 
-  private cleanUrlAfterLogin() {
-    let url =
-      this.location.origin +
-      this.location.pathname +
-      this.location.search
-        .replace(/nonce=[^&\$]*/, '')
-        .replace(/client_id=[^&\$]*/, '')
-        .replace(/isSubrogation=[^&\$]*/, '')
-        .replace(/^\?&/, '?')
-        .replace(/&$/, '')
-        .replace(/^\?$/, '')
-        .replace(/&+/g, '&')
-        .replace(/\?&/, '?')
-        .replace(/\?$/, '');
-    history.replaceState(null, window.name, url);
+  private cleanUrlAfterLogin(): void {
+    history.replaceState(null, '', this.cleanOidcParams(this.location.pathname + this.location.search));
+  }
+
+  private getUrlSeparator(url: string): string {
+    const idx = url.indexOf('?');
+    if (idx === -1) return '?';
+    if (idx === url.length - 1) return '';
+    return '&';
+  }
+
+  private buildAbsoluteRedirectUri(): string {
+    const postLogoutUri = this.oAuthService.postLogoutRedirectUri;
+
+    try {
+      const u = new URL(postLogoutUri);
+      const forbiddenParams = ['code', 'state', 'id_token', 'access_token', 'token_type', 'session_state'];
+      forbiddenParams.forEach((p) => u.searchParams.delete(p));
+      return u.toString();
+    } catch {
+      return this.location.origin + postLogoutUri;
+    }
   }
 }
