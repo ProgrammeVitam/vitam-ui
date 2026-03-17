@@ -233,8 +233,8 @@ public class ProjectService {
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
             if (
-                e.getVitamError().getHttpCode() == HttpStatus.BAD_REQUEST.value() &&
                 e.getVitamError() != null &&
+                e.getVitamError().getHttpCode() == HttpStatus.BAD_REQUEST.value() &&
                 !e.getVitamError().getErrorsDetails().isEmpty()
             ) {
                 return e.getVitamError().toJsonNode();
