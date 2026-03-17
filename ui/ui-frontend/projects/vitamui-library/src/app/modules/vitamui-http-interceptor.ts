@@ -52,6 +52,7 @@ import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-e
 import { StartupService } from './startup.service';
 import { SKIP_ERROR_NOTIFICATION } from './utils';
 import { VitamuiHttpHeaders } from './vitamui-http-headers.enum';
+import { ErrorsDetailsDialogComponent } from '../../lib/components/dialog/errors-details-dialog/errors-details-dialog.component';
 
 const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export'];
 // @ts-ignore
@@ -82,6 +83,7 @@ const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
   private errorDialog: MatDialogRef<ErrorDialogComponent>;
+  private errorsDetailsDialog: MatDialogRef<ErrorsDetailsDialogComponent>;
   private snackBarService: SnackBarService;
 
   constructor(
@@ -172,7 +174,11 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
 
   private errorNotification(response: HttpErrorResponse, request: HttpRequest<any>): void {
     if (!request.headers.has(SKIP_ERROR_NOTIFICATION)) {
-      response.status === HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR ? this.displayErrorDialog() : this.displaySnackBar(response);
+      response.error.errorsDetails !== undefined
+        ? this.displayErrorsDetailsDialog(response.error)
+        : HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR
+          ? this.displayErrorDialog()
+          : this.displaySnackBar(response);
     }
   }
 
@@ -187,6 +193,15 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     if (!this.errorDialog) {
       this.errorDialog = this.matDialog.open(ErrorDialogComponent);
       this.errorDialog.afterClosed().subscribe(() => (this.errorDialog = null));
+    }
+  }
+
+  private displayErrorsDetailsDialog(error: any) {
+    if (!this.errorsDetailsDialog) {
+      this.errorsDetailsDialog = this.matDialog.open(ErrorsDetailsDialogComponent, {
+        data: error,
+      });
+      this.errorsDetailsDialog.afterClosed().subscribe(() => (this.errorsDetailsDialog = null));
     }
   }
 }

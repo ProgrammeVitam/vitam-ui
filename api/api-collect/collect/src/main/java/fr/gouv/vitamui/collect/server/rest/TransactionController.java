@@ -26,10 +26,11 @@
  */
 package fr.gouv.vitamui.collect.server.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
-import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionService;
@@ -45,6 +46,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -161,21 +163,22 @@ public class TransactionController {
         value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
         consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public VitamErrorResponseDto updateArchiveUnitsMetadataFromCsvFile(
+    public ResponseEntity<JsonNode> updateArchiveUnitsMetadataFromCsvFile(
         final @PathVariable("transactionId") String transactionId,
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    ) throws PreconditionFailedException {
+    ) throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(" [External] The transactionId is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[External] Calling update archive units metadata for transaction Id  {} ", transactionId);
-        return transactionService.updateArchiveUnitsFromCsvFile(
+        RequestResponse<JsonNode> response = transactionService.updateArchiveUnitsFromCsvFile(
             inputStream,
             transactionId,
             externalParametersService.buildVitamContextFromExternalParam()
         );
+        return new ResponseEntity<>(response.toJsonNode(), HttpStatusCode.valueOf(response.getHttpCode()));
     }
 
     @Secured(ServicesData.ROLE_COLLECT_RECLASSIFICATION)

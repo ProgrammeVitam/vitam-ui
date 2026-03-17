@@ -41,29 +41,3 @@
     </button>
   </mat-dialog-actions>
 </ng-template>
-
-<ng-template #displayCsvErrorsDialog>
-  <vitamui-dialog-header class="mb-4" [subhead]="'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate"></vitamui-dialog-header>
-  <vitamui-dialog-content-with-state
-    [state]="'invalid'"
-    [title]="'COLLECT.UPDATE_UNITS_METADATA.IMPORTED_CSV_FILE_INCLUDES_ERRORS' | translate"
-  >
-    <div>
-      <div class="text bold medium">{{ 'COLLECT.UPDATE_UNITS_METADATA.LIST_IDENTIFIED_ERRORS' | translate }}</div>
-      <ul class="scroll-area pl-5 mt-0">
-        @if (errorsDetails) {
-          @for (errorsDetail of errorsDetails; track errorsDetail) {
-            <li>{{ translateErrorKeys(errorsDetail) }}</li>
-          }
-        } @else {
-          <li>{{ errorMessage }}</li>
-        }
-      </ul>
-    </div>
-  </vitamui-dialog-content-with-state>
-  <mat-dialog-actions>
-    <button type="button" (click)="onCloseAction()" class="btn primary">
-      {{ 'COLLECT.UPDATE_UNITS_METADATA.CLOSE' | translate }}
-    </button>
-  </mat-dialog-actions>
-</ng-template>

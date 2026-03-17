@@ -44,7 +44,7 @@ import { last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
-import { HttpEventType } from '@angular/common/http';
+import { HttpEventType, HttpStatusCode } from '@angular/common/http';
 import {
   ExternalReferentialService,
   fetchTitle,
@@ -67,11 +67,11 @@ import {
   Transaction,
   TransactionStatus,
   Unit,
+  VitamError,
+  VitamErrorDetails,
   Workflow,
   ZipFile,
   ZipFileStatus,
-  VitamError,
-  VitamErrorDetails,
 } from 'vitamui-library';
 
 export enum ImportType {
@@ -518,7 +518,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         next: (_result) => {
           this.dialogRef.close(true);
           let vitamError: VitamError = JSON.parse(_result.body);
-          if (vitamError.httpCode === 200) {
+          if (vitamError.httpCode === HttpStatusCode.Ok) {
             this.snackBarService.open({
               message: 'COLLECT.UPLOAD.TERMINATED',
               duration: 10_000,

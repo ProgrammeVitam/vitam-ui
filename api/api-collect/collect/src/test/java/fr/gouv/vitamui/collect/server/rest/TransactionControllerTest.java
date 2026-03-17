@@ -29,15 +29,20 @@
 
 package fr.gouv.vitamui.collect.server.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.error.VitamError;
+import fr.gouv.vitam.common.error.VitamErrorDetails;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,6 +51,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.ByteArrayInputStream;
@@ -53,6 +59,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_PATH;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -122,11 +129,33 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
     }
 
     @Test
-    void testUpdateUnitsMetadataThenReturnVitamOperationDetails() throws PreconditionFailedException {
+    void testUpdateUnitsMetadataThenReturnVitamOperationDetails()
+        throws PreconditionFailedException, JsonProcessingException, InvalidParseOperationException, VitamClientException {
         // Given
         String fileName = "FileName";
         String transactionId = "transactionId";
-        VitamErrorResponseDto expectedResponse = new VitamErrorResponseDto("BAD_REQUEST", 400, "Message", List.of());
+        String resultDto =
+            """
+              {
+                  "httpCode" : 400,
+                  "code" : "BAD_REQUEST",
+                  "context" : "Collect",
+                  "message" : "error message",
+                  "errorsDetails" : [{
+                    "key" : "ERROR_KEY"
+                  }]
+                }
+            """;
+        VitamClientException exception = new VitamClientException("error message");
+        List<VitamErrorDetails> errorDetailsList = List.of(new VitamErrorDetails("ERROR_KEY", null));
+        exception.setVitamError(
+            new VitamError<>("BAD_REQUEST")
+                .setHttpCode(HttpStatus.BAD_REQUEST.value())
+                .setContext("Collect")
+                .setMessage("error message")
+                .setErrorsDetails(errorDetailsList)
+        );
+        RequestResponse<JsonNode> expectedResponse = VitamError.getFromJsonNode(new ObjectMapper().readTree(resultDto));
         String initialString = "csv file to update collect units";
         InputStream csvFile = new ByteArrayInputStream(initialString.getBytes());
 
@@ -138,14 +167,14 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
                 eq(transactionId),
                 any(VitamContext.class)
             )
-        ).thenReturn(expectedResponse);
-        VitamErrorResponseDto response = transactionController.updateArchiveUnitsMetadataFromCsvFile(
-            transactionId,
-            csvFile,
-            fileName
-        );
+        )
+            .thenThrow(exception)
+            .thenReturn(expectedResponse);
 
-        // Then
-        Assertions.assertEquals(response, expectedResponse);
+        assertThatCode(
+            () -> transactionController.updateArchiveUnitsMetadataFromCsvFile(transactionId, csvFile, fileName)
+        )
+            .isInstanceOf(VitamClientException.class)
+            .hasMessage("error message");
     }
 }

@@ -42,7 +42,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
-import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -74,7 +73,6 @@ public class TransactionService {
     public static final String UNABLE_TO_UPDATE_TRANSACTION = "Unable to update transaction";
     public static final String UNABLE_TO_PROCESS_RESPONSE = "Unable to process response";
     public static final String UNABLE_TO_PROCESS_UNIT_UPDATE = "Unable to process units update operation";
-    public static final String ERROR_400 = "ERROR_400";
     public static final String REQUEST_TIMEOUT_EXCEPTION_MESSAGE =
         "the server has decided to close the connection rather than continue waiting";
 
@@ -178,23 +176,13 @@ public class TransactionService {
         }
     }
 
-    public VitamErrorResponseDto updateArchiveUnitsFromCsvFile(
+    public RequestResponse<JsonNode> updateArchiveUnitsFromCsvFile(
         InputStream inputStream,
         String transactionId,
         VitamContext vitamContext
-    ) {
-        try {
-            LOGGER.debug("[Internal] call update Archive Units From CSV File for transaction Id {}  ", transactionId);
-            collectService.updateCollectArchiveUnitsWithCsv(vitamContext, transactionId, inputStream);
-            return new VitamErrorResponseDto();
-        } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_PROCESS_UNIT_UPDATE, e);
-            if (e.getVitamError() != null && e.getVitamError().getHttpCode() == HttpStatus.BAD_REQUEST.value()) {
-                return new VitamErrorResponseDto(e.getVitamError());
-            } else {
-                throw new InternalServerException(e.getMessage(), e);
-            }
-        }
+    ) throws VitamClientException {
+        LOGGER.debug("[Internal] call update Archive Units From CSV File for transaction Id {}  ", transactionId);
+        return collectService.updateCollectArchiveUnitsWithCsv(vitamContext, transactionId, inputStream);
     }
 
     public String reclassification(

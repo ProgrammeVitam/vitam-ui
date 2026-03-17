@@ -1,0 +1,23 @@
+<vitamui-dialog-header class="mb-4" [subhead]="'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate"></vitamui-dialog-header>
+<vitamui-dialog-content-with-state
+  [state]="'invalid'"
+  [title]="'COLLECT.UPDATE_UNITS_METADATA.IMPORTED_CSV_FILE_INCLUDES_ERRORS' | translate"
+>
+  <div>
+    <div class="text bold medium">{{ 'COLLECT.UPDATE_UNITS_METADATA.LIST_IDENTIFIED_ERRORS' | translate }}</div>
+    <ul class="scroll-area pl-4 mt-0">
+      @if (data.errorsDetails) {
+        @for (errorsDetail of data.errorsDetails; track errorsDetail) {
+          <li>{{ translateErrorKeys(errorsDetail) }}</li>
+        }
+      } @else {
+        <li>{{ data.message }}</li>
+      }
+    </ul>
+  </div>
+</vitamui-dialog-content-with-state>
+<mat-dialog-actions>
+  <button type="button" [matDialogClose]="true" class="btn primary">
+    {{ 'COLLECT.UPDATE_UNITS_METADATA.CLOSE' | translate }}
+  </button>
+</mat-dialog-actions>
