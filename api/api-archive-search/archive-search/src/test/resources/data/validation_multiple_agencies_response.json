@@ -1,0 +1,39 @@
+{
+  "$hits": {
+    "total": 2,
+    "offset": 0,
+    "limit": 2,
+    "size": 2
+  },
+  "$results": [
+    {
+      "#id": "aeaqaaaaaeecmnlhaesx6am4mvglqjqaaaaq",
+      "#originating_agency": "agency1"
+    },
+    {
+      "#id": "aeaqaaaaaeecmnlhaesx6am4mvglqjqaaaar",
+      "#originating_agency": "agency2"
+    }
+  ],
+  "$facetResults": [
+    {
+      "name": "originating_agency_facet",
+      "buckets": [
+        {
+          "value": "agency1",
+          "count": 1
+        },
+        {
+          "value": "agency2",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "$context": {
+    "$roots": [],
+    "$query": [],
+    "$filter": {},
+    "$projection": {}
+  }
+}

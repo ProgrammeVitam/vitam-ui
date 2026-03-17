@@ -51,6 +51,7 @@ import {
   VitamUICommonModule,
   VitamuiSelectOptions,
 } from 'vitamui-library';
+import { ReassignmentMode } from '../../../models/reassign-request.interface';
 
 @Component({
   selector: 'app-originating-agency-reassignment-dialog',
@@ -72,8 +73,7 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
   form: FormGroup;
   originatingAgenciesOptions: VitamuiSelectOptions = { options: [] };
   itemSelected: number;
-  originatingAgenciesFromSelection: string[] = [];
-  isOriginatingAgencyUnique: boolean;
+  reassignmentMode: ReassignmentMode;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -85,14 +85,19 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
     @Inject(MAT_DIALOG_DATA)
     public data: {
       itemSelected: number;
+      reassignmentMode: ReassignmentMode;
     },
   ) {}
 
   ngOnInit(): void {
+    this.itemSelected = this.data.itemSelected;
+    this.reassignmentMode = this.data.reassignmentMode;
+
     this.form = this.fb.group({
+      entryOperationIds: ['', this.reassignmentMode === ReassignmentMode.BY_ID ? [] : [Validators.required]],
+      propagateToObjectGroups: [true],
       sourceOriginatingAgency: [null, [Validators.required]],
       targetOriginatingAgency: [null, [Validators.required]],
-      propagateToObjectGroups: [true],
     });
 
     this.agencyService
@@ -103,8 +108,6 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
       .listenToEscapeKeyPress(this.dialogRef)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.onCancel());
-
-    this.itemSelected = this.data.itemSelected;
   }
 
   ngOnDestroy(): void {
@@ -127,4 +130,24 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
 
     this.dialogRef.close({ ...this.form.getRawValue() });
   }
+
+  get title(): string {
+    return this.reassignmentMode === ReassignmentMode.BY_ID
+      ? 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.TITLE'
+      : 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.TITLE';
+  }
+
+  get subhead(): string {
+    return this.reassignmentMode === ReassignmentMode.BY_ID
+      ? 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.SUBTITLE'
+      : 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.SUBTITLE';
+  }
+
+  get sectionTitle(): string {
+    return this.reassignmentMode === ReassignmentMode.BY_ID
+      ? 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.SOURCE_ORIGINATING_AGENCY_LABEL'
+      : 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_SECTION_TITLE';
+  }
+
+  protected readonly ReassignmentMode = ReassignmentMode;
 }

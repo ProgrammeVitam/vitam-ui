@@ -36,10 +36,12 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ReassignmentDialogService } from './reassignment-dialog.service';
 import { ArchiveService } from '../../../archive.service';
 import { SnackBarService, SearchCriteriaEltDto, CriteriaOperator, CriteriaDataType, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { ReassignmentMode } from '../../../models/reassign-request.interface';
 
 describe('ReassignmentDialogService', () => {
   let service: ReassignmentDialogService;
@@ -63,7 +65,7 @@ describe('ReassignmentDialogService', () => {
   beforeEach(() => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     archiveServiceSpy = jasmine.createSpyObj('ArchiveService', ['launchReassignmentAction']);
-    snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+    snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open', 'openSnackBar']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -80,22 +82,25 @@ describe('ReassignmentDialogService', () => {
   it('should stop flow when dialog returns null', () => {
     dialogSpy.open.and.returnValue({ afterClosed: () => of(null) } as any);
 
-    service.lanchReassignmentModal(mockCriteria, itemSelected, tenantId);
+    service.launchReassignmentModal(mockCriteria, itemSelected, tenantId);
 
     expect(archiveServiceSpy.launchReassignmentAction).not.toHaveBeenCalled();
     expect(snackBarSpy.open).not.toHaveBeenCalled();
   });
 
   it('should call API with correctly built ReassignRequestDto', () => {
-    const dialogResult = { fromAgency: 'agencie-a', toAgency: 'agencie-b', propagateToObjectGroups: true };
+    const dialogResult = { sourceOriginatingAgency: 'agencie-a', targetOriginatingAgency: 'agencie-b', propagateToObjectGroups: true };
     dialogSpy.open.and.returnValue({ afterClosed: () => of(dialogResult) } as any);
     archiveServiceSpy.launchReassignmentAction.and.returnValue(of(apiResponse));
 
-    service.lanchReassignmentModal(mockCriteria, itemSelected, tenantId);
+    service.launchReassignmentModal(mockCriteria, itemSelected, tenantId);
 
     expect(archiveServiceSpy.launchReassignmentAction).toHaveBeenCalledWith(
       jasmine.objectContaining({
-        ...dialogResult,
+        reassignMode: ReassignmentMode.BY_ID,
+        sourceOriginatingAgency: 'agencie-a',
+        targetOriginatingAgency: 'agencie-b',
+        propagateToObjectGroups: true,
         searchCriteria: {
           criteriaList: mockCriteria,
           pageNumber: 0,
@@ -106,12 +111,12 @@ describe('ReassignmentDialogService', () => {
   });
 
   it('should show snackbar with operation link when reassignment succeeds', () => {
-    const dialogResult = { fromAgency: 'agencie-a', toAgency: 'agencie-b', propagateToObjectGroups: true };
+    const dialogResult = { sourceOriginatingAgency: 'agencie-a', targetOriginatingAgency: 'agencie-b', propagateToObjectGroups: true };
 
     dialogSpy.open.and.returnValue({ afterClosed: () => of(dialogResult) } as any);
     archiveServiceSpy.launchReassignmentAction.and.returnValue(of(apiResponse));
 
-    service.lanchReassignmentModal(mockCriteria, itemSelected, tenantId);
+    service.launchReassignmentModal(mockCriteria, itemSelected, tenantId);
 
     expect(snackBarSpy.open).toHaveBeenCalledWith(
       jasmine.objectContaining({
@@ -121,6 +126,67 @@ describe('ReassignmentDialogService', () => {
             path: `/tenant/${tenantId}?guid=aeaqaaaabieci5gnciz5kam2cby53jaaaabq`,
           }),
         ],
+      }),
+    );
+  });
+
+  it('should show alert dialog when ERROR_MULTIPLE_SP error occurs', () => {
+    const dialogResult = { sourceOriginatingAgency: 'agencie-a', targetOriginatingAgency: 'agencie-b', propagateToObjectGroups: true };
+    const errorResponse = new HttpErrorResponse({
+      error: 'ERROR_MULTIPLE_SP',
+      status: 400,
+      statusText: 'Bad Request',
+    });
+
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(dialogResult) } as any);
+    archiveServiceSpy.launchReassignmentAction.and.returnValue(throwError(() => errorResponse));
+
+    service.launchReassignmentModal(mockCriteria, itemSelected, tenantId);
+
+    expect(dialogSpy.open).toHaveBeenCalledTimes(2); // Once for reassignment modal, once for error dialog
+    expect(snackBarSpy.open).not.toHaveBeenCalled();
+  });
+
+  it('should show snackbar error when bad request error occurs', () => {
+    const dialogResult = { sourceOriginatingAgency: 'agencie-a', targetOriginatingAgency: 'agencie-b', propagateToObjectGroups: true };
+    const errorResponse = new HttpErrorResponse({
+      error: 'Some validation error',
+      status: 400,
+      statusText: 'Bad Request',
+    });
+
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(dialogResult) } as any);
+    archiveServiceSpy.launchReassignmentAction.and.returnValue(throwError(() => errorResponse));
+
+    service.launchReassignmentModal(mockCriteria, itemSelected, tenantId);
+
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      jasmine.objectContaining({
+        message: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.BAD_REQUEST_ERROR',
+        icon: 'vitamui-icon-close',
+        duration: 10000,
+      }),
+    );
+  });
+
+  it('should show snackbar error when server error occurs', () => {
+    const dialogResult = { sourceOriginatingAgency: 'agencie-a', targetOriginatingAgency: 'agencie-b', propagateToObjectGroups: true };
+    const errorResponse = new HttpErrorResponse({
+      error: 'Internal server error',
+      status: 500,
+      statusText: 'Internal Server Error',
+    });
+
+    dialogSpy.open.and.returnValue({ afterClosed: () => of(dialogResult) } as any);
+    archiveServiceSpy.launchReassignmentAction.and.returnValue(throwError(() => errorResponse));
+
+    service.launchReassignmentModal(mockCriteria, itemSelected, tenantId);
+
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      jasmine.objectContaining({
+        message: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.SERVER_ERROR',
+        icon: 'vitamui-icon-close',
+        duration: 10000,
       }),
     );
   });

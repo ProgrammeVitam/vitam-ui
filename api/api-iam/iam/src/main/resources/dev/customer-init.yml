@@ -211,7 +211,7 @@ customer-init:
         - ROLE_LOGBOOKS
 
     - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, requête et aquittement de transfert, export DIP et opérations d'élimination
+      description: Profil ayant tous les droits de recherche et consultation des archives dont la modification, l'élimination, le transfert et la réattribution
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:

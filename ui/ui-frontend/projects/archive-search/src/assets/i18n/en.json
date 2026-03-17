@@ -40,9 +40,29 @@
         "TITLE": "Multiple originating agencies selected",
         "MESSAGE": "Originating agency reassignment can only be performed on a selection of archival units sharing the same source originating agency to be reassigned to the same target originating agency"
       },
-      "ALERTE_MESSAGES": {
+      "ALERT_MESSAGES": {
         "SUBHEAD": "The requested action is not possible on this selection",
-        "ACTION_ALERTE_TITLE": "Wrong archival unit type"
+        "INVALID_ARCHIVAL_UNIT_TYPE": "Wrong archival unit type"
+      },
+      "REASSIGNMENT_LAUNCHED": "The reassignment request has been successfully initiated",
+      "REASSIGNMENT_ERROR": "An error occurred during reassignment",
+      "BAD_REQUEST_ERROR": "Invalid request: please check reassignment parameters",
+      "SERVER_ERROR": "Server error during reassignment"
+    },
+    "ENTRY_OPERATION_REASSIGNMENT": {
+      "SUBTITLE": "Reassign",
+      "TITLE": "Modify the producer service for one or more entries",
+      "ENTRY_OPERATION_IDS_SECTION_TITLE": "Enter entry operation identifier(s)",
+      "ENTRY_OPERATION_IDS_LABEL": "Entry operation identifier(s)",
+      "ENTRY_OPERATION_IDS_HINT": "Identifiers separated by commas",
+      "SOURCE_ORIGINATING_AGENCY_LABEL": "Specify the source producer service for the entered entry operations",
+      "TARGET_ORIGINATING_AGENCY_LABEL": "Select the target producer service",
+      "ORIGINATING_AGENCY": "Producer service",
+      "CONFIRM": "REASSIGN",
+      "ERROR_MULTIPLE_SP_MODAL": {
+        "SUBHEAD": "The requested action is not possible on this selection",
+        "TITLE": "Multiple producer services selected",
+        "MESSAGE": "Reassignment of producer service can only be performed on a selection of archive units having the same source producer service to be reassigned to the same target producer service"
       },
       "REASSIGNMENT_LAUNCHED": "The reassignment request has been successfully initiated"
     },

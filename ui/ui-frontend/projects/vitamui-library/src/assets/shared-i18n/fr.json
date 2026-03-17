@@ -4814,6 +4814,9 @@
     },
     "PERSISTENT_IDENTIFIER_SEARCH": {
       "GO_TO_PAGE": "Recherche par identifiant pérenne"
+    },
+    "MODIFY_PRODUCER_SERVICE": {
+      "TITLE": "Modifier le service producteur d’une ou plusieurs entrées"
     }
   },
   "COLLECT": {

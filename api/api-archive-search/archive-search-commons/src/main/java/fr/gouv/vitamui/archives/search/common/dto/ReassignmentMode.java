@@ -27,19 +27,31 @@
 
 package fr.gouv.vitamui.archives.search.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import lombok.Data;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-@ToString
-@Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ReassignRequestDto {
+public enum ReassignmentMode {
+    BY_ID("BY_ID"),
+    BY_OPI("BY_OPI");
 
-    private ReassignmentMode reassignMode;
-    private String sourceOriginatingAgency;
-    private String targetOriginatingAgency;
-    private boolean propagateToObjectGroups;
-    private SearchCriteriaDto searchCriteria;
+    private final String value;
+
+    ReassignmentMode(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @JsonCreator
+    public static ReassignmentMode fromValue(String value) {
+        for (ReassignmentMode mode : ReassignmentMode.values()) {
+            if (mode.value.equalsIgnoreCase(value)) {
+                return mode;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + value);
+    }
 }

@@ -35,12 +35,35 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 import { OriginatingAgencyReassignmentDialogComponent } from './originating-agency-reassignment-dialog.component';
-import { ApplicationId, SearchCriteriaDto, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
+import {
+  ApplicationId,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SnackBarService,
+  CriteriaOperator,
+  SearchCriteriaTypeEnum,
+  CriteriaDataType,
+  AlertDialogComponent,
+} from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
-import { ReassignRequestDto } from '../../../models/reassign-request.interface';
-import { filter, switchMap } from 'rxjs/operators';
+import { ReassignmentMode, ReassignRequestDto } from '../../../models/reassign-request.interface';
+import { filter, switchMap, catchError } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+
+interface ReassignmentDialogData {
+  itemSelected?: number;
+  reassignmentMode: ReassignmentMode;
+}
+
+interface ReassignmentDialogResult {
+  sourceOriginatingAgency: string;
+  targetOriginatingAgency: string;
+  propagateToObjectGroups: boolean;
+  entryOperationIds?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -52,12 +75,88 @@ export class ReassignmentDialogService {
     private snackBarService: SnackBarService,
   ) {}
 
-  lanchReassignmentModal(listOfUACriteriaSearch: SearchCriteriaEltDto[], itemSelected: number, tenantIdentifier: number) {
-    const dialogRef = this.dialog.open(OriginatingAgencyReassignmentDialogComponent, {
-      disableClose: false,
-      data: {
+  launchReassignmentModal(listOfUACriteriaSearch: SearchCriteriaEltDto[], itemSelected: number, tenantIdentifier: number) {
+    this.openReassignmentDialog(
+      {
         itemSelected,
+        reassignmentMode: ReassignmentMode.BY_ID,
       },
+      (result) => {
+        const searchCriteriaDto: SearchCriteriaDto = {
+          criteriaList: listOfUACriteriaSearch,
+          pageNumber: 0,
+          size: 1,
+        };
+
+        return {
+          reassignMode: ReassignmentMode.BY_ID,
+          sourceOriginatingAgency: result.sourceOriginatingAgency,
+          targetOriginatingAgency: result.targetOriginatingAgency,
+          propagateToObjectGroups: result.propagateToObjectGroups,
+          searchCriteria: searchCriteriaDto,
+        };
+      },
+      'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.REASSIGNMENT_LAUNCHED',
+      tenantIdentifier,
+    );
+  }
+
+  launchEntryOperationReassignmentModal(tenantIdentifier: number) {
+    this.openReassignmentDialog(
+      {
+        reassignmentMode: ReassignmentMode.BY_OPI,
+      },
+      (result) => {
+        // Split + trim + remove empty + deduplicate
+        const idsArray = [
+          ...new Set(
+            result.entryOperationIds
+              .split(',')
+              .map((id: string) => id.trim())
+              .filter((id: string) => id.length > 0),
+          ),
+        ];
+
+        if (!idsArray.length) {
+          return null;
+        }
+
+        const criteriaList: SearchCriteriaEltDto[] = [
+          {
+            criteria: 'GUID_OPI',
+            values: idsArray.map((id: string) => ({ value: id, id })),
+            operator: CriteriaOperator.IN,
+            category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+            dataType: CriteriaDataType.STRING,
+          },
+        ];
+
+        return {
+          reassignMode: ReassignmentMode.BY_OPI,
+          sourceOriginatingAgency: result.sourceOriginatingAgency,
+          targetOriginatingAgency: result.targetOriginatingAgency,
+          propagateToObjectGroups: true,
+          searchCriteria: {
+            criteriaList,
+            pageNumber: 0,
+            size: 1,
+          },
+        };
+      },
+      'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.REASSIGNMENT_LAUNCHED',
+      tenantIdentifier,
+    );
+  }
+
+  private openReassignmentDialog(
+    dialogData: ReassignmentDialogData,
+    buildReassignRequest: (result: ReassignmentDialogResult) => ReassignRequestDto | null,
+    successMessage: string,
+    tenantIdentifier: number,
+  ): void {
+    const dialogRef = this.dialog.open(OriginatingAgencyReassignmentDialogComponent, {
+      disableClose: true,
+      data: dialogData,
     });
 
     dialogRef
@@ -65,23 +164,24 @@ export class ReassignmentDialogService {
       .pipe(
         filter((result) => !!result),
         switchMap((result) => {
-          const searchCriteriaDto: SearchCriteriaDto = {
-            criteriaList: listOfUACriteriaSearch,
-            pageNumber: 0,
-            size: 1,
-          };
+          const reassignDto = buildReassignRequest(result);
+          if (!reassignDto) {
+            return EMPTY;
+          }
 
-          const reassignDto: ReassignRequestDto = {
-            ...result,
-            searchCriteria: searchCriteriaDto,
-          };
-          return this.archiveService.launchReassignmentAction(reassignDto);
+          return this.archiveService.launchReassignmentAction(reassignDto).pipe(
+            catchError((error: HttpErrorResponse) => {
+              console.log(error);
+              this.handleReassignmentError(error);
+              return EMPTY;
+            }),
+          );
         }),
         filter((opi) => !!opi),
       )
       .subscribe((opi) => {
         this.snackBarService.open({
-          message: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.REASSIGNMENT_LAUNCHED',
+          message: successMessage,
           buttons: [
             {
               appId: ApplicationId.LOGBOOK_OPERATION_APP,
@@ -92,5 +192,48 @@ export class ReassignmentDialogService {
           duration: 100_000,
         });
       });
+  }
+
+  private handleReassignmentError(err: HttpErrorResponse): void {
+    let errorMessage = 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.REASSIGNMENT_ERROR';
+
+    if (err.status === 400) {
+      // Bad Request - typically ERROR_MULTIPLE_SP
+      if (err.error?.includes('ERROR_MULTIPLE_SP')) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          subhead: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.SUBHEAD',
+          title: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.TITLE',
+          icon: 'cancel',
+          message: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.MESSAGE',
+          cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+        };
+        this.dialog.open(AlertDialogComponent, dialogConfig);
+        return;
+      }
+      // Bad Request - typically INVALID_ARCHIVAL_UNIT_TYPE
+      if (err.error?.includes('INVALID_ARCHIVAL_UNIT_TYPE')) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          subhead: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.SUBHEAD',
+          title: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERT_MESSAGES.INVALID_ARCHIVAL_UNIT_TYPE',
+          icon: 'cancel',
+          message: 'RULES.ALERT_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+          cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+        };
+        this.dialog.open(AlertDialogComponent, dialogConfig);
+        return;
+      }
+      errorMessage = 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.BAD_REQUEST_ERROR';
+    } else if (err.status === 500) {
+      // Internal Server Error
+      errorMessage = 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.SERVER_ERROR';
+    }
+
+    this.snackBarService.open({
+      message: errorMessage,
+      icon: 'vitamui-icon-close',
+      duration: 10000,
+    });
   }
 }
