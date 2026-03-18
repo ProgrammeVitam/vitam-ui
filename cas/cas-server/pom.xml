@@ -20,7 +20,6 @@
 
         <!-- Spring & Spring Cloud Versions -->
         <spring.boot.version>3.2.1</spring.boot.version>
-        <spring.cloud.consul.version>4.1.0</spring.cloud.consul.version>
 
         <!-- CAS & Security Versions -->
         <cas.version>7.0.10.1</cas.version>
