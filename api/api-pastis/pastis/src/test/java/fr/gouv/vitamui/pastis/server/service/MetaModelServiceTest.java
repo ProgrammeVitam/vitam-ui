@@ -40,6 +40,7 @@ package fr.gouv.vitamui.pastis.server.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
 import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
 import org.json.JSONObject;
@@ -75,7 +76,7 @@ public class MetaModelServiceTest {
         // Return empty schema on calling
         doReturn(new ArrayList<>()).when(externalSchemaService).getExternalSchemaModels();
         // Call service
-        SedaNode sedaNode = metaModelService.getMetaModelForVersion(ProfileVersion.VERSION_2_2);
+        SedaNode sedaNode = metaModelService.getMetaModelForVersion(ProfileVersion.VERSION_2_2, ProfileType.PA);
         JSONObject actual = new JSONObject(objectMapper.writeValueAsString(sedaNode));
         InputStream inputStreamExpected = getClass()
             .getClassLoader()
@@ -89,7 +90,10 @@ public class MetaModelServiceTest {
         // Return empty schema on calling
         doReturn(new ArrayList<>()).when(externalSchemaService).getExternalSchemaModels();
         // Call service
-        SedaNode sedaNode = metaModelService.getArchiveUnitMetaModelForVersion(ProfileVersion.VERSION_2_3);
+        SedaNode sedaNode = metaModelService.getArchiveUnitMetaModelForVersion(
+            ProfileVersion.VERSION_2_3,
+            ProfileType.PUA
+        );
         JSONObject actual = new JSONObject(objectMapper.writeValueAsString(sedaNode));
         InputStream inputStreamExpected = getClass()
             .getClassLoader()
@@ -104,7 +108,7 @@ public class MetaModelServiceTest {
         List<SchemaResponse> schemaResponses = getSchemaResponses("metamodel/external_schema.json");
         doReturn(schemaResponses).when(externalSchemaService).getExternalSchemaModels();
         // Call service
-        SedaNode sedaNode = metaModelService.getMetaModelForVersion(ProfileVersion.VERSION_2_2);
+        SedaNode sedaNode = metaModelService.getMetaModelForVersion(ProfileVersion.VERSION_2_2, ProfileType.PA);
         JSONObject actual = new JSONObject(objectMapper.writeValueAsString(sedaNode));
         InputStream inputStreamExpected = getClass()
             .getClassLoader()
@@ -119,7 +123,10 @@ public class MetaModelServiceTest {
         List<SchemaResponse> schemaResponses = getSchemaResponses("metamodel/external_schema.json");
         doReturn(schemaResponses).when(externalSchemaService).getExternalSchemaModels();
         // Call service
-        SedaNode sedaNode = metaModelService.getArchiveUnitMetaModelForVersion(ProfileVersion.VERSION_2_3);
+        SedaNode sedaNode = metaModelService.getArchiveUnitMetaModelForVersion(
+            ProfileVersion.VERSION_2_3,
+            ProfileType.PUA
+        );
         JSONObject actual = new JSONObject(objectMapper.writeValueAsString(sedaNode));
         InputStream inputStreamExpected = getClass()
             .getClassLoader()

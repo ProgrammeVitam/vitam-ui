@@ -208,10 +208,12 @@ class PastisController {
     @Operation(summary = "Get meta-model by type and version")
     @Secured({ ServicesData.ROLE_GET_ARCHIVE_PROFILES, ServicesData.ROLE_GET_PROFILES })
     @GetMapping(value = RestApi.PASTIS_METAMODEL)
-    ResponseEntity<SedaNode> getMetaModel(@RequestParam String version) throws IOException {
+    ResponseEntity<SedaNode> getMetaModel(@RequestParam String version, @RequestParam String type) throws IOException {
         SanityChecker.checkSecureParameter(version);
+        SanityChecker.checkSecureParameter(type);
         ProfileVersion profileVersion = ProfileVersion.fromVersionString(version);
-        SedaNode sedaNode = profileService.getMetaModel(profileVersion);
+        ProfileType profileType = ProfileType.valueOf(type);
+        SedaNode sedaNode = profileService.getMetaModel(profileVersion, profileType);
         if (sedaNode == null) {
             return ResponseEntity.notFound().build();
         }

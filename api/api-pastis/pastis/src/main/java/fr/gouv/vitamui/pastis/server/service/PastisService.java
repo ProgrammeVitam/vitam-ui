@@ -232,7 +232,10 @@ public class PastisService {
         }
         String controlSchema;
         try {
-            SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(ProfileVersion.VERSION_2_3);
+            SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(
+                ProfileVersion.VERSION_2_3,
+                ProfileType.PUA
+            );
             controlSchema = puaFromJSON.getControlSchemaFromElementProperties(sedaTree, json.getElementProperties());
         } catch (IOException e) {
             throw new TechnicalException(
@@ -298,7 +301,10 @@ public class PastisService {
                 LOGGER.info("Starting editing Archive Profile with id : {}", notice.getId());
             } else if (fileType.equals(ProfileType.PUA)) {
                 puaPastisValidator.validatePUA(profileJson, false);
-                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(notice.getSedaVersion());
+                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(
+                    notice.getSedaVersion(),
+                    ProfileType.PUA
+                );
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(sedaTree, profileJson));
             }
             profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
@@ -384,7 +390,7 @@ public class PastisService {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
                 puaPastisValidator.validatePUA(profileJson, false);
-                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion);
+                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion, ProfileType.PUA);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(sedaTree, profileJson));
                 // Get default PUA model and apply the seda version to it
                 Notice noticeFromPUA = NoticeUtils.getNoticeFromPUA(profileJson);
@@ -436,7 +442,7 @@ public class PastisService {
                     ProfileVersion.fromVersionString(DEFAULT_SEDA_VERSION)
                 );
                 profileResponse.setSedaVersion(profileVersion);
-                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion);
+                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion, ProfileType.PUA);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(sedaTree, profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", file.getOriginalFilename());
             }
@@ -466,8 +472,8 @@ public class PastisService {
         return notices;
     }
 
-    public SedaNode getMetaModel(ProfileVersion profileVersion) throws IOException {
-        return metaModelService.getMetaModelForVersion(profileVersion);
+    public SedaNode getMetaModel(ProfileVersion profileVersion, ProfileType profileType) throws IOException {
+        return metaModelService.getMetaModelForVersion(profileVersion, profileType);
     }
 
     private VitamContext buildVitamContext() {

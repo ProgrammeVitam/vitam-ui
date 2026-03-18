@@ -261,8 +261,8 @@ export class ProfileService implements OnDestroy {
     return this.paService.download(id);
   }
 
-  getMetaModel(version: ProfileVersion): Observable<SedaData> {
-    const params = new HttpParams().set('version', version);
+  getMetaModel(version: ProfileVersion, type: ProfileType): Observable<SedaData> {
+    const params = new HttpParams().set('version', version).set('type', type);
     return this.apiService.get<SedaData>(this.pastisConfig.metaModelUrl, { params });
   }
 

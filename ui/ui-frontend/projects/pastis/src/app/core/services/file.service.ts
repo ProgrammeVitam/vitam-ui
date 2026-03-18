@@ -143,7 +143,7 @@ export class FileService implements OnDestroy {
       .getProfile(element)
       .pipe(
         mergeMap((profile) =>
-          this.profileService.getMetaModel(profile.sedaVersion).pipe(
+          this.profileService.getMetaModel(profile.sedaVersion, profile.type).pipe(
             map((metaModel) => ({
               profile,
               metaModel,

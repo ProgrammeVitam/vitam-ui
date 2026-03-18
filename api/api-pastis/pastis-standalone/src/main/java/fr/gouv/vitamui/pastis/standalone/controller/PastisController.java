@@ -247,9 +247,10 @@ class PastisController {
         tags = { "pastis" }
     )
     @GetMapping(value = RestApi.PASTIS_METAMODEL)
-    ResponseEntity<SedaNode> getMetaModel(@RequestParam String version) throws IOException {
+    ResponseEntity<SedaNode> getMetaModel(@RequestParam String version, @RequestParam String type) throws IOException {
         ProfileVersion profileVersion = ProfileVersion.fromVersionString(version);
-        SedaNode sedaNode = profileService.getMetaModel(profileVersion);
+        ProfileType profileType = ProfileType.valueOf(type);
+        SedaNode sedaNode = profileService.getMetaModel(profileVersion, profileType);
         if (sedaNode == null) {
             return ResponseEntity.notFound().build();
         }

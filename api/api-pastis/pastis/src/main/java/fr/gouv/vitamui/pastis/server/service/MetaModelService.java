@@ -40,6 +40,7 @@ package fr.gouv.vitamui.pastis.server.service;
 
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitam.common.model.administration.schema.SchemaType;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
 import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
 import fr.gouv.vitamui.pastis.common.util.SedaNodeUtils;
@@ -62,9 +63,9 @@ public class MetaModelService {
 
     private final ExternalSchemaService externalSchemaService;
 
-    public SedaNode getMetaModelForVersion(ProfileVersion profileVersion) throws IOException {
-        // Get metamodel for wanted profile version
-        String resourcePath = "metamodel/metamodel-" + profileVersion.getVersion() + ".json";
+    public SedaNode getMetaModelForVersion(ProfileVersion profileVersion, ProfileType profileType) throws IOException {
+        // Get metamodel for wanted profile version and type
+        String resourcePath = buildMetamodelResourcePath(profileVersion, profileType);
         SedaNode sedaNode = SedaNodeUtils.parseSedaNodeFromResource(resourcePath);
         // Get metamodel from external schema properties
         List<SedaNode> externalSedaNodes = getMetaModelFromExternalSchema();
@@ -72,9 +73,15 @@ public class MetaModelService {
         return mergeSedaNodesIntoContent(sedaNode, externalSedaNodes);
     }
 
-    public SedaNode getArchiveUnitMetaModelForVersion(ProfileVersion profileVersion) throws IOException {
-        SedaNode sedaNode = getMetaModelForVersion(profileVersion);
+    public SedaNode getArchiveUnitMetaModelForVersion(ProfileVersion profileVersion, ProfileType profileType)
+        throws IOException {
+        SedaNode sedaNode = getMetaModelForVersion(profileVersion, profileType);
         return sedaNode.getChild("DataObjectPackage").getChild("DescriptiveMetadata").getChild("ArchiveUnit");
+    }
+
+    private String buildMetamodelResourcePath(ProfileVersion profileVersion, ProfileType profileType) {
+        String typeSuffix = profileType == ProfileType.PUA ? "-pua" : "";
+        return "metamodel/metamodel" + typeSuffix + "-" + profileVersion.getVersion() + ".json";
     }
 
     private List<SedaNode> getMetaModelFromExternalSchema() {

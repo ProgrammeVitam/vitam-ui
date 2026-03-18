@@ -228,7 +228,9 @@ export class MainComponent implements OnInit, OnDestroy {
           this.uploadedProfileResponse.id = null;
         }),
         switchMap((profileResponse) =>
-          this.profileService.getMetaModel(profileResponse.sedaVersion).pipe(map((metaModel) => ({ profileResponse, metaModel }))),
+          this.profileService
+            .getMetaModel(profileResponse.sedaVersion, profileType)
+            .pipe(map((metaModel) => ({ profileResponse, metaModel }))),
         ),
         tap(({ profileResponse, metaModel }) => {
           this.sedaService.setMetaModel(metaModel);
@@ -243,7 +245,7 @@ export class MainComponent implements OnInit, OnDestroy {
   private uploadNewProfile() {
     this.loaderService.start();
     this.profileService
-      .getMetaModel(this.uploadedProfileByFile.sedaVersion)
+      .getMetaModel(this.uploadedProfileByFile.sedaVersion, this.uploadedProfileByFile.type)
       .pipe(
         map((metaModel) => {
           this.sedaService.setMetaModel(metaModel);
