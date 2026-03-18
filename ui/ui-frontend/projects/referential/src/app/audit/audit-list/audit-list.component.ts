@@ -35,13 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject, merge } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import { Subject, merge, timer, Subscription } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, Event, PageRequest } from 'vitamui-library';
 import { AuditOperation } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
+const POLLING_INTERVAL_MS = 5000;
 
 export class AuditFilters {
   startDate: string;
@@ -81,6 +82,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
   private readonly filterChange = new Subject<any>();
+  private pollingSubscription: Subscription;
 
   constructor(public auditService: AuditService) {
     super(auditService);
@@ -89,7 +91,10 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   ngOnInit() {
     this.auditService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildCriteriaFromSearch())))
-      .subscribe((data: any[]) => (this.dataSource = data));
+      .subscribe((data: any[]) => {
+        this.dataSource = data;
+        this.startPolling();
+      });
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
@@ -97,11 +102,13 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
       const query: any = this.buildCriteriaFromSearch();
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
+      this.restartPolling();
     });
   }
 
   ngOnDestroy() {
     this.updatedData.unsubscribe();
+    this.stopPolling();
   }
 
   searchAuditOrdered() {
@@ -157,5 +164,53 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
     }
 
     return criteria;
+  }
+
+  private restartPolling(): void {
+    this.stopPolling();
+    this.startPolling();
+  }
+
+  private stopPolling(): void {
+    if (this.pollingSubscription) {
+      this.pollingSubscription.unsubscribe();
+      this.pollingSubscription = null;
+    }
+  }
+
+  private startPolling(): void {
+    this.pollingSubscription = timer(POLLING_INTERVAL_MS)
+      .pipe(
+        switchMap(() => {
+          const query: any = this.buildCriteriaFromSearch();
+          const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
+          return this.auditService.search(pageRequest);
+        }),
+      )
+      .subscribe((data: Event[]) => {
+        this.updateDataSource(data);
+      });
+  }
+
+  private updateDataSource(newData: any[]): void {
+    if (!this.dataSource || this.dataSource.length === 0) {
+      this.dataSource = newData;
+      return;
+    }
+    newData.forEach((newItem: Event) => {
+      const existingItemIndex = this.dataSource.findIndex((item) => item.id === newItem.id);
+      if (existingItemIndex !== -1) {
+        const existingItem = this.dataSource[existingItemIndex];
+        const newStatus = this.auditMessage(newItem);
+        const oldStatus = this.auditMessage(existingItem);
+
+        if (newStatus !== oldStatus) {
+          this.dataSource[existingItemIndex] = { ...existingItem, ...newItem };
+          this.auditClick.next(newItem);
+        }
+      } else {
+        this.dataSource.unshift(newItem);
+      }
+    });
   }
 }

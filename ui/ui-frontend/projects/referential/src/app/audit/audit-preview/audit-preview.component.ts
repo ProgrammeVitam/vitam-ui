@@ -57,6 +57,28 @@ export class AuditPreviewComponent implements OnInit {
     return true;
   });
 
+  isAuditCompleted: Signal<boolean> = computed(() => {
+    const audit = this.audit();
+    if (!audit) {
+      return false;
+    }
+
+    const status = this.getLastStepStatus(audit);
+    return (
+      [
+        'PROCESS_AUDIT.OK',
+        'PROCESS_AUDIT.WARNING',
+        'PROCESS_AUDIT.KO',
+        'EVIDENCE_AUDIT.OK', //
+        'EVIDENCE_AUDIT.WARNING',
+        'EVIDENCE_AUDIT.KO',
+        'RECTIFICATION_AUDIT.OK', //
+        'RECTIFICATION_AUDIT.WARNING',
+        'RECTIFICATION_AUDIT.KO',
+      ].includes(status) || status?.endsWith('FATAL')
+    );
+  });
+
   constructor(
     private auditService: AuditService,
     private externalParameterService: ExternalParametersService,
@@ -88,5 +110,9 @@ export class AuditPreviewComponent implements OnInit {
     return (
       event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_AUDIT') || event.outDetail.includes('EXT_VITAMUI_CREATE_AUDIT'))
     );
+  }
+
+  private getLastStepStatus(audit: Event): string {
+    return (audit?.events?.at(-1) ?? audit)?.outDetail;
   }
 }
