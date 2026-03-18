@@ -20,7 +20,6 @@
 
         <!-- Spring & Spring Cloud Versions -->
         <spring.boot.version>3.2.1</spring.boot.version>
-        <spring.cloud.consul.version>4.1.0</spring.cloud.consul.version>
 
         <!-- CAS & Security Versions -->
         <cas.version>7.0.10.1</cas.version>
@@ -67,15 +66,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- VITAMUI BOM -->
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- CAS BOM -->
             <dependency>
                 <groupId>org.apereo.cas</groupId>
@@ -134,6 +124,7 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-client</artifactId>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
