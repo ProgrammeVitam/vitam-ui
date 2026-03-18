@@ -67,15 +67,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- VITAMUI BOM -->
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- CAS BOM -->
             <dependency>
                 <groupId>org.apereo.cas</groupId>
@@ -134,6 +125,7 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-client</artifactId>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
