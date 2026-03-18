@@ -38,9 +38,9 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Inject, Injectable, Injector } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import moment from 'moment';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, timeout } from 'rxjs';
 
-import { catchError, tap, timeoutWith } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 import { VitamUISnackBarService } from './components/vitamui-snack-bar/vitamui-snack-bar.service';
@@ -52,7 +52,7 @@ import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-e
 import { StartupService } from './startup.service';
 import { SKIP_ERROR_NOTIFICATION } from './utils';
 
-const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export', 'documents', 'ingest'];
+const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export'];
 // @ts-ignore
 const HTTP_STATUS_CODE_BAD_REQUEST = 400;
 const HTTP_STATUS_CODE_UNAUTHORIZED = 401;
@@ -81,7 +81,6 @@ const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
   private errorDialog: MatDialogRef<ErrorDialogComponent>;
-  private apiTimeout: number;
   private snackBarService: VitamUISnackBarService;
 
   constructor(
@@ -91,9 +90,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     private authService: AuthService,
     private injector: Injector,
     @Inject(ENVIRONMENT) private environment: any,
-  ) {
-    this.apiTimeout = environment?.apiTimeout ? environment.apiTimeout : DEFAULT_API_TIMEOUT;
-  }
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.initSnackBarService();
@@ -111,10 +108,18 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     if (!applicationId) {
       applicationId = this.startupService.CURRENT_APP_ID;
     }
-    const headerTimeout = request.headers.get('X-Api-Timeout');
-    if (headerTimeout && !isNaN(Number(headerTimeout))) {
-      this.apiTimeout = Number(headerTimeout);
-    }
+
+    const headerTimeout = Number(request.headers.get('X-Api-Timeout'));
+    const isUpload = request.headers.get('Content-Type') === 'application/octet-stream';
+    const isBigDownload = URLS_INCREASED_TIMEOUT.some((url) => request.url.includes(url));
+    const apiTimeout =
+      headerTimeout && !isNaN(headerTimeout)
+        ? headerTimeout
+        : isUpload || isBigDownload
+          ? DEFAULT_DOWNLOAD_UPLOAD_API_TIMEOUT
+          : this.environment?.apiTimeout
+            ? this.environment.apiTimeout
+            : DEFAULT_API_TIMEOUT;
 
     const reqWithCredentials = request.clone({
       withCredentials: true,
@@ -134,10 +139,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     }
 
     return next.handle(reqWithCredentials).pipe(
-      timeoutWith(
-        URLS_INCREASED_TIMEOUT.some((url) => request.url.includes(url)) ? DEFAULT_DOWNLOAD_UPLOAD_API_TIMEOUT : this.apiTimeout,
-        throwError(new VitamUITimeoutError()),
-      ),
+      timeout({ each: apiTimeout, with: () => throwError(() => new VitamUITimeoutError()) }),
       tap((ev: HttpEvent<any>) => {
         if (ev instanceof HttpResponse) {
           this.logger.log(this, 'processing response', ev);
