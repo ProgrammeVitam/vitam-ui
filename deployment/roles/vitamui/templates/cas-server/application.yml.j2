@@ -164,10 +164,7 @@ cas:
     follow-service-redirects: true
     redirect-parameter: next
 
-management.endpoints.enabled-by-default: true
-management.endpoints.web.exposure.include: '*'
 cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
-management.prometheus.metrics.export.enabled: true
 
 {% if sms.enabled|lower == "true" %}
 # for SMS:
