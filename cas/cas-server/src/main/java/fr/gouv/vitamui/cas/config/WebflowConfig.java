@@ -138,7 +138,7 @@ public class WebflowConfig {
         IdentityProviderHelper identityProviderHelper,
         CasApi casApi,
         Utils utils,
-        @Qualifier("delegatedClientDistributedSessionStore") ObjectProvider<
+        @Qualifier(CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE) ObjectProvider<
             SessionStore
         > delegatedClientDistributedSessionStore
     ) {
@@ -166,23 +166,25 @@ public class WebflowConfig {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public Action sendPasswordResetInstructionsAction(
-        @Qualifier(AuthenticationSystemSupport.BEAN_NAME) final AuthenticationSystemSupport authenticationSystemSupport,
         @Qualifier(
-            MultifactorAuthenticationProviderSelector.BEAN_NAME
+            CasBeans.AUTHENTICATION_SYSTEM_SUPPORT
+        ) final AuthenticationSystemSupport authenticationSystemSupport,
+        @Qualifier(
+            CasBeans.MULTIFACTOR_AUTHENTICATION_PROVIDER_SELECTOR
         ) final MultifactorAuthenticationProviderSelector multifactorAuthenticationProviderSelector,
         final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
         @Qualifier(
-            PasswordManagementService.DEFAULT_BEAN_NAME
+            CasBeans.PASSWORD_MANAGEMENT_SERVICE_DEFAULT
         ) final PasswordManagementService passwordManagementService,
-        @Qualifier(TicketRegistry.BEAN_NAME) final TicketRegistry ticketRegistry,
-        @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver,
-        @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
-        @Qualifier(PasswordResetUrlBuilder.BEAN_NAME) final PasswordResetUrlBuilder passwordResetUrlBuilder,
+        @Qualifier(CasBeans.TICKET_REGISTRY) final TicketRegistry ticketRegistry,
+        @Qualifier(CasBeans.PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver,
+        @Qualifier(CasBeans.COMMUNICATIONS_MANAGER) final CommunicationsManager communicationsManager,
+        @Qualifier(CasBeans.PASSWORD_RESET_URL_BUILDER) final PasswordResetUrlBuilder passwordResetUrlBuilder,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
-        @Qualifier("messageSource") final HierarchicalMessageSource messageSource,
+        @Qualifier(CasBeans.MESSAGE_SOURCE) final HierarchicalMessageSource messageSource,
         @Value("${theme.vitamui-platform-name:VITAM-UI}") final String vitamuiPlatformName
     ) {
         final var pmTicketFactory = new DefaultTicketFactory();
@@ -221,13 +223,9 @@ public class WebflowConfig {
     public CasWebflowConfigurer defaultWebflowConfigurer(
         final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
-        @Qualifier(
-            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
-        ) final FlowDefinitionRegistry loginFlowRegistry,
-        @Qualifier(
-            CasWebflowConstants.BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY
-        ) final FlowDefinitionRegistry logoutFlowRegistry,
-        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices
+        @Qualifier(CasBeans.LOGIN_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry loginFlowRegistry,
+        @Qualifier(CasBeans.LOGOUT_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry logoutFlowRegistry,
+        @Qualifier(CasBeans.FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices
     ) {
         final var c = new VitamLoginWebflowConfigurer(
             flowBuilderServices,
@@ -246,13 +244,13 @@ public class WebflowConfig {
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext,
         @Qualifier(
-            DelegatedClientAuthenticationFailureEvaluator.BEAN_NAME
+            CasBeans.DELEGATED_CLIENT_AUTHENTICATION_FAILURE_EVALUATOR
         ) final DelegatedClientAuthenticationFailureEvaluator delegatedClientAuthenticationFailureEvaluator,
         @Qualifier(
-            DelegatedClientAuthenticationConfigurationContext.BEAN_NAME
+            CasBeans.DELEGATED_CLIENT_AUTHENTICATION_CONFIGURATION_CONTEXT
         ) final DelegatedClientAuthenticationConfigurationContext delegatedClientAuthenticationConfigurationContext,
         @Qualifier(
-            DelegatedClientAuthenticationWebflowManager.DEFAULT_BEAN_NAME
+            CasBeans.DELEGATED_CLIENT_AUTHENTICATION_WEBFLOW_MANAGER
         ) final DelegatedClientAuthenticationWebflowManager delegatedClientWebflowManager,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
@@ -260,7 +258,6 @@ public class WebflowConfig {
         final CasApi casApi,
         final Utils utils,
         @Value("${vitamui.portal.url}") final String vitamuiPortalUrl
-        // ,@Value("${cas.authn.surrogate.separator}") final String surrogationSeparator
     ) {
         return WebflowActionBeanSupplier.builder()
             .withApplicationContext(applicationContext)
@@ -289,21 +286,19 @@ public class WebflowConfig {
     public Action terminateSessionAction(
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext,
-        @Qualifier(LogoutManager.DEFAULT_BEAN_NAME) final LogoutManager logoutManager,
+        @Qualifier(CasBeans.LOGOUT_MANAGER) final LogoutManager logoutManager,
+        @Qualifier(CasBeans.TICKET_GRANTING_COOKIE_BUILDER) final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+        @Qualifier(CasBeans.WARN_COOKIE_GENERATOR) final CasCookieBuilder warnCookieGenerator,
         @Qualifier(
-            CasCookieBuilder.BEAN_NAME_TICKET_GRANTING_COOKIE_BUILDER
-        ) final CasCookieBuilder ticketGrantingTicketCookieGenerator,
-        @Qualifier("warnCookieGenerator") final CasCookieBuilder warnCookieGenerator,
-        @Qualifier(
-            CentralAuthenticationService.BEAN_NAME
+            CasBeans.CENTRAL_AUTHENTICATION_SERVICE
         ) final CentralAuthenticationService centralAuthenticationService,
         final Utils utils,
         final CasApi casApi,
         final ServicesManager servicesManager,
         final TicketRegistry ticketRegistry,
-        @Qualifier(CasWebflowConstants.ACTION_ID_FRONT_CHANNEL_LOGOUT) final Action frontChannelLogoutAction,
+        @Qualifier(CasBeans.FRONT_CHANNEL_LOGOUT_ACTION) final Action frontChannelLogoutAction,
         @Qualifier(
-            SingleLogoutRequestExecutor.BEAN_NAME
+            CasBeans.SINGLE_LOGOUT_REQUEST_EXECUTOR
         ) final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor
     ) {
         return WebflowActionBeanSupplier.builder()
@@ -342,13 +337,15 @@ public class WebflowConfig {
     public Action mfaSimpleMultifactorSendTokenAction(
         final ConfigurableApplicationContext applicationContext,
         @Qualifier(
-            CasSimpleMultifactorAuthenticationService.BEAN_NAME
+            CasBeans.CAS_SIMPLE_MULTIFACTOR_AUTHENTICATION_SERVICE
         ) final CasSimpleMultifactorAuthenticationService casSimpleMultifactorAuthenticationService,
         @Qualifier(
-            "mfaSimpleMultifactorTokenCommunicationStrategy"
+            CasBeans.MFA_SIMPLE_MULTIFACTOR_TOKEN_COMMUNICATION_STRATEGY
         ) final CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy,
-        @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
-        @Qualifier("mfaSimpleMultifactorBucketConsumer") final BucketConsumer mfaSimpleMultifactorBucketConsumer,
+        @Qualifier(CasBeans.COMMUNICATIONS_MANAGER) final CommunicationsManager communicationsManager,
+        @Qualifier(
+            CasBeans.MFA_SIMPLE_MULTIFACTOR_BUCKET_CONSUMER
+        ) final BucketConsumer mfaSimpleMultifactorBucketConsumer,
         final CasConfigurationProperties casProperties,
         final Utils utils
     ) {
@@ -376,12 +373,10 @@ public class WebflowConfig {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasWebflowConfigurer mfaSimpleMultifactorWebflowConfigurer(
         @Qualifier(
-            "mfaSimpleAuthenticatorFlowRegistry"
+            CasBeans.MFA_SIMPLE_AUTHENTICATOR_FLOW_REGISTRY
         ) final FlowDefinitionRegistry mfaSimpleAuthenticatorFlowRegistry,
-        @Qualifier(
-            CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY
-        ) final FlowDefinitionRegistry loginFlowRegistry,
-        @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
+        @Qualifier(CasBeans.LOGIN_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry loginFlowRegistry,
+        @Qualifier(CasBeans.FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext
     ) {
@@ -407,8 +402,10 @@ public class WebflowConfig {
     public Action delegatedAuthenticationClientLogoutAction(
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext,
-        @Qualifier(DelegatedIdentityProviders.BEAN_NAME) final DelegatedIdentityProviders identityProviders,
-        @Qualifier("delegatedClientDistributedSessionStore") final SessionStore delegatedClientDistributedSessionStore,
+        @Qualifier(CasBeans.DELEGATED_IDENTITY_PROVIDERS) final DelegatedIdentityProviders identityProviders,
+        @Qualifier(
+            CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
+        ) final SessionStore delegatedClientDistributedSessionStore,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper
     ) {
@@ -445,12 +442,14 @@ public class WebflowConfig {
     @RefreshScope
     public Action x509Check(
         final CasConfigurationProperties casProperties,
-        @Qualifier("adaptiveAuthenticationPolicy") final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
         @Qualifier(
-            "serviceTicketRequestWebflowEventResolver"
+            CasBeans.ADAPTIVE_AUTHENTICATION_POLICY
+        ) final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
+        @Qualifier(
+            CasBeans.SERVICE_TICKET_REQUEST_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver serviceTicketRequestWebflowEventResolver,
         @Qualifier(
-            "initialAuthenticationAttemptWebflowEventResolver"
+            CasBeans.INITIAL_AUTHENTICATION_ATTEMPT_WEBFLOW_EVENT_RESOLVER
         ) final CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver,
         @Value("${vitamui.authn.x509.enabled:false}") final boolean x509AuthnEnabled,
         @Value("${vitamui.authn.x509.mandatory:false}") final boolean x509AuthnMandatory
@@ -478,46 +477,46 @@ public class WebflowConfig {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver(
         @Qualifier(
-            "selectiveAuthenticationProviderWebflowEventResolver"
+            CasBeans.SELECTIVE_AUTHENTICATION_PROVIDER_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver selectiveAuthenticationProviderWebflowEventResolver,
         @Qualifier(
-            "casWebflowConfigurationContext"
+            CasBeans.CAS_WEBFLOW_CONFIGURATION_CONTEXT
         ) final CasWebflowEventResolutionConfigurationContext casWebflowConfigurationContext,
         @Qualifier(
-            "adaptiveAuthenticationPolicyWebflowEventResolver"
+            CasBeans.ADAPTIVE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver adaptiveAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "timedAuthenticationPolicyWebflowEventResolver"
+            CasBeans.TIMED_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver timedAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "globalAuthenticationPolicyWebflowEventResolver"
+            CasBeans.GLOBAL_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver globalAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "httpRequestAuthenticationPolicyWebflowEventResolver"
+            CasBeans.HTTP_REQUEST_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver httpRequestAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "restEndpointAuthenticationPolicyWebflowEventResolver"
+            CasBeans.REST_ENDPOINT_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver restEndpointAuthenticationPolicyWebflowEventResolver,
-        @Qualifier("groovyScriptAuthenticationPolicyWebflowEventResolver") final ObjectProvider<
+        @Qualifier(CasBeans.GROOVY_SCRIPT_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER) final ObjectProvider<
             CasWebflowEventResolver
         > groovyScriptAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver"
+            CasBeans.SCRIPTED_REGISTERED_SERVICE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver"
+            CasBeans.REGISTERED_SERVICE_PRINCIPAL_ATTRIBUTE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver"
+            CasBeans.PREDICATED_PRINCIPAL_ATTRIBUTE_MULTIFACTOR_AUTHENTICATION_POLICY_EVENT_RESOLVER
         ) final CasWebflowEventResolver predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver,
         @Qualifier(
-            "principalAttributeAuthenticationPolicyWebflowEventResolver"
+            CasBeans.PRINCIPAL_ATTRIBUTE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver principalAttributeAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "authenticationAttributeAuthenticationPolicyWebflowEventResolver"
+            CasBeans.AUTHENTICATION_ATTRIBUTE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver authenticationAttributeAuthenticationPolicyWebflowEventResolver,
         @Qualifier(
-            "registeredServiceAuthenticationPolicyWebflowEventResolver"
+            CasBeans.REGISTERED_SERVICE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver registeredServiceAuthenticationPolicyWebflowEventResolver,
         @Value("${vitamui.authn.x509.mandatory:false}") final boolean x509AuthnMandatory
     ) {

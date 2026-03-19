@@ -165,8 +165,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public LoginPwdAuthenticationHandler loginPwdAuthenticationHandler(
         final CasApi casApi,
         @Value("${ip.header}") final String ipHeaderName,
-        @Qualifier("principalFactory") final PrincipalFactory principalFactory,
-        @Qualifier("servicesManager") final ServicesManager servicesManager
+        @Qualifier(CasBeans.PRINCIPAL_FACTORY) final PrincipalFactory principalFactory,
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
     ) {
         return new LoginPwdAuthenticationHandler(servicesManager, principalFactory, casApi, ipHeaderName);
     }
@@ -181,8 +181,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         @Value("${vitamui.authn.x509.identifierAttributeParsing:}") final String x509IdentifierAttributeParsing,
         @Value("${vitamui.authn.x509.identifierAttributeExpansion:}") final String x509IdentifierAttributeExpansion,
         @Value("${vitamui.authn.x509.defaultDomain:}") final String x509DefaultDomain,
-        @Qualifier("delegatedClientDistributedSessionStore") final SessionStore delegatedClientDistributedSessionStore,
-        @Qualifier(PrincipalFactory.BEAN_NAME) PrincipalFactory principalFactory,
+        @Qualifier(
+            CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
+        ) final SessionStore delegatedClientDistributedSessionStore,
+        @Qualifier(CasBeans.PRINCIPAL_FACTORY) PrincipalFactory principalFactory,
         final ProvidersService providersService,
         final CasApi casApi
     ) {
@@ -211,7 +213,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public AuthenticationEventExecutionPlanConfigurer registerInternalHandler(
         final LoginPwdAuthenticationHandler loginPwdAuthenticationHandler,
-        @Qualifier("defaultPrincipalResolver") final PrincipalResolver defaultPrincipalResolver
+        @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
     ) {
         return plan ->
             plan.registerAuthenticationHandlerWithPrincipalResolver(
@@ -223,7 +225,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver surrogatePrincipalResolver(
-        @Qualifier("defaultPrincipalResolver") final PrincipalResolver defaultPrincipalResolver
+        @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
     ) {
         return defaultPrincipalResolver;
     }
@@ -231,18 +233,19 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver x509SubjectDNPrincipalResolver(
-        @Qualifier("defaultPrincipalResolver") final PrincipalResolver defaultPrincipalResolver
+        @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
     ) {
         return defaultPrincipalResolver;
     }
 
     /**
-     * We must define our customizer to replace X_ORIGIN header from IamApiClient.java for CAS usage.
+     * We must define our customizer to replace X_ORIGIN header from
+     * IamApiClient.java for CAS usage.
      *
      * @return a rest template customizer.
      */
     @Bean
-    @Qualifier("restTemplateCustomizer")
+    @Qualifier(CasBeans.REST_TEMPLATE_CUSTOMIZER)
     public RestTemplateCustomizer restTemplateCustomizer() {
         return restTemplate ->
             restTemplate
@@ -261,7 +264,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public IamApiClientsFactory iamApiClientsFactory(
         final IamClientConfigurationProperties iamClientProperties,
         final RestTemplateBuilder restTemplateBuilder,
-        @Qualifier("restTemplateCustomizer") final RestTemplateCustomizer restTemplateCustomizer
+        @Qualifier(CasBeans.REST_TEMPLATE_CUSTOMIZER) final RestTemplateCustomizer restTemplateCustomizer
     ) {
         return new IamApiClientsFactory(
             iamClientProperties,
@@ -339,14 +342,12 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory(
-        @Qualifier(ServicesManager.BEAN_NAME) ServicesManager servicesManager,
-        @Qualifier(
-            "ticketGrantingTicketUniqueIdGenerator"
-        ) final UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator,
-        @Qualifier("grantingTicketExpirationPolicy") final ObjectProvider<
+        @Qualifier(CasBeans.SERVICES_MANAGER) ServicesManager servicesManager,
+        @Qualifier(CasBeans.TGT_ID_GENERATOR) final UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator,
+        @Qualifier(CasBeans.TGT_EXPIRATION_POLICY) final ObjectProvider<
             ExpirationPolicyBuilder
         > grantingTicketExpirationPolicy,
-        @Qualifier("protocolTicketCipherExecutor") final CipherExecutor protocolTicketCipherExecutor,
+        @Qualifier(CasBeans.PROTOCOL_TICKET_CIPHER_EXECUTOR) final CipherExecutor protocolTicketCipherExecutor,
         final Utils utils
     ) {
         return new DynamicTicketGrantingTicketFactory(
@@ -361,10 +362,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public OAuth20AccessTokenFactory defaultAccessTokenFactory(
-        @Qualifier("accessTokenIdGenerator") final UniqueTicketIdGenerator accessTokenIdGenerator,
-        @Qualifier("accessTokenExpirationPolicy") final ExpirationPolicyBuilder accessTokenExpirationPolicy,
-        @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager,
-        @Qualifier("accessTokenJwtBuilder") final JwtBuilder accessTokenJwtBuilder,
+        @Qualifier(CasBeans.ACCESS_TOKEN_ID_GENERATOR) final UniqueTicketIdGenerator accessTokenIdGenerator,
+        @Qualifier(CasBeans.ACCESS_TOKEN_EXPIRATION_POLICY) final ExpirationPolicyBuilder accessTokenExpirationPolicy,
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
+        @Qualifier(CasBeans.ACCESS_TOKEN_JWT_BUILDER) final JwtBuilder accessTokenJwtBuilder,
         @Qualifier(
             TicketTrackingPolicy.BEAN_NAME_DESCENDANT_TICKET_TRACKING
         ) final TicketTrackingPolicy descendantTicketsTrackingPolicy
@@ -401,7 +402,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @SneakyThrows
     public SurrogateAuthenticationService surrogateAuthenticationService(
         final CasApi casApi,
-        @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
     ) {
         return new IamSurrogateAuthenticationService(casApi, servicesManager);
     }
@@ -410,7 +411,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public PasswordManagementService passwordChangeService(
         final CasConfigurationProperties casProperties,
-        @Qualifier("passwordManagementCipherExecutor") final CipherExecutor passwordManagementCipherExecutor,
+        @Qualifier(CasBeans.PASSWORD_MANAGEMENT_CIPHER_EXECUTOR) final CipherExecutor passwordManagementCipherExecutor,
         @Qualifier(PasswordHistoryService.BEAN_NAME) final PasswordHistoryService passwordHistoryService,
         final ProvidersService providersService,
         final TicketRegistry ticketRegistry,
@@ -418,7 +419,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
         final PasswordValidator passwordValidator,
-        @Qualifier("centralAuthenticationService") final CentralAuthenticationService centralAuthenticationService,
+        @Qualifier(
+            CasBeans.CENTRAL_AUTHENTICATION_SERVICE
+        ) final CentralAuthenticationService centralAuthenticationService,
         final PasswordConfiguration passwordConfiguration
     ) {
         return new IamPasswordManagementService(
@@ -485,40 +488,44 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             AuditableExecution.AUDITABLE_EXECUTION_DELEGATED_AUTHENTICATION_ACCESS
         ) final AuditableExecution registeredServiceDelegatedAuthenticationPolicyAuditableEnforcer,
         @Qualifier(
-            "serviceTicketRequestWebflowEventResolver"
+            CasBeans.SERVICE_TICKET_REQUEST_WEBFLOW_EVENT_RESOLVER
         ) final CasWebflowEventResolver serviceTicketRequestWebflowEventResolver,
         @Qualifier(
-            "initialAuthenticationAttemptWebflowEventResolver"
+            CasBeans.INITIAL_AUTHENTICATION_ATTEMPT_WEBFLOW_EVENT_RESOLVER
         ) final CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver,
-        @Qualifier("adaptiveAuthenticationPolicy") final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
+        @Qualifier(
+            CasBeans.ADAPTIVE_AUTHENTICATION_POLICY
+        ) final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
         final CasConfigurationProperties casProperties,
-        @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager,
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
         @Qualifier(DelegatedIdentityProviders.BEAN_NAME) final DelegatedIdentityProviders identityProviders,
         @Qualifier(
             DelegatedClientIdentityProviderConfigurationProducer.BEAN_NAME
         ) final DelegatedClientIdentityProviderConfigurationProducer delegatedClientIdentityProviderConfigurationProducer,
         @Qualifier(
-            "delegatedClientIdentityProviderConfigurationPostProcessor"
+            CasBeans.DELEGATED_CLIENT_IDENTITY_PROVIDER_CONFIGURATION_POST_PROCESSOR
         ) final DelegatedClientIdentityProviderConfigurationPostProcessor delegatedClientIdentityProviderConfigurationPostProcessor,
         @Qualifier(
-            "delegatedClientDistributedSessionCookieGenerator"
+            CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_COOKIE_GENERATOR
         ) final CasCookieBuilder delegatedClientDistributedSessionCookieGenerator,
         @Qualifier(
-            CentralAuthenticationService.BEAN_NAME
+            CasBeans.CENTRAL_AUTHENTICATION_SERVICE
         ) final CentralAuthenticationService centralAuthenticationService,
         @Qualifier(
-            "pac4jDelegatedClientNameExtractor"
+            CasBeans.PAC4J_DELEGATED_CLIENT_NAME_EXTRACTOR
         ) final DelegatedClientNameExtractor pac4jDelegatedClientNameExtractor,
         @Qualifier(AuthenticationSystemSupport.BEAN_NAME) final AuthenticationSystemSupport authenticationSystemSupport,
         @Qualifier(ArgumentExtractor.BEAN_NAME) final ArgumentExtractor argumentExtractor,
         @Qualifier(TicketRegistry.BEAN_NAME) final TicketRegistry ticketRegistry,
-        @Qualifier("delegatedClientDistributedSessionStore") final SessionStore delegatedClientDistributedSessionStore,
+        @Qualifier(
+            CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
+        ) final SessionStore delegatedClientDistributedSessionStore,
         @Qualifier(TicketFactory.BEAN_NAME) final TicketFactory ticketFactory,
         @Qualifier(
             AuditableExecution.AUDITABLE_EXECUTION_REGISTERED_SERVICE_ACCESS
         ) final AuditableExecution registeredServiceAccessStrategyEnforcer,
         @Qualifier(
-            "delegatedClientIdentityProviderRedirectionStrategy"
+            CasBeans.DELEGATED_CLIENT_IDENTITY_PROVIDER_REDIRECTION_STRATEGY
         ) final DelegatedClientIdentityProviderRedirectionStrategy delegatedClientIdentityProviderRedirectionStrategy,
         @Qualifier(
             SingleSignOnParticipationStrategy.BEAN_NAME
@@ -527,10 +534,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             AuthenticationServiceSelectionPlan.BEAN_NAME
         ) final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
         @Qualifier(
-            "delegatedAuthenticationCookieGenerator"
+            CasBeans.DELEGATED_AUTHENTICATION_COOKIE_GENERATOR
         ) final CasCookieBuilder delegatedAuthenticationCookieGenerator,
         @Qualifier(
-            "delegatedAuthenticationCredentialExtractor"
+            CasBeans.DELEGATED_AUTHENTICATION_CREDENTIAL_EXTRACTOR
         ) final DelegatedAuthenticationCredentialExtractor delegatedAuthenticationCredentialExtractor,
         final ConfigurableApplicationContext applicationContext,
         @Qualifier(LogoutExecutionPlan.BEAN_NAME) final LogoutExecutionPlan logoutExecutionPlan,

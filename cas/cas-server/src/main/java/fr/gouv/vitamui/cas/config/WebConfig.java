@@ -65,7 +65,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.HierarchicalMessageSource;
@@ -91,10 +90,10 @@ public class WebConfig {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public OAuth20CasClientRedirectActionBuilder oidcCasClientRedirectActionBuilder(
         @Qualifier(
-            OAuth20RequestParameterResolver.BEAN_NAME
+            CasBeans.OAUTH20_REQUEST_PARAMETER_RESOLVER
         ) final OAuth20RequestParameterResolver oauthRequestParameterResolver,
-        @Qualifier("oidcRequestSupport") final OidcRequestSupport oidcRequestSupport,
-        @Qualifier("oauthCasClient") final Client oauthCasClient
+        @Qualifier(CasBeans.OIDC_REQUEST_SUPPORT) final OidcRequestSupport oidcRequestSupport,
+        @Qualifier(CasBeans.OAUTH_CAS_CLIENT) final Client oauthCasClient
     ) {
         final var builder = new CustomOidcCasClientRedirectActionBuilder(
             oidcRequestSupport,
@@ -110,8 +109,8 @@ public class WebConfig {
     public CorsConfigurationSource corsHttpWebRequestConfigurationSource(
         final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
-        @Qualifier(ArgumentExtractor.BEAN_NAME) final ArgumentExtractor argumentExtractor,
-        @Qualifier(ServicesManager.BEAN_NAME) final ServicesManager servicesManager
+        @Qualifier(CasBeans.ARGUMENT_EXTRACTOR) final ArgumentExtractor argumentExtractor,
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
     ) {
         return new RegisteredServiceCorsConfigurationSource(casProperties, servicesManager, argumentExtractor);
     }
@@ -121,7 +120,7 @@ public class WebConfig {
     public CorsFilter corsFilter(
         final CasConfigurationProperties casProperties,
         @Qualifier(
-            "corsHttpWebRequestConfigurationSource"
+            CasBeans.CORS_HTTP_WEB_REQUEST_CONFIGURATION_SOURCE
         ) final CorsConfigurationSource corsHttpWebRequestConfigurationSource,
         final IdentityProviderHelper identityProviderHelper,
         final ProvidersService providersService
@@ -133,12 +132,12 @@ public class WebConfig {
 
     @Bean
     public ResetPasswordController resetPasswordController(
-        @Qualifier(PasswordResetUrlBuilder.BEAN_NAME) final PasswordResetUrlBuilder passwordResetUrlBuilder,
-        @Qualifier(CommunicationsManager.BEAN_NAME) final CommunicationsManager communicationsManager,
+        @Qualifier(CasBeans.PASSWORD_RESET_URL_BUILDER) final PasswordResetUrlBuilder passwordResetUrlBuilder,
+        @Qualifier(CasBeans.COMMUNICATIONS_MANAGER) final CommunicationsManager communicationsManager,
         @Qualifier(
-            PasswordManagementService.DEFAULT_BEAN_NAME
+            CasBeans.PASSWORD_MANAGEMENT_SERVICE_DEFAULT
         ) final PasswordManagementService passwordManagementService,
-        @Qualifier("messageSource") final HierarchicalMessageSource messageSource,
+        @Qualifier(CasBeans.MESSAGE_SOURCE) final HierarchicalMessageSource messageSource,
         final CasConfigurationProperties casProperties,
         final IdentityProviderHelper identityProviderHelper,
         final ProvidersService providersService,
@@ -160,14 +159,14 @@ public class WebConfig {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     @Bean
     public OidcRevocationEndpointController oidcRevocationEndpointController(
-        @Qualifier(OidcConfigurationContext.BEAN_NAME) final OidcConfigurationContext oidcConfigurationContext
+        @Qualifier(CasBeans.OIDC_CONFIGURATION_CONTEXT) final OidcConfigurationContext oidcConfigurationContext
     ) {
         return new CustomOidcRevocationEndpointController(oidcConfigurationContext);
     }
 
     @Bean
     public WebSecurityCustomizer casWebSecurityCustomizer(
-        @Qualifier("securityContextRepository") final SecurityContextRepository securityContextRepository,
+        @Qualifier(CasBeans.SECURITY_CONTEXT_REPOSITORY) final SecurityContextRepository securityContextRepository,
         final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
         final List<CasWebSecurityConfigurer> configurersList,
         final WebEndpointProperties webEndpointProperties,
@@ -185,12 +184,11 @@ public class WebConfig {
 
     @Bean
     public SecurityFilterChain casWebSecurityConfigurerAdapter(
-        @Qualifier("securityContextRepository") final SecurityContextRepository securityContextRepository,
+        @Qualifier(CasBeans.SECURITY_CONTEXT_REPOSITORY) final SecurityContextRepository securityContextRepository,
         final HttpSecurity http,
         final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
         final List<CasWebSecurityConfigurer> configurersList,
         final WebEndpointProperties webEndpointProperties,
-        final SecurityProperties securityProperties,
         final CasConfigurationProperties casProperties
     ) throws Exception {
         val adapter = new CustomCasWebSecurityConfigurerAdapter(
