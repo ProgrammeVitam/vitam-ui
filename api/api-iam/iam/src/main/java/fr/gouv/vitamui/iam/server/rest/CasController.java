@@ -294,8 +294,8 @@ public class CasController {
     @ResponseStatus(HttpStatus.OK)
     public void logout(
         @RequestParam final String authToken,
-        @RequestParam final String superUser,
-        @RequestParam final String superUserCustomerId
+        @RequestParam(required = false) final String superUser,
+        @RequestParam(required = false) final String superUserCustomerId
     ) {
         LOGGER.debug(
             "logout: authToken={}, superUser={}, superUserCustomerId={}",
@@ -306,7 +306,7 @@ public class CasController {
         ParameterChecker.checkParameter("The arguments authToken is mandatory : ", authToken);
         final CasService.PrincipalFromToken principal = casService.removeTokenAndGetPrincipal(authToken);
 
-        if ((null != principal) && StringUtils.isNotBlank(superUser)) {
+        if (principal != null && StringUtils.isNotBlank(superUser)) {
             casService.deleteSubrogationBySuperUserAndSurrogate(
                 superUser,
                 superUserCustomerId,
