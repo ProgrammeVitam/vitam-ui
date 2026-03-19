@@ -124,7 +124,7 @@ public class ListCustomersAction extends AbstractAction {
         );
         if (providerDto.isEmpty()) {
             LOGGER.error(
-                "No provider found for superUserEmail / superUserCustomerId: {}",
+                "No provider found for superUserEmail: {} / superUserCustomerId: {}",
                 superUserEmail,
                 superUserCustomerId
             );
@@ -147,7 +147,8 @@ public class ListCustomersAction extends AbstractAction {
 
         if (existingUsersList.size() > 1) {
             return processMultipleUsersForInputEmail(flowScope, username, existingUsersList);
-        } else if (!existingUsersList.isEmpty()) {
+        }
+        if (existingUsersList.size() == 1) {
             return processSingleUserForInputEmail(flowScope, username, existingUsersList.getFirst());
         }
 
