@@ -234,7 +234,7 @@ public class WebflowConfig {
             casProperties
         );
         c.setLogoutFlowDefinitionRegistry(logoutFlowRegistry);
-        c.setOrder(10);
+        c.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return c;
     }
 
