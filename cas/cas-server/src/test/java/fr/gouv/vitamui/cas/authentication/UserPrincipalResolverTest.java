@@ -106,7 +106,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveUserSuccessfully() {
         when(
-            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(""), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
+            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(null), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
 
         final var principal = resolver.resolve(
@@ -393,12 +393,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
 
@@ -426,12 +426,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -460,12 +460,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -499,12 +499,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -528,7 +528,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testResolveAddressDeserializeSuccessfully() {
         AuthUserDto userProfile = userProfile(UserStatusEnum.ENABLED);
         when(
-            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(""), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
+            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(null), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
         ).thenReturn(userProfile);
 
         final var principal = resolver.resolve(

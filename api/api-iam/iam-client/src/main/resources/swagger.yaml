@@ -2504,7 +2504,7 @@ paths:
                       example: null
                 - name: idp
                   in: query
-                  required: true
+                  required: false
                   schema:
                       type: string
                       example: null
