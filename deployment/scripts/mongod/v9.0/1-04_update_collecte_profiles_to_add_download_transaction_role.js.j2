@@ -1,16 +1,15 @@
 
+print("START v9.0-1-04_update_collecte_profiles_to_add_download_transaction_role.js");
 
-print("START v9.0.0-04_update_collecte_profiles_to_add_download_transaction_role.js");
+dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
 
 // We need a regex for newest profiles created from customer-init because it contains the tenantId...
 dbIam.profiles.updateMany({
     applicationName: "COLLECT_APP",
-     name: {
-                $in: [
-                    'Archiviste - Administrateur',
-                    'Archiviste - gestion et collecte'
-                ]
-            }
+    $or: [
+            { name: { $regex: "^Archiviste - Administrateur" } },
+            { name: { $regex: "^Archiviste - gestion et collecte" } }
+    ]
 }, {
     $addToSet: {
         roles: {
@@ -34,4 +33,4 @@ dbSecurity.contexts.updateOne({
     }
 });
 
-print("END v9.0.0-04_update_collecte_profiles_to_add_download_transaction_role.js");
+print("END v9.0-1-04_update_collecte_profiles_to_add_download_transaction_role.js");

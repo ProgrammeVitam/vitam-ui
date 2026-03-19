@@ -1,7 +1,7 @@
 dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
 dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
 
-print("START v9.0.0-03_projects_update_role_granularity");
+print("START v9.0.1-03_projects_update_role_granularity");
 
 // First, rename "Profile Service producteur" to "Service producteur" for homogeneity
 dbIam.profiles.updateOne(
@@ -12,13 +12,11 @@ dbIam.profiles.updateOne(
 // Then, delete old "ROLE_UPDATE_PROJECTS" role
 dbIam.profiles.updateMany(
     {
-        name: {
-            $in: [
-                'Archiviste - Administrateur',
-                'Archiviste - gestion et collecte',
-                'Service producteur'
-            ]
-        }
+         $or: [
+            { name: { $regex: "^Archiviste - Administrateur" } },
+            { name: { $regex: "^Archiviste - gestion et collecte" } },
+            { name: { $regex: "^Service producteur" } }
+        ]
     },
     {
         $pull: {
@@ -30,7 +28,7 @@ dbIam.profiles.updateMany(
 
 // Finally, add new projects roles on Archiviste - Administrateur
 dbIam.profiles.updateMany(
-    { name: "Archiviste - Administrateur" },
+    { name: { $regex: "^Archiviste - Administrateur" } },
     {
         $addToSet: {
             roles: {
@@ -47,7 +45,7 @@ dbIam.profiles.updateMany(
 
 // Finally, add new projects roles on Archiviste - gestion et collecte
 dbIam.profiles.updateMany(
-    { name: "Archiviste - gestion et collecte" },
+    { name: { $regex: "^Archiviste - gestion et collecte" } },
     {
         $addToSet: {
             roles: {
@@ -63,7 +61,7 @@ dbIam.profiles.updateMany(
 
 // Finally, add new projects roles on Service producteur
 dbIam.profiles.updateMany(
-    { name: "Service producteur" },
+    { name: { $regex: "^Service producteur" } },
     {
         $addToSet: {
             roles: {
@@ -84,12 +82,13 @@ dbSecurity.contexts.updateOne(
         }
     }
 );
+
 // Add new project roles on collect-ui context
 dbSecurity.contexts.updateOne(
     { "_id": "ui_collect_context" },
     {
         $addToSet: {
-            roleNames:  {
+            roleNames: {
                 $each: [
                     "ROLE_UPDATE_PROJECTS_DESCRIPTION",
                     "ROLE_UPDATE_PROJECTS_CONTEXT",
@@ -101,4 +100,4 @@ dbSecurity.contexts.updateOne(
     }
 );
 
-print("END v9.0.0-03_projects_update_role_granularity");
+print("END v9.0.1-03_projects_update_role_granularity");
