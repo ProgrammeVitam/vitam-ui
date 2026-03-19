@@ -108,7 +108,6 @@ cas.service-registry.mongo:
 #  user-id: mongod_dbuser_cas
 #  password: mongod_dbpwd_cas
 
-cas.authn.surrogate.separator: ","
 cas.authn.surrogate.mail.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnEmail
 
 

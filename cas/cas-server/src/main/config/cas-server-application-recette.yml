@@ -64,7 +64,6 @@ cas.service-registry.mongo.collection: services
 #cas.service-registry.mongo.password: mongod_dbpwd_cas
 
 
-cas.authn.surrogate.separator: ","
 cas.authn.surrogate.mail.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnEmail
 
 
