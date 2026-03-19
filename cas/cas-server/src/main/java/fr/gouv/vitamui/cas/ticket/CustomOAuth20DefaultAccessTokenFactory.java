@@ -39,7 +39,6 @@ package fr.gouv.vitamui.cas.ticket;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
@@ -51,9 +50,11 @@ import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessTokenFactory;
 import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Specific factory for access tokens using the auth token as identifier.
@@ -83,20 +84,28 @@ public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccess
     @Override
     protected String generateAccessTokenId(final Service service, final Authentication authentication)
         throws Throwable {
-        val request =
-            ((ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.getRequestAttributes()).getRequest();
+        final var request =
+            ((ServletRequestAttributes) Objects.requireNonNull(
+                    RequestContextHolder.getRequestAttributes(),
+                    "No request context available — generateAccessTokenId must be called within an HTTP request scope"
+                )).getRequest();
+
         final Principal principal = authentication.getPrincipal();
-        String authToken;
         final List<Object> values = principal.getAttributes().get(CommonConstants.AUTHTOKEN_ATTRIBUTE);
         if (values != null && !values.isEmpty()) {
-            authToken = (String) values.getFirst();
+            final var authToken = (String) values.getFirst();
+            LOGGER.debug("authToken found in principal attributes for [{}].", principal.getId());
             request.setAttribute(CommonConstants.AUTHTOKEN_ATTRIBUTE, authToken);
-        } else {
-            authToken = (String) request.getAttribute(CommonConstants.AUTHTOKEN_ATTRIBUTE);
+            return authToken;
         }
-        if (StringUtils.isBlank(authToken)) {
-            return super.generateAccessTokenId(service, authentication);
+
+        final var authTokenFromRequest = (String) request.getAttribute(CommonConstants.AUTHTOKEN_ATTRIBUTE);
+        if (StringUtils.isNotBlank(authTokenFromRequest)) {
+            LOGGER.debug("authToken found in request attributes for [{}].", principal.getId());
+            return authTokenFromRequest;
         }
-        return authToken;
+
+        LOGGER.debug("No authToken found for [{}], falling back to default token generation.", principal.getId());
+        return super.generateAccessTokenId(service, authentication);
     }
 }
