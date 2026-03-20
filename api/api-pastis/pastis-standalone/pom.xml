@@ -96,10 +96,6 @@
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>iam-client-legacy</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>fr.gouv.vitamui</groupId>
                     <artifactId>iam-client</artifactId>
                 </exclusion>
                 <exclusion>
