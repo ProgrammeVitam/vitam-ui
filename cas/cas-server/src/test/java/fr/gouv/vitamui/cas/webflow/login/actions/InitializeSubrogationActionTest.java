@@ -17,30 +17,30 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = CheckSubrogationActionTest.class)
+@ContextConfiguration(classes = InitializeSubrogationActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
-public class CheckSubrogationActionTest extends BaseWebflowActionTest {
+public class InitializeSubrogationActionTest extends BaseWebflowActionTest {
 
     private CasApi casApi;
-    private CheckSubrogationAction checkSubrogationAction;
+    private InitializeSubrogationAction initializeSubrogationAction;
 
     @Before
     public void before() {
         casApi = mock(CasApi.class);
-        checkSubrogationAction = new CheckSubrogationAction(casApi);
+        initializeSubrogationAction = new InitializeSubrogationAction(casApi);
     }
 
     @Test
     public void shouldReturnProceedWhenNoSubrogationParams() {
         // When
-        Event event = checkSubrogationAction.doExecute(context);
+        Event event = initializeSubrogationAction.doExecute(context);
 
         // Then
-        assertThat(event.getId()).isEqualTo(CheckSubrogationAction.PROCEED);
+        assertThat(event.getId()).isEqualTo(InitializeSubrogationAction.PROCEED);
     }
 
     @Test
-    public void shouldReturnSubrogationWhenValidParams() {
+    public void shouldReturnProceedWhenValidParams() {
         // Given
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, "surrogate@vitamui.fr");
         requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, "customerSurrogate");
@@ -53,14 +53,20 @@ public class CheckSubrogationActionTest extends BaseWebflowActionTest {
         when(casApi.getCustomersByIds(anyList())).thenReturn(List.of(customerDto));
 
         // When
-        Event event = checkSubrogationAction.doExecute(context);
+        Event event = initializeSubrogationAction.doExecute(context);
 
         // Then
-        assertThat(event.getId()).isEqualTo(CheckSubrogationAction.SUBROGATION);
+        assertThat(event.getId()).isEqualTo(InitializeSubrogationAction.PROCEED);
         assertThat(flowParameters.get(Constants.FLOW_SURROGATE_EMAIL)).isEqualTo("surrogate@vitamui.fr");
         assertThat(flowParameters.get(Constants.FLOW_SURROGATE_CUSTOMER_ID)).isEqualTo("customerSurrogate");
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo("admin@vitamui.fr");
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo("customerAdmin");
+
+        assertThat(flowParameters.get("userEmail")).isEqualTo("surrogate@vitamui.fr");
+        assertThat(flowParameters.get("userCustomerId")).isEqualTo("customerSurrogate");
+        assertThat(flowParameters.get("superUserEmail")).isEqualTo("admin@vitamui.fr");
+        assertThat(flowParameters.get("superUserCustomerId")).isEqualTo("customerAdmin");
+
         assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_CODE)).isEqualTo("SURR");
         assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_NAME)).isEqualTo("Surrogate Customer");
     }
@@ -74,9 +80,9 @@ public class CheckSubrogationActionTest extends BaseWebflowActionTest {
         requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, "customerAdmin");
 
         // When
-        Event event = checkSubrogationAction.doExecute(context);
+        Event event = initializeSubrogationAction.doExecute(context);
 
         // Then
-        assertThat(event.getId()).isEqualTo(CheckSubrogationAction.PROCEED);
+        assertThat(event.getId()).isEqualTo(InitializeSubrogationAction.PROCEED);
     }
 }

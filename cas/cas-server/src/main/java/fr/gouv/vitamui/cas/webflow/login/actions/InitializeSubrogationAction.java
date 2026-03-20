@@ -41,20 +41,20 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Action to check if subrogation parameters are present in the request.
- * If present, it populates the flow scope and returns 'subrogation'.
- * Otherwise, it returns 'proceed'.
+ * Initialize the subrogation flow by populating the flow scope with required
+ * parameters.
+ * This action replaces the former CheckSubrogationAction to align with CAS 7 /
+ * OIDC requirements
+ * and allows the standard webflow to handle view selection.
  */
 @Slf4j
 @RequiredArgsConstructor
-public class CheckSubrogationAction extends AbstractAction {
+public class InitializeSubrogationAction extends AbstractAction {
 
-    public static final String SUBROGATION = "subrogation";
     public static final String PROCEED = "proceed";
 
     private static final Pattern EMAIL_VALID_REGEXP = Pattern.compile(
-        "^[_A-Za-z0-9]+(((\\.|-)[_A-Za-z0-9]+))*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
-    );
+            "^[_A-Za-z0-9]+(((\\.|-)[_A-Za-z0-9]+))*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
     private static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^\\w+$");
 
     private final CasApi casApi;
@@ -74,12 +74,11 @@ public class CheckSubrogationAction extends AbstractAction {
                 validateCustomerId(superUserCustomerId);
 
                 LOGGER.debug(
-                    "Subrogation parameters validated: surrogateEmail={}, surrogateCustomerId={}, superUserEmail={}, superUserCustomerId={}",
-                    surrogateEmail,
-                    surrogateCustomerId,
-                    superUserEmail,
-                    superUserCustomerId
-                );
+                        "Subrogation parameters validated: surrogateEmail={}, surrogateCustomerId={}, superUserEmail={}, superUserCustomerId={}",
+                        surrogateEmail,
+                        surrogateCustomerId,
+                        superUserEmail,
+                        superUserCustomerId);
 
                 var flowScope = context.getFlowScope();
                 flowScope.put(Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
@@ -87,19 +86,25 @@ public class CheckSubrogationAction extends AbstractAction {
                 flowScope.put(Constants.FLOW_LOGIN_EMAIL, superUserEmail);
                 flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, superUserCustomerId);
 
+                // Populate extra properties for CAS 7 / OIDC compatibility as used in v9.0
+                flowScope.put("userEmail", surrogateEmail);
+                flowScope.put("userCustomerId", surrogateCustomerId);
+                flowScope.put("superUserEmail", superUserEmail);
+                flowScope.put("superUserCustomerId", superUserCustomerId);
+
                 // Fetch surrogate customer info for display in subrogation validation mire
                 CustomerDto surrogateCustomer = casApi
-                    .getCustomersByIds(List.of(surrogateCustomerId))
-                    .stream()
-                    .findFirst()
-                    .orElseThrow(
-                        () -> new IllegalArgumentException("Invalid surrogateCustomerId: '" + surrogateCustomerId + "'")
-                    );
+                        .getCustomersByIds(List.of(surrogateCustomerId))
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(
+                                () -> new IllegalArgumentException(
+                                        "Invalid surrogateCustomerId: '" + surrogateCustomerId + "'"));
 
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getName());
 
-                return new Event(this, SUBROGATION);
+                return new Event(this, PROCEED);
             } catch (Exception e) {
                 LOGGER.error("Validation of subrogation parameters failed", e);
                 // If validation fails, we treat it as a normal login request

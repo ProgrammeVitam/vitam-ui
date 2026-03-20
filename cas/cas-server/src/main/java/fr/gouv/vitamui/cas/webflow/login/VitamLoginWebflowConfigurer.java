@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.cas.webflow.login;
 
-import fr.gouv.vitamui.cas.webflow.login.actions.CheckSubrogationAction;
+import fr.gouv.vitamui.cas.webflow.login.actions.InitializeSubrogationAction;
 import fr.gouv.vitamui.cas.webflow.login.actions.DispatcherAction;
 import fr.gouv.vitamui.cas.webflow.login.actions.ListCustomersAction;
 import fr.gouv.vitamui.cas.webflow.login.actions.TriggerChangePasswordAction;
@@ -84,89 +84,71 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
 
     // FORMS FIELDS
     public static final String USERNAME = "username";
+    public static final String PROCEED = "proceed";
     public static final String PASSWORD = "password";
     public static final String CUSTOMER_ID = "customerId";
 
     public VitamLoginWebflowConfigurer(
-        final FlowBuilderServices flowBuilderServices,
-        final FlowDefinitionRegistry flowDefinitionRegistry,
-        final ConfigurableApplicationContext applicationContext,
-        final CasConfigurationProperties casProperties
-    ) {
+            final FlowBuilderServices flowBuilderServices,
+            final FlowDefinitionRegistry flowDefinitionRegistry,
+            final ConfigurableApplicationContext applicationContext,
+            final CasConfigurationProperties casProperties) {
         super(flowBuilderServices, flowDefinitionRegistry, applicationContext, casProperties);
     }
 
     private void createCheckSubrogationAction(final Flow flow) {
         val action = createActionState(flow, ACTION_STATE_CHECK_SUBROGATION, "checkSubrogationAction");
-        createTransitionForState(action, CheckSubrogationAction.SUBROGATION, VIEW_STATE_SUBROGATION_FORM);
         createTransitionForState(
-            action,
-            CheckSubrogationAction.PROCEED,
-            CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK
-        );
-        createSubrogationFormView(flow);
-    }
-
-    protected void createSubrogationFormView(final Flow flow) {
-        var propertiesToBind = Map.of(USERNAME, Map.of("required", "false"));
-        var binder = createStateBinderConfiguration(propertiesToBind);
-
-        var state = createViewState(flow, VIEW_STATE_SUBROGATION_FORM, TEMPLATE_EMAIL_FORM, binder);
-        createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
-
-        createTransitionForState(state, CasWebflowConstants.TRANSITION_ID_SUBMIT, ACTION_STATE_INTERMEDIATE_SUBMIT);
+                action,
+                InitializeSubrogationAction.PROCEED,
+                CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK);
     }
 
     @Override
     protected void createTicketGrantingTicketCheckAction(final Flow flow) {
         val action = createActionState(
-            flow,
-            CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
-            CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK
-        );
+                flow,
+                CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
+                CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK);
 
-        // CUSTO: instead of STATE_ID_GATEWAY_REQUEST_CHECK, send to ACTION_STATE_CHECK_SUBROGATION
+        // CUSTO: instead of STATE_ID_GATEWAY_REQUEST_CHECK, send to
+        // ACTION_STATE_CHECK_SUBROGATION
         createTransitionForState(
-            action,
-            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_NOT_EXISTS,
-            ACTION_STATE_CHECK_SUBROGATION
-        );
+                action,
+                CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_NOT_EXISTS,
+                ACTION_STATE_CHECK_SUBROGATION);
 
         createCheckSubrogationAction(flow);
         //
 
         createTransitionForState(
-            action,
-            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_INVALID,
-            CasWebflowConstants.STATE_ID_TERMINATE_SESSION
-        );
+                action,
+                CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_INVALID,
+                CasWebflowConstants.STATE_ID_TERMINATE_SESSION);
 
-        // CUSTO: instead of STATE_ID_HAS_SERVICE_CHECK, send to STATE_ID_TRIGGER_CHANGE_PASSWORD
+        // CUSTO: instead of STATE_ID_HAS_SERVICE_CHECK, send to
+        // STATE_ID_TRIGGER_CHANGE_PASSWORD
         createTransitionForState(
-            action,
-            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_VALID,
-            ACTION_STATE_TRIGGER_CHANGE_PASSWORD
-        );
+                action,
+                CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_VALID,
+                ACTION_STATE_TRIGGER_CHANGE_PASSWORD);
 
         createTriggerChangePasswordAction(flow);
     }
 
     private void createTriggerChangePasswordAction(final Flow flow) {
         final ActionState action = createActionState(
-            flow,
-            ACTION_STATE_TRIGGER_CHANGE_PASSWORD,
-            "triggerChangePasswordAction"
-        );
+                flow,
+                ACTION_STATE_TRIGGER_CHANGE_PASSWORD,
+                "triggerChangePasswordAction");
         createTransitionForState(
-            action,
-            TriggerChangePasswordAction.EVENT_ID_CHANGE_PASSWORD,
-            CasWebflowConstants.STATE_ID_MUST_CHANGE_PASSWORD
-        );
+                action,
+                TriggerChangePasswordAction.EVENT_ID_CHANGE_PASSWORD,
+                CasWebflowConstants.STATE_ID_MUST_CHANGE_PASSWORD);
         createTransitionForState(
-            action,
-            TriggerChangePasswordAction.EVENT_ID_CONTINUE,
-            CasWebflowConstants.STATE_ID_HAS_SERVICE_CHECK
-        );
+                action,
+                TriggerChangePasswordAction.EVENT_ID_CONTINUE,
+                CasWebflowConstants.STATE_ID_HAS_SERVICE_CHECK);
     }
 
     @Override
@@ -178,12 +160,12 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
         state.getRenderActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_INIT_LOGIN_ACTION));
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
-        // CUSTO: CasWebflowConstants.STATE_ID_REAL_SUBMIT becomes ACTION_STATE_LIST_CUSTOMERS
+        // CUSTO: CasWebflowConstants.STATE_ID_REAL_SUBMIT becomes
+        // ACTION_STATE_LIST_CUSTOMERS
         val transition = createTransitionForState(
-            state,
-            CasWebflowConstants.TRANSITION_ID_SUBMIT,
-            ACTION_STATE_LIST_CUSTOMERS
-        );
+                state,
+                CasWebflowConstants.TRANSITION_ID_SUBMIT,
+                ACTION_STATE_LIST_CUSTOMERS);
         val attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
         attributes.put("validate", Boolean.TRUE);
@@ -201,10 +183,9 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
         createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_SUCCESS, VIEW_STATE_PASSWORD_FORM);
         createTransitionForState(action, DispatcherAction.TRANSITION_SELECT_CUSTOMER, VIEW_STATE_LOGIN_CUSTOMER_FORM);
         createTransitionForState(
-            action,
-            CasWebflowConstants.TRANSITION_ID_STOP,
-            CasWebflowConstants.STATE_ID_STOP_WEBFLOW
-        );
+                action,
+                CasWebflowConstants.TRANSITION_ID_STOP,
+                CasWebflowConstants.STATE_ID_STOP_WEBFLOW);
         createTransitionForState(action, DispatcherAction.DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
         createTransitionForState(action, DispatcherAction.BAD_CONFIGURATION, TEMPLATE_BAD_CONFIGURATION);
         createEndState(flow, TEMPLATE_BAD_CONFIGURATION, TEMPLATE_BAD_CONFIGURATION);
@@ -212,11 +193,10 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
 
     protected void createPwdFormView(final Flow flow) {
         val propertiesToBind = Map.of(
-            USERNAME,
-            Map.of("required", "true"),
-            PASSWORD,
-            Map.of("converter", StringToCharArrayConverter.ID)
-        );
+                USERNAME,
+                Map.of("required", "true"),
+                PASSWORD,
+                Map.of("converter", StringToCharArrayConverter.ID));
         val binder = createStateBinderConfiguration(propertiesToBind);
 
         val state = createViewState(flow, VIEW_STATE_PASSWORD_FORM, TEMPLATE_PASSWORD_FORM, binder);
@@ -224,20 +204,18 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
         val transition = createTransitionForState(
-            state,
-            CasWebflowConstants.TRANSITION_ID_SUBMIT,
-            CasWebflowConstants.STATE_ID_REAL_SUBMIT
-        );
+                state,
+                CasWebflowConstants.TRANSITION_ID_SUBMIT,
+                CasWebflowConstants.STATE_ID_REAL_SUBMIT);
         val attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
         attributes.put("validate", Boolean.TRUE);
         attributes.put("history", History.INVALIDATE);
 
         createTransitionForState(
-            state,
-            CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD,
-            CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
-        );
+                state,
+                CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD,
+                CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO);
     }
 
     private void createListCustomersAction(final Flow flow) {
@@ -252,10 +230,9 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
         val binder = createStateBinderConfiguration(propertiesToBind);
         val state = createViewState(flow, VIEW_STATE_LOGIN_CUSTOMER_FORM, TEMPLATE_CUSTOMER_FORM, binder);
         val transition = createTransitionForState(
-            state,
-            CasWebflowConstants.TRANSITION_ID_SUBMIT,
-            ACTION_STATE_SELECTED_CUSTOMER_SUBMIT
-        );
+                state,
+                CasWebflowConstants.TRANSITION_ID_SUBMIT,
+                ACTION_STATE_SELECTED_CUSTOMER_SUBMIT);
         val attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
         attributes.put("validate", Boolean.TRUE);
