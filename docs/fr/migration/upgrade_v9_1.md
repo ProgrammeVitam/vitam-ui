@@ -93,7 +93,7 @@ Puis exécutez le playbook suivant :
 ansible-playbook -i environments/<inventaire> ansible-vitamui-extra/bootstrap.yml --ask-vault-pass
 ```
 
-### Mise à jour de MongoDB 8.0.17
+### Mise à jour de MongoDB 8.0.20
 
 > **Attention**
 > Cette opération doit être effectuée après avoir mis à jour les dépôts Vitam en V9.1.
