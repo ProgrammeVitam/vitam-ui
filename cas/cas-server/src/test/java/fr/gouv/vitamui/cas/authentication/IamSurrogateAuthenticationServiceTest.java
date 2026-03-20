@@ -2,9 +2,9 @@ package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.surrogation.IamSurrogateAuthenticationService;
 import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
-import fr.gouv.vitamui.iam.openapiclient.domain.SubrogationDto;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.services.ServicesManager;
