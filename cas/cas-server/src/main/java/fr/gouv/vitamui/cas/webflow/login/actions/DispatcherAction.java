@@ -191,12 +191,7 @@ public class DispatcherAction extends AbstractAction {
     }
 
     private boolean ensureUserIsEnabled(String email, String customerId) {
-        UserDto userDto =
-            this.casApi.getUsersByEmail(email, null)
-                .stream()
-                .filter(user -> user.getCustomerId().equals(customerId))
-                .findFirst()
-                .orElse(null);
+        UserDto userDto = this.casApi.getUser(email, customerId, null, null, null);
         if (userDto == null) {
             // To avoid account existence disclosure, unknown users are silently ignored.
             // Once they enter their credentials, they will get a generic "login or password
