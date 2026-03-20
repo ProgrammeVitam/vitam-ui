@@ -69,6 +69,7 @@ function jqueryReady() {
     };
     ///
     var policyPatternRegex = new RegExp(policyPattern);
+    var invalidCharacterRegex = /^[\s\da-zA-Z!"#$%&£'()*+,-./:;<=>?@\]\[^_`{|}~]*$/;
     var password = document.getElementById('password');
     var confirmed = document.getElementById('confirmedPassword');
 
@@ -86,25 +87,33 @@ function jqueryReady() {
     function validate() {
         var val = password.value;
         var cnf = confirmed.value;
-        var responseText;
-        var passwordIsNotValid = !policyPatternRegex.test(val);
 
-        var disableSubmit = val == '' || cnf == '' || val != cnf || passwordIsNotValid || !policyPatternRegex.test(cnf);
-        $('#submit').prop('disabled', disableSubmit);
+        var characterIsValid = invalidCharacterRegex.test(val);
+        if (characterIsValid) {
+            $('#invalid-character-error').css('display', 'none');
+        } else {
+            $('#invalid-character-error').css('display', 'block');
+        }
+
+        var passwordIsNotValid = !policyPatternRegex.test(val) || !characterIsValid;
+        var confirmIsNotValid = !policyPatternRegex.test(cnf) || !invalidCharacterRegex.test(cnf);
+
+        var disableSubmit = val == '' || cnf == '' || val != cnf || passwordIsNotValid || confirmIsNotValid;
+        $('#main-form-submit, #submit').prop('disabled', disableSubmit);
 
         var result = zxcvbn(val);
         $('#strengthProgressBar').zxcvbnProgressBar({ passwordInput: '#password' });
 
         if (passwordIsNotValid && $('#security-four.valid').length > 0 && $('#security-valid-password.valid').length > 0) {
-          $('#security-invalid-password').addClass("valid");
-          $('#security-invalid-password').show();
+            $('#security-invalid-password').addClass("valid");
+            $('#security-invalid-password').show();
         } else {
-          $('#password-policy-text').hide();
-          $('#security-valid-password').show();
+            $('#password-policy-text').hide();
+            $('#security-valid-password').show();
         }
 
         if (disableSubmit) {
-           return;
+            return;
         }
     }
 }
