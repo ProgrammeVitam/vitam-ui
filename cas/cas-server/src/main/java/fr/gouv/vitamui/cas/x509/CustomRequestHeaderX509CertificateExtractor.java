@@ -65,7 +65,8 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
     public X509Certificate[] extract(final HttpServletRequest request) {
         final X509Certificate[] certs = internalExtract(request);
         if (x509AuthnMandatory && certs == null) {
-            throw new RuntimeException("Client certificate is mandatory!");
+            LOGGER.warn("Client certificate is mandatory but not found in request headers.");
+            return null;
         }
         return certs;
     }
