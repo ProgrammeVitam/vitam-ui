@@ -36,10 +36,12 @@
       "TARGET_ORIGINATING_AGENCY_LABEL": "Sélectionner le nouveau service producteur",
       "CONFIRM": "RÉATTRIBUER",
       "ERROR_MULTIPLE_SP_MODAL": {
+        "SUBHEAD": "L'action demandée n'est pas possible sur cette sélection",
         "TITLE": "Plusieurs services producteurs sélectionnés",
         "MESSAGE": "La réattribution du service producteur se fait uniquement sur une sélection d’unités archivistiques ayant le même service producteur source pour être réattribuer au même service producteur cible"
       },
       "ALERTE_MESSAGES": {
+        "SUBHEAD": "L'action demandée n'est pas possible sur cette sélection",
         "ACTION_ALERTE_TITLE": "Mauvais type d'unité archivistique"
       },
       "REASSIGNMENT_LAUNCHED": "La demande de réattribution a bien été lancée"
