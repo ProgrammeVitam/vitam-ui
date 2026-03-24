@@ -1188,6 +1188,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           if (isMultipleSP) {
             const dialogConfig = new MatDialogConfig();
             dialogConfig.data = {
+              subhead: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERTE_MESSAGES.SUBHEAD',
               title: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.TITLE',
               icon: 'cancel',
               message: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.MESSAGE',
@@ -1203,6 +1204,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             const dialogConfig = new MatDialogConfig();
 
             dialogConfig.data = {
+              subhead: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERTE_MESSAGES.SUBHEAD',
               title: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
               icon: 'cancel',
               message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
@@ -1252,6 +1254,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
+      subhead: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERTE_MESSAGES.SUBHEAD',
       title: 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE',
       icon: 'cancel',
       message: 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2',

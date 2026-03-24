@@ -1,8 +1,8 @@
-<vitamui-dialog-header [subhead]="data.title | translate"></vitamui-dialog-header>
+<vitamui-dialog-header [subhead]="data.subhead | translate"></vitamui-dialog-header>
 
 <mat-dialog-content>
   <vitamui-dialog-content-with-state state="invalid" [title]="data.title | translate">
-    <div class="text normal bold">{{ data.title | translate }}</div>
+    <div class="text normal bold">{{ data.subhead | translate }}</div>
     <div class="text normal">{{ data.message | translate }}</div>
   </vitamui-dialog-content-with-state>
 </mat-dialog-content>
