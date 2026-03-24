@@ -86,7 +86,9 @@ cas.tgc.path: /cas
 {% endif %}
 cas.tgc.secure: true
 cas.tgc.crypto.enabled: true
-cas.webflow.crypto.enabled: false
+cas.webflow.crypto:
+  enabled: true
+  encryption.key-size: 128
 cas.authn.pm.reset.crypto.enabled: true
 
 ##
