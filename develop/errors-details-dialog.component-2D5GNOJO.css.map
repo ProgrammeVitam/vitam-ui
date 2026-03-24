@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/lib/components/dialog/errors-details-dialog/errors-details-dialog.component.scss"],
+  "sourcesContent": [".scroll-area {\n  overflow-y: auto;\n  max-height: 264px;\n  scrollbar-width: thin;\n  margin-left: 13.18px;\n}\n"],
+  "mappings": "AAAA,CAAA,YACE,WAAA,KACA,WAAA,MACA,gBAAA,KACA,YAAA",
+  "names": []
+}
