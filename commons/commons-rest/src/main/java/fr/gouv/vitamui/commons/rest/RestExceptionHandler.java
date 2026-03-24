@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -167,6 +168,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         if (ex instanceof RuntimeException) {
             return handleVitamUIException(new InternalServerException(ex.getMessage(), ex), request);
+        }
+        if (ex instanceof VitamClientException vitamClientException) {
+            logException(ex, request);
+            return new ResponseEntity<>(
+                vitamClientException.getVitamError().toJsonNode(),
+                HttpStatusCode.valueOf(vitamClientException.getVitamError().getHttpCode())
+            );
         }
         logException(ex, request);
         final VitamUIError apiErrors = buildApiErrors(ex);

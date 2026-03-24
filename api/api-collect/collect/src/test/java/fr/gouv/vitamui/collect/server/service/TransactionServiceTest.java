@@ -42,15 +42,16 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
-import fr.gouv.vitamui.collect.common.dto.VitamErrorResponseDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
+import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
@@ -61,7 +62,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -255,7 +255,7 @@ class TransactionServiceTest {
             fakeResponse
         );
         // WHEN
-        VitamErrorResponseDto resultedOperation = transactionService.updateArchiveUnitsFromCsvFile(
+        RequestResponse<JsonNode> resultedOperation = transactionService.updateArchiveUnitsFromCsvFile(
             csvContent,
             TRANSACTION_ID,
             vitamContext
@@ -266,37 +266,42 @@ class TransactionServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUpdateArchiveUnitsFromFile()
-        throws VitamClientException, InvalidParseOperationException {
+        throws VitamClientException, InvalidParseOperationException, JsonProcessingException, JSONException {
         // GIVEN
         List<VitamErrorDetails> errorDetail = List.of(new VitamErrorDetails("ERROR_KEY", null));
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
-        fakeResponse.setHttpCode(200);
+        fakeResponse.setHttpCode(HttpStatus.BAD_REQUEST.value());
         fakeResponse.addResult(JsonHandler.toJsonNode(errorDetail));
-        VitamClientException exception = new VitamClientException("error message");
-        exception.setVitamError(
-            new VitamError<>("BAD_REQUEST")
-                .setHttpCode(400)
-                .setContext("Collect")
-                .setMessage("error message")
-                .setErrorsDetails(errorDetail)
-        );
-        VitamErrorResponseDto expectedResponse = new VitamErrorResponseDto(exception.getVitamError());
+        String resultDto =
+            """
+                  {
+                  "httpCode" : 400,
+                  "code" : "BAD_REQUEST",
+                  "context" : "Collect",
+                  "message" : "error message",
+                  "errorsDetails" : [{
+                    "key" : "ERROR_KEY"
+                  }]
+                }
+            """;
+        RequestResponse<JsonNode> expectedResponse = VitamError.getFromJsonNode(new ObjectMapper().readTree(resultDto));
         String fakeContent = "Path;Name;blablabla";
         InputStream csvContent = new ByteArrayInputStream(fakeContent.getBytes());
 
         // WHEN
-        when(collectService.updateCollectArchiveUnitsWithCsv(vitamContext, TRANSACTION_ID, csvContent))
-            .thenThrow(exception)
-            .thenReturn(fakeResponse);
+        when(collectService.updateCollectArchiveUnitsWithCsv(vitamContext, TRANSACTION_ID, csvContent)).thenReturn(
+            expectedResponse
+        );
 
-        VitamErrorResponseDto response = transactionService.updateArchiveUnitsFromCsvFile(
+        RequestResponse<JsonNode> response = transactionService.updateArchiveUnitsFromCsvFile(
             csvContent,
             TRANSACTION_ID,
             vitamContext
         );
 
         // THEN
-        assertThat(response).isEqualTo(expectedResponse);
+        assertNotNull(response);
+        assertEquals(response, expectedResponse);
     }
 
     @Test
