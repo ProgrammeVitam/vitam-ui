@@ -229,13 +229,14 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       const isDefaultKey = key === 'id';
 
       if (isDefaultKey && inCollectAttachment) {
-        const { title, unitType, hasObject } = inCollectAttachment;
+        const { title, unitType, hasObject, vitamId } = inCollectAttachment;
         return {
           // internalAttachment
           ...node,
           title,
           unitType,
           hasObject,
+          vitamId,
         };
       }
 
