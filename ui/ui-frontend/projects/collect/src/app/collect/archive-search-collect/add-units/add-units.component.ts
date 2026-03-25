@@ -192,6 +192,10 @@ export class AddUnitsComponent implements OnInit {
 
   resetFilesToImportList() {
     this.filesToUploadControl.setValue([]);
+    this.filesToUploadControl.clearValidators();
+    this.filesToUploadControl.setValidators([Validators.required]);
+    this.filesToUploadControl.updateValueAndValidity();
+    this.filesToUploadControl.markAsUntouched();
   }
 
   private handleUploadSuccess(operationId: string | null): void {
