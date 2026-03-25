@@ -38,7 +38,11 @@
   {% endif %}
   "OIDC_CONFIG": {
     "issuer": "{{ vitamui.cas_server.base_url | default(url_prefix+'/cas') }}/oidc",
-    "redirectUri": "{{ vitamui.ui_portal.base_url | default(url_prefix+'/') }}",
+    {% if vitamui_struct.vitamui_component == 'ui-portal' %}
+    "redirectUri": "{{ vitamui_struct.base_url | default(url_prefix + '/') }}",
+    {% else %}
+    "redirectUri": "{{ vitamui_struct.base_url | default(url_prefix + '/' + vitamui_struct.vitamui_component | regex_replace('^ui-', '') + '/' + vitamui_struct.vitamui_component | regex_replace('^ui-', '')) }}",
+    {% endif %}
     "postLogoutRedirectUri": "{{ vitamui.ui_portal.base_url | default(url_prefix+'/') }}",
     "clientId": "{{ vitamui_struct.vitamui_component | regex_replace('^ui-', '') }}",
     "responseType": "code",
