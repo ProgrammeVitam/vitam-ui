@@ -110,7 +110,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   transaction: Transaction;
   projectId: string;
   foundAccessContract = false;
-  accessContractAllowUpdating = false;
   accessContractUpdatingRestrictedDesc: boolean;
   hasUnitaryUpdateUnitRole = false;
   hasBulkUpdateUnitRole = false;
@@ -442,7 +441,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   fetchVitamAccessContract() {
     this.accessContractSubscription = this.archiveUnitCollectService.getAccessContractById(this.accessContract).subscribe(
       (ac: AccessContract) => {
-        this.accessContractAllowUpdating = ac.writingPermission;
         this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
       },
       (error: any) => {
