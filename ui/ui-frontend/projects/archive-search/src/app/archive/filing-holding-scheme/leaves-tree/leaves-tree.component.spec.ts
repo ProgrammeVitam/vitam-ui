@@ -227,7 +227,7 @@ describe('LeavesTreeComponent', () => {
       isLoadingChildren: false,
       paginatedChildrenLoaded: 5,
     };
-    const response = component.nodeIsUAWithoutChildren(1, filingHoldingSchemaNode);
+    const response = component.nodeIsUAWithoutChildrenOrWithChildrenFromDetachedSignature(1, filingHoldingSchemaNode);
     expect(response).toBeFalsy();
   });
 
@@ -287,7 +287,7 @@ describe('LeavesTreeComponent', () => {
       isLoadingChildren: false,
       paginatedChildrenLoaded: 5,
     };
-    const response = component.nodeIsUAWithoutChildren(1, node);
+    const response = component.nodeIsUAWithoutChildrenOrWithChildrenFromDetachedSignature(1, node);
     expect(response).toBeTruthy();
   });
 
