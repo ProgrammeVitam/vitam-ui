@@ -36,12 +36,11 @@
  */
 import { isEmpty } from 'lodash-es';
 import { getUnitI18nAttribute } from '../../pipes/unitI18n.pipe';
-import { ResultFacet } from '../criteria/search-criteria.interface';
+import { ResultFacet } from '../criteria';
 import { DescriptionLevel } from '../units/description-level.enum';
-import { Unit } from '../units/unit.interface';
+import { Unit, UnitType } from '../units';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
 import { copyNodeWithoutChildren } from './node.utils';
-import { UnitType } from '../units';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';
 export const KEY_VALUE_NODE_ID = 'KEY_VALUE_NODE';
