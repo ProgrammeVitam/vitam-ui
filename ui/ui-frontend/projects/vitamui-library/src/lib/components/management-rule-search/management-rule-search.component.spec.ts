@@ -42,7 +42,7 @@ import { MANAGEMENT_RULE_SEARCH_CONFIG, ManagementRuleCheckboxDescriptor, Manage
 import { QueryParamsService } from '../../../app/modules/url/query-params.service';
 import { SearchCriteriaService } from '../../../app/modules/models/criteria/search-criteria.service';
 import { MANAGEMENT_RULE_SHARED_DATA_SERVICE } from '../../models/management-rule-shared-data-service.interface';
-import { ACCESS_RULE, ApplicationId, StartupService } from '../../../app/modules';
+import { ACCESS_RULE, ApplicationId, ORIGIN_WAITING_RECALCULATE, StartupService } from '../../../app/modules';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ManagementRuleCriteriaService } from './services/management-rule-criteria.service';
@@ -62,6 +62,10 @@ describe('ManagementRuleSearchComponent', () => {
       'buildDateCriteria',
       'applyDefaultOriginCriteria',
     ]);
+    mockManagementRuleCriteriaService.initializeFromSearchCriteria.and.callFake((_obs, _keys, _criteria, _destroyed, onDefault) => {
+      onDefault();
+      return of().subscribe();
+    });
 
     const mockSharedDataService = {
       searchCriteria$: of(new Map()),
@@ -79,6 +83,11 @@ describe('ManagementRuleSearchComponent', () => {
             checkboxes: [{ key: 'MyKey', labelKey: 'MyKeyLabel' }],
             id_endDate: 'myEndDateId',
           },
+          [ManagementRuleType.APPRAISAL]: {
+            ruleType: 'APPRAISAL_RULE',
+            checkboxConfig: [] as ManagementRuleCheckboxDescriptor[],
+            checkboxes: [{ key: 'MyKey', labelKey: 'MyKeyLabel' }],
+          },
         },
         [ApplicationId.ARCHIVE_SEARCH_APP]: {
           [ManagementRuleType.ACCESS]: {
@@ -88,6 +97,11 @@ describe('ManagementRuleSearchComponent', () => {
               { key: 'MyKey', labelKey: 'MyKeyLabel' },
               { key: 'MyKey2', labelKey: 'MyKeyLabel2' },
             ],
+          },
+          [ManagementRuleType.APPRAISAL]: {
+            ruleType: 'APPRAISAL_RULE',
+            checkboxConfig: [] as ManagementRuleCheckboxDescriptor[],
+            checkboxes: [{ key: 'MyKey', labelKey: 'MyKeyLabel' }],
           },
         },
       };
@@ -149,5 +163,23 @@ describe('ManagementRuleSearchComponent', () => {
     component.criteriaForm.controls.ruleStartDate.setValue('2023-01-01');
     component.addBeginDtCriteria();
     expect(component.criteriaForm.controls.ruleStartDate.value).toBeNull();
+  });
+
+  it('should reset ruleEliminationIdentifier after processing form update', () => {
+    fixture.componentRef.setInput('type', ManagementRuleType.APPRAISAL);
+    component.ngOnInit();
+    component.criteriaForm.controls.ruleEliminationIdentifier.setValue('ELIM-123');
+
+    // @ts-ignore
+    component.processFormUpdate(component.criteriaForm.value);
+
+    expect(component.criteriaForm.controls.ruleEliminationIdentifier.value).toBeNull();
+  });
+
+  it('should initialize ORIGIN_WAITING_RECALCULATE from hasWaitingToRecalculateCriteria input', () => {
+    fixture.componentRef.setInput('hasWaitingToRecalculateCriteria', true);
+    component.ngOnInit();
+
+    expect(component.additionalCriteria.get(ORIGIN_WAITING_RECALCULATE)).toBeTrue();
   });
 });

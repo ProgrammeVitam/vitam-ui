@@ -164,7 +164,12 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
       ManagementRuleFormUtils.getKeysList(this.config),
       this.additionalCriteria,
       this.destroyed$,
-      () => this.setDefaultCriteria(),
+      () => {
+        if (this.hasWaitingToRecalculateCriteria) {
+          this.additionalCriteria.set(ORIGIN_WAITING_RECALCULATE, true);
+        }
+        this.setDefaultCriteria();
+      },
     );
   }
 
@@ -219,6 +224,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
           [ELIMINATION_TECHNICAL_ID]:
             formData.ruleEliminationIdentifier && formData.ruleEliminationIdentifier !== '' ? formData.ruleEliminationIdentifier : null,
         });
+        this.criteriaForm.controls.ruleEliminationIdentifier?.reset(undefined, { emitEvent: false });
       }
 
       this.previousCriteriaValue = consistentData;
