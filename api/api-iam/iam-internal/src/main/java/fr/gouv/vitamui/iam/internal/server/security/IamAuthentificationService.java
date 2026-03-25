@@ -77,7 +77,7 @@ public class IamAuthentificationService {
     @NotNull
     private Integer tokenAdditionalTtl;
 
-    @Value("${cas.secret.token}")
+    @Value("${cas_secret_token}")
     @NotNull
     private String casSecretToken;
 

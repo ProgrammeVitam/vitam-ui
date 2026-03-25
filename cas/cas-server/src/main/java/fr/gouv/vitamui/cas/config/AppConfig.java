@@ -179,7 +179,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Autowired
     private PasswordConfiguration passwordConfiguration;
 
-    @Value("${cas.secret.token}")
+    @Value("${cas_secret_token}")
     @NotNull
     private String tokenApiCas;
 
