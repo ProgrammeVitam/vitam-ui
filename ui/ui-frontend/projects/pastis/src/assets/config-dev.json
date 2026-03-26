@@ -20,7 +20,6 @@
   "ALLOWED_URLS": ["/pastis"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
-    "redirectUri": "https://dev.vitamui.com:4251/pastis",
     "postLogoutRedirectUri": "https://dev.vitamui.com:4251/pastis",
     "clientId": "pastis",
     "responseType": "code",

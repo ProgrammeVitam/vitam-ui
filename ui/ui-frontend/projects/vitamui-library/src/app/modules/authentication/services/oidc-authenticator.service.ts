@@ -37,19 +37,37 @@
 import { OAuthService } from 'angular-oauth2-oidc';
 import { from, Observable } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
-import { map, tap } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
+import { ConfigService } from '../../config.service';
+import { OidcUrlCleaner } from './oidc-url-cleaner';
+import { Inject, Injectable } from '@angular/core';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 
-const OIDC_PARAMS = ['code', 'state', 'id_token', 'access_token', 'token_type', 'session_state', 'nonce'];
-
+@Injectable({
+  providedIn: 'root',
+})
 export class OidcAuthenticatorService implements AuthenticatorService {
   constructor(
     private oAuthService: OAuthService,
-    private location: any,
-  ) {}
+    @Inject(WINDOW_LOCATION) private location: any, // Native Location object
+    private configService: ConfigService,
+    private urlCleaner: OidcUrlCleaner,
+  ) {
+    this.configService.config$.pipe(first((config) => !!config?.OIDC_CONFIG)).subscribe((config) => {
+      const oidcConfig = { ...config.OIDC_CONFIG };
+      // Initialize deep linking support
+      oidcConfig.redirectUri = this.urlCleaner.resolveValidRedirectUri(oidcConfig.redirectUri, this.location.href);
+      oidcConfig.postLogoutRedirectUri = this.urlCleaner.resolveValidRedirectUri(oidcConfig.postLogoutRedirectUri, this.location.href);
+      this.oAuthService.configure(oidcConfig);
+    });
+  }
 
   public login(): Observable<boolean> {
     const url = new URL(this.location.href);
-    const returnUrl = this.cleanOidcParams(this.location.pathname + this.location.search);
+    const returnUrl = this.urlCleaner.getCleanedPath(this.location.pathname + this.location.search, this.location.origin);
+
+    // Ensure redirectUri is up-to-date with current URL (important for subrogation and deep links)
+    this.oAuthService.redirectUri = this.urlCleaner.resolveValidRedirectUri(this.oAuthService.redirectUri, this.location.href);
 
     if (url.searchParams.get('isSubrogation')) {
       return from(this.startSubrogationFlow(url, returnUrl));
@@ -64,7 +82,6 @@ export class OidcAuthenticatorService implements AuthenticatorService {
 
   private async startSubrogationFlow(url: URL, returnUrl: string): Promise<boolean> {
     await this.oAuthService.loadDiscoveryDocument();
-    this.oAuthService.redirectUri = this.buildAbsoluteRedirectUri();
     this.oAuthService.initCodeFlow(returnUrl, {
       superUserEmail: url.searchParams.get('superUserEmail'),
       superUserCustomerId: url.searchParams.get('superUserCustomerId'),
@@ -76,7 +93,6 @@ export class OidcAuthenticatorService implements AuthenticatorService {
 
   private async startLoginWithUsername(url: URL, returnUrl: string): Promise<boolean> {
     await this.oAuthService.loadDiscoveryDocument();
-    this.oAuthService.redirectUri = this.buildAbsoluteRedirectUri();
     this.oAuthService.initCodeFlow(returnUrl, { username: url.searchParams.get('username') });
     return true;
   }
@@ -90,15 +106,6 @@ export class OidcAuthenticatorService implements AuthenticatorService {
       tap((authenticated) => {
         if (authenticated) {
           this.cleanUrlAfterLogin();
-          const claims = this.oAuthService.getIdentityClaims() as any;
-          if (claims?.state) {
-            const parts = claims.state.split(';');
-            // The state format is `<nonce>;<encoded_url>` — we take parts[1].
-            const redirectPath = parts.length > 1 ? decodeURIComponent(parts[1]) : null;
-            if (redirectPath && redirectPath !== '/') {
-              this.location.href = this.location.origin + redirectPath;
-            }
-          }
         }
       }),
     );
@@ -109,15 +116,23 @@ export class OidcAuthenticatorService implements AuthenticatorService {
   }
 
   public logoutSubrogationAndRedirectToLoginPage(username: string): void {
-    this.oAuthService.postLogoutRedirectUri += this.getUrlSeparator(this.oAuthService.postLogoutRedirectUri) + 'username=' + username;
+    this.updatePostLogoutRedirectUri({ username });
     this.oAuthService.revokeTokenAndLogout();
   }
 
-  public initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string): void {
-    const sep = this.getUrlSeparator(this.oAuthService.postLogoutRedirectUri);
-    this.oAuthService.postLogoutRedirectUri +=
-      sep +
-      `isSubrogation=true&superUserEmail=${superUser}&superUserCustomerId=${superUserCustomerId}&surrogateEmail=${surrogate}&surrogateCustomerId=${surrogateCustomerId}`;
+  public initSubrogationFlow(
+    superUserEmail: string,
+    superUserCustomerId: string,
+    surrogateEmail: string,
+    surrogateCustomerId: string,
+  ): void {
+    this.updatePostLogoutRedirectUri({
+      isSubrogation: 'true',
+      superUserEmail,
+      superUserCustomerId,
+      surrogateEmail,
+      surrogateCustomerId,
+    });
     this.oAuthService.revokeTokenAndLogout();
   }
 
@@ -125,33 +140,16 @@ export class OidcAuthenticatorService implements AuthenticatorService {
     this.oAuthService.revokeTokenAndLogout();
   }
 
-  private cleanOidcParams(path: string): string {
-    const u = new URL(path, this.location.origin);
-    OIDC_PARAMS.forEach((p) => u.searchParams.delete(p));
-    return u.pathname + (u.search || '');
+  /** Update postLogoutRedirectUri by adding search parameters */
+  private updatePostLogoutRedirectUri(params: Record<string, string>): void {
+    const url = new URL(this.oAuthService.postLogoutRedirectUri, this.location.origin);
+    Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+    this.oAuthService.postLogoutRedirectUri = url.toString();
   }
 
+  /** Clean address bar URL after authentication */
   private cleanUrlAfterLogin(): void {
-    history.replaceState(null, '', this.cleanOidcParams(this.location.pathname + this.location.search));
-  }
-
-  private getUrlSeparator(url: string): string {
-    const idx = url.indexOf('?');
-    if (idx === -1) return '?';
-    if (idx === url.length - 1) return '';
-    return '&';
-  }
-
-  private buildAbsoluteRedirectUri(): string {
-    const postLogoutUri = this.oAuthService.postLogoutRedirectUri;
-
-    try {
-      const u = new URL(postLogoutUri);
-      const forbiddenParams = ['code', 'state', 'id_token', 'access_token', 'token_type', 'session_state'];
-      forbiddenParams.forEach((p) => u.searchParams.delete(p));
-      return u.toString();
-    } catch {
-      return this.location.origin + postLogoutUri;
-    }
+    const cleanedPath = this.urlCleaner.getCleanedPath(this.location.pathname + this.location.search, this.location.origin);
+    history.replaceState(null, '', cleanedPath);
   }
 }
