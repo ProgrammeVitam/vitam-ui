@@ -245,23 +245,15 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
         this.breadcrumbDataMetadata = this.breadcrumbService.computeBreadcrumb({ node, root });
       });
     this.sedaVersionLabel = this.profileService.getSedaVersionLabel();
-    // BreadCrump Top for navigation
-    this.profileModeLabel =
-      this.profileService.profileType === ProfileType.PUA
-        ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA'
-        : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
-    this.breadcrumbDataTop = [
-      {
-        label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
-        url: this.startupService.getPortalUrl(),
-        external: true,
-      },
-      { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' },
-      { label: this.profileModeLabel },
-    ];
+    this.updateBreadcrumbTop();
 
     this._fileServiceSubscription = this.fileService.currentTree
-      .pipe(tap((_node) => (this.sedaVersionLabel = this.profileService.getSedaVersionLabel())))
+      .pipe(
+        tap((_node) => {
+          this.sedaVersionLabel = this.profileService.getSedaVersionLabel();
+          this.updateBreadcrumbTop();
+        }),
+      )
       .subscribe((fileTree) => {
         if (fileTree) {
           this.clickedNode = fileTree[0];
@@ -947,5 +939,21 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  private updateBreadcrumbTop(): void {
+    this.profileModeLabel =
+      this.profileService.profileType === ProfileType.PUA
+        ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA'
+        : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
+    this.breadcrumbDataTop = [
+      {
+        label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
+        url: this.startupService.getPortalUrl(),
+        external: true,
+      },
+      { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/' },
+      { label: this.profileModeLabel },
+    ];
   }
 }
