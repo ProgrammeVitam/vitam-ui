@@ -33,6 +33,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.error.VitamErrorDetails;
@@ -85,21 +86,27 @@ class TransactionServiceTest {
     @Test
     void shouldValidateTransactionWithSuccess() throws VitamClientException {
         // GIVEN
-        when(collectService.validateTransaction(vitamContext, TRANSACTION_ID)).thenReturn(
-            new RequestResponseOK().setHttpCode(200)
-        );
+        when(
+            collectService.validateTransaction(vitamContext, TRANSACTION_ID, TransactionValidationMode.VALIDATE)
+        ).thenReturn(new RequestResponseOK().setHttpCode(200));
         // THEN
-        assertDoesNotThrow(() -> transactionService.validateTransaction(TRANSACTION_ID, vitamContext));
+        assertDoesNotThrow(
+            () ->
+                transactionService.validateTransaction(TRANSACTION_ID, vitamContext, TransactionValidationMode.VALIDATE)
+        );
     }
 
     @Test
     void shouldThrowExceptionWhenValidateTransaction() throws VitamClientException {
         // GIVEN
-        when(collectService.validateTransaction(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
+        when(
+            collectService.validateTransaction(vitamContext, TRANSACTION_ID, TransactionValidationMode.VALIDATE)
+        ).thenThrow(VitamClientException.class);
         // THEN
         assertThrows(
             VitamClientException.class,
-            () -> transactionService.validateTransaction(TRANSACTION_ID, vitamContext)
+            () ->
+                transactionService.validateTransaction(TRANSACTION_ID, vitamContext, TransactionValidationMode.VALIDATE)
         );
     }
 

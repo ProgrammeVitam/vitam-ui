@@ -46,7 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { EllipsisDirectiveModule } from '../../directives/ellipsis/ellipsis.directive.module';
-import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
+import { ConfirmDialogModule } from '../common-confirm-dialog/confirm-dialog.module';
 import { EditableEmailInputComponent } from './editable-email-input/editable-email-input.component';
 import { EditableFieldComponent } from './editable-field.component';
 import { EditableFileComponent } from './editable-file/editable-file.component';

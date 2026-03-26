@@ -40,12 +40,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
-import { ConfirmDialogComponent } from './confirm-dialog.component';
+import { CommonConfirmDialogComponent } from './common-confirm-dialog.component';
 import { DialogHeaderComponent } from '../../../../lib/components/dialog/dialog-header/dialog-header.component';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, ClosePopupDialogComponent],
+  declarations: [CommonConfirmDialogComponent, ClosePopupDialogComponent],
   imports: [CommonModule, MatDialogModule, TranslateModule, DialogHeaderComponent],
-  exports: [ConfirmDialogComponent, ClosePopupDialogComponent],
+  exports: [CommonConfirmDialogComponent, ClosePopupDialogComponent],
 })
 export class ConfirmDialogModule {}

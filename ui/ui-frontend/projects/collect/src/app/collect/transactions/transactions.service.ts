@@ -52,6 +52,7 @@ import {
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 import { pollUntil } from './polling';
+import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -88,8 +89,12 @@ export class TransactionsService extends SearchService<Transaction> {
     return this.transactionApiService.getTransactionById(transactionById);
   }
 
-  public validate(transaction: Transaction, context = { isAutomaticIngest: false }): Observable<Transaction> {
-    return this.validateTransaction(transaction.id).pipe(
+  public validate(
+    transaction: Transaction,
+    validationMode: TransactionValidationMode,
+    context = { isAutomaticIngest: false },
+  ): Observable<Transaction> {
+    return this.validateTransaction(transaction.id, validationMode).pipe(
       switchMap(() => {
         const status$ = this.getTransactionById(transaction.id).pipe(map((next) => next.status));
         const isValidated = (status: TransactionStatus) => {
@@ -107,8 +112,8 @@ export class TransactionsService extends SearchService<Transaction> {
     );
   }
 
-  validateTransaction(id: string) {
-    return this.transactionApiService.validateTransaction(id);
+  validateTransaction(id: string, validationMode: TransactionValidationMode) {
+    return this.transactionApiService.validateTransaction(id, validationMode);
   }
 
   sendTransaction(id: string) {

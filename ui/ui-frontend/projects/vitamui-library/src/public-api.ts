@@ -54,6 +54,7 @@ export * from './lib/components/vitamui-radio/vitamui-radio.component';
 export * from './lib/components/vitamui-radio/vitamui-radio.module';
 
 export * from './lib/components/dialog/alert-dialog/alert-dialog.component';
+export * from './lib/components/dialog/confirm-dialog/confirm-dialog.component';
 export * from './lib/components/dialog/dialog-content-with-state/dialog-content-with-state.component';
 export * from './lib/components/dialog/dialog-header/dialog-header.component';
 export * from './lib/components/dialog/error-dialog/error-dialog.component';
@@ -90,6 +91,7 @@ export * from './lib/models/search-query.interface';
 export * from './lib/models/year-month-query.interface';
 export * from './lib/models/zip/zip-file.class';
 export * from './lib/models/zip/zip-file-status.interface';
+export * from './lib/models/confirm-dialog-data.interface';
 
 /* SERVICES */
 export * from './lib/components/filing-plan/filing-plan.service';

@@ -60,6 +60,7 @@ public class TransactionConverter {
         collectTransactionDto.setLastUpdate(transactionDto.getLastUpdate());
         collectTransactionDto.setProjectId(transactionDto.getProjectId());
         collectTransactionDto.setName(transactionDto.getName());
+        collectTransactionDto.setBatches(transactionDto.getBatches());
         return collectTransactionDto;
     }
 

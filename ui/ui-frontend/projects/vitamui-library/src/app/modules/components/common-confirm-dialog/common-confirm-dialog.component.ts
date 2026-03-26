@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './close-popup-dialog.component';
-export * from './confirm-dialog.component';
-export * from './confirm-dialog.module';
-export * from './confirm-dialog.service';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'vitamui-common-confirm-dialog',
+  templateUrl: './common-confirm-dialog.component.html',
+  styleUrls: ['./common-confirm-dialog.component.scss'],
+  standalone: false,
+})
+export class CommonConfirmDialogComponent {
+  @Input() dialogTitle: string;
+  @Input() dialogSubTitle: string;
+  @Input() cancelLabel: string;
+  @Input() confirmLabel: string;
+
+  constructor() {}
+}

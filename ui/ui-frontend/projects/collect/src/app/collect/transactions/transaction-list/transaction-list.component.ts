@@ -36,11 +36,23 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, finalize } from 'rxjs';
-import { Direction, InfiniteScrollTable, SnackBarService, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
+import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+  Direction,
+  InfiniteScrollTable,
+  SnackBarService,
+  StartupService,
+  Transaction,
+  TransactionStatus,
+} from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { ProjectsService } from '../../projects/projects.service';
+import { MatDialog } from '@angular/material/dialog';
+import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
+import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
 
 @Component({
   selector: 'app-transaction-list',
@@ -68,6 +80,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     private router: Router,
     private startupService: StartupService,
     private snackBarService: SnackBarService,
+    private dialog: MatDialog,
   ) {
     super(transactionService);
   }
@@ -112,14 +125,34 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   validateTransaction(transaction: Transaction) {
-    this.transactionService
-      .validate(transaction, { isAutomaticIngest: this.isAutomaticIngest })
+    const hasBatchError = this.hasBatchInError(transaction);
+    const validationMode = hasBatchError ? TransactionValidationMode.VALIDATE_IGNORE : TransactionValidationMode.VALIDATE;
+    const confirmation$ = hasBatchError
+      ? this.dialog
+          .open<ConfirmDialogComponent, ConfirmDialogData>(ConfirmDialogComponent, {
+            disableClose: false,
+            data: {
+              title: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM_FORCE_TRANSACTION_VALIDATION_MESSAGE',
+              subTitle: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM_TRANSACTION_VALIDATION',
+              confirmLabel: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM_TRANSACTION_VALIDATION',
+              cancelLabel: 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL',
+            },
+          })
+          .afterClosed()
+          .pipe(filter((confirmed) => !!confirmed))
+      : of(true);
+
+    confirmation$
       .pipe(
-        finalize(() => {
-          this.snackBarService.open({
-            message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
-            duration: 10_000,
-          });
+        switchMap(() => {
+          return this.transactionService.validate(transaction, validationMode, { isAutomaticIngest: this.isAutomaticIngest }).pipe(
+            finalize(() => {
+              this.snackBarService.open({
+                message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
+                duration: 10_000,
+              });
+            }),
+          );
         }),
       )
       .subscribe({
@@ -204,6 +237,14 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     return [TransactionStatus.VALIDATED, TransactionStatus.SENDING, TransactionStatus.SENT, TransactionStatus.ACK_KO].includes(
       transaction.status,
     );
+  }
+
+  private hasBatchInError(transaction: Transaction): boolean {
+    return transaction.batches?.some((b) => b.BatchStatus === BatchStatus.KO) ?? false;
+  }
+
+  shouldShowBatchError(transaction: Transaction): boolean {
+    return this.hasBatchInError(transaction) && transaction.status === TransactionStatus.OPEN;
   }
 
   private checkTransactionsPermissions() {

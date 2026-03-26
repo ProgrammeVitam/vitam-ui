@@ -44,7 +44,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ConfirmDialogModule } from '../components/confirm-dialog/confirm-dialog.module';
+import { ConfirmDialogModule } from '../components/common-confirm-dialog/confirm-dialog.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
 import { PipesModule } from '../pipes/pipes.module';
 import { SubrogationBannerComponent } from './subrogation-banner/subrogation-banner.component';

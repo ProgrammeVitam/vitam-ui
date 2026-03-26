@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -88,9 +89,17 @@ public class TransactionService {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public void validateTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
+    public void validateTransaction(
+        String idTransaction,
+        VitamContext vitamContext,
+        TransactionValidationMode validationMode
+    ) throws VitamClientException {
         try {
-            RequestResponse requestResponse = collectService.validateTransaction(vitamContext, idTransaction);
+            RequestResponse requestResponse = collectService.validateTransaction(
+                vitamContext,
+                idTransaction,
+                validationMode
+            );
             if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
                 throw new VitamClientException("Error occurs when validating transaction!");
             }

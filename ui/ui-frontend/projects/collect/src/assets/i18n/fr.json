@@ -260,7 +260,9 @@
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l’opération demandée dépasse le seuil de plateforme autorisé.",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l’action à réaliser ?",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L’action demandée n’est pas possible sur cette sélection",
-        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L’opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l’opération"
+        "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L’opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l’opération",
+        "CONFIRM_TRANSACTION_VALIDATION": "Confirmer la validation",
+        "CONFIRM_FORCE_TRANSACTION_VALIDATION_MESSAGE": "A l’import des fichiers et des métadonnées, des erreurs ont été détectées. Si vous ne les avez pas résolues vous pourriez être bloqué au versement. Confirmez-vous votre validation ?"
       }
     },
     "TITLE_TRANSACTIONS_MONITORING": "Suivi des versements du projet",
@@ -273,6 +275,7 @@
     "VALIDATE_TRANSACTION_VALIDATED": "La demande de versement du projet a été bien validée",
     "TRANSACTION_ABORTED": "La demande de versement du projet a été bien abandonnée",
     "TRANSACTION_REOPENED": "La demande de versement du projet a été bien rouverte",
+    "BATCH_ERROR_RECORDED": "Erreurs enregistrées",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
         "SHOW_TRANSACTIONS": "Accéder à la liste des versements du projet",
