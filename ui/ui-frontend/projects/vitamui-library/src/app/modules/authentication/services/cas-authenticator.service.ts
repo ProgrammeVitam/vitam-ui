@@ -34,16 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { inject, Injectable } from '@angular/core';
+import { first } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
+import { WINDOW_LOCATION } from '../../injection-tokens';
+import { ConfigService } from '../../config.service';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class CasAuthenticatorService implements AuthenticatorService {
-  constructor(
-    private location: any,
-    private loginUrl: string,
-    private logoutUrl: string,
-    private logoutRedirectUiUrl: string,
-  ) {}
+  private location = inject(WINDOW_LOCATION);
+  private configService = inject(ConfigService);
+
+  private loginUrl: string;
+  private logoutUrl: string;
+  private logoutRedirectUiUrl: string;
+
+  constructor() {
+    this.configService.config$.pipe(first((config) => !!config)).subscribe((config) => {
+      this.loginUrl = config.CAS_URL;
+      this.logoutUrl = config.CAS_LOGOUT_URL;
+      this.logoutRedirectUiUrl = config.LOGOUT_REDIRECT_UI_URL;
+    });
+  }
 
   public login(): Observable<boolean> {
     return of(true);
