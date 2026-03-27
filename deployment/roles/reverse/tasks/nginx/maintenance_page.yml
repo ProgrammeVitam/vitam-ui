@@ -1,0 +1,28 @@
+---
+
+- name: Create maintenance page directory
+  file:
+    path: "{{ nginx_conf_dir }}/maintenance_page"
+    state: directory
+    owner: "{{ reverse_user }}"
+    group: "{{ reverse_group }}"
+    mode: "0755"
+
+- name: Copy maintenance images
+  copy:
+    src: "{{ role_path }}/templates/maintenance_page/{{ item }}"
+    dest: "{{ nginx_conf_dir }}/maintenance_page/{{ item }}"
+    owner: "{{ reverse_user }}"
+    group: "{{ reverse_group }}"
+    mode: "0644"
+  with_items:
+    - logo_vitamui.png
+    - logo_maintenance.png
+
+- name: Template maintenance index page
+  template:
+    src: maintenance_page/index.html.j2
+    dest: "{{ nginx_conf_dir }}/maintenance_page/index.html"
+    owner: "{{ reverse_user }}"
+    group: "{{ reverse_group }}"
+    mode: "0644"

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance - VitamUI</title>
+    <style>
+        :root {
+            --vitam-dark-purple: #3a1c5e;
+            --vitam-purple: #8e44ad;
+            --vitam-blue: #0066b2;
+            --vitam-light-blue: #74b9ef;
+            --vitam-red: #e93e50;
+            --text-grey: #555;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: var(--vitam-dark-purple);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--vitam-blue);
+        }
+
+        .logo-placeholder {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .logo-placeholder span.v { color: var(--vitam-blue); }
+        .logo-placeholder span.dot { color: var(--vitam-red); }
+
+        h1 {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .divider {
+            height: 4px;
+            width: 80px;
+            background: linear-gradient(to right, var(--vitam-blue), var(--vitam-purple));
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        p {
+            color: var(--text-grey);
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        .status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: var(--vitam-red);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-placeholder">
+            <img src="logo_vitamui.png" alt="VitamUI Logo" style="height: 150px;" />
+        </div>
+
+        <h1>Maintenance en cours</h1>
+        <div class="divider"></div>
+
+        <p>Notre service d'archivage numérique est momentanément indisponible pour des raisons de maintenance technique.</p>
+
+        <p style="font-size: 15px;">
+            <img src="logo_maintenance.png" alt="Maintenance" />
+            {% if maintenance_message %}
+            <span class="status-dot"></span> {{ maintenance_message }}
+            {% endif %}
+        </p>
+
+        <footer>
+            &copy; 2026 Programme Vitam
+        </footer>
+    </div>
+
+</body>
+</html>

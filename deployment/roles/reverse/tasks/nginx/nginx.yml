@@ -31,6 +31,9 @@
   notify: reload nginx
   when: vitamui_reverse_external_protocol | lower == 'https'
 
+- include_tasks: maintenance_page.yml
+  when: maintenance_enabled | default(false) | bool
+
 - name: Ensure nginx is started
   systemd:
     name: nginx

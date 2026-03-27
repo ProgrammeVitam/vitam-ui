@@ -10,6 +10,23 @@ server {
 
   server_name {{ vitamui_reverse_external_dns }};
 
+{% if maintenance_enabled | default(false) | bool %}
+  root {{ nginx_conf_dir }}/maintenance_page;
+  error_page 503 @maintenance;
+
+  location @maintenance {
+    rewrite ^ /index.html break;
+  }
+
+  location ~* /(logo_vitamui\.png|logo_maintenance\.png)$ {
+    try_files /$1 =404;
+  }
+
+  location / {
+    return 503;
+  }
+{% else %}
+
   location = /favicon.ico {
     alias {{ assets_path }}/favicon.ico;
   }
@@ -149,5 +166,7 @@ server {
     proxy_pass {{ 'https' if vitamui.ui_portal.secure | default(secure) | bool else 'http' }}://PORTAL;
     include {{ nginx_conf_dir }}/proxy_params;
   }
+
+{% endif %}
 
 }
