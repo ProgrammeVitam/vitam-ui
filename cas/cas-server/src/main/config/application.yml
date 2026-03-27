@@ -1,0 +1,137 @@
+# Shared functional and technical configuration for CAS server profiles
+
+cas:
+  message-bundle:
+    base-names: classpath:overriden_messages,classpath:messages
+  host.name: cas
+  tgc:
+    path: /cas
+    secure: true
+    crypto.enabled: false
+  webflow.crypto.enabled: true
+  logout:
+    follow-service-redirects: true
+    redirect-parameter: next
+  service-registry.mongo:
+    collection: services
+  # 24 hours cache for login delegation
+  # Must be at least 24 hours as this cache is also used for password management and its 24-hour-creation email
+  ticket.tst.time-to-kill-in-seconds: 86400
+  authn:
+    accept.users: ""
+    pm:
+      core:
+        enabled: true
+        password-policy-pattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
+        auto-login: true
+      reset:
+        expiration: PT1440M # 1 Day : 24 * 60 Minutes to reset password
+        number-of-uses: 1
+        mail:
+          from: serveur-cas@noreply.com
+          subject: Requete de reinitialisation de mot de passe
+          text: "Changez de mot de passe via le lien: %s"
+          attribute-name: email
+        crypto.enabled: true
+        security-questions-enabled: false
+        include-server-ip-address: false
+    oauth:
+      access-token:
+        max-time-to-live-in-seconds: 28800 # 8 hours in seconds
+    oidc:
+      core.issuer: ${cas.server.prefix}/oidc
+    mfa:
+      simple:
+        sms:
+          from: 'changeme'
+          text: 'Code : ${tokenWithoutPrefix}'
+          attribute-name: mobile
+        mail.text: xxx
+        token.core:
+          time-to-kill-in-seconds: 3600
+          token-length: 4
+      triggers.principal:
+        global-principal-attribute-name-triggers: computedOtp
+        global-principal-attribute-value-regex: 'true'
+    surrogate.mail.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnEmail
+    throttle.failure:
+      threshold: 2
+      range-seconds: 3
+  # Cas CORS (necessary for mobile app)
+  http-web-request.cors:
+    enabled: true
+    allow-credentials: false
+    allow-origins: [ '*' ]
+    allow-methods: [ '*' ]
+    allow-headers: [ '*' ]
+
+iam-client:
+  secure: true
+  hostname-verification: false
+
+vitamui:
+  cas:
+    tenant.identifier: -1
+    identity: cas
+
+
+login.url: ${cas.server.prefix}/login
+ip.header: X-Real-IP
+
+password:
+  length: 12
+  max-old-password: 12
+  check-occurrence: true
+  occurrences-chars-number: 3
+  profile: "anssi" # anssi or custom
+  constraints:
+    defaults:
+      fr:
+        messages:
+          - Avoir une taille d'au moins ${password.length} caractères
+        special-chars:
+          title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+          messages:
+            - Minuscules (a-z)
+            - Majuscules (A-Z)
+            - Numériques (0-9)
+            - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      en:
+        messages:
+          - Have a size of at least ${password.length} characters
+        special-chars:
+          title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+          messages:
+            - Uppercases (a-z)
+            - Lowercases (A-Z)
+            - Digits (0-9)
+            - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        messages:
+          - Mindestens ${password.length} Zeichen lang sein
+        special-chars:
+          title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+          messages:
+            - Großbuchstaben (a-z)
+            - Kleinbuchstaben (A-Z)
+            - Ziffern (0-9)
+            - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+    customs:
+      fr:
+        title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+        messages:
+          - Au moins ${password.length} caractères
+          - Des minuscules et des majuscules
+          - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      en:
+        title: 'For security reasons, your password must:'
+        messages:
+          - At least ${password.length} characters
+          - Lowercase and uppercase
+          - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+        messages:
+          - Mindestens ${password.length} Zeichen
+          - Klein- und Großbuchstaben
+          - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)

@@ -1,0 +1,80 @@
+# Root: spring - Core Spring framework configurations (Cloud, Mail, Config, etc.)
+spring:
+  cloud:
+    consul:
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+  mail:
+    host: localhost
+    port: 2525
+    username: no-reply@vitamui.com
+    password: password
+    testConnection: false
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# Root: server - Web server configuration (Port, Context-path, SSL)
+server:
+  host: dev.vitamui.com
+  port: 8080
+  servlet:
+    context-path: /cas
+  ssl:
+    key-store: ../../../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_cas-server.p12
+    key-store-password: changeme
+    key-password: changeme
+    enabled-protocols: TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+
+# Root: management - Spring Boot Actuator endpoints and monitoring
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: health,metrics,prometheus,info,status,configurationMetadata
+  monitor.endpoints.endpoint.defaults.access: PERMIT
+
+# Root: cas - Apereo CAS technical and functional configuration
+cas:
+  server.prefix: https://dev.vitamui.com:8080/cas
+  service-registry.mongo:
+    client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
+
+# Root: iam-client - Internal VITAM-UI IAM service client
+iam-client:
+  server-host: localhost
+  server-port: 8083
+  ssl-configuration:
+    keystore:
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_cas-server.p12
+      key-password: changeme
+    truststore:
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
+      key-password: changeme
+
+# Root: vitamui - Global VITAM-UI environment settings
+vitamui:
+  portal.url: https://dev.vitamui.com:9000/
+
+cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
+
+# Root: logging - Logback and logging levels
+logging:
+  config: src/main/config/logback-dev.xml
+  level:
+    org.springframework: 'DEBUG'
+    fr.gouv: 'DEBUG'
+    org.apereo.cas: 'DEBUG'
+    org.springframework.beans: 'OFF'
+    org.springframework.aop: 'OFF'
+    org.springframework.context: 'OFF'
+    org.springframework.core.env: 'OFF'
+    org.springframework.boot.devtools: 'OFF'
+    org.apereo.inspektr.audit.support: 'OFF'

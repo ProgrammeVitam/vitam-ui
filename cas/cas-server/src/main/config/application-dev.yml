@@ -1,0 +1,163 @@
+# Root: spring - Core Spring framework configurations (Cloud, Mail, Config, etc.)
+spring:
+  cloud:
+    consul:
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+  # set port to 1025 for local development with MailHog container
+  mail:
+    host: localhost
+    port: 2025
+    username: no-reply@vitamui.com
+    password: password
+    testConnection: false
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# Root: server - Web server configuration (Port, Context-path, SSL)
+server:
+  host: dev.vitamui.com
+  port: 8080
+  servlet:
+    context-path: /cas
+  ssl:
+    key-store: ../../dev-deployment/environments/keystores/vitamui-services/servers/keystore_cas-server.p12
+    key-store-password: changeme
+    key-password: changeme
+    enabled-protocols: TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+    trust-store: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
+    trust-store-password: changeme
+
+# Root: management - Spring Boot Actuator endpoints and monitoring
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: health,metrics,prometheus,info,status,configurationMetadata
+  server:
+    port: 7080
+    ssl:
+      enabled: false
+  prometheus:
+    metrics:
+      export:
+        enabled: false
+
+# Root: cas - Apereo CAS technical and functional configuration
+cas:
+  server.prefix: https://dev.vitamui.com:8080/cas
+  webflow.crypto:
+    signing.key: =oebPIRe18A0cAeBdZCHkVlLPa_Kbthxo70iRpAhbk84dQGQj_8AOEMvEg3y7GAKYxtpF5nn6nx7vj5iU-eHStg
+    encryption.key: 3FzNquczUjhmeJyqu251Ow
+  service-registry.mongo:
+    client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
+  authn:
+    # Authent with x509 certificate :
+    # x509:
+    #   sslHeaderName: x-ssl-cert
+    pac4j:
+      cas:
+        - login-url: https://dev.vitamui.com:8080/cas/login
+      core.session-replication.cookie:
+        crypto:
+          encryption.key: T4LxS93IaaD-F-7kz66VEc2BD3g8uGGYKPECFkV9vBU
+          signing.key: fRYHy2_3_qApascjXEaXuTL5o52nrohztttpiGKFkWpXYUHaV85lS8Ph10OGfkpUUZlkyhhq6oPOXOlGIAQbiQ
+    pm.reset.crypto:
+      encryption.key: w7ZxSCZsGix3Xl6pFg-1viJIeFIWdrwEjxUvDyyVCM8
+      signing.key: TIUaCcEAjUW_HV-1hJRrcVobZ3CCEwJC8u60vPH2nspslA3TkRFjAsceEUugp9mb6rGQiFj1IY2HJuf3FmXM5w
+    oauth:
+      access-token.crypto:
+        encryption.key: RGAYHpTTKJ-YMbh7Yrt3Xd6VQH_myXYISwThfo-9OKI
+        signing.key: j8AZtUo6i4BI2n3bu2Elr9d3aIOL35vec0AjUBubP6rgj5arKWB9lRcWq9bjxGIwoAbFv-1MRmiScXlIIX0BGg
+      crypto:
+        encryption.key: 0mfCTGphgW6sLEG2xsmnb-dzQZ-9wQfjOWDrXdUg4lg
+        signing.key: kSs5OT5bTV6E9Ba0biGZ3taVlmlBFmoMyvG4JB0pSiZJml3CqyfHlexueJAv2BT4YG9gQ1IP_hvu1leejdFzng
+      session-replication.cookie.crypto:
+        encryption.key: 2macKckIM22PrUn9cHkyVe1lB4jc12hXsbUa8e7Ih8Q
+        signing.key: vhnibDmTxFA0q_jO3XedyoHgKkPQPmfVeWLVj9byRfLiVFqZi38ZsEy4Qt0Vu2rZFXceBgp5nb55iWgxo2EzCQ
+    oidc.jwks.file-system.jwks-file: file:./src/main/config/keystore.jwks
+  monitor.endpoints.endpoint.defaults.access: PERMIT
+  sms-provider.sms-mode:
+    access-token: changeme
+
+# Root: iam-client - Internal VITAM-UI IAM service client
+iam-client:
+  server-host: localhost
+  server-port: 8083
+  ssl-configuration:
+    keystore:
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/clients/keystore_cas-server.p12
+      key-password: changeme
+    truststore:
+      key-path: ../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
+      key-password: changeme
+
+# Root: vitamui - Global VITAM-UI environment settings
+vitamui:
+  portal.url: https://dev.vitamui.com:4200/
+
+cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
+
+# Root: opentracing - Jaeger distributed tracing
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
+# Root: logging - Logback and logging levels
+logging:
+  config: src/main/config/logback-dev.xml
+  level:
+    org.springframework:
+      amqp: 'OFF'
+      context.annotation: 'OFF'
+      boot.devtools: 'OFF'
+    org.apereo.inspektr.audit.support: 'INFO'
+    org.springframework.webflow: INFO
+    org.apereo: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: gateway
+
+cas.http-web-request.cors:
+  allow-credentials: true
+  allow-origins:
+    - "https://dev.vitamui.com:4200"
+    - "https://dev.vitamui.com:4201"
+    - "https://dev.vitamui.com:4202"
+    - "https://dev.vitamui.com:4203"
+    - "https://dev.vitamui.com:4204"
+    - "https://dev.vitamui.com:4205"
+    - "https://dev.vitamui.com:4208"
+    - "https://dev.vitamui.com:4209"
+    - "https://dev.vitamui.com:4210"
+    - "https://dev.vitamui.com:4251"
+    - "https://dev.vitamui.com"
+    - "https://localhost:4200"
+    - "https://localhost:4201"
+    - "https://localhost:4202"
+    - "https://localhost:4203"
+    - "https://localhost:4204"
+    - "https://localhost:4205"
+    - "https://localhost:4208"
+    - "https://localhost:4209"
+    - "https://localhost:4210"
+    - "https://localhost:4251"
+    - "https://localhost"
+    - "https://dev.vitamui.com:8083" # For swagger (IAM)
+    - "https://localhost:8083"

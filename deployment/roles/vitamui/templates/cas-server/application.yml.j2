@@ -30,7 +30,6 @@ server:
     context-path: /
     session.cookie.path: /
 {% else %}
-    context-path: /cas
     session.cookie.path: /cas
 {% endif %}
   tomcat:
@@ -41,8 +40,6 @@ server:
       directory: "{{ vitamui_folder_log }}"
       prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
       file-date-format: ".yyyy-MM-dd"
-      suffix: ".log"
-      buffered: false
 
 management:
   server:
@@ -50,10 +47,6 @@ management:
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
-  endpoints:
-    web:
-      exposure:
-        include: health,metrics,prometheus
   metrics:
     tags:
       application: ${spring.application.name}
@@ -165,7 +158,6 @@ cas:
     follow-service-redirects: true
     redirect-parameter: next
 
-cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
 
 {% if sms.enabled|lower == "true" %}
 # for SMS:
