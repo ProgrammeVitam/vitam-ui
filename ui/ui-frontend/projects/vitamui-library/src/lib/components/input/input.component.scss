@@ -108,6 +108,10 @@ label {
   line-height: 0;
   font-size: 14px;
   top: 50%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .item {
