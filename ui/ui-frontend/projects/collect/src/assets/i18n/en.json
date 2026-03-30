@@ -122,7 +122,7 @@
         "PATH_IS_NOT_CANONICAL": "Path {{PATH}} is not canonical",
         "PROJECT_NOT_FOUND": "Project not found",
         "INTERNAL_ERROR_OCCURRED_DURING_CSV_METADATA_PROCESSING": "An internal error occurred during csv metadata file processing",
-        "EMPTY_FILE": "Empty file",
+        "EMPTY_METADATA_FILE": "The metadata file is empty",
         "RULE_PROPERTY_FIELD_DOES_NOT_HAVE_CORRESPONDING_RULE_ID": "Rule property field '{{FIELD}}' does not have a corresponding '{{RULE_ID}}'",
         "ERROR_CONVERTING_CSV_TO_JSONL": "Invalid CSV record at line {{LINE_NUMBER}} (File=\\\"{{UPLOAD_PATH}}\\\"): {{MESSAGE}}",
         "NO_UPDATE_DATA_FOUND": "No update data found"
