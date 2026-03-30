@@ -265,6 +265,8 @@ public class RNGConstants {
         TypesMap.put("unCompressedSize", DataType.POSITIVE_INTEGER);
         TypesMap.put("unit", DataType.STRING);
         TypesMap.put("when", DataType.TOKEN);
+        TypesMap.put("MetadataName", DataType.TOKEN);
+        TypesMap.put("MetadataValue", DataType.STRING);
     }
 
     public static boolean isElement(String type) {
