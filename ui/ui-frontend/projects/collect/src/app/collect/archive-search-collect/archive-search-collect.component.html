@@ -71,21 +71,13 @@
             [icon]="'vitamui-icon-more-horiz'"
             [vitamuiTooltip]="'COLLECT.OTHER_ACTION' | translate"
           >
-            <button
-              mat-menu-item
-              [disabled]="(isNotOpen$ | async) || isArchiveUnitsEmpty() || !hasBulkUpdateUnitRole"
-              (click)="openUpdateUnitsForm()"
-            >
+            <button mat-menu-item [disabled]="(isNotOpen$ | async) || !hasBulkUpdateUnitRole" (click)="openUpdateUnitsForm()">
               {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
             </button>
             <button mat-menu-item [disabled]="isNotOpen$ | async" (click)="openAddUnitsForm()">
               {{ 'COLLECT.ADD_UNITS.ACTION_TITLE' | translate }}
             </button>
-            <button
-              mat-menu-item
-              (click)="validateTransaction()"
-              [disabled]="!hasCloseTransactionRole || isArchiveUnitsEmpty() || (isNotOpen$ | async)"
-            >
+            <button mat-menu-item (click)="validateTransaction()" [disabled]="!hasCloseTransactionRole || (isNotOpen$ | async)">
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
             <button
