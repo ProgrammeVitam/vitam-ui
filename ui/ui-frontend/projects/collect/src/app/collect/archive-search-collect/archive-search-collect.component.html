@@ -73,18 +73,10 @@
             matTooltip="{{ 'COLLECT.OTHER_ACTION' | translate }}"
             matTooltipClass="vitamui-tooltip"
           >
-            <button
-              mat-menu-item
-              [disabled]="(isNotOpen$ | async) || isArchiveUnitsEmpty() || !hasBulkUpdateUnitRole"
-              (click)="openUpdateUnitsForm()"
-            >
+            <button mat-menu-item [disabled]="(isNotOpen$ | async) || !hasBulkUpdateUnitRole" (click)="openUpdateUnitsForm()">
               {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
             </button>
-            <button
-              mat-menu-item
-              (click)="validateTransaction()"
-              [disabled]="!hasCloseTransactionRole || isArchiveUnitsEmpty() || (isNotOpen$ | async)"
-            >
+            <button mat-menu-item (click)="validateTransaction()" [disabled]="!hasCloseTransactionRole || (isNotOpen$ | async)">
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
             <button
