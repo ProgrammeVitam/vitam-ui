@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Inject, Injectable, Injector } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import moment from 'moment';
@@ -46,7 +46,7 @@ import { AuthService } from './auth.service';
 import { SnackBarService } from './components/snack-bar/snack-bar.service';
 import { ErrorDialogComponent } from '../../lib/components/dialog/error-dialog/error-dialog.component';
 import { ENVIRONMENT } from './injection-tokens';
-import { Logger } from './logger/logger';
+import { Logger } from './logger';
 
 import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-error';
 import { StartupService } from './startup.service';
@@ -79,6 +79,8 @@ const ERROR_NOTIFICATION_MESSAGE_BY_HTTP_STATUS: Map<number, string> = new Map([
   [412, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION'],
   [408, 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_REQUEST_TIMEOUT'],
 ]);
+
+const CONTEXT_COLLECT = 'Collect';
 
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
@@ -174,9 +176,9 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
 
   private errorNotification(response: HttpErrorResponse, request: HttpRequest<any>): void {
     if (!request.headers.has(SKIP_ERROR_NOTIFICATION)) {
-      response.error.errorsDetails !== undefined
+      response.error.context === CONTEXT_COLLECT && response.error.httpCode === HttpStatusCode.BadRequest
         ? this.displayErrorsDetailsDialog(response.error)
-        : HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR
+        : response.status === HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR
           ? this.displayErrorDialog()
           : this.displaySnackBar(response);
     }
