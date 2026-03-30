@@ -60,6 +60,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   groupsCount: boolean;
   previousValue: ExternalParamProfile;
   activeAccessContractsIdentifiers: string[];
+  private isResetting = false;
 
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() readOnly: boolean;
@@ -83,8 +84,10 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('externalParamProfile') && this.form) {
+      this.isResetting = true;
       this.resetForm(this.externalParamProfile);
-      this.previousValue = this.form.value;
+      this.previousValue = { ...this.form.getRawValue() } as ExternalParamProfile;
+      this.isResetting = false;
     }
   }
 
@@ -100,9 +103,11 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   private initListenersOnFormsValuesChanges() {
     this.updateFormSub = this.form.valueChanges
       .pipe(
+        filter(() => !this.isResetting),
         skip(1),
         filter(() => this.form.valid),
         distinctUntilChanged(isEqual),
+        filter((formValue) => !isEqual(formValue, this.previousValue)),
         map((formData) =>
           extend(
             {
