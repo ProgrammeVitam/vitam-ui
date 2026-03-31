@@ -47,6 +47,9 @@
     font-weight: 700;
     color: var(--vitamui-primary) !important;
     line-height: 10px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
     transform-origin: left;
     transition: transform $anim-timing;
