@@ -1,0 +1,21 @@
+{
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 1,
+    "size": 1
+  },
+  "$results": [
+    {
+      "evId": "aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq",
+      "evIdProc": "aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq",
+      "evType": "STP_UPDATE_UNIT",
+      "evTypeProc": "UPDATE",
+      "outcome": "OK",
+      "outMessg": "Succès de la mise à jour",
+      "evDateTime": "2024-03-18T10:00:00.000"
+    }
+  ],
+  "$facetResults": [],
+  "$context": {}
+}

@@ -1,0 +1,21 @@
+{
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 1,
+    "size": 1
+  },
+  "$results": [
+    {
+      "#id": "aeaqaaaaaeecmnlhaesx6am4mvglqjqaaaaq",
+      "#originating_agency": "agency1"
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [],
+    "$filter": {},
+    "$projection": {}
+  }
+}

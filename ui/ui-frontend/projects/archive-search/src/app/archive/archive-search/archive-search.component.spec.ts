@@ -49,6 +49,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
 import {
+  AuthService,
   BASE_URL,
   InjectorModule,
   LoggerModule,
@@ -122,6 +123,19 @@ describe('ArchiveSearchComponent', () => {
     launchComputedInheritedRulesModal: () => of(),
   };
 
+  const authServiceStub = {
+    user: {
+      profileGroup: {
+        profiles: [
+          {
+            applicationName: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            name: 'Default',
+          },
+        ],
+      },
+    },
+  };
+
   const computeActivatedRoute = (queryParams: Params = {}) => {
     return {
       params: of({ tenantIdentifier: 1 }),
@@ -161,6 +175,7 @@ describe('ArchiveSearchComponent', () => {
         ArchiveSharedDataService,
         { provide: ActivatedRoute, useValue: computeActivatedRoute(queryParams) },
         { provide: ArchiveService, useValue: archiveServiceStub },
+        { provide: AuthService, useValue: authServiceStub },
         { provide: ArchiveUnitDipService, useValue: archiveUnitDipServiceMock },
         { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },

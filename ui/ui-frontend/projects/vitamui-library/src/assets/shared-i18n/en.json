@@ -4814,6 +4814,9 @@
     },
     "PERSISTENT_IDENTIFIER_SEARCH": {
       "GO_TO_PAGE": "Search by permanent identifier"
+    },
+    "MODIFY_PRODUCER_SERVICE": {
+      "TITLE": "Modify the producing service of one or more entries"
     }
   },
   "COLLECT": {

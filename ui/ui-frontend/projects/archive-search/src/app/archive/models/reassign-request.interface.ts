@@ -36,7 +36,12 @@
  */
 import { SearchCriteriaDto } from 'vitamui-library';
 
+export enum ReassignmentMode {
+  BY_ID = 'BY_ID',
+  BY_OPI = 'BY_OPI',
+}
 export interface ReassignRequestDto {
+  reassignMode: ReassignmentMode;
   sourceOriginatingAgency: string;
   targetOriginatingAgency: string;
   propagateToObjectGroups: boolean;

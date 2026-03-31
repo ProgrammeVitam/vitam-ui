@@ -45,10 +45,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
+import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
+import fr.gouv.vitam.common.database.builder.request.single.Select;
+import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -57,24 +61,33 @@ import fr.gouv.vitamui.archives.search.common.common.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReassignRequestDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReassignmentMode;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.TermsFacet;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
+import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import jakarta.ws.rs.core.Response;
 import lombok.Getter;
@@ -90,6 +103,7 @@ import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -155,6 +169,7 @@ public class ArchiveSearchService {
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
     private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
     private final SecurityService securityService;
+    private final LogbookService logbookService;
 
     @Autowired
     public ArchiveSearchService(
@@ -166,7 +181,8 @@ public class ArchiveSearchService {
         final PersistentIdentifierService persistentIdentifierService,
         final ArchiveSearchThresholdService archiveSearchThresholdService,
         ArchiveSearchExternalParametersService archiveSearchExternalParametersService,
-        SecurityService securityService
+        SecurityService securityService,
+        LogbookService logbookService
     ) {
         this.unitCommonService = unitCommonService;
         this.objectMapper = objectMapper;
@@ -177,6 +193,7 @@ public class ArchiveSearchService {
         this.archiveSearchThresholdService = archiveSearchThresholdService;
         this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
         this.securityService = securityService;
+        this.logbookService = logbookService;
     }
 
     public VitamUIArchiveUnitResponseDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery)
@@ -536,6 +553,15 @@ public class ArchiveSearchService {
     }
 
     public String reassignOriginatingAgency(ReassignRequestDto reassignRequestDto) throws VitamClientException {
+        // Validate single originating agency
+        validateSingleOriginatingAgency(reassignRequestDto.getSearchCriteria());
+
+        if (ReassignmentMode.BY_ID.equals(reassignRequestDto.getReassignMode())) {
+            validateNoHoldingUnits(reassignRequestDto.getSearchCriteria()); // validate no holding units
+        } else if (ReassignmentMode.BY_OPI.equals(reassignRequestDto.getReassignMode())) {
+            validateEntryOperationReassignment(reassignRequestDto.getSearchCriteria()); // validate that operations have INGEST type
+        }
+
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(reassignRequestDto.getSearchCriteria()::setThreshold);
         VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
@@ -571,5 +597,139 @@ public class ArchiveSearchService {
             );
         }
         return reassignmentDsl;
+    }
+
+    private void validateEntryOperationReassignment(SearchCriteriaDto searchCriteria) throws VitamClientException {
+        var operationIds = extractOperationIds(searchCriteria);
+        if (operationIds.isEmpty()) {
+            return;
+        }
+
+        var operations = retrieveOperationsInformation(operationIds);
+        if (operations.isEmpty()) {
+            throw new VitamClientException("NO_OPERATIONS_FOUND");
+        }
+        boolean hasNonIngestOperation = operations.stream().anyMatch(op -> !"INGEST".equals(op.getEvTypeProc()));
+        if (hasNonIngestOperation) {
+            throw new BadRequestException("INVALID_ARCHIVAL_UNIT_TYPE");
+        }
+    }
+
+    private void validateNoHoldingUnits(SearchCriteriaDto searchCriteria) throws VitamClientException {
+        try {
+            SearchCriteriaDto searchCriteriaCopy = new SearchCriteriaDto();
+            searchCriteriaCopy.setCriteriaList(new ArrayList<>(searchCriteria.getCriteriaList()));
+            searchCriteriaCopy.setFieldsList(new ArrayList<>(searchCriteria.getFieldsList()));
+            searchCriteriaCopy.setPageNumber(1);
+            searchCriteriaCopy.setSize(1);
+
+            // Add criteria to search for holding units
+            SearchCriteriaEltDto holdingUnitCriteria = new SearchCriteriaEltDto();
+            holdingUnitCriteria.setCriteria("ALL_ARCHIVE_UNIT_TYPES");
+            holdingUnitCriteria.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_HOLDING_UNIT")));
+            holdingUnitCriteria.setOperator("EQ");
+            holdingUnitCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+            holdingUnitCriteria.setDataType("STRING");
+            searchCriteriaCopy.getCriteriaList().add(holdingUnitCriteria);
+
+            // Build and execute query
+            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+            JsonNode dslQuery = mapRequestToDslQuery(searchCriteriaCopy);
+            JsonNode response = searchArchiveUnits(dslQuery, vitamContext);
+
+            // Check if any holding units were found
+            VitamUISearchResponseDto searchResponse = objectMapper.treeToValue(
+                response,
+                VitamUISearchResponseDto.class
+            );
+
+            if (searchResponse.getHits() != null && searchResponse.getHits().getTotal() > 0) {
+                throw new BadRequestException("INVALID_ARCHIVAL_UNIT_TYPE");
+            }
+        } catch (JsonProcessingException e) {
+            throw new VitamClientException("Error while validating holding units", e);
+        }
+    }
+
+    private List<String> extractOperationIds(SearchCriteriaDto searchCriteria) {
+        List<String> operationIds = new ArrayList<>();
+
+        if (searchCriteria.getCriteriaList() != null) {
+            searchCriteria
+                .getCriteriaList()
+                .stream()
+                .filter(criteria -> "GUID_OPI".equals(criteria.getCriteria()))
+                .flatMap(criteria -> criteria.getValues().stream())
+                .forEach(value -> operationIds.add(value.getValue()));
+        }
+
+        return operationIds;
+    }
+
+    private List<LogbookOperationDto> retrieveOperationsInformation(List<String> operationIds)
+        throws VitamClientException {
+        try {
+            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+
+            // Build query to retrieve operations by evIdProc using OR conditions
+            final Select select = new Select();
+            final BooleanQuery query = QueryHelper.or();
+
+            // Add an eq condition for each operation ID
+            for (String operationId : operationIds) {
+                query.add(QueryHelper.eq("evIdProc", operationId));
+            }
+
+            select.setQuery(query);
+
+            return VitamRestUtils.responseMapping(
+                logbookService.selectOperations(select.getFinalSelect(), vitamContext).toJsonNode(),
+                LogbookOperationsCommonResponseDto.class
+            ).getResults();
+        } catch (InvalidCreateOperationException e) {
+            throw new VitamClientException("Error building query for operations retrieval", e);
+        }
+    }
+
+    private void validateSingleOriginatingAgency(SearchCriteriaDto searchCriteria) throws VitamClientException {
+        try {
+            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+            // Add facet for originating agency
+            List<TermsFacet> facets = new ArrayList<>();
+            TermsFacet originatingAgencyFacet = new TermsFacet(
+                "originating_agency_facet",
+                "#originating_agency",
+                2, // We only need to know if there's more than 1
+                FacetOrder.ASC
+            );
+            facets.add(originatingAgencyFacet);
+            searchCriteria.setFacets(facets);
+
+            // Build DSL query with facets
+            JsonNode dslQuery = mapRequestToDslQuery(searchCriteria);
+
+            // Execute search
+            JsonNode response = searchArchiveUnits(dslQuery, vitamContext);
+            VitamUISearchResponseDto searchResponse = objectMapper.treeToValue(
+                response,
+                VitamUISearchResponseDto.class
+            );
+
+            // Check facet results
+            if (searchResponse.getFacetResults() != null) {
+                searchResponse
+                    .getFacetResults()
+                    .stream()
+                    .filter(facet -> "originating_agency_facet".equals(facet.getName()))
+                    .findFirst()
+                    .ifPresent(facet -> {
+                        if (facet.getBuckets() != null && facet.getBuckets().size() > 1) {
+                            throw new BadRequestException("ERROR_MULTIPLE_SP");
+                        }
+                    });
+            }
+        } catch (JsonProcessingException e) {
+            throw new VitamClientException("Error while validating originating agencies", e);
+        }
     }
 }
