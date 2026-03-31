@@ -31,11 +31,11 @@ import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
-import fr.gouv.vitamui.iam.openapiclient.domain.CustomerDto;
-import fr.gouv.vitamui.iam.openapiclient.domain.UserDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -124,7 +124,7 @@ public class ListCustomersAction extends AbstractAction {
         );
         if (providerDto.isEmpty()) {
             LOGGER.error(
-                "No provider found for superUserEmail / superUserCustomerId: {}",
+                "No provider found for superUserEmail: {} / superUserCustomerId: {}",
                 superUserEmail,
                 superUserCustomerId
             );
@@ -147,7 +147,8 @@ public class ListCustomersAction extends AbstractAction {
 
         if (existingUsersList.size() > 1) {
             return processMultipleUsersForInputEmail(flowScope, username, existingUsersList);
-        } else if (!existingUsersList.isEmpty()) {
+        }
+        if (existingUsersList.size() == 1) {
             return processSingleUserForInputEmail(flowScope, username, existingUsersList.getFirst());
         }
 

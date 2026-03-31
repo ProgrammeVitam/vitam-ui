@@ -27,7 +27,7 @@
 
 package fr.gouv.vitamui.cas.x509;
 
-import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
@@ -39,6 +39,7 @@ import org.springframework.webflow.execution.RequestContext;
 import java.util.List;
 
 /** Custom webflow event resolver to handle when the x509 authn is mandatory. */
+@Slf4j
 public class X509CasDelegatingWebflowEventResolver extends DefaultCasDelegatingWebflowEventResolver {
 
     private final boolean x509AuthnMandatory;
@@ -60,9 +61,7 @@ public class X509CasDelegatingWebflowEventResolver extends DefaultCasDelegatingW
         final Service service
     ) {
         if (x509AuthnMandatory) {
-            if (credential != null && credential.stream().anyMatch(X509CertificateCredential.class::isInstance)) {
-                throw new IllegalArgumentException("Authentication failure for mandatory X509 login");
-            }
+            LOGGER.error("Authentication failure for mandatory X509 login: {}", exception.getMessage());
         }
 
         return super.buildEventFromException(exception, requestContext, credential, service);

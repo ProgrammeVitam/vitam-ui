@@ -12,10 +12,10 @@ import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
-import fr.gouv.vitamui.iam.openapiclient.domain.AuthUserDto;
 import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -106,7 +106,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveUserSuccessfully() {
         when(
-            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(""), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
+            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(null), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
 
         final var principal = resolver.resolve(
@@ -393,12 +393,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
 
@@ -426,12 +426,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -460,12 +460,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -499,12 +499,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             casApi.getUser(
                 eq(USERNAME),
                 eq(CUSTOMER_ID),
-                eq(""),
+                eq(null),
                 eq(null),
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(""), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -528,7 +528,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testResolveAddressDeserializeSuccessfully() {
         AuthUserDto userProfile = userProfile(UserStatusEnum.ENABLED);
         when(
-            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(""), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
+            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(null), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
         ).thenReturn(userProfile);
 
         final var principal = resolver.resolve(

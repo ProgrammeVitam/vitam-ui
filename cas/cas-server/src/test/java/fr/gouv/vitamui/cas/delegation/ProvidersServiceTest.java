@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.cas.delegation;
 
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
-import fr.gouv.vitamui.iam.openapiclient.domain.IdentityProviderDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

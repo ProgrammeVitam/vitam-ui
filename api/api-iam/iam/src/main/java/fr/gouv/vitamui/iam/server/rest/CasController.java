@@ -225,21 +225,25 @@ public class CasController {
         return casService.getUsersByEmail(email, embedded.orElse(null));
     }
 
-    @GetMapping(
-        value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
-        params = { "loginEmail", "loginCustomerId", "idp" }
+    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING)
+    @Operation(
+        operationId = "cas_getUser",
+        summary = "Get a user by their loginEmail, loginCustomerId and optional idp"
     )
-    @Operation(operationId = "cas_getUser", summary = "Get a user by their loginEmail, loginCustomerId and idp")
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUser(
-        @RequestParam final String loginEmail,
-        @RequestParam final String loginCustomerId,
-        @RequestParam final String idp,
-        @RequestParam final Optional<String> userIdentifier,
-        @RequestParam Optional<String> embedded
+        @RequestParam String loginEmail,
+        @RequestParam String loginCustomerId,
+        @RequestParam(required = false) String idp,
+        @RequestParam(required = false) String userIdentifier,
+        @RequestParam(required = false) String embedded
     ) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(idp, loginEmail, loginCustomerId);
-        userIdentifier.ifPresent(SanityChecker::checkSecureParameter);
+
+        if (userIdentifier != null) {
+            SanityChecker.checkSecureParameter(userIdentifier);
+        }
+
         LOGGER.debug(
             "getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}, embedded options : {}",
             loginEmail,
@@ -248,7 +252,8 @@ public class CasController {
             userIdentifier,
             embedded
         );
-        return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier.orElse(null), embedded.orElse(null));
+
+        return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
     }
 
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH)
@@ -294,8 +299,8 @@ public class CasController {
     @ResponseStatus(HttpStatus.OK)
     public void logout(
         @RequestParam final String authToken,
-        @RequestParam final String superUser,
-        @RequestParam final String superUserCustomerId
+        @RequestParam(required = false) final String superUser,
+        @RequestParam(required = false) final String superUserCustomerId
     ) {
         LOGGER.debug(
             "logout: authToken={}, superUser={}, superUserCustomerId={}",
@@ -306,7 +311,7 @@ public class CasController {
         ParameterChecker.checkParameter("The arguments authToken is mandatory : ", authToken);
         final CasService.PrincipalFromToken principal = casService.removeTokenAndGetPrincipal(authToken);
 
-        if ((null != principal) && StringUtils.isNotBlank(superUser)) {
+        if (principal != null && StringUtils.isNotBlank(superUser)) {
             casService.deleteSubrogationBySuperUserAndSurrogate(
                 superUser,
                 superUserCustomerId,

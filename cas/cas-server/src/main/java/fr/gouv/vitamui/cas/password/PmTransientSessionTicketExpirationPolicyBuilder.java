@@ -43,7 +43,6 @@ import org.apereo.cas.ticket.ExpirationPolicy;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
-import org.apereo.cas.ticket.expiration.builder.TransientSessionTicketExpirationPolicyBuilder;
 import org.springframework.web.context.request.RequestContextHolder;
 
 /**
@@ -58,16 +57,12 @@ public class PmTransientSessionTicketExpirationPolicyBuilder
 
     private final CasConfigurationProperties casProperties;
 
-    private final TransientSessionTicketExpirationPolicyBuilder transientSessionTicketExpirationPolicyBuilder;
-
     public PmTransientSessionTicketExpirationPolicyBuilder(final CasConfigurationProperties casProperties) {
         this.casProperties = casProperties;
-        this.transientSessionTicketExpirationPolicyBuilder = new TransientSessionTicketExpirationPolicyBuilder(
-            casProperties
-        );
     }
 
-    public ExpirationPolicy toTransientSessionTicketExpirationPolicy() {
+    @Override
+    public ExpirationPolicy buildTicketExpirationPolicy() {
         final var attributes = RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             try {
@@ -81,10 +76,5 @@ public class PmTransientSessionTicketExpirationPolicyBuilder
         }
         final var duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
         return new HardTimeoutExpirationPolicy(duration.toSeconds());
-    }
-
-    @Override
-    public ExpirationPolicy buildTicketExpirationPolicy() {
-        return toTransientSessionTicketExpirationPolicy();
     }
 }

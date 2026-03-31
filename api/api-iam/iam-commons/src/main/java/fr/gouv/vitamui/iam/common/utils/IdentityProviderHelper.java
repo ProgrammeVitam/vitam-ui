@@ -102,22 +102,6 @@ public class IdentityProviderHelper {
             .findFirst();
     }
 
-    public Optional<IdentityProviderDto> findAutoProvisioningProviderByEmail(
-        final List<IdentityProviderDto> providers,
-        final String email
-    ) {
-        for (final IdentityProviderDto provider : providers) {
-            if (provider.isAutoProvisioningEnabled()) {
-                for (final String pattern : provider.getPatterns()) {
-                    if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(email).matches()) {
-                        return Optional.of(provider);
-                    }
-                }
-            }
-        }
-        return Optional.empty();
-    }
-
     public boolean identifierMatchProviderPattern(
         final List<IdentityProviderDto> providers,
         final String userEmail,

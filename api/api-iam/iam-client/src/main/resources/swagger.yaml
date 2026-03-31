@@ -2504,7 +2504,7 @@ paths:
                       example: null
                 - name: idp
                   in: query
-                  required: true
+                  required: false
                   schema:
                       type: string
                       example: null
@@ -2580,13 +2580,13 @@ paths:
                       example: null
                 - name: superUser
                   in: query
-                  required: true
+                  required: false
                   schema:
                       type: string
                       example: null
                 - name: superUserCustomerId
                   in: query
-                  required: true
+                  required: false
                   schema:
                       type: string
                       example: null

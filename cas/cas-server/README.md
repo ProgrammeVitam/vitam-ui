@@ -7,7 +7,7 @@ This component is the CAS server.
 
 ```shell
 mvn clean package
-java -Dspring.config.additional-location=src/main/config/cas-server-application-dev.yml -Dspring.profiles.active=gateway -Xms128m -Xmx512m -jar target/cas-server.jar
+java -Dspring.config.additional-location=src/main/config/ -Dspring.profiles.active=dev,gateway -Xms128m -Xmx512m -jar target/cas-server.war
 ```
 
 # Main features / workflows

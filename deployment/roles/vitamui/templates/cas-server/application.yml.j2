@@ -30,7 +30,6 @@ server:
     context-path: /
     session.cookie.path: /
 {% else %}
-    context-path: /cas
     session.cookie.path: /cas
 {% endif %}
   tomcat:
@@ -41,8 +40,6 @@ server:
       directory: "{{ vitamui_folder_log }}"
       prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
       file-date-format: ".yyyy-MM-dd"
-      suffix: ".log"
-      buffered: false
 
 management:
   server:
@@ -50,10 +47,6 @@ management:
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
-  endpoints:
-    web:
-      exposure:
-        include: health,metrics,prometheus
   metrics:
     tags:
       application: ${spring.application.name}
@@ -86,7 +79,9 @@ cas.tgc.path: /cas
 {% endif %}
 cas.tgc.secure: true
 cas.tgc.crypto.enabled: true
-cas.webflow.crypto.enabled: false
+cas.webflow.crypto:
+  enabled: true
+  encryption.key-size: 128
 cas.authn.pm.reset.crypto.enabled: true
 
 ##
@@ -108,7 +103,6 @@ cas.service-registry.mongo.collection: services
 cas.service-registry.mongo.user-id: {{ mongodb.cas.user }}
 cas.service-registry.mongo.password: {{ mongodb.cas.password }}
 
-cas.authn.surrogate.separator: ","
 cas.authn.surrogate.sms.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
 
 # 24 hours cache for login delegation
@@ -164,10 +158,6 @@ cas:
     follow-service-redirects: true
     redirect-parameter: next
 
-management.endpoints.enabled-by-default: true
-management.endpoints.web.exposure.include: '*'
-cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
-management.prometheus.metrics.export.enabled: true
 
 {% if sms.enabled|lower == "true" %}
 # for SMS:

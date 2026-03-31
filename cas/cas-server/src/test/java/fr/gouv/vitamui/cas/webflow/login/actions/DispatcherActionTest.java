@@ -5,11 +5,11 @@ import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
-import fr.gouv.vitamui.iam.openapiclient.domain.UserDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.pac4j.core.context.session.SessionStore;
@@ -112,7 +112,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUsersByEmail(eq(USER_1), eq(null))).thenReturn(java.util.List.of(userDto));
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
+            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        );
 
         final Event event = action.doExecute(context);
 
@@ -141,7 +143,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_2);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUsersByEmail(eq(USER_2), eq(null))).thenReturn(java.util.List.of(userDto));
+        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(null), eq(null), eq(null))).thenReturn(
+            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        );
 
         final Event event = action.doExecute(context);
 
@@ -158,7 +162,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUsersByEmail(eq(USER_1), eq(null))).thenReturn(java.util.List.of(userDto));
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
+            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        );
 
         final Event event = action.doExecute(context);
 
@@ -191,7 +197,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUsersByEmail(eq(USER_1), eq(null))).thenReturn(java.util.List.of(userDto));
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
+            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        );
 
         final Event event = action.doExecute(context);
 
@@ -224,7 +232,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_2);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUsersByEmail(eq(USER_2), eq(null))).thenReturn(java.util.List.of(userDto));
+        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(null), eq(null), eq(null))).thenReturn(
+            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        );
 
         final Event event = action.doExecute(context);
 
@@ -243,7 +253,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUsersByEmail(eq(USER_1), eq(null))).thenReturn(java.util.List.of(userDto));
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
+            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        );
 
         final Event event = action.doExecute(context);
 

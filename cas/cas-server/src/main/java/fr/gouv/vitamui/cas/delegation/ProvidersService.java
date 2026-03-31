@@ -94,8 +94,10 @@ public class ProvidersService {
 
     protected void loadData() {
         final String embedded = ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA;
-        List<fr.gouv.vitamui.iam.openapiclient.domain.IdentityProviderDto> temporaryProviders =
-            identityProvidersApi.getAll(null, embedded);
+        List<fr.gouv.vitamui.iam.common.dto.IdentityProviderDto> temporaryProviders = identityProvidersApi.getAll(
+            null,
+            embedded
+        );
         // sort by identifier. This is needed in order to take the internal provider first.
         temporaryProviders.sort(Comparator.comparing(IdentityProviderDto::getIdentifier));
         LOGGER.debug(

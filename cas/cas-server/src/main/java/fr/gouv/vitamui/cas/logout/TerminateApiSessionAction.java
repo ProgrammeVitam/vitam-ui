@@ -68,7 +68,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
@@ -136,12 +135,11 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
                     final Principal principal = ticket.getAuthentication().getPrincipal();
                     final Map<String, List<Object>> attributes = principal.getAttributes();
                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
-                    final String superUserEmail = Optional.ofNullable(
-                        (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE)
-                    ).orElse("");
-                    final String superUserCustomerId = Optional.ofNullable(
-                        (String) utils.getAttributeValue(attributes, SUPER_USER_CUSTOMER_ID_ATTRIBUTE)
-                    ).orElse("");
+                    final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
+                    final String superUserCustomerId = (String) utils.getAttributeValue(
+                        attributes,
+                        SUPER_USER_CUSTOMER_ID_ATTRIBUTE
+                    );
 
                     LOGGER.debug(
                         "Calling logout for authToken={} and superUser={}, superUserCustomerId={}",

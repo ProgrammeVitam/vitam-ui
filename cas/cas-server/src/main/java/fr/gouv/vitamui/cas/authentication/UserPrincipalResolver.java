@@ -42,10 +42,11 @@ import fr.gouv.vitamui.cas.x509.CertificateParser;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
-import fr.gouv.vitamui.iam.openapiclient.domain.AuthUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -126,9 +127,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
-    public static final Pattern EMAIL_VALID_REGEXP = Pattern.compile(
-        "^[_A-Za-z0-9]+(((\\.|-)[_A-Za-z0-9]+))*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
-    );
+    public static final Pattern EMAIL_VALID_REGEXP = Pattern.compile(IamUtils.EMAIL_VALID_REGEXP);
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
@@ -376,12 +375,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         LOGGER.debug("Computed embedded: {}", embedded);
 
-        // FIXME: The new vitam client not allow null providerId but handles correctly empty strings...
-        // TODO: Need to investigate and fix this behavior
-        if (userProviderId == null) {
-            userProviderId = DEFAULT_PROVIDER;
-        }
-
         final AuthUserDto user = casApi.getUser(
             loginEmail,
             loginCustomerId,
@@ -440,7 +433,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         if (subrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUserEmail));
             attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(superUserCustomerId));
-            superUser = casApi.getUser(superUserEmail, superUserCustomerId, userProviderId, null, null);
+            superUser = casApi.getUser(superUserEmail, superUserCustomerId, null, null, null);
             if (superUser == null) {
                 LOGGER.debug("No super user found for: {}", superUserEmail);
                 return NullPrincipal.getInstance();
