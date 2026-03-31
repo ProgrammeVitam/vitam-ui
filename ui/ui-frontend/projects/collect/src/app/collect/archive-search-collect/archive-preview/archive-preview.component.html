@@ -8,12 +8,8 @@
   (onclose)="emitClose()"
 >
   <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-    <button
-      mat-menu-item
-      (click)="updateMetadataDesc()"
-      [disabled]="transactionIsNotOpen || updateStarted || !hasUnitaryUpdateUnitRole">
-
-    {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
+    <button mat-menu-item (click)="updateMetadataDesc()" [disabled]="transactionIsNotOpen || updateStarted || !hasUnitaryUpdateUnitRole">
+      {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
   </vitamui-common-menu-button>
 </vitamui-common-sidenav-header>
