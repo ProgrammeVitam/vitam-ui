@@ -25,7 +25,7 @@ public class AccessionRegisterSearchDto {
 
     private String elimination;
     private String transferReply;
-    private String reassignment;
+    private String originatingAgencyReassignment;
 
     @Data
     public static class EndDateInterval {

@@ -88,7 +88,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
               acquisitionInformations: this.acquisitionInformations,
               elimination: 'all',
               transferReply: 'all',
-              reassignment: 'all',
+              originatingAgencyReassignment: 'all',
             });
           }
         }),
@@ -104,7 +104,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
       values.acquisitionInformations.length !== this.acquisitionInformations.length ||
       values.elimination !== 'all' ||
       values.transferReply !== 'all' ||
-      values.reassignment !== 'all';
+      values.originatingAgencyReassignment !== 'all';
 
     this.accessionRegistersService.setAdvancedFormHaveChanged(haveChanged);
     this.accessionRegistersService.setGlobalSearchButtonEvent(false);
@@ -118,7 +118,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
       acquisitionInformations: this.acquisitionInformationsControl,
       elimination: ['all', []],
       transferReply: ['all', []],
-      reassignment: ['all', []],
+      originatingAgencyReassignment: ['all', []],
     });
   }
 

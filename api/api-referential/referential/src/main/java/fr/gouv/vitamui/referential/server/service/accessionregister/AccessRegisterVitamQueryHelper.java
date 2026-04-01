@@ -100,7 +100,7 @@ public class AccessRegisterVitamQueryHelper {
     private static final String STATUS = "Status";
     private static final String ARCHIVAL_AGREEMENT = "ArchivalAgreement";
     private static final String ELIMINATION = "ELIMINATION";
-    private static final String REASSIGNMENT = "REASSIGNMENT";
+    private static final String ORIGINATING_AGENCY_REASSIGNMENT = "ORIGINATING_AGENCY_REASSIGNMENT";
     private static final String ARCHIVAL_PROFILE = "ArchivalProfile";
     private static final String TRANSFER_REPLY = "TRANSFER_REPLY";
     private static final String EVENTS_OPTYPE = "Events.OpType";
@@ -146,13 +146,13 @@ public class AccessRegisterVitamQueryHelper {
             select.setLimitFilter((long) pageNumber * size, size);
         }
 
-        addExclusionToQuery(andQuery, OPTYPE, REASSIGNMENT);
+        addExclusionToQuery(andQuery, OPTYPE, ORIGINATING_AGENCY_REASSIGNMENT);
         addOrderToQuery(select, orderBy, direction);
         addFiltersToQuery(andQuery, criteria.getFilters());
         addEndDateToQuery(andQuery, criteria.getEndDateInterval());
         addEventsToQuery(andQuery, criteria.getElimination(), ELIMINATION);
         addEventsToQuery(andQuery, criteria.getTransferReply(), TRANSFER_REPLY);
-        addEventsToQuery(andQuery, criteria.getReassignment(), REASSIGNMENT);
+        addEventsToQuery(andQuery, criteria.getOriginatingAgencyReassignment(), ORIGINATING_AGENCY_REASSIGNMENT);
         addOpiToQuery(orQuery, criteria.getOpi());
         addOriginatingAgencyToQuery(orQuery, criteria.getOriginatingAgency());
 

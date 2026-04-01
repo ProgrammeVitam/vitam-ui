@@ -11,7 +11,7 @@
   },
   "elimination": "all",
   "transferReply": "all",
-  "reassignment": "all",
+  "originatingAgencyReassignment": "all",
   "opi": "operation_technical_id",
   "originatingAgency": "agence de recencement de rien",
   "originatingAgencies": [
