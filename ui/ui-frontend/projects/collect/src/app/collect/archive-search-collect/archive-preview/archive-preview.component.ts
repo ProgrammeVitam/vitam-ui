@@ -50,7 +50,6 @@ import { ArchiveSharedDataService } from '../../core/archive-shared-data.service
 export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   @Input() archiveUnit: Unit;
   @Input() isPopup: boolean;
-  @Input() accessContractAllowUpdating: boolean;
   @Input() hasUnitaryUpdateUnitRole: boolean;
   @Input() transactionId: string;
   @Input() transactionIsNotOpen: boolean;
