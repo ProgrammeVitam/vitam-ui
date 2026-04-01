@@ -386,7 +386,7 @@
           "PRESERVATION": "Preservation",
           "TRANSFER_REPLY": "Transfer",
           "ELIMINATION": "Elimination",
-          "REASSIGNMENT": "Reassignment",
+          "ORIGINATING_AGENCY_REASSIGNMENT": "Reassignment",
           "DELETE_GOT_VERSIONS": "Deleting object group versions"
         }
       }

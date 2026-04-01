@@ -3,7 +3,7 @@
     "$and": [
       {
         "$ne": {
-          "OpType": "REASSIGNMENT"
+          "OpType": "ORIGINATING_AGENCY_REASSIGNMENT"
         }
       }
     ]

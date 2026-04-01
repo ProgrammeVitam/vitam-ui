@@ -386,7 +386,7 @@
           "PRESERVATION": "Préservation",
           "TRANSFER_REPLY": "Transfert",
           "ELIMINATION": "Élimination",
-          "REASSIGNMENT": "Réattribution",
+          "ORIGINATING_AGENCY_REASSIGNMENT": "Réattribution",
           "DELETE_GOT_VERSIONS": "Suppression des versions des groupes d'objets"
         }
       }
