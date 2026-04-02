@@ -43,8 +43,8 @@ import {
   LogbookApiService,
   LogbookOperationReportState,
   SearchService,
-  VitamuiHttpHeaders,
   SnackBarService,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
@@ -73,6 +73,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'PRESERVATION',
     'INGEST_CLEANUP',
     'COLLECT_DELETION_ACTION',
+    'DELETE_GOT_VERSIONS',
   ];
   private evTypeProcAllowed = [
     'AUDIT',
@@ -83,6 +84,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'MASS_UPDATE',
     'BULK_UPDATE',
     'COLLECT_DELETION_ACTION',
+    'DELETE_GOT_VERSIONS',
   ];
 
   constructor(
@@ -126,6 +128,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       case 'PRESERVATION':
       case 'MASS_UPDATE':
       case 'BULK_UPDATE':
+      case 'DELETE_GOT_VERSIONS':
       case 'COLLECT_DELETION_ACTION':
         return DOWNLOAD_TYPE_BATCH_REPORT;
       case 'INGEST':
