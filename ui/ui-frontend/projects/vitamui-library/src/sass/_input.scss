@@ -48,9 +48,6 @@
     color: var(--vitamui-primary) !important;
     letter-spacing: 0.1px;
     line-height: 10px;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
     transform-origin: left;
     transition: transform $anim-timing;
@@ -160,4 +157,11 @@
     margin-top: 25px;
     padding: 0;
   }
+}
+
+app-simple-criteria-search .vitamui-input label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
