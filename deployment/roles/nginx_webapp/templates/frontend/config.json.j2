@@ -74,6 +74,6 @@
   }
   {% endif %}
   {% if (vitamui_struct.vitamui_component == "ui-archive-search") %}
-  ,"REASSIGNMENT_ENABLED": {{vitamui.ui_archive_search.reassignment_enabled | default(false) | bool | lower }}
+  ,"REASSIGNMENT_ENABLED": {{ vitamui.ui_archive_search.reassignment_enabled | default(false) | bool | lower }}
   {% endif %}
 }
