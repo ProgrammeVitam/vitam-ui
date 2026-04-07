@@ -64,6 +64,7 @@ public class CustomCasWebSecurityConfigurerAdapter extends CasWebSecurityConfigu
     protected List<String> getAllowedPatternsToIgnore() {
         val patterns = super.getAllowedPatternsToIgnore();
         patterns.add("/extras/**");
+        patterns.add("/icons/**");
         return patterns;
     }
 }
