@@ -90,6 +90,15 @@ export class OidcAuthenticatorService implements AuthenticatorService {
       tap((authenticated) => {
         if (authenticated) {
           this.cleanUrlAfterLogin();
+          const claims = this.oAuthService.getIdentityClaims() as any;
+          if (claims?.state) {
+            const parts = claims.state.split(';');
+            // The state format is `<nonce>;<encoded_url>` — we take parts[1].
+            const redirectPath = parts.length > 1 ? decodeURIComponent(parts[1]) : null;
+            if (redirectPath && redirectPath !== '/') {
+              this.location.href = this.location.origin + redirectPath;
+            }
+          }
         }
       }),
     );
