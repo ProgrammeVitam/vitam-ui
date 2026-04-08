@@ -41,6 +41,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
@@ -61,6 +62,7 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
 import fr.gouv.vitamui.iam.server.common.domain.Address;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
@@ -71,6 +73,8 @@ import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import fr.gouv.vitamui.iam.server.security.AbstractResourceClientService;
+import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import lombok.Getter;
 import lombok.Setter;
@@ -120,6 +124,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
     private final OwnerService ownerService;
     private final UserService userService;
     private final SecurityService securityService;
+    private final UserRepository userRepository;
     private final AddressService addressService;
     private final InitCustomerService initCustomerService;
     private final IamLogbookService iamLogbookService;
@@ -132,6 +137,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
         final CustomerRepository customerRepository,
         final OwnerService ownerService,
         final UserService userService,
+        final UserRepository userRepository,
         final SecurityService securityService,
         final AddressService addressService,
         final InitCustomerService initCustomerService,
@@ -143,6 +149,7 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
         this.customerRepository = customerRepository;
         this.ownerService = ownerService;
         this.userService = userService;
+        this.userRepository = userRepository;
         this.securityService = securityService;
         this.addressService = addressService;
         this.initCustomerService = initCustomerService;
@@ -350,6 +357,8 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
                         )
                     );
                     customer.setDefaultEmailDomain(defaultEmailDomain);
+                    // Update admin user email domain to reflect the new default domain
+                    updateAdminUserEmailDomain(customer.getId(), defaultEmailDomain);
                     break;
                 case "gdprAlertDelay":
                     if (this.isGdprAlertReadonly()) {
@@ -760,6 +769,26 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
             customerDtos.add(convertFromEntityToDto(customer));
         }
         return customerDtos;
+    }
+
+    private void updateAdminUserEmailDomain(String customerId, String newDefaultEmailDomain) {
+        List<User> users = userRepository.findByCustomerId(customerId);
+
+        // Build the admin email prefix pattern: "admin@"
+        String adminEmailPrefix = ApiIamConstants.ADMIN_CLIENT_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR;
+
+        // Clean the domain (remove wildcard prefix if present)
+        String cleanNewDomain = newDefaultEmailDomain.replace("*.", "");
+
+        // Filter and update only admin users
+        for (User user : users) {
+            if (user.getEmail() != null && user.getEmail().startsWith(adminEmailPrefix)) {
+                // Build the new admin email with the new domain
+                String newAdminEmail = adminEmailPrefix + cleanNewDomain;
+                user.setEmail(newAdminEmail);
+                userRepository.save(user);
+            }
+        }
     }
 
     @Override
