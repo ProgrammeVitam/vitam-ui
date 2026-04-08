@@ -23,6 +23,7 @@ import fr.gouv.vitamui.iam.server.logbook.service.AbstractLogbookIntegrationTest
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
+import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,6 +73,9 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
     private UserService userService;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private OwnerService ownerService;
 
     @Mock
@@ -101,6 +105,7 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
             customerRepository,
             ownerService,
             userService,
+            userRepository,
             securityService,
             addressService,
             initCustomerService,
