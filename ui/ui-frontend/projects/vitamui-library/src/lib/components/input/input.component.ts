@@ -125,7 +125,6 @@ export class InputComponent extends AbstractFormInputDirective {
 
   onFocus(i: number) {
     this.focused = i;
-    this.onTouched();
   }
 
   onBlur(i: number) {
