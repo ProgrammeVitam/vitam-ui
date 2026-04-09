@@ -74,6 +74,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'INGEST_CLEANUP',
     'COLLECT_DELETION_ACTION',
     'DELETE_GOT_VERSIONS',
+    'ORIGINATING_AGENCY_REASSIGNMENT',
   ];
   private evTypeProcAllowed = [
     'AUDIT',
@@ -85,6 +86,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'BULK_UPDATE',
     'COLLECT_DELETION_ACTION',
     'DELETE_GOT_VERSIONS',
+    'ORIGINATING_AGENCY_REASSIGNMENT',
   ];
 
   constructor(
@@ -130,6 +132,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       case 'BULK_UPDATE':
       case 'DELETE_GOT_VERSIONS':
       case 'COLLECT_DELETION_ACTION':
+      case 'ORIGINATING_AGENCY_REASSIGNMENT':
         return DOWNLOAD_TYPE_BATCH_REPORT;
       case 'INGEST':
         return DOWNLOAD_TYPE_OBJECT;
