@@ -49,7 +49,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
 import {
-  AuthService,
   BASE_URL,
   InjectorModule,
   LoggerModule,
@@ -57,6 +56,7 @@ import {
   SchemaService,
   SearchCriteriaDto,
   SearchCriteriaStatusEnum,
+  SecurityService,
   UnitType,
   VitamuiRoles,
 } from 'vitamui-library';
@@ -123,7 +123,7 @@ describe('ArchiveSearchComponent', () => {
     launchComputedInheritedRulesModal: () => of(),
   };
 
-  const authServiceStub = {
+  const securityServiceStub = {
     user: {
       profileGroup: {
         profiles: [
@@ -134,6 +134,7 @@ describe('ArchiveSearchComponent', () => {
         ],
       },
     },
+    hasRole$: () => of(false),
   };
 
   const computeActivatedRoute = (queryParams: Params = {}) => {
@@ -175,7 +176,7 @@ describe('ArchiveSearchComponent', () => {
         ArchiveSharedDataService,
         { provide: ActivatedRoute, useValue: computeActivatedRoute(queryParams) },
         { provide: ArchiveService, useValue: archiveServiceStub },
-        { provide: AuthService, useValue: authServiceStub },
+        { provide: SecurityService, useValue: securityServiceStub },
         { provide: ArchiveUnitDipService, useValue: archiveUnitDipServiceMock },
         { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
