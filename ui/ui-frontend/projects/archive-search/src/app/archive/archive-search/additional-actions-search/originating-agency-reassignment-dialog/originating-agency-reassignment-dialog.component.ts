@@ -146,7 +146,7 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
   get sectionTitle(): string {
     return this.reassignmentMode === ReassignmentMode.BY_ID
       ? 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.SOURCE_ORIGINATING_AGENCY_LABEL'
-      : 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_SECTION_TITLE';
+      : 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.SOURCE_ORIGINATING_AGENCY_LABEL';
   }
 
   protected readonly ReassignmentMode = ReassignmentMode;

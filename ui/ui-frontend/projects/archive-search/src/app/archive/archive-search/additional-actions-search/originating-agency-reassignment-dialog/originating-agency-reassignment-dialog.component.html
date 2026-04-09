@@ -2,11 +2,10 @@
 
 <form [formGroup]="form" (ngSubmit)="reassign()">
   <mat-dialog-content class="gap-3 align-items-stretch">
-    <p class="text bold primary m-0">
-      {{ sectionTitle | translate }}
-    </p>
-
     <ng-container *ngIf="reassignmentMode !== ReassignmentMode.BY_ID">
+      <p class="text bold primary m-0 mt-1">
+        {{ 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_SECTION_TITLE' | translate }}
+      </p>
       <vitamui-input
         formControlName="entryOperationIds"
         [placeholder]="'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_LABEL' | translate"
@@ -20,6 +19,9 @@
       </div>
     </ng-container>
 
+    <p class="text bold primary m-0">
+      {{ sectionTitle | translate }}
+    </p>
     <vitamui-select
       [multiple]="false"
       [enableSearch]="true"
