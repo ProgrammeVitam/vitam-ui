@@ -218,7 +218,7 @@ export class ReassignmentDialogService {
           subhead: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERROR_MULTIPLE_SP_MODAL.SUBHEAD',
           title: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERT_MESSAGES.INVALID_ARCHIVAL_UNIT_TYPE',
           icon: 'cancel',
-          message: 'RULES.ALERT_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+          message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
           cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
         };
         this.dialog.open(AlertDialogComponent, dialogConfig);
