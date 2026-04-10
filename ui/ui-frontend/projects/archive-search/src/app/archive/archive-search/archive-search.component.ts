@@ -91,6 +91,7 @@ import {
   SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
+  SecurityService,
   STORAGE_RULE,
   TermsFacet,
   toManagementRuleType,
@@ -99,7 +100,6 @@ import {
   VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamuiRoles,
   WAITING_RECALCULATE,
-  AuthService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -166,6 +166,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   isAllChecked: boolean;
   hasResults = false;
 
+  hasReassignmentRole = false;
   hasDipExportRole = false;
   hasTransferRequestRole = false;
   hasUpdateManagementRuleRole = false;
@@ -259,7 +260,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private ruleService: RuleService,
     private reassignmentDialogService: ReassignmentDialogService,
     protected configService: ConfigService,
-    private authService: AuthService,
+    private securityService: SecurityService,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
@@ -442,6 +443,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
+      this.hasRole('ROLE_ORIGINATING_AGENCY_REASSIGNMENT');
     });
     this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
     this.searchCriterias = new Map();
@@ -1202,13 +1204,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     );
   }
 
-  disableReassignment(): boolean {
-    const user = this.authService.user;
-    return (
-      user.profileGroup?.profiles?.some(
-        (p) => ['Consultation', 'Archiviste'].includes(p.name) && p.applicationName === 'ARCHIVE_SEARCH_MANAGEMENT_APP',
-      ) || false
-    );
+  private hasRole(role: string): void {
+    const appId = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
+    this.securityService.hasRole$(appId, role, this.tenantIdentifier).subscribe((result) => {
+      return (this.hasReassignmentRole = result);
+    });
   }
 
   private bulkOperationWarningWorkflow(operation: () => void): void {

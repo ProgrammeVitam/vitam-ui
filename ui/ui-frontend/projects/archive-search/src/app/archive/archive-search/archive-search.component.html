@@ -21,11 +21,7 @@
         <button mat-menu-item (click)="goToPersistentIdentifierSearchPage()">
           {{ 'ARCHIVE_SEARCH.PERSISTENT_IDENTIFIER_SEARCH.GO_TO_PAGE' | translate }}
         </button>
-        <button
-          mat-menu-item
-          (click)="launchOriginatingAgencyReassignmentModal(ReassignmentMode.BY_OPI)"
-          [disabled]="disableReassignment()"
-        >
+        <button mat-menu-item (click)="launchOriginatingAgencyReassignmentModal(ReassignmentMode.BY_OPI)" [disabled]="!hasReassignmentRole">
           {{ 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.TITLE' | translate }}
         </button>
       </vitamui-menu-button>
