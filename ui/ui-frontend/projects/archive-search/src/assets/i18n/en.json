@@ -59,6 +59,12 @@
       "TARGET_ORIGINATING_AGENCY_LABEL": "Select the target producer service",
       "ORIGINATING_AGENCY": "Producer service",
       "CONFIRM": "REASSIGN",
+      "ERRORS": {
+        "WHITESPACE_ONLY": "The field cannot contain only whitespace",
+        "EMPTY_AFTER_TRIM": "No valid identifier found after trimming",
+        "INVALID_FORMAT": "The following identifiers do not match the expected format (36 lowercase alphanumeric characters): {{invalidIds}}",
+        "INVALID_IDS": "The following identifiers do not exist in the database: {{invalidIds}}"
+      },
       "ERROR_MULTIPLE_SP_MODAL": {
         "SUBHEAD": "The requested action is not possible on this selection",
         "TITLE": "Multiple producer services selected",

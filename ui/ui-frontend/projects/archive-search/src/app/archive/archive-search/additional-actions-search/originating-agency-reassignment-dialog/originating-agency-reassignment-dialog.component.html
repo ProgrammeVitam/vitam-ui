@@ -10,6 +10,12 @@
       <vitamui-input
         formControlName="entryOperationIds"
         [placeholder]="'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_LABEL' | translate"
+        [errorMessageMap]="{
+          whitespaceOnly: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERRORS.WHITESPACE_ONLY',
+          emptyAfterTrim: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERRORS.EMPTY_AFTER_TRIM',
+          invalidFormat: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERRORS.INVALID_FORMAT',
+          invalidOperationIds: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERRORS.INVALID_IDS',
+        }"
       ></vitamui-input>
 
       <div class="row ml-0 mt-n2">

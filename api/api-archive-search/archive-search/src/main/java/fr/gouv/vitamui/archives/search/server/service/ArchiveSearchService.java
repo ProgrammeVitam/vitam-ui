@@ -105,6 +105,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -580,6 +581,27 @@ public class ArchiveSearchService {
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
     }
 
+    /**
+     * Check if operation IDs exist in the logbook.
+     *
+     * @param operationIds List of operation IDs to check
+     * @return Map of operation IDs to their existence status (true if exists, false otherwise)
+     * @throws VitamClientException if there's an error communicating with Vitam
+     */
+    public Map<String, Boolean> checkOperationIdsExistence(List<String> operationIds) throws VitamClientException {
+        if (operationIds == null || operationIds.isEmpty()) {
+            return Map.of();
+        }
+
+        List<LogbookOperationDto> operations = retrieveOperationsInformation(operationIds);
+        Set<String> existingOperationIds = operations
+            .stream()
+            .map(LogbookOperationDto::getEvId)
+            .collect(Collectors.toSet());
+
+        return operationIds.stream().collect(Collectors.toMap(id -> id, existingOperationIds::contains));
+    }
+
     private JsonNode buildReassignmentDsl(JsonNode searchDsl, Long threshold) {
         ObjectNode reassignmentDsl = JsonHandler.createObjectNode();
         reassignmentDsl.set(
@@ -671,12 +693,15 @@ public class ArchiveSearchService {
         try {
             VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
 
+            // Convert to Set to remove duplicates and optimize query
+            Set<String> uniqueOperationIds = new HashSet<>(operationIds);
+
             // Build query to retrieve operations by evIdProc using OR conditions
             final Select select = new Select();
             final BooleanQuery query = QueryHelper.or();
 
-            // Add an eq condition for each operation ID
-            for (String operationId : operationIds) {
+            // Add an eq condition for each unique operation ID
+            for (String operationId : uniqueOperationIds) {
                 query.add(QueryHelper.eq("evIdProc", operationId));
             }
 

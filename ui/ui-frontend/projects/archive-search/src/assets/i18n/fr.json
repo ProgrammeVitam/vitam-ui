@@ -59,6 +59,12 @@
       "TARGET_ORIGINATING_AGENCY_LABEL": "Sélectionner le service producteur cible",
       "ORIGINATING_AGENCY": "Service producteur",
       "CONFIRM": "RÉATTRIBUER",
+      "ERRORS": {
+        "WHITESPACE_ONLY": "Le champ ne peut contenir uniquement des espaces",
+        "EMPTY_AFTER_TRIM": "Aucun identifiant valide trouvé après nettoyage",
+        "INVALID_FORMAT": "Les identifiants suivants ne respectent pas le format attendu (36 caractères alphanumériques en minuscules) : {{invalidIds}}",
+        "INVALID_IDS": "Les identifiants suivants n'existent pas en base : {{invalidIds}}"
+      },
       "ERROR_MULTIPLE_SP_MODAL": {
         "SUBHEAD": "L'action demandée n'est pas possible sur cette sélection",
         "TITLE": "Plusieurs services producteurs sélectionnés",

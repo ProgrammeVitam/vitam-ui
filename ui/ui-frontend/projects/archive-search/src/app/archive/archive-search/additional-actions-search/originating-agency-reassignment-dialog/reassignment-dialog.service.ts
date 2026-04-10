@@ -56,6 +56,8 @@ import { EMPTY } from 'rxjs';
 interface ReassignmentDialogData {
   itemSelected?: number;
   reassignmentMode: ReassignmentMode;
+  tenantIdentifier?: number;
+  accessContract?: string;
 }
 
 interface ReassignmentDialogResult {
@@ -101,10 +103,12 @@ export class ReassignmentDialogService {
     );
   }
 
-  launchEntryOperationReassignmentModal(tenantIdentifier: number) {
+  launchEntryOperationReassignmentModal(tenantIdentifier: number, accessContract?: string) {
     this.openReassignmentDialog(
       {
         reassignmentMode: ReassignmentMode.BY_OPI,
+        tenantIdentifier,
+        accessContract,
       },
       (result) => {
         // Split + trim + remove empty + deduplicate

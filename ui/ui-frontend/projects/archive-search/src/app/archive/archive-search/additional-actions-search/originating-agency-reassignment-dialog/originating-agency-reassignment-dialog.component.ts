@@ -52,6 +52,7 @@ import {
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ReassignmentMode } from '../../../models/reassign-request.interface';
+import { EntryOperationValidatorService } from './entry-operation-validator.service';
 
 @Component({
   selector: 'app-originating-agency-reassignment-dialog',
@@ -82,10 +83,13 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
     public dialog: MatDialog,
     private confirmDialogService: ConfirmDialogService,
     private agencyService: AgencyService,
+    private entryOperationValidator: EntryOperationValidatorService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       itemSelected: number;
       reassignmentMode: ReassignmentMode;
+      tenantIdentifier?: number;
+      accessContract?: string;
     },
   ) {}
 
@@ -94,11 +98,19 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
     this.reassignmentMode = this.data.reassignmentMode;
 
     this.form = this.fb.group({
-      entryOperationIds: ['', this.reassignmentMode === ReassignmentMode.BY_ID ? [] : [Validators.required]],
+      entryOperationIds: [''],
       propagateToObjectGroups: [true],
       sourceOriginatingAgency: [null, [Validators.required]],
       targetOriginatingAgency: [null, [Validators.required]],
     });
+
+    // Configure validators for entryOperationIds based on mode
+    const entryOperationControl = this.form.get('entryOperationIds');
+    if (this.reassignmentMode === ReassignmentMode.BY_OPI) {
+      entryOperationControl?.setValidators([Validators.required]);
+      entryOperationControl?.setAsyncValidators([this.entryOperationValidator.validateEntryOperationIds()]);
+      entryOperationControl?.updateValueAndValidity();
+    }
 
     this.agencyService
       .getOriginatingAgenciesAsOptions()

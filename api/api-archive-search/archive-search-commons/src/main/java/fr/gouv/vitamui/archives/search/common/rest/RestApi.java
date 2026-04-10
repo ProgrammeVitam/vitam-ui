@@ -60,4 +60,5 @@ public class RestApi {
     public static final String OBJECTS_PERSISTENT_IDENTIFIER = "/objects-by-persistent-identifier";
 
     public static final String REASSIGNMENT_ACTION = "/reassignment";
+    public static final String CHECK_ENTRY_OPERATION_IDS = "/check-operation-ids";
 }
