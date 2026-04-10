@@ -3030,6 +3030,7 @@
     "STP_OG_LFC_TRACEABILITY_FINALIZATION": "Process of finalization of securing the lifecycle logs of objects groups",
     "STP_OG_LFC_TRACEABILITY_FINALIZATION.OK": "Success of the process of finalization of securing the lifecycle logs of objects groups",
     "STP_BACKUP_ONTOLOGY": "Process of backing up the referential of ontologies",
+    "STP_BACKUP_ONTOLOGY.OK": "Success of the process of backing up the referential of ontologies",
     "STP_BACKUP_MANAGEMENT_CONTRACT": "Process of management contract backup",
     "STP_BACKUP_MANAGEMENT_CONTRACT.OK": "Success of the process of management contract backup",
     "STP_UPDATE_MANAGEMENT_CONTRACT": "Management contract update process",
