@@ -3029,6 +3029,7 @@
     "STP_OG_LFC_TRACEABILITY_FINALIZATION": "Processus de finalisation de la sécurisation des journaux du cycle de vie des groupes d'objets",
     "STP_OG_LFC_TRACEABILITY_FINALIZATION.OK": "Succès du processus de finalisation de la sécurisation des journaux du cycle de vie des groupes d'objets",
     "STP_BACKUP_ONTOLOGY": "Processus de sauvegarde du référentiel des ontologies",
+    "STP_BACKUP_ONTOLOGY.OK": "Succès du processus de sauvegarde du référentiel des ontologies",
     "STP_BACKUP_MANAGEMENT_CONTRACT": "Processus de sauvegarde du contrat de gestion",
     "STP_BACKUP_MANAGEMENT_CONTRACT.OK": "Succès du processus de sauvegarde du contrat de gestion",
     "STP_UPDATE_MANAGEMENT_CONTRACT": "Processus de mise à jour du contrat de gestion",
