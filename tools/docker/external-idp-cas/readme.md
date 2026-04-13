@@ -1,12 +1,12 @@
 # Readme
 
-To test the authentication delegation in the OIDC protocol, you will find an example of ready-made configuration here.
+To test the authentication delegation based on OIDC protocol, bellow an example of ready-made configuration:
 
-- Simply launch the `run-dev.sh` script,
-- This script will create a Docker container with a Keycloak and its database, create an OIDC client, and create a test
-  user.
-- The keycloak is the url `http://localhost:8041`
-- The keycloak credentials for admin are:
+- Launch the `run-dev.sh` script on your computer or on vm, this script create:
+    - Keycloak Docker container exposed on the url :  `http://localhost:8041`
+    - OIDC client on the realm `vitamui-test`
+    - Test user `demo@change-me.fr`
+- The keycloak credentials for GUI administration are:
     - user: `admin`,
     - password: `changeme`
 - The OIDC client created has the following information:
@@ -25,15 +25,24 @@ To test the authentication delegation in the OIDC protocol, you will find an exa
   environment.
 
 **Full example**
-Based on the test container, bellow an example on OIDC authentication provider based on the script run-dev.sh :
+
+1. Créate or update a customer by adding a new email domain **change-me.fr**
+2. Create a new provider in the SSO tab with the following settings :
+
+- ### Step 1:
+  ![My Image](./images/create-oidc-provider.png)
+- ### Step 2:
+  ![My Image](./images/create-oidc-provider-2.png)
+
+We can check that a new provider is created in the **iam/providers** collection on vitamui:
 
 ```mongodb-json
 
 {
-    _id: '662f3f36f0fb0f340240221df27815df8c0a490d8f2f73b120d78a3fc0de2a7b',
-    identifier: '53',
+    _id: '<some-guid>',
+    identifier: '<some-identifier>',
     name: 'keycloak-oidc',
-    technicalName: 'idp295983',
+    technicalName: '<some technical name with fomat idp295983> ',
     internal: false,
     enabled: true,
     patterns: [
@@ -55,10 +64,12 @@ Based on the test container, bellow an example on OIDC authentication provider b
     useNonce: true,
     usePkce: false,
     protocoleType: 'OIDC',
-    customerId: '5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9',
+    customerId: '<the customer id >',
     _class: 'providers'
 }
 
 ```
 
-Please follow steps in ```cas/cas-server/readme.md```
+## Case 1: testing without auto-provisioning feature:
+
+In this case we need to create an internal user having the email **demo@change-me.fr**
