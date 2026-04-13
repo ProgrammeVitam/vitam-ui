@@ -74,6 +74,7 @@
         <spring-security-cas.version>6.2.8</spring-security-cas.version>
         <swagger.version>3.0.0</swagger.version>
         <testcontainers.version>1.21.4</testcontainers.version>
+        <archunit.version>1.4.1</archunit.version>
         <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
         <vitam.version>9.1.0-SNAPSHOT</vitam.version>
         <xdocreport.version>2.2.0</xdocreport.version>
@@ -838,7 +839,12 @@
                 <version>${testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>
-
+            <dependency>
+                <groupId>com.tngtech.archunit</groupId>
+                <artifactId>archunit-junit5</artifactId>
+                <version>${archunit.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!-- CUCUMBER SERENITY -->
             <dependency>
                 <groupId>net.serenity-bdd</groupId>
