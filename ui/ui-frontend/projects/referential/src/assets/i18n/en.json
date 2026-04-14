@@ -797,7 +797,9 @@
       "TRACEABILITY": "Security",
       "CHECK": "Checking secure logs",
       "ARCHIVE_TRANSFER": "Transfer",
-      "COLLECT_SIP_INGEST": "Process of Collect ingest"
+      "COLLECT_SIP_INGEST": "Process of Collect ingest",
+      "DELETE_GOT_VERSIONS": "Objects groups versions deletion",
+      "ORIGINATING_AGENCY_REASSIGNMENT": "Originating agency reassignment process"
     },
     "HOME": {
       "TITLE": "Operations log",
