@@ -31,6 +31,7 @@ import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
+import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -89,6 +90,9 @@ public class CustomerInternalServiceTest {
     private OwnerInternalService internalOwnerService;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private TenantInternalService internalTenantService;
 
     @Mock
@@ -129,6 +133,7 @@ public class CustomerInternalServiceTest {
             customerRepository,
             internalOwnerService,
             userInternalService,
+            userRepository,
             internalSecurityService,
             addressService,
             initCustomerService,
