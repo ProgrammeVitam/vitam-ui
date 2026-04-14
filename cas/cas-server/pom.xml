@@ -23,7 +23,7 @@
 
         <!-- CAS & Security Versions -->
         <cas.version>7.0.10.1</cas.version>
-        <pac4j.version>6.1.1</pac4j.version>
+        <pac4j.version>6.3.3</pac4j.version>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
 
         <!-- Logger & Utils Versions -->
