@@ -19,6 +19,14 @@ To test the authentication delegation based on OIDC protocol, bellow an example 
     - Email: `demo@change-me.fr`
     - Name: `demo oidc vitamui`
     - Password: `ChangeIt.2024`
+- If you have an error message about 'Https Required' you can update that by following the steps:
+    - Connect to Mysql db using credentials declared in the docker-compose file.
+    - Update the realms
+        - ```mysql
+      use keycloak
+      update REALM set SSL_REQUIRED ='NONE'
+      ```
+    - Restart the docker container
 
 - The client is configured for local tests. To test on another environment, you need to change the settings on the
   oidc-client `vitamui-oidc` on keycloak by replacing http://localhost:8080 with the main vitamui url of the
