@@ -32,6 +32,7 @@ import fr.gouv.vitamui.iam.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
+import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.Assertions;
@@ -85,6 +86,9 @@ public class CustomerServiceTest {
     private UserService userService;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private OwnerService ownerService;
 
     @Mock
@@ -128,6 +132,7 @@ public class CustomerServiceTest {
             customerRepository,
             ownerService,
             userService,
+            userRepository,
             securityService,
             addressService,
             initCustomerService,

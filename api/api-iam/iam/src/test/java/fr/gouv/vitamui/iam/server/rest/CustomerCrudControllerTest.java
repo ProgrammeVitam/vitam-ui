@@ -45,6 +45,7 @@ import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.tenant.service.InitVitamTenantService;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
+import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
@@ -111,6 +112,9 @@ public final class CustomerCrudControllerTest {
     private UserService userService;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private OwnerService ownerService;
 
     @Mock
@@ -171,6 +175,7 @@ public final class CustomerCrudControllerTest {
             customerRepository,
             ownerService,
             userService,
+            userRepository,
             securityService,
             addressService,
             initCustomerService,
@@ -187,6 +192,7 @@ public final class CustomerCrudControllerTest {
             customerRepository,
             ownerService,
             userService,
+            userRepository,
             securityService,
             addressService,
             initCustomerService,
