@@ -65,6 +65,7 @@ import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
+import org.apereo.cas.authentication.principal.DefaultDelegatedAuthenticationCredentialExtractor;
 import org.apereo.cas.authentication.principal.DelegatedAuthenticationCredentialExtractor;
 import org.apereo.cas.authentication.principal.DelegatedAuthenticationPreProcessor;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
@@ -590,6 +591,23 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public DelegatedAuthenticationPreProcessor surrogateDelegatedAuthenticationPreProcessor() {
         return (principal, client, credential, service) -> principal;
+    }
+
+    /**
+     * Override the default CAS delegatedAuthenticationCredentialExtractor to avoid a NoClassDefFoundError
+     * on PasswordlessWebflowUtils when the passwordless module is not in the classpath.
+     * External surrogate feature is not supported.
+     */
+    @Bean(
+        name = { "delegatedAuthenticationCredentialExtractor", "surrogateDelegatedAuthenticationCredentialExtractor" }
+    )
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public DelegatedAuthenticationCredentialExtractor delegatedAuthenticationCredentialExtractor(
+        @Qualifier(
+            CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
+        ) final SessionStore delegatedClientDistributedSessionStore
+    ) {
+        return new DefaultDelegatedAuthenticationCredentialExtractor(delegatedClientDistributedSessionStore);
     }
 
     @Bean
