@@ -207,7 +207,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     this.archiveCollectService.hasCollectRole('ROLE_SEND_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasSendTransactionRole = result;
     });
-    this.archiveCollectService.hasCollectRole('ROLE_UPDATE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+    this.archiveCollectService.hasCollectRole('ROLE_REOPEN_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasEditTransactionRole = result;
     });
     this.archiveCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
