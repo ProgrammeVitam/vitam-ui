@@ -119,9 +119,9 @@ jobs:
           path: |
             **/target/classes/**/*
             **/target/test-classes/**/*
-  sonarcloud:
-    name: Run SonarCloud analysis
-    needs: [build-frontend, build-backend]
+  sonarcloud-protected:
+    name: SonarCloud Full Analysis (Protected branches)
+    needs: [ build-frontend, build-backend ]
     if: ${{ github.event_name == 'push' && github.ref_protected }} # only run SonarCloud analysis on protected branches
     runs-on: ubuntu-latest
     steps:
@@ -151,12 +151,35 @@ jobs:
         with:
           name: backend-generated-classes
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v3.0.0
+        uses: SonarSource/sonarqube-scan-action@v7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL:  https://sonarcloud.io
+        with:
+          # "**.jar" because of https://sonarsource.atlassian.net/browse/SONARJAVA-1965
+          # "lib" directory is created and populated with m2 repository content by the GitHub Action
+          args: >
+            -Dsonar.java.libraries=lib/**.jar
       - name: Delete temporary artifact
         uses: geekyeggo/delete-artifact@v5.1.0
-        if: success() || failure() # always run even if the previous step fails
+        if: always() # always run even if the previous step fails
         with:
           name: backend-generated-classes
+  sonarcloud-pr:
+    name: SonarCloud PR Analysis (Fast)
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v7.1.0
+        with:
+          args: >
+            -Dsonar.scm.revision=${{ github.event.pull_request.head.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL:  https://sonarcloud.io
