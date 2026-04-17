@@ -423,6 +423,11 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
     return this.archiveApiService.launchReassignmentAction(reassignDto, headers);
   }
+
+  checkOperationIdsExistence(operationIds: string[]): Observable<{ [key: string]: boolean }> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.archiveApiService.checkOperationIdsExistence(operationIds, headers);
+  }
 }
 
 function idExists(units: Unit[], id: string): boolean {

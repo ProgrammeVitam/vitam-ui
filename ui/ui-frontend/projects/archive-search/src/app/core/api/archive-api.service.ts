@@ -267,4 +267,15 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
       headers,
     });
   }
+
+  /**
+   * Check if operation IDs exist in the logbook.
+   *
+   * @param operationIds List of operation IDs to check
+   * @param headers HTTP headers
+   * @returns Observable of a map where keys are operation IDs and values are boolean indicating existence
+   */
+  checkOperationIdsExistence(operationIds: string[], headers?: HttpHeaders): Observable<{ [key: string]: boolean }> {
+    return this.http.post<{ [key: string]: boolean }>(`${this.apiUrl}/check-operation-ids`, operationIds, { headers });
+  }
 }

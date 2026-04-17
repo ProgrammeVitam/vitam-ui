@@ -436,6 +436,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   ngOnInit() {
     this.accessContractService.currentAccessContract$.subscribe((ac: AccessContract) => {
+      this.accessContractId = ac.identifier;
       this.accessContractAllowUpdating = ac.writingPermission;
       this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
     });
@@ -1188,7 +1189,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.DEFAULT_ORIGINATING_AGENCY_REASSIGNMENT_THRESHOLD,
       );
     } else {
-      this.reassignmentDialogService.launchEntryOperationReassignmentModal(this.tenantIdentifier);
+      this.reassignmentDialogService.launchEntryOperationReassignmentModal(this.tenantIdentifier, this.accessContractId);
     }
   }
 

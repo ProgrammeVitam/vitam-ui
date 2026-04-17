@@ -72,6 +72,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * UI Archive-Search External controller
@@ -309,5 +310,14 @@ public class ArchivesSearchController {
         throws VitamClientException {
         LOGGER.debug("Calling reassign action By Criteria {} ", reassignRequestDto);
         return archiveSearchService.reassignOriginatingAgency(reassignRequestDto);
+    }
+
+    @PostMapping(RestApi.CHECK_ENTRY_OPERATION_IDS)
+    @Secured(ServicesData.ROLE_ORIGINATING_AGENCY_REASSIGNMENT)
+    @Operation(summary = "Check if operation IDs exist in the logbook")
+    public Map<String, Boolean> checkOperationIdsExistence(final @RequestBody List<String> operationIds)
+        throws VitamClientException {
+        LOGGER.debug("Check operation IDs existence for {} IDs", operationIds.size());
+        return archiveSearchService.checkOperationIdsExistence(operationIds);
     }
 }
