@@ -105,15 +105,27 @@ export class AddUnitsComponent implements OnInit {
 
   private loadAttachementUnits() {
     const sortingCriteria = { criteria: 'Title', sorting: Direction.ASCENDANT };
-    const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: 'DescriptionLevel',
-      values: [{ id: 'RecordGrp', value: 'RecordGrp' }],
+
+    // Exclude units with objects (folders)
+    const noObjectCriteria: SearchCriteriaEltDto = {
+      criteria: '#object',
+      values: [],
       category: SearchCriteriaTypeEnum.FIELDS,
-      operator: CriteriaOperator.EQ,
+      operator: CriteriaOperator.MISSING,
       dataType: CriteriaDataType.STRING,
     };
+
+    // Exclude units with UpdateOperation (static/dynamic attachments or CSV UpdateOperation)
+    const noUpdateOperationCriteria: SearchCriteriaEltDto = {
+      criteria: '#management.UpdateOperation',
+      values: [],
+      category: SearchCriteriaTypeEnum.FIELDS,
+      operator: CriteriaOperator.MISSING,
+      dataType: CriteriaDataType.STRING,
+    };
+
     const searchCriteria = {
-      criteriaList: Array.of(criteriaWithId),
+      criteriaList: Array.of(noObjectCriteria, noUpdateOperationCriteria),
       pageNumber: 0,
       size: 100,
       sortingCriteria,
