@@ -57,4 +57,6 @@ public interface GroupRepository extends VitamUIRepository<Group, String> {
     List<Group> findByProfileIds(String profileId);
 
     List<Group> findByCustomerId(String customerId);
+
+    Optional<Group> findByUnits(String unit);
 }

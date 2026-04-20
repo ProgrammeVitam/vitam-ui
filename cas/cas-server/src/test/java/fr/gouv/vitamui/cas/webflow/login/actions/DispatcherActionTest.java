@@ -72,6 +72,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         when(
             identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_1), eq(CUSTOMER_ID_1))
         ).thenReturn(Optional.of(provider));
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_2), eq(CUSTOMER_ID_2))
+        ).thenReturn(Optional.of(provider));
     }
 
     @Test

@@ -22,7 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,7 +85,7 @@ class CasServiceTest {
             buildProvidedUser("jean-vitam", "RH")
         );
 
-        when(groupService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
+        when(groupService.getGroupByUnitInternal(any())).thenReturn(buildGroup());
 
         when(userRepository.existsByEmailIgnoreCaseAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(false);
 
@@ -118,7 +117,7 @@ class CasServiceTest {
             buildProvidedUser("jean vitam", "RH")
         );
 
-        when(groupService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
+        when(groupService.getGroupByUnitInternal(any())).thenReturn(buildGroup());
 
         when(userRepository.existsByEmailIgnoreCaseAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(true);
         when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(buildAuthUser(true));
