@@ -39,7 +39,7 @@ import { from, Observable } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
 import { map, tap } from 'rxjs/operators';
 
-const OIDC_PARAMS = ['code', 'state', 'id_token', 'access_token', 'token_type', 'session_state', 'nonce'];
+const OIDC_PARAMS = ['code', 'state', 'id_token', 'access_token', 'token_type', 'session_state', 'nonce', 'client_id'];
 
 export class OidcAuthenticatorService implements AuthenticatorService {
   constructor(
