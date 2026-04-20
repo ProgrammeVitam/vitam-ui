@@ -326,9 +326,9 @@
       "LOAD_MORE_RESULTS": "Load more results..."
     },
     "STATUS": {
-      "STORED_AND_UPDATED": "Partially eliminated, transferred or reassigned",
+      "STORED_AND_UPDATED": "Partially eliminated or transferred",
       "STORED_AND_COMPLETED": "In stock and complete",
-      "UNSTORED": "Completely eliminated, transferred or reassigned"
+      "UNSTORED": "Completely eliminated or transferred"
     },
     "FACETS": {
       "SHOW_SEARCH_FILTERS": "Show search filters",
