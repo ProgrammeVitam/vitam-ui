@@ -9,7 +9,7 @@ spring:
   # set port to 1025 for local development with MailHog container
   mail:
     host: localhost
-    port: 2025
+    port: 2525
     username: no-reply@vitamui.com
     password: password
     testConnection: false
