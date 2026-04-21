@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.common.utils;
 
 import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.oauth2.sdk.auth.ClientAuthenticationMethod;
 import com.nimbusds.openid.connect.sdk.Nonce;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.rest.ErrorsConstants;
@@ -130,6 +131,7 @@ public class Pac4jClientBuilder {
                     oidcConfiguration.setClientId(clientId);
                     oidcConfiguration.setSecret(clientSecret);
                     oidcConfiguration.setDiscoveryURI(discoveryUrl);
+                    oidcConfiguration.setClientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST);
 
                     final String scope = provider.getScope();
                     oidcConfiguration.setScope(scope != null ? scope : "openid");
