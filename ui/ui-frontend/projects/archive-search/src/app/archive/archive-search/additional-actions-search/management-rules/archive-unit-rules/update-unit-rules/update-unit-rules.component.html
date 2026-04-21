@@ -48,6 +48,7 @@
               outputType="Date"
               format="dd/MM/yyyy"
               class="w-100"
+              [disabled]="isStartDateDisabled"
             ></vitamui-datepicker>
             <button
               [ngStyle]="{
@@ -66,7 +67,17 @@
           </div>
         </div>
 
-        <vitamui-input class="col" formControlName="endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate"> </vitamui-input>
+        <div class="col">
+          <div class="hgap-2">
+            <vitamui-datepicker
+              [label]="'RULES.APPRAISAL_RULES.END_DATE' | translate"
+              formControlName="endDate"
+              outputType="Date"
+              format="dd/MM/yyyy"
+              class="w-100"
+            ></vitamui-datepicker>
+          </div>
+        </div>
       </div>
     </div>
 
