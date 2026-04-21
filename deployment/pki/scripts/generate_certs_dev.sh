@@ -31,36 +31,36 @@ function generateCerts {
 
     # VitamUI Services
     # Server Only for https
-    generateServerCertAndStorePassphrase            security            vitamui-services
+    generateServerCertAndStorePassphrase          vitamui-services security
 
     # Server and Client for https or mTLS
-    generateServerAndClientCertAndStorePassphrase   iam                 vitamui-services
-    generateServerAndClientCertAndStorePassphrase   cas-server          vitamui-services
-    generateServerAndClientCertAndStorePassphrase   referential         vitamui-services
-    generateServerAndClientCertAndStorePassphrase   ingest              vitamui-services
-    generateServerAndClientCertAndStorePassphrase   archive-search      vitamui-services
-    generateServerAndClientCertAndStorePassphrase   collect             vitamui-services
-    generateServerAndClientCertAndStorePassphrase   pastis              vitamui-services
-    generateServerAndClientCertAndStorePassphrase   api-gateway         vitamui-services
+    generateServerAndClientCertAndStorePassphrase vitamui-services iam
+    generateServerAndClientCertAndStorePassphrase vitamui-services cas-server
+    generateServerAndClientCertAndStorePassphrase vitamui-services referential
+    generateServerAndClientCertAndStorePassphrase vitamui-services ingest
+    generateServerAndClientCertAndStorePassphrase vitamui-services archive-search
+    generateServerAndClientCertAndStorePassphrase vitamui-services collect
+    generateServerAndClientCertAndStorePassphrase vitamui-services pastis
+    generateServerAndClientCertAndStorePassphrase vitamui-services api-gateway
 
     # Zone UI - Client Only for mTLS
-    generateClientCertAndStorePassphrase            ui-portal           vitamui-services
-    generateClientCertAndStorePassphrase            ui-identity         vitamui-services
-    generateClientCertAndStorePassphrase            ui-identity-admin   vitamui-services
-    generateClientCertAndStorePassphrase            ui-referential      vitamui-services
-    generateClientCertAndStorePassphrase            ui-ingest           vitamui-services
-    generateClientCertAndStorePassphrase            ui-archive-search   vitamui-services
-    generateClientCertAndStorePassphrase            ui-pastis           vitamui-services
-    generateClientCertAndStorePassphrase            ui-collect          vitamui-services
+    generateClientCertAndStorePassphrase          vitamui-services ui-portal
+    generateClientCertAndStorePassphrase          vitamui-services ui-identity
+    generateClientCertAndStorePassphrase          vitamui-services ui-identity-admin
+    generateClientCertAndStorePassphrase          vitamui-services ui-referential
+    generateClientCertAndStorePassphrase          vitamui-services ui-ingest
+    generateClientCertAndStorePassphrase          vitamui-services ui-archive-search
+    generateClientCertAndStorePassphrase          vitamui-services ui-pastis
+    generateClientCertAndStorePassphrase          vitamui-services ui-collect
 
     # Reverse proxy - Server Only for https
-    generateServerCertAndStorePassphrase            reverse             vitamui-services
-
-    # Example of generated client cert for a customer allowing to perform request on external APIs
-    generateClientCertAndStorePassphrase            customer_x          client-external
+    generateServerCertAndStorePassphrase          vitamui-services reverse
 
     # Generate Vitam certificates for VitamUI
-    generateClientCertAndStorePassphrase            vitamui             client-vitam
+    generateClientCertAndStorePassphrase          client-vitam     vitamui
+
+    # Example of generated client cert for a customer allowing to perform request on external APIs
+    generateClientCertAndStorePassphrase          client-external  customer_x
 }
 
 ######################################################################

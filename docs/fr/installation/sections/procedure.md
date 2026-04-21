@@ -360,7 +360,7 @@ Le déploiement de Vitam-UI s'effectue à l'aide du playbook `ansible-vitamui/vi
 ansible-playbook --vault-password-file vault_pass.txt -i environments/<hostfile_vitamui> --extra-vars=@./environments/vitamui_extra_vars.yml ansible-vitamui/vitamui.yml
 ~~~
 
-Ce playbook va déployer l'ensemble du coeur Vitam-UI et les applications associées (Referential, Ingest & Archive-search).
+Ce playbook va déployer l'ensemble du coeur Vitam-UI et les applications associées (Referential, Ingest, Archive-search, Collect & Pastis).
 
 ---
 

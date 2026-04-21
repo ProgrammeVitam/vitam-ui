@@ -44,6 +44,11 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 * Contraintes
 * API swagger
 
+### Service api-gateway
+
+* Description : passerelle d'accès unifiée (Spring Cloud Gateway) vers l'ensemble des API internes de VITAMUI.
+  Le service api-gateway a pour responsabilité la sécurisation par authentification mutuelle (mTLS) avec les interfaces IHM et le routage des requêtes.
+
 ### Service referential
 
 * Description : service pour la gestion des référentiels de la solution logicielle VITAM.
@@ -485,7 +490,7 @@ La documentation pour la génération des clés pour le cluster CAS est disponib
 
 ### Fonctionnalités
 
-Le serveur CAS VITAMUI est construit sur le serveur CAS Open Source v6.1.x via un mécanisme d'overlay Maven.
+Le serveur CAS VITAMUI est construit sur le serveur CAS Open Source v7.0.x via un mécanisme d'overlay Maven.
 
 Les beans Spring sont chargés via les classes `AppConfig` et `WebflowConfig` déclarées par le fichier `src/main/resources/META-INF/spring.factories`.
 

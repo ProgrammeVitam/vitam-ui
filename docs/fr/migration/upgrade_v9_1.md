@@ -27,7 +27,15 @@ Un truststore VitamUI interne est utilisé pour établir la confiance entre serv
 
 #### Mise à jour des certificats
 
-À partir de la V9.1, la séparation des certificat serveur/client de vitamui nécessite la regénération des certificats.
+À partir de la V9.1, la séparation des certificats serveur/client de VitamUI nécessite la regénération de la PKI.
+
+* Générer la nouvelle autorité de certification `vitamui-services`
+
+  ```sh
+  ./pki/scripts/generate_ca.sh true
+  ```
+
+  > Le paramètre true permet d'écraser l'autorité de certification existante.
 
 * Générer les nouveaux certificats
 

@@ -1,0 +1,46 @@
+graph TD
+
+    %% Service Definitions
+    RP[Reverse Proxy]
+
+    subgraph SERVICES_UI[VitamUI-UI Services]
+        direction TB
+        UPO[ui-portal]
+        UID[ui-identity]
+        UIA[ui-identity-admin]
+        UAS[ui-archive-search]
+        URE[ui-referential]
+        UCO[ui-collect]
+        UPA[ui-pastis]
+        UIN[ui-ingest]
+    end
+
+    API_GW[api-gateway]
+    CAS[cas-server]
+
+    subgraph VITAM_UI_SERVICES[VitamUI Services]
+        direction TB
+        subgraph VUI_SERVICES[ ]
+            direction TB
+            R[referential]
+            P[pastis]
+            I[ingest]
+            C[collect]
+            AS[archive_search]
+        end
+
+        IAM[iam]
+        SEC[security]
+    end
+
+    %% Communications
+    EXTERNAL -->|https| RP
+    RP -->|http| SERVICES_UI
+    RP -->|https| CAS
+    SERVICES_UI -->|mTLS| API_GW
+    API_GW -->|https + x-ssl-cert| VITAM_UI_SERVICES
+    VUI_SERVICES -->|mTLS| IAM
+    VUI_SERVICES -->|https| SEC
+
+    IAM <-->|mTLS| CAS
+    IAM -->|https| SEC
