@@ -286,7 +286,12 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.sd
       .scrolled()
       .pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable))
-      .subscribe(() => this.updateSelectAll());
+      .subscribe(() => {
+        this.updateSelectAll();
+        this.syncRenderedOptionsSelection();
+      });
+
+    this.optionKeys.changes.subscribe(() => this.syncRenderedOptionsSelection());
 
     this.addEventListeners();
 
@@ -295,6 +300,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       Promise.resolve().then(() => {
         this.synchronizeSelectedOptions();
         this.updateMatSelectTriggerContent();
+        this.syncRenderedOptionsSelection();
         this.cd.detectChanges();
       });
     }
@@ -435,12 +441,14 @@ export class SelectComponent extends AbstractFormInputDirective implements After
 
     if (this.selectedOptions.length === 0) {
       this.clearAllSelectedOptions();
+      this.updateMatSelectTriggerContent(this._multiple ? [] : undefined);
     } else {
       const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
-      this.onChange(this._multiple ? selectedKeys : selectedKeys[0]);
+      const valueToPropagate = this._multiple ? selectedKeys : selectedKeys[0];
+      this.onChange(valueToPropagate);
+      this.updateMatSelectTriggerContent(valueToPropagate);
     }
-
-    this.updateMatSelectTriggerContent();
+    this.syncRenderedOptionsSelection();
   }
 
   public readonly compareOptions = (o1: any, o2: any): boolean => {
@@ -576,7 +584,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     }
   }
 
-  private updateMatSelectTriggerContent(): void {
+  private updateMatSelectTriggerContent(valueOverride?: any): void {
     if (!this.matSelect || this.isUpdatingTrigger) return;
 
     Object.defineProperties(this.matSelect, {
@@ -586,12 +594,14 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       },
     });
 
-    if (this.control?.value != null) {
+    const valueToDisplay = valueOverride ?? this.control?.value;
+
+    if (valueToDisplay != null) {
       this.isUpdatingTrigger = true;
 
       try {
-        this.matSelect.value = this.control.value;
-        this.matSelect._onChange(this.control.value);
+        this.matSelect.value = valueToDisplay;
+        this.matSelect._onChange(valueToDisplay);
         this.matSelect.stateChanges.next();
       } finally {
         this.isUpdatingTrigger = false;
@@ -639,7 +649,25 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       if (this.multiple && Array.isArray(this.control.value)) {
         this.selectedOptions = this.allOptions.filter((option) => this.control.value.includes(option.key));
       }
+      this.syncRenderedOptionsSelection();
       this.cd.detectChanges();
+    });
+  }
+
+  private syncRenderedOptionsSelection(): void {
+    if (!this.optionKeys) return;
+
+    const selectedKeys = new Set(this.selectedOptions.map((option) => String(option.key)));
+    this.optionKeys.forEach((optionKey) => {
+      if (optionKey.value === this.SELECT_ALL_OPTIONS) return;
+
+      const shouldBeSelected = selectedKeys.has(String(optionKey.value));
+      if (shouldBeSelected && !optionKey.selected) {
+        optionKey.select(false);
+      }
+      if (!shouldBeSelected && optionKey.selected) {
+        optionKey.deselect(false);
+      }
     });
   }
 
