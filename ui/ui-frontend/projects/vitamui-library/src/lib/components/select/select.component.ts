@@ -529,12 +529,26 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   private selectAll(value: boolean): void {
     if (value) {
       this.selectedOptions = [...this.allOptions];
-      const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
+
+      const selectedKeys = this.selectedOptions.map((o) => o.key).sort();
       this.onChange(selectedKeys);
+
+      // visual synchronization
+      this.optionKeys?.forEach((option) => {
+        if (option.value !== this.SELECT_ALL_OPTIONS) {
+          option.select(false);
+        }
+      });
     } else {
       this.clearAllSelectedOptions();
+
+      this.optionKeys?.forEach((option) => {
+        option.deselect(false);
+      });
     }
+
     this.resizeContainerHeightInSelectedItemsView();
+    this.cd.detectChanges();
   }
 
   private resizeContainerHeightInSearchView(): void {
