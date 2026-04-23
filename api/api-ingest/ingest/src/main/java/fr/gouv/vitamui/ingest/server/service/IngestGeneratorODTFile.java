@@ -40,6 +40,7 @@
 package fr.gouv.vitamui.ingest.server.service;
 
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
+import fr.gouv.vitamui.commons.utils.OdfUtils;
 import fr.gouv.vitamui.commons.vitam.seda.LevelType;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
@@ -166,10 +167,10 @@ public class IngestGeneratorODTFile {
         Table table = document.addTable(2, 2);
         Cell cellOne = table.getColumnByIndex(0).getCellByIndex(0);
         Cell cellTwo = table.getColumnByIndex(0).getCellByIndex(1);
-        cellOne.setStringValue("Service producteur :");
-        cellTwo.setStringValue("Service versant :");
         table.getColumnByIndex(0).setWidth(50);
 
+        OdfUtils.setCellText(cellOne, "Service producteur :");
+        OdfUtils.setCellText(cellTwo, "Service versant :");
         Font fontCellOne = cellOne.getFont();
         fontCellOne.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         cellOne.setFont(fontCellOne);
@@ -178,11 +179,11 @@ public class IngestGeneratorODTFile {
         fontCellTwo.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         cellTwo.setFont(fontCellTwo);
 
-        table
-            .getColumnByIndex(1)
-            .getCellByIndex(0)
-            .setStringValue(getManifestPrincipalData(manifest, "OriginatingAgencyIdentifier"));
-        table.getColumnByIndex(1).getCellByIndex(1).setStringValue(getServiceVersant(manifest));
+        OdfUtils.setCellText(
+            table.getColumnByIndex(1).getCellByIndex(0),
+            getManifestPrincipalData(manifest, "OriginatingAgencyIdentifier")
+        );
+        OdfUtils.setCellText(table.getColumnByIndex(1).getCellByIndex(1), getServiceVersant(manifest));
 
         addSpace(document);
     }
@@ -203,35 +204,37 @@ public class IngestGeneratorODTFile {
         table.getColumnByIndex(0).setWidth(50);
 
         Cell tableCellOne = table.getColumnByIndex(0).getCellByIndex(0);
-        tableCellOne.setStringValue("Numéro du versement :");
+        OdfUtils.setCellText(tableCellOne, "Numéro du versement :");
         Font fontCellOne = tableCellOne.getFont();
         fontCellOne.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         tableCellOne.setFont(fontCellOne);
 
         Cell tableCellTwo = table.getColumnByIndex(0).getCellByIndex(1);
-        tableCellTwo.setStringValue("Présentation du contenu :");
+        OdfUtils.setCellText(tableCellTwo, "Présentation du contenu :");
         Font fontCellTwo = tableCellTwo.getFont();
         fontCellTwo.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         tableCellTwo.setFont(fontCellTwo);
 
         Cell tableCellThree = table.getColumnByIndex(0).getCellByIndex(2);
-        tableCellThree.setStringValue("Dates extrêmes :");
+        OdfUtils.setCellText(tableCellThree, "Dates extrêmes :");
         Font fontCellThree = tableCellThree.getFont();
         fontCellThree.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         tableCellThree.setFont(fontCellThree);
 
         Cell tableCellFour = table.getColumnByIndex(0).getCellByIndex(3);
-        tableCellFour.setStringValue("Historique des conservations :");
+        OdfUtils.setCellText(tableCellFour, "Historique des conservations :");
         Font fontCellFour = tableCellFour.getFont();
         fontCellFour.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         tableCellFour.setFont(fontCellFour);
 
-        table
-            .getColumnByIndex(1)
-            .getCellByIndex(0)
-            .setStringValue(getManifestPrincipalData(manifest, "MessageIdentifier"));
-
-        table.getColumnByIndex(1).getCellByIndex(1).setStringValue(getManifestPrincipalData(manifest, "Comment"));
+        OdfUtils.setCellText(
+            table.getColumnByIndex(1).getCellByIndex(0),
+            getManifestPrincipalData(manifest, "MessageIdentifier")
+        );
+        OdfUtils.setCellText(
+            table.getColumnByIndex(1).getCellByIndex(1),
+            getManifestPrincipalData(manifest, "Comment")
+        );
         if (!archiveUnitDtoList.isEmpty()) {
             table
                 .getColumnByIndex(1)
@@ -242,7 +245,7 @@ public class IngestGeneratorODTFile {
                 .getCellByIndex(2)
                 .addParagraph("Date de fin : " + getEndDate(getArchiveUnitEndDatesList(archiveUnitDtoList)));
         }
-        table.getColumnByIndex(1).getCellByIndex(3).setStringValue(getCustodialHistory(manifest));
+        OdfUtils.setCellText(table.getColumnByIndex(1).getCellByIndex(3), getCustodialHistory(manifest));
 
         addSpace(document);
     }
@@ -259,19 +262,19 @@ public class IngestGeneratorODTFile {
         table.getColumnByIndex(0).setWidth(50);
 
         Cell cellOne = table.getColumnByIndex(0).getCellByIndex(0);
-        cellOne.setStringValue("Nombre de fichiers binaires:");
+        OdfUtils.setCellText(cellOne, "Nombre de fichiers binaires:");
         Font fontCellOne = cellOne.getFont();
         fontCellOne.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         cellOne.setFont(fontCellOne);
 
         Cell cellTwo = table.getColumnByIndex(0).getCellByIndex(1);
-        cellTwo.setStringValue("Identifiant de l’opération d’entrée :");
+        OdfUtils.setCellText(cellTwo, "Identifiant de l'opération d'entrée :");
         Font fontCellTwo = cellTwo.getFont();
         fontCellTwo.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
         cellTwo.setFont(fontCellTwo);
 
-        table.getColumnByIndex(1).getCellByIndex(0).setStringValue(getBinaryFileNumber(manifest) + " fichiers");
-        table.getColumnByIndex(1).getCellByIndex(1).setStringValue(id);
+        OdfUtils.setCellText(table.getColumnByIndex(1).getCellByIndex(0), getBinaryFileNumber(manifest) + " fichiers");
+        OdfUtils.setCellText(table.getColumnByIndex(1).getCellByIndex(1), id);
 
         addSpace(document);
         addSpace(document);
@@ -292,19 +295,19 @@ public class IngestGeneratorODTFile {
         table.getRowByIndex(1).setHeight(25, false);
 
         Cell tableCellOne = table.getColumnByIndex(0).getCellByIndex(0);
-        tableCellOne.setStringValue("Date de signature : ");
+        OdfUtils.setCellText(tableCellOne, "Date de signature : ");
         tableCellOne.addParagraph("");
 
         Cell tableCellTwo = table.getColumnByIndex(0).getCellByIndex(1);
-        tableCellTwo.setStringValue("Le responsable du versement :");
+        OdfUtils.setCellText(tableCellTwo, "Le responsable du versement :");
         tableCellTwo.addParagraph("");
 
         Cell tableCellThree = table.getColumnByIndex(1).getCellByIndex(0);
-        tableCellThree.setStringValue("Date de signature :");
+        OdfUtils.setCellText(tableCellThree, "Date de signature :");
         tableCellThree.addParagraph("");
 
         Cell tableCellFour = table.getColumnByIndex(1).getCellByIndex(1);
-        tableCellFour.setStringValue("Le responsable du service d'archives :");
+        OdfUtils.setCellText(tableCellFour, "Le responsable du service d'archives :");
         tableCellFour.addParagraph("");
 
         tableCellOne.setBorders(StyleTypeDefinitions.CellBordersType.NONE, border);
