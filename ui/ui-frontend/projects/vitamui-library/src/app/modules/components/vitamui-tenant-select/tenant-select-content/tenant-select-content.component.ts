@@ -37,13 +37,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MenuOption } from '../../../models/menu-option.interface';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-tenant-select-content',
   templateUrl: './tenant-select-content.component.html',
   styleUrls: ['./tenant-select-content.component.scss'],
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
 })
 export class TenantSelectContentComponent {
   @Input() tenants: MenuOption[];

@@ -46,21 +46,13 @@ import { Subscription } from 'rxjs';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { PastisMaterialModule } from '../../material.module';
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { FileService } from '../../core/services/file.service';
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
 
 @Component({
-  imports: [
-    CommonModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    FormsModule,
-    VitamUICommonModule,
-    PastisMaterialModule,
-    PastisGenericPopupComponent,
-  ],
+  imports: [VitamUILibraryModule, ReactiveFormsModule, FormsModule, VitamUICommonModule, PastisMaterialModule, PastisGenericPopupComponent],
   selector: 'app-save-profile-popup',
   templateUrl: './save-profile-popup.component.html',
 })

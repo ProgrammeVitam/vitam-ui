@@ -1,16 +1,16 @@
-<ng-container *ngFor="let event of events">
+@for (event of events; track event) {
   <div
     class="history-event-item"
     [class.event-error]="event.outcome === 'KO' || event.outcome === 'FATAL'"
     [class.event-warning]="event.outcome === 'WARNING'"
   >
     <div class="history-event-date">
-      <ng-container *ngIf="event.parsedData && event.parsedData['Date d\'opération']">
+      @if (event.parsedData && event.parsedData["Date d'opération"]) {
         {{ event.parsedData["Date d'opération"] | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
-      </ng-container>
-      <ng-container *ngIf="!event.parsedData || !event.parsedData['Date d\'opération']">
+      }
+      @if (!event.parsedData || !event.parsedData["Date d'opération"]) {
         {{ event.dateTime | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
-      </ng-container>
+      }
     </div>
     <div class="history-event-title">
       <vitamui-common-event-type-label [key]="event.type"></vitamui-common-event-type-label> -
@@ -18,11 +18,16 @@
     </div>
     <div class="history-event-outmessage">
       <vitamui-common-event-type-label [key]="event.outDetail"></vitamui-common-event-type-label>
-      <span *ngIf="event.userIdentifier"> {{ 'COMMON.BY_USER' | translate: { userIdentifier: event.userIdentifier } }}</span>
-      <span *ngIf="event.subrogatorIdentifier">
-        ({{ 'COMMON.SUBROGATED_BY' | translate: { subrogatorIdentifier: event.subrogatorIdentifier } }})</span
-      >.
+      @if (event.userIdentifier) {
+        <span> {{ 'COMMON.BY_USER' | translate: { userIdentifier: event.userIdentifier } }}</span>
+      }
+      @if (event.subrogatorIdentifier) {
+        <span> ({{ 'COMMON.SUBROGATED_BY' | translate: { subrogatorIdentifier: event.subrogatorIdentifier } }})</span>
+      }
+      .
     </div>
-    <div class="history-event-details" *ngIf="checkEventData(event)">{{ getEventData(event) }}</div>
+    @if (checkEventData(event)) {
+      <div class="history-event-details">{{ getEventData(event) }}</div>
+    }
   </div>
-</ng-container>
+}

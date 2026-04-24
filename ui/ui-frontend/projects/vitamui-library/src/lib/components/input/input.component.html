@@ -1,64 +1,70 @@
 <div class="form-field">
-  <div
-    *ngFor="let item of items; trackBy: trackBy; let i = index; let first = first; let last = last"
-    class="item"
-    [class.first]="first"
-    [class.vitamui-focused]="i === focused"
-  >
-    <div class="vitamui-input" [class.first]="first">
-      <label *ngIf="first">
-        {{ placeholder }}
-        <span *ngIf="isRequired()" class="required-marker">*</span>
-      </label>
-
-      <input
-        *ngIf="!textarea"
-        [type]="type"
-        (blur)="onBlur(i)"
-        (focus)="onFocus(i)"
-        [ngModel]="item.value"
-        (ngModelChange)="onValueChange($event, i)"
-        [disabled]="control.disabled"
-      />
-      <div *ngIf="textarea" class="grow-wrap" [attr.data-replicated-value]="item.value">
-        <textarea
-          rows="3"
-          (blur)="onBlur(i)"
-          (focus)="onFocus(i)"
-          [ngModel]="item.value"
-          (ngModelChange)="onValueChange($event, i)"
-          onInput="parentNode.dataset.replicatedValue = value"
-          [disabled]="control.disabled"
-        ></textarea>
-      </div>
-
-      <div *ngIf="!control.disabled && multiple" [class.hgap-1]="!textarea" [class.gap-1]="textarea">
-        <button
-          *ngIf="items.length > 1"
-          type="button"
-          class="btn btn-circle link primary xsmall remove"
-          (click)="removeInput(i)"
-          [vitamuiTooltip]="removeTooltipKey | translate"
-          vitamuiTooltipPosition="LEFT"
-          [outline]="true"
-        >
-          <i class="vitamui-icon vitamui-icon-remove"></i>
-        </button>
-        <button
-          *ngIf="last && (i === focused || !isEmpty(item.value))"
-          type="button"
-          class="btn btn-circle link primary xsmall"
-          (click)="addInput()"
-          [disabled]="isEmpty(item.value)"
-          [vitamuiTooltip]="addTooltipKey | translate"
-          vitamuiTooltipPosition="LEFT"
-          [outline]="true"
-        >
-          <i class="material-icons vitamui-icon vitamui-icon-add"> </i>
-        </button>
+  @for (item of items; track trackBy(i, item); let i = $index; let first = $first; let last = $last) {
+    <div class="item" [class.first]="first" [class.vitamui-focused]="i === focused">
+      <div class="vitamui-input" [class.first]="first">
+        @if (first) {
+          <label>
+            {{ placeholder }}
+            @if (isRequired()) {
+              <span class="required-marker">*</span>
+            }
+          </label>
+        }
+        @if (!textarea) {
+          <input
+            [type]="type"
+            (blur)="onBlur(i)"
+            (focus)="onFocus(i)"
+            [ngModel]="item.value"
+            (ngModelChange)="onValueChange($event, i)"
+            [disabled]="control.disabled"
+          />
+        }
+        @if (textarea) {
+          <div class="grow-wrap" [attr.data-replicated-value]="item.value">
+            <textarea
+              rows="3"
+              (blur)="onBlur(i)"
+              (focus)="onFocus(i)"
+              [ngModel]="item.value"
+              (ngModelChange)="onValueChange($event, i)"
+              onInput="parentNode.dataset.replicatedValue = value"
+              [disabled]="control.disabled"
+            ></textarea>
+          </div>
+        }
+        @if (!control.disabled && multiple) {
+          <div [class.hgap-1]="!textarea" [class.gap-1]="textarea">
+            @if (items.length > 1) {
+              <button
+                type="button"
+                class="btn btn-circle link primary xsmall remove"
+                (click)="removeInput(i)"
+                [vitamuiTooltip]="removeTooltipKey | translate"
+                vitamuiTooltipPosition="LEFT"
+                [outline]="true"
+              >
+                <i class="vitamui-icon vitamui-icon-remove"></i>
+              </button>
+            }
+            @if (last && (i === focused || !isEmpty(item.value))) {
+              <button
+                type="button"
+                class="btn btn-circle link primary xsmall"
+                (click)="addInput()"
+                [disabled]="isEmpty(item.value)"
+                [vitamuiTooltip]="addTooltipKey | translate"
+                vitamuiTooltipPosition="LEFT"
+                [outline]="true"
+              >
+                <i class="material-icons vitamui-icon vitamui-icon-add"> </i>
+              </button>
+            }
+          </div>
+        }
       </div>
     </div>
-  </div>
+  }
   <mat-spinner diameter="25"></mat-spinner>
 </div>
 

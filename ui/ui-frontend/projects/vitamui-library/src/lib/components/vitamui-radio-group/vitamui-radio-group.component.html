@@ -1,6 +1,11 @@
 <div class="row">
   <div class="col-12 mb-3">
-    <label>{{ label }} <span *ngIf="required" class="required-marker">*</span></label>
+    <label
+      >{{ label }}
+      @if (required) {
+        <span class="required-marker">*</span>
+      }
+    </label>
   </div>
   <div class="col-12">
     <div class="radio-group">

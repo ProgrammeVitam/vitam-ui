@@ -1,24 +1,28 @@
-<ng-container *ngIf="!disabled">
+@if (!disabled) {
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
         <label>{{ label }}</label>
         <span class="editable-field-text-content">
-          <div *ngFor="let pattern of control.value">{{ pattern }}</div>
+          @for (pattern of control.value; track pattern) {
+            <div>{{ pattern }}</div>
+          }
         </span>
         <div class="mt-2 editable-field-control">
           <app-pattern [style.width.%]="100" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
         </div>
       </div>
-      <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
-      <div *ngIf="showSpinner">
-        <mat-spinner class="vitamui-spinner small"></mat-spinner>
-      </div>
+      @if (!showSpinner && !editMode) {
+        <i class="material-icons edit-icon">edit</i>
+      }
+      @if (showSpinner) {
+        <div>
+          <mat-spinner class="vitamui-spinner small"></mat-spinner>
+        </div>
+      }
     </div>
   </div>
-
   <div class="vitamui-input-errors"></div>
-
   <ng-template
     cdkConnectedOverlay
     [cdkConnectedOverlayOpen]="editMode"
@@ -32,9 +36,13 @@
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-</ng-container>
+}
 
-<div *ngIf="disabled" class="read-only-field">
-  <label>{{ label }}</label>
-  <div *ngFor="let pattern of control?.value">{{ pattern }}</div>
-</div>
+@if (disabled) {
+  <div class="read-only-field">
+    <label>{{ label }}</label>
+    @for (pattern of control?.value; track pattern) {
+      <div>{{ pattern }}</div>
+    }
+  </div>
+}

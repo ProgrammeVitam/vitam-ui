@@ -1,11 +1,12 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-logbook-operation-detail
-      *ngIf="openedItem"
-      [tenantIdentifier]="tenantIdentifier"
-      [eventId]="openedItem?.id"
-      (closePanel)="closePanel()"
-    ></app-logbook-operation-detail>
+    @if (openedItem) {
+      <app-logbook-operation-detail
+        [tenantIdentifier]="tenantIdentifier"
+        [eventId]="openedItem?.id"
+        (closePanel)="closePanel()"
+      ></app-logbook-operation-detail>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

@@ -1,8 +1,9 @@
-<vitamui-dialog-header
-  *ngIf="updateMode"
-  [subhead]="'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate"
-  [title]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.TITLE' | translate"
-></vitamui-dialog-header>
+@if (updateMode) {
+  <vitamui-dialog-header
+    [subhead]="'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate"
+    [title]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.TITLE' | translate"
+  ></vitamui-dialog-header>
+}
 
 <form [formGroup]="form">
   <mat-dialog-content>

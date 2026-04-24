@@ -5,8 +5,12 @@
     <div class="d-flex justify-content-between">
       <div class="d-flex align-items-center">
         <vitamui-slide-toggle formControlName="enabled">
-          <span *ngIf="!form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
-          <span *ngIf="form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+          @if (!form?.get('enabled').value) {
+            <span>{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+          }
+          @if (form?.get('enabled').value) {
+            <span>{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+          }
         </vitamui-slide-toggle>
       </div>
 
@@ -17,12 +21,16 @@
         </div>
 
         <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-          <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('required')">
-            {{ 'COMMON.ERROR.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')">
-            {{ 'HIERARCHY.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}
-          </vitamui-common-input-error>
+          @if (form?.get('level')?.touched && form?.get('level')?.hasError('required')) {
+            <vitamui-common-input-error>
+              {{ 'COMMON.ERROR.REQUIRED' | translate }}
+            </vitamui-common-input-error>
+          }
+          @if (form?.get('level')?.touched && form?.get('level')?.hasError('pattern')) {
+            <vitamui-common-input-error>
+              {{ 'HIERARCHY.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}
+            </vitamui-common-input-error>
+          }
         </vitamui-common-level-input>
       </div>
     </div>

@@ -36,14 +36,15 @@
  */
 import { Component, Input } from '@angular/core';
 import { slideDownAnimation } from '../../animations/vitamui-common-animations';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-field-error',
-  template: `<div *ngIf="show" @slideDownAnimation><ng-content></ng-content></div>`,
+  template: `@if (show) {
+    <div @slideDownAnimation><ng-content></ng-content></div>
+  }`,
   styleUrls: ['./vitamui-field-error.component.scss'],
   animations: [slideDownAnimation],
-  imports: [CommonModule],
+  imports: [],
 })
 export class VitamUIFieldErrorComponent {
   @Input() errorKey: string;

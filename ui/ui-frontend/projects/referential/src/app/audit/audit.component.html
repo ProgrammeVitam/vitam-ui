@@ -1,6 +1,8 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-audit-preview *ngIf="openedItem" [audit]="openedItem" (previewClose)="closePanel()"></app-audit-preview>
+    @if (openedItem) {
+      <app-audit-preview [audit]="openedItem" (previewClose)="closePanel()"></app-audit-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

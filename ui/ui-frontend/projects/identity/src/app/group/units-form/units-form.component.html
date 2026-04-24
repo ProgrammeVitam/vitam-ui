@@ -26,15 +26,17 @@
 
 <div class="vitamui-table mt-2">
   <div class="vitamui-table-body">
-    <div class="vitamui-table-rows" *ngFor="let unit of units">
-      <div class="vitamui-row d-flex align-items-center">
-        <div class="col-11" vitamuiCommonEllipsis>{{ unit }}</div>
-        <div class="d-flex justify-content-end" class="col-1">
-          <button class="btn link" (click)="remove(unit)">
-            <i class="material-icons">clear</i>
-          </button>
+    @for (unit of units; track unit) {
+      <div class="vitamui-table-rows">
+        <div class="vitamui-row d-flex align-items-center">
+          <div class="col-11" vitamuiCommonEllipsis>{{ unit }}</div>
+          <div class="d-flex justify-content-end" class="col-1">
+            <button class="btn link" (click)="remove(unit)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    }
   </div>
 </div>

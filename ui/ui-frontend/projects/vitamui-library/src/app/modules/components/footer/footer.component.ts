@@ -41,13 +41,12 @@ import { ThemeDataType } from '../../models';
 import { StartupService } from '../../startup.service';
 import { ThemeService } from '../../theme.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule],
 })
 export class FooterComponent implements OnInit {
   public footerLogoUrl: SafeResourceUrl;

@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -59,7 +58,6 @@ import { EntryOperationValidatorService } from './entry-operation-validator.serv
   templateUrl: './originating-agency-reassignment-dialog.component.html',
   styleUrls: ['./originating-agency-reassignment-dialog.component.scss'],
   imports: [
-    CommonModule,
     TranslatePipe,
     MatDialogModule,
     DialogHeaderComponent,

@@ -1,8 +1,10 @@
-<div *ngIf="!hideCounter" class="text caption bold primary steps" [class.right]="!count">
-  @if (count) {
-    {{ 'PROGRESS_BAR.STEP' | translate }} {{ index + 1 }} / {{ count }}
-  } @else {
-    {{ percent | number: '1.0-0' }} %
-  }
-</div>
+@if (!hideCounter) {
+  <div class="text caption bold primary steps" [class.right]="!count">
+    @if (count) {
+      {{ 'PROGRESS_BAR.STEP' | translate }} {{ index + 1 }} / {{ count }}
+    } @else {
+      {{ percent | number: '1.0-0' }} %
+    }
+  </div>
+}
 <mat-progress-bar mode="determinate" [value]="percent"></mat-progress-bar>

@@ -13,8 +13,12 @@
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-slide-toggle formControlName="enabled">
-          <span *ngIf="!form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
-          <span *ngIf="form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+          @if (!form?.get('enabled').value) {
+            <span>{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+          }
+          @if (form?.get('enabled').value) {
+            <span>{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+          }
         </vitamui-slide-toggle>
 
         <vitamui-input
@@ -34,14 +38,14 @@
 
           <div class="col-3 p-0">
             <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-              <ng-container *ngIf="form.get('level')?.touched">
-                <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')">{{
-                  'COMMON.ERROR.REQUIRED' | translate
-                }}</vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')"
-                  >{{ 'GROUP.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}
-                </vitamui-common-input-error>
-              </ng-container>
+              @if (form.get('level')?.touched) {
+                @if (form?.get('level')?.hasError('required')) {
+                  <vitamui-common-input-error>{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
+                }
+                @if (form?.get('level')?.touched && form?.get('level')?.hasError('pattern')) {
+                  <vitamui-common-input-error>{{ 'GROUP.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }} </vitamui-common-input-error>
+                }
+              }
             </vitamui-common-level-input>
           </div>
         </div>
@@ -54,9 +58,9 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <div class="text medium bold mb-4" *ngIf="form.get('level').value">
-          {{ 'GROUP.INFORMATIONS.LEVEL' | translate }} : {{ form.get('level').value }}
-        </div>
+        @if (form.get('level').value) {
+          <div class="text medium bold mb-4">{{ 'GROUP.INFORMATIONS.LEVEL' | translate }} : {{ form.get('level').value }}</div>
+        }
 
         <app-profiles-form formControlName="profileIds" [level]="form.get('level').value"></app-profiles-form>
       </mat-dialog-content>

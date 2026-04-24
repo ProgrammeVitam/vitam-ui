@@ -40,7 +40,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field';
-import { NgForOf } from '@angular/common';
+
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -56,7 +56,6 @@ import { extend } from 'underscore';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    NgForOf,
     ReactiveFormsModule,
     TranslatePipe,
     VitamUICommonModule,

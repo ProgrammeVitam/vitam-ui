@@ -42,14 +42,14 @@ import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import { Agency, ApplicationId, diff, Role, SecurityService, AgencyService, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { AgencyCreateValidators } from '../../agency-create/agency-create.validators';
 
 @Component({
   selector: 'app-agency-information-tab',
   templateUrl: './agency-information-tab.component.html',
   styleUrls: ['./agency-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, VitamUICommonModule, TranslatePipe, AsyncPipe, NgIf],
+  imports: [ReactiveFormsModule, VitamUICommonModule, TranslatePipe, AsyncPipe],
 })
 export class AgencyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

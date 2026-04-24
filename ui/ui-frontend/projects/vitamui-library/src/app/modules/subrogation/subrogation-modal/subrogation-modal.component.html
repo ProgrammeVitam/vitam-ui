@@ -32,16 +32,20 @@
 
   <cdk-step>
     <mat-dialog-content>
-      <div class="text normal" *ngIf="user?.firstname && user?.lastname">
-        {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate }} {{ user?.firstname }} {{ user?.lastname }}
-      </div>
+      @if (user?.firstname && user?.lastname) {
+        <div class="text normal">
+          {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate }} {{ user?.firstname }} {{ user?.lastname }}
+        </div>
+      }
 
-      <div class="text normal" *ngIf="!user?.firstname || !user?.lastname">
-        {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate }} {{ user?.email }}
-      </div>
+      @if (!user?.firstname || !user?.lastname) {
+        <div class="text normal">{{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate }} {{ user?.email }}</div>
+      }
 
       <div class="d-flex justify-content-center align-items-center my-5">
-        <mat-spinner *ngIf="pending" class="vitamui-spinner large"></mat-spinner>
+        @if (pending) {
+          <mat-spinner class="vitamui-spinner large"></mat-spinner>
+        }
       </div>
     </mat-dialog-content>
 

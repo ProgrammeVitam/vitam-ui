@@ -37,14 +37,14 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { SnackBarData, SnackBarUrlButton } from './snack-bar.interface';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 
 @Component({
   templateUrl: './snack-bar.component.html',
   styleUrls: ['./snack-bar.component.scss'],
-  imports: [CommonModule, TranslateModule, PipesModule],
+  imports: [TranslateModule, PipesModule],
 })
 export class SnackBarComponent {
   constructor(

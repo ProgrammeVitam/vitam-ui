@@ -52,7 +52,7 @@ import { ManagementContractToFormGroupConverterService } from '../components/man
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -69,7 +69,6 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
   templateUrl: './management-contract-create.component.html',
   styleUrls: ['./management-contract-create.component.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     MatButtonToggleModule,
     MatCheckboxModule,

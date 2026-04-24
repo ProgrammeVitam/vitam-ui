@@ -119,16 +119,16 @@ describe('IngestComponent test:', () => {
   });
 
   it('should call open', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     component.openImportSipDialog(IngestType.DEFAULT_WORKFLOW);
     expect(matDialogSpy.open).toHaveBeenCalled();
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect((matDialogSpy.open as jasmine.Spy).calls.count()).toBe(1);
   });
 
   it('should open a modal with IngestComponent', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     component.openImportSipDialog(IngestType.DEFAULT_WORKFLOW);
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect((matDialogSpy.open as jasmine.Spy).calls.count()).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalled();
   });
 });

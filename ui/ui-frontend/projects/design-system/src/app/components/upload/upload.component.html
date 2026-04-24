@@ -81,7 +81,9 @@
   <vitamui-file-selector #fs [multiple]="true">
     <ng-template #fileList>
       <ul style="margin: 0 auto">
-        <li *ngFor="let file of fs.displayFiles">{{ file.name }} ({{ file.size }})</li>
+        @for (file of fs.displayFiles; track file) {
+          <li>{{ file.name }} ({{ file.size }})</li>
+        }
       </ul>
     </ng-template>
     <ng-template #content>

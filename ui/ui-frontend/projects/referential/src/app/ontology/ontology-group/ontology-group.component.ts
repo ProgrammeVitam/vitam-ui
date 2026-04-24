@@ -40,7 +40,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { CommonModule } from '@angular/common';
+
 import { MatTabsModule } from '@angular/material/tabs';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
 import { SchemaListComponent } from './schema-list/schema-list.component';
@@ -48,7 +48,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { OntologyService } from '../ontology.service';
 
 @Component({
-  imports: [MatTabsModule, CommonModule, TranslatePipe, OntologyListComponent, SchemaListComponent],
+  imports: [MatTabsModule, TranslatePipe, OntologyListComponent, SchemaListComponent],
   selector: 'app-ontology-group',
   templateUrl: './ontology-group.component.html',
   styleUrls: ['./ontology-group.component.scss'],

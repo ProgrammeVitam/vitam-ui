@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -67,7 +67,6 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
   templateUrl: 'edit-agency.component.html',
   styleUrls: ['edit-agency.component.scss'],
   imports: [
-    CommonModule,
     RouterModule,
     VitamUICommonModule,
     VitamUILibraryModule,

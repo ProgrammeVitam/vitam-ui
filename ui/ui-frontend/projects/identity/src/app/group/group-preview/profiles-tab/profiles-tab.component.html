@@ -1,17 +1,20 @@
-<button *ngIf="!readOnly" class="btn primary mb-3" (click)="openEditProfilesDialog()">
-  {{ 'COMMON.UPDATE' | translate }}
-</button>
+@if (!readOnly) {
+  <button class="btn primary mb-3" (click)="openEditProfilesDialog()">
+    {{ 'COMMON.UPDATE' | translate }}
+  </button>
+}
 
-<div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of profilesDisplay">
-  <div>
-    <div class="text caption light mb-1">{{ 'APPLICATION.' + profile.appId + '.NAME' | translate }}</div>
-    <div class="text medium">{{ profile?.tenantName }} : {{ profile?.profileName }}</div>
+@for (profile of profilesDisplay; track profile) {
+  <div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list">
+    <div>
+      <div class="text caption light mb-1">{{ 'APPLICATION.' + profile.appId + '.NAME' | translate }}</div>
+      <div class="text medium">{{ profile?.tenantName }} : {{ profile?.profileName }}</div>
+    </div>
+    <div>
+      <i
+        class="vitamui-icon vitamui-icon-info primary clickable"
+        [vitamuiTooltip]="profile?.description ? profile.description : ('MISC.NO_DESC' | translate)"
+      ></i>
+    </div>
   </div>
-
-  <div>
-    <i
-      class="vitamui-icon vitamui-icon-info primary clickable"
-      [vitamuiTooltip]="profile?.description ? profile.description : ('MISC.NO_DESC' | translate)"
-    ></i>
-  </div>
-</div>
+}

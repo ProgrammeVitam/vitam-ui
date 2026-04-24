@@ -1,14 +1,16 @@
 <div class="vitamui-sidepanel">
   @if (inputProfile) {
     <vitamui-common-sidenav-header [title]="inputProfile.name" [subtitle]="inputProfile.identifier" (onclose)="emitClose()">
-      <vitamui-menu-button *ngIf="isProfilAttached()" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-        <button mat-menu-item (click)="editProfile(inputProfile)">
-          {{ 'PROFILE_PREVIEW.MENU.MODIFIER_PROFILE' | translate }}
-        </button>
-        <button mat-menu-item (click)="downloadProfile(inputProfile)">
-          {{ 'PROFILE_PREVIEW.MENU.TELECHARGER_PROFILE' | translate }}
-        </button>
-      </vitamui-menu-button>
+      @if (isProfilAttached()) {
+        <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+          <button mat-menu-item (click)="editProfile(inputProfile)">
+            {{ 'PROFILE_PREVIEW.MENU.MODIFIER_PROFILE' | translate }}
+          </button>
+          <button mat-menu-item (click)="downloadProfile(inputProfile)">
+            {{ 'PROFILE_PREVIEW.MENU.TELECHARGER_PROFILE' | translate }}
+          </button>
+        </vitamui-menu-button>
+      }
     </vitamui-common-sidenav-header>
   } @else {
     <ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>

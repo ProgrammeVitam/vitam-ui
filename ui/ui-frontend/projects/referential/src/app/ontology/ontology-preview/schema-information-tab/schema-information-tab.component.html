@@ -23,11 +23,9 @@
       [enableSelectAll]="false"
     ></vitamui-select>
 
-    <vitamui-input
-      *ngIf="stringSizeVisible"
-      formControlName="StringSize"
-      [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.STRING_SIZE' | translate"
-    ></vitamui-input>
+    @if (stringSizeVisible) {
+      <vitamui-input formControlName="StringSize" [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.STRING_SIZE' | translate"></vitamui-input>
+    }
 
     <vitamui-select
       formControlName="DataType"
@@ -38,11 +36,12 @@
       [enableSelectAll]="false"
     ></vitamui-select>
 
-    <vitamui-input
-      *ngIf="showCustomSearchTypes"
-      formControlName="CustomSearchTypes"
-      [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CUSTOM_SEARCH_TYPES' | translate"
-    ></vitamui-input>
+    @if (showCustomSearchTypes) {
+      <vitamui-input
+        formControlName="CustomSearchTypes"
+        [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CUSTOM_SEARCH_TYPES' | translate"
+      ></vitamui-input>
+    }
 
     <vitamui-select
       formControlName="Collection"
@@ -80,27 +79,30 @@
       [enableSelectAll]="false"
     ></vitamui-select>
 
-    <vitamui-input
-      *ngIf="!isExternal"
-      formControlName="SedaVersions"
-      [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SEDA_VERSIONS' | translate"
-    ></vitamui-input>
+    @if (!isExternal) {
+      <vitamui-input
+        formControlName="SedaVersions"
+        [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.SEDA_VERSIONS' | translate"
+      ></vitamui-input>
+    }
 
-    <vitamui-input
-      *ngIf="isExternal"
-      formControlName="CreationDate"
-      [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CREATION_DATE' | translate"
-      [disabled]="true"
-    >
-    </vitamui-input>
+    @if (isExternal) {
+      <vitamui-input
+        formControlName="CreationDate"
+        [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.CREATION_DATE' | translate"
+        [disabled]="true"
+      >
+      </vitamui-input>
+    }
 
-    <vitamui-input
-      *ngIf="isExternal"
-      formControlName="LastUpdate"
-      [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.MODIFICATION_DATE' | translate"
-      [disabled]="true"
-    >
-    </vitamui-input>
+    @if (isExternal) {
+      <vitamui-input
+        formControlName="LastUpdate"
+        [placeholder]="'ONTOLOGY.SCHEMA.TAB.INFORMATION.MODIFICATION_DATE' | translate"
+        [disabled]="true"
+      >
+      </vitamui-input>
+    }
   </div>
 
   <button type="submit" class="btn primary" [disabled]="true">

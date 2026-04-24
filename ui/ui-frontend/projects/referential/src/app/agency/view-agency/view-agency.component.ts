@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   Agency,
@@ -53,7 +53,7 @@ import { of, switchMap } from 'rxjs';
   selector: 'app-view-agency',
   templateUrl: 'view-agency.component.html',
   styleUrls: ['view-agency.component.scss'],
-  imports: [CommonModule, RouterModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class ViewAgencyComponent implements OnInit {
   readonly agencyTemplate = agencyTemplate;

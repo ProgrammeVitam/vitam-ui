@@ -1,14 +1,20 @@
-<mat-icon [class.disabled]="disabled" *ngIf="imageUrl && canDelete" (click)="onDelete()" class="delete pointer">clear</mat-icon>
+@if (imageUrl && canDelete) {
+  <mat-icon [class.disabled]="disabled" (click)="onDelete()" class="delete pointer">clear</mat-icon>
+}
 <div [class.disabled]="disabled">
   <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleImage($event)">
     <input type="file" #fileSearch class="d-none" (change)="handleImage($event.target.files)" />
     <div class="image-area d-flex flex-column justify-content-center align-items-center">
-      <div *ngIf="!imageUrl && messContent" class="">
-        <h5>
-          {{ messContent }}
-        </h5>
-      </div>
-      <img *ngIf="imageUrl" [src]="imageUrl" />
+      @if (!imageUrl && messContent) {
+        <div class="">
+          <h5>
+            {{ messContent }}
+          </h5>
+        </div>
+      }
+      @if (imageUrl) {
+        <img [src]="imageUrl" />
+      }
     </div>
   </div>
   <div class="d-flex flex-column pt-2">
@@ -17,7 +23,9 @@
       {{ messPj }}
     </span>
     <small class="error-message">
-      <div *ngIf="hasError">{{ message }}</div>
+      @if (hasError) {
+        <div>{{ message }}</div>
+      }
     </small>
   </div>
 </div>

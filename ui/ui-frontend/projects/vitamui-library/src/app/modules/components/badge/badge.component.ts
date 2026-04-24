@@ -35,13 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, HostBinding, Input } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-badge',
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.scss',
-  imports: [NgIf],
+  imports: [],
 })
 export class BadgeComponent {
   @Input() text = '';

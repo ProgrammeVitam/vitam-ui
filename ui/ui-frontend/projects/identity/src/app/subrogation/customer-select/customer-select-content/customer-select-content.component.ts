@@ -38,13 +38,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CustomerSelectionService, MenuOption } from 'vitamui-library';
 import { CustomerMenuService } from '../customer-menu.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-customer-select-content',
   templateUrl: './customer-select-content.component.html',
   styleUrls: ['./customer-select-content.component.scss'],
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
 })
 export class CustomerSelectContentComponent implements OnInit {
   @Input() customers: MenuOption[];

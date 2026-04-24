@@ -5,27 +5,23 @@
 
   <div class="w-100 mt-4">
     <div class="text normal bold">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.CONSULTATION_POSITIONS' | translate }}</div>
-    <ng-container *ngIf="isAllRootUnitsSelected; else listPosition">
+    @if (isAllRootUnitsSelected) {
       <li class="text normal px-3">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.ALL_POSITIONS' | translate }}</li>
-    </ng-container>
+    } @else {
+      @for (rootUnitsTitle of rootUnitsTitles; track rootUnitsTitle) {
+        <li class="text normal px-3">{{ rootUnitsTitle }}</li>
+      }
+    }
   </div>
 
   <div class="w-100 mt-2">
     <div class="text normal bold">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.EXCLUDED_POSITIONS' | translate }}</div>
-    <ng-container *ngIf="!accessContract.excludedRootUnits || accessContract.excludedRootUnits.length === 0; else excludedPosition">
+    @if (!accessContract.excludedRootUnits || accessContract.excludedRootUnits.length === 0) {
       <li class="text normal px-3">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.NO_EXCLUDED_POSITION' | translate }}</li>
-    </ng-container>
+    } @else {
+      @for (excludeRootUnitTitle of excludedRootUnitsTitles; track excludeRootUnitTitle) {
+        <li class="text normal px-3">{{ excludeRootUnitTitle }}</li>
+      }
+    }
   </div>
 </div>
-
-<ng-template #listPosition>
-  <ng-container *ngFor="let rootUnitsTitle of rootUnitsTitles">
-    <li class="text normal px-3">{{ rootUnitsTitle }}</li>
-  </ng-container>
-</ng-template>
-
-<ng-template #excludedPosition>
-  <ng-container *ngFor="let excludeRootUnitTitle of excludedRootUnitsTitles">
-    <li class="text normal px-3">{{ excludeRootUnitTitle }}</li>
-  </ng-container>
-</ng-template>

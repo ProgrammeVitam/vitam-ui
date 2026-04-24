@@ -41,7 +41,7 @@ import { Observable } from 'rxjs';
 import { ConfirmActionComponent, Ontology, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchemaInformationTabComponent } from './schema-information-tab/schema-information-tab.component';
 
@@ -50,7 +50,6 @@ import { SchemaInformationTabComponent } from './schema-information-tab/schema-i
   templateUrl: './ontology-preview.component.html',
   styleUrls: ['./ontology-preview.component.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     MatTabsModule,
     OntologyInformationTabComponent,

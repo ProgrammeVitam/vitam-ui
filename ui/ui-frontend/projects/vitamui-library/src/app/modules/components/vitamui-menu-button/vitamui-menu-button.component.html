@@ -13,7 +13,9 @@
   aria-label="more menu"
   [class]="menuButtonSize"
 >
-  <i *ngIf="icon" class="vitamui-icon {{ icon }}" [class.mr-3]="label"></i>
+  @if (icon) {
+    <i class="vitamui-icon {{ icon }}" [class.mr-3]="label"></i>
+  }
   {{ label }}
 </button>
 

@@ -39,7 +39,7 @@ import { Router } from '@angular/router';
 import { ApplicationService } from '../../application.service';
 import { Application } from '../../models';
 import { StartupService } from '../../startup.service';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -47,7 +47,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'vitamui-application-card',
   templateUrl: './application-card.component.html',
   styleUrls: ['./application-card.component.scss'],
-  imports: [CommonModule, MatCardModule, TranslateModule],
+  imports: [MatCardModule, TranslateModule],
 })
 export class ApplicationCardComponent implements OnInit {
   @Input() application: Application;

@@ -37,7 +37,7 @@
 import { Component, EventEmitter, forwardRef, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
-import { LowerCasePipe, NgIf } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
@@ -60,7 +60,7 @@ export interface SearchWithTypeSelectorValue {
 
 @Component({
   selector: 'vitamui-search-with-type-selector',
-  imports: [ReactiveFormsModule, MatMenuModule, FormsModule, LowerCasePipe, NgIf, FormErrorsComponent],
+  imports: [ReactiveFormsModule, MatMenuModule, FormsModule, LowerCasePipe, FormErrorsComponent],
   templateUrl: './search-with-type-selector.component.html',
   styleUrl: './search-with-type-selector.component.scss',
   providers: [

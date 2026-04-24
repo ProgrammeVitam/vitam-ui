@@ -7,7 +7,9 @@
 </label>
 @if (isArray(value)) {
   <ul>
-    <li *ngFor="let item of value" class="text medium">{{ item | empty }}</li>
+    @for (item of value; track item) {
+      <li class="text medium">{{ item | empty }}</li>
+    }
   </ul>
 } @else {
   <div>
@@ -18,16 +20,17 @@
         {{ value | empty }}
       }
     </span>
-    <button
-      *ngIf="canCopyValue"
-      (click)="copyToClipboard(value)"
-      class="btn btn-circle link primary xsmall d-inline-block ml-1"
-      [vitamuiTooltip]="'COMMON.COPY' | translate"
-      [outline]="true"
-      vitamuiTooltipClass="secondary"
-      tabindex="0"
-    >
-      <i class="vitamui-icon vitamui-icon-content-copy"></i>
-    </button>
+    @if (canCopyValue) {
+      <button
+        (click)="copyToClipboard(value)"
+        class="btn btn-circle link primary xsmall d-inline-block ml-1"
+        [vitamuiTooltip]="'COMMON.COPY' | translate"
+        [outline]="true"
+        vitamuiTooltipClass="secondary"
+        tabindex="0"
+      >
+        <i class="vitamui-icon vitamui-icon-content-copy"></i>
+      </button>
+    }
   </div>
 }

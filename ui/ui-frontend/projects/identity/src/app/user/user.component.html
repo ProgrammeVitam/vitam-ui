@@ -1,12 +1,8 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-user-preview
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      [user]="openedItem"
-      [customer]="customer"
-      [groups]="groups"
-    ></app-user-preview>
+    @if (openedItem) {
+      <app-user-preview (previewClose)="closePanel()" [user]="openedItem" [customer]="customer" [groups]="groups"></app-user-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -16,9 +12,11 @@
       </vitamui-title-breadcrumb>
 
       <vitamui-banner [searchbarPlaceholder]="'USER.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
-        <button class="btn primary mr-3" *ngIf="groups" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
-          <span>{{ 'USER.HOME.ACTION_BUTTON' | translate }}</span>
-        </button>
+        @if (groups) {
+          <button class="btn primary mr-3" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
+            <span>{{ 'USER.HOME.ACTION_BUTTON' | translate }}</span>
+          </button>
+        }
 
         <button class="btn secondary" (click)="export()" [disabled]="exportLoading">
           <span>{{ 'USER.HOME.EXPORT' | translate }}</span>

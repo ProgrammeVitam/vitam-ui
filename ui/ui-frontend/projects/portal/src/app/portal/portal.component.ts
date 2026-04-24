@@ -57,7 +57,7 @@ import {
 } from 'vitamui-library';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
 import { Content } from '../components/content-list/content.interface';
-import { CommonModule } from '@angular/common';
+
 import { MatMenuModule } from '@angular/material/menu';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -71,15 +71,7 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   selector: 'app-portal',
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss'],
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    RouterModule,
-    WelcomeMessageComponent,
-    ContentListComponent,
-    MatProgressSpinnerModule,
-  ],
+  imports: [MatMenuModule, ReactiveFormsModule, RouterModule, WelcomeMessageComponent, ContentListComponent, MatProgressSpinnerModule],
 })
 export class PortalComponent implements OnInit, OnDestroy {
   public content: Map<Category, Content> = new Map();

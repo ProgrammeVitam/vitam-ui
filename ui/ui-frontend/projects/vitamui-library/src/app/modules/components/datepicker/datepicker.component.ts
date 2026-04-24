@@ -50,7 +50,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { PickerType } from './datepicker.interface';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { CustomValidators } from '../../object-editor/pattern.validator';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
@@ -73,7 +73,6 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
   styleUrl: './datepicker.component.scss',
   providers: [DATEPICKER_VALUE_ACCESSOR],
   imports: [
-    CommonModule,
     FormErrorsComponent,
     FormsModule,
     MatDatepickerModule,

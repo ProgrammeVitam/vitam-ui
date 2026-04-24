@@ -5,22 +5,23 @@
         {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
       </vitamui-slide-toggle>
 
-      <div class="select-threshold" *ngIf="!form.get('usePlatformThreshold').value">
-        <vitamui-select
-          class="w-100"
-          formControlName="bulkOperationsThreshold"
-          [placeholder]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL' | translate"
-          [options]="thresholdValues"
-          [multiple]="false"
-          [enableSearch]="false"
-        ></vitamui-select>
-
-        <i
-          class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
-          [vitamuiTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
-          [vitamuiTooltipShowDelay]="300"
-        ></i>
-      </div>
+      @if (!form.get('usePlatformThreshold').value) {
+        <div class="select-threshold">
+          <vitamui-select
+            class="w-100"
+            formControlName="bulkOperationsThreshold"
+            [placeholder]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_TITLE_SIDE_PANEL' | translate"
+            [options]="thresholdValues"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
+          <i
+            class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+            [vitamuiTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
+            [vitamuiTooltipShowDelay]="300"
+          ></i>
+        </div>
+      }
     </div>
 
     <button

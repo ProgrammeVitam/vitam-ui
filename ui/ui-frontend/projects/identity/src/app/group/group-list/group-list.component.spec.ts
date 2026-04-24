@@ -231,8 +231,19 @@ describe('GroupListComponent', () => {
   });
 
   it('should update the profileGroup', () => {
-    const groupService = TestBed.get(GroupService);
-    groupService.updated.next({ id: '2', name: 'Updated profileGroup' });
+    const groupService = TestBed.inject(GroupService);
+    groupService.updated.next({
+      id: '2',
+      name: 'Updated profileGroup',
+      customerId: '',
+      description: '',
+      level: '',
+      profileIds: [],
+      profiles: [],
+      readonly: false,
+      usersCount: 0,
+      units: []
+    });
     expect(component.dataSource[1].name).toBe('Updated profileGroup');
   });
 

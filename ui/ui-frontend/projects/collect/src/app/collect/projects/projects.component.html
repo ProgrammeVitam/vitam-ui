@@ -6,14 +6,15 @@
     position="end"
     [fixedInViewport]="true"
   >
-    <app-project-preview
-      *ngIf="projectId"
-      [projectId]="projectId"
-      (previewClose)="closePanel()"
-      (showExtendedLateralPanel)="showExtendedLateralPanel()"
-      (backToNormalLateralPanel)="backToNormalLateralPanel()"
-    >
-    </app-project-preview>
+    @if (projectId) {
+      <app-project-preview
+        [projectId]="projectId"
+        (previewClose)="closePanel()"
+        (showExtendedLateralPanel)="showExtendedLateralPanel()"
+        (backToNormalLateralPanel)="backToNormalLateralPanel()"
+      >
+      </app-project-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content id="projectList">

@@ -37,7 +37,7 @@
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { MatSelectModule } from '@angular/material/select';
 import { SelectComponent } from '../select/select.component';
 import { Option } from '../../../app/modules';
@@ -54,7 +54,7 @@ export const PATTERN_VALUE_ACCESSOR: any = {
   selector: 'app-pattern',
   templateUrl: './pattern.component.html',
   styleUrls: ['./pattern.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, MatSelectModule, TranslatePipe, SelectComponent],
+  imports: [ReactiveFormsModule, MatSelectModule, TranslatePipe, SelectComponent],
   providers: [PATTERN_VALUE_ACCESSOR],
 })
 export class PatternComponent implements ControlValueAccessor {

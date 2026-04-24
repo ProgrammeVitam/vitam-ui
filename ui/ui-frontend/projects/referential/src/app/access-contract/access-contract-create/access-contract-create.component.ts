@@ -64,7 +64,7 @@ import { AccessContractCreateValidators } from './access-contract-create.validat
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AccessContractPreviewModule } from '../access-contract-preview/access-contract-preview.module';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -80,7 +80,6 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./access-contract-create.component.scss'],
   imports: [
     AccessContractPreviewModule,
-    CommonModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,

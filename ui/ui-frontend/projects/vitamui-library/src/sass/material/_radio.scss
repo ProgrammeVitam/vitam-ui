@@ -2,14 +2,14 @@
 @use '../spacing';
 
 :root {
-  --mdc-radio-state-layer-size: 24px;
+  --mat-radio-state-layer-size: 24px;
 
   .mat-mdc-radio-button.mat-primary {
-    --mdc-radio-unselected-icon-color: var(--vitamui-grey-700);
-    --mdc-radio-disabled-unselected-icon-color: var(--vitamui-grey-700);
-    --mdc-radio-disabled-unselected-icon-opacity: 1;
-    --mdc-radio-disabled-selected-icon-color: var(--vitamui-grey-700);
-    --mdc-radio-disabled-selected-icon-opacity: 1;
+    --mat-radio-unselected-icon-color: var(--vitamui-grey-700);
+    --mat-radio-disabled-unselected-icon-color: var(--vitamui-grey-700);
+    --mat-radio-disabled-unselected-icon-opacity: 1;
+    --mat-radio-disabled-selected-icon-color: var(--vitamui-grey-700);
+    --mat-radio-disabled-selected-icon-opacity: 1;
 
     --mat-radio-label-text-color: var(--vitamui-grey-900);
     --mat-radio-disabled-label-color: var(--vitamui-grey-700);
@@ -45,8 +45,8 @@ mat-radio-group mat-radio-button + *:not(mat-radio-button) {
       &::before {
         opacity: 1 !important;
         background-color: var(--vitamui-primary-50) !important;
-        top: calc(-1 * (var(--mdc-radio-state-layer-size) - 16px) / 2);
-        left: calc(-1 * (var(--mdc-radio-state-layer-size) - 16px) / 2);
+        top: calc(-1 * (var(--mat-radio-state-layer-size) - 16px) / 2);
+        left: calc(-1 * (var(--mat-radio-state-layer-size) - 16px) / 2);
       }
 
       .mdc-radio__outer-circle {

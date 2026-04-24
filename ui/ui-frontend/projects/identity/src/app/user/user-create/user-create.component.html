@@ -14,8 +14,12 @@
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-slide-toggle formControlName="enabled">
-          <span *ngIf="!form?.get('enabled').value">{{ 'USER.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
-          <span *ngIf="form?.get('enabled').value">{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+          @if (!form?.get('enabled').value) {
+            <span>{{ 'USER.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+          }
+          @if (form?.get('enabled').value) {
+            <span>{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+          }
         </vitamui-slide-toggle>
 
         <div class="hgap-2 align-items-start">

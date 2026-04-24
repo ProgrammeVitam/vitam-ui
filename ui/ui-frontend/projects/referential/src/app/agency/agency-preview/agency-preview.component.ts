@@ -40,7 +40,7 @@ import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/mater
 import { Observable } from 'rxjs';
 import { Agency, AgencyService, ConfirmActionComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatOptionModule } from '@angular/material/core';
@@ -56,7 +56,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./agency-preview.component.scss'],
   imports: [
     AgencyInformationTabComponent,
-    CommonModule,
     FormsModule,
     MatDialogModule,
     MatMenuModule,

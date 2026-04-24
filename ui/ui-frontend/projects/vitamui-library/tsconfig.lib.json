@@ -7,8 +7,7 @@
     "sourceMap": true,
     "inlineSources": true,
     "inlineSourceMap": true,
-    "types": [],
-    "lib": ["dom", "ES2022"]
+    "types": []
   },
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

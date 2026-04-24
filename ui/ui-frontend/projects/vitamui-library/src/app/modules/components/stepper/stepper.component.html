@@ -1,4 +1,4 @@
-<ng-container *ngFor="let step of steps; let i = index; let isLast = last">
+@for (step of steps; track step; let i = $index; let isLast = $last) {
   <div
     class="step"
     [class.hidden]="selectedIndex !== i"
@@ -8,4 +8,4 @@
   >
     <ng-container [ngTemplateOutlet]="step.content"></ng-container>
   </div>
-</ng-container>
+}

@@ -39,7 +39,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GlobalEventService, MenuOption } from 'vitamui-library';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomerSelectContentComponent } from './customer-select-content/customer-select-content.component';
 
@@ -47,7 +47,7 @@ import { CustomerSelectContentComponent } from './customer-select-content/custom
   selector: 'app-customer-select',
   templateUrl: './customer-select.component.html',
   styleUrls: ['./customer-select.component.scss'],
-  imports: [CommonModule, CustomerSelectContentComponent, RouterModule, TranslateModule],
+  imports: [CustomerSelectContentComponent, RouterModule, TranslateModule],
 })
 export class CustomerSelectComponent implements OnInit, OnDestroy {
   public customers: MenuOption[];

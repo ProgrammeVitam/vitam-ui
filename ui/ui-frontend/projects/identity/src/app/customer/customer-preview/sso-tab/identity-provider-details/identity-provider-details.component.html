@@ -10,16 +10,18 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="!form.get('internal').value">
-    <div class="col-12">
-      <vitamui-common-editable-toggle-group formControlName="protocoleType" [label]="'CUSTOMER.SSO.PROTOCOL_TYPE' | translate">
-        <vitamui-common-editable-button-toggle value="SAML" content="SAML"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle value="OIDC" content="OIDC"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle value="CERTIFICAT" content="CERTIFICAT"></vitamui-common-editable-button-toggle>
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
-      </vitamui-common-editable-toggle-group>
+  @if (!form.get('internal').value) {
+    <div class="row">
+      <div class="col-12">
+        <vitamui-common-editable-toggle-group formControlName="protocoleType" [label]="'CUSTOMER.SSO.PROTOCOL_TYPE' | translate">
+          <vitamui-common-editable-button-toggle value="SAML" content="SAML"></vitamui-common-editable-button-toggle>
+          <vitamui-common-editable-button-toggle value="OIDC" content="OIDC"></vitamui-common-editable-button-toggle>
+          <vitamui-common-editable-button-toggle value="CERTIFICAT" content="CERTIFICAT"></vitamui-common-editable-button-toggle>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+        </vitamui-common-editable-toggle-group>
+      </div>
     </div>
-  </div>
+  }
   <div class="row">
     <div class="col-6">
       <vitamui-common-editable-input
@@ -114,19 +116,21 @@
         </vitamui-common-editable-toggle-group>
       </div>
     </div>
-    <div class="row" *ngIf="!identityProvider.internal">
-      <div class="col-12">
-        <vitamui-common-editable-input
-          type="number"
-          formControlName="maximumAuthenticationLifetime"
-          label="{{ 'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate }}"
-          [validator]="form?.get('maximumAuthenticationLifetime')?.validator"
-          [asyncValidator]="form?.get('maximumAuthenticationLifetime')?.asyncValidator"
-        >
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
-        </vitamui-common-editable-input>
+    @if (!identityProvider.internal) {
+      <div class="row">
+        <div class="col-12">
+          <vitamui-common-editable-input
+            type="number"
+            formControlName="maximumAuthenticationLifetime"
+            label="{{ 'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate }}"
+            [validator]="form?.get('maximumAuthenticationLifetime')?.validator"
+            [asyncValidator]="form?.get('maximumAuthenticationLifetime')?.asyncValidator"
+          >
+            <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          </vitamui-common-editable-input>
+        </div>
       </div>
-    </div>
+    }
     <div class="row">
       <div class="col-6">
         <app-editable-keystore [identityProvider]="identityProvider" [disabled]="readOnly"></app-editable-keystore>
@@ -143,23 +147,25 @@
         </vitamui-common-editable-file>
       </div>
     </div>
-    <div class="row" *ngIf="!identityProvider.internal">
-      <div class="col-5">
-        <vitamui-slide-toggle formControlName="wantsAssertionsSigned">
-          {{ 'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate }}
-        </vitamui-slide-toggle>
+    @if (!identityProvider.internal) {
+      <div class="row">
+        <div class="col-5">
+          <vitamui-slide-toggle formControlName="wantsAssertionsSigned">
+            {{ 'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate }}
+          </vitamui-slide-toggle>
+        </div>
+        <div class="col-6">
+          <vitamui-slide-toggle formControlName="authnRequestSigned">
+            {{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}
+          </vitamui-slide-toggle>
+        </div>
+        <div class="col-6">
+          <vitamui-slide-toggle formControlName="propagateLogout">
+            {{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}
+          </vitamui-slide-toggle>
+        </div>
       </div>
-      <div class="col-6">
-        <vitamui-slide-toggle formControlName="authnRequestSigned">
-          {{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}
-        </vitamui-slide-toggle>
-      </div>
-      <div class="col-6">
-        <vitamui-slide-toggle formControlName="propagateLogout">
-          {{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}
-        </vitamui-slide-toggle>
-      </div>
-    </div>
+    }
   }
   @if (form.value.protocoleType === 'OIDC' && displayOIDCSAMLBLOCKS) {
     <div class="row">

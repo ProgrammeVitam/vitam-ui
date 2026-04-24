@@ -42,14 +42,14 @@ import { ConfirmDialogService, setTypeDetailAndStringSize, VitamUICommonModule, 
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
 import { collections, sizes, types } from '../ontology-form-options';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-create',
   templateUrl: './ontology-create.component.html',
   styleUrls: ['./ontology-create.component.scss'],
-  imports: [CommonModule, MatDialogModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [MatDialogModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

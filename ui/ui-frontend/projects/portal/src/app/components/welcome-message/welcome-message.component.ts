@@ -35,13 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-welcome-message',
   templateUrl: './welcome-message.component.html',
   styleUrls: ['./welcome-message.component.scss'],
-  imports: [CommonModule],
+  imports: [],
 })
 export class WelcomeMessageComponent {
   @Input() title: string;

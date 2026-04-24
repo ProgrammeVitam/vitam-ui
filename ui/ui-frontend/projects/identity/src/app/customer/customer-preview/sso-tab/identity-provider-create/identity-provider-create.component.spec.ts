@@ -163,9 +163,23 @@ describe('IdentityProviderCreateComponent', () => {
       elInputs[1].dispatchEvent(customEvent);
       expect(component.setKeystore).toHaveBeenCalled();
       expect(component.setIdpMetadata).toHaveBeenCalled();
-      component.setKeystore({ item: () => keystore, length: 1 });
+      const mockKeystoreFileList = {
+        item: () => keystore,
+        length: 1,
+        [Symbol.iterator]: function* () {
+          yield keystore;
+        },
+      } as unknown as FileList;
+      component.setKeystore(mockKeystoreFileList);
       expect(component.keystore).toEqual(keystore);
-      component.setIdpMetadata({ item: () => idpMetadata, length: 1 });
+      const mockIdpMetadataFileList = {
+        item: () => idpMetadata,
+        length: 1,
+        [Symbol.iterator]: function* () {
+          yield idpMetadata;
+        },
+      } as unknown as FileList;
+      component.setIdpMetadata(mockIdpMetadataFileList);
       expect(component.idpMetadata).toEqual(idpMetadata);
     });
 

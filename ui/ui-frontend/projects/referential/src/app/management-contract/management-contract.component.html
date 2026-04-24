@@ -1,7 +1,9 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-management-contract-preview *ngIf="openedItem" (previewClose)="closePanel()" [inputManagementContract]="openedItem">
-    </app-management-contract-preview>
+    @if (openedItem) {
+      <app-management-contract-preview (previewClose)="closePanel()" [inputManagementContract]="openedItem">
+      </app-management-contract-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

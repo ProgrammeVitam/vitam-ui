@@ -57,7 +57,7 @@ import { ManagementContractApiService } from '../../core/api/management-contract
 import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -73,7 +73,6 @@ import { MatCheckbox } from '@angular/material/checkbox';
   templateUrl: './ingest-contract-create.component.html',
   styleUrls: ['./ingest-contract-create.component.scss'],
   imports: [
-    CommonModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,

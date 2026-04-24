@@ -15,31 +15,39 @@
         ></vitamui-datepicker>
       </div>
 
-      <div class="col-1 filter-text" *ngIf="showDateMax" [ngStyle]="{ flex: '0 5%' }">
-        <span>{{ 'LOGBOOK_OPERATION_PAGE.AND' | translate }}</span>
-      </div>
+      @if (showDateMax) {
+        <div class="col-1 filter-text" [ngStyle]="{ flex: '0 5%' }">
+          <span>{{ 'LOGBOOK_OPERATION_PAGE.AND' | translate }}</span>
+        </div>
+      }
 
-      <div class="col-2 filter-text" *ngIf="!showDateMax" (click)="showIntervalDate(true)">
-        <span class="clickable cp-text-color">
-          {{ 'LOGBOOK_OPERATION_PAGE.ADD_INTERVAL' | translate }}
-        </span>
-      </div>
+      @if (!showDateMax) {
+        <div class="col-2 filter-text" (click)="showIntervalDate(true)">
+          <span class="clickable cp-text-color">
+            {{ 'LOGBOOK_OPERATION_PAGE.ADD_INTERVAL' | translate }}
+          </span>
+        </div>
+      }
 
-      <div class="col-3" *ngIf="showDateMax">
-        <vitamui-datepicker
-          [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
-          formControlName="dateMax"
-          [min]="dateRangeFilterForm.get('dateMin').value"
-          outputType="Date"
-          format="dd/MM/yyyy"
-        ></vitamui-datepicker>
-      </div>
+      @if (showDateMax) {
+        <div class="col-3">
+          <vitamui-datepicker
+            [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
+            formControlName="dateMax"
+            [min]="dateRangeFilterForm.get('dateMin').value"
+            outputType="Date"
+            format="dd/MM/yyyy"
+          ></vitamui-datepicker>
+        </div>
+      }
 
-      <div class="col-2 filter-text" *ngIf="showDateMax" (click)="showIntervalDate(false)">
-        <span class="clickable text primary bold">
-          {{ 'LOGBOOK_OPERATION_PAGE.DELETE_INTERVAL' | translate }}
-        </span>
-      </div>
+      @if (showDateMax) {
+        <div class="col-2 filter-text" (click)="showIntervalDate(false)">
+          <span class="clickable text primary bold">
+            {{ 'LOGBOOK_OPERATION_PAGE.DELETE_INTERVAL' | translate }}
+          </span>
+        </div>
+      }
     </div>
   </div>
 </form>

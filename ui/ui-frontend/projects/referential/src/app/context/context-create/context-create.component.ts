@@ -42,7 +42,7 @@ import { ConfirmDialogService, Context, Option, VitamUICommonModule, VitamUILibr
 import { SecurityProfileService } from '../../security-profile/security-profile.service';
 import { ContextService } from '../context.service';
 import { ContextCreateValidators } from './context-create.validators';
-import { CommonModule } from '@angular/common';
+
 import { ContextEditPermissionModule } from './context-edit-permission/context-edit-permission.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -57,7 +57,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './context-create.component.html',
   styleUrls: ['./context-create.component.scss'],
   imports: [
-    CommonModule,
     ContextEditPermissionModule,
     MatButtonToggleModule,
     MatDialogModule,

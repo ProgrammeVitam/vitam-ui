@@ -114,7 +114,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   unitHasObject(): boolean {
-    return this.allowedDescriptionLevel.includes(this.archiveUnit.DescriptionLevel) && !!this.archiveUnit['#object'];
+    return this.allowedDescriptionLevel.includes(this.archiveUnit.DescriptionLevel as any) && !!this.archiveUnit['#object'];
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {

@@ -37,7 +37,7 @@
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
@@ -56,7 +56,7 @@ type InternalValue = { id: number; value: string | number | boolean };
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   providers: [INPUT_VALUE_ACCESSOR],
-  imports: [FormsModule, CommonModule, TranslateModule, CommonTooltipModule, FormErrorsComponent, MatProgressSpinner],
+  imports: [FormsModule, TranslateModule, CommonTooltipModule, FormErrorsComponent, MatProgressSpinner],
 })
 export class InputComponent extends AbstractFormInputDirective {
   @Input() placeholder: string;

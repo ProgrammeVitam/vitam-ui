@@ -1,29 +1,36 @@
-<div class="side-form" *ngIf="dataLoaded">
-  <div class="permission" *ngFor="let permission of updatedPermissions">
-    <ul>
-      <li>
-        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.ORGANISATION' | translate }}</span> :
-        {{ getOrganisationName(permission.tenant) }}
-      </li>
-      <li>
-        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.TENANT' | translate }}</span> :
-        {{ tenants?.get(permission.tenant)?.name }}
-      </li>
-      <li *ngIf="permission.accessContracts?.length > 0">
-        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.ACCESS_CONTRACT' | translate }}</span> :
-        {{ getAccessContractNames(permission.accessContracts) }}
-      </li>
-      <li *ngIf="permission.ingestContracts?.length > 0">
-        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.INGEST_CONTRACT' | translate }}</span> :
-        {{ getIngestContractNames(permission.ingestContracts) }}
-      </li>
-    </ul>
-    <mat-divider></mat-divider>
+@if (dataLoaded) {
+  <div class="side-form">
+    @for (permission of updatedPermissions; track permission) {
+      <div class="permission">
+        <ul>
+          <li>
+            <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.ORGANISATION' | translate }}</span> :
+            {{ getOrganisationName(permission.tenant) }}
+          </li>
+          <li>
+            <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.TENANT' | translate }}</span> :
+            {{ tenants?.get(permission.tenant)?.name }}
+          </li>
+          @if (permission.accessContracts?.length > 0) {
+            <li>
+              <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.ACCESS_CONTRACT' | translate }}</span> :
+              {{ getAccessContractNames(permission.accessContracts) }}
+            </li>
+          }
+          @if (permission.ingestContracts?.length > 0) {
+            <li>
+              <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.INGEST_CONTRACT' | translate }}</span> :
+              {{ getIngestContractNames(permission.ingestContracts) }}
+            </li>
+          }
+        </ul>
+        <mat-divider></mat-divider>
+      </div>
+    }
+    <div class="actions mt-3">
+      <button class="btn primary" (click)="openEditContextDialog()">
+        <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.EDIT' | translate }}</span>
+      </button>
+    </div>
   </div>
-
-  <div class="actions mt-3">
-    <button class="btn primary" (click)="openEditContextDialog()">
-      <span>{{ 'CONTEXTS_APP.TAB.PERMISSIONS.EDIT' | translate }}</span>
-    </button>
-  </div>
-</div>
+}

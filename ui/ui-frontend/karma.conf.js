@@ -3,8 +3,12 @@
 const path = require('path');
 
 module.exports = function (config) {
-  const projectPath = config.buildWebpack.webpackConfig.resolve.roots[0];
-  const projectName = path.basename(projectPath);
+  // In Angular 21, the buildWebpack API has changed
+  // We need to get the project path from the Angular builder context
+  const angularJson = require('./angular.json');
+  const defaultProject = config.angularCli?.project || 'portal';
+  const projectPath = path.join(__dirname, angularJson.projects[defaultProject]?.root || 'projects/' + defaultProject);
+  const projectName = defaultProject;
 
   config.set({
     basePath: '',

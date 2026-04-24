@@ -104,7 +104,7 @@ describe('SelectComponent', () => {
   function commonBetweenMultiAndNoMulti() {
     it('should display placeholder', () => {
       const labelElement = hostFixture.debugElement.query(By.css('mat-label')).nativeElement;
-      expect(labelElement.textContent).toEqual(placeholder);
+      expect(labelElement.textContent.trim()).toEqual(placeholder);
     });
 
     it('should open the select on click', async () => {

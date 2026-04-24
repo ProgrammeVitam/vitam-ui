@@ -1,10 +1,8 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav [class]="'mat-sidenav'" [ngClass]="'extended-lateral-panel'" #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-accession-register-preview
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      [accessionRegisterDetail]="openedItem"
-    ></app-accession-register-preview>
+    @if (openedItem) {
+      <app-accession-register-preview (previewClose)="closePanel()" [accessionRegisterDetail]="openedItem"></app-accession-register-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -30,9 +28,9 @@
           >
             <i class="material-icons primary-save-icon">delete</i>
           </button>
-          <strong class="ml-3" *ngIf="isAdvancedFormChanged$ | async">{{
-            'ACCESSION_REGISTER.ADVANCED_SEARCH_FILTERS_ACTIVATED' | translate
-          }}</strong>
+          @if (isAdvancedFormChanged$ | async) {
+            <strong class="ml-3">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH_FILTERS_ACTIVATED' | translate }}</strong>
+          }
         </div>
       </vitamui-banner>
 

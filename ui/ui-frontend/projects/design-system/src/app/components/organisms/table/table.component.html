@@ -55,16 +55,18 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of tableDataSource" class="clickable" [class.selected]="row === selectedRow" (click)="selectedRow = row">
-      <td>{{ row.zipName }}</td>
-      <td>{{ row.size }}</td>
-      <td>
-        <mat-progress-bar [value]="row.compression" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
-      </td>
-      <td>
-        <mat-progress-bar [value]="row.loading" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
-      </td>
-    </tr>
+    @for (row of tableDataSource; track row) {
+      <tr class="clickable" [class.selected]="row === selectedRow" (click)="selectedRow = row">
+        <td>{{ row.zipName }}</td>
+        <td>{{ row.size }}</td>
+        <td>
+          <mat-progress-bar [value]="row.compression" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
+        </td>
+        <td>
+          <mat-progress-bar [value]="row.loading" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
+        </td>
+      </tr>
+    }
   </tbody>
 </table>
 
@@ -123,20 +125,22 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="handleClick(profile)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-2">
-            <i
-              class="vitamui-icon vitamui-icon-gestion-de-profil"
-              [ngClass]="profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
-            ></i>
+      @for (profile of dataSource; track profile) {
+        <div class="vitamui-table-rows" (click)="handleClick(profile)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-2">
+              <i
+                class="vitamui-icon vitamui-icon-gestion-de-profil"
+                [ngClass]="profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
+              ></i>
+            </div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ profile.description }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
           </div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ profile.description }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>
@@ -155,23 +159,25 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="handleClick(profile)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-2">
-            <i
-              class="vitamui-icon vitamui-icon-gestion-de-profil"
-              [ngClass]="profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
-            ></i>
+      @for (profile of dataSource; track profile) {
+        <div class="vitamui-table-rows" (click)="handleClick(profile)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-2">
+              <i
+                class="vitamui-icon vitamui-icon-gestion-de-profil"
+                [ngClass]="profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
+              ></i>
+            </div>
+            <div class="col-3">
+              <div vitamuiCommonEllipsis>{{ profile.name }}</div>
+              <div vitamuiCommonEllipsis class="text normal light">{{ profile.name }}</div>
+            </div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ profile.description }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
           </div>
-          <div class="col-3">
-            <div vitamuiCommonEllipsis>{{ profile.name }}</div>
-            <div vitamuiCommonEllipsis class="text normal light">{{ profile.name }}</div>
-          </div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ profile.description }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>
@@ -246,17 +252,19 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let group of dataSource" (click)="handleClick(group)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-2 d-flex align-items-center">
-            <i class="vitamui-icon vitamui-icon-keys pl-4" [ngClass]="group?.enabled ? 'status-badge-green' : 'status-badge-grey'"> </i>
+      @for (group of dataSource; track group) {
+        <div class="vitamui-table-rows" (click)="handleClick(group)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-2 d-flex align-items-center">
+              <i class="vitamui-icon vitamui-icon-keys pl-4" [ngClass]="group?.enabled ? 'status-badge-green' : 'status-badge-grey'"> </i>
+            </div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ group.name }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ group.identifier }}</div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ group.description }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ group.level }}</div>
           </div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ group.name }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ group.identifier }}</div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ group.description }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ group.level }}</div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>
@@ -276,7 +284,7 @@
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
-        <ng-container *ngFor="let customer of dataSource">
+        @for (customer of dataSource; track customer) {
           <div
             class="vitamui-row"
             [vitamuiCommonCollapse]
@@ -302,8 +310,33 @@
               </div>
             </div>
           </div>
-          <div *ngIf="row.state === 'expanded'; then subArray"></div>
-        </ng-container>
+          @if (row.state === 'expanded') {
+            <div class="vitamui-subtable p-0">
+              <div class="vitamui-table-head">
+                <div class="col-3"></div>
+                <div class="col-2">Code propriétaire</div>
+                <div class="col-3">Propriétaire</div>
+                <div class="col-2">Code coffre</div>
+                <div class="col-4"></div>
+              </div>
+              <div class="vitamui-table-body">
+                <div class="vitamui-table-rows">
+                  @for (tenant of dataSource; track tenant) {
+                    <div class="vitamui-row d-flex align-items-center clickable" (click)="handleClick(tenant)">
+                      <div class="col-3 d-flex justify-content-center align-items-end"></div>
+                      <div class="col-2" vitamuiCommonEllipsis>{{ tenant.identifier }}</div>
+                      <div class="col-3" vitamuiCommonEllipsis>{{ tenant.name }}</div>
+                      <div class="col-2" vitamuiCommonEllipsis>{{ tenant.description }}</div>
+                    </div>
+                  }
+                </div>
+                <div class="footer-action">
+                  <span class="clickable">{{ 'ARRAY.ADD_OWNER' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        }
       </div>
     </div>
   </div>
@@ -318,7 +351,7 @@
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
-        <ng-container *ngFor="let group of dataSource">
+        @for (group of dataSource; track group) {
           <div
             class="vitamui-row p-0 px-4"
             [class.no-hover]="row.state === 'expanded'"
@@ -333,59 +366,27 @@
                 {{ row.state === 'collapsed' ? 'Voir detail' : 'Masquer detail' }}
               </button>
             </div>
-            <div *ngIf="row.state === 'expanded'; then dialogSubArray"></div>
+            @if (row.state === 'expanded') {
+              <div class="vitamui-subtable p-0">
+                <div class="vitamui-table-head">
+                  <div class="col-4">Prop1</div>
+                  <div class="col-4">Prop2</div>
+                  <div class="col-4">Prop3</div>
+                </div>
+                <div class="vitamui-table-body">
+                  <div class="vitamui-table-rows">
+                    <div class="vitamui-row d-flex align-items-center clickable">
+                      <div class="col-4" vitamuiCommonEllipsis>Value 1</div>
+                      <div class="col-4" vitamuiCommonEllipsis>Value 2</div>
+                      <div class="col-4" vitamuiCommonEllipsis>Value 3</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
           </div>
-        </ng-container>
+        }
       </div>
     </div>
   </div>
 </div>
-
-<ng-template #subArray>
-  <div class="vitamui-subtable p-0">
-    <div class="vitamui-table-head">
-      <div class="col-3"></div>
-      <div class="col-2">Code propriétaire</div>
-      <div class="col-3">Propriétaire</div>
-      <div class="col-2">Code coffre</div>
-      <div class="col-4"></div>
-    </div>
-
-    <div class="vitamui-table-body">
-      <div class="vitamui-table-rows">
-        <ng-container *ngFor="let tenant of dataSource">
-          <div class="vitamui-row d-flex align-items-center clickable" (click)="handleClick(tenant)">
-            <div class="col-3 d-flex justify-content-center align-items-end"></div>
-            <div class="col-2" vitamuiCommonEllipsis>{{ tenant.identifier }}</div>
-            <div class="col-3" vitamuiCommonEllipsis>{{ tenant.name }}</div>
-            <div class="col-2" vitamuiCommonEllipsis>{{ tenant.description }}</div>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="footer-action">
-        <span class="clickable">{{ 'ARRAY.ADD_OWNER' | translate }}</span>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #dialogSubArray>
-  <div class="vitamui-subtable p-0">
-    <div class="vitamui-table-head">
-      <div class="col-4">Prop1</div>
-      <div class="col-4">Prop2</div>
-      <div class="col-4">Prop3</div>
-    </div>
-
-    <div class="vitamui-table-body">
-      <div class="vitamui-table-rows">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-4" vitamuiCommonEllipsis>Value 1</div>
-          <div class="col-4" vitamuiCommonEllipsis>Value 2</div>
-          <div class="col-4" vitamuiCommonEllipsis>Value 3</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>

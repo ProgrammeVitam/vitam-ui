@@ -213,7 +213,14 @@ describe('EditableKeystoreComponent', () => {
     describe('setFile', () => {
       it('should set the file', () => {
         const expectedFile = newFile([''], 'test.jks');
-        testhost.component.setFile({ item: () => expectedFile, length: 1 });
+        const mockFileList = {
+          item: () => expectedFile,
+          length: 1,
+          [Symbol.iterator]: function* () {
+            yield expectedFile;
+          },
+        } as unknown as FileList;
+        testhost.component.setFile(mockFileList);
         expect(testhost.component.file).toBe(expectedFile);
       });
     });

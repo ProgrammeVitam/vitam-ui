@@ -38,7 +38,7 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SchemaElement, SchemaService, Option } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
@@ -47,7 +47,7 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
   selector: 'app-schema-information-tab',
   templateUrl: './schema-information-tab.component.html',
   styleUrl: './schema-information-tab.component.scss',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [FormsModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class SchemaInformationTabComponent {
   form: FormGroup;

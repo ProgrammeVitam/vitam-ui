@@ -137,7 +137,7 @@ describe('CustomerComponent', () => {
   });
 
   it('should open a modal with CustomerCreateComponent', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     page.createCustomer.click();
     expect(matDialogSpy.open).toHaveBeenCalledWith(CustomerCreateComponent, {
       data: { gdprReadOnlySettingStatus: true },

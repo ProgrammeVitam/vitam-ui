@@ -41,7 +41,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmDialogService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
-import { CommonModule } from '@angular/common';
+
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -56,7 +56,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './security-profile-create.component.html',
   styleUrls: ['./security-profile-create.component.scss'],
   imports: [
-    CommonModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,

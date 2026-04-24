@@ -55,10 +55,10 @@ import { RowCollapseDirective } from './row-collapse.directive';
       <div vitamuiCommonRowCollapse #collapse3="vitamuiRowCollapse"></div>
       <button [vitamuiCommonRowCollapseTriggerFor]="collapse4">Collapse 4</button>
       <div vitamuiCommonRowCollapse #collapse4="vitamuiRowCollapse"></div>
-      <ng-container *ngIf="showCollapse">
+      @if (showCollapse) {
         <button [vitamuiCommonRowCollapseTriggerFor]="collapse5">Collapse 5</button>
         <div vitamuiCommonRowCollapse #collapse5="vitamuiRowCollapse"></div>
-      </ng-container>
+      }
     </div>
   `,
   standalone: false,

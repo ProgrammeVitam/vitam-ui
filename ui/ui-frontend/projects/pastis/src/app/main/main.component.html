@@ -1,16 +1,16 @@
-<div *ngIf="pending; then loadingSpinner"></div>
-
-<ng-template #loadingSpinner>
+@if (pending) {
   <div class="steackhouse">
     <mat-spinner color="primary" class="vitamui-spinner x-large my-3"></mat-spinner>
   </div>
-</ng-template>
+}
 
 <ngx-ui-loader></ngx-ui-loader>
 
-<button (click)="openSideNav()" *ngIf="!opened" class="pastis-btn-show-profile" disableRipple="true" mat-button>
-  <mat-icon class="pastis-icon-show-profile">keyboard_arrow_right</mat-icon>
-</button>
+@if (!opened) {
+  <button (click)="openSideNav()" class="pastis-btn-show-profile" disableRipple="true" mat-button>
+    <mat-icon class="pastis-icon-show-profile">keyboard_arrow_right</mat-icon>
+  </button>
+}
 
 <mat-sidenav-container class="pastis-page-container">
   <mat-sidenav
@@ -21,7 +21,9 @@
     class="pastis-side-nav"
     mode="side"
   >
-    <pastis-edit-profile *ngIf="fileService.currentTreeLoaded"></pastis-edit-profile>
+    @if (fileService.currentTreeLoaded) {
+      <pastis-edit-profile></pastis-edit-profile>
+    }
   </mat-sidenav>
   <mat-sidenav-content>
     <div>

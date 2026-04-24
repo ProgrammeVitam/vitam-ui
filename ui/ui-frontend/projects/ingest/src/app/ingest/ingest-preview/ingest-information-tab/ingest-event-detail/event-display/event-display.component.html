@@ -8,6 +8,8 @@
   </div>
 </div>
 
-<div *ngFor="let task of event.subEvents" class="eventChild">
-  <app-vitam-event-display [event]="task"></app-vitam-event-display>
-</div>
+@for (task of event.subEvents; track task) {
+  <div class="eventChild">
+    <app-vitam-event-display [event]="task"></app-vitam-event-display>
+  </div>
+}

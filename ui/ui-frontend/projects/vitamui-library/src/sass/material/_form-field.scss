@@ -3,17 +3,17 @@
 
 :root {
   .mat-mdc-form-field {
-    --mdc-filled-text-field-container-color: transparent;
+    --mat-form-field-filled-container-color: transparent;
 
-    --mdc-outlined-text-field-label-text-color: var(--vitamui-primary);
-    --mdc-outlined-text-field-hover-label-text-color: var(--vitamui-primary);
-    --mdc-outlined-text-field-focus-label-text-color: var(--vitamui-primary);
-    --mdc-outlined-text-field-error-label-text-color: var(--vitamui-primary);
-    --mdc-outlined-text-field-error-hover-label-text-color: var(--vitamui-primary);
-    --mdc-outlined-text-field-error-focus-label-text-color: var(--vitamui-primary);
-    --mdc-outlined-text-field-disabled-label-text-color: var(--vitamui-grey-700);
-    --mdc-outlined-text-field-disabled-outline-color: transparent;
-    --mdc-outlined-text-field-label-text-weight: 700;
+    --mat-form-field-outlined-label-text-color: var(--vitamui-primary);
+    --mat-form-field-outlined-hover-label-text-color: var(--vitamui-primary);
+    --mat-form-field-outlined-focus-label-text-color: var(--vitamui-primary);
+    --mat-form-field-outlined-error-label-text-color: var(--vitamui-primary);
+    --mat-form-field-outlined-error-hover-label-text-color: var(--vitamui-primary);
+    --mat-form-field-outlined-error-focus-label-text-color: var(--vitamui-primary);
+    --mat-form-field-outlined-disabled-label-text-color: var(--vitamui-grey-700);
+    --mat-form-field-outlined-disabled-outline-color: transparent;
+    --mat-form-field-outlined-label-text-weight: 700;
 
     --mat-select-enabled-trigger-text-color: var(--vitamui-grey-900);
     --mat-select-enabled-arrow-color: var(--vitamui-primary);
@@ -21,18 +21,18 @@
     --mat-select-trigger-text-size: 16px;
     --mat-select-disabled-trigger-text-color: var(--vitamui-grey-700);
 
-    --mdc-shape-small: 5px;
+    --mat-shape-small: 5px;
 
     background-color: var(--vitamui-white);
 
     .mdc-text-field {
       &.mdc-text-field--outlined {
-        --mdc-outlined-text-field-outline-width: 1px;
-        --mdc-outlined-text-field-outline-color: transparent;
-        --mdc-outlined-text-field-hover-outline-color: transparent;
-        --mdc-outlined-text-field-error-outline-color: var(--vitamui-red);
-        --mdc-outlined-text-field-focus-outline-width: 1px;
-        --mdc-outlined-text-field-focus-outline-color: var(--vitamui-primary);
+        --mat-form-field-outlined-outline-width: 1px;
+        --mat-form-field-outlined-outline-color: transparent;
+        --mat-form-field-outlined-hover-outline-color: transparent;
+        --mat-form-field-outlined-error-outline-color: var(--vitamui-red);
+        --mat-form-field-outlined-focus-outline-width: 1px;
+        --mat-form-field-outlined-focus-outline-color: var(--vitamui-primary);
 
         --mat-select-trigger-text-line-height: 40px;
 
@@ -51,7 +51,7 @@
         }
       }
 
-      border-radius: var(--mdc-shape-small);
+      border-radius: var(--mat-shape-small);
       height: 60px;
 
       &--focused:not(.mdc-text-field--disabled),

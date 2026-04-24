@@ -144,7 +144,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     const archiveUnit: Unit = {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-      DescriptionLevel: DescriptionLevel.RECORD_GRP,
+      DescriptionLevel: DescriptionLevel.RECORD_GRP as any,
       Title: 'Gambetta par producteur1',
       Description: 'Station Gambetta ligne 3 Paris',
       '#id': 'aeaqaaaaaehkfhaythjgjhfg545szniaaacq',

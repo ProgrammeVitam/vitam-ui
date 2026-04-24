@@ -1,42 +1,48 @@
-<div *ngIf="user?.status !== 'REMOVED'">
-  <button class="btn primary mb-4" (click)="openAttributionGroupe()" *ngIf="showUpdateButton" [disabled]="userInfo.type === 'NONE'">
-    <div>
-      {{ 'COMMON.UPDATE' | translate }}
-    </div>
-  </button>
-
-  <div *ngIf="userGroup">
-    <div class="mb-3">
-      <p class="text normal light mb-1">{{ 'USER.GROUP.GROUP' | translate }}</p>
-      <p class="text medium m-0">{{ userGroup?.name }}</p>
-    </div>
-
-    <div class="mb-3">
-      <p class="text normal light mb-1">{{ 'USER.GROUP.LEVEL' | translate }}</p>
-      <p class="text medium m-0">{{ userGroup?.level }}</p>
-    </div>
-
-    <div class="mb-3">
-      <p class="text normal light mb-1">{{ 'USER.GROUP.DESCRIPTION' | translate }}</p>
-      <p class="text medium m-0">{{ userGroup?.description }}</p>
-    </div>
+@if (user?.status !== 'REMOVED') {
+  <div>
+    @if (showUpdateButton) {
+      <button class="btn primary mb-4" (click)="openAttributionGroupe()" [disabled]="userInfo.type === 'NONE'">
+        <div>
+          {{ 'COMMON.UPDATE' | translate }}
+        </div>
+      </button>
+    }
+    @if (userGroup) {
+      <div>
+        <div class="mb-3">
+          <p class="text normal light mb-1">{{ 'USER.GROUP.GROUP' | translate }}</p>
+          <p class="text medium m-0">{{ userGroup?.name }}</p>
+        </div>
+        <div class="mb-3">
+          <p class="text normal light mb-1">{{ 'USER.GROUP.LEVEL' | translate }}</p>
+          <p class="text medium m-0">{{ userGroup?.level }}</p>
+        </div>
+        <div class="mb-3">
+          <p class="text normal light mb-1">{{ 'USER.GROUP.DESCRIPTION' | translate }}</p>
+          <p class="text medium m-0">{{ userGroup?.description }}</p>
+        </div>
+      </div>
+    }
+    <p class="text normal light mt-5">{{ 'USER.GROUP.PROFILE' | translate }}</p>
+    @for (profile of groupProfiles; track profile) {
+      <div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list">
+        <div>
+          <div class="text medium">{{ profile?.name }}</div>
+        </div>
+        <div>
+          <i
+            class="vitamui-icon vitamui-icon-info primary clickable"
+            [vitamuiTooltipDisabled]="profile?.description ? profile.description : ('MISC.NO_DESC' | translate)"
+          ></i>
+        </div>
+      </div>
+    }
   </div>
+}
 
-  <p class="text normal light mt-5">{{ 'USER.GROUP.PROFILE' | translate }}</p>
-  <div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of groupProfiles">
-    <div>
-      <div class="text medium">{{ profile?.name }}</div>
-    </div>
-    <div>
-      <i
-        class="vitamui-icon vitamui-icon-info primary clickable"
-        [vitamuiTooltipDisabled]="profile?.description ? profile.description : ('MISC.NO_DESC' | translate)"
-      ></i>
-    </div>
+@if (user?.status === 'REMOVED') {
+  <div>
+    <h2>ATTENTION</h2>
+    L'utilisateur que vous cherchez est déja supprimé
   </div>
-</div>
-
-<div *ngIf="user?.status === 'REMOVED'">
-  <h2>ATTENTION</h2>
-  L'utilisateur que vous cherchez est déja supprimé
-</div>
+}

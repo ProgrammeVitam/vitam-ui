@@ -254,7 +254,9 @@ describe('CustomerListComponent', () => {
 
     const customerListServiceSpy = {
       search: () => of(customers),
-      canLoadMore: true,
+      get canLoadMore() {
+        return true;
+      },
       loadMore: () => of(customers),
     };
 
@@ -285,14 +287,13 @@ describe('CustomerListComponent', () => {
       ],
     }).compileComponents();
 
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     spyOn(customerListService, 'search').and.callThrough();
     spyOn(customerListService, 'loadMore').and.callThrough();
 
-    const customerDataService = TestBed.get(CustomerDataService);
+    const customerDataService = TestBed.inject(CustomerDataService);
     spyOn(customerDataService, 'addTenants').and.callThrough();
     spyOn(customerDataService, 'updateTenant').and.callThrough();
-    spyOn(customerDataService, 'tenantsUpdated$').and.callThrough();
   });
 
   beforeEach(() => {
@@ -321,7 +322,7 @@ describe('CustomerListComponent', () => {
   });
 
   it('should have a list of clients', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     expect(customerListService.search).toHaveBeenCalledTimes(1);
     expect(page.rows).toBeTruthy();
     expect(page.rows.length).toBe(5);
@@ -344,14 +345,14 @@ describe('CustomerListComponent', () => {
   });
 
   it('should hide the "load more" button ', () => {
-    const customerListService = TestBed.get(CustomerListService);
-    customerListService.canLoadMore = false;
+    const customerListService = TestBed.inject(CustomerListService) as jasmine.SpyObj<CustomerListService>;
+    spyOnProperty(customerListService, 'canLoadMore', 'get').and.returnValue(false);
     fixture.detectChanges();
     expect(page.loadMoreButton.length).toBe(0);
   });
 
   it('should call loadMore()', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     component.infiniteScrollDisabled = true;
     fixture.detectChanges();
     page.loadMoreButton[0].click();
@@ -359,7 +360,7 @@ describe('CustomerListComponent', () => {
   });
 
   it('should call loadMore() on scroll', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     expect(page.infiniteScroll).toBeTruthy();
     const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
     directive.vitamuiScroll.next();
@@ -368,7 +369,7 @@ describe('CustomerListComponent', () => {
 
   it('should open the owner creation dialog', () => {
     page.ownerBtn[2].click();
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
     expect(matDialogSpy.open.calls.count()).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(OwnerCreateComponent, {
       data: { customer: customers[2] },
@@ -392,23 +393,43 @@ describe('CustomerListComponent', () => {
       },
       readonly: false,
     };
-    const matDialogSpy = TestBed.get(MatDialog);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of({ owner: newOwner }) });
+    const matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of({ owner: newOwner }) } as any);
     const addOwnerBtn = page.rows[0].querySelector('.btn.btn-circle.primary');
     addOwnerBtn.click();
     expect(customers[0].owners).toContain(newOwner);
   });
 
   it('should not add anything to the owners list', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(undefined) });
+    const matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of(undefined) } as any);
     page.ownerBtn[0].click();
     expect(customers[0].owners.length).toBe(0);
   });
 
   it('should update the customer', () => {
-    const customerService = TestBed.get(CustomerService);
-    customerService.updated.next({ id: '12', name: 'Updated customer' });
+    const customerService = TestBed.inject(CustomerService);
+    customerService.updated.next({
+      id: '12',
+      name: 'Updated customer',
+      code: '',
+      identifier: '',
+      companyName: '',
+      passwordRevocationDelay: 0,
+      otp: OtpState.DEACTIVATED,
+      address: { street: '', zipCode: '', city: '', country: '' },
+      language: '',
+      emailDomains: [],
+      defaultEmailDomain: '',
+      owners: [],
+      readonly: false,
+      portalMessages: {},
+      portalTitles: {},
+      hasCustomGraphicIdentity: false,
+      themeColors: {},
+      gdprAlert: false,
+      gdprAlertDelay: 0,
+    });
     expect(component.dataSource[1].name).toBe('Updated customer');
   });
 

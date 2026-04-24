@@ -37,7 +37,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NgForOf, NgIf, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { NgTemplateOutlet, TitleCasePipe } from '@angular/common';
 
 interface ButtonType {
   type: string;
@@ -52,7 +52,7 @@ interface ButtonType {
 @Component({
   templateUrl: './buttons.component.html',
   styleUrls: ['./buttons.component.scss'],
-  imports: [TranslatePipe, NgForOf, TitleCasePipe, NgIf, NgTemplateOutlet],
+  imports: [TranslatePipe, TitleCasePipe, NgTemplateOutlet],
 })
 export class ButtonsComponent {
   public control = new FormControl();

@@ -36,7 +36,7 @@
  */
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -53,7 +53,6 @@ import {
   selector: 'design-system-sample-dialog',
   templateUrl: './sample-dialog.component.html',
   imports: [
-    CommonModule,
     TranslatePipe,
     MatDialogModule,
     DialogHeaderComponent,

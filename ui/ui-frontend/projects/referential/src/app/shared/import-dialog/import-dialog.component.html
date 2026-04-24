@@ -1,7 +1,7 @@
 <vitamui-dialog-header [subhead]="dialogParams.title" [title]="dialogParams.subtitle"></vitamui-dialog-header>
 
 <mat-dialog-content>
-  <ng-container *ngIf="!fileToUpload || errorsDuringImport.length > 0">
+  @if (!fileToUpload || errorsDuringImport.length > 0) {
     <div
       class="drag-drop-container"
       [ngClass]="{ hasError: hasWrongFormat || errorsDuringImport.length > 0 }"
@@ -17,41 +17,49 @@
       <p class="text primary">
         {{ dialogParams.fileFormatDetailInfo }}
       </p>
-      <div class="text bold" *ngIf="hasWrongFormat">
-        {{ 'IMPORT_DIALOG.WRONG_FORMAT' | translate: { format: dialogParams.allowedFiles } }}
-      </div>
-      <div
-        class="text bold text-center"
-        *ngIf="errorsDuringImport.length > 0"
-        innerHTML="{{ 'IMPORT_DIALOG.ERRORS_DURING_IMPORT' | translate }}"
-      ></div>
+      @if (hasWrongFormat) {
+        <div class="text bold">
+          {{ 'IMPORT_DIALOG.WRONG_FORMAT' | translate: { format: dialogParams.allowedFiles } }}
+        </div>
+      }
+      @if (errorsDuringImport.length > 0) {
+        <div class="text bold text-center" innerHTML="{{ 'IMPORT_DIALOG.ERRORS_DURING_IMPORT' | translate }}"></div>
+      }
     </div>
-  </ng-container>
+  }
 
-  <ng-container *ngIf="fileToUpload">
+  @if (fileToUpload) {
     <div class="file-to-upload">
       <div class="text normal">{{ fileToUpload.name }}</div>
       <div class="text normal">{{ fileToUpload.size | bytes: 0 }}</div>
-      <div class="clickable" *ngIf="!(errorsDuringImport.length > 0)" (click)="removeFile()">
-        <i class="vitamui-icon vitamui-icon-close text caption light"></i>
-      </div>
+      @if (!(errorsDuringImport.length > 0)) {
+        <div class="clickable" (click)="removeFile()">
+          <i class="vitamui-icon vitamui-icon-close text caption light"></i>
+        </div>
+      }
     </div>
-  </ng-container>
+  }
 
-  <ng-container *ngIf="errorsDuringImport.length > 0">
+  @if (errorsDuringImport.length > 0) {
     <div class="text medium bold red">{{ 'IMPORT_DIALOG.ERRORS_LIST' | translate }}</div>
     <ul>
-      <li *ngFor="let error of errorsDuringImport" class="text medium">
-        {{ 'IMPORT_DIALOG.IMPORT_ERROR_MESSAGE.' + error.error | translate: { line: error.line, column: error.column, data: error.data } }}
-      </li>
+      @for (error of errorsDuringImport; track error) {
+        <li class="text medium">
+          {{
+            'IMPORT_DIALOG.IMPORT_ERROR_MESSAGE.' + error.error | translate: { line: error.line, column: error.column, data: error.data }
+          }}
+        </li>
+      }
     </ul>
-  </ng-container>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button type="button" class="btn primary" [disabled]="!fileToUpload || isLoading || errorsDuringImport.length > 0" (click)="submitFile()">
     <span>{{ 'IMPORT_DIALOG.IMPORT' | translate }}</span>
-    <mat-spinner *ngIf="isLoading" class="vitamui-spinner small ml-3"></mat-spinner>
+    @if (isLoading) {
+      <mat-spinner class="vitamui-spinner small ml-3"></mat-spinner>
+    }
   </button>
 
   <button type="button" class="btn cancel link" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>

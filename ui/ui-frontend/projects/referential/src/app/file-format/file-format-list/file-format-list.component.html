@@ -35,49 +35,47 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let format of dataSource; let index = index" (click)="fileFormatClick.emit(format)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-1"><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ format?.puid }}</div>
-          <div class="col-4" vitamuiCommonEllipsis>{{ format?.name }}</div>
-          <div class="col-4 actions">
-            <span>{{ format?.createdDate | dateTime: 'dd/MM/yyyy' }}</span>
-            <div *ngIf="!isInternal(format)">
-              <button
-                class="btn btn-circle primary"
-                (click)="$event.stopPropagation(); deleteFileFormatDialog(format)"
-                *vitamuiCommonHasRole="{
-                  appId: 'FILE_FORMATS_APP',
-                  tenantIdentifier: vitamAdminTenant,
-                  role: 'ROLE_DELETE_FILE_FORMATS',
-                }"
-              >
-                <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
-              </button>
+      @for (format of dataSource; track format; let index = $index) {
+        <div class="vitamui-table-rows" (click)="fileFormatClick.emit(format)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-1"><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ format?.puid }}</div>
+            <div class="col-4" vitamuiCommonEllipsis>{{ format?.name }}</div>
+            <div class="col-4 actions">
+              <span>{{ format?.createdDate | dateTime: 'dd/MM/yyyy' }}</span>
+              @if (!isInternal(format)) {
+                <div>
+                  <button
+                    class="btn btn-circle primary"
+                    (click)="$event.stopPropagation(); deleteFileFormatDialog(format)"
+                    *vitamuiCommonHasRole="{
+                      appId: 'FILE_FORMATS_APP',
+                      tenantIdentifier: vitamAdminTenant,
+                      role: 'ROLE_DELETE_FILE_FORMATS',
+                    }"
+                  >
+                    <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+                  </button>
+                </div>
+              }
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
 
-    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && fileFormatService.canLoadMore && !pending; then loadMore"></div>
+    @if (!dataSource || pending) {
+      <div class="vitamui-min-content">
+        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+      </div>
+    }
+    @if (!pending && dataSource?.length === 0) {
+      <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+    }
+    @if (infiniteScrollDisabled && fileFormatService.canLoadMore && !pending) {
+      <div class="vitamui-min-content vitamui-table-message" (click)="fileFormatService.loadMore()">
+        <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+      </div>
+    }
   </div>
 </div>
-
-<ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
-</ng-template>
-
-<ng-template #loadMore>
-  <div class="vitamui-min-content vitamui-table-message" (click)="fileFormatService.loadMore()">
-    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
-  </div>
-</ng-template>
-
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>

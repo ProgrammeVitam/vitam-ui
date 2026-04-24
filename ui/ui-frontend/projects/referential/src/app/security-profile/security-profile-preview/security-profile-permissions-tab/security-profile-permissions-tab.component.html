@@ -1,9 +1,13 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="mt-3" *ngIf="form.value.fullAccess">{{ 'SECURITY_PROFILE_APP.TAB.PERMISSIONS.ACCESS' | translate }}</div>
+  @if (form.value.fullAccess) {
+    <div class="mt-3">{{ 'SECURITY_PROFILE_APP.TAB.PERMISSIONS.ACCESS' | translate }}</div>
+  }
 
-  <div *ngIf="!form.value.fullAccess">
-    <app-security-profile-edit-permission formControlName="permissions"></app-security-profile-edit-permission>
-  </div>
+  @if (!form.value.fullAccess) {
+    <div>
+      <app-security-profile-edit-permission formControlName="permissions"></app-security-profile-edit-permission>
+    </div>
+  }
 
   <div class="actions mt-3">
     <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited">

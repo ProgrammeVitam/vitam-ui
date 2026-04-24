@@ -181,11 +181,11 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   nodeIsUAWithChildren(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.unitType === UnitType.INGEST && node.descriptionLevel !== DescriptionLevel.ITEM;
+    return node.unitType === UnitType.INGEST && node.descriptionLevel !== (DescriptionLevel.ITEM as any);
   }
 
   nodeIsUAWithoutChildrenOrWithChildrenFromDetachedSignature(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.unitType === UnitType.INGEST && node.descriptionLevel === DescriptionLevel.ITEM;
+    return node.unitType === UnitType.INGEST && node.descriptionLevel === (DescriptionLevel.ITEM as any);
   }
 
   nodeIsOrphansNode(_: number, node: FilingHoldingSchemeNode): boolean {

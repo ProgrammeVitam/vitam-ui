@@ -9,10 +9,12 @@
   <ng-content select="vitamui-common-field-error"></ng-content>
 </div>
 <div class="vitamui-chip-list mt-1">
-  <div *ngFor="let val of values | keyvalue" class="vitamui-chip">
-    <div class="vitamui-chip-content">{{ val.key }} : {{ val.value }}</div>
-    <div class="vitamui-remove-chip" (click)="remove(val.key)">
-      <i class="material-icons">clear</i>
+  @for (val of values | keyvalue; track val) {
+    <div class="vitamui-chip">
+      <div class="vitamui-chip-content">{{ val.key }} : {{ val.value }}</div>
+      <div class="vitamui-remove-chip" (click)="remove(val.key)">
+        <i class="material-icons">clear</i>
+      </div>
     </div>
-  </div>
+  }
 </div>

@@ -3,18 +3,20 @@
     <span>{{ 'INGEST_CONTRACT.TAB.FORMAT.ALL_FORMAT' | translate }}</span>
   </vitamui-slide-toggle>
 
-  <div *ngIf="!form?.get('everyFormatType')?.value && formatOptions" class="py-3">
-    <vitamui-select
-      [multiple]="true"
-      formControlName="formatType"
-      class="mb-3"
-      [placeholder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT' | translate"
-      [searchBarPlaceHolder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT_SEARCH' | translate"
-      [options]="formatOptions"
-      [errorMessageMap]="{ required: 'INGEST_CONTRACT.TAB.FORMAT.NO_FORMAT_SELECTED' }"
-    >
-    </vitamui-select>
-  </div>
+  @if (!form?.get('everyFormatType')?.value && formatOptions) {
+    <div class="py-3">
+      <vitamui-select
+        [multiple]="true"
+        formControlName="formatType"
+        class="mb-3"
+        [placeholder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT' | translate"
+        [searchBarPlaceHolder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT_SEARCH' | translate"
+        [options]="formatOptions"
+        [errorMessageMap]="{ required: 'INGEST_CONTRACT.TAB.FORMAT.NO_FORMAT_SELECTED' }"
+      >
+      </vitamui-select>
+    </div>
+  }
 
   <vitamui-slide-toggle formControlName="formatUnidentifiedAuthorized" class="w-100 p-0">
     <span>{{ 'INGEST_CONTRACT.TAB.FORMAT.ALLOW_FORMAT' | translate }}</span>

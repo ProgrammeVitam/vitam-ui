@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FileValidationErrors, readFileContent, VitamUICommonModule } from 'vitamui-library';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -43,7 +43,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   selector: 'design-system-upload',
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
-  imports: [CommonModule, VitamUICommonModule, FormsModule, ReactiveFormsModule],
+  imports: [VitamUICommonModule, FormsModule, ReactiveFormsModule],
 })
 export class UploadComponent {
   filenameValidator =

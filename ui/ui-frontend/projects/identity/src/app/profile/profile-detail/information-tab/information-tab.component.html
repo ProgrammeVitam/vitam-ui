@@ -4,8 +4,12 @@
     [vitamuiTooltip]="'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
     [vitamuiTooltipDisabled]="profile?.groupsCount === 0"
   >
-    <span *ngIf="!form?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
-    <span *ngIf="form?.get('enabled').value">{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+    @if (!form?.get('enabled').value) {
+      <span>{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+    }
+    @if (form?.get('enabled').value) {
+      <span>{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+    }
   </vitamui-slide-toggle>
 
   <div class="row">

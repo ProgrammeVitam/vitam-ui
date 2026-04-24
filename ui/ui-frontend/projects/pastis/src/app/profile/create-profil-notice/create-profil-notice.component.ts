@@ -47,18 +47,11 @@ import { Subscription } from 'rxjs';
 import { Notice } from '../../models/notice.model';
 import { PastisMaterialModule } from '../../material.module';
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
-import { CommonModule } from '@angular/common';
+
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
 
 @Component({
-  imports: [
-    CommonModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    PastisMaterialModule,
-    PastisGenericPopupComponent,
-  ],
+  imports: [VitamUILibraryModule, ReactiveFormsModule, VitamUICommonModule, PastisMaterialModule, PastisGenericPopupComponent],
   selector: 'app-create-profil-notice',
   templateUrl: './create-profil-notice.component.html',
 })

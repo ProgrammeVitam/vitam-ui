@@ -3,9 +3,9 @@
     <div class="vitamui-table">
       <div class="vitamui-table-head table-subhead result-layout">
         <div class="col-11">
-          <ng-template [ngIf]="getTotalElements()">
+          @if (getTotalElements()) {
             {{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: getTotalElements() } }}
-          </ng-template>
+          }
         </div>
         <div class="col-1 area-download" [ngClass]="dataSource?.length > 0 ? 'enabled-div' : 'disabled-div'">
           <i (click)="exportAccessionRegisterCsv()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
@@ -91,57 +91,48 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let accessionRegisterDetail of dataSource"
-            class="clickable"
-            [class.selected]="accessionRegisterDetail === selectedRow"
-            (click)="onSelectRow(accessionRegisterDetail)"
-          >
-            <td>{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</td>
-            <td>{{ accessionRegisterDetail.obIdIn }}</td>
-            <td>
-              <p [vitamuiTooltip]="accessionRegisterDetail.originatingAgencyLabel">
-                {{ accessionRegisterDetail.originatingAgency | truncate: 12 }}
-              </p>
-            </td>
-            <td>
-              <p [vitamuiTooltip]="accessionRegisterDetail.archivalAgreement">
-                {{ accessionRegisterDetail.archivalAgreement | truncate: 12 }}
-              </p>
-            </td>
-            <td>{{ accessionRegisterDetail.acquisitionInformation }}</td>
-            <td>{{ accessionRegisterDetail.totalUnits?.ingested }}</td>
-            <td>{{ accessionRegisterDetail.totalObjectsGroups?.ingested }}</td>
-            <td>{{ accessionRegisterDetail.totalObjects?.ingested }}</td>
-            <td>{{ accessionRegisterDetail.objectSize?.ingested | bytes }}</td>
-            <td>
-              <p [vitamuiTooltip]="'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate">
-                {{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate | truncate: 12 }}
-              </p>
-            </td>
-          </tr>
+          @for (accessionRegisterDetail of dataSource; track accessionRegisterDetail) {
+            <tr class="clickable" [class.selected]="accessionRegisterDetail === selectedRow" (click)="onSelectRow(accessionRegisterDetail)">
+              <td>{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</td>
+              <td>{{ accessionRegisterDetail.obIdIn }}</td>
+              <td>
+                <p [vitamuiTooltip]="accessionRegisterDetail.originatingAgencyLabel">
+                  {{ accessionRegisterDetail.originatingAgency | truncate: 12 }}
+                </p>
+              </td>
+              <td>
+                <p [vitamuiTooltip]="accessionRegisterDetail.archivalAgreement">
+                  {{ accessionRegisterDetail.archivalAgreement | truncate: 12 }}
+                </p>
+              </td>
+              <td>{{ accessionRegisterDetail.acquisitionInformation }}</td>
+              <td>{{ accessionRegisterDetail.totalUnits?.ingested }}</td>
+              <td>{{ accessionRegisterDetail.totalObjectsGroups?.ingested }}</td>
+              <td>{{ accessionRegisterDetail.totalObjects?.ingested }}</td>
+              <td>{{ accessionRegisterDetail.objectSize?.ingested | bytes }}</td>
+              <td>
+                <p [vitamuiTooltip]="'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate">
+                  {{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate | truncate: 12 }}
+                </p>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
 
-      <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-      <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-      <div *ngIf="infiniteScrollDisabled && accessionRegistersService.canLoadMore && !pending; then loadMore"></div>
+      @if (!dataSource || pending) {
+        <div class="vitamui-min-content">
+          <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+        </div>
+      }
+      @if (!pending && dataSource?.length === 0) {
+        <div class="vitamui-min-content vitamui-table-message">{{ 'ACCESSION_REGISTER.LIST.NO_RESULT' | translate }}</div>
+      }
+      @if (infiniteScrollDisabled && accessionRegistersService.canLoadMore && !pending) {
+        <div class="vitamui-min-content vitamui-table-message" (click)="accessionRegistersService.loadMore()">
+          <span class="clickable">{{ 'ACCESSION_REGISTER.LIST.LOAD_MORE_RESULTS' | translate }}</span>
+        </div>
+      }
     </div>
-
-    <ng-template #noResults>
-      <div class="vitamui-min-content vitamui-table-message">{{ 'ACCESSION_REGISTER.LIST.NO_RESULT' | translate }}</div>
-    </ng-template>
-
-    <ng-template #loadMore>
-      <div class="vitamui-min-content vitamui-table-message" (click)="accessionRegistersService.loadMore()">
-        <span class="clickable">{{ 'ACCESSION_REGISTER.LIST.LOAD_MORE_RESULTS' | translate }}</span>
-      </div>
-    </ng-template>
-
-    <ng-template #loadingSpinner>
-      <div class="vitamui-min-content">
-        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-      </div>
-    </ng-template>
   </div>
 </div>

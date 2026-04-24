@@ -9,39 +9,46 @@
 
   <div class="vitamui-table-body">
     <div class="vitamui-table-rows">
-      <div
-        class="vitamui-row d-flex align-items-center clickable"
-        *ngFor="let tenant of myTenants"
-        (click)="($event.stopPropagation); clickTenant(tenant, getOwner(tenant?.ownerId))"
-      >
-        <div class="col-3 d-flex justify-content-center align-items-end">
-          <div *ngIf="tenant.proof; then proofIcons; else notProofIcons"></div>
+      @for (tenant of myTenants; track tenant) {
+        <div
+          class="vitamui-row d-flex align-items-center clickable"
+          (click)="($event.stopPropagation); clickTenant(tenant, getOwner(tenant?.ownerId))"
+        >
+          <div class="col-3 d-flex justify-content-center align-items-end">
+            @if (tenant.proof) {
+              <div [vitamuiTooltip]="'CUSTOMER.OWNER.LIST.PROOF_ELEMENTS' | translate">
+                <i class="vitamui-icon vitamui-icon-safe secondary mr-1" [style.fontSize.px]="25"></i>
+                <i class="vitamui-icon vitamui-icon-key secondary" [style.fontSize.px]="15"></i>
+              </div>
+            } @else {
+              <i class="vitamui-icon vitamui-icon-safe mr-1" [style.fontSize.px]="25"></i>
+              <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="15"></i>
+            }
+          </div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.code }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.name }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ tenant?.identifier }}</div>
         </div>
-        <div class="col-2" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.code }}</div>
-        <div class="col-3" vitamuiCommonEllipsis>{{ getOwner(tenant?.ownerId)?.name }}</div>
-        <div class="col-2" vitamuiCommonEllipsis>{{ tenant?.identifier }}</div>
-      </div>
+      }
     </div>
 
     <div class="vitamui-table-rows">
-      <div
-        class="vitamui-row d-flex align-items-center clickable"
-        *ngFor="let owner of ownersWithoutTenant"
-        (click)="($event.stopPropagation); ownerClick.emit(owner)"
-      >
-        <div class="col-3 d-flex justify-content-center align-items-end">
-          <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="25"></i>
-        </div>
-        <div class="col-2" vitamuiCommonEllipsis>{{ owner?.code }}</div>
-        <div class="col-3" vitamuiCommonEllipsis>{{ owner?.name }}</div>
-        <div class="col-3 sub-actions">
-          <div>
-            <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateTenantDialog(owner)">
-              <i class="vitamui-icon vitamui-icon-home-add" [style.fontSize.px]="25"></i>
-            </button>
+      @for (owner of ownersWithoutTenant; track owner) {
+        <div class="vitamui-row d-flex align-items-center clickable" (click)="($event.stopPropagation); ownerClick.emit(owner)">
+          <div class="col-3 d-flex justify-content-center align-items-end">
+            <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="25"></i>
+          </div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ owner?.code }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ owner?.name }}</div>
+          <div class="col-3 sub-actions">
+            <div>
+              <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateTenantDialog(owner)">
+                <i class="vitamui-icon vitamui-icon-home-add" [style.fontSize.px]="25"></i>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      }
     </div>
 
     <div class="footer-action">
@@ -51,15 +58,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #proofIcons>
-  <div [vitamuiTooltip]="'CUSTOMER.OWNER.LIST.PROOF_ELEMENTS' | translate">
-    <i class="vitamui-icon vitamui-icon-safe secondary mr-1" [style.fontSize.px]="25"></i>
-    <i class="vitamui-icon vitamui-icon-key secondary" [style.fontSize.px]="15"></i>
-  </div>
-</ng-template>
-
-<ng-template #notProofIcons>
-  <i class="vitamui-icon vitamui-icon-safe mr-1" [style.fontSize.px]="25"></i>
-  <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="15"></i>
-</ng-template>

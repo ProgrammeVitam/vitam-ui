@@ -1,10 +1,16 @@
 <mat-form-field class="w-100" [appearance]="appearance" subscriptSizing="dynamic">
-  <mat-label *ngIf="!_selectedItem" class="selected-item-label">{{ label }}</mat-label>
-  <mat-label *ngIf="_selectedItem" class="unselected-item-label">{{ selectedLabel }}</mat-label>
+  @if (!_selectedItem) {
+    <mat-label class="selected-item-label">{{ label }}</mat-label>
+  }
+  @if (_selectedItem) {
+    <mat-label class="unselected-item-label">{{ selectedLabel }}</mat-label>
+  }
   <mat-select (selectionChange)="selectItem($event.source.value)" [(value)]="_selectedItem" panelClass="vitamui-mat-select">
-    <mat-option *ngFor="let item of items" [value]="item.label">
-      {{ item.label }}
-    </mat-option>
+    @for (item of items; track item) {
+      <mat-option [value]="item.label">
+        {{ item.label }}
+      </mat-option>
+    }
   </mat-select>
   <i matSuffix class="vitamui-icon vitamui-icon-chevron-down"></i>
 </mat-form-field>

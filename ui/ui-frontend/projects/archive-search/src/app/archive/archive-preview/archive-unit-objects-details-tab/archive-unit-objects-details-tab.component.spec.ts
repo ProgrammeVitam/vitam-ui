@@ -154,7 +154,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: DescriptionLevel.ITEM,
+      DescriptionLevel: DescriptionLevel.ITEM as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     } as Unit;
@@ -178,7 +178,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: DescriptionLevel.ITEM,
+      DescriptionLevel: DescriptionLevel.ITEM as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
@@ -199,7 +199,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: DescriptionLevel.RECORD_GRP,
+      DescriptionLevel: DescriptionLevel.RECORD_GRP as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
