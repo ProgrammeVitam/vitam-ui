@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -48,17 +48,21 @@ import { AccessionRegistersService } from './accession-register.service';
   standalone: false,
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
+  private accessionRegistersService: AccessionRegistersService;
+  private externalParameterService = inject(ExternalParametersService);
+
   search: string;
   advancedSearchPanelOpenState$: Observable<boolean>;
   isAdvancedFormChanged$: Observable<boolean>;
   accessContract: string;
 
-  constructor(
-    private accessionRegistersService: AccessionRegistersService,
-    route: ActivatedRoute,
-    private externalParameterService: ExternalParametersService,
-  ) {
+  constructor() {
+    const accessionRegistersService = inject(AccessionRegistersService);
+    const route = inject(ActivatedRoute);
+
     super(route, accessionRegistersService);
+
+    this.accessionRegistersService = accessionRegistersService;
   }
 
   ngOnInit(): void {

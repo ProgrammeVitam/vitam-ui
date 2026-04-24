@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
@@ -48,6 +48,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [CommonModule, PipesModule, CommonTooltipModule, TranslatePipe],
 })
 export class DataComponent {
+  private clipboard = inject(Clipboard);
+
   @Input() label: string;
   @Input() value: string | string[];
   @Input() valueCss?: string;
@@ -56,8 +58,6 @@ export class DataComponent {
   @Input() canCopyValue = false;
 
   @ContentChild('label') labelRef: TemplateRef<any>;
-
-  constructor(private clipboard: Clipboard) {}
 
   copyToClipboard(text: string) {
     this.clipboard.copy(text);

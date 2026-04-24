@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
-import { DOCUMENT } from '@angular/common';
 
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,16 +54,17 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
+  private document = inject<Document>(DOCUMENT);
+
   @Input() options: Array<{ value: string; disabled: boolean }>;
 
   @ViewChild(PatternComponent, { static: false }) pattern: PatternComponent;
 
   private patternClicked = false;
 
-  constructor(
-    elementRef: ElementRef,
-    @Inject(DOCUMENT) private document: Document,
-  ) {
+  constructor() {
+    const elementRef = inject(ElementRef);
+
     super(elementRef);
   }
 
@@ -78,7 +79,8 @@ export class EditablePatternsComponent extends EditableFieldComponent {
     }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
     // Overlay has same id as the "select" element, suffixed by "-panel"
-    const selectOverlay = this.document.querySelector(`#${this.pattern.select.matSelect.id}-panel`) as HTMLElement;
+    const selectOverlayId = this.pattern?.select?.matSelect?.id;
+    const selectOverlay = selectOverlayId ? (this.document.querySelector(`#${selectOverlayId}-panel`) as HTMLElement) : null;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||
       this.isInside(target, overlayRef.hostElement) ||

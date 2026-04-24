@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 import { Params } from '@angular/router';
@@ -61,11 +61,9 @@ import { ManagementRuleSearchHelper } from '../utils/management-rule-search.help
  */
 @Injectable()
 export class ManagementRuleCriteriaService {
-  constructor(
-    @Inject(MANAGEMENT_RULE_SHARED_DATA_SERVICE) private sharedDataService: ManagementRuleSharedDataService,
-    private searchCriteriaService: SearchCriteriaService,
-    private queryParamsService: QueryParamsService,
-  ) {}
+  private sharedDataService = inject<ManagementRuleSharedDataService>(MANAGEMENT_RULE_SHARED_DATA_SERVICE);
+  private searchCriteriaService = inject(SearchCriteriaService);
+  private queryParamsService = inject(QueryParamsService);
 
   /**
    * Initializes criteria from existing search criteria observable.

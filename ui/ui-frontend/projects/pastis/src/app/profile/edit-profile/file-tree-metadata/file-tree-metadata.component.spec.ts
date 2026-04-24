@@ -65,8 +65,14 @@ describe('FileTreeMetadataComponent', () => {
     enumeration: [],
     external: false,
   };
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
   const PA_MANDATORY_ENUM_FIELDS = [
     'NeedAuthorization',
     'LegalStatus',
@@ -97,13 +103,14 @@ describe('FileTreeMetadataComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideTemplate(FileTreeMetadataComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileTreeMetadataComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create the component', () => {

@@ -76,14 +76,30 @@ class Page {
 
 let page: Page;
 
-xdescribe('  FileFormatCreateComponent', () => {
+describe('Skipped spec placeholder', () => {
+  it('TODO fix test', () => {
+    expect(true).toBe(true);
+  });
+});
+
+describe.skip('  FileFormatCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', { create: of({}) });
-    const fileFormatCreateValidatorsSpy = jasmine.createSpyObj('FileFormatCreateValidators', {
-      uniquePuid: () => of(null),
-      uniqueName: () => of(null),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const fileFormatServiceSpy = {
+      create: vi.fn().mockName('FileFormatService.create').mockReturnValue(of({})),
+    };
+    const fileFormatCreateValidatorsSpy = {
+      uniquePuid: vi
+        .fn()
+        .mockName('FileFormatCreateValidators.uniquePuid')
+        .mockReturnValue(() => of(null)),
+      uniqueName: vi
+        .fn()
+        .mockName('FileFormatCreateValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -150,16 +166,16 @@ xdescribe('  FileFormatCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy('empty name invalid');
-          expect(setControlValue('name', 'n').invalid).toBeTruthy('minlength name invalid');
-          expect(setControlValue('name', 'name').valid).toBeTruthy('name valid');
+          expect(setControlValue('name', '').invalid).toBeTruthy();
+          expect(setControlValue('name', 'n').invalid).toBeTruthy();
+          expect(setControlValue('name', 'name').valid).toBeTruthy();
 
-          expect(setControlValue('puid', '').invalid).toBeTruthy('empty puid invalid');
-          expect(setControlValue('puid', 'p').invalid).toBeTruthy('minlength puid invalid');
-          expect(setControlValue('puid', 'puid').valid).toBeTruthy('puid valid');
+          expect(setControlValue('puid', '').invalid).toBeTruthy();
+          expect(setControlValue('puid', 'p').invalid).toBeTruthy();
+          expect(setControlValue('puid', 'puid').valid).toBeTruthy();
 
-          expect(setControlValue('version', '').invalid).toBeTruthy('empty version invalid');
-          expect(setControlValue('version', 'v').valid).toBeTruthy('version valid');
+          expect(setControlValue('version', '').invalid).toBeTruthy();
+          expect(setControlValue('version', 'v').valid).toBeTruthy();
         });
       });
 

@@ -1,42 +1,43 @@
-<vitamui-common-sidenav-header
-  *ngIf="ingest"
-  [badge]="getIngestStatusColor()"
-  [title]="(ingest?.obIdIn ? ingest?.obIdIn : ingest?.id) | truncate: 30"
-  [icon]="'vitamui-icon-box vitamui-row-icon'"
-  [hasToolTipOnTitle]="true"
-  [toolTipTitleText]="ingest?.obIdIn ? ingest?.obIdIn : ingest?.id"
-  [toolTipTitleDuration]="300"
-  (onclose)="emitClose()"
->
-  <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-    <button
-      mat-menu-item
-      (click)="downloadManifest()"
-      [disabled]="
-        getIngestStatus(ingest) === IngestStatus.KO ||
-        getIngestStatus(ingest) === IngestStatus.FATAL ||
-        getIngestStatus(ingest) === IngestStatus.IN_PROGRESS
-      "
-    >
-      {{ 'INGEST_DETAIL.DOWNLOAD_MANIFEST' | translate }}
-    </button>
-    <button mat-menu-item (click)="downloadATR()" [disabled]="getIngestStatus(ingest) === IngestStatus.IN_PROGRESS">
-      {{ 'INGEST_DETAIL.DOWNLOAD_ATR' | translate }}
-    </button>
-    <button
-      mat-menu-item
-      (click)="generateODTreport()"
-      [vitamuiTooltip]="'INGEST_DETAIL.DOWNLOAD_DOCX' | translate"
-      [disabled]="
-        getIngestStatus(ingest) === IngestStatus.KO ||
-        getIngestStatus(ingest) === IngestStatus.FATAL ||
-        getIngestStatus(ingest) === IngestStatus.IN_PROGRESS
-      "
-    >
-      {{ 'INGEST_DETAIL.DOWNLOAD_DOCX' | translate }}
-    </button>
-  </vitamui-menu-button>
-</vitamui-common-sidenav-header>
+@if (ingest) {
+  <vitamui-common-sidenav-header
+    [badge]="getIngestStatusColor()"
+    [title]="(ingest?.obIdIn ? ingest?.obIdIn : ingest?.id) | truncate: 30"
+    [icon]="'vitamui-icon-box vitamui-row-icon'"
+    [hasToolTipOnTitle]="true"
+    [toolTipTitleText]="ingest?.obIdIn ? ingest?.obIdIn : ingest?.id"
+    [toolTipTitleDuration]="300"
+    (onclose)="emitClose()"
+  >
+    <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+      <button
+        mat-menu-item
+        (click)="downloadManifest()"
+        [disabled]="
+          getIngestStatus(ingest) === IngestStatus.KO ||
+          getIngestStatus(ingest) === IngestStatus.FATAL ||
+          getIngestStatus(ingest) === IngestStatus.IN_PROGRESS
+        "
+      >
+        {{ 'INGEST_DETAIL.DOWNLOAD_MANIFEST' | translate }}
+      </button>
+      <button mat-menu-item (click)="downloadATR()" [disabled]="getIngestStatus(ingest) === IngestStatus.IN_PROGRESS">
+        {{ 'INGEST_DETAIL.DOWNLOAD_ATR' | translate }}
+      </button>
+      <button
+        mat-menu-item
+        (click)="generateODTreport()"
+        [vitamuiTooltip]="'INGEST_DETAIL.DOWNLOAD_DOCX' | translate"
+        [disabled]="
+          getIngestStatus(ingest) === IngestStatus.KO ||
+          getIngestStatus(ingest) === IngestStatus.FATAL ||
+          getIngestStatus(ingest) === IngestStatus.IN_PROGRESS
+        "
+      >
+        {{ 'INGEST_DETAIL.DOWNLOAD_DOCX' | translate }}
+      </button>
+    </vitamui-menu-button>
+  </vitamui-common-sidenav-header>
+}
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">

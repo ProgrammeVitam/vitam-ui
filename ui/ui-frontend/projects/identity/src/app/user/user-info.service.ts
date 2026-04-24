@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BaseUserInfoApiService, SearchService, User, UserInfo, SnackBarService } from 'vitamui-library';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {
+  private userInfoServiceApi = inject(BaseUserInfoApiService);
+  private snackBarService = inject(SnackBarService);
+
   userInfoUpdated = new Subject<UserInfo>();
 
-  constructor(
-    private userInfoServiceApi: BaseUserInfoApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     super({ getAllPaginated: () => EMPTY }, '');
   }
 

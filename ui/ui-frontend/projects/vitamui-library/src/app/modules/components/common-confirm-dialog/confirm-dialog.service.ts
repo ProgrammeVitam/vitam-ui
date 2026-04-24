@@ -36,7 +36,7 @@
  */
 import { hasModifierKey } from '@angular/cdk/keycodes';
 import { ComponentType } from '@angular/cdk/portal';
-import { Injectable, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -48,7 +48,7 @@ import { DialogInputData } from './dialog-input-data.interface';
   providedIn: 'root',
 })
 export class ConfirmDialogService {
-  constructor(private matDialog: MatDialog) {}
+  private matDialog = inject(MatDialog);
 
   public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>, data?: DialogInputData): Observable<boolean> {
     return this.matDialog

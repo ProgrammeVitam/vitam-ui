@@ -59,3 +59,37 @@
 //     expect(component).toBeTruthy();
 //   });
 // });
+import { OverlayModule } from '@angular/cdk/overlay';
+import { DOCUMENT } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { EditableEmailInputComponent } from './editable-email-input.component';
+
+describe('EditableEmailInputComponent', () => {
+  let component: EditableEmailInputComponent;
+  let fixture: ComponentFixture<EditableEmailInputComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [EditableEmailInputComponent],
+      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, NoopAnimationsModule],
+      providers: [{ provide: DOCUMENT, useValue: document }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditableEmailInputComponent);
+    component = fixture.componentInstance;
+    component.domains = ['example.com'];
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

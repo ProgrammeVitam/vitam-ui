@@ -54,20 +54,22 @@
       </i>
     </div>
 
-    <div *ngIf="sizeFieldVisible" class="w-100 d-flex align-items-center">
-      <vitamui-select
-        class="w-100"
-        formControlName="stringSize"
-        [placeholder]="'ONTOLOGY.CREATE_DIALOG.FIELD_SIZE' | translate"
-        [options]="sizes"
-        [multiple]="false"
-        [enableSearch]="false"
-      ></vitamui-select>
-      <i
-        class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
-        [vitamuiTooltip]="'ONTOLOGY.CREATE_DIALOG.SIZE_TOOLTIP' | translate"
-      ></i>
-    </div>
+    @if (sizeFieldVisible) {
+      <div class="w-100 d-flex align-items-center">
+        <vitamui-select
+          class="w-100"
+          formControlName="stringSize"
+          [placeholder]="'ONTOLOGY.CREATE_DIALOG.FIELD_SIZE' | translate"
+          [options]="sizes"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
+        <i
+          class="vitamui-icon vitamui-icon-info align-middle primary ml-3"
+          [vitamuiTooltip]="'ONTOLOGY.CREATE_DIALOG.SIZE_TOOLTIP' | translate"
+        ></i>
+      </div>
+    }
 
     <div class="w-100 d-flex align-items-center">
       <vitamui-select

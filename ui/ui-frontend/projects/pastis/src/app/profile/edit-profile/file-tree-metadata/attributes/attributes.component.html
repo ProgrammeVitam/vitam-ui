@@ -33,23 +33,25 @@
         {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.VALEUR_FIXE' | translate }}
       </th>
       <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-medium" mat-cell>
-        <ng-container [ngSwitch]="getAttributeInputType(element)">
-          <ng-container *ngSwitchDefault>
+        @switch (getAttributeInputType(element)) {
+          @default {
             <div class="pastis-vitamui-container-editable-valeur-fixe">
               <vitamui-common-editable-textarea [(ngModel)]="element.valeurFixe" [maxlength]="120" class="valeur-fixe-pastis">
               </vitamui-common-editable-textarea>
             </div>
-          </ng-container>
-          <ng-container *ngSwitchCase="'enumeration'">
+          }
+          @case ('enumeration') {
             <mat-select [(ngModel)]="element.valeurFixe" class="mat-select-valeur-fixe" placeholder="Choisissez une valeur">
               <mat-option [value]=""></mat-option>
-              <mat-option *ngFor="let val of element.enumeration" [value]="val"
-                >{{ val }}>
-                <mat-checkbox [checked]="selected === i"> {{ val }} </mat-checkbox>
-              </mat-option>
+              @for (val of element.enumeration; track val) {
+                <mat-option [value]="val"
+                  >{{ val }}>
+                  <mat-checkbox [checked]="selected === i"> {{ val }} </mat-checkbox>
+                </mat-option>
+              }
             </mat-select>
-          </ng-container>
-        </ng-container>
+          }
+        }
         <ng-template #simpleElement></ng-template>
       </td>
     </ng-container>

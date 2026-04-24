@@ -35,6 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { SlideToggleComponent } from 'vitamui-library';
 
 import { AllowAdditionalPropertiesComponent } from './allow-additional-properties.component';
 
@@ -45,6 +47,7 @@ describe('AllowAdditionalPropertiesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AllowAdditionalPropertiesComponent],
+      imports: [FormsModule, SlideToggleComponent],
     }).compileComponents();
   });
 

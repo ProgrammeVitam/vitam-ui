@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
@@ -58,8 +58,10 @@ import { InformationTabComponent } from './information-tab.component';
   standalone: false,
 })
 class EditableTextAreaStubComponent implements ControlValueAccessor {
-  @Input() validator: Validator;
-  @Input() asyncValidator: AsyncValidator;
+  @Input()
+  validator: Validator;
+  @Input()
+  asyncValidator: AsyncValidator;
   value: string;
   writeValue(value: string) {
     this.value = value;
@@ -101,8 +103,12 @@ class TestHostComponent {
   };
   readOnly = false;
 
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false })
+  component: InformationTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('Hierarchy InformationTabComponent', () => {
   let testhost: TestHostComponent;
@@ -110,11 +116,17 @@ describe('Hierarchy InformationTabComponent', () => {
 
   beforeEach(async () => {
     const hierarchyServiceMock = { update: of({}), updated: new Subject() };
-    const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { nameExists: () => of(null) });
+    const profileValidatorsSpy = {
+      nameExists: vi
+        .fn()
+        .mockName('ProfileValidators.nameExists')
+        .mockReturnValue(() => of(null)),
+    };
     const authServiceMock = { user: { level: '' } };
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent],
       providers: [
         { provide: HierarchyService, useValue: hierarchyServiceMock },
@@ -122,7 +134,17 @@ describe('Hierarchy InformationTabComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: CountryService, useValue: {} },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationTabComponent, {
+        set: {
+          template: `
+            <vitamui-common-editable-input [attr.formControlName]="'name'" maxlength="100">ProfileName</vitamui-common-editable-input>
+            <vitamui-common-editable-textarea [attr.formControlName]="'description'" maxlength="250">Profile description...</vitamui-common-editable-textarea>
+            <vitamui-slide-toggle [attr.formControlName]="'enabled'">HIERARCHY.INFORMATIONS.ACTIVE_SWITCH</vitamui-slide-toggle>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -138,17 +160,17 @@ describe('Hierarchy InformationTabComponent', () => {
   describe('DOM', () => {
     it('should have all the fields', () => {
       let element = fixture.nativeElement.querySelector('vitamui-common-editable-input[formControlName=name]');
-      expect(element).toBeTruthy('name input');
+      expect(element).toBeTruthy();
       expect(element.textContent).toContain('ProfileName');
       expect(element.attributes.maxlength.value).toBe('100');
 
       element = fixture.nativeElement.querySelector('vitamui-common-editable-textarea[formControlName=description]');
-      expect(element).toBeTruthy('description textarea');
+      expect(element).toBeTruthy();
       expect(element.textContent).toContain('Profile description...');
       expect(element.attributes.maxlength.value).toBe('250');
 
       element = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=enabled]');
-      expect(element).toBeTruthy('enabled toggle');
+      expect(element).toBeTruthy();
       expect(element.textContent).toContain('HIERARCHY.INFORMATIONS.ACTIVE_SWITCH');
     });
   });

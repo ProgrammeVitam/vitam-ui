@@ -13,7 +13,9 @@
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-slide-toggle formControlName="enabled">
           {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }}
-          <span *ngIf="!form.controls.enabled.value">in</span>
+          @if (!form.controls.enabled.value) {
+            <span>in</span>
+          }
           {{ 'COMMON.ACTIVE' | translate }}
         </vitamui-slide-toggle>
 
@@ -52,22 +54,23 @@
           {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
         </vitamui-slide-toggle>
 
-        <div class="select-threshold" *ngIf="!form.controls.usePlatformThreshold.value">
-          <vitamui-select
-            class="w-100"
-            formControlName="bulkOperationsThreshold"
-            [placeholder]="'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate"
-            [options]="thresholdOptions"
-            [multiple]="false"
-            [enableSearch]="false"
-          ></vitamui-select>
-
-          <i
-            class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
-            [vitamuiTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
-            [vitamuiTooltipShowDelay]="300"
-          ></i>
-        </div>
+        @if (!form.controls.usePlatformThreshold.value) {
+          <div class="select-threshold">
+            <vitamui-select
+              class="w-100"
+              formControlName="bulkOperationsThreshold"
+              [placeholder]="'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate"
+              [options]="thresholdOptions"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+            <i
+              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+              [vitamuiTooltip]="'EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_HELPER' | translate"
+              [vitamuiTooltipShowDelay]="300"
+            ></i>
+          </div>
+        }
       </mat-dialog-content>
 
       <mat-dialog-actions>

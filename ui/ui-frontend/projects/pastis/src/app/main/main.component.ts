@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
@@ -82,7 +82,7 @@ import { ProfileResponse } from '../models/profile-response';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 import { ProfileService } from '../core/services/profile.service';
 import { SedaService } from '../core/services/seda.service';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { SpinnerOverlayService } from 'vitamui-library';
 import { tap } from 'rxjs/operators';
 import { ProfileType } from '../models/profile-type.enum';
 import { ProfileVersion } from '../models/profile-version.enum';
@@ -94,6 +94,14 @@ import { ProfileVersion } from '../models/profile-version.enum';
   standalone: false,
 })
 export class MainComponent implements OnInit, OnDestroy {
+  fileService = inject(FileService);
+  private route = inject(ActivatedRoute);
+  private sideNavService = inject(ToggleSidenavService);
+  private profileService = inject(ProfileService);
+  private sedaService = inject(SedaService);
+  private spinnerOverlayService = inject(SpinnerOverlayService);
+  private router = inject(Router);
+
   @ViewChild('treeSelector', { static: true }) tree: any;
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @ViewChild(EditProfileComponent)
@@ -110,15 +118,7 @@ export class MainComponent implements OnInit, OnDestroy {
   private _routeParamsSubscription: Subscription;
   private _profileLoadingSubscription: Subscription;
 
-  constructor(
-    public fileService: FileService,
-    private route: ActivatedRoute,
-    private sideNavService: ToggleSidenavService,
-    private profileService: ProfileService,
-    private sedaService: SedaService,
-    private loaderService: NgxUiLoaderService,
-    private router: Router,
-  ) {
+  constructor() {
     this.sideNavService.isOpened.subscribe((status) => {
       this.opened = status;
     });
@@ -219,7 +219,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   private createNewProfile(profileType: ProfileType, profileVersion: ProfileVersion) {
-    this.loaderService.start();
+    this.spinnerOverlayService.open();
     this.profileService
       .createProfile(profileType, profileVersion)
       .pipe(
@@ -237,13 +237,13 @@ export class MainComponent implements OnInit, OnDestroy {
           this.fileService.linkFileNodeToSedaData(null, [profileResponse.profile]);
           this.fileService.updateTreeWithProfile(profileResponse);
         }),
-        finalize(() => this.loaderService.stop()),
+        finalize(() => this.spinnerOverlayService.close()),
       )
       .subscribe();
   }
 
   private uploadNewProfile() {
-    this.loaderService.start();
+    this.spinnerOverlayService.open();
     this.profileService
       .getMetaModel(this.uploadedProfileByFile.sedaVersion, this.uploadedProfileByFile.type)
       .pipe(
@@ -252,7 +252,7 @@ export class MainComponent implements OnInit, OnDestroy {
           this.fileService.linkFileNodeToSedaData(null, [this.uploadedProfileByFile.profile]);
           this.fileService.updateTreeWithProfile(this.uploadedProfileByFile);
         }),
-        finalize(() => this.loaderService.stop()),
+        finalize(() => this.spinnerOverlayService.close()),
       )
       .subscribe();
   }

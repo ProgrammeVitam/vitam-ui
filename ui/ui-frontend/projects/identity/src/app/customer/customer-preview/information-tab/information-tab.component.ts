@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -53,6 +53,12 @@ const UPDATE_DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class InformationTabComponent implements OnInit, OnDestroy {
+  private formBuilder = inject(FormBuilder);
+  private customerService = inject(CustomerService);
+  private customerCreateValidators = inject(CustomerCreateValidators);
+  private countryService = inject(CountryService);
+  private startupService = inject(StartupService);
+
   public readonly form: FormGroup;
   public maxStreetLength: number;
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
@@ -118,13 +124,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
 
   public countries: Option[];
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private customerService: CustomerService,
-    private customerCreateValidators: CustomerCreateValidators,
-    private countryService: CountryService,
-    private startupService: StartupService,
-  ) {
+  constructor() {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
       id: [null, Validators.required],

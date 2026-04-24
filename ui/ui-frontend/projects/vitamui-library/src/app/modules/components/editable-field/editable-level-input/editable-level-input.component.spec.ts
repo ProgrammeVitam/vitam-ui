@@ -36,14 +36,35 @@
  */
 import { OverlayModule } from '@angular/cdk/overlay';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
-import { LevelInputModule } from '../level-input/level-input.module';
 import { EditableLevelInputComponent } from './editable-level-input.component';
 import { SubLevelPipe } from './sub-level.pipe';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
+@Component({
+  selector: 'vitamui-common-level-input',
+  template: '',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => LevelInputStubComponent),
+      multi: true,
+    },
+  ],
+  standalone: false,
+})
+class LevelInputStubComponent implements ControlValueAccessor {
+  @Input() prefix: string;
+  @Input() isEditableComponent: boolean;
+
+  writeValue(_: string): void {}
+  registerOnChange(_: any): void {}
+  registerOnTouched(_: any): void {}
+}
 
 describe('EditableLevelInputComponent', () => {
   let component: EditableLevelInputComponent;
@@ -51,8 +72,8 @@ describe('EditableLevelInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditableLevelInputComponent, SubLevelPipe],
-      imports: [ReactiveFormsModule, OverlayModule, LevelInputModule, TranslateModule.forRoot()],
+      declarations: [EditableLevelInputComponent, LevelInputStubComponent, SubLevelPipe],
+      imports: [ReactiveFormsModule, OverlayModule, TranslateModule.forRoot()],
       providers: [
         {
           provide: WINDOW_LOCATION,

@@ -34,14 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, HostListener, Inject, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonResizeSidebar]',
   standalone: false,
 })
 export class ResizeSidebarDirective implements OnInit {
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private document = inject<Document>(DOCUMENT);
+
   /**
    * Orientation du block à redimensionner, permet de positionner à droite ou à gauche la barre permettant de
    * redimensionner
@@ -88,12 +93,6 @@ export class ResizeSidebarDirective implements OnInit {
   onMouseUp() {
     this.status = 0;
   }
-
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document,
-  ) {}
 
   ngOnInit(): void {
     const nativeElt = this.elementRef.nativeElement;

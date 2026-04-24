@@ -186,11 +186,21 @@
 }
 
 <ng-template #title let-title let-depth="depth">
-  <h2 *ngIf="depth === 2">{{ title }}</h2>
-  <h3 *ngIf="depth === 3">{{ title }}</h3>
-  <h4 *ngIf="depth === 4">{{ title }}</h4>
-  <h5 *ngIf="depth === 5">{{ title }}</h5>
-  <h6 *ngIf="depth === 6">{{ title }}</h6>
+  @if (depth === 2) {
+    <h2>{{ title }}</h2>
+  }
+  @if (depth === 3) {
+    <h3>{{ title }}</h3>
+  }
+  @if (depth === 4) {
+    <h4>{{ title }}</h4>
+  }
+  @if (depth === 5) {
+    <h5>{{ title }}</h5>
+  }
+  @if (depth === 6) {
+    <h6>{{ title }}</h6>
+  }
 </ng-template>
 
 <ng-template #buttonTypeTemplate let-buttonType let-depth="depth">
@@ -200,19 +210,25 @@
     <ng-container *ngTemplateOutlet="title; context: { $implicit: color, depth: depth + 1 }"></ng-container>
     <div class="row m-0 gap-1">
       <div class="col"></div>
-      <div *ngFor="let variation of variations" class="col">{{ variation | titlecase }}</div>
+      @for (variation of variations; track variation) {
+        <div class="col">{{ variation | titlecase }}</div>
+      }
       @for (size of buttonType.sizes; track size) {
         <div class="w-100"></div>
         <div class="col">{{ size }}</div>
-        <div class="col" *ngFor="let variation of variations">
-          <button
-            class="btn"
-            [class]="buttonType.classes + ' ' + size + ' ' + color + ' ' + variation"
-            [disabled]="variation === 'disabled'"
-          >
-            <i *ngIf="buttonType.icon" class="vitamui-icon vitamui-icon-{{ buttonType.icon }}"></i>
-          </button>
-        </div>
+        @for (variation of variations; track variation) {
+          <div class="col">
+            <button
+              class="btn"
+              [class]="buttonType.classes + ' ' + size + ' ' + color + ' ' + variation"
+              [disabled]="variation === 'disabled'"
+            >
+              @if (buttonType.icon) {
+                <i class="vitamui-icon vitamui-icon-{{ buttonType.icon }}"></i>
+              }
+            </button>
+          </div>
+        }
       }
     </div>
   }

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
@@ -67,6 +67,16 @@ import { UserService } from './user.service';
   standalone: false,
 })
 export class UserComponent extends SidenavPage<User> implements OnInit {
+  dialog = inject(MatDialog);
+  userService = inject(UserService);
+  route: ActivatedRoute;
+  customerService = inject(CustomerService);
+  globalEventService: GlobalEventService;
+  groupService = inject(GroupService);
+  private authService = inject(AuthService);
+  private downloadSnackBarService = inject(DownloadSnackBarService);
+  private snackBarService = inject(SnackBarService);
+
   public users: User[];
   public connectedUserInfo: AdminUserProfile;
   public customer: Customer;
@@ -76,18 +86,14 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
 
   @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
 
-  constructor(
-    public dialog: MatDialog,
-    public userService: UserService,
-    public route: ActivatedRoute,
-    public customerService: CustomerService,
-    public globalEventService: GlobalEventService,
-    public groupService: GroupService,
-    private authService: AuthService,
-    private downloadSnackBarService: DownloadSnackBarService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+
+    this.route = route;
+    this.globalEventService = globalEventService;
   }
 
   ngOnInit() {

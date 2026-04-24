@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DialogModule } from '@angular/cdk/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmDialogData } from '../../../models/confirm-dialog-data.interface';
@@ -47,8 +47,5 @@ import { ConfirmDialogModule } from '../../../../app/modules';
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {
-  constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data?: ConfirmDialogData,
-  ) {}
+  data? = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
 }

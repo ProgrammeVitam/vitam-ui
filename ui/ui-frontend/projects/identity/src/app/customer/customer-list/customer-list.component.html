@@ -11,7 +11,7 @@
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
-        <ng-container *ngFor="let customer of dataSource">
+        @for (customer of dataSource; track customer) {
           <div
             class="vitamui-row"
             [vitamuiCommonCollapse]
@@ -24,12 +24,10 @@
                 <i class="vitamui-icon vitamui-icon-bank"></i>
                 <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
               </div>
-
               <div class="col-2" vitamuiCommonEllipsis>{{ customer?.code }}</div>
               <div class="col-2" vitamuiCommonEllipsis>{{ customer?.name }}</div>
               <div class="col-3" vitamuiCommonEllipsis>{{ customer?.companyName }}</div>
               <div class="col-2" vitamuiCommonEllipsis>{{ ('CUSTOMER.INFORMATIONS.IDP_' + customer?.idp ? 'YES' : 'NO') | translate }}</div>
-
               <div class="col-2 actions">
                 <span vitamuiCommonEllipsis>{{ 'CUSTOMER.INFORMATIONS.OTP_' + customer?.otp | translate }}</span>
                 <div>
@@ -40,7 +38,6 @@
               </div>
             </div>
           </div>
-
           <app-owner-list
             [@collapseAnimation]="row.state"
             [customer]="customer"
@@ -48,28 +45,22 @@
             (tenantClick)="tenantClick.emit($event)"
           >
           </app-owner-list>
-        </ng-container>
+        }
       </div>
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && customerListService.canLoadMore && !pending; then loadMore"></div>
+  @if (!dataSource || pending) {
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+    </div>
+  }
+  @if (!pending && dataSource?.length === 0) {
+    <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+  }
+  @if (infiniteScrollDisabled && customerListService.canLoadMore && !pending) {
+    <div class="vitamui-min-content vitamui-table-message" (click)="customerListService.loadMore()">
+      <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+    </div>
+  }
 </div>
-
-<ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
-</ng-template>
-
-<ng-template #loadMore>
-  <div class="vitamui-min-content vitamui-table-message" (click)="customerListService.loadMore()">
-    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
-  </div>
-</ng-template>
-
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>

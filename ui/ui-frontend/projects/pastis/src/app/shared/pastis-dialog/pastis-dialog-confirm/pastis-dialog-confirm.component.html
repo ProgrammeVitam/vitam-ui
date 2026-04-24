@@ -1,9 +1,11 @@
 <vitamui-dialog-header [subhead]="dialogReceivedData.subTitleDialog" [title]="dialogReceivedData.titleDialog"></vitamui-dialog-header>
 
 <!-- Pastis dialog dynamic content-->
-<mat-dialog-content *ngIf="portal" style="overflow: hidden">
-  <ng-template #dialogContent [cdkPortalOutlet]="portal"></ng-template>
-</mat-dialog-content>
+@if (portal) {
+  <mat-dialog-content style="overflow: hidden">
+    <ng-template #dialogContent [cdkPortalOutlet]="portal"></ng-template>
+  </mat-dialog-content>
+}
 
 <!-- Pastis defaut dialog buttons-->
 <mat-dialog-actions>

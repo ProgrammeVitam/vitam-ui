@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
 import { Agency, AgencyService, ConfirmActionComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatOptionModule } from '@angular/material/core';
@@ -56,7 +56,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./agency-preview.component.scss'],
   imports: [
     AgencyInformationTabComponent,
-    CommonModule,
     FormsModule,
     MatDialogModule,
     MatMenuModule,
@@ -73,6 +72,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class AgencyPreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private agencyService = inject(AgencyService);
+
   @Input() agency: Agency;
   @Input() tenantIdentifier: number;
   @Input() readOnly: boolean;
@@ -86,11 +88,6 @@ export class AgencyPreviewComponent implements AfterViewInit {
   tabLinks: Array<AgencyInformationTabComponent> = [];
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('infoTab', { static: false }) infoTab: AgencyInformationTabComponent;
-
-  constructor(
-    private matDialog: MatDialog,
-    private agencyService: AgencyService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

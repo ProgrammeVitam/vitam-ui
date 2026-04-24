@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, inject } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PermissionStructure, PermissionUtils } from '../permission.utils';
 
@@ -52,6 +52,9 @@ export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class SecurityProfileEditPermissionComponent implements ControlValueAccessor {
+  private permissionUtils = inject(PermissionUtils);
+  private formBuilder = inject(FormBuilder);
+
   permissions: PermissionStructure;
   loaded = false;
   form: FormGroup;
@@ -64,11 +67,6 @@ export class SecurityProfileEditPermissionComponent implements ControlValueAcces
 
   onChange = (_x: any) => {};
   onTouched = () => {};
-
-  constructor(
-    private permissionUtils: PermissionUtils,
-    private formBuilder: FormBuilder,
-  ) {}
 
   onSubmit() {
     this.onChange(this.getAllowedPermissions());

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -50,12 +50,10 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class ArchiveUnitEliminationService {
-  constructor(
-    private archiveService: ArchiveService,
-    private translateService: TranslateService,
-    public dialog: MatDialog,
-    private snackBarService: SnackBarService,
-  ) {}
+  private archiveService = inject(ArchiveService);
+  private translateService = inject(TranslateService);
+  dialog = inject(MatDialog);
+  private snackBarService = inject(SnackBarService);
 
   launchEliminationAnalysisModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],

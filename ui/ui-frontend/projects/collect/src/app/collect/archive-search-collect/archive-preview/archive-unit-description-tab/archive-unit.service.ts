@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ArchiveUnitApiService } from './archive-unit-api.service';
 import { ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'vitamui-library';
@@ -44,7 +44,7 @@ import { ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'vitamui-library';
   providedIn: 'root',
 })
 export class ArchiveUnitService {
-  constructor(private archiveUnitApiService: ArchiveUnitApiService) {}
+  private archiveUnitApiService = inject(ArchiveUnitApiService);
 
   /**
    * Updates many archive units asynchronously in one Vitam operation.

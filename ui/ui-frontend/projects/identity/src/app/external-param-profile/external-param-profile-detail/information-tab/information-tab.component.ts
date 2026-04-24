@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { of, skip, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
@@ -50,11 +50,9 @@ import { ExternalParamProfileValidators } from '../../external-param-profile.val
   standalone: false,
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
-  constructor(
-    private formBuilder: FormBuilder,
-    private externalParamProfileService: ExternalParamProfileService,
-    private externalParamProfileValidators: ExternalParamProfileValidators,
-  ) {}
+  private formBuilder = inject(FormBuilder);
+  private externalParamProfileService = inject(ExternalParamProfileService);
+  private externalParamProfileValidators = inject(ExternalParamProfileValidators);
 
   form: FormGroup;
   groupsCount: boolean;

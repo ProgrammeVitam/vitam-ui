@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
@@ -67,6 +67,13 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   standalone: false,
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
+  private logbookService = inject(LogbookService);
+  private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private logbookDownloadService = inject(LogbookDownloadService);
+  private externalParameterService = inject(ExternalParametersService);
+  private snackBarService = inject(SnackBarService);
+
   @Input() eventId: string;
   @Input() tenantIdentifier: number;
   @Input() isPopup: boolean;
@@ -84,15 +91,6 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   public disableDownloadButton = true;
 
   private subscriptions = new Subscription();
-
-  constructor(
-    private logbookService: LogbookService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private logbookDownloadService: LogbookDownloadService,
-    private externalParameterService: ExternalParametersService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));

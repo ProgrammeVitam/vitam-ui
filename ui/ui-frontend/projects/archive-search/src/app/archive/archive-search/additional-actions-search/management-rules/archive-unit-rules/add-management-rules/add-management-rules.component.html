@@ -43,7 +43,36 @@
         <vitamui-input class="col" formControlName="endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate"> </vitamui-input>
       </div>
 
-      <div *ngIf="isLoading; then loadingMode; else resultsFound"></div>
+      @if (isLoading) {
+        <div class="vitamui-min-content">
+          <mat-spinner class="vitamui-spinner large"></mat-spinner>
+        </div>
+      } @else {
+        @if (showText && itemsToUpdate !== '0') {
+          <div class="row message-text-ok">
+            <div class="col-1"><i class="material-icons">check_circle</i></div>
+            <div class="col-11">
+              {{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}
+            </div>
+          </div>
+        }
+        @if (showText && itemsWithSameRule !== '0') {
+          <div class="row message-text-ko">
+            <div class="col-1"><i class="material-icons">error</i></div>
+            <div class="col-11">
+              {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}
+            </div>
+          </div>
+        }
+        @if (showText && itemsWithSameRuleAndDate > 0) {
+          <div class="row message-text-ko">
+            <div class="col-1"><i class="material-icons">error</i></div>
+            <div class="col-11">
+              {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE_AND_DATE' | translate: { itemsWithSameRuleAndDate: itemsWithSameRuleAndDate } }}
+            </div>
+          </div>
+        }
+      }
 
       <div class="d-flex">
         <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled" (click)="submit()">
@@ -70,22 +99,28 @@
 </ng-template>
 
 <ng-template #resultsFound>
-  <div *ngIf="showText && itemsToUpdate !== '0'" class="row message-text-ok">
-    <div class="col-1"><i class="material-icons">check_circle</i></div>
-    <div class="col-11">
-      {{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}
+  @if (showText && itemsToUpdate !== '0') {
+    <div class="row message-text-ok">
+      <div class="col-1"><i class="material-icons">check_circle</i></div>
+      <div class="col-11">
+        {{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}
+      </div>
     </div>
-  </div>
-  <div *ngIf="showText && itemsWithSameRule !== '0'" class="row message-text-ko">
-    <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">
-      {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}
+  }
+  @if (showText && itemsWithSameRule !== '0') {
+    <div class="row message-text-ko">
+      <div class="col-1"><i class="material-icons">error</i></div>
+      <div class="col-11">
+        {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}
+      </div>
     </div>
-  </div>
-  <div *ngIf="showText && itemsWithSameRuleAndDate > 0" class="row message-text-ko">
-    <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">
-      {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE_AND_DATE' | translate: { itemsWithSameRuleAndDate: itemsWithSameRuleAndDate } }}
+  }
+  @if (showText && itemsWithSameRuleAndDate > 0) {
+    <div class="row message-text-ko">
+      <div class="col-1"><i class="material-icons">error</i></div>
+      <div class="col-11">
+        {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE_AND_DATE' | translate: { itemsWithSameRuleAndDate: itemsWithSameRuleAndDate } }}
+      </div>
     </div>
-  </div>
+  }
 </ng-template>

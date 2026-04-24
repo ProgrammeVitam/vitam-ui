@@ -193,25 +193,27 @@
       </vitamui-slide-toggle>
     </div>
   </div>
-  <div class="row" *ngIf="form?.get('gdprAlert')?.value">
-    <div class="col-12 form-control">
-      <vitamui-common-editable-input
-        [disabled]="gdprReadOnlyStatus && !form?.get('gdprAlert')?.value"
-        formControlName="gdprAlertDelay"
-        [label]="'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.LABEL' | translate"
-        [validator]="form?.get('gdprAlertDelay')?.validator"
-        [asyncValidator]="form?.get('gdprAlertDelay')?.asyncValidator"
-      >
-        <vitamui-common-field-error errorKey="required">
-          {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.REQUIRED' | translate }}
-        </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern">
-          {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.WRONG_FORMAT' | translate }}
-        </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="min">
-          {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.MIN_VALUE' | translate }}
-        </vitamui-common-field-error>
-      </vitamui-common-editable-input>
+  @if (form?.get('gdprAlert')?.value) {
+    <div class="row">
+      <div class="col-12 form-control">
+        <vitamui-common-editable-input
+          [disabled]="gdprReadOnlyStatus && !form?.get('gdprAlert')?.value"
+          formControlName="gdprAlertDelay"
+          [label]="'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.LABEL' | translate"
+          [validator]="form?.get('gdprAlertDelay')?.validator"
+          [asyncValidator]="form?.get('gdprAlertDelay')?.asyncValidator"
+        >
+          <vitamui-common-field-error errorKey="required">
+            {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.REQUIRED' | translate }}
+          </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="pattern">
+            {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.WRONG_FORMAT' | translate }}
+          </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="min">
+            {{ 'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.MIN_VALUE' | translate }}
+          </vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
     </div>
-  </div>
+  }
 </form>

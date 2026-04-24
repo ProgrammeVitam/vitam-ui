@@ -86,6 +86,10 @@ describe('FileFormatInformationTabComponent', () => {
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(FileFormatInformationTabComponent, {
+      set: { template: '' },
+    });
+
     const startupServiceStub = {
       getTenantIdentifier: () => '',
     };

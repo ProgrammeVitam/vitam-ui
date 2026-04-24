@@ -45,6 +45,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
@@ -60,6 +61,11 @@ import { ArchiveSharedDataService } from '../../core/archive-shared-data.service
   standalone: false,
 })
 export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit {
+  private route = inject(ActivatedRoute);
+  private translateService = inject(TranslateService);
+  private accessContractService = inject(AccessContractService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   @Input() archiveUnit: Unit;
   @Input() isPopup: boolean;
   @Input() hasUpdateDescriptiveUnitMetadataRole: boolean;
@@ -79,12 +85,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('descriptionTab', { static: false }) descriptionTab: ArchiveUnitDescriptionTabComponent;
 
-  constructor(
-    private route: ActivatedRoute,
-    private translateService: TranslateService,
-    private accessContractService: AccessContractService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {
+  constructor() {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });

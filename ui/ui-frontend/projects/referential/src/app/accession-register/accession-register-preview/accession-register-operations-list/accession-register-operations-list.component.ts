@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
 
@@ -54,6 +54,8 @@ import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vita
   standalone: false,
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {
+  private translateService = inject(TranslateService);
+
   @Input() operationsIds: string[];
   @Input() operations: RegisterValueEventModel[];
 
@@ -69,8 +71,6 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
   orderKeyOperationObjects: keyof RegisterValueEventModel = 'Objects';
   orderKeyOperationObjSize: keyof RegisterValueEventModel = 'ObjSize';
   orderKeyOperationCreationDate: keyof RegisterValueEventModel = 'CreationDate';
-
-  constructor(private translateService: TranslateService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.operations) {

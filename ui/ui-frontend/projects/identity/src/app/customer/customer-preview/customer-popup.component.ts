@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Customer } from 'vitamui-library';
@@ -45,9 +45,11 @@ import { Customer } from 'vitamui-library';
   standalone: false,
 })
 export class CustomerPopupComponent {
+  private route = inject(ActivatedRoute);
+
   customer: Customer;
 
-  constructor(private route: ActivatedRoute) {
+  constructor() {
     this.customer = this.route.snapshot.data.customer;
   }
 

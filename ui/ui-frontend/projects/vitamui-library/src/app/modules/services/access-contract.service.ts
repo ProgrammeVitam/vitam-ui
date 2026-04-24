@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject, switchMap } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { AccessContractApiService } from '../api/access-contract-api.service';
@@ -50,6 +50,10 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class AccessContractService extends SearchService<AccessContract> {
+  private accessContractApi: AccessContractApiService;
+  private snackBarService = inject(SnackBarService);
+  private externalParameterService = inject(ExternalParametersService);
+
   /** Observable of current access contract ID */
   currentAccessContractId$: Observable<string> = this.externalParameterService.getUserExternalParameters().pipe(
     map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)),
@@ -63,12 +67,12 @@ export class AccessContractService extends SearchService<AccessContract> {
 
   updated = new Subject<AccessContract>();
 
-  constructor(
-    private accessContractApi: AccessContractApiService,
-    private snackBarService: SnackBarService,
-    private externalParameterService: ExternalParametersService,
-  ) {
+  constructor() {
+    const accessContractApi = inject(AccessContractApiService);
+
     super(accessContractApi, 'ALL');
+
+    this.accessContractApi = accessContractApi;
   }
 
   get(id: string): Observable<AccessContract> {

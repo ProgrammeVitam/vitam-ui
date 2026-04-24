@@ -41,8 +41,12 @@ import { SubrogationResolver } from './subrogation-resolver.service';
 
 describe('SubrogationResolverService', () => {
   beforeEach(() => {
-    const customerSearchServiceSpy = jasmine.createSpyObj('CustomerSelectService', ['search']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const customerSearchServiceSpy = {
+      search: vi.fn().mockName('CustomerSelectService.search'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     TestBed.configureTestingModule({
       providers: [

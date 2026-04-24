@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -50,6 +50,13 @@ import { sizes } from '../../ontology/ontology-form-options';
   standalone: false,
 })
 export class RuleCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<RuleCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private ruleService = inject(RuleService);
+  private ruleCreateValidator = inject(RuleCreateValidators);
+
   form: FormGroup;
   hasCustomGraphicIdentity = false;
   hasError = true;
@@ -63,15 +70,6 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
   tenantIdentifier: number;
-
-  constructor(
-    public dialogRef: MatDialogRef<RuleCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private ruleService: RuleService,
-    private ruleCreateValidator: RuleCreateValidators,
-  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({

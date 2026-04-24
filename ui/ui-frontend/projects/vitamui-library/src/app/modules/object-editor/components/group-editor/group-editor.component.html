@@ -1,45 +1,88 @@
-<vitamui-common-accordion *ngIf="editObject?.key; else content" [opened]="editObject.open">
-  <span class="title" [ngClass]="{ empty: isEmptyObject(editObject?.value) }">{{
-    editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required
-  }}</span>
-  <div class="title-extra v-col align-items-center justify-content-end favorite-entry">
-    <span *ngIf="favoriteEntry">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</span>
-    <vitamui-menu-button
-      *ngIf="actionList.length"
-      overlayPos="end"
-      icon="vitamui-icon-more-vert"
-      menuButtonSize="small"
-      outline="secondary"
-      (click)="stopPropagation($event)"
-    >
-      <ng-container *ngFor="let action of actionList">
-        <button mat-menu-item (click)="action.handler()">{{ action.label | translate }}</button>
-      </ng-container>
-    </vitamui-menu-button>
-  </div>
-
-  <div class="content">
-    <div *ngTemplateOutlet="content"></div>
-  </div>
-</vitamui-common-accordion>
+@if (editObject?.key) {
+  <vitamui-common-accordion [opened]="editObject.open">
+    <span class="title" [ngClass]="{ empty: isEmptyObject(editObject?.value) }">{{
+      editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required
+    }}</span>
+    <div class="title-extra v-col align-items-center justify-content-end favorite-entry">
+      @if (favoriteEntry) {
+        <span>{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</span>
+      }
+      @if (actionList.length) {
+        <vitamui-menu-button
+          overlayPos="end"
+          icon="vitamui-icon-more-vert"
+          menuButtonSize="small"
+          outline="secondary"
+          (click)="stopPropagation($event)"
+        >
+          @for (action of actionList; track action) {
+            <button mat-menu-item (click)="action.handler()">{{ action.label | translate }}</button>
+          }
+        </vitamui-menu-button>
+      }
+    </div>
+    <div class="content">
+      <div *ngTemplateOutlet="content"></div>
+    </div>
+  </vitamui-common-accordion>
+} @else {
+  @for (column of rows; track column) {
+    <div class="v-row">
+      @for (child of column; track child) {
+        <div class="v-col">
+          @if (!child) {
+            <div></div>
+          }
+          @if (child) {
+            @switch (child.type) {
+              @case (DisplayObjectType.GROUP) {
+                <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+              }
+              @case (DisplayObjectType.LIST) {
+                <vitamui-common-list-editor [editObject]="child"></vitamui-common-list-editor>
+              }
+              @case (DisplayObjectType.PRIMITIVE) {
+                <vitamui-common-primitive-editor [editObject]="child"></vitamui-common-primitive-editor>
+              }
+            }
+          }
+        </div>
+      }
+    </div>
+  }
+  @if (editObject && (editObject.value === null || editObject.value === undefined)) {
+    <div>{{ editObject.value | empty }}</div>
+  }
+}
 
 <ng-template #content>
-  <div *ngFor="let column of rows" class="v-row">
-    <div *ngFor="let child of column" class="v-col">
-      <div *ngIf="!child"></div>
-      <ng-container *ngIf="child">
-        <ng-container [ngSwitch]="child.type">
-          <vitamui-common-group-editor *ngSwitchCase="DisplayObjectType.GROUP" [editObject]="child"></vitamui-common-group-editor>
-          <vitamui-common-list-editor *ngSwitchCase="DisplayObjectType.LIST" [editObject]="child"></vitamui-common-list-editor>
-          <vitamui-common-primitive-editor
-            *ngSwitchCase="DisplayObjectType.PRIMITIVE"
-            [editObject]="child"
-          ></vitamui-common-primitive-editor>
-        </ng-container>
-      </ng-container>
+  @for (column of rows; track column) {
+    <div class="v-row">
+      @for (child of column; track child) {
+        <div class="v-col">
+          @if (!child) {
+            <div></div>
+          }
+          @if (child) {
+            @switch (child.type) {
+              @case (DisplayObjectType.GROUP) {
+                <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+              }
+              @case (DisplayObjectType.LIST) {
+                <vitamui-common-list-editor [editObject]="child"></vitamui-common-list-editor>
+              }
+              @case (DisplayObjectType.PRIMITIVE) {
+                <vitamui-common-primitive-editor [editObject]="child"></vitamui-common-primitive-editor>
+              }
+            }
+          }
+        </div>
+      }
     </div>
-  </div>
-  <div *ngIf="editObject && (editObject.value === null || editObject.value === undefined)">{{ editObject.value | empty }}</div>
+  }
+  @if (editObject && (editObject.value === null || editObject.value === undefined)) {
+    <div>{{ editObject.value | empty }}</div>
+  }
 </ng-template>
 
 <ng-template #removeDialog>

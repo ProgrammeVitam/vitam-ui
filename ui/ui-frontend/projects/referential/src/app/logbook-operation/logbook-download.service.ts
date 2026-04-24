@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import {
   DownloadUtils,
@@ -57,6 +57,10 @@ const DOWNLOAD_TYPE_OBJECT = 'object';
   providedIn: 'root',
 })
 export class LogbookDownloadService extends SearchService<IEvent> {
+  private logbookApiService: LogbookApiService;
+  private snackBarService = inject(SnackBarService);
+  private http = inject(HttpClient);
+
   logbookOperationsReloaded = new Subject<IEvent[]>();
 
   private evTypeAllowed = [
@@ -89,12 +93,12 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'ORIGINATING_AGENCY_REASSIGNMENT',
   ];
 
-  constructor(
-    private logbookApiService: LogbookApiService,
-    private snackBarService: SnackBarService,
-    private http: HttpClient,
-  ) {
+  constructor() {
+    const logbookApiService = inject(LogbookApiService);
+
     super(logbookApiService);
+
+    this.logbookApiService = logbookApiService;
   }
 
   logbookOperationReportState(event: IEvent): LogbookOperationReportState {
@@ -122,7 +126,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
         if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT' || eventType === 'LINKED_CHECK_SECURISATION') {
           return DOWNLOAD_TYPE_BATCH_REPORT;
         }
-      // eslint-disable-next-line no-fallthrough
+        return DOWNLOAD_TYPE_REPORT;
       case 'DATA_MIGRATION':
         return DOWNLOAD_TYPE_REPORT;
       case 'TRANSFER_REPLY':
@@ -152,7 +156,10 @@ export class LogbookDownloadService extends SearchService<IEvent> {
           case 'HOLDINGSCHEME':
             return DOWNLOAD_TYPE_OBJECT;
         }
-      // eslint-disable-next-line no-fallthrough
+        if (eventType === 'INGEST_CLEANUP') {
+          return DOWNLOAD_TYPE_BATCH_REPORT;
+        }
+        break;
       case 'INTERNAL_OPERATING_OP':
         if (eventType === 'INGEST_CLEANUP') {
           return DOWNLOAD_TYPE_BATCH_REPORT;

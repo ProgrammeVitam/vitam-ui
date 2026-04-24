@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Injectable, LOCALE_ID, inject } from '@angular/core';
 import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -76,14 +76,18 @@ import { ReassignRequestDto } from './models/reassign-request.interface';
   providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  constructor(
-    private archiveApiService: ArchiveApiService,
-    @Inject(LOCALE_ID) private locale: string,
-    private snackBarService: SnackBarService,
-    private securityService: SecurityService,
-    private accessContractService: AccessContractService,
-  ) {
+  private archiveApiService: ArchiveApiService;
+  private locale = inject(LOCALE_ID);
+  private snackBarService = inject(SnackBarService);
+  private securityService = inject(SecurityService);
+  private accessContractService = inject(AccessContractService);
+
+  constructor() {
+    const archiveApiService = inject(ArchiveApiService);
+
     super(archiveApiService, 'ALL');
+
+    this.archiveApiService = archiveApiService;
   }
 
   headers = new HttpHeaders();

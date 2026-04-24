@@ -1,10 +1,8 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-probative-value-preview
-      *ngIf="openedItem"
-      [probativeValue]="openedItem"
-      (previewClose)="closePanel()"
-    ></app-probative-value-preview>
+    @if (openedItem) {
+      <app-probative-value-preview [probativeValue]="openedItem" (previewClose)="closePanel()"></app-probative-value-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

@@ -36,7 +36,7 @@
  */
 
 import { HttpClient, HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 import {
   BASE_URL,
@@ -57,7 +57,10 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
   urlTransaction: string;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/projects');
     this.baseUrl = baseUrl;
     this.urlTransaction = baseUrl + '/transactions';

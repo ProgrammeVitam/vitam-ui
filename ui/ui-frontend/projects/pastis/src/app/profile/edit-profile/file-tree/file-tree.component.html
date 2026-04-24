@@ -1,93 +1,102 @@
-<mat-tree *ngIf="!updating" [dataSource]="dataSource" [treeControl]="fileTreeService.nestedTreeControl" class="pastis-tree">
-  <!-- Nested tree node-->
-  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-    <div
-      *ngIf="node.name === rootElementName && activeTabIndex === 2 && profileService.profileType === 'PA'"
-      class="pastis-btn-container-add-ua"
-    >
-      <button (click)="addArchiveUnit(node)" class="btn primary">
-        {{ 'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA' | translate }}
-      </button>
-    </div>
-    <ng-container *ngIf="!isAttribute(node) && shouldBeOnTab(node) && node">
-      <mat-list-item
-        (click)="updateMetadataTable(node); fileTreeService.nestedTreeControl.expand(node)"
-        [ngClass]="{ 'list-item': !selectedItem(node), 'list-item-select': selectedItem(node) }"
-      >
-        <!--Root node name-->
-        <span *ngIf="node.name === rootElementName && profileService.profileType === 'PA'" class="pastis-tree-node-root-name">
-          <span [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }">
-            {{ rootElementShowName }}
-          </span>
-          <mat-divider class="pastis-divider"></mat-divider>
-        </span>
-
-        <!--Root children without children-->
-        <span
-          (click)="updateMetadataTable(node); $event.stopPropagation()"
-          *ngIf="
+@if (!updating) {
+  <mat-tree [dataSource]="dataSource" [treeControl]="fileTreeService.nestedTreeControl" class="pastis-tree">
+    <!-- Nested tree node-->
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+      @if (node.name === rootElementName && activeTabIndex === 2 && profileService.profileType === 'PA') {
+        <div class="pastis-btn-container-add-ua">
+          <button (click)="addArchiveUnit(node)" class="btn primary">
+            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA' | translate }}
+          </button>
+        </div>
+      }
+      @if (!isAttribute(node) && shouldBeOnTab(node) && node) {
+        <mat-list-item
+          (click)="updateMetadataTable(node); fileTreeService.nestedTreeControl.expand(node)"
+          [ngClass]="{ 'list-item': !selectedItem(node), 'list-item-select': selectedItem(node) }"
+        >
+          <!--Root node name-->
+          @if (node.name === rootElementName && profileService.profileType === 'PA') {
+            <span class="pastis-tree-node-root-name">
+              <span [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }">
+                {{ rootElementShowName }}
+              </span>
+              <mat-divider class="pastis-divider"></mat-divider>
+            </span>
+          }
+          <!--Root children without children-->
+          @if (
             !node.children.length && node.name !== rootElementName && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)
-          "
-          [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }"
-          class="pastis-tree-node-name"
-        >
-          <span *ngIf="node.external">EXT-</span>
-          <span class="text text-medium">{{ onResolveName(node) }}</span>
-          <mat-divider class="pastis-divider"></mat-divider>
-        </span>
-
-        <!--Root children with children-->
-
-        <span
-          *ngIf="
-            node.children.length && node.name !== rootElementName && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)
-          "
-        >
-          <div
-            (click)="expandChildren(node); $event.stopPropagation()"
-            [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px', width: '360px' }"
-          >
+          ) {
             <span
-              *ngIf="isElementComplexAndHasChildren(node)"
-              [ngClass]="{
-                'pastis-chevron-icon': !fileTreeService.nestedTreeControl.isExpanded(node),
-                'pastis-chevron-icon-selected': fileTreeService.nestedTreeControl.isExpanded(node),
-              }"
+              (click)="updateMetadataTable(node); $event.stopPropagation()"
+              [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }"
+              class="pastis-tree-node-name"
             >
-              <mat-icon>{{ fileTreeService.nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }} </mat-icon>
+              @if (node.external) {
+                <span>EXT-</span>
+              }
+              <span class="text text-medium">{{ onResolveName(node) }}</span>
+              <mat-divider class="pastis-divider"></mat-divider>
             </span>
-            <button [id]="'child' + node.id" [ngStyle]="{ display: 'none' }" mat-icon-button matTreeNodeToggle></button>
-            <span class="pastis-tree-node-name">
-              <span *ngIf="node.external">EXT-</span>
-              <span
-                [ngClass]="{ 'text-medium-normal': !selectedItem(node), 'text-medium-primary': selectedItem(node) }"
-                class="text text-medium"
-                *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'; else elseBlock"
+          }
+          <!--Root children with children-->
+          @if (
+            node.children.length && node.name !== rootElementName && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)
+          ) {
+            <span>
+              <div
+                (click)="expandChildren(node); $event.stopPropagation()"
+                [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px', width: '360px' }"
               >
-                <modify-text-button
-                  *ngIf="profileService.profileType === 'PA'"
-                  (textEdit)="changeFileNode($event, node)"
-                  [node]="node"
-                ></modify-text-button>
-                {{ profileService.profileType === 'PUA' ? onResolveName(node) : '' }}
-              </span>
-              <ng-template #elseBlock>{{ onResolveName(node) }}</ng-template>
-              <span *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'" vitamuiTooltip="Ajouter une UA" style="float: right">
-                <!--Button plus-->
-                <button (click)="addArchiveUnit(node)" *ngIf="profileService.profileType === 'PA'" class="pastis-btn-add-ua">
-                  <i class="vitamui-icon vitamui-icon-add" style="color: var(--vitamui-primary)"></i>
-                  <span class="pastis-btn-add-ua-text">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA_ICON' | translate }}</span>
-                </button>
-              </span>
+                @if (isElementComplexAndHasChildren(node)) {
+                  <span
+                    [ngClass]="{
+                      'pastis-chevron-icon': !fileTreeService.nestedTreeControl.isExpanded(node),
+                      'pastis-chevron-icon-selected': fileTreeService.nestedTreeControl.isExpanded(node),
+                    }"
+                  >
+                    <mat-icon>{{ fileTreeService.nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }} </mat-icon>
+                  </span>
+                }
+                <button [id]="'child' + node.id" [ngStyle]="{ display: 'none' }" mat-icon-button matTreeNodeToggle></button>
+                <span class="pastis-tree-node-name">
+                  @if (node.external) {
+                    <span>EXT-</span>
+                  }
+                  @if (node.nonEditFileNode || node.name === 'ArchiveUnit') {
+                    <span
+                      [ngClass]="{ 'text-medium-normal': !selectedItem(node), 'text-medium-primary': selectedItem(node) }"
+                      class="text text-medium"
+                    >
+                      @if (profileService.profileType === 'PA') {
+                        <modify-text-button (textEdit)="changeFileNode($event, node)" [node]="node"></modify-text-button>
+                      }
+                      {{ profileService.profileType === 'PUA' ? onResolveName(node) : '' }}
+                    </span>
+                  } @else {
+                    {{ onResolveName(node) }}
+                  }
+                  @if (node.nonEditFileNode || node.name === 'ArchiveUnit') {
+                    <span vitamuiTooltip="Ajouter une UA" style="float: right">
+                      <!--Button plus-->
+                      @if (profileService.profileType === 'PA') {
+                        <button (click)="addArchiveUnit(node)" class="pastis-btn-add-ua">
+                          <i class="vitamui-icon vitamui-icon-add" style="color: var(--vitamui-primary)"></i>
+                          <span class="pastis-btn-add-ua-text">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA_ICON' | translate }}</span>
+                        </button>
+                      }
+                    </span>
+                  }
+                </span>
+              </div>
+              <mat-divider class="pastis-divider"></mat-divider>
             </span>
-          </div>
-          <mat-divider class="pastis-divider"></mat-divider>
-        </span>
-      </mat-list-item>
-
-      <ul [hidden]="!fileTreeService.nestedTreeControl.isExpanded(node)" class="pastis-tree-ul">
-        <ng-container matTreeNodeOutlet></ng-container>
-      </ul>
-    </ng-container>
-  </mat-nested-tree-node>
-</mat-tree>
+          }
+        </mat-list-item>
+        <ul [hidden]="!fileTreeService.nestedTreeControl.isExpanded(node)" class="pastis-tree-ul">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </ul>
+      }
+    </mat-nested-tree-node>
+  </mat-tree>
+}

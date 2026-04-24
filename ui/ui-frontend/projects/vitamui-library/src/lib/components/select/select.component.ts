@@ -52,6 +52,7 @@ import {
   Signal,
   ViewChild,
   ViewChildren,
+  inject,
 } from '@angular/core';
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';
@@ -124,6 +125,10 @@ export interface VitamuiSelectOptions {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent extends AbstractFormInputDirective implements AfterViewInit, AfterViewChecked {
+  private cd = inject(ChangeDetectorRef);
+  readonly sd = inject(ScrollDispatcher);
+  private translateService = inject(TranslateService);
+
   @Input() placeholder: string;
   @Input() searchBarPlaceHolder: string;
 
@@ -256,12 +261,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     }
   }
 
-  constructor(
-    injector: Injector,
-    private cd: ChangeDetectorRef,
-    readonly sd: ScrollDispatcher,
-    private translateService: TranslateService,
-  ) {
+  constructor() {
+    const injector = inject(Injector);
+
     super(injector);
 
     effect(() => {

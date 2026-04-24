@@ -1,156 +1,171 @@
-<div *ngFor="let action of getActionByRuleType()">
-  <div class="margin-style" *ngIf="action === 'ADD_RULES'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.RULES_TO_ADD' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
-        {{ collapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="collapsed" *ngFor="let actionName of getActions()">
-      <app-add-management-rules
-        *ngIf="actionName.actionType === action && action === 'ADD_RULES'"
-        (delete)="deleteForm(actionName.id, $event, action)"
-        (confirmStep)="confirmStep(actionName.id)"
-        (cancelStep)="cancelStep(actionName.id)"
-        [selectedItem]="Number(selectedItem)"
-        [ruleCategory]="ruleCategory"
-        [hasExactCount]="hasExactCount"
-        [rulesList]="rules$"
-      ></app-add-management-rules>
-    </div>
+@for (action of getActionByRuleType(); track action) {
+  <div>
+    @if (action === 'ADD_RULES') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.RULES_TO_ADD' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
+            {{ collapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        @for (actionName of getActions(); track actionName) {
+          <div class="collapsible" [@collapse]="collapsed">
+            @if (actionName.actionType === action && action === 'ADD_RULES') {
+              <app-add-management-rules
+                (delete)="deleteForm(actionName.id, $event, action)"
+                (confirmStep)="confirmStep(actionName.id)"
+                (cancelStep)="cancelStep(actionName.id)"
+                [selectedItem]="Number(selectedItem)"
+                [ruleCategory]="ruleCategory"
+                [hasExactCount]="hasExactCount"
+                [rulesList]="rules$"
+              ></app-add-management-rules>
+            }
+          </div>
+        }
+      </div>
+    }
+    @if (action === 'DELETE_RULES') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.RULES_TO_DELETE' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showDeleteRuleBloc()">
+            {{ deleteRuleCollapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        @for (actionName of getActions(); track actionName) {
+          <div class="collapsible" [@collapse]="deleteRuleCollapsed">
+            @if (actionName.actionType === action && action === 'DELETE_RULES') {
+              <app-delete-unit-rules
+                [selectedItem]="Number(selectedItem)"
+                [ruleCategory]="ruleCategory"
+                (delete)="deleteForm(actionName.id, $event, action)"
+                (confirmStep)="confirmStep(actionName.id)"
+                (cancelStep)="cancelStep(actionName.id)"
+                [hasExactCount]="hasExactCount"
+                [rulesList]="rules$"
+              ></app-delete-unit-rules>
+            }
+          </div>
+        }
+      </div>
+    }
+    @if (action === 'UPDATE_PROPERTY') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdatePropertyBloc()">
+            {{ updatePropertyCollapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        <div class="collapsible" [@collapse]="updatePropertyCollapsed">
+          <app-add-update-property [ruleCategory]="ruleCategory"></app-add-update-property>
+        </div>
+      </div>
+    }
+    @if (action === 'UPDATE_RULES') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.RULES_TO_UPDATE' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdateRuleBloc()">
+            {{ updateRuleCollapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        @for (actionName of getActions(); track actionName) {
+          <div class="collapsible" [@collapse]="updateRuleCollapsed">
+            @if (actionName.actionType === action && action === 'UPDATE_RULES') {
+              <app-update-unit-rules
+                (delete)="deleteForm(actionName.id, $event, action)"
+                (confirmStep)="confirmStep(actionName.id)"
+                (cancelStep)="cancelStep(actionName.id)"
+                [selectedItem]="Number(selectedItem)"
+                [ruleCategory]="ruleCategory"
+                [hasExactCount]="hasExactCount"
+                [rulesList]="rules$"
+              ></app-update-unit-rules>
+            }
+          </div>
+        }
+      </div>
+    }
+    @if (action === 'BLOCK_CATEGORY_INHERITANCE') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.CATEGORY_TO_BLOCK' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showBlockCategoryInheritanceloc()">
+            {{ blockCategoryInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        <div class="collapsible" [@collapse]="blockCategoryInheritanceCollapsed">
+          <app-block-category-inheritance [ruleCategory]="ruleCategory"></app-block-category-inheritance>
+        </div>
+      </div>
+    }
+    @if (action === 'UNLOCK_CATEGORY_INHERITANCE') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.CATEGORY_TO_UNLOCK' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUnlockCategoryInheritanceloc()">
+            {{ unlockCategoryInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        <div class="collapsible" [@collapse]="unlockCategoryInheritanceCollapsed">
+          <app-unlock-category-inheritance
+            [ruleCategory]="ruleCategory"
+            [hasExactCount]="hasExactCount"
+            [selectedItem]="Number(selectedItem)"
+          ></app-unlock-category-inheritance>
+        </div>
+      </div>
+    }
+    <!-- // BLOCK_RULE_INHERITANCE -->
+    @if (action === 'BLOCK_RULE_INHERITANCE') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.BLOCK_RULES_INHERITANCE' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showBlockRulesInheritanceloc()">
+            {{ blockRuleInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        @for (actionName of getActions(); track actionName) {
+          <div class="collapsible" [@collapse]="blockRuleInheritanceCollapsed">
+            @if (actionName.actionType === action && action === 'BLOCK_RULE_INHERITANCE') {
+              <app-block-rules-inheritance
+                [ruleCategory]="ruleCategory"
+                (delete)="deleteForm(actionName.id, $event, action)"
+                (confirmStep)="confirmStep(actionName.id)"
+                (cancelStep)="cancelStep(actionName.id)"
+                [rulesList]="rules$"
+              ></app-block-rules-inheritance>
+            }
+          </div>
+        }
+      </div>
+    }
+    @if (action === 'UNLOCK_RULE_INHERITANCE') {
+      <div class="margin-style">
+        <div class="action-style vitamui-table-head">
+          {{ 'RULES.UNLOCK_RULES_INHERITANCE' | translate }}
+          <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUnlockRulesInheritanceloc()">
+            {{ unlockRuleInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
+          </i>
+        </div>
+        @for (actionName of getActions(); track actionName) {
+          <div class="collapsible" [@collapse]="unlockRuleInheritanceCollapsed">
+            @if (actionName.actionType === action && action === 'UNLOCK_RULE_INHERITANCE') {
+              <app-unlock-rules-inheritance
+                (delete)="deleteForm(actionName.id, $event, action)"
+                (confirmStep)="confirmStep(actionName.id)"
+                (cancelStep)="cancelStep(actionName.id)"
+                [selectedItem]="Number(selectedItem)"
+                [ruleCategory]="ruleCategory"
+                [hasExactCount]="hasExactCount"
+                [rulesList]="rules$"
+              ></app-unlock-rules-inheritance>
+            }
+          </div>
+        }
+      </div>
+    }
   </div>
-
-  <div class="margin-style" *ngIf="action === 'DELETE_RULES'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.RULES_TO_DELETE' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showDeleteRuleBloc()">
-        {{ deleteRuleCollapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="deleteRuleCollapsed" *ngFor="let actionName of getActions()">
-      <app-delete-unit-rules
-        *ngIf="actionName.actionType === action && action === 'DELETE_RULES'"
-        [selectedItem]="Number(selectedItem)"
-        [ruleCategory]="ruleCategory"
-        (delete)="deleteForm(actionName.id, $event, action)"
-        (confirmStep)="confirmStep(actionName.id)"
-        (cancelStep)="cancelStep(actionName.id)"
-        [hasExactCount]="hasExactCount"
-        [rulesList]="rules$"
-      ></app-delete-unit-rules>
-    </div>
-  </div>
-
-  <div class="margin-style" *ngIf="action === 'UPDATE_PROPERTY'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdatePropertyBloc()">
-        {{ updatePropertyCollapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="updatePropertyCollapsed">
-      <app-add-update-property [ruleCategory]="ruleCategory"></app-add-update-property>
-    </div>
-  </div>
-
-  <div class="margin-style" *ngIf="action === 'UPDATE_RULES'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.RULES_TO_UPDATE' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdateRuleBloc()">
-        {{ updateRuleCollapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="updateRuleCollapsed" *ngFor="let actionName of getActions()">
-      <app-update-unit-rules
-        *ngIf="actionName.actionType === action && action === 'UPDATE_RULES'"
-        (delete)="deleteForm(actionName.id, $event, action)"
-        (confirmStep)="confirmStep(actionName.id)"
-        (cancelStep)="cancelStep(actionName.id)"
-        [selectedItem]="Number(selectedItem)"
-        [ruleCategory]="ruleCategory"
-        [hasExactCount]="hasExactCount"
-        [rulesList]="rules$"
-      ></app-update-unit-rules>
-    </div>
-  </div>
-
-  <div class="margin-style" *ngIf="action === 'BLOCK_CATEGORY_INHERITANCE'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.CATEGORY_TO_BLOCK' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showBlockCategoryInheritanceloc()">
-        {{ blockCategoryInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="blockCategoryInheritanceCollapsed">
-      <app-block-category-inheritance [ruleCategory]="ruleCategory"></app-block-category-inheritance>
-    </div>
-  </div>
-
-  <div class="margin-style" *ngIf="action === 'UNLOCK_CATEGORY_INHERITANCE'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.CATEGORY_TO_UNLOCK' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUnlockCategoryInheritanceloc()">
-        {{ unlockCategoryInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="unlockCategoryInheritanceCollapsed">
-      <app-unlock-category-inheritance
-        [ruleCategory]="ruleCategory"
-        [hasExactCount]="hasExactCount"
-        [selectedItem]="Number(selectedItem)"
-      ></app-unlock-category-inheritance>
-    </div>
-  </div>
-
-  <!-- // BLOCK_RULE_INHERITANCE -->
-
-  <div class="margin-style" *ngIf="action === 'BLOCK_RULE_INHERITANCE'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.BLOCK_RULES_INHERITANCE' | translate }}
-
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showBlockRulesInheritanceloc()">
-        {{ blockRuleInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="blockRuleInheritanceCollapsed" *ngFor="let actionName of getActions()">
-      <app-block-rules-inheritance
-        *ngIf="actionName.actionType === action && action === 'BLOCK_RULE_INHERITANCE'"
-        [ruleCategory]="ruleCategory"
-        (delete)="deleteForm(actionName.id, $event, action)"
-        (confirmStep)="confirmStep(actionName.id)"
-        (cancelStep)="cancelStep(actionName.id)"
-        [rulesList]="rules$"
-      ></app-block-rules-inheritance>
-    </div>
-  </div>
-
-  <div class="margin-style" *ngIf="action === 'UNLOCK_RULE_INHERITANCE'">
-    <div class="action-style vitamui-table-head">
-      {{ 'RULES.UNLOCK_RULES_INHERITANCE' | translate }}
-
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUnlockRulesInheritanceloc()">
-        {{ unlockRuleInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
-      </i>
-    </div>
-
-    <div class="collapsible" [@collapse]="unlockRuleInheritanceCollapsed" *ngFor="let actionName of getActions()">
-      <app-unlock-rules-inheritance
-        *ngIf="actionName.actionType === action && action === 'UNLOCK_RULE_INHERITANCE'"
-        (delete)="deleteForm(actionName.id, $event, action)"
-        (confirmStep)="confirmStep(actionName.id)"
-        (cancelStep)="cancelStep(actionName.id)"
-        [selectedItem]="Number(selectedItem)"
-        [ruleCategory]="ruleCategory"
-        [hasExactCount]="hasExactCount"
-        [rulesList]="rules$"
-      ></app-unlock-rules-inheritance>
-    </div>
-  </div>
-</div>
+}

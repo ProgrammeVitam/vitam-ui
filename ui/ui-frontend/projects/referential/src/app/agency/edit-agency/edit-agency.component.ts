@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -67,7 +67,6 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
   templateUrl: 'edit-agency.component.html',
   styleUrls: ['edit-agency.component.scss'],
   imports: [
-    CommonModule,
     RouterModule,
     VitamUICommonModule,
     VitamUILibraryModule,
@@ -79,6 +78,18 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
   ],
 })
 export class EditAgencyComponent implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+  private agencyService = inject(AgencyService);
+  private editObjectService = inject(EditObjectService);
+  private templateService = inject(TemplateService);
+  private typeService = inject(TypeService);
+  private spinnerService = inject(SpinnerOverlayService);
+  private router = inject(Router);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private dialog = inject(MatDialog);
+  private translateService = inject(TranslateService);
+  private snackBarService = inject(SnackBarService);
+
   @ViewChild('confirmCancelDialog', { static: true })
   confirmCancelDialog: TemplateRef<EditAgencyComponent>;
   dialogRefToClose: MatDialogRef<EditAgencyComponent>;
@@ -91,19 +102,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
   breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
   editObject: EditObject;
 
-  constructor(
-    private route: ActivatedRoute,
-    private agencyService: AgencyService,
-    private editObjectService: EditObjectService,
-    private templateService: TemplateService,
-    private typeService: TypeService,
-    private spinnerService: SpinnerOverlayService,
-    private router: Router,
-    private tenantSelectionService: TenantSelectionService,
-    private dialog: MatDialog,
-    private translateService: TranslateService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
   }
 

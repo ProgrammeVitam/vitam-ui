@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize, merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
@@ -64,6 +64,11 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./ontology-list.component.scss'],
 })
 export class OntologyListComponent extends InfiniteScrollTable<Ontology> implements OnDestroy, OnInit {
+  ontologyService: OntologyService;
+  private translateService = inject(TranslateService);
+  private matDialog = inject(MatDialog);
+  private tenantSelectionService = inject(TenantSelectionService);
+
   @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
@@ -87,13 +92,12 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
 
   private subscriptions = new Subscription();
 
-  constructor(
-    public ontologyService: OntologyService,
-    private translateService: TranslateService,
-    private matDialog: MatDialog,
-    private tenantSelectionService: TenantSelectionService,
-  ) {
+  constructor() {
+    const ontologyService = inject(OntologyService);
+
     super(ontologyService);
+    this.ontologyService = ontologyService;
+
     this.orderBy = this.shortName;
   }
 

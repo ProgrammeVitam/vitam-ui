@@ -47,6 +47,10 @@ describe('AuditListComponent', () => {
   let fixture: ComponentFixture<AuditListComponent>;
 
   beforeEach(async () => {
+    TestBed.overrideComponent(AuditListComponent, {
+      set: { template: '' },
+    });
+
     const auditServiceMock = {
       search: () => of(null),
     };

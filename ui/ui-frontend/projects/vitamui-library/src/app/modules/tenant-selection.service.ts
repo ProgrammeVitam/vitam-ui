@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject, switchMap } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { UserApiService } from './api/user-api.service';
@@ -49,6 +49,9 @@ export const TENANT_SELECTION_URL_CONDITION = '/tenant/';
   providedIn: 'root',
 })
 export class TenantSelectionService {
+  private authService = inject(AuthService);
+  private userApiService = inject(UserApiService);
+
   public currentAppId$ = new BehaviorSubject(null);
 
   /** Contain data about the current selected tenant */
@@ -65,11 +68,6 @@ export class TenantSelectionService {
 
   /** Contain a list of all existing tenant for the current logged in user */
   private tenants: Tenant[];
-
-  constructor(
-    private authService: AuthService,
-    private userApiService: UserApiService,
-  ) {}
 
   public getSelectedTenant(): Tenant {
     return this.selectedTenant;

@@ -4,5 +4,7 @@
 
 <div class="vitamui-content">
   <app-content-list [content]="content"></app-content-list>
-  <mat-spinner class="vitamui-spinner large my-4 mx-auto" *ngIf="loading"></mat-spinner>
+  @if (loading) {
+    <mat-spinner class="vitamui-spinner large my-4 mx-auto"></mat-spinner>
+  }
 </div>

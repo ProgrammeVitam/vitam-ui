@@ -41,7 +41,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { QuicklinkModule } from 'ngx-quicklink';
 import {
   AuthenticationModule,
   BASE_URL,
@@ -61,7 +60,6 @@ import { PastisConfiguration } from './core/classes/pastis-configuration';
 import { NoAuthenticationModule } from './standalone/no-authentication.module';
 import { StandaloneStartupService } from './standalone/standalone-startup.service';
 import { StandaloneThemeService } from './standalone/standalone-theme.service';
-import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
 export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
@@ -74,33 +72,6 @@ const startupServiceClass = environment.standalone ? StandaloneStartupService : 
 const themeServiceClass = environment.standalone ? StandaloneThemeService : ThemeService;
 const authenticationModuleClass = environment.standalone ? NoAuthenticationModule : AuthenticationModule.forRoot();
 
-const ngxUiLoaderConfig: NgxUiLoaderConfig = {
-  bgsColor: 'red',
-  bgsOpacity: 0.5,
-  bgsPosition: 'bottom-right',
-  bgsSize: 60,
-  bgsType: SPINNER.ballSpinClockwise,
-  blur: 5,
-  delay: 0,
-  fgsColor: 'var(--vitamui-white)',
-  fgsPosition: 'center-center',
-  fgsSize: 60,
-  fgsType: SPINNER.ballSpinClockwise,
-  gap: 24,
-  logoPosition: 'center-center',
-  logoSize: 120,
-  masterLoaderId: 'master',
-  overlayBorderRadius: '0',
-  pbColor: 'var(--vitamui-primary)',
-  pbDirection: 'ltr',
-  pbThickness: 3,
-  hasProgressBar: false,
-  textColor: 'var(--vitamui-white)',
-  textPosition: 'center-center',
-  maxTime: -1,
-  minTime: 300,
-};
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -112,14 +83,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     VitamUICommonModule.forRoot(),
     AppRoutingModule,
     MatToolbarModule,
-    QuicklinkModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), // FIXME: remove this pastis-specific loader in favor of vitam global loader
   ],
   providers: [
     provideI18n(),

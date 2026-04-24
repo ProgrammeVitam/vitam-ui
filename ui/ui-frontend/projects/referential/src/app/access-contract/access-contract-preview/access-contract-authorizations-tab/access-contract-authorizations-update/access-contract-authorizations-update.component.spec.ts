@@ -57,7 +57,9 @@ describe('AccessContractAuthorizationsUpdateComponent', () => {
   };
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [AccessContractAuthorizationsUpdateComponent],

@@ -50,13 +50,13 @@ describe('EditAgencyGuard', () => {
   beforeEach(() => {
     // Mocks des services
     mockSecurityService = {
-      hasRole$: jasmine.createSpy('hasRole$'),
+      hasRole$: vi.fn(),
     };
     mockTenantSelectionService = {
-      getSelectedTenant: jasmine.createSpy('getSelectedTenant').and.returnValue({ identifier: 1 }),
+      getSelectedTenant: vi.fn().mockReturnValue({ identifier: 1 }),
     };
     mockRouter = {
-      navigateByUrl: jasmine.createSpy('navigateByUrl'),
+      navigateByUrl: vi.fn(),
     };
 
     // Configuration du TestBed
@@ -69,9 +69,9 @@ describe('EditAgencyGuard', () => {
     });
   });
 
-  it('should allow access if the user has the required role', (done) => {
+  it('should allow access if the user has the required role', async () => {
     // GIVEN : L'utilisateur a le rôle requis
-    mockSecurityService.hasRole$.and.returnValue(of(true));
+    mockSecurityService.hasRole$.mockReturnValue(of(true));
 
     // GIVEN: Les paramètres de route et les mocks renvoyant "true" pour le rôle
     const route: any = {
@@ -87,22 +87,21 @@ describe('EditAgencyGuard', () => {
 
       // THEN: La guard doit retourner "true" sans redirection
       result$.subscribe((canActivate: boolean) => {
-        expect(canActivate).toBeTrue();
+        expect(canActivate).toBe(true);
         expect(mockSecurityService.hasRole$).toHaveBeenCalledWith('AGENCIES_APP', 'ROLE_UPDATE_AGENCIES', 1);
         expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
-        done();
       });
     });
   });
 
-  it('should redirect if the user does not have the required role', (done) => {
+  it('should redirect if the user does not have the required role', async () => {
     // GIVEN : L'utilisateur n'a pas le rôle requis
-    mockSecurityService.hasRole$.and.returnValue(of(false));
+    mockSecurityService.hasRole$.mockReturnValue(of(false));
 
     // Mock des paramètres de route
     const route: any = {
       paramMap: {
-        get: jasmine.createSpy('get').and.callFake((param) => {
+        get: vi.fn().mockImplementation((param) => {
           return param === 'tenantIdentifier' ? '1' : 'agency123';
         }),
       },
@@ -116,9 +115,8 @@ describe('EditAgencyGuard', () => {
 
       // THEN : La redirection doit avoir lieu
       result$.subscribe((canActivate) => {
-        expect(canActivate).toBeFalse();
+        expect(canActivate).toBe(false);
         expect(mockRouter.navigateByUrl).toHaveBeenCalledWith(ROUTES.AGENCY_DETAILS(1, 'agency123'));
-        done();
       });
     });
   });

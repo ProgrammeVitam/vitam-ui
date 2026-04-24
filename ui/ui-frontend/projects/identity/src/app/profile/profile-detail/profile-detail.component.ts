@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, isLevelAllowed, Profile } from 'vitamui-library';
+import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
 
 import { ProfileService } from '../profile.service';
 
@@ -47,6 +47,10 @@ import { ProfileService } from '../profile.service';
   standalone: false,
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
+  private rngProfileService = inject(ProfileService);
+  private authService = inject(AuthService);
+  private startupService = inject(StartupService);
+
   @Input()
   set id(id: string) {
     this.rngProfileService.get(id).subscribe((profile) => (this.profile = profile));
@@ -58,11 +62,6 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
 
   profileUpdateSub: Subscription;
 
-  constructor(
-    private rngProfileService: ProfileService,
-    private authService: AuthService,
-  ) {}
-
   ngOnInit(): void {
     this.profileUpdateSub = this.rngProfileService.updated.subscribe((updatedProfile) => {
       if (updatedProfile) {
@@ -71,6 +70,15 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  openPopup() {
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/profile/' + this.profile.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
+    this.emitClose();
   }
 
   levelNotAllowed(): boolean {
@@ -85,5 +93,11 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.profileUpdateSub.unsubscribe();
+  }
+
+  filterEvents(event: Event): boolean {
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') || event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE'))
+    );
   }
 }

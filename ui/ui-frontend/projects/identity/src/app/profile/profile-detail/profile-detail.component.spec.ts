@@ -39,7 +39,7 @@ import { EMPTY, of, Subject } from 'rxjs';
 import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
 
-import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -92,6 +92,9 @@ class TestHostComponent {
 
   @ViewChild(ProfileDetailComponent, { static: false }) component: ProfileDetailComponent;
 }
+
+@NgModule({ declarations: [SidePanelStubComponent, TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('ProfileDetailComponent', () => {
   let testhost: TestHostComponent;
@@ -154,7 +157,7 @@ describe('ProfileDetailComponent', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        // TranslateService provided by VitamUICommonTestModule (TranslateModule.forRoot())
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

@@ -1,7 +1,7 @@
 @use '../../../../sass/mixins/elevation' as elevation;
 
 mat-card {
-  --mdc-outlined-card-outline-width: 0;
+  --mat-card-outlined-outline-width: 0;
   --mat-card-title-text-line-height: 23px;
   --mat-card-title-text-tracking: 0;
 

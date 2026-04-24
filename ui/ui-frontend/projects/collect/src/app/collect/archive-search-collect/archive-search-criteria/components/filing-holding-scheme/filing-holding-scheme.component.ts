@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subscription } from 'rxjs';
@@ -66,6 +66,10 @@ import { tap } from 'rxjs/operators';
   standalone: false,
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
+  private translateService = inject(TranslateService);
+  private archiveService = inject(ArchiveCollectService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   @Input() transactionId: string;
   @Input() searchHasMatches = false;
   @Input() searchRequestTotalResults: number;
@@ -95,12 +99,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private filingPlanLoaded = false;
   private attachmentUnitsLoaded = false;
   requestResultsInFilingPlan: number;
-
-  constructor(
-    private translateService: TranslateService,
-    private archiveService: ArchiveCollectService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {}
 
   ngOnInit(): void {
     this.nestedDataSourceLeaves.data = [];

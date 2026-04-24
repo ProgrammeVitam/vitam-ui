@@ -38,7 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
@@ -51,11 +51,20 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 describe('SubrogationSnackBarComponent', () => {
   let component: SubrogationSnackBarComponent;
   let fixture: ComponentFixture<SubrogationSnackBarComponent>;
+  const translateServiceSpy = {
+    instant: () => '',
+    get: () => EMPTY,
+    stream: () => EMPTY,
+    onTranslationChange: EMPTY,
+    onLangChange: EMPTY,
+    onDefaultLangChange: EMPTY,
+    onFallbackLangChange: EMPTY,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SubrogationSnackBarComponent],
-      imports: [VitamUICommonTestModule],
+      imports: [VitamUICommonTestModule, TranslateModule.forRoot()],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: BASE_URL, useValue: '/fakeapi' },
@@ -76,7 +85,7 @@ describe('SubrogationSnackBarComponent', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
         { provide: SnackBarService, useValue: {} },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: TranslateService, useValue: translateServiceSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

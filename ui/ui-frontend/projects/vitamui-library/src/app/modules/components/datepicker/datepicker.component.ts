@@ -47,10 +47,11 @@ import {
   OnInit,
   Signal,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { PickerType } from './datepicker.interface';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { CustomValidators } from '../../object-editor/pattern.validator';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
@@ -73,7 +74,6 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
   styleUrl: './datepicker.component.scss',
   providers: [DATEPICKER_VALUE_ACCESSOR],
   imports: [
-    CommonModule,
     FormErrorsComponent,
     FormsModule,
     MatDatepickerModule,
@@ -85,6 +85,8 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
   ],
 })
 export class DatepickerComponent extends AbstractFormInputDirective implements OnInit {
+  private datePipe = inject(DatePipe);
+
   @Input() pickerType: PickerType = 'day';
   // May be yyyy-MM-dd, dd/MM/yyyy, yyyy or any other date format
   format = input<string>();
@@ -128,10 +130,9 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
     ['year', 'yyyy'],
   ]);
 
-  constructor(
-    injector: Injector,
-    private datePipe: DatePipe,
-  ) {
+  constructor() {
+    const injector = inject(Injector);
+
     super(injector);
   }
 

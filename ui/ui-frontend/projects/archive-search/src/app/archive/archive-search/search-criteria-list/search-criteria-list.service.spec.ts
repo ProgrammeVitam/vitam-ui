@@ -90,7 +90,7 @@ describe('SearchCriteriaListService', () => {
 
   it('should call getSearchCriteriaHistory of archiveApiService', () => {
     // Given
-    spyOn(archiveApiServiceMock, 'getSearchCriteriaHistory').and.callThrough();
+    vi.spyOn(archiveApiServiceMock, 'getSearchCriteriaHistory');
 
     // When
     service.getSearchCriteriaHistory();
@@ -102,7 +102,7 @@ describe('SearchCriteriaListService', () => {
   it('should call deleteSearchCriteriaHistory of archiveApiService', () => {
     // Given
     const savedSearchCriteriaId = '1';
-    spyOn(archiveApiServiceMock, 'deleteSearchCriteriaHistory').and.callThrough();
+    vi.spyOn(archiveApiServiceMock, 'deleteSearchCriteriaHistory');
 
     // When
     service.deleteSearchCriteriaHistory(savedSearchCriteriaId);

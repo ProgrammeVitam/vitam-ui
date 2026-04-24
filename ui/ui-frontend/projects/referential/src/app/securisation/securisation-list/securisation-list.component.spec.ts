@@ -54,6 +54,10 @@ describe('SecurisationListComponent', () => {
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(SecurisationListComponent, {
+      set: { template: '' },
+    });
+
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), VitamUICommonTestModule, ReactiveFormsModule],
       declarations: [SecurisationListComponent],

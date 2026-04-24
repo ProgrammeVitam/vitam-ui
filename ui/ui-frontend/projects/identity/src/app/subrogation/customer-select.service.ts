@@ -39,7 +39,7 @@ import { catchError, map } from 'rxjs/operators';
 import { CriteriaSearchQuery, Customer, MenuOption, Operators } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { CustomerApiService } from '../core/api/customer-api.service';
 
@@ -47,9 +47,9 @@ import { CustomerApiService } from '../core/api/customer-api.service';
   providedIn: 'root',
 })
 export class CustomerSelectService {
-  private customers: Customer[];
+  private customerApi = inject(CustomerApiService);
 
-  constructor(private customerApi: CustomerApiService) {}
+  private customers: Customer[];
 
   getAll(subrogeable: boolean): Observable<MenuOption[]> {
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -53,6 +53,10 @@ const UPDATE_DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class IdentityProviderDetailsComponent {
+  private formBuilder = inject(FormBuilder);
+  private identityProviderService = inject(IdentityProviderService);
+  private snackBarService = inject(SnackBarService);
+
   @Input()
   set identityProvider(identityProvider: IdentityProvider) {
     this._identityProvider = identityProvider;
@@ -142,11 +146,7 @@ export class IdentityProviderDetailsComponent {
   commonsControls: FormGroup;
   idpMetadata: FormControl;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private identityProviderService: IdentityProviderService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     this.commonsControls = this.initializeCommonControls();
     this.specificSamlControls = this.initializeSamlControls();
     this.specificOidcControls = this.initializeOidcControls();

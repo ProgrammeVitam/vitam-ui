@@ -4,14 +4,16 @@
 </div>
 
 <mat-menu #alertsMenu="matMenu">
-  <ng-container *ngFor="let alert of userAlerts.alerts">
+  @for (alert of userAlerts.alerts; track alert) {
     <button class="alert" mat-menu-item title="{{ alert.label }}">
       <div class="text normal" (click)="openAlert.emit(alert)">{{ alert.label }}</div>
       <i class="text normal light vitamui-icon vitamui-icon-close" (click)="closeAlert.emit(alert)"></i>
     </button>
-  </ng-container>
+  }
 
-  <button class="alert" mat-menu-item (click)="seeMoreAlerts.emit()" *ngIf="hasMoreAlerts">
-    <div class="text normal primary">{{ 'USER_ALERTS.SEE_MORE' | translate }}</div>
-  </button>
+  @if (hasMoreAlerts) {
+    <button class="alert" mat-menu-item (click)="seeMoreAlerts.emit()">
+      <div class="text normal primary">{{ 'USER_ALERTS.SEE_MORE' | translate }}</div>
+    </button>
+  }
 </mat-menu>

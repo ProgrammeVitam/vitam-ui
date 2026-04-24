@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Group, Profile } from 'vitamui-library';
@@ -48,6 +48,9 @@ import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
   standalone: false,
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
+  private dialog = inject(MatDialog);
+  private groupService = inject(GroupService);
+
   @Input() group: Group;
 
   @Input() readOnly: boolean;
@@ -55,11 +58,6 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
   profilesDisplay: any[];
   updatedGroup: Subscription;
   public groupProfiles: Profile[];
-
-  constructor(
-    private dialog: MatDialog,
-    private groupService: GroupService,
-  ) {}
 
   ngOnInit() {
     this.initializeProfilesList(this.group?.profiles);

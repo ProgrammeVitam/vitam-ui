@@ -58,7 +58,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   LOCALE_ID,
   OnDestroy,
@@ -66,6 +65,7 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
 
 import { CustomerService } from '../../core/customer.service';
@@ -82,6 +82,12 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
+  private customerService = inject(CustomerService);
+  userService: UserService;
+  private locale = inject(LOCALE_ID);
+  private authService = inject(AuthService);
+  private snackBarService = inject(SnackBarService);
+
   @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
@@ -142,14 +148,12 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
   private _groups: Group[];
 
-  constructor(
-    private customerService: CustomerService,
-    public userService: UserService,
-    @Inject(LOCALE_ID) private locale: string,
-    private authService: AuthService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const userService = inject(UserService);
+
     super(userService);
+    this.userService = userService;
+
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,

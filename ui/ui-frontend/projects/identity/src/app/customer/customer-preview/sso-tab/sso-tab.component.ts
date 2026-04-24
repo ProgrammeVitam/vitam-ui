@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
@@ -68,6 +68,10 @@ import { ProviderApiService } from './provider-api.service';
   standalone: false,
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
+  dialog = inject(MatDialog);
+  private identityProviderService = inject(IdentityProviderService);
+  private providerApi = inject(ProviderApiService);
+
   providers: IdentityProvider[];
   panel1Position = 'current';
   panel2Position = 'next';
@@ -94,12 +98,6 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   @Input() readOnly: boolean;
 
   private updatedProviderSub: Subscription;
-
-  constructor(
-    public dialog: MatDialog,
-    private identityProviderService: IdentityProviderService,
-    private providerApi: ProviderApiService,
-  ) {}
 
   ngOnInit() {
     this.updatedProviderSub = this.identityProviderService.updated.subscribe((updatedProvider: IdentityProvider) => {

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -96,6 +96,22 @@ export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
   standalone: false,
 })
 export class CreateProjectComponent implements OnInit, AfterViewChecked {
+  private formBuilder = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<CreateProjectComponent>>(MatDialogRef);
+  private dialogRefToClose = inject<MatDialogRef<CreateProjectComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private projectsService = inject(ProjectsService);
+  private externalReferentialService = inject(ExternalReferentialService);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private transactionsService = inject(TransactionsService);
+  private archiveCollectService = inject(ArchiveCollectService);
+  private logger = inject(Logger);
+  private cdr = inject(ChangeDetectorRef);
+  private translationService = inject(TranslateService);
+  dialog = inject(MatDialog);
+  private schemaService = inject(SchemaService);
+  private snackBarService = inject(SnackBarService);
+
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
   // enums for html
   Workflow = Workflow;
@@ -151,24 +167,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   @ViewChild('displayCsvErrorsDialog', { static: true })
   displayCsvErrorsDialog: TemplateRef<CreateProjectComponent>;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<CreateProjectComponent>,
-    private dialogRefToClose: MatDialogRef<CreateProjectComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private projectsService: ProjectsService,
-    private externalReferentialService: ExternalReferentialService,
-    private tenantSelectionService: TenantSelectionService,
-    private transactionsService: TransactionsService,
-    private archiveCollectService: ArchiveCollectService,
-    private logger: Logger,
-    private cdr: ChangeDetectorRef,
-    private translationService: TranslateService,
-    public dialog: MatDialog,
-    private schemaService: SchemaService,
-    filingPlanService: FilingPlanService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const filingPlanService = inject(FilingPlanService);
+
     filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
   }
 

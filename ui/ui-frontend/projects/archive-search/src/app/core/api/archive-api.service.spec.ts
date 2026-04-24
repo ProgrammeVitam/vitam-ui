@@ -54,13 +54,13 @@ describe('ArchiveApiService', () => {
     }),
   );
   it('should be created', () => {
-    const service: ArchiveApiService = TestBed.get(ArchiveApiService);
+    const service: ArchiveApiService = TestBed.inject(ArchiveApiService);
     expect(service).toBeTruthy();
   });
 
   it('should return the exact baseUrl', () => {
     // Given
-    const service: ArchiveApiService = TestBed.get(ArchiveApiService);
+    const service: ArchiveApiService = TestBed.inject(ArchiveApiService);
     // When
     service.baseUrl = 'localhost:4200/archive-search';
     // Then

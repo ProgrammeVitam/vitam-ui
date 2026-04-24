@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Event, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
 import { OperationApiService } from '../core/api/operation-api.service';
@@ -45,11 +45,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ProbativeValueService extends SearchService<Event> {
-  constructor(
-    private operationApiService: OperationApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  private operationApiService: OperationApiService;
+  private snackBarService = inject(SnackBarService);
+
+  constructor() {
+    const operationApiService = inject(OperationApiService);
+
     super(operationApiService, 'ALL');
+
+    this.operationApiService = operationApiService;
   }
 
   create(probativeValueRequest: any, headers: HttpHeaders) {

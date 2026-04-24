@@ -172,15 +172,15 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0]);
 
         // Then: Check all nodes checked
-        expect(nodes[0].checked).toBeTruthy('Root node should be checked');
-        expect(nodes[0].children[0].checked).toBeTruthy('Child 1 should be checked');
-        expect(nodes[0].children[1].checked).toBeTruthy('Child 2 should be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeTruthy('Leaf 1 should be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeTruthy('Leaf 2 should be checked');
+        expect(nodes[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[1].checked).toBeTruthy();
 
         // And: rootNode in selected / included nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootId', 'rootId should be included');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootId');
       });
 
       it('should exclude and deselect children when unselect root child 1', () => {
@@ -191,20 +191,20 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0]);
 
         // Then: Check all nodes state
-        expect(nodes[0].checked).toBeTruthy('Root node should be checked');
-        expect(nodes[0].children[0].checked).toBeFalsy('Child 1 should not be checked');
-        expect(nodes[0].children[1].checked).toBeTruthy('Child 2 should be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeFalsy('Leaf 1 should not be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeFalsy('Leaf 2 should not be checked');
+        expect(nodes[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
 
         // Then: Check Root indeterminate state
-        expect(nodes[0].disabledChild).toBeTruthy('Root node should have disabledChild');
+        expect(nodes[0].disabledChild).toBeTruthy();
 
         // And: Check selectedNodes state
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootId', 'rootId should be included');
-        expect(component.selectedNodes.excluded.length).toBe(1, 'only 1 node should be excluded');
-        expect(component.selectedNodes.excluded[0]).toBe('rootChild-1', 'rootChild-1 should be excluded');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootId');
+        expect(component.selectedNodes.excluded.length).toBe(1);
+        expect(component.selectedNodes.excluded[0]).toBe('rootChild-1');
       });
 
       it('should re-include leaf is selected', () => {
@@ -217,21 +217,21 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0].children[0]);
 
         // Then: Check all nodes state
-        expect(nodes[0].checked).toBeTruthy('Root node should be checked');
-        expect(nodes[0].children[0].checked).toBeFalsy('Child 1 should not be checked');
-        expect(nodes[0].children[1].checked).toBeTruthy('Child 2 should be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeTruthy('Leaf 1 should be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeFalsy('Leaf 2 should not be checked');
+        expect(nodes[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
 
         // Then: Check Root indeterminate state
-        expect(nodes[0].disabledChild).toBeTruthy('Root node should have disabledChild');
+        expect(nodes[0].disabledChild).toBeTruthy();
 
         // And: Check selectedNodes state
-        expect(component.selectedNodes.included.length).toBe(2, 'only 2 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootId', 'rootId should be included');
-        expect(component.selectedNodes.included[1]).toBe('leaf-1', 'leaf-1 should be included');
-        expect(component.selectedNodes.excluded.length).toBe(1, 'only 1 node should be excluded');
-        expect(component.selectedNodes.excluded[0]).toBe('rootChild-1', 'rootChild-1 should be excluded');
+        expect(component.selectedNodes.included.length).toBe(2);
+        expect(component.selectedNodes.included[0]).toBe('rootId');
+        expect(component.selectedNodes.included[1]).toBe('leaf-1');
+        expect(component.selectedNodes.excluded.length).toBe(1);
+        expect(component.selectedNodes.excluded[0]).toBe('rootChild-1');
       });
 
       it('should remove leaf from included if parent is re-selected', () => {
@@ -246,18 +246,18 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0]);
 
         // Then: Check all nodes state
-        expect(nodes[0].checked).toBeTruthy('Root node should be checked');
-        expect(nodes[0].children[0].checked).toBeTruthy('Child 1 should be checked');
-        expect(nodes[0].children[1].checked).toBeTruthy('Child 2 should be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeTruthy('Leaf 1 should be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeTruthy('Leaf 2 should be checked');
+        expect(nodes[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[1].checked).toBeTruthy();
 
         // Then: Check Root indeterminate state
-        expect(nodes[0].disabledChild).toBeFalsy('Root node should not have disabledChild');
+        expect(nodes[0].disabledChild).toBeFalsy();
 
         // And: Check selectedNodes state
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootId', 'rootId should be included');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootId');
       });
 
       it('should exclude leaf is deselected', () => {
@@ -268,21 +268,21 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0].children[1]);
 
         // Then: Check all nodes checked
-        expect(nodes[0].checked).toBeTruthy('Root node should be checked');
-        expect(nodes[0].children[0].checked).toBeTruthy('Child 1 should be checked');
-        expect(nodes[0].children[1].checked).toBeTruthy('Child 2 should be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeTruthy('Leaf 1 should be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeFalsy('Leaf 2 should not be checked');
+        expect(nodes[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
 
         // Then: Check Root indeterminate state
-        expect(nodes[0].disabledChild).toBeTruthy('Root node should have disabledChild');
-        expect(nodes[0].children[0].disabledChild).toBeTruthy('Child 1 should have disabledChild');
+        expect(nodes[0].disabledChild).toBeTruthy();
+        expect(nodes[0].children[0].disabledChild).toBeTruthy();
 
         // And: rootNode in selected / included nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootId', 'rootId should be included');
-        expect(component.selectedNodes.excluded.length).toBe(1, 'only 1 node should be excluded');
-        expect(component.selectedNodes.excluded[0]).toBe('leaf-2', 'leaf-2 should be excluded');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootId');
+        expect(component.selectedNodes.excluded.length).toBe(1);
+        expect(component.selectedNodes.excluded[0]).toBe('leaf-2');
       });
 
       it('should remove leaf from excluded if parent is deselected', () => {
@@ -295,20 +295,20 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0]);
 
         // Then: Check all nodes checked
-        expect(nodes[0].checked).toBeTruthy('Root node should be checked');
-        expect(nodes[0].children[0].checked).toBeFalsy('Child 1 node should not be checked');
-        expect(nodes[0].children[1].checked).toBeTruthy('Child 2 should be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeFalsy('Leaf 1 should not be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeFalsy('Leaf 2 should not be checked');
+        expect(nodes[0].checked).toBeTruthy();
+        expect(nodes[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
 
         // Then: Check Root indeterminate state
-        expect(nodes[0].disabledChild).toBeTruthy('Root node should have disabledChild');
+        expect(nodes[0].disabledChild).toBeTruthy();
 
         // And: rootNode in selected / included nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootId', 'rootId should be included');
-        expect(component.selectedNodes.excluded.length).toBe(1, 'only 1 node should be excluded');
-        expect(component.selectedNodes.excluded[0]).toBe('rootChild-1', 'rootChild-1 should be excluded');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootId');
+        expect(component.selectedNodes.excluded.length).toBe(1);
+        expect(component.selectedNodes.excluded[0]).toBe('rootChild-1');
       });
     });
 
@@ -323,21 +323,17 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0]);
 
         // Then: Check selected and all children checked (and children disabled)
-        expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and not Disabled');
-        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should be Checked and Disabled',
-        );
-        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should be Checked and Disabled',
-        );
+        expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy();
+        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy();
 
         // Then: Check sibling and parent nodes not checked nor disabled
-        expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should not be Checked nor Disabled');
-        expect(!nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy('Root node should not be Checked nor Disabled');
+        expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy();
+        expect(!nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy();
 
         // Then: Check selected nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootChild-1', 'rootChild-1 should be included');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootChild-1');
       });
 
       it('should add another inclusion when selecting other node', () => {
@@ -348,22 +344,18 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[1]);
 
         // Then: Check selected and all children checked (and children disabled)
-        expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and not Disabled');
-        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should be Checked and Disabled',
-        );
-        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should be Checked and Disabled',
-        );
-        expect(nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy('Child 2 should be Checked and not Disabled');
+        expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy();
+        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy();
+        expect(nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy();
 
         // Then: Check sibling and parent nodes not checked nor disabled
-        expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should not be Checked nor Disabled');
+        expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy();
 
         // Then: Check selected nodes
-        expect(component.selectedNodes.included.length).toBe(2, 'only 2 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootChild-1', 'rootChild-1 should be included');
-        expect(component.selectedNodes.included[1]).toBe('rootChild-2', 'rootChild-2 should be included');
+        expect(component.selectedNodes.included.length).toBe(2);
+        expect(component.selectedNodes.included[0]).toBe('rootChild-1');
+        expect(component.selectedNodes.included[1]).toBe('rootChild-2');
       });
 
       it('should unselect node and children when uncheck node', () => {
@@ -376,21 +368,17 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0]);
 
         // Then: Check selected and all children checked (and children disabled)
-        expect(nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy('Child 2 should be Checked and not Disabled');
+        expect(nodes[0].children[1].checked && !nodes[0].children[1].disabled).toBeTruthy();
 
         // Then: Check sibling and parent nodes not checked nor disabled
-        expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should not be Checked nor Disabled');
-        expect(!nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should not be Checked nor Disabled');
-        expect(!nodes[0].children[0].children[0].checked && !nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should not be Checked nor Disabled',
-        );
-        expect(!nodes[0].children[0].children[1].checked && !nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should not be Checked nor Disabled',
-        );
+        expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy();
+        expect(!nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy();
+        expect(!nodes[0].children[0].children[0].checked && !nodes[0].children[0].children[0].disabled).toBeTruthy();
+        expect(!nodes[0].children[0].children[1].checked && !nodes[0].children[0].children[1].disabled).toBeTruthy();
 
         // Then: Check selected nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootChild-2', 'rootChild-2 should be included');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootChild-2');
       });
 
       it('should unselect and disable selected children when select root', () => {
@@ -405,19 +393,15 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0]);
 
         // Then: Check selected and all children checked (and children disabled)
-        expect(nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should be Checked and not Disabled');
-        expect(nodes[0].children[0].checked && nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and Disabled');
-        expect(nodes[0].children[1].checked && nodes[0].children[1].disabled).toBeTruthy('Child 2 should be Checked and Disabled');
-        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy(
-          'Leaf 1 should be Checked and Disabled',
-        );
-        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy(
-          'Leaf 2 should be Checked and Disabled',
-        );
+        expect(nodes[0].checked && !nodes[0].disabled).toBeTruthy();
+        expect(nodes[0].children[0].checked && nodes[0].children[0].disabled).toBeTruthy();
+        expect(nodes[0].children[1].checked && nodes[0].children[1].disabled).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled).toBeTruthy();
+        expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled).toBeTruthy();
 
         // Then: Check selected nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootId', 'rootId should be included');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootId');
       });
     });
 
@@ -432,15 +416,15 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0]);
 
         // Then: Check only checked is checked
-        expect(nodes[0].checked).toBeFalsy('Root node should not be checked');
-        expect(nodes[0].children[0].checked).toBeTruthy('Child 1 should be checked');
-        expect(nodes[0].children[1].checked).toBeFalsy('Child 2 should not be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeFalsy('Leaf 1 should not be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeFalsy('Leaf 2 should not be checked');
+        expect(nodes[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].checked).toBeTruthy();
+        expect(nodes[0].children[1].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
 
         // Then: Check selected nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootChild-1', 'rootChild-1 should be included');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootChild-1');
       });
 
       it('should remove unselected node from inclusion', () => {
@@ -451,14 +435,14 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[0]);
 
         // Then: Check only new node is checked
-        expect(nodes[0].checked).toBeFalsy('Root Node should not be checked');
-        expect(nodes[0].children[0].checked).toBeFalsy('Child 1 should not be checked');
-        expect(nodes[0].children[1].checked).toBeFalsy('Child 2 should not be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeFalsy('Leaf 1 should not be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeFalsy('Leaf 2 should not be checked');
+        expect(nodes[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[1].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
 
         // Then: Check selected nodes
-        expect(component.selectedNodes.included.length).toBe(0, 'no node should be included');
+        expect(component.selectedNodes.included.length).toBe(0);
       });
 
       it('should change inclusion node with the new selected node', () => {
@@ -469,15 +453,15 @@ describe('FilingPlanComponent', () => {
         component.emitVitamId(nodes[0].children[1]);
 
         // Then: Check only new node is checked
-        expect(nodes[0].checked).toBeFalsy('Root Node should not be checked');
-        expect(nodes[0].children[0].checked).toBeFalsy('Child 1 should not be checked');
-        expect(nodes[0].children[1].checked).toBeTruthy('Child 2 should be checked');
-        expect(nodes[0].children[0].children[0].checked).toBeFalsy('Leaf 1 should not be checked');
-        expect(nodes[0].children[0].children[1].checked).toBeFalsy('Leaf 2 should not be checked');
+        expect(nodes[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[1].checked).toBeTruthy();
+        expect(nodes[0].children[0].children[0].checked).toBeFalsy();
+        expect(nodes[0].children[0].children[1].checked).toBeFalsy();
 
         // Then: Check selected nodes
-        expect(component.selectedNodes.included.length).toBe(1, 'only 1 node should be included');
-        expect(component.selectedNodes.included[0]).toBe('rootChild-2', 'rootChild-2 should be included');
+        expect(component.selectedNodes.included.length).toBe(1);
+        expect(component.selectedNodes.included[0]).toBe('rootChild-2');
       });
     });
   });

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, OnInit, SimpleChanges, ViewChild, OnChanges } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, OnInit, SimpleChanges, ViewChild, OnChanges, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { map, shareReplay } from 'rxjs/operators';
 import { Application, ApplicationApiService, Option, Profile, ProfileService, SelectComponent } from 'vitamui-library';
@@ -57,6 +57,9 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnChanges {
+  private rngProfileService = inject(ProfileService);
+  private appApiService = inject(ApplicationApiService);
+
   profiles: Profile[] = [];
   profileIds: string[] = [];
   applicationsDetails: Application[] = [];
@@ -84,11 +87,6 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
     map((applications) => applications.APPLICATION_CONFIGURATION),
     shareReplay(1),
   );
-
-  constructor(
-    private rngProfileService: ProfileService,
-    private appApiService: ApplicationApiService,
-  ) {}
 
   ngOnInit(): void {
     this.applicationsDetails$.subscribe((applicationsDetails) => (this.applicationsDetails = applicationsDetails));

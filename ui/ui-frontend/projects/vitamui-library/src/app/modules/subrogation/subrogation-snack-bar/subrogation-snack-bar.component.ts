@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
@@ -44,12 +44,10 @@ import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
   standalone: false,
 })
 export class SubrogationSnackBarComponent {
-  constructor(
-    @Inject(MAT_SNACK_BAR_DATA) public data: any,
-    private matSnackBarRef: MatSnackBarRef<SubrogationSnackBarComponent>,
-    private subrogationApiService: SubrogationApiService,
-    private snackBarService: SnackBarService,
-  ) {}
+  data = inject(MAT_SNACK_BAR_DATA);
+  private matSnackBarRef = inject<MatSnackBarRef<SubrogationSnackBarComponent>>(MatSnackBarRef);
+  private subrogationApiService = inject(SubrogationApiService);
+  private snackBarService = inject(SnackBarService);
 
   close() {
     this.matSnackBarRef.dismiss();

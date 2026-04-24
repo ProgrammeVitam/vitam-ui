@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BASE_URL, VitamuiHttpHeaders } from 'vitamui-library';
 import { ReferentialTypes } from '../../shared/import-dialog/import-dialog-param.interface';
 
@@ -43,10 +43,8 @@ import { ReferentialTypes } from '../../shared/import-dialog/import-dialog-param
   providedIn: 'root',
 })
 export class ReferentialImportApiService {
-  constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) private baseUrl: string,
-  ) {}
+  private http = inject(HttpClient);
+  private baseUrl = inject(BASE_URL);
 
   importReferential(referential: ReferentialTypes, file: File) {
     const headers = new HttpHeaders().append(VitamuiHttpHeaders.X_BY_PASSED_ERROR, '400');

@@ -36,7 +36,7 @@
  */
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { I18nPluralPipe } from '@angular/common';
-import { AfterViewInit, Component, computed, DestroyRef, inject, Inject, OnInit, signal, Signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, inject, OnInit, signal, Signal, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
@@ -69,11 +69,9 @@ import { tap } from 'rxjs/operators';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { searchAllRecordsQuery } from './reclassification-dialog.queries';
 import { BaseReclassificationDialogService, BuildQueryParams } from './reclassification-dialog.service';
+import { ReclassificationMode } from './reclassification-dialog.types';
 
-export enum ReclassificationMode {
-  FILING_PLAN = 'FILING_PLAN',
-  ARCHIVE_UNIT_ID = 'ARCHIVE_UNIT_ID',
-}
+export { ReclassificationMode };
 
 interface ActionOption extends Option {
   key: 'ADD' | 'PULL' | 'REPLACE';
@@ -111,6 +109,27 @@ const atLeastOneFilingPlan: ValidatorFn = (control) => {
   providers: [BaseReclassificationDialogService],
 })
 export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
+  private reclassificationDialogService = inject(BaseReclassificationDialogService);
+  private translateService = inject(TranslateService);
+  private formBuilder = inject(FormBuilder);
+  private reclassificationService = inject(ReclassificationService);
+  private reclassificationValidator = inject(ReclassificationValidatorService);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private startupService = inject(StartupService);
+  private logger = inject(Logger);
+  private snackBarService = inject(SnackBarService);
+  dialogRef = inject<MatDialogRef<ReclassificationDialogComponent>>(MatDialogRef);
+  data = inject<{
+    appName: string;
+    reclassificationCriteria: SearchCriteriaDto;
+    itemSelected: number;
+    archiveUnitGuidSelected: string[];
+    archiveUnitAllunitup: string[];
+    accessContract: string;
+    transactionId: string;
+    tenantIdentifier: number;
+  }>(MAT_DIALOG_DATA);
+
   stepperRef = viewChild.required(StepperComponent);
 
   protected readonly FilingPlanMode = FilingPlanMode;
@@ -245,29 +264,7 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
 
   projectUnits: Unit[];
 
-  constructor(
-    private reclassificationDialogService: BaseReclassificationDialogService,
-    private translateService: TranslateService,
-    private formBuilder: FormBuilder,
-    private reclassificationService: ReclassificationService,
-    private reclassificationValidator: ReclassificationValidatorService,
-    private confirmDialogService: ConfirmDialogService,
-    private startupService: StartupService,
-    private logger: Logger,
-    private snackBarService: SnackBarService,
-    public dialogRef: MatDialogRef<ReclassificationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      appName: string;
-      reclassificationCriteria: SearchCriteriaDto;
-      itemSelected: number;
-      archiveUnitGuidSelected: string[];
-      archiveUnitAllunitup: string[];
-      accessContract: string;
-      transactionId: string;
-      tenantIdentifier: number;
-    },
-  ) {
+  constructor() {
     const { childrenCountLoaded, shouldProposeExactChildrenCount, badgeMessage, parentIds, parents } = this.reclassificationDialogService;
 
     this.childrenCountLoaded = childrenCountLoaded;

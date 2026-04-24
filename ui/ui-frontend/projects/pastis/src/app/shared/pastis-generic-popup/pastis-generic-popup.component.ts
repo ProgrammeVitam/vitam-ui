@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { DataGeneriquePopupService } from '../data-generique-popup.service';
 import { PastisPopupSelectionService } from './pastis-popup-selection.service';
 import { CommonModule } from '@angular/common';
@@ -47,6 +47,9 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./pastis-generic-popup.component.scss'],
 })
 export class PastisGenericPopupComponent implements OnInit {
+  private pastisPopupSelectionService = inject(PastisPopupSelectionService);
+  private dataGeneriquePopupService = inject(DataGeneriquePopupService);
+
   donnees: string[];
 
   @Input()
@@ -62,11 +65,6 @@ export class PastisGenericPopupComponent implements OnInit {
   @Output() changeStatusEvent: EventEmitter<string> = new EventEmitter<string>();
 
   status: boolean;
-
-  constructor(
-    private pastisPopupSelectionService: PastisPopupSelectionService,
-    private dataGeneriquePopupService: DataGeneriquePopupService,
-  ) {}
 
   ngOnInit(): void {
     this.dataGeneriquePopupService.currentDonnee.subscribe((donnees) => (this.donnees = donnees));

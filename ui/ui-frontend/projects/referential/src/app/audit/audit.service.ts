@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -58,14 +58,18 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class AuditService extends SearchService<Event> {
-  constructor(
-    private operationApiService: OperationApiService,
-    private logbookApiService: LogbookApiService,
-    private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
-    private snackBarService: SnackBarService,
-    private translateService: TranslateService,
-  ) {
+  private operationApiService: OperationApiService;
+  private logbookApiService = inject(LogbookApiService);
+  private accessionRegisterSummaryApiService = inject(AccessionRegisterSummaryApiService);
+  private snackBarService = inject(SnackBarService);
+  private translateService = inject(TranslateService);
+
+  constructor() {
+    const operationApiService = inject(OperationApiService);
+
     super(operationApiService, 'ALL');
+
+    this.operationApiService = operationApiService;
   }
 
   create(audit: any, headers: HttpHeaders) {

@@ -52,10 +52,14 @@ describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
-  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+  };
+  matDialogRefSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
-  const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}) });
+  const uploadServiceSpy = {
+    uploadFile: vi.fn().mockName('UploadService.uploadFile').mockReturnValue(of({})),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -74,7 +78,9 @@ describe('UploadComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideTemplate(UploadComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {

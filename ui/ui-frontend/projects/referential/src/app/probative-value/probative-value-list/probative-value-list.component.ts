@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
@@ -55,6 +55,8 @@ export class ProbativeValueFilters {
   standalone: false,
 })
 export class ProbativeValueListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+  probativeValueService: ProbativeValueService;
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
@@ -83,8 +85,12 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
 
   @Output() probativeValueClick = new EventEmitter<any>();
 
-  constructor(public probativeValueService: ProbativeValueService) {
+  constructor() {
+    const probativeValueService = inject(ProbativeValueService);
+
     super(probativeValueService);
+
+    this.probativeValueService = probativeValueService;
   }
 
   ngOnInit() {

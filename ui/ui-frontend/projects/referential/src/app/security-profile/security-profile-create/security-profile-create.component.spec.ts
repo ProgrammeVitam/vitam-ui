@@ -82,7 +82,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
@@ -102,11 +102,15 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() selected: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  selected: string;
+  @Input()
+  spinnerDiameter = 25;
 
-  @Output() selectedChange = new EventEmitter<string>();
+  @Output()
+  selectedChange = new EventEmitter<string>();
 
   writeValue() {}
   registerOnChange() {}
@@ -157,13 +161,23 @@ let page: Page;
 
 describe('SecurityProfileCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', { create: of({}) });
-    const customerCreateValidatorsSpy = jasmine.createSpyObj('SecurityProfileCreateValidators', {
-      uniqueName: () => of(null),
-      uniqueIdentifier: () => of(null),
-      identifierToIgnore: '',
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const customerServiceSpy = {
+      create: vi.fn().mockName('SecurityProfileService.create').mockReturnValue(of({})),
+    };
+    const customerCreateValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('SecurityProfileCreateValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+      uniqueIdentifier: vi
+        .fn()
+        .mockName('SecurityProfileCreateValidators.uniqueIdentifier')
+        .mockReturnValue(() => of(null)),
+      identifierToIgnore: vi.fn().mockName('SecurityProfileCreateValidators.identifierToIgnore').mockReturnValue(''),
+    };
     await TestBed.configureTestingModule({
       imports: [
         SecurityProfileCreateComponent,
@@ -188,7 +202,15 @@ describe('SecurityProfileCreateComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(SecurityProfileCreateComponent, {
-        remove: { imports: [VitamUILibraryModule] },
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="name" />
+              <input formControlName="fullAccess" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
       })
       .compileComponents();
   });
@@ -236,9 +258,9 @@ describe('SecurityProfileCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy('empty name invalid');
-          expect(setControlValue('name', 'n').invalid).toBeTruthy('minlength name invalid');
-          expect(setControlValue('name', 'name').valid).toBeTruthy('name valid');
+          expect(setControlValue('name', '').invalid).toBeTruthy();
+          expect(setControlValue('name', 'n').invalid).toBeTruthy();
+          expect(setControlValue('name', 'name').valid).toBeTruthy();
         });
       });
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { SafeResourceUrl, Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
@@ -57,7 +57,7 @@ import {
 } from 'vitamui-library';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
 import { Content } from '../components/content-list/content.interface';
-import { CommonModule } from '@angular/common';
+
 import { MatMenuModule } from '@angular/material/menu';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -71,17 +71,18 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   selector: 'app-portal',
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss'],
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    RouterModule,
-    WelcomeMessageComponent,
-    ContentListComponent,
-    MatProgressSpinnerModule,
-  ],
+  imports: [MatMenuModule, ReactiveFormsModule, RouterModule, WelcomeMessageComponent, ContentListComponent, MatProgressSpinnerModule],
 })
 export class PortalComponent implements OnInit, OnDestroy {
+  private translateService = inject(TranslateService);
+  private applicationService = inject(ApplicationService);
+  private startupService = inject(StartupService);
+  private authService = inject(AuthService);
+  private themeService = inject(ThemeService);
+  private languageService = inject(LanguageService);
+  private titleService = inject(Title);
+  private globalEventService = inject(GlobalEventService);
+
   public content: Map<Category, Content> = new Map();
   public welcomeTitle: string;
   public welcomeMessage: string;
@@ -89,17 +90,6 @@ export class PortalComponent implements OnInit, OnDestroy {
   public loading = true;
 
   private destroyer$ = new Subject<void>();
-
-  constructor(
-    private translateService: TranslateService,
-    private applicationService: ApplicationService,
-    private startupService: StartupService,
-    private authService: AuthService,
-    private themeService: ThemeService,
-    private languageService: LanguageService,
-    private titleService: Title,
-    private globalEventService: GlobalEventService,
-  ) {}
 
   ngOnInit() {
     this.applicationService

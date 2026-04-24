@@ -54,15 +54,15 @@ describe('MiscValidators', () => {
       const formGroup = formBuilder.group({
         field: [str, MiscValidators.requiredNotBlank],
       });
-      expect(formGroup.valid).withContext('Form group must be valid').toBeTruthy();
-      expect(formGroup.get('field').errors).withContext('Field control must not have errors').toBeNull();
+      expect(formGroup.valid, 'Form group must be valid').toBeTruthy();
+      expect(formGroup.get('field').errors, 'Field control must not have errors').toBeNull();
     };
     const expectInvalid = (str: string | null) => () => {
       const formGroup = formBuilder.group({
         field: [str, MiscValidators.requiredNotBlank],
       });
-      expect(formGroup.invalid).withContext('Form group must be invalid').toBeTruthy();
-      expect(formGroup.get('field').errors).withContext('Field control must have errors').toBeTruthy();
+      expect(formGroup.invalid, 'Form group must be invalid').toBeTruthy();
+      expect(formGroup.get('field').errors, 'Field control must have errors').toBeTruthy();
     };
     it('should allow non blank field without spaces', expectValid('azerty'));
     it('should allow non blank field with spaces', expectValid(' azer ty  '));

@@ -36,7 +36,7 @@
  */
 import { EditableFieldComponent, IdentityProvider, newFile } from 'vitamui-library';
 
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 /*eslint no-use-before-define: "error"*/
@@ -47,6 +47,8 @@ import { IdentityProviderService } from '../../../customer/customer-preview/sso-
   standalone: false,
 })
 export class EditableKeystoreComponent extends EditableFieldComponent {
+  private identityProviderService = inject(IdentityProviderService);
+
   @Input() identityProvider: IdentityProvider;
 
   file: File;
@@ -58,10 +60,9 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
     return this.editMode && !!this.file && this.control.valid;
   }
 
-  constructor(
-    private identityProviderService: IdentityProviderService,
-    elementRef: ElementRef,
-  ) {
+  constructor() {
+    const elementRef = inject(ElementRef);
+
     super(elementRef);
   }
 

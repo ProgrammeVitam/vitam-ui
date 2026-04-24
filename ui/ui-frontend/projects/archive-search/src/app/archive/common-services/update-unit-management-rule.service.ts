@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -52,12 +52,10 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class UpdateUnitManagementRuleService {
-  constructor(
-    private archiveService: ArchiveService,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private translateService: TranslateService,
-    public dialog: MatDialog,
-  ) {}
+  private archiveService = inject(ArchiveService);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private translateService = inject(TranslateService);
+  dialog = inject(MatDialog);
 
   DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
   DEFAULT_DIP_EXPORT_THRESHOLD = 100000;

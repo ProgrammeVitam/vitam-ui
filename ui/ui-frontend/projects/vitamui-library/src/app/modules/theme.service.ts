@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
@@ -59,6 +59,8 @@ const DEFAULT_PRIMARY = '#9C31B5';
   providedIn: 'root',
 })
 export class ThemeService {
+  private domSanitizer = inject(DomSanitizer);
+
   private luminosityStep = 10;
   public get defaultTheme(): Theme {
     return this._defaultTheme.getValue();
@@ -67,8 +69,6 @@ export class ThemeService {
   public set defaultTheme(theme: Theme) {
     this._defaultTheme.next(theme);
   }
-
-  constructor(private domSanitizer: DomSanitizer) {}
 
   private baseColors: { [colorId in ThemeColorType]?: string } = {
     [ThemeColorType.VITAMUI_PRIMARY]: 'COLOR.PRIMARY',

@@ -14,7 +14,9 @@
       >
         <div class="shade-text">
           <div class="text normal">{{ colorToHex(color) }}</div>
-          <div class="text normal" *ngFor="let kv of colorToHsl(color) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
+          @for (kv of colorToHsl(color) | keyvalue; track kv) {
+            <div class="text normal">{{ kv.key }} : {{ kv.value }}</div>
+          }
         </div>
       </div>
 
@@ -26,7 +28,9 @@
               <div class="shade-text">
                 <div class="text normal">{{ hueId === 500 ? '(' + hueId + ')' : hueId }}</div>
                 <div class="text normal">{{ colorToHex(hue) }}</div>
-                <div class="text normal" *ngFor="let kv of colorToHsl(hue) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
+                @for (kv of colorToHsl(hue) | keyvalue; track kv) {
+                  <div class="text normal">{{ kv.key }} : {{ kv.value }}</div>
+                }
               </div>
             </li>
           }

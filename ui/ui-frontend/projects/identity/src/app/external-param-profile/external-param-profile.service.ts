@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -55,14 +55,18 @@ import {
   providedIn: 'root',
 })
 export class ExternalParamProfileService extends SearchService<ExternalParamProfile> {
+  private externalParamProfileApi: ExternalParamProfileApiService;
+  private accessContractApiService = inject(AccessContractApiService);
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<ExternalParamProfile>();
 
-  constructor(
-    private externalParamProfileApi: ExternalParamProfileApiService,
-    private accessContractApiService: AccessContractApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const externalParamProfileApi = inject(ExternalParamProfileApiService);
+
     super(externalParamProfileApi);
+
+    this.externalParamProfileApi = externalParamProfileApi;
   }
 
   getOne(id: string): Observable<ExternalParamProfile> {

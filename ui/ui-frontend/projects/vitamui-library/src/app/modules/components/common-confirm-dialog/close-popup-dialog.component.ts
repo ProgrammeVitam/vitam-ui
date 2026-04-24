@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogInputData } from './dialog-input-data.interface';
 
@@ -45,8 +45,5 @@ import { DialogInputData } from './dialog-input-data.interface';
   standalone: false,
 })
 export class ClosePopupDialogComponent {
-  constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data?: DialogInputData,
-  ) {}
+  data? = inject<DialogInputData>(MAT_DIALOG_DATA);
 }

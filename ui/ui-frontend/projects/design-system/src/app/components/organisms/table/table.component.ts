@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { collapseAnimation, Direction, Group, rotateAnimation, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SampleDialogComponent } from '../dialog/sample-dialog/sample-dialog.component';
@@ -62,6 +62,8 @@ import { MatMenuModule } from '@angular/material/menu';
   ],
 })
 export class TableComponent {
+  private dialog = inject(MatDialog);
+
   tableDataSource = [
     { zipName: 'Cabinet Douillet_Martin', size: '30 Go', compression: 100, loading: 20 },
     { zipName: 'Cabinet Douillet_Martin 2', size: '12 Go', compression: 80, loading: 0 },
@@ -87,8 +89,6 @@ export class TableComponent {
     { name: 'Sample name', identifier: '0005', description: 'Sample description', level: 'Hero' },
     { name: 'Sample name', identifier: '0006', description: 'Sample description', level: 'Hero' },
   ] as Group[];
-
-  constructor(private dialog: MatDialog) {}
 
   public onFilterChange(key: string, values: any[]): void {
     this.filterMap[key] = values;

@@ -1,47 +1,52 @@
-<ng-container *ngIf="editObject?.control && editObject.cardinality !== 'ZERO'">
-  <ng-container [ngSwitch]="uiComponent">
-    <vitamui-editor-input
-      *ngSwitchCase="'textfield'"
-      [control]="editObject.control"
-      [label]="editObject.displayRule?.ui?.label"
-      [hint]="editObject.hint"
-      [required]="editObject.required"
-    ></vitamui-editor-input>
-    <vitamui-editor-textarea
-      *ngSwitchCase="'textarea'"
-      [control]="editObject.control"
-      [label]="editObject.displayRule?.ui?.label"
-      [hint]="editObject.hint"
-      [required]="editObject.required"
-    ></vitamui-editor-textarea>
-    <vitamui-editor-select
-      *ngSwitchCase="'select'"
-      [control]="editObject.control"
-      [label]="editObject.displayRule?.ui?.label"
-      [options]="editObject.options"
-      [hint]="editObject.hint"
-      [multiple]="editObject.cardinality.includes('MANY')"
-      [required]="editObject.required"
-    ></vitamui-editor-select>
-    <vitamui-datepicker
-      *ngSwitchCase="'datepicker'"
-      [formControl]="editObject.control"
-      [label]="editObject.displayRule.ui.label | translate | empty"
-      [required]="editObject.required"
-      [pickerType]="getPickerType(editObject)"
-      outputType="String"
-    >
-      <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
-    </vitamui-datepicker>
-    <vitamui-datepicker
-      *ngSwitchCase="'datetime'"
-      [formControl]="editObject.control"
-      [label]="editObject.displayRule.ui.label | translate | empty"
-      [required]="editObject.required"
-      [pickerType]="getPickerType(editObject)"
-      outputType="String"
-    >
-      <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
-    </vitamui-datepicker>
-  </ng-container>
-</ng-container>
+@if (editObject?.control && editObject.cardinality !== 'ZERO') {
+  @switch (uiComponent) {
+    @case ('textfield') {
+      <vitamui-editor-input
+        [control]="editObject.control"
+        [label]="editObject.displayRule?.ui?.label"
+        [hint]="editObject.hint"
+        [required]="editObject.required"
+      ></vitamui-editor-input>
+    }
+    @case ('textarea') {
+      <vitamui-editor-textarea
+        [control]="editObject.control"
+        [label]="editObject.displayRule?.ui?.label"
+        [hint]="editObject.hint"
+        [required]="editObject.required"
+      ></vitamui-editor-textarea>
+    }
+    @case ('select') {
+      <vitamui-editor-select
+        [control]="editObject.control"
+        [label]="editObject.displayRule?.ui?.label"
+        [options]="editObject.options"
+        [hint]="editObject.hint"
+        [multiple]="editObject.cardinality.includes('MANY')"
+        [required]="editObject.required"
+      ></vitamui-editor-select>
+    }
+    @case ('datepicker') {
+      <vitamui-datepicker
+        [formControl]="editObject.control"
+        [label]="editObject.displayRule.ui.label | translate | empty"
+        [required]="editObject.required"
+        [pickerType]="getPickerType(editObject)"
+        outputType="String"
+      >
+        <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
+      </vitamui-datepicker>
+    }
+    @case ('datetime') {
+      <vitamui-datepicker
+        [formControl]="editObject.control"
+        [label]="editObject.displayRule.ui.label | translate | empty"
+        [required]="editObject.required"
+        [pickerType]="getPickerType(editObject)"
+        outputType="String"
+      >
+        <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
+      </vitamui-datepicker>
+    }
+  }
+}

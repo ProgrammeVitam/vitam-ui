@@ -43,9 +43,11 @@ import { RuleCreateValidators } from './rule-create.validators';
 describe('Rule Create Validators', () => {
   describe('uniqueRuleId', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(false));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(false));
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -54,9 +56,11 @@ describe('Rule Create Validators', () => {
     }));
 
     it('should return { ruleIdExists: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });
@@ -65,9 +69,11 @@ describe('Rule Create Validators', () => {
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      ruleServiceSpy.existsProperties.and.returnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
+      const ruleServiceSpy = {
+        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
+      };
+      ruleServiceSpy.existsProperties.mockReturnValue(of(true));
+      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -76,9 +82,11 @@ describe('Rule Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('RuleService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });

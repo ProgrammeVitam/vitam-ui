@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
 import {
@@ -61,6 +61,15 @@ import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/col
   standalone: false,
 })
 export class TransactionListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
+  private transactionService: TransactionsService;
+  private archiveCollectService = inject(ArchiveCollectService);
+  private projectService = inject(ProjectsService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private startupService = inject(StartupService);
+  private snackBarService = inject(SnackBarService);
+  private dialog = inject(MatDialog);
+
   direction = Direction.DESCENDANT;
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
@@ -72,17 +81,12 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   hasDownloadTransactionRole = false;
   isAutomaticIngest = false;
 
-  constructor(
-    private transactionService: TransactionsService,
-    private archiveCollectService: ArchiveCollectService,
-    private projectService: ProjectsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private startupService: StartupService,
-    private snackBarService: SnackBarService,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
+    const transactionService = inject(TransactionsService);
+
     super(transactionService);
+
+    this.transactionService = transactionService;
   }
 
   ngOnInit(): void {

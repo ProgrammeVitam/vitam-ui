@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -73,8 +74,12 @@ describe('UpdateUaMetadataComponent', () => {
   let component: UpdateUnitsMetadataComponent;
   let fixture: ComponentFixture<UpdateUnitsMetadataComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -87,6 +92,7 @@ describe('UpdateUaMetadataComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

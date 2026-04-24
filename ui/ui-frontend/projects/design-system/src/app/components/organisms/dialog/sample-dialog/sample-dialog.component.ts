@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -53,7 +53,6 @@ import {
   selector: 'design-system-sample-dialog',
   templateUrl: './sample-dialog.component.html',
   imports: [
-    CommonModule,
     TranslatePipe,
     MatDialogModule,
     DialogHeaderComponent,
@@ -67,6 +66,9 @@ import {
   ],
 })
 export class SampleDialogComponent {
+  private dialogRef = inject<MatDialogRef<SampleDialogComponent>>(MatDialogRef);
+  isSmall = inject(MAT_DIALOG_DATA);
+
   showSteps = true;
   showTitle = true;
   showSubhead = true;
@@ -75,10 +77,9 @@ export class SampleDialogComponent {
 
   titles = ['Dialog customization', 'Drag & Drop', 'Choose a value', 'Displaying an error', 'Displaying a success message'];
 
-  constructor(
-    private dialogRef: MatDialogRef<SampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public isSmall: boolean,
-  ) {
+  constructor() {
+    const isSmall = this.isSmall;
+
     this.smallDialog = isSmall;
   }
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -61,6 +61,21 @@ import { delay, distinctUntilChanged, map } from 'rxjs/operators';
   standalone: false,
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
+  private translate = inject(TranslateService);
+  dialogRef = inject<MatDialogRef<TransferRequestModalComponent>>(MatDialogRef);
+  private fb = inject(FormBuilder);
+  private archiveService = inject(ArchiveService);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private logger = inject(Logger);
+  data = inject<{
+    itemSelected: number;
+    searchCriteria: SearchCriteriaEltDto[];
+    accessContract: string;
+    tenantIdentifier: string;
+    selectedItemCountKnown?: boolean;
+  }>(MAT_DIALOG_DATA);
+  private snackBarService = inject(SnackBarService);
+
   formGroups: FormGroup[];
   itemSelected: number;
   selectedItemCountKnown: boolean;
@@ -68,24 +83,6 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   dataObjectVersions = ObjectQualifierTypeList;
   UsageVersionEnum = UsageVersionEnum;
   usageOptions: VitamuiSelectOptions[] = [];
-
-  constructor(
-    private translate: TranslateService,
-    public dialogRef: MatDialogRef<TransferRequestModalComponent>,
-    private fb: FormBuilder,
-    private archiveService: ArchiveService,
-    private confirmDialogService: ConfirmDialogService,
-    private logger: Logger,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      itemSelected: number;
-      searchCriteria: SearchCriteriaEltDto[];
-      accessContract: string;
-      tenantIdentifier: string;
-      selectedItemCountKnown?: boolean;
-    },
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;

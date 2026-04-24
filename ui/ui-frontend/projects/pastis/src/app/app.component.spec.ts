@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -68,20 +68,20 @@ describe('AppComponent', () => {
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => {} } },
       ],
-    }).compileComponents();
+    })
+      .overrideTemplate(AppComponent, '<div></div>')
+      .compileComponents();
   });
 
-  it('should create the app', waitForAsync(() => {
+  it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    // console.log('Create App: ', app);
     expect(app).toBeTruthy();
-  }));
+  });
 
-  it(`should have as title 'Pastis Application'`, waitForAsync(() => {
+  it(`should have as title 'Pastis Application'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    // console.log('Title App: ', app);
     expect(app.title).toEqual('Pastis Application');
-  }));
+  });
 });

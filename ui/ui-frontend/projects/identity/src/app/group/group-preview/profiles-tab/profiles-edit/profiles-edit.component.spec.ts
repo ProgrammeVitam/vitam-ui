@@ -63,7 +63,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   standalone: false,
 })
 class ProfilesFormStubComponent {
-  @Input() level: any;
+  @Input()
+  level: any;
 
   writeValue() {}
 
@@ -77,7 +78,9 @@ describe('ProfilesEditComponent', () => {
   let fixture: ComponentFixture<ProfilesEditComponent>;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [ProfilesEditComponent, ProfilesFormStubComponent],
@@ -112,7 +115,7 @@ describe('ProfilesEditComponent', () => {
     });
 
     it('should have a submit button', () => {
-      spyOn(component, 'onSubmit');
+      vi.spyOn(component, 'onSubmit');
       component.form.setValue({ profileIds: ['1'] });
       component.form.markAsDirty();
       fixture.detectChanges();
@@ -124,7 +127,7 @@ describe('ProfilesEditComponent', () => {
     });
 
     it('should have a cancel button', () => {
-      spyOn(component, 'onCancel');
+      vi.spyOn(component, 'onCancel');
       const elCancel = fixture.nativeElement.querySelector('button[type=button].btn.cancel');
       expect(elCancel).toBeTruthy();
       expect(elCancel.textContent).toContain('COMMON.UNDO');
@@ -136,7 +139,7 @@ describe('ProfilesEditComponent', () => {
   describe('Component', () => {
     it('should call groupService.patch', () => {
       const groupService = TestBed.inject(GroupService);
-      spyOn(groupService, 'patch').and.callThrough();
+      vi.spyOn(groupService, 'patch');
       const matDialogRefSpy = TestBed.inject(MatDialogRef);
       component.form.setValue({ profileIds: ['1', '2', '3'] });
       component.form.markAsDirty();
@@ -147,7 +150,7 @@ describe('ProfilesEditComponent', () => {
 
     it('should not call profileGroupService.patch', () => {
       const profileGroupService = TestBed.inject(GroupService);
-      spyOn(profileGroupService, 'patch').and.callThrough();
+      vi.spyOn(profileGroupService, 'patch');
       component.form.markAsDirty();
       component.onSubmit();
       expect(profileGroupService.patch).toHaveBeenCalledTimes(0);
@@ -155,7 +158,7 @@ describe('ProfilesEditComponent', () => {
 
     it('should not call profileGroupService.patch', () => {
       const profileGroupService = TestBed.inject(GroupService);
-      spyOn(profileGroupService, 'patch').and.callThrough();
+      vi.spyOn(profileGroupService, 'patch');
       component.form.setValue({ profileIds: ['1', '2', '3'] });
       component.onSubmit();
       expect(profileGroupService.patch).toHaveBeenCalledTimes(0);

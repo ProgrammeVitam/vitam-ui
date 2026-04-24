@@ -44,7 +44,9 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
       imports: [TranslateModule.forRoot()],
-    }).compileComponents();
+    })
+      .overrideTemplate(AppComponent, '<div></div>')
+      .compileComponents();
   });
 
   it('should create the app Design-system', () => {

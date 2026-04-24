@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -49,6 +49,11 @@ import { BaseUserInfoApiService } from './../../../api/base-user-info-api.servic
   standalone: false,
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
+  private translateService = inject(TranslateService);
+  private languageService = inject(LanguageService);
+  private userInfoApiService = inject(BaseUserInfoApiService);
+  private authService = inject(AuthService);
+
   /**
    * This component have two display mode :
    * select : displays a select box with the current selected lang as text.
@@ -60,13 +65,6 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   public minLangString = MinLangString;
 
   private destroyer$ = new Subject<void>();
-
-  constructor(
-    private translateService: TranslateService,
-    private languageService: LanguageService,
-    private userInfoApiService: BaseUserInfoApiService,
-    private authService: AuthService,
-  ) {}
 
   ngOnInit() {
     this.authService.getUserInfo$().subscribe((userInfo) => {

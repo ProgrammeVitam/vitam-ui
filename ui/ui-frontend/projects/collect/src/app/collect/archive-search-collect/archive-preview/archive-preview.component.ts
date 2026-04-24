@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, unitToVitamuiIcon, ArchiveUnit, addErrorStatusBadgeIfArchiveUnitHasErrors } from 'vitamui-library';
@@ -48,6 +59,9 @@ import { ArchiveSharedDataService } from '../../core/archive-shared-data.service
   standalone: false,
 })
 export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
+  private translateService = inject(TranslateService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   @Input() archiveUnit: Unit;
   @Input() isPopup: boolean;
   @Input() hasUnitaryUpdateUnitRole: boolean;
@@ -65,11 +79,6 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
 
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('descriptionTab', { static: false }) descriptionTab: ArchiveUnitDescriptionTabComponent;
-
-  constructor(
-    private translateService: TranslateService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {}
 
   ngAfterViewInit(): void {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

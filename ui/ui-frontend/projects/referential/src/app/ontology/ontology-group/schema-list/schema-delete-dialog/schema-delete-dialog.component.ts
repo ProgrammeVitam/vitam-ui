@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { I18nPluralPipe } from '@angular/common';
@@ -49,21 +49,19 @@ export type SchemaDeleteDialogComponentData = string[];
   styleUrl: './schema-delete-dialog.component.scss',
 })
 export class SchemaDeleteDialogComponent {
+  paths = inject<SchemaDeleteDialogComponentData>(MAT_DIALOG_DATA);
+  private dialogRef = inject<MatDialogRef<SchemaDeleteDialogComponent>>(MatDialogRef);
+  private schemaService = inject(SchemaService);
+  private snackBarService = inject(SnackBarService);
+  private startupService = inject(StartupService);
+  private translateService = inject(TranslateService);
+
   subtitle: { [k: string]: string } = {
     '=1': 'ONTOLOGY.SCHEMA_DELETE_DIALOG.SUBTITLE.SINGULAR',
     other: 'ONTOLOGY.SCHEMA_DELETE_DIALOG.SUBTITLE.PLURAL',
   };
 
   deleting?: boolean;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public paths: SchemaDeleteDialogComponentData,
-    private dialogRef: MatDialogRef<SchemaDeleteDialogComponent>,
-    private schemaService: SchemaService,
-    private snackBarService: SnackBarService,
-    private startupService: StartupService,
-    private translateService: TranslateService,
-  ) {}
 
   submit() {
     this.deleting = true;

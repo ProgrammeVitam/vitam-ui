@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApplicationId, FileTypes, SnackBarService } from 'vitamui-library';
 import { finalize, Subject } from 'rxjs';
@@ -49,18 +49,16 @@ import { ReferentialImportService } from './referential-import.service';
   standalone: false,
 })
 export class ImportDialogComponent implements OnDestroy {
+  dialogParams = inject<ImportDialogParam>(MAT_DIALOG_DATA);
+  dialogRef = inject<MatDialogRef<ImportDialogComponent>>(MatDialogRef);
+  private referentialImportService = inject(ReferentialImportService);
+  private snackBarService = inject(SnackBarService);
+
   public fileToUpload: File;
   public hasWrongFormat = false;
   public isLoading = false;
   public errorsDuringImport: ImportError[] = [];
   private destroy = new Subject<void>();
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogParams: ImportDialogParam,
-    public dialogRef: MatDialogRef<ImportDialogComponent>,
-    private referentialImportService: ReferentialImportService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   public submitFile(): void {
     this.isLoading = true;

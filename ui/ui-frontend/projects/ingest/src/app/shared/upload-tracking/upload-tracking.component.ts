@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IngestList } from '../../core/common/ingest-list';
 import { UploadService } from '../../core/common/upload.service';
 
@@ -53,10 +53,12 @@ import { UploadService } from '../../core/common/upload.service';
   standalone: false,
 })
 export class UploadTrackingComponent {
+  private uploadSipService = inject(UploadService);
+
   ingestList: IngestList;
   displayTracking = false;
 
-  constructor(private uploadSipService: UploadService) {
+  constructor() {
     this.uploadSipService.filesStatus().subscribe((ingestList) => {
       this.ingestList = ingestList;
       if (this.ingestList.wipNumber > 0) {

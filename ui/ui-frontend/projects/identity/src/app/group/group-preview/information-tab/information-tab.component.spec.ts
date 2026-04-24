@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -57,17 +57,30 @@ class TestHostComponent {
   group = expectedGroup;
   readOnly = false;
 
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false })
+  component: InformationTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('Profile Group InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
-  const groupServiceSpy = jasmine.createSpyObj('GroupService', { patch: of({}) });
-  const groupValidatorsSpy = jasmine.createSpyObj('GroupValidators', { nameExists: () => of(null) });
+  const groupServiceSpy = {
+    patch: vi.fn().mockName('GroupService.patch').mockReturnValue(of({})),
+  };
+  const groupValidatorsSpy = {
+    nameExists: vi
+      .fn()
+      .mockName('GroupValidators.nameExists')
+      .mockReturnValue(() => of(null)),
+  };
   const authServiceMock = { user: { level: '' } };
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   beforeEach(async () => {
     expectedGroup = {
@@ -87,6 +100,7 @@ describe('Profile Group InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [InformationTabComponent, TestHostComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot()],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -99,7 +113,9 @@ describe('Profile Group InformationTabComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationTabComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -128,9 +144,9 @@ describe('Profile Group InformationTabComponent', () => {
         enabled: false,
         description: null,
       });
-      expect(testhost.component.form.get('id').valid).toBeFalsy('id');
-      expect(testhost.component.form.get('name').valid).toBeFalsy('name');
-      expect(testhost.component.form.get('description').valid).toBeFalsy('description');
+      expect(testhost.component.form.get('id').valid).toBeFalsy();
+      expect(testhost.component.form.get('name').valid).toBeFalsy();
+      expect(testhost.component.form.get('description').valid).toBeFalsy();
     });
 
     it('should be valid and call patch()', () => {
@@ -146,11 +162,15 @@ describe('Profile Group InformationTabComponent', () => {
     });
 
     it('should disable then enable the form', () => {
-      testhost.readOnly = true;
-      fixture.detectChanges();
+      testhost.component.readOnly = true;
+      testhost.component.ngOnChanges({
+        readOnly: { previousValue: false, currentValue: true, firstChange: false, isFirstChange: () => false },
+      });
       expect(testhost.component.form.disabled).toBe(true);
-      testhost.readOnly = false;
-      fixture.detectChanges();
+      testhost.component.readOnly = false;
+      testhost.component.ngOnChanges({
+        readOnly: { previousValue: true, currentValue: false, firstChange: false, isFirstChange: () => false },
+      });
       expect(testhost.component.form.disabled).toBe(false);
     });
   });

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Customer, StartupService } from 'vitamui-library';
@@ -47,6 +47,9 @@ import { CustomerService } from '../../core/customer.service';
   standalone: false,
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
+  private customerService = inject(CustomerService);
+  private startupService = inject(StartupService);
+
   @Input() customer: Customer;
   @Input() isPopup: boolean;
   @Output() previewClose = new EventEmitter();
@@ -54,11 +57,6 @@ export class CustomerPreviewComponent implements OnInit, OnDestroy {
   @Input() gdprReadOnlyStatus: boolean;
 
   customerUpdatedSub: Subscription;
-
-  constructor(
-    private customerService: CustomerService,
-    private startupService: StartupService,
-  ) {}
 
   ngOnInit() {
     this.customerUpdatedSub = this.customerService.updated.subscribe((updatedCustomer: Customer) => {

@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -106,6 +106,18 @@ const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
   standalone: false,
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
+  private profileService = inject(ProfileService);
+  private noticeService = inject(NoticeService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private startupService = inject(StartupService);
+  private pastisConfig = inject(PastisConfiguration);
+  private route: ActivatedRoute;
+  private dataGeneriquePopupService = inject(DataGeneriquePopupService);
+  private translateService = inject(TranslateService);
+  private toggleService = inject(ToggleSidenavService);
+  private snackBarService = inject(SnackBarService);
+
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
 
   @ViewChild('confirmReplacement') confirmReplacement: TemplateRef<any>;
@@ -163,21 +175,13 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   profilesChargees = false;
 
-  constructor(
-    private profileService: ProfileService,
-    private noticeService: NoticeService,
-    private router: Router,
-    private dialog: MatDialog,
-    private startupService: StartupService,
-    private pastisConfig: PastisConfiguration,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private dataGeneriquePopupService: DataGeneriquePopupService,
-    private translateService: TranslateService,
-    private toggleService: ToggleSidenavService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
+
     this.pendingSub = this.toggleService.isPending.subscribe((status) => {
       this.pending = status;
     });

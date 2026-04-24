@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -57,6 +57,12 @@ import { ProfileInformationTabComponent } from './profile-information-tab/profil
   standalone: false,
 })
 export class ProfilePreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private router = inject(Router);
+  private pastisConfig = inject(PastisConfiguration);
+  private profileService = inject(ProfileService);
+  private route = inject(ActivatedRoute);
+
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
   @Input()
@@ -82,14 +88,6 @@ export class ProfilePreviewComponent implements AfterViewInit {
       return '';
     }
   }
-
-  constructor(
-    private matDialog: MatDialog,
-    private router: Router,
-    private pastisConfig: PastisConfiguration,
-    private profileService: ProfileService,
-    private route: ActivatedRoute,
-  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

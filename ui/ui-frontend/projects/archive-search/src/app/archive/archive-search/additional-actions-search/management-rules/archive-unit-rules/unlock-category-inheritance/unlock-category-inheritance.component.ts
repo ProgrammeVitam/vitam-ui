@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
@@ -56,6 +56,12 @@ const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
   standalone: false,
 })
 export class UnlockCategoryInheritanceComponent implements OnDestroy {
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private archiveService = inject(ArchiveService);
+  private translateService = inject(TranslateService);
+  private dialog = inject(MatDialog);
+  private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+
   @Input()
   ruleCategory: string;
   @Input()
@@ -83,13 +89,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   @ViewChild('confirmDeleteUnlockCategoryInheritance', { static: true })
   confirmDeleteUnlockCategoryInheritance: TemplateRef<UnlockCategoryInheritanceComponent>;
 
-  constructor(
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private archiveService: ArchiveService,
-    private translateService: TranslateService,
-    private dialog: MatDialog,
-    private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
-  ) {
+  constructor() {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }
 

@@ -36,7 +36,7 @@
  */
 import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
 
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -51,20 +51,20 @@ import { TenantFormValidators } from './tenant-form.validators';
   standalone: false,
 })
 export class TenantCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<TenantCreateComponent>>(MatDialogRef);
+  data = inject<{
+    owner: Owner;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private tenantService = inject(TenantService);
+  private tenantFormValidators = inject(TenantFormValidators);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
   availableTenants: number[];
   isLoading = false;
-
-  constructor(
-    public dialogRef: MatDialogRef<TenantCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { owner: Owner },
-    private formBuilder: FormBuilder,
-    private tenantService: TenantService,
-    private tenantFormValidators: TenantFormValidators,
-    private confirmDialogService: ConfirmDialogService,
-  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({

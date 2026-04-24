@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationService } from '../../application.service';
 import { Application } from '../../models';
 import { StartupService } from '../../startup.service';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -47,19 +47,17 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'vitamui-application-card',
   templateUrl: './application-card.component.html',
   styleUrls: ['./application-card.component.scss'],
-  imports: [CommonModule, MatCardModule, TranslateModule],
+  imports: [MatCardModule, TranslateModule],
 })
 export class ApplicationCardComponent implements OnInit {
+  private applicationService = inject(ApplicationService);
+  private startupService = inject(StartupService);
+  private router = inject(Router);
+
   @Input() application: Application;
   protected link: string;
   protected title: string;
   protected subtitle: string;
-
-  constructor(
-    private applicationService: ApplicationService,
-    private startupService: StartupService,
-    private router: Router,
-  ) {}
 
   ngOnInit(): void {
     this.link = this.applicationService.getApplicationUrl(this.application);

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
@@ -48,11 +48,9 @@ import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-e
   standalone: false,
 })
 export class SearchReuseRulesFacetsComponent implements OnChanges {
-  constructor(
-    private facetsService: ArchiveFacetsService,
-    private translateService: TranslateService,
-    private datePipe: DatePipe,
-  ) {}
+  private facetsService = inject(ArchiveFacetsService);
+  private translateService = inject(TranslateService);
+  private datePipe = inject(DatePipe);
 
   @Input()
   reuseRuleFacets: RuleFacets;

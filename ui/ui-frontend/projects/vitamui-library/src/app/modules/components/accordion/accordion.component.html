@@ -9,6 +9,6 @@
     </div>
   </div>
 </div>
-<ng-container *ngIf="opened">
+@if (opened) {
   <ng-content select=".content"></ng-content>
-</ng-container>
+}

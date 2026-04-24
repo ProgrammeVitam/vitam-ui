@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Group, Profile } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
 
@@ -45,12 +45,12 @@ import { GroupService } from '../../../group/group.service';
   standalone: false,
 })
 export class GroupDetailComponent implements OnInit {
+  private groupService = inject(GroupService);
+
   @Input() group: Group;
   public displayedGroup: Group;
 
   public groupProfiles: Profile[];
-
-  constructor(private groupService: GroupService) {}
   ngOnInit(): void {
     this.getGroupProfiles(this.group);
   }

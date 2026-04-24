@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -74,7 +74,29 @@ describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
   let fixture: ComponentFixture<ArchiveUnitInformationTabComponent>;
 
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  @Pipe({
+    name: 'unitI18n',
+    standalone: false,
+  })
+  class UnitI18nStubPipe implements PipeTransform {
+    transform(value: any, _attribute: string): string {
+      return value?.Title ?? '';
+    }
+  }
+
+  @Pipe({
+    name: 'dateTime',
+    standalone: false,
+  })
+  class DateTimeStubPipe implements PipeTransform {
+    transform(value: string = ''): string {
+      return value;
+    }
+  }
+
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   const activatedRouteMock = {
     params: of({ tenantIdentifier: 1 }),
@@ -122,7 +144,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
         DataComponent,
         PipesModule,
       ],
-      declarations: [ArchiveUnitInformationTabComponent],
+      declarations: [ArchiveUnitInformationTabComponent, UnitI18nStubPipe, DateTimeStubPipe],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
@@ -144,7 +166,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     const archiveUnit: Unit = {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-      DescriptionLevel: DescriptionLevel.RECORD_GRP,
+      DescriptionLevel: DescriptionLevel.RECORD_GRP as any,
       Title: 'Gambetta par producteur1',
       Description: 'Station Gambetta ligne 3 Paris',
       '#id': 'aeaqaaaaaehkfhaythjgjhfg545szniaaacq',
@@ -207,8 +229,8 @@ describe('ArchiveUnitInformationTabComponent', () => {
       dataObjectVersion: [],
     } as AccessContract;
 
-    spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
-    spyOn<AccessContractService, any>(accessContractServiceMock, 'currentAccessContract$').and.returnValue(of(accessContractEveryObject));
+    vi.spyOn(archiveServiceMock, 'downloadObjectFromUnit');
+    (accessContractServiceMock as any).currentAccessContract$ = of(accessContractEveryObject);
     component.archiveUnit = archiveUnit;
     component.ngOnChanges({
       archiveUnit: new SimpleChange(null, archiveUnit, true),

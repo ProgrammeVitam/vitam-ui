@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { AgencyService, AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -49,6 +49,12 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 const authServiceMock = { user: { proofTenantIdentifier: '1' } };
 const activatedRouteMock = { params: of({ tenantIdentifier: 1 }), paramMap: EMPTY };
+
+class FakeLoader implements TranslateLoader {
+  getTranslation() {
+    return of({});
+  }
+}
 
 describe('AgencyListComponent', () => {
   let component: AgencyListComponent;
@@ -62,7 +68,7 @@ describe('AgencyListComponent', () => {
         VitamUICommonTestModule,
         MatProgressSpinnerModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
       ],
       providers: [

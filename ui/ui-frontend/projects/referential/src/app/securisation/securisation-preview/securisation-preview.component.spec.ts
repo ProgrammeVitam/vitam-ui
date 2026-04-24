@@ -106,7 +106,9 @@ describe('SecurisationPreviewComponent', () => {
     ],
   };
 
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
 
   beforeEach(async () => {
     const parameters: Map<string, string> = new Map<string, string>();

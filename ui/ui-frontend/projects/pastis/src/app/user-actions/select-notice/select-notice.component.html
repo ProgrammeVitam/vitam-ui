@@ -1,25 +1,33 @@
 <vitamui-dialog-header [subhead]="data.subTitleDialog" [title]="data.titleDialog"></vitamui-dialog-header>
 
-<form *ngIf="!userValidation; else validation">
-  <mat-dialog-content>
-    <vitamui-select
-      [(ngModel)]="selectedProfile"
-      [ngModelOptions]="{ standalone: true }"
-      [placeholder]="'PROFILE.POP-UP_SELECT_NOTICE.LIST_NOTICE' | translate"
-      [options]="profileOptions"
-      [enableSearch]="false"
-    ></vitamui-select>
-  </mat-dialog-content>
-
-  <mat-dialog-actions *ngIf="selectedProfile && selectedProfile.controlSchema && selectedProfile.controlSchema !== '{}'; else submitButton">
-    <button (click)="setUserValidation(true)" class="btn primary" [disabled]="!selectedProfile">
-      {{ 'PROFILE.POP-UP_SELECT_NOTICE.NEXT_LABEL' | translate }}
-    </button>
-    <button type="button" class="btn cancel link" (click)="onCancel()">{{ data.cancelLabel }}</button>
-  </mat-dialog-actions>
-</form>
-
-<ng-template #validation>
+@if (!userValidation) {
+  <form>
+    <mat-dialog-content>
+      <vitamui-select
+        [(ngModel)]="selectedProfile"
+        [ngModelOptions]="{ standalone: true }"
+        [placeholder]="'PROFILE.POP-UP_SELECT_NOTICE.LIST_NOTICE' | translate"
+        [options]="profileOptions"
+        [enableSearch]="false"
+      ></vitamui-select>
+    </mat-dialog-content>
+    @if (selectedProfile && selectedProfile.controlSchema && selectedProfile.controlSchema !== '{}') {
+      <mat-dialog-actions>
+        <button (click)="setUserValidation(true)" class="btn primary" [disabled]="!selectedProfile">
+          {{ 'PROFILE.POP-UP_SELECT_NOTICE.NEXT_LABEL' | translate }}
+        </button>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{ data.cancelLabel }}</button>
+      </mat-dialog-actions>
+    } @else {
+      <mat-dialog-actions>
+        <button (click)="onSubmit()" class="btn primary" [disabled]="!selectedProfile">
+          {{ data.okLabel }}
+        </button>
+        <button type="button" class="btn cancel link" (click)="userValidation = false">{{ data.cancelLabel }}</button>
+      </mat-dialog-actions>
+    }
+  </form>
+} @else {
   <mat-dialog-content>{{ 'PROFILE.POP-UP_SELECT_NOTICE.VALIDATION_MESSAGE' | translate }}</mat-dialog-content>
   <mat-dialog-actions>
     <button (click)="onSubmit()" class="btn primary" [disabled]="!selectedProfile">
@@ -27,13 +35,4 @@
     </button>
     <button type="button" class="btn cancel link" (click)="setUserValidation(false)">{{ data.cancelLabel }}</button>
   </mat-dialog-actions>
-</ng-template>
-
-<ng-template #submitButton>
-  <mat-dialog-actions>
-    <button (click)="onSubmit()" class="btn primary" [disabled]="!selectedProfile">
-      {{ data.okLabel }}
-    </button>
-    <button type="button" class="btn cancel link" (click)="userValidation = false">{{ data.cancelLabel }}</button>
-  </mat-dialog-actions>
-</ng-template>
+}

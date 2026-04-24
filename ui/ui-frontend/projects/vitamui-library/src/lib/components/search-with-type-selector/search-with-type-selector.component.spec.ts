@@ -129,10 +129,10 @@ describe('SearchWithTypeSelectorComponent', () => {
   it('disabling the control should mark the component as disabled', async () => {
     const element: HTMLElement = hostFixture.debugElement.query(By.css('.vitamui-input')).nativeElement;
 
-    expect(element.classList.contains('disabled')).toBeFalse();
+    expect(element.classList.contains('disabled')).toBe(false);
     testHostComponent.control.disable();
     hostFixture.detectChanges();
-    expect(element.classList.contains('disabled')).toBeTrue();
+    expect(element.classList.contains('disabled')).toBe(true);
   });
 
   it('a disabled type should make it disabled in the menu', async () => {
@@ -142,8 +142,10 @@ describe('SearchWithTypeSelectorComponent', () => {
 
     expect(await firstMenuElement.getAttribute('disabled')).toBeNull();
     testHostComponent.types[0].disabled = true;
+    hostFixture.changeDetectorRef.detectChanges();
     expect(await firstMenuElement.getAttribute('disabled')).toEqual('true');
     testHostComponent.types[0].disabled = false;
+    hostFixture.changeDetectorRef.detectChanges();
     expect(await firstMenuElement.getAttribute('disabled')).toBeNull();
   });
 });

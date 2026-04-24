@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
@@ -55,6 +55,12 @@ import { VitamuiHttpHeaders } from './vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class ApplicationService {
+  private applicationApi = inject(ApplicationApiService);
+  private authService = inject(AuthService);
+  private tenantService = inject(TenantSelectionService);
+  private globalEventService = inject(GlobalEventService);
+  private configService = inject(ConfigService);
+
   set applications(apps: Application[]) {
     this._applications = apps;
     this._applications$.next(this._applications);
@@ -81,14 +87,6 @@ export class ApplicationService {
   private _applications$ = new BehaviorSubject<Application[]>(null);
   private _applicationsAnalytics: ApplicationAnalytics[];
   private appMap$ = new BehaviorSubject(null);
-
-  constructor(
-    private applicationApi: ApplicationApiService,
-    private authService: AuthService,
-    private tenantService: TenantSelectionService,
-    private globalEventService: GlobalEventService,
-    private configService: ConfigService,
-  ) {}
 
   /**
    * Get and init applications list for the current auth user.

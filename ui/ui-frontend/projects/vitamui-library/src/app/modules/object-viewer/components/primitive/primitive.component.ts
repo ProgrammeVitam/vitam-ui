@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { DateDisplayService } from '../../services/date-display.service';
 
@@ -46,14 +46,12 @@ import { DateDisplayService } from '../../services/date-display.service';
   standalone: false,
 })
 export class PrimitiveComponent implements OnInit {
+  private dateDisplayService = inject(DateDisplayService);
+  private datePipe = inject(DatePipe);
+
   @Input() displayObject: DisplayObject;
 
   value: string;
-
-  constructor(
-    private dateDisplayService: DateDisplayService,
-    private datePipe: DatePipe,
-  ) {}
 
   ngOnInit(): void {
     const uiComponent = this.displayObject.displayRule?.ui?.component;

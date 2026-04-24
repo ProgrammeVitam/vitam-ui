@@ -51,25 +51,26 @@ import {
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
-import createSpyObj = jasmine.createSpyObj;
-import anything = jasmine.anything;
+import { vi } from 'vitest';
+const createSpyObj = (name: string, methods: string[]) => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
+const anything = () => expect.anything();
 import { ActivatedRoute } from '@angular/router';
 
 describe('ArchiveUnitObjectsDetailsTabComponent', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitObjectsDetailsTabComponent>;
-  const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
-  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', [
+  const clipboardSpy = createSpyObj('Clipboard', ['copy']);
+  const archiveServiceSpy = createSpyObj('ArchiveService', [
     'downloadObjectFromUnit',
     'getObjectById',
     'getAccessContractById',
     'hasArchiveSearchRole',
   ]);
 
-  archiveServiceSpy.getAccessContractById.and.returnValue(of({} as AccessContract));
-  archiveServiceSpy.hasArchiveSearchRole.and.returnValue(of(true));
-  const tenantSelectionServiceSpy = jasmine.createSpyObj('TenantSelectionService', {
-    getSelectedTenant: {
+  archiveServiceSpy.getAccessContractById.mockReturnValue(of({} as AccessContract));
+  archiveServiceSpy.hasArchiveSearchRole.mockReturnValue(of(true));
+  const tenantSelectionServiceSpy = {
+    getSelectedTenant: vi.fn().mockName('TenantSelectionService.getSelectedTenant').mockReturnValue({
       name: 'tenantName',
       identifier: 2,
       ownerId: 'owner',
@@ -81,8 +82,8 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       itemIngestContractIdentifier: 'string',
       accessContractHoldingIdentifier: 'string',
       accessContractLogbookIdentifier: 'string',
-    },
-  });
+    }),
+  };
 
   const accessContractServiceMock = {
     currentAccessContract$: of({
@@ -139,7 +140,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
     const event = {
       stopPropagation: () => {},
     } as Event;
-    const preventDefaultSpy = spyOn(event, 'stopPropagation');
+    const preventDefaultSpy = vi.spyOn(event, 'stopPropagation');
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
     expect(archiveServiceSpy.downloadObjectFromUnit).toHaveBeenCalledWith('archiveUnitTestID', ObjectQualifierType.BINARYMASTER, 1);
     expect(preventDefaultSpy).toHaveBeenCalled();
@@ -154,11 +155,11 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: DescriptionLevel.ITEM,
+      DescriptionLevel: DescriptionLevel.ITEM as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     } as Unit;
-    archiveServiceSpy.getObjectById.and.returnValue(of(newApiUnitObject()));
+    archiveServiceSpy.getObjectById.mockReturnValue(of(newApiUnitObject()));
     component.archiveUnit = unit;
     component.ngOnChanges({
       archiveUnit: new SimpleChange(null, unit, true),
@@ -178,7 +179,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: DescriptionLevel.ITEM,
+      DescriptionLevel: DescriptionLevel.ITEM as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
@@ -199,7 +200,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       '#unitups': [],
       '#opi': '',
       '#tenant': 1,
-      DescriptionLevel: DescriptionLevel.RECORD_GRP,
+      DescriptionLevel: DescriptionLevel.RECORD_GRP as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };

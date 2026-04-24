@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { ActionsRules, ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
@@ -56,6 +56,8 @@ import { Rule } from 'vitamui-library';
   standalone: false,
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+
   @Input()
   selectedItem: string;
   @Input()
@@ -84,8 +86,6 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
   blockRuleInheritanceCollapsed = false;
   unlockRuleInheritanceCollapsed = false;
   isRuleDuplicated = false;
-
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
 
   ngOnDestroy() {
     this.ruleActionsSubscription?.unsubscribe();

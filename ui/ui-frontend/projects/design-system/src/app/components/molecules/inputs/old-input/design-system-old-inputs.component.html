@@ -62,9 +62,11 @@
         <div class="col-8">
           <mat-form-field class="mr-3 field-domain vitamui-mat-select">
             <mat-select [formControl]="country" panelClass="vitamui-mat-select">
-              <mat-option *ngFor="let country of countries" [value]="country.key">
-                {{ country.label }}
-              </mat-option>
+              @for (country of countries; track country) {
+                <mat-option [value]="country.key">
+                  {{ country.label }}
+                </mat-option>
+              }
             </mat-select>
             <div class="select-arrow">
               <i class="material-icons">keyboard_arrow_up</i>
@@ -74,9 +76,11 @@
         </div>
         <mat-form-field class="mr-3 field-domain vitamui-mat-select">
           <mat-select [formControl]="country" disabled panelClass="vitamui-mat-select">
-            <mat-option *ngFor="let country of countries" [value]="country.key">
-              {{ country.label }}
-            </mat-option>
+            @for (country of countries; track country) {
+              <mat-option [value]="country.key">
+                {{ country.label }}
+              </mat-option>
+            }
           </mat-select>
           <div class="select-arrow">
             <i class="material-icons">keyboard_arrow_up</i>

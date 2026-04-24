@@ -46,13 +46,12 @@ import {
   OtpState,
   User,
   UserInfo,
-  VitamUILibraryModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -177,8 +176,12 @@ class TestHostComponent {
   adminUserProfile = expectedAdminUserProfile;
   userInfo = userInfolanguage;
 
-  @ViewChild(UserInfoTabComponent, { static: false }) component: UserInfoTabComponent;
+  @ViewChild(UserInfoTabComponent, { static: false })
+  component: UserInfoTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('UserInfoTabComponent', () => {
   let testhost: TestHostComponent;
@@ -279,10 +282,19 @@ describe('UserInfoTabComponent', () => {
       id: '1',
       language: 'fr',
     };
-    const userServiceSpy = jasmine.createSpyObj('UserService', { patch: of({}) });
-    const userInfoServiceSpy = jasmine.createSpyObj('UserInfoService', { patch: of({}) });
+    const userServiceSpy = {
+      patch: vi.fn().mockName('UserService.patch').mockReturnValue(of({})),
+    };
+    const userInfoServiceSpy = {
+      patch: vi.fn().mockName('UserInfoService.patch').mockReturnValue(of({})),
+    };
 
-    const userCreateValidatorsSpy = jasmine.createSpyObj('userCreateValidators', { uniqueEmail: () => of(null) });
+    const userCreateValidatorsSpy = {
+      uniqueEmail: vi
+        .fn()
+        .mockName('userCreateValidators.uniqueEmail')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -292,9 +304,9 @@ describe('UserInfoTabComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       declarations: [UserInfoTabComponent, TestHostComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -306,7 +318,9 @@ describe('UserInfoTabComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(UserInfoTabComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -348,11 +362,15 @@ describe('UserInfoTabComponent', () => {
   });
 
   it('should disable then enable the form', () => {
-    testhost.readOnly = true;
-    fixture.detectChanges();
+    testhost.component.readOnly = true;
+    testhost.component.ngOnChanges({
+      readOnly: { previousValue: false, currentValue: true, firstChange: false, isFirstChange: () => false },
+    });
     expect(testhost.component.form.disabled).toBe(true);
-    testhost.readOnly = false;
-    fixture.detectChanges();
+    testhost.component.readOnly = false;
+    testhost.component.ngOnChanges({
+      readOnly: { previousValue: true, currentValue: false, firstChange: false, isFirstChange: () => false },
+    });
     expect(testhost.component.form.disabled).toBe(false);
   });
 });

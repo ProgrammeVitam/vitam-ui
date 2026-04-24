@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
@@ -58,6 +58,10 @@ import { SharedService } from '../shared.service';
   standalone: false,
 })
 export class ExternalParamProfileListComponent extends InfiniteScrollTable<ExternalParamProfile> implements OnDestroy, OnInit {
+  externalParamProfileServiceService: ExternalParamProfileService;
+  private profileService = inject(ProfileService);
+  private sharedService = inject(SharedService);
+
   orderBy = 'name';
   direction = Direction.ASCENDANT;
   private updatedProfileSub: Subscription;
@@ -74,12 +78,12 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
     this.searchChange.next(searchText);
   }
 
-  constructor(
-    public externalParamProfileServiceService: ExternalParamProfileService,
-    private profileService: ProfileService,
-    private sharedService: SharedService,
-  ) {
+  constructor() {
+    const externalParamProfileServiceService = inject(ExternalParamProfileService);
+
     super(externalParamProfileServiceService);
+
+    this.externalParamProfileServiceService = externalParamProfileServiceService;
   }
 
   ngOnInit() {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
@@ -63,6 +63,12 @@ interface OperationSearch {
   standalone: false,
 })
 export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+  private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private queryParamsService = inject(QueryParamsService);
+  private dateService = inject(DateService);
+
   tenantIdentifier: number;
   dateRangeFilterForm = this.formBuilder.group<FormData>({
     startDateMin: null,
@@ -81,13 +87,7 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private queryParamsService: QueryParamsService,
-    private dateService: DateService,
-  ) {
+  constructor() {
     if (this.route && this.route.paramMap) {
       this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
       this.tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);

@@ -54,8 +54,10 @@ describe('LogbookOperationComponent', () => {
   let fixture: ComponentFixture<LogbookOperationComponent>;
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
       imports: [
         InjectorModule,
@@ -71,7 +73,7 @@ describe('LogbookOperationComponent', () => {
         provideNativeDateAdapter(),
         DatePipe,
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
+        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({}) } },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: Router, useValue: { navigate: () => {} } },
         GlobalEventService,

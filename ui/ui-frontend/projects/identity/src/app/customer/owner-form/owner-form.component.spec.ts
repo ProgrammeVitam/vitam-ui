@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, VitamUILibraryModule, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
@@ -57,21 +57,31 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 class TesthostComponent {
   owner: Owner = null;
   customerId = '4242';
-  @ViewChild(OwnerFormComponent, { static: false }) ownerFormComponent: OwnerFormComponent;
+  @ViewChild(OwnerFormComponent, { static: false })
+  ownerFormComponent: OwnerFormComponent;
 }
 
 let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
+
 describe('OwnerFormComponent', () => {
   beforeEach(async () => {
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', {
-      uniqueCode: () => timer(10).pipe(map((): any => null)),
-    });
+    const ownerServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of({})),
+    };
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => timer(10).pipe(map((): any => null))),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [OwnerFormComponent, TesthostComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         FormsModule,
         LoggerModule.forRoot(),
@@ -80,7 +90,6 @@ describe('OwnerFormComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -92,7 +101,9 @@ describe('OwnerFormComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(OwnerFormComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {

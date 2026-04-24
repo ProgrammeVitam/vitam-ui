@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
-import { Owner, Tenant } from 'vitamui-library';
+import { Owner, StartupService, Tenant } from 'vitamui-library';
 
 @Component({
   selector: 'app-owner-preview',
@@ -45,12 +45,34 @@ import { Owner, Tenant } from 'vitamui-library';
   standalone: false,
 })
 export class OwnerPreviewComponent {
+  private startupService = inject(StartupService);
+
   @Input() owner: Owner;
   @Input() tenant: Tenant;
   @Input() isPopup: boolean;
   @Output() previewClose = new EventEmitter();
 
+  openPopup() {
+    const url = this.tenant ? '/customer/tenant/' + this.tenant.id : '/customer/owner/' + this.owner.id;
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + url,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
+    this.emitClose();
+  }
+
   emitClose() {
     this.previewClose.emit();
+  }
+
+  filterEvents(event: any): boolean {
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_UPDATE_OWNER') ||
+        event.outDetail.includes('EXT_VITAMUI_CREATE_OWNER') ||
+        event.outDetail.includes('EXT_VITAMUI_CREATE_TENANT') ||
+        event.outDetail.includes('EXT_VITAMUI_UPDATE_TENANT'))
+    );
   }
 }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
@@ -42,16 +42,22 @@ import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import { Agency, ApplicationId, diff, Role, SecurityService, AgencyService, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { AgencyCreateValidators } from '../../agency-create/agency-create.validators';
 
 @Component({
   selector: 'app-agency-information-tab',
   templateUrl: './agency-information-tab.component.html',
   styleUrls: ['./agency-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, VitamUICommonModule, TranslatePipe, AsyncPipe, NgIf],
+  imports: [ReactiveFormsModule, VitamUICommonModule, TranslatePipe, AsyncPipe],
 })
 export class AgencyInformationTabComponent {
+  private route = inject(ActivatedRoute);
+  private formBuilder = inject(FormBuilder);
+  private agencyService = inject(AgencyService);
+  private securityService = inject(SecurityService);
+  private agencyCreateValidators = inject(AgencyCreateValidators);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   tenantIdentifier: number;
@@ -91,13 +97,9 @@ export class AgencyInformationTabComponent {
     }
   }
 
-  constructor(
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private agencyService: AgencyService,
-    private securityService: SecurityService,
-    private agencyCreateValidators: AgencyCreateValidators,
-  ) {
+  constructor() {
+    const agencyCreateValidators = this.agencyCreateValidators;
+
     this.form = this.formBuilder.group({
       name: [null, [Validators.required, agencyCreateValidators.onlyWhitespaces]],
       description: [null],

@@ -1,8 +1,13 @@
-<form *ngIf="editObject" [formGroup]="editObject.control">
-  <vitamui-common-group-editor *ngIf="editObject.type === DisplayObjectType.GROUP" [editObject]="editObject"></vitamui-common-group-editor>
-  <vitamui-common-list-editor *ngIf="editObject.type === DisplayObjectType.LIST" [editObject]="editObject"></vitamui-common-list-editor>
-  <vitamui-common-primitive-editor
-    *ngIf="editObject.type === DisplayObjectType.PRIMITIVE"
-    [editObject]="editObject"
-  ></vitamui-common-primitive-editor>
-</form>
+@if (editObject) {
+  <form [formGroup]="editObject.control">
+    @if (editObject.type === DisplayObjectType.GROUP) {
+      <vitamui-common-group-editor [editObject]="editObject"></vitamui-common-group-editor>
+    }
+    @if (editObject.type === DisplayObjectType.LIST) {
+      <vitamui-common-list-editor [editObject]="editObject"></vitamui-common-list-editor>
+    }
+    @if (editObject.type === DisplayObjectType.PRIMITIVE) {
+      <vitamui-common-primitive-editor [editObject]="editObject"></vitamui-common-primitive-editor>
+    }
+  </form>
+}

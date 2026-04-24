@@ -52,8 +52,14 @@ describe('ContextListComponent', () => {
   let component: ContextListComponent;
   let fixture: ComponentFixture<ContextListComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
 
   const authServiceMock = {
     user: () => of({}),
@@ -101,7 +107,9 @@ describe('ContextListComponent', () => {
 
   it('Search criteria should exists when we have some status as criteria', fakeAsync(() => {
     // Given
-    const filterMap: { [key: string]: any[] } = {
+    const filterMap: {
+      [key: string]: any[];
+    } = {
       status: ['ACTIVE', 'INACTIVE'],
     };
     const searchText = 'Search text';

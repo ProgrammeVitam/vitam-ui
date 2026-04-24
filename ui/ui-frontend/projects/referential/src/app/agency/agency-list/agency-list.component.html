@@ -21,43 +21,41 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let agency of dataSource" (click)="agencyClick.emit(agency)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-1 d-flex align-items-center">
-            <i class="vitamui-icon vitamui-icon-agent"></i>
-          </div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ agency.identifier }}</div>
-          <div class="col-3" vitamuiCommonEllipsis>{{ agency.name }}</div>
-          <div class="col-5 actions">
-            <span vitamuiCommonEllipsis>{{ agency.description }}</span>
-            <div>
-              <button
-                class="btn btn-circle primary"
-                [disabled]="!hasDeleteRole"
-                (click)="$event.stopPropagation(); deleteAgencyDialog(agency)"
-              >
-                <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
-              </button>
+      @for (agency of dataSource; track agency) {
+        <div class="vitamui-table-rows" (click)="agencyClick.emit(agency)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-1 d-flex align-items-center">
+              <i class="vitamui-icon vitamui-icon-agent"></i>
+            </div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ agency.identifier }}</div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ agency.name }}</div>
+            <div class="col-5 actions">
+              <span vitamuiCommonEllipsis>{{ agency.description }}</span>
+              <div>
+                <button
+                  class="btn btn-circle primary"
+                  [disabled]="!hasDeleteRole"
+                  (click)="$event.stopPropagation(); deleteAgencyDialog(agency)"
+                >
+                  <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 
-  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  @if (!dataSource || pending) {
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+    </div>
+  }
+  @if (!pending && dataSource?.length === 0) {
+    <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+  }
 </div>
-
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
-
-<ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
-</ng-template>
 
 <ng-template #confirmDeleteDialog>
   <vitamui-common-confirm-dialog

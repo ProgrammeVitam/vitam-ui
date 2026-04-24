@@ -56,7 +56,11 @@ describe('DisplayObjectHelperService', () => {
 
   describe('toDisplayObject', () => {
     it('should map to display object', () => {
-      const inputs: { data: any; template: DisplayRule[]; expected: DisplayObject }[] = [
+      const inputs: {
+        data: any;
+        template: DisplayRule[];
+        expected: DisplayObject;
+      }[] = [
         {
           data: 'bonjour',
           template: [],
@@ -455,7 +459,15 @@ describe('DisplayObjectHelperService', () => {
 
       expect(service).toBeTruthy();
       inputs.forEach((input, i) => {
-        const { data, template, expected }: { data: any; template: DisplayRule[]; expected: DisplayObject } = input;
+        const {
+          data,
+          template,
+          expected,
+        }: {
+          data: any;
+          template: DisplayRule[];
+          expected: DisplayObject;
+        } = input;
 
         expect(data).toBeTruthy();
         expect(template).toBeTruthy();
@@ -463,7 +475,7 @@ describe('DisplayObjectHelperService', () => {
 
         const displayObject = service.toDisplayObject(data, template);
 
-        expect(displayObject).withContext(`failed on index ${i}`).toEqual(expected, `failed on index ${i}`);
+        expect(displayObject).toEqual(expected);
       });
     });
   });

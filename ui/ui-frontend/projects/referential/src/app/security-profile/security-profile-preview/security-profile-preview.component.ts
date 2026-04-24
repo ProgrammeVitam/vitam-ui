@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -50,6 +50,9 @@ import { SecurityProfilePermissionsTabComponent } from './security-profile-permi
   standalone: false,
 })
 export class SecurityProfilePreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private securityProfileService = inject(SecurityProfileService);
+
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() securityProfile: SecurityProfile;
 
@@ -68,11 +71,6 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
       return '';
     }
   }
-
-  constructor(
-    private matDialog: MatDialog,
-    private securityProfileService: SecurityProfileService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

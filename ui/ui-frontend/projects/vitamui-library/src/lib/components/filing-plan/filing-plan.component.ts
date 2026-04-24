@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Injector, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Injector, Input, OnInit, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
@@ -59,6 +59,8 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class FilingPlanComponent extends AbstractFormInputDirective implements OnInit {
+  filingPlanService = inject(FilingPlanService);
+
   @Input() dataSource: Unit[];
   /** @deprecated should be removed - see VitamUIHttpInterceptor */
   @Input() tenantIdentifier: number;
@@ -75,10 +77,9 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
 
-  constructor(
-    injector: Injector,
-    public filingPlanService: FilingPlanService,
-  ) {
+  constructor() {
+    const injector = inject(Injector);
+
     super(injector);
     this.nestedTreeControl = new NestedTreeControl<Node>((node) => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();

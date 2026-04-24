@@ -36,7 +36,7 @@
  */
 import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -50,16 +50,22 @@ import { ProfileListComponent } from './profile-list/profile-list.component';
   standalone: false,
 })
 export class ProfileComponent extends SidenavPage<Profile> {
+  dialog = inject(MatDialog);
+  route: ActivatedRoute;
+  globalEventService: GlobalEventService;
+
   public search: string;
 
   @ViewChild(ProfileListComponent, { static: true }) profileListComponent: ProfileListComponent;
 
-  constructor(
-    public dialog: MatDialog,
-    public route: ActivatedRoute,
-    public globalEventService: GlobalEventService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+
+    this.route = route;
+    this.globalEventService = globalEventService;
   }
 
   openProfilAdminCreateDialog() {

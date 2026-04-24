@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiUnitObject, Unit } from 'vitamui-library';
 import { PersistentIdentifierApiService } from '../core/api/persistent-identifier-api.service';
@@ -45,7 +45,7 @@ import { PersistentIdentifierResponseDto } from '../core/api/persistent-identifi
   providedIn: 'root',
 })
 export class PersistentIdentifierService {
-  constructor(private persistentIdentifierApiService: PersistentIdentifierApiService) {}
+  private persistentIdentifierApiService = inject(PersistentIdentifierApiService);
 
   findUnitsByPersistentIdentifier(id: string): Observable<PersistentIdentifierResponseDto<Unit>> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');

@@ -38,19 +38,17 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CriteriaSearchQuery, Criterion, Operators, Owner, SnackBarService } from 'vitamui-library';
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { OwnerApiService } from './owner-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OwnerService {
-  updated = new Subject<Owner>();
+  private ownerApi = inject(OwnerApiService);
+  private snackBarService = inject(SnackBarService);
 
-  constructor(
-    private ownerApi: OwnerApiService,
-    private snackBarService: SnackBarService,
-  ) {}
+  updated = new Subject<Owner>();
 
   get(id: string): Observable<Owner> {
     return this.ownerApi.getOne(id);

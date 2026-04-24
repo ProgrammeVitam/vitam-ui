@@ -37,7 +37,7 @@
 import { Observable } from 'rxjs';
 
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { MetadataApiService } from '../api/metadata-api.service';
 import { Metadata } from '../models/metadata.interface';
@@ -47,7 +47,7 @@ import { VitamuiHttpHeaders } from '../../app/modules';
   providedIn: 'root',
 })
 export class MetadataService {
-  constructor(private metadataApi: MetadataApiService) {}
+  private metadataApi = inject(MetadataApiService);
 
   get(tenantIdentifier: number, unitId: string): Observable<Metadata> {
     const headers = new HttpHeaders()

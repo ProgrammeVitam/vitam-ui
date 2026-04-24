@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -45,7 +45,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { PatternComponent } from './pattern.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SelectComponent } from '../select/select.component';
-import objectContaining = jasmine.objectContaining;
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
 
@@ -62,8 +61,12 @@ class TestHostComponent {
     { value: 'option4.com', disabled: true },
   ];
 
-  @ViewChild(PatternComponent, { static: false }) component: PatternComponent;
+  @ViewChild(PatternComponent, { static: false })
+  component: PatternComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('PatternComponent', () => {
   let testhost: TestHostComponent;
@@ -99,10 +102,8 @@ describe('PatternComponent', () => {
   });
 
   it('should set the patterns', waitForAsync(() => {
-    testhost.patterns = ['option1.com', 'option2.com'];
-    fixture.detectChanges();
+    testhost.component.writeValue(['option1.com', 'option2.com']);
     fixture.whenStable().then(() => {
-      fixture.detectChanges();
       expect(testhost.component.patterns).toEqual(['option1.com', 'option2.com']);
     });
   }));
@@ -162,31 +163,31 @@ describe('PatternComponent', () => {
 
   it('should return the available options', () => {
     expect(testhost.component.availableOptions).toEqual([
-      objectContaining({ key: 'option1.com', disabled: false }),
-      objectContaining({ key: 'option2.com', disabled: false }),
-      objectContaining({ key: 'option3.com', disabled: false }),
-      objectContaining({ key: 'option4.com', disabled: true }),
+      expect.objectContaining({ key: 'option1.com', disabled: false }),
+      expect.objectContaining({ key: 'option2.com', disabled: false }),
+      expect.objectContaining({ key: 'option3.com', disabled: false }),
+      expect.objectContaining({ key: 'option4.com', disabled: true }),
     ]);
     add('option2.com');
     expect(testhost.component.availableOptions).toEqual([
-      objectContaining({ key: 'option1.com', disabled: false }),
-      objectContaining({ key: 'option2.com', disabled: true }),
-      objectContaining({ key: 'option3.com', disabled: false }),
-      objectContaining({ key: 'option4.com', disabled: true }),
+      expect.objectContaining({ key: 'option1.com', disabled: false }),
+      expect.objectContaining({ key: 'option2.com', disabled: true }),
+      expect.objectContaining({ key: 'option3.com', disabled: false }),
+      expect.objectContaining({ key: 'option4.com', disabled: true }),
     ]);
     add('option1.com');
     expect(testhost.component.availableOptions).toEqual([
-      objectContaining({ key: 'option1.com', disabled: true }),
-      objectContaining({ key: 'option2.com', disabled: true }),
-      objectContaining({ key: 'option3.com', disabled: false }),
-      objectContaining({ key: 'option4.com', disabled: true }),
+      expect.objectContaining({ key: 'option1.com', disabled: true }),
+      expect.objectContaining({ key: 'option2.com', disabled: true }),
+      expect.objectContaining({ key: 'option3.com', disabled: false }),
+      expect.objectContaining({ key: 'option4.com', disabled: true }),
     ]);
     add('option3.com');
     expect(testhost.component.availableOptions).toEqual([
-      objectContaining({ key: 'option1.com', disabled: true }),
-      objectContaining({ key: 'option2.com', disabled: true }),
-      objectContaining({ key: 'option3.com', disabled: true }),
-      objectContaining({ key: 'option4.com', disabled: true }),
+      expect.objectContaining({ key: 'option1.com', disabled: true }),
+      expect.objectContaining({ key: 'option2.com', disabled: true }),
+      expect.objectContaining({ key: 'option3.com', disabled: true }),
+      expect.objectContaining({ key: 'option4.com', disabled: true }),
     ]);
   });
 
@@ -208,9 +209,9 @@ describe('PatternComponent', () => {
 
   it('should return the enabled options', () => {
     expect(testhost.component.enabledOptions()).toEqual([
-      objectContaining({ key: 'option1.com', disabled: false }),
-      objectContaining({ key: 'option2.com', disabled: false }),
-      objectContaining({ key: 'option3.com', disabled: false }),
+      expect.objectContaining({ key: 'option1.com', disabled: false }),
+      expect.objectContaining({ key: 'option2.com', disabled: false }),
+      expect.objectContaining({ key: 'option3.com', disabled: false }),
     ]);
   });
 
@@ -243,16 +244,16 @@ describe('PatternComponent', () => {
       const selectOptions = await selectHarness.getOptions();
 
       expect(await selectOptions[0].getText()).toContain('option1.com');
-      expect(await selectOptions[0].isDisabled()).toBeFalse();
+      expect(await selectOptions[0].isDisabled()).toBe(false);
 
       expect(await selectOptions[1].getText()).toContain('option2.com');
-      expect(await selectOptions[1].isDisabled()).toBeFalse();
+      expect(await selectOptions[1].isDisabled()).toBe(false);
 
       expect(await selectOptions[2].getText()).toContain('option3.com');
-      expect(await selectOptions[2].isDisabled()).toBeTrue();
+      expect(await selectOptions[2].isDisabled()).toBe(true);
 
       expect(await selectOptions[3].getText()).toContain('option4.com');
-      expect(await selectOptions[3].isDisabled()).toBeTrue();
+      expect(await selectOptions[3].isDisabled()).toBe(true);
     });
 
     it('should have a list of selected patterns', () => {
@@ -266,7 +267,7 @@ describe('PatternComponent', () => {
     });
 
     it('should remove the pattern', () => {
-      spyOn(testhost.component, 'remove').and.callThrough();
+      vi.spyOn(testhost.component, 'remove');
       add('option1.com');
       add('option2.com');
       fixture.detectChanges();
@@ -277,7 +278,7 @@ describe('PatternComponent', () => {
     });
 
     it('should call add() on click', () => {
-      spyOn(testhost.component, 'add').and.callThrough();
+      vi.spyOn(testhost.component, 'add');
       testhost.component.control.setValue('option2.com');
       fixture.detectChanges();
       const elAddButton = fixture.nativeElement.querySelector('button');

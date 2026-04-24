@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   Agency,
@@ -53,19 +53,19 @@ import { of, switchMap } from 'rxjs';
   selector: 'app-view-agency',
   templateUrl: 'view-agency.component.html',
   styleUrls: ['view-agency.component.scss'],
-  imports: [CommonModule, RouterModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class ViewAgencyComponent implements OnInit {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private agencyService = inject(AgencyService);
+
   readonly agencyTemplate = agencyTemplate;
   breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
   agency: Agency;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private tenantSelectionService: TenantSelectionService,
-    private agencyService: AgencyService,
-  ) {
+  constructor() {
     this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
   }
 

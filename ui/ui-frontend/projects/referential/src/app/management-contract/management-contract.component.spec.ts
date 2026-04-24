@@ -54,12 +54,17 @@ describe('ManagementContractComponent', () => {
   let component: ManagementContractComponent;
   let fixture: ComponentFixture<ManagementContractComponent>;
 
-  const applicationServiceSpy = jasmine.createSpyObj<ApplicationService>('ApplicationService', ['isApplicationExternalIdentifierEnabled']);
-  applicationServiceSpy.isApplicationExternalIdentifierEnabled.and.returnValue(of(true));
+  const applicationServiceSpy = {
+    isApplicationExternalIdentifierEnabled: vi.fn().mockName('ApplicationService.isApplicationExternalIdentifierEnabled'),
+  };
+  applicationServiceSpy.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'closeAll']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+      closeAll: vi.fn().mockName('MatDialog.closeAll'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
       declarations: [ManagementContractComponent],

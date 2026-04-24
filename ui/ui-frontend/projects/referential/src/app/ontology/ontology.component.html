@@ -1,6 +1,8 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true" (vitamuiClickOutside)="onClose()">
-    <app-ontology-preview *ngIf="openedItem" (previewClose)="closePanel()" [selectedElement]="openedItem"></app-ontology-preview>
+    @if (openedItem) {
+      <app-ontology-preview (previewClose)="closePanel()" [selectedElement]="openedItem"></app-ontology-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

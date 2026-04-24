@@ -1,10 +1,8 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-security-profile-preview
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      [securityProfile]="openedItem"
-    ></app-security-profile-preview>
+    @if (openedItem) {
+      <app-security-profile-preview (previewClose)="closePanel()" [securityProfile]="openedItem"></app-security-profile-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

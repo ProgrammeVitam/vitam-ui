@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -48,13 +48,11 @@ import { TenantSelectionService } from './tenant-selection.service';
   providedIn: 'root',
 })
 export class ActiveTenantGuard {
-  constructor(
-    private authService: AuthService,
-    private startupService: StartupService,
-    private tenantSelectionService: TenantSelectionService,
-    private globalEventService: GlobalEventService,
-    private router: Router,
-  ) {}
+  private authService = inject(AuthService);
+  private startupService = inject(StartupService);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private globalEventService = inject(GlobalEventService);
+  private router = inject(Router);
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
     return this.checkTenants(route);

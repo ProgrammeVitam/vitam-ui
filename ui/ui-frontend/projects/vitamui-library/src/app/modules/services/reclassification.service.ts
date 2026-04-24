@@ -42,7 +42,7 @@ import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { ReclassificationApiService } from './reclassification-api.service';
 import { HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ReclassificationCriteriaDto } from './reclassification.interface';
 import { getUnitI18nAttribute } from '../pipes/unitI18n.pipe';
 
@@ -50,8 +50,14 @@ import { getUnitI18nAttribute } from '../pipes/unitI18n.pipe';
   providedIn: 'root',
 })
 export class ReclassificationService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  constructor(private reclassificationApiService: ReclassificationApiService) {
+  private reclassificationApiService: ReclassificationApiService;
+
+  constructor() {
+    const reclassificationApiService = inject(ReclassificationApiService);
+
     super(reclassificationApiService, 'ALL');
+
+    this.reclassificationApiService = reclassificationApiService;
   }
 
   public fetchTitle(title: string, titleInLanguages: any): string {

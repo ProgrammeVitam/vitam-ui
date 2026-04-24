@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   AccessContract,
@@ -54,6 +54,11 @@ import { AccessContractNodeUpdateComponent } from './access-contract-nodes-updat
   standalone: false,
 })
 export class AccessContractNodesTabComponent {
+  private unitService = inject(SearchUnitApiService);
+  private externalParameterService = inject(ExternalParametersService);
+  private dialog = inject(MatDialog);
+  private snackBarService = inject(SnackBarService);
+
   @Input() tenantIdentifier: number;
 
   @Input() set accessContract(accessContract: AccessContract) {
@@ -78,13 +83,6 @@ export class AccessContractNodesTabComponent {
   private _accessContract: AccessContract;
   rootUnitsTitles: string[] = [];
   excludedRootUnitsTitles: string[] = [];
-
-  constructor(
-    private unitService: SearchUnitApiService,
-    private externalParameterService: ExternalParametersService,
-    private dialog: MatDialog,
-    private snackBarService: SnackBarService,
-  ) {}
 
   get isAllRootUnitsSelected(): boolean {
     return !this._accessContract.rootUnits || this._accessContract.rootUnits.length === 0;

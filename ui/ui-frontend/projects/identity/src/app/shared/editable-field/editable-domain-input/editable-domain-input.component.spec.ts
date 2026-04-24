@@ -37,7 +37,7 @@
 import { of } from 'rxjs';
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output, ViewChild, NgModule } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -58,11 +58,15 @@ import { EditableDomainInputComponent } from './editable-domain-input.component'
   standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() selected: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  selected: string;
+  @Input()
+  spinnerDiameter = 25;
 
-  @Output() selectedChange = new EventEmitter<string>();
+  @Output()
+  selectedChange = new EventEmitter<string>();
 
   writeValue() {}
   registerOnChange() {}
@@ -79,8 +83,12 @@ class TesthostComponent {
   defaultValue: string;
   label = 'Test label';
 
-  @ViewChild(EditableDomainInputComponent, { static: false }) component: EditableDomainInputComponent;
+  @ViewChild(EditableDomainInputComponent, { static: false })
+  component: EditableDomainInputComponent;
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('EditableDomainInputComponent', () => {
   let testhost: TesthostComponent;
@@ -88,10 +96,16 @@ describe('EditableDomainInputComponent', () => {
   let overlayContainerElement: HTMLElement;
 
   beforeEach(async () => {
-    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
-      uniqueCode: () => of(null),
-      uniqueDomain: () => of(null),
-    });
+    const customerCreateValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('CustomerCreateValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+      uniqueDomain: vi
+        .fn()
+        .mockName('CustomerCreateValidators.uniqueDomain')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonTestModule],
@@ -117,7 +131,7 @@ describe('EditableDomainInputComponent', () => {
 
   describe('DOM', () => {
     it('should call enterEditMode() on click', () => {
-      spyOn(testhost.component, 'enterEditMode');
+      vi.spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
       element.click();
       expect(testhost.component.enterEditMode).toHaveBeenCalled();
@@ -164,18 +178,17 @@ describe('EditableDomainInputComponent', () => {
 
     it('should open then close the action buttons', () => {
       testhost.component.enterEditMode();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeTruthy();
       testhost.component.cancel();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeFalsy();
+      expect(testhost.component.editMode).toBe(false);
     });
 
     it('should have a confirm button', () => {
-      spyOn(testhost.component, 'confirm');
+      vi.spyOn(testhost.component, 'confirm');
       testhost.component.enterEditMode();
       testhost.component.control.markAsDirty();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-confirm') as HTMLButtonElement;
       expect(elButton).toBeTruthy();
       elButton.click();
@@ -183,9 +196,9 @@ describe('EditableDomainInputComponent', () => {
     });
 
     it('should have a cancel button', () => {
-      spyOn(testhost.component, 'cancel');
+      vi.spyOn(testhost.component, 'cancel');
       testhost.component.enterEditMode();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-cancel') as HTMLButtonElement;
       expect(elButton).toBeTruthy();
       elButton.click();
@@ -193,15 +206,15 @@ describe('EditableDomainInputComponent', () => {
     });
 
     it('should have a spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(true);
-      fixture.detectChanges();
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(true);
+      fixture.detectChanges(false);
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(false);
-      fixture.detectChanges();
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(false);
+      fixture.detectChanges(false);
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
     });

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -49,6 +49,9 @@ import { FormControl, Validators } from '@angular/forms';
   standalone: false,
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
+  private matDialog = inject(MatDialog);
+  logbookManagementOperationService = inject(LogbookManagementOperationService);
+
   @Input() operation: OperationDetails;
   @Input() tenantIdentifier: number;
   @Input() tenant: any;
@@ -61,11 +64,6 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   actionId: string;
   reason: FormControl;
   operationUpdatedSub: Subscription;
-
-  constructor(
-    private matDialog: MatDialog,
-    public logbookManagementOperationService: LogbookManagementOperationService,
-  ) {}
 
   ngOnDestroy(): void {
     this.operationUpdatedSub?.unsubscribe();

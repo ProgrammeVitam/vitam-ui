@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { collapseAnimation, Profile, rotateAnimation } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
@@ -46,6 +46,8 @@ import { GroupSelection } from './../../group-selection.interface';
   standalone: false,
 })
 export class GroupListComponent implements OnInit {
+  data = inject(MAT_DIALOG_DATA);
+
   public groupName: string;
 
   private initialGroups: GroupSelection[];
@@ -67,8 +69,6 @@ export class GroupListComponent implements OnInit {
   public selectedGroupEvent = new EventEmitter<GroupSelection>();
 
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit() {
     this.initialGroups = this.groups.slice();

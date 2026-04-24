@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -92,6 +92,15 @@ const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
   standalone: false,
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
+  dialog = inject(MatDialog);
+  private formBuilder = inject(FormBuilder);
+  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private translateService = inject(TranslateService);
+  private route = inject(ActivatedRoute);
+  private searchCriteriaService = inject(SearchCriteriaService);
+  private archiveHelperService = inject(ArchiveSearchHelperService);
+
   form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
@@ -111,20 +120,12 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   } satisfies { [key: string]: VitamuiSelectOptions };
   private offlineServices$: Observable<SearchProvider[]>;
 
-  constructor(
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private archiveExchangeDataService: ArchiveSharedDataService,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private translateService: TranslateService,
-    private route: ActivatedRoute,
-    private searchCriteriaService: SearchCriteriaService,
-    private archiveHelperService: ArchiveSearchHelperService,
-    schemaService: SchemaService,
-    agencyService: AgencyService,
-    archiveUnitProfilesService: ArchiveUnitProfilesService,
-    configService: ConfigService,
-  ) {
+  constructor() {
+    const schemaService = inject(SchemaService);
+    const agencyService = inject(AgencyService);
+    const archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
+    const configService = inject(ConfigService);
+
     this.offlineServices$ = configService.config$
       .pipe(map((configuration) => configuration.COLLECT))
       .pipe(map((config) => config?.OFFLINE_SERVICES));

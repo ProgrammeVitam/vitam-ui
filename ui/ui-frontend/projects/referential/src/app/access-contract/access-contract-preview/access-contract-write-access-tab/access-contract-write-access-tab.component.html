@@ -33,17 +33,18 @@
       </div>
     </div>
 
-    <vitamui-select
-      *ngIf="form.get('downloadChoose').value === 'SELECTION'"
-      class="w-100"
-      formControlName="dataObjectVersion"
-      [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER' | translate"
-      [options]="usages"
-      [multiple]="true"
-      [enableSearch]="false"
-      [enableSelectAll]="false"
-      [enableDisplaySelected]="false"
-    ></vitamui-select>
+    @if (form.get('downloadChoose').value === 'SELECTION') {
+      <vitamui-select
+        class="w-100"
+        formControlName="dataObjectVersion"
+        [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER' | translate"
+        [options]="usages"
+        [multiple]="true"
+        [enableSearch]="false"
+        [enableSelectAll]="false"
+        [enableDisplaySelected]="false"
+      ></vitamui-select>
+    }
   </div>
 
   <button type="submit" class="btn primary mt-4" [disabled]="form.invalid || unChanged || submitted">

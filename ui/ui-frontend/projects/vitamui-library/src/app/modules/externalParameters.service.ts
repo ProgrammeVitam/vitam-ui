@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from './injection-tokens';
@@ -44,12 +44,12 @@ import { BASE_URL } from './injection-tokens';
   providedIn: 'root',
 })
 export class ExternalParametersService {
+  private http = inject(HttpClient);
+  private baseUrl = inject(BASE_URL);
+
   private readonly apiUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) private baseUrl: string,
-  ) {
+  constructor() {
     this.apiUrl = this.baseUrl + '/externalparameters';
   }
 

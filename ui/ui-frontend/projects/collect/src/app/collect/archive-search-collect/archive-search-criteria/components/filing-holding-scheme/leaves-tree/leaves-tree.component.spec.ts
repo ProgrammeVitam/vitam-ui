@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
@@ -63,7 +64,7 @@ export function newNode(
     id: currentId,
     title: currentId,
     unitType: UnitType.INGEST,
-    descriptionLevel: currentDescriptionLevel,
+    descriptionLevel: currentDescriptionLevel as any,
     checked: false,
     children: currentChildren,
     vitamId: 'whatever',
@@ -86,7 +87,9 @@ describe('LeavesTreeComponent', () => {
   const configurationsApiServiceStube = {
     getVirtualPathsFields: () => of(['SomeField']),
   };
-  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', ['getSearchCriterias']);
+  const archiveSharedDataServiceStub = {
+    getSearchCriterias: vi.fn().mockName('ArchiveSharedDataService.getSearchCriterias'),
+  };
   const searchCriteria: SearchCriteriaDto = {
     pageNumber: 0,
     size: 1,
@@ -100,12 +103,13 @@ describe('LeavesTreeComponent', () => {
     archiveServiceStub = {};
     archiveFacetsServicStube = {};
 
-    archiveSharedDataServiceStub.getSearchCriterias.and.returnValue(of(searchCriteria));
-    archiveSharedDataServiceStub.selectedUnit$ = of();
+    archiveSharedDataServiceStub.getSearchCriterias.mockReturnValue(of(searchCriteria));
+    (archiveSharedDataServiceStub as any).selectedUnit$ = of();
 
     await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, TranslateModule.forRoot()],
       declarations: [LeavesTreeComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
@@ -150,7 +154,7 @@ describe('LeavesTreeComponent', () => {
       id: 'filingHoldingSchemaNodeId',
       title: 'string',
       unitType: UnitType.INGEST,
-      descriptionLevel: DescriptionLevel.ITEM,
+      descriptionLevel: DescriptionLevel.ITEM as any,
       label: 'string',
       children: [],
       count: 55,

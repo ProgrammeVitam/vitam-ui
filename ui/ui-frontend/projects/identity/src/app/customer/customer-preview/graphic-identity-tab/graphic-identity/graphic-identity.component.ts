@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -56,6 +56,10 @@ interface ThemeColorGroup {
   standalone: false,
 })
 export class GraphicIdentityComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<GraphicIdentityComponent>>(MatDialogRef);
+  private formBuilder = inject(FormBuilder);
+  private themeService = inject(ThemeService);
+
   private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
   private destroy = new Subject<void>();
@@ -83,12 +87,6 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
   private defaultTheme: Theme = this.themeService.defaultTheme;
 
   public displayCustomGraphicIdentity = new FormControl(false);
-
-  constructor(
-    public dialogRef: MatDialogRef<GraphicIdentityComponent>,
-    private formBuilder: FormBuilder,
-    private themeService: ThemeService,
-  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();

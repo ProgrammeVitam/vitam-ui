@@ -35,39 +35,130 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LogbookApiService } from '../api/logbook-api.service';
-import { HistoryEvent, IEvent } from '../models';
+import { Logger } from '../logger/logger';
+import { IEvent } from '../models';
+import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LogbookService {
-  constructor(private logbookApi: LogbookApiService) {}
+  private logger = inject(Logger);
+  private logbookApi = inject(LogbookApiService);
 
-  listOperationByIdAndCollectionName(id: string, collectionName: string, tenantIdentifier: number): Observable<HistoryEvent[]> {
-    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
-    return this.logbookApi.findOperationByIdAndCollectionName(id, collectionName, headers).pipe(
-      catchError(() => of([] as HistoryEvent[])),
-      map((response) => response.sort(sortEventByDate)),
+  protected extractEvents(response: { $results: IEvent[] }): IEvent[] {
+    if (response && response.$results) {
+      if (response.$results.length > 1) {
+        this.logger.warn(this, 'WARN: multiple results in history');
+      }
+      if (response.$results.length > 0) {
+        return response.$results[0].events;
+      }
+    }
+
+    return [];
+  }
+
+  listOperationsEvents(identifier: string, obIdReq: string, tenantIdentifier: number, accessContract: string): Observable<IEvent[]> {
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
+
+    return this.logbookApi.findOperations(identifier, obIdReq, headers).pipe(
+      catchError(() => of({ $results: [] as IEvent[] })),
+      map((response) => response.$results.reduce(flattenChildEvents, []).sort(sortEventByDate)),
     );
   }
 
-  private listOperationByIdentifierAndCollectionName(
+  listUnitEvents(unitId: string, accessContract: string, tenantIdentifier: number): Observable<IEvent[]> {
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
+
+    return this.logbookApi.findUnitLifeCyclesByUnitId(unitId, headers).pipe(
+      catchError(() => of({ $hits: null, $results: [] })),
+      map((response) => this.extractEvents(response).sort(sortEventByDate)),
+    );
+  }
+
+  listObjectEvents(objectId: string, accessContract: string, tenantIdentifier: number): Observable<IEvent[]> {
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
+    return this.logbookApi.findObjectGroupLifeCyclesByUnitId(objectId, headers).pipe(
+      catchError(() => of({ $hits: null, $results: [] })),
+      map((response) => this.extractEvents(response).sort(sortEventByDate)),
+    );
+  }
+
+  listOperationByIdAndCollectionName(identifier: string, collectionName: string, tenantIdentifier: number): Observable<IEvent[]> {
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
+    return this.logbookApi.findOperationByIdAndCollectionName(identifier, collectionName, headers).pipe(
+      catchError(() => of({ $results: [] as IEvent[] })),
+      map((response) =>
+        response.$results
+          .reduce(flattenChildEvents, [])
+          .filter((e) => e.obIdReq.toLowerCase() === collectionName.toLowerCase())
+          .sort(sortEventByDate),
+      ),
+    );
+  }
+
+  listOperationByResourcePathIdAndCollectionName(
+    resourcePath: string,
+    identifier: string,
+    collectionName: string,
+    tenantIdentifier: number,
+  ): Observable<IEvent[]> {
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
+    return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
+      catchError(() => of({ $results: [] as IEvent[] })),
+      map((response) =>
+        response.$results
+          .reduce(flattenChildEvents, [])
+          .filter((e) => e.obIdReq === collectionName)
+          .sort(sortEventByDate),
+      ),
+    );
+  }
+
+  listOperationByResourcePathIdAndCollectionNameWithCustomFilter(
+    resourcePath: string,
+    identifier: string,
+    tenantIdentifier: number,
+    filterPredicate: (event: IEvent) => boolean,
+  ): Observable<IEvent[]> {
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
+    return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
+      catchError(() => of({ $results: [] as IEvent[] })),
+      map((response) => response.$results.reduce(flattenChildEvents, []).filter(filterPredicate).sort(sortEventByDate)),
+    );
+  }
+
+  listOperationByIdentifierAndCollectionName(
     id: string,
     identifier: string,
     collectionName: string,
     tenantIdentifier: number,
-  ): Observable<HistoryEvent[]> {
-    return this.listOperationByIdAndCollectionName(id, collectionName, tenantIdentifier).pipe(
-      map((response) => response.filter((e) => e.obId === identifier)),
+  ): Observable<IEvent[]> {
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
+    return this.logbookApi.findOperationByIdAndCollectionName(id, collectionName, headers).pipe(
+      catchError(() => of({ $results: [] as IEvent[] })),
+      map((response) =>
+        response.$results
+          .reduce(flattenChildEvents, [])
+          .filter((e) => e.obIdReq === collectionName && e.obId === identifier)
+          .sort(sortEventByDate),
+      ),
     );
   }
 
-  listHistoryForOwner(id: string, identifier: string, externalParamId: string, tenantIdentifier: number): Observable<HistoryEvent[]> {
+  listHistoryForOwner(id: string, identifier: string, externalParamId: string, tenantIdentifier: number): Observable<IEvent[]> {
     const ownerEventsObservable = this.listOperationByIdentifierAndCollectionName(id, identifier, 'owners', tenantIdentifier);
     const tenantEventsObservable = this.listOperationByIdAndCollectionName(externalParamId, 'tenants', tenantIdentifier);
 
@@ -78,8 +169,19 @@ export class LogbookService {
     );
   }
 
-  listHistoryOperations(collectionsMap: Map<string, string>, tenantIdentifier: number): Observable<HistoryEvent[]> {
-    const observables: Observable<HistoryEvent[]>[] = [];
+  listHistoryForProfileArchive(id: string, externalParamId: string, tenantIdentifier: number): Observable<IEvent[]> {
+    const profileEventsObservable = this.listOperationByIdAndCollectionName(id, 'profiles', tenantIdentifier);
+    const archiveParamEventsObservable = this.listOperationByIdAndCollectionName(externalParamId, 'archiveparams', tenantIdentifier);
+
+    return forkJoin([profileEventsObservable, archiveParamEventsObservable]).pipe(
+      map((results) => {
+        return results[0].concat(results[1]).sort(sortEventByDate);
+      }),
+    );
+  }
+
+  listHistoryOperations(collectionsMap: Map<string, string>, tenantIdentifier: number): Observable<IEvent[]> {
+    const observables: Observable<IEvent[]>[] = [];
     collectionsMap.forEach((value, key) => {
       const result = this.listOperationByIdAndCollectionName(key, value, tenantIdentifier);
       observables.push(result);
@@ -87,12 +189,31 @@ export class LogbookService {
 
     return forkJoin(observables).pipe(
       map((results) => {
-        let events: HistoryEvent[] = [];
+        let events: IEvent[] = [];
 
         results.forEach((event) => {
           events = events.concat(event);
         });
         return events.sort(sortEventByDate);
+      }),
+    );
+  }
+
+  listOperationsBySelectQuery(
+    query: VitamSelectQuery,
+    tenantIdentifier: number,
+    accessContract?: string,
+    vitamTenantIdentifier?: number,
+  ): Observable<IEvent[]> {
+    let headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
+    if (accessContract) {
+      headers = headers.set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
+    }
+
+    return this.logbookApi.findOperationsBySelectQuery(query, vitamTenantIdentifier, headers).pipe(
+      catchError(() => of({ $results: [] as IEvent[] })),
+      map((response) => {
+        return response.$results.reduce(flattenChildEvents, []).sort(sortEventByDate);
       }),
     );
   }
@@ -136,6 +257,10 @@ export class LogbookService {
       document.body.removeChild(element);
     });
   }
+}
+
+function flattenChildEvents(acc: IEvent[], current: IEvent): IEvent[] {
+  return acc.concat(current.events);
 }
 
 export function sortEventByDate(ev1: IEvent, ev2: IEvent): number {

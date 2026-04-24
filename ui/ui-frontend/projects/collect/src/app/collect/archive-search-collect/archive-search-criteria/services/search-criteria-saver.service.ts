@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SearchCriteriaHistory, SearchService } from 'vitamui-library';
 import { ProjectsApiService } from '../../../core/api/project-api.service';
@@ -44,8 +44,14 @@ import { ProjectsApiService } from '../../../core/api/project-api.service';
   providedIn: 'root',
 })
 export class SearchCriteriaSaverService extends SearchService<any> {
-  constructor(private projectsApiService: ProjectsApiService) {
+  private projectsApiService: ProjectsApiService;
+
+  constructor() {
+    const projectsApiService = inject(ProjectsApiService);
+
     super(projectsApiService, 'ALL');
+
+    this.projectsApiService = projectsApiService;
   }
 
   saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {

@@ -37,7 +37,18 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ConnectedPosition, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ComponentRef,
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
 import { TooltipPosition } from './TooltipPosition.enum';
 import { CommonTooltipComponent } from './common-tooltip.component';
 
@@ -75,6 +86,10 @@ const TOOLTIP_TRIGGER_CLASS = 'tooltip-trigger';
   standalone: false,
 })
 export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
+  private overlay = inject(Overlay);
+  private overlayPositionBuilder = inject(OverlayPositionBuilder);
+  private elementRef = inject(ElementRef);
+
   @Input('vitamuiTooltip') text?: string;
   @Input() outline = false;
   @Input() vitamuiTooltipPosition: TooltipPosition = TooltipPosition.BOTTOM;
@@ -88,12 +103,6 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   #hideTimeoutId: ReturnType<typeof setTimeout>;
   #testRemovedInterval: ReturnType<typeof setInterval>;
   #overlayRef: OverlayRef;
-
-  constructor(
-    private overlay: Overlay,
-    private overlayPositionBuilder: OverlayPositionBuilder,
-    private elementRef: ElementRef,
-  ) {}
 
   ngOnInit(): void {
     if (!this.disabled && this.text) (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);

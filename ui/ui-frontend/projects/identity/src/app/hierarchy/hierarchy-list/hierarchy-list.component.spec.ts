@@ -88,7 +88,9 @@ describe('HierarchyListComponent', () => {
       loadMore: () => of([]),
       updated: new Subject(),
     };
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     await TestBed.configureTestingModule({
       imports: [MatProgressSpinnerModule, VitamUICommonTestModule],

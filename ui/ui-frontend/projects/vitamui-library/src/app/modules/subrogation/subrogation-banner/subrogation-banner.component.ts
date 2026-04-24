@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../auth.service';
@@ -47,18 +47,16 @@ import { SubrogationService } from '../subrogation.service';
   standalone: false,
 })
 export class SubrogationBannerComponent implements OnInit {
+  authService = inject(AuthService);
+  private subrogationService = inject(SubrogationService);
+
   show = false;
   hidden = false;
   endDate: Date;
   surrogateCustomerCode: String;
   surrogateCustomerName: String;
   subrogation: Subrogation;
-  subrogationTTL = 1800000; // default TTL
-
-  constructor(
-    public authService: AuthService,
-    private subrogationService: SubrogationService,
-  ) {}
+  subrogationTTL = 1800000;
 
   ngOnInit() {
     this.authService.user$.pipe(filter((user: AuthUser) => !!user?.superUser)).subscribe(() => {

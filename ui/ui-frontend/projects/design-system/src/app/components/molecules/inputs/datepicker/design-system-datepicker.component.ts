@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DatepickerComponent, PickerType, SelectComponent } from 'vitamui-library';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe, TitleCasePipe } from '@angular/common';
@@ -49,6 +49,8 @@ type Row = { default: FormControl; active: FormControl; disabled: FormControl; e
   styleUrl: './design-system-datepicker.component.scss',
 })
 export class DesignSystemDatepickerComponent {
+  private datePipe = inject(DatePipe);
+
   startDate = new FormControl();
   endDate = new FormControl();
 
@@ -91,7 +93,7 @@ export class DesignSystemDatepickerComponent {
 
   columns: (keyof Row)[] = ['default', 'active', 'disabled', 'error'];
 
-  constructor(private datePipe: DatePipe) {
+  constructor() {
     this.generateConfig();
   }
 

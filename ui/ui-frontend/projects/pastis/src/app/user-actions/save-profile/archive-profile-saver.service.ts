@@ -41,7 +41,7 @@ import { finalize, mergeMap, Observable, of, pipe, switchMap, throwError, UnaryF
 import { ProfileDescription } from '../../models/profile-description.model';
 import { FileNode } from '../../models/file-node';
 import { ProfileType } from '../../models/profile-type.enum';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 export interface FileUploadPayload {
   profile: Profile;
@@ -53,6 +53,9 @@ export interface FileUploadPayload {
   providedIn: 'root',
 })
 export class ArchiveProfileSaverService {
+  private profileService = inject(ProfileService);
+  private toggleService = inject(ToggleSidenavService);
+
   private attachmentOperator: UnaryFunction<Observable<FileUploadPayload>, Observable<Profile>> = pipe(
     mergeMap((payload: FileUploadPayload) =>
       payload.profile ? of(payload) : throwError(() => new Error('No profile after action attempt')),
@@ -64,11 +67,6 @@ export class ArchiveProfileSaverService {
     ),
     switchMap(({ file, profile }) => this.profileService.updateProfileFilePa(profile, file)),
   );
-
-  constructor(
-    private profileService: ProfileService,
-    private toggleService: ToggleSidenavService,
-  ) {}
 
   create(profileToCreate: Profile, profileDescription: ProfileDescription, data: FileNode[]): Observable<Profile> {
     this.toggleService.showPending();

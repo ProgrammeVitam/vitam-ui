@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, finalize, mergeMap, Observable, Subscription } from 'rxjs';
 import { FileNode, TypeConstants } from '../../models/file-node';
@@ -83,12 +83,17 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
 import { ProfileService } from './profile.service';
 import { SedaService } from './seda.service';
 import { filter, map, tap } from 'rxjs/operators';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { SpinnerOverlayService } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileService implements OnDestroy {
+  private profileService = inject(ProfileService);
+  private dialog = inject(MatDialog);
+  private sedaService = inject(SedaService);
+  private spinnerOverlayService = inject(SpinnerOverlayService);
+
   currentTree = new BehaviorSubject<FileNode[]>([]);
   tree$ = this.currentTree.asObservable();
 
@@ -103,13 +108,6 @@ export class FileService implements OnDestroy {
   private _profileServiceGetProfileSubscription: Subscription;
 
   public tabChildrenRulesChange = new BehaviorSubject<string[][]>([]);
-
-  constructor(
-    private profileService: ProfileService,
-    private dialog: MatDialog,
-    private sedaService: SedaService,
-    private loaderService: NgxUiLoaderService,
-  ) {}
 
   /**
    * Update the tree with the profile provided
@@ -138,7 +136,7 @@ export class FileService implements OnDestroy {
       this._profileServiceGetProfileSubscription.unsubscribe();
     }
 
-    this.loaderService.start();
+    this.spinnerOverlayService.open();
     this._profileServiceGetProfileSubscription = this.profileService
       .getProfile(element)
       .pipe(
@@ -155,7 +153,7 @@ export class FileService implements OnDestroy {
           this.linkFileNodeToSedaData(null, [profile.profile]);
           this.updateTreeWithProfile(profile);
         }),
-        finalize(() => this.loaderService.stop()),
+        finalize(() => this.spinnerOverlayService.close()),
       )
       .subscribe();
   }

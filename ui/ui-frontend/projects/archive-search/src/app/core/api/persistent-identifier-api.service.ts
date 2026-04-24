@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, Unit, ApiUnitObject } from 'vitamui-library';
 import { PersistentIdentifierResponseDto } from './persistent-identifier-response-dto.interface';
@@ -44,7 +44,10 @@ import { PersistentIdentifierResponseDto } from './persistent-identifier-respons
   providedIn: 'root',
 })
 export class PersistentIdentifierApiService extends BaseHttpClient<any> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/archive-search');
   }
 

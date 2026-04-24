@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 import { Logger } from '../../../logger/logger';
@@ -56,6 +56,14 @@ import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class ArchiveUnitEditorService {
+  private logger = inject(Logger);
+  private schemaService = inject(SchemaService);
+  private templateService = inject(TemplateService);
+  private schemaUtils = inject(SchemaUtils);
+  private archiveUnitTemplateService = inject(ArchiveUnitTemplateService);
+  private archiveUnitEditObjectService = inject(ArchiveUnitEditObjectService);
+  private editObjectService = inject(EditObjectService);
+
   private collection = new BehaviorSubject<Collection>(Collection.ARCHIVE_UNIT);
   private sedaVersions = new BehaviorSubject<SedaVersion[]>(['INTERNE', '2.3']);
   private category = new BehaviorSubject<SchemaElement['Category']>('DESCRIPTION');
@@ -68,15 +76,7 @@ export class ArchiveUnitEditorService {
   editObject$ = this.editObject.asObservable();
   schema$: Observable<Schema>;
 
-  constructor(
-    private logger: Logger,
-    private schemaService: SchemaService,
-    private templateService: TemplateService,
-    private schemaUtils: SchemaUtils,
-    private archiveUnitTemplateService: ArchiveUnitTemplateService,
-    private archiveUnitEditObjectService: ArchiveUnitEditObjectService,
-    private editObjectService: EditObjectService,
-  ) {
+  constructor() {
     this.schema$ = this.data$.asObservable().pipe(
       filter((archiveUnit) => Boolean(archiveUnit)),
       switchMap((archiveUnit) => this.getArchiveUnitProfileSchemaOrDefault(archiveUnit)),

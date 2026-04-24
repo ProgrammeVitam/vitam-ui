@@ -42,7 +42,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BASE_URL, LoggerModule, Unit } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
 import { ArchiveApiService } from '../core/api/archive-api.service';
-import createSpyObj = jasmine.createSpyObj;
+import { vi } from 'vitest';
+const createSpyObj = (name: string, methods: string[]) => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 import { of } from 'rxjs';
 
 describe('ArchiveService', () => {
@@ -162,7 +163,7 @@ describe('ArchiveService', () => {
         '#allunitups': [],
       },
     ] as unknown as Unit[];
-    archiveApiService.searchArchiveUnitsByCriteria.and.returnValue(
+    archiveApiService.searchArchiveUnitsByCriteria.mockReturnValue(
       of({
         $hits: {
           limit: mockedUnits.length,

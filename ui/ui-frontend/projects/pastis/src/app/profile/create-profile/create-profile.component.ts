@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileVersion, ProfileVersionOptions } from '../../models/profile-version.enum';
@@ -91,16 +91,14 @@ export interface CreateProfileFormResult {
   standalone: false,
 })
 export class CreateProfileComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<CreateProfileComponent>>(MatDialogRef);
+  data = inject<PastisDialogData>(MAT_DIALOG_DATA);
+
   readonly ProfileType = ProfileType;
   readonly ProfileVersionOptions = ProfileVersionOptions;
 
   form: FormGroup;
-
-  constructor(
-    private fb: FormBuilder,
-    public dialogRef: MatDialogRef<CreateProfileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PastisDialogData,
-  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({

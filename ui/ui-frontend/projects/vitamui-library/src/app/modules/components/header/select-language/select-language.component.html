@@ -1,17 +1,4 @@
-<div *ngIf="displayMode === 'select'; then select; else button"></div>
-
-<ng-template #button>
-  <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu" aria-label="flag">
-    <img [src]="'assets/country/' + currentLang + '.svg'" />
-  </button>
-
-  <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-    <span mat-menu-item (click)="use(minLangString.FR)"> FR<img src="assets/country/fr.svg" /> </span>
-    <span mat-menu-item (click)="use(minLangString.EN)"> EN<img src="assets/country/en.svg" /> </span>
-  </mat-menu>
-</ng-template>
-
-<ng-template #select>
+@if (displayMode === 'select') {
   <div class="select-language">
     <vitamui-common-item-select
       [label]="'SELECT_LANGUAGE.LANGUAGE' | translate"
@@ -29,4 +16,12 @@
     >
     </vitamui-common-item-select>
   </div>
-</ng-template>
+} @else {
+  <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu" aria-label="flag">
+    <img [src]="'assets/country/' + currentLang + '.svg'" />
+  </button>
+  <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+    <span mat-menu-item (click)="use(minLangString.FR)"> FR<img src="assets/country/fr.svg" /> </span>
+    <span mat-menu-item (click)="use(minLangString.EN)"> EN<img src="assets/country/en.svg" /> </span>
+  </mat-menu>
+}

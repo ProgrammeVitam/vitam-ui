@@ -1,70 +1,82 @@
 <div class="vitamui-panel" [class.active]="!selectedIdentityProvider">
-  <div class="vitamui-panel-content" *ngIf="!selectedIdentityProvider">
-    <button *ngIf="!readOnly" class="btn primary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
-      <div [vitamuiTooltipDisabled]="domainsAvailable" [vitamuiTooltip]="'CUSTOMER.SSO.UNAVAILABLE_DOMAINS' | translate">
-        {{ 'CUSTOMER.SSO.BUTTON' | translate }}
-      </div>
-    </button>
-
-    <div class="provider-list d-flex align-items-center mb-2" *ngFor="let provider of providers">
-      <div class="provider-item-content d-flex py-3 px-1" (click)="selectIdentityProvider(provider)">
-        <div class="col-3">
-          <label>{{ 'CUSTOMER.SSO.NAME' | translate }}</label>
-          <div>{{ provider?.name }}</div>
+  @if (!selectedIdentityProvider) {
+    <div class="vitamui-panel-content">
+      @if (!readOnly) {
+        <button class="btn primary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
+          <div [vitamuiTooltipDisabled]="domainsAvailable" [vitamuiTooltip]="'CUSTOMER.SSO.UNAVAILABLE_DOMAINS' | translate">
+            {{ 'CUSTOMER.SSO.BUTTON' | translate }}
+          </div>
+        </button>
+      }
+      @for (provider of providers; track provider) {
+        <div class="provider-list d-flex align-items-center mb-2">
+          <div class="provider-item-content d-flex py-3 px-1" (click)="selectIdentityProvider(provider)">
+            <div class="col-3">
+              <label>{{ 'CUSTOMER.SSO.NAME' | translate }}</label>
+              <div>{{ provider?.name }}</div>
+            </div>
+            <div class="col-2">
+              <label>{{ 'CUSTOMER.SSO.TYPE' | translate }}</label>
+              @if (provider?.internal) {
+                <div>{{ 'CUSTOMER.SSO.TYPE_INTERNAL' | translate }}</div>
+              }
+              @if (!provider?.internal) {
+                <div>{{ 'CUSTOMER.SSO.TYPE_EXTERNAL' | translate }}</div>
+              }
+            </div>
+            <div class="col-5">
+              <label>{{ 'CUSTOMER.SSO.PATTERNS' | translate }}</label>
+              @for (pattern of provider?.patterns; track pattern) {
+                <div>{{ pattern }}</div>
+              }
+            </div>
+            <div class="col-2 d-flex align-items-center">
+              @if (provider?.enabled) {
+                <div class="provider-status active">{{ 'CUSTOMER.SSO.STATUS_ACTIVE' | translate }}</div>
+              }
+              @if (!provider?.enabled) {
+                <div class="provider-status">{{ 'CUSTOMER.SSO.STATUS_INACTIVE' | translate }}</div>
+              }
+            </div>
+          </div>
+          <a
+            class="provider-item-link clickable"
+            (click)="downloadFile(provider?.internal, provider?.idpMetadataUrl)"
+            [class.disabled]="provider?.internal"
+          >
+            <i class="material-icons">file_download</i>
+            <span class="p-0">{{ 'CUSTOMER.SSO.METADATA' | translate }}</span>
+          </a>
+          <a
+            class="provider-item-link clickable"
+            (click)="downloadFile(provider?.internal, provider?.spMetadataUrl)"
+            [class.disabled]="provider?.internal"
+          >
+            <i class="material-icons">file_download</i>
+            <span class="p-0">{{ 'CUSTOMER.SSO.SP_METADATA' | translate }}</span>
+          </a>
         </div>
-
-        <div class="col-2">
-          <label>{{ 'CUSTOMER.SSO.TYPE' | translate }}</label>
-          <div *ngIf="provider?.internal">{{ 'CUSTOMER.SSO.TYPE_INTERNAL' | translate }}</div>
-          <div *ngIf="!provider?.internal">{{ 'CUSTOMER.SSO.TYPE_EXTERNAL' | translate }}</div>
-        </div>
-
-        <div class="col-5">
-          <label>{{ 'CUSTOMER.SSO.PATTERNS' | translate }}</label>
-          <div *ngFor="let pattern of provider?.patterns">{{ pattern }}</div>
-        </div>
-
-        <div class="col-2 d-flex align-items-center">
-          <div *ngIf="provider?.enabled" class="provider-status active">{{ 'CUSTOMER.SSO.STATUS_ACTIVE' | translate }}</div>
-          <div *ngIf="!provider?.enabled" class="provider-status">{{ 'CUSTOMER.SSO.STATUS_INACTIVE' | translate }}</div>
-        </div>
-      </div>
-
-      <a
-        class="provider-item-link clickable"
-        (click)="downloadFile(provider?.internal, provider?.idpMetadataUrl)"
-        [class.disabled]="provider?.internal"
-      >
-        <i class="material-icons">file_download</i>
-        <span class="p-0">{{ 'CUSTOMER.SSO.METADATA' | translate }}</span>
-      </a>
-
-      <a
-        class="provider-item-link clickable"
-        (click)="downloadFile(provider?.internal, provider?.spMetadataUrl)"
-        [class.disabled]="provider?.internal"
-      >
-        <i class="material-icons">file_download</i>
-        <span class="p-0">{{ 'CUSTOMER.SSO.SP_METADATA' | translate }}</span>
-      </a>
+      }
     </div>
-  </div>
+  }
 </div>
 
 <div class="vitamui-panel" [class.active]="selectedIdentityProvider">
-  <div class="vitamui-panel-content" *ngIf="selectedIdentityProvider">
-    <div>
-      <button type="button" class="btn link" (click)="selectedIdentityProvider = null">
-        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <ng-container
-          ><span class="underline">{{ 'CUSTOMER.SSO.RETURN' | translate }}</span></ng-container
-        >
-      </button>
-      <app-identity-provider-details
-        [identityProvider]="selectedIdentityProvider"
-        [domains]="domains"
-        [readOnly]="readOnly || selectedIdentityProvider.readonly"
-      ></app-identity-provider-details>
+  @if (selectedIdentityProvider) {
+    <div class="vitamui-panel-content">
+      <div>
+        <button type="button" class="btn link" (click)="selectedIdentityProvider = null">
+          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+          <ng-container
+            ><span class="underline">{{ 'CUSTOMER.SSO.RETURN' | translate }}</span></ng-container
+          >
+        </button>
+        <app-identity-provider-details
+          [identityProvider]="selectedIdentityProvider"
+          [domains]="domains"
+          [readOnly]="readOnly || selectedIdentityProvider.readonly"
+        ></app-identity-provider-details>
+      </div>
     </div>
-  </div>
+  }
 </div>

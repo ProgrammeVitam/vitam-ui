@@ -102,16 +102,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="zipFileStatus$ | async as zippedFile">
-              <td>{{ zippedFile?.name }}</td>
-              <td>{{ zippedFile?.size | fileSize }}</td>
-              <td>
-                <vitamui-common-progress-bar [percent]="zippedFile?.currentFileUploadedSize"></vitamui-common-progress-bar>
-              </td>
-              <td>
-                <vitamui-common-progress-bar [percent]="zippedFile?.uploadedSize"></vitamui-common-progress-bar>
-              </td>
-            </tr>
+            @if (zipFileStatus$ | async; as zippedFile) {
+              <tr>
+                <td>{{ zippedFile?.name }}</td>
+                <td>{{ zippedFile?.size | fileSize }}</td>
+                <td>
+                  <vitamui-common-progress-bar [percent]="zippedFile?.currentFileUploadedSize"></vitamui-common-progress-bar>
+                </td>
+                <td>
+                  <vitamui-common-progress-bar [percent]="zippedFile?.uploadedSize"></vitamui-common-progress-bar>
+                </td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

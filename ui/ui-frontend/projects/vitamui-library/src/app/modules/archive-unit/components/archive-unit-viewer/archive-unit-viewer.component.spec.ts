@@ -114,7 +114,7 @@ describe('ArchiveUnitViewerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitViewerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
   });
 
   it('should create', () => {
@@ -128,7 +128,7 @@ describe('ArchiveUnitViewerComponent', () => {
       data: new SimpleChange(null, archiveUnit, true),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(component.data).toBeTruthy();
     expect(component.template).toBeTruthy();

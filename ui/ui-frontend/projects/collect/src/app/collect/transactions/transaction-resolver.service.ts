@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -46,10 +46,8 @@ import { TransactionsService } from './transactions.service';
   providedIn: 'root',
 })
 export class TransactionResolver {
-  constructor(
-    private transactionsService: TransactionsService,
-    private projectService: ProjectsService,
-  ) {}
+  private transactionsService = inject(TransactionsService);
+  private projectService = inject(ProjectsService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     const id = route.paramMap.get('projectId');

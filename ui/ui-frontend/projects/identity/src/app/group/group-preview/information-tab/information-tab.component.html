@@ -5,8 +5,12 @@
       [vitamuiTooltip]="'GROUP.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
       [vitamuiTooltipDisabled]="form.get('enabled').enabled || readOnly"
     >
-      <span *ngIf="!form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
-      <span *ngIf="form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+      @if (!form?.get('enabled').value) {
+        <span>{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
+      }
+      @if (form?.get('enabled').value) {
+        <span>{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
+      }
     </vitamui-slide-toggle>
   </div>
   <div class="row">
@@ -81,12 +85,16 @@
 
   <!-- Units -->
   <div>
-    <button *ngIf="!readOnly" class="btn primary mb-3" (click)="openEditUnitsDialog()">
-      {{ 'GROUP.INFORMATIONS.MODIF_UNITS_BUTTON' | translate }}
-    </button>
+    @if (!readOnly) {
+      <button class="btn primary mb-3" (click)="openEditUnitsDialog()">
+        {{ 'GROUP.INFORMATIONS.MODIF_UNITS_BUTTON' | translate }}
+      </button>
+    }
     <div class="align-items-center">
       <div class="text small primary mb-2">{{ 'GROUP.INFORMATIONS.UNITS_TABLE_TITLE' | translate }}</div>
-      <div *ngFor="let unit of getUnits(group)" class="text medium">{{ unit }}</div>
+      @for (unit of getUnits(group); track unit) {
+        <div class="text medium">{{ unit }}</div>
+      }
     </div>
   </div>
 </form>

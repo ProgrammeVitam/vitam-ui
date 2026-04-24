@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -48,16 +48,17 @@ import { TransactionsService } from './transactions.service';
   standalone: false,
 })
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
+  private transactionsService = inject(TransactionsService);
+
   tenantIdentifier: string;
   projectName$: Observable<string>;
   transactions$: Observable<Transaction[]>;
   dataBreadcrumb: BreadCrumbData[];
 
-  constructor(
-    route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private transactionsService: TransactionsService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
   }
 

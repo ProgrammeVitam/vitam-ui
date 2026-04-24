@@ -72,8 +72,10 @@ describe('ManagementContractListComponent', () => {
   };
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
       declarations: [ManagementContractListComponent],
@@ -140,7 +142,7 @@ describe('ManagementContractListComponent', () => {
 
   it('should not call search of SearchService', () => {
     // Given
-    spyOn(searchServiceeMock, 'search').and.callThrough();
+    vi.spyOn(searchServiceeMock, 'search');
 
     // When
     component.pending = true;

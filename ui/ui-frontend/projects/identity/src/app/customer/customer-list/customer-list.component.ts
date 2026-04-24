@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -64,6 +64,12 @@ import { CustomerListService } from './customer-list.service';
   standalone: false,
 })
 export class CustomerListComponent extends InfiniteScrollTable<Customer> implements OnDestroy, OnInit {
+  customerListService: CustomerListService;
+  customerService = inject(CustomerService);
+  tenantService = inject(TenantService);
+  private customerDataService = inject(CustomerDataService);
+  private dialog = inject(MatDialog);
+
   @Output() customerClick = new EventEmitter<Customer>();
   @Output() ownerClick = new EventEmitter<Owner>();
   @Output() tenantClick = new EventEmitter<any>();
@@ -74,14 +80,12 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
 
   private updatedCustomerSub: Subscription;
 
-  constructor(
-    public customerListService: CustomerListService,
-    public customerService: CustomerService,
-    public tenantService: TenantService,
-    private customerDataService: CustomerDataService,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
+    const customerListService = inject(CustomerListService);
+
     super(customerListService);
+
+    this.customerListService = customerListService;
   }
 
   ngOnInit() {

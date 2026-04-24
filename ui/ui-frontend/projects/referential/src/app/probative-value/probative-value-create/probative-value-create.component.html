@@ -37,9 +37,11 @@
       </mat-button-toggle-group>
     </div>
 
-    <div *ngIf="showWarningMessage">
-      <p [innerText]="'PROBATIVE_VALUE.HOME.WARNING_ELECTRONICALLY_SIGNED_DOCUMENT' | translate" class="text bold warningRow"></p>
-    </div>
+    @if (showWarningMessage) {
+      <div>
+        <p [innerText]="'PROBATIVE_VALUE.HOME.WARNING_ELECTRONICALLY_SIGNED_DOCUMENT' | translate" class="text bold warningRow"></p>
+      </div>
+    }
   </mat-dialog-content>
 
   <mat-dialog-actions>

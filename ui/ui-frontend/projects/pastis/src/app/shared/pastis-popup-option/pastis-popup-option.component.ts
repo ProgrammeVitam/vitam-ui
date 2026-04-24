@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -76,6 +76,14 @@ function constantToTranslate(edit: boolean) {
   standalone: false,
 })
 export class PastisPopupOptionComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+  dialog = inject(MatDialog);
+  private profileService = inject(ProfileService);
+  private noticeService = inject(NoticeService);
+  private translateService = inject(TranslateService);
+  private route = inject(ActivatedRoute);
+  private snackBarService = inject(SnackBarService);
+
   popupSaveCancelLabel: string;
   popupSaveTitleDialog: string;
   popupSaveSubTitleDialog: string;
@@ -104,16 +112,6 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   newProfileUrl: string;
 
   expanded = false;
-
-  constructor(
-    private router: Router,
-    public dialog: MatDialog,
-    private profileService: ProfileService,
-    private noticeService: NoticeService,
-    private translateService: TranslateService,
-    private route: ActivatedRoute,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit(): void {
     constantToTranslate.call(this, this.editProfile);

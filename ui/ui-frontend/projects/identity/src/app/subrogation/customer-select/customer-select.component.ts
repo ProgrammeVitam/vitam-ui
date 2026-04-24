@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GlobalEventService, MenuOption } from 'vitamui-library';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomerSelectContentComponent } from './customer-select-content/customer-select-content.component';
 
@@ -47,18 +47,16 @@ import { CustomerSelectContentComponent } from './customer-select-content/custom
   selector: 'app-customer-select',
   templateUrl: './customer-select.component.html',
   styleUrls: ['./customer-select.component.scss'],
-  imports: [CommonModule, CustomerSelectContentComponent, RouterModule, TranslateModule],
+  imports: [CustomerSelectContentComponent, RouterModule, TranslateModule],
 })
 export class CustomerSelectComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private globalEventService = inject(GlobalEventService);
+
   public customers: MenuOption[];
 
   private destroyer$ = new Subject<void>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private globalEventService: GlobalEventService,
-  ) {}
 
   ngOnInit() {
     this.route.data.pipe(takeUntil(this.destroyer$)).subscribe((data) => {

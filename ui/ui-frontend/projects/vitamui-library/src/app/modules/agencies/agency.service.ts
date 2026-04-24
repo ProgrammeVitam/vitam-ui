@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { from, mergeMap, Observable, of, Subject, toArray } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AgencyApiService } from './agency-api.service';
@@ -50,13 +50,17 @@ import { Agency } from '../../../lib/models/agency';
   providedIn: 'root',
 })
 export class AgencyService extends SearchService<Agency> {
+  private agencyApiService: AgencyApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<Agency>();
 
-  constructor(
-    private agencyApiService: AgencyApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const agencyApiService = inject(AgencyApiService);
+
     super(agencyApiService, 'ALL');
+
+    this.agencyApiService = agencyApiService;
   }
 
   get(id: string): Observable<Agency> {

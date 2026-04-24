@@ -111,8 +111,13 @@ describe('AddUpdatePropertyComponent', () => {
   let component: AddUpdatePropertyComponent;
   let fixture: ComponentFixture<AddUpdatePropertyComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
 
   let currentTestRuleActions: ActionsRules[] = RULE_ACTIONS;
   let currentTestManagementRules: ManagementRules[] = managementRules;
@@ -514,7 +519,7 @@ describe('AddUpdatePropertyComponent', () => {
         stepValid: true,
       },
     ];
-    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
+    vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
 
     // When
     component.onUpdateRuleProperty();

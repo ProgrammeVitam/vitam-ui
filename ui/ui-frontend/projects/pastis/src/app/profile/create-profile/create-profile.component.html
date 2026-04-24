@@ -24,9 +24,9 @@
     <div>
       <div class="text bold caption primary">{{ 'PROFILE.CREATE_PROFILE.INFORMATION.SEDA_VERSION' | translate }}</div>
       <mat-radio-group class="hgap-2" formControlName="profileVersion">
-        <mat-radio-button *ngFor="let profileVersionOption of ProfileVersionOptions" [value]="profileVersionOption.version">{{
-          profileVersionOption.label
-        }}</mat-radio-button>
+        @for (profileVersionOption of ProfileVersionOptions; track profileVersionOption) {
+          <mat-radio-button [value]="profileVersionOption.version">{{ profileVersionOption.label }}</mat-radio-button>
+        }
       </mat-radio-group>
     </div>
   </div>

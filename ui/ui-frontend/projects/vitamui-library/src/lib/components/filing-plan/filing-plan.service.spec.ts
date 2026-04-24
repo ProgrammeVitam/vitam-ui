@@ -51,7 +51,7 @@ import {
   SnackBarService,
 } from '../../../app/modules';
 import { DescriptionLevel } from '../../models/description-level.enum';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY, firstValueFrom, of } from 'rxjs';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FilingPlanService', () => {
@@ -130,11 +130,7 @@ describe('FilingPlanService', () => {
     };
     children[1].children.push(subChild);
 
-    service.loadTree('prefix').subscribe((tree) => {
-      console.log('Result: ', tree);
-      console.log('Expected: ', rootNode);
-      expect(tree).toEqual(rootNode);
-    });
+    const treePromise = firstValueFrom(service.loadTree('prefix'));
     expect(service.pending).toBe(true);
 
     const requests = httpTestingController.match('/fake-api/search/filingplan');
@@ -166,6 +162,12 @@ describe('FilingPlanService', () => {
     expect(service.pending).toBe(false);
 
     httpTestingController.verify();
+
+    return treePromise.then((tree) => {
+      expect(withoutParents(tree)).toEqual(withoutParents(rootNode));
+      expect(tree[0].children[0].parents).toEqual([tree[0]]);
+      expect(tree[0].children[1].children[0].parents).toEqual([tree[0].children[1]]);
+    });
   }));
 
   it('should return an empty tree if an error occurs', inject([FilingPlanService], (service: FilingPlanService) => {
@@ -183,3 +185,10 @@ describe('FilingPlanService', () => {
     httpTestingController.verify();
   }));
 });
+
+function withoutParents(nodes: Node[]): Omit<Node, 'parents' | 'children'>[] {
+  return nodes.map(({ parents: _parents, children, ...node }) => ({
+    ...node,
+    children: withoutParents(children),
+  })) as any;
+}

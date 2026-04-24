@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
@@ -49,7 +49,7 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class ProfileService {
-  constructor(private profileApi: ProfileApiService) {}
+  private profileApi = inject(ProfileApiService);
 
   list(level?: string, tenantIdentifier?: number, applicationNameExclude?: string[]): Observable<Profile[]> {
     let httpHeaders = new HttpHeaders();

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
 import { Logger } from '../../logger/logger';
 import { CustomFile } from '../../../../lib/models/custom-file';
 
@@ -43,6 +43,9 @@ import { CustomFile } from '../../../../lib/models/custom-file';
   selector: '[vitamuiCommonDragAndDrop]',
 })
 export class DragAndDropDirective {
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private logger = inject(Logger);
+
   @Output() private fileToUploadEmitter: EventEmitter<File[]> = new EventEmitter();
   @Output() private fileDragHover: EventEmitter<boolean> = new EventEmitter();
 
@@ -54,11 +57,6 @@ export class DragAndDropDirective {
   @Input() enableFileDragAndDrop = true;
   @Input() enableFolderDragAndDrop = false;
   @Input() hoverClass = 'on-over';
-
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private logger: Logger,
-  ) {}
 
   @HostListener('dragenter', ['$event']) public onDragEnter(event: DragEvent) {
     event.preventDefault();

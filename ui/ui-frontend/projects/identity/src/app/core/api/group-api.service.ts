@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BASE_URL, CriteriaSearchQuery, Group, PaginatedHttpClient } from 'vitamui-library';
@@ -44,7 +44,10 @@ import { BASE_URL, CriteriaSearchQuery, Group, PaginatedHttpClient } from 'vitam
   providedIn: 'root',
 })
 export class GroupApiService extends PaginatedHttpClient<Group> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/groups');
   }
 

@@ -38,6 +38,7 @@
 import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform, TemplateRef } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 import { CdkStepper } from '@angular/cdk/stepper';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-tenant-select',
@@ -370,16 +371,6 @@ export class TruncateStubPipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'translate',
-  standalone: false,
-})
-export class TranslateStubPipe implements PipeTransform {
-  transform(value: string = ''): any {
-    return value;
-  }
-}
-
-@Pipe({
   name: 'dateTime',
   standalone: false,
 })
@@ -436,7 +427,6 @@ const components = [
   StepperStubComponent,
   StrongifyStubPipe,
   TableFilterStubDirective,
-  TranslateStubPipe,
   TruncateStubPipe,
   VitamUIAutocompleteMultiSelectStubComponent,
   VitamUIEditableButtonToggleStubComponent,
@@ -458,6 +448,7 @@ const components = [
 
 @NgModule({
   declarations: components,
-  exports: components,
+  imports: [TranslateModule.forRoot()],
+  exports: [...components, TranslateModule],
 })
 export class VitamUICommonTestModule {}

@@ -13,30 +13,38 @@
   ></vitamui-select>
 
   <div class="mt-3" formArrayName="persistentIdentifierPolicies">
-    <div *ngFor="let persistentIdentifier of getPersistentIdentifierPolicies().controls">
-      <app-update-persistent-identifier-policy-form
-        [form]="persistentIdentifier"
-        (objectUsagePolicyAdded)="contractForm.markAsDirty()"
-        (objectUsagePolicyRemoved)="contractForm.markAsDirty()"
-      ></app-update-persistent-identifier-policy-form>
-    </div>
+    @for (persistentIdentifier of getPersistentIdentifierPolicies().controls; track persistentIdentifier) {
+      <div>
+        <app-update-persistent-identifier-policy-form
+          [form]="persistentIdentifier"
+          (objectUsagePolicyAdded)="contractForm.markAsDirty()"
+          (objectUsagePolicyRemoved)="contractForm.markAsDirty()"
+        ></app-update-persistent-identifier-policy-form>
+      </div>
+    }
   </div>
-  <vitamui-common-input-error *ngFor="let error of contractForm.errors">
-    {{ error }}
-  </vitamui-common-input-error>
+  @for (error of $any(contractForm.errors) ?? []; track error) {
+    <vitamui-common-input-error>
+      {{ error }}
+    </vitamui-common-input-error>
+  }
   <div class="row">
-    <div *ngIf="!sending" class="col">
-      <button
-        type="submit"
-        class="btn secondary mt-3 mb-3"
-        [vitamuiTooltip]="'CONTRACT_MANAGEMENT.FORM_UPDATE.SAVE' | translate"
-        [disabled]="isSubmitButtonDisabled()"
-      >
-        {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.SAVE' | translate }}
-      </button>
-    </div>
-    <div *ngIf="sending" class="col d-flex justify-content-center">
-      <mat-spinner class="vitamui-spinner medium mt-3 mb-3"></mat-spinner>
-    </div>
+    @if (!sending) {
+      <div class="col">
+        <button
+          type="submit"
+          class="btn secondary mt-3 mb-3"
+          [vitamuiTooltip]="'CONTRACT_MANAGEMENT.FORM_UPDATE.SAVE' | translate"
+          [disabled]="isSubmitButtonDisabled()"
+        >
+          {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.SAVE' | translate }}
+        </button>
+      </div>
+    }
+    @if (sending) {
+      <div class="col d-flex justify-content-center">
+        <mat-spinner class="vitamui-spinner medium mt-3 mb-3"></mat-spinner>
+      </div>
+    }
   </div>
 </form>

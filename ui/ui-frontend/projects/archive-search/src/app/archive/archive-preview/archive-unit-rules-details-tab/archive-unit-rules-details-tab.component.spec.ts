@@ -117,7 +117,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
 
   it('should call selectUnitWithInheritedRules of archiveService', () => {
     // Given
-    spyOn(archiveServiceMock, 'selectUnitWithInheritedRules').and.callThrough();
+    vi.spyOn(archiveServiceMock, 'selectUnitWithInheritedRules');
 
     // When
     component.selectUnitWithInheritedRules(component.archiveUnit);

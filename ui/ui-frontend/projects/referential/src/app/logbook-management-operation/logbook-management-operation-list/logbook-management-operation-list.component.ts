@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Colors, FacetDetails } from 'vitamui-library';
@@ -48,6 +48,9 @@ import { LogbookManagementOperationService } from '../logbook-management-operati
   standalone: false,
 })
 export class LogbookManagementOperationListComponent implements OnInit {
+  logbookManagementOperationService = inject(LogbookManagementOperationService);
+  private translate = inject(TranslateService);
+
   elementInPage: number;
   filter = false;
   operationsList: OperationsResults;
@@ -84,11 +87,6 @@ export class LogbookManagementOperationListComponent implements OnInit {
     { key: 'PRESERVATION', value: 'Processus global de préservation' },
     { key: 'EXTERNAL_LOGBOOK', value: 'Journalisation d’événements externes' },
   ];
-
-  constructor(
-    public logbookManagementOperationService: LogbookManagementOperationService,
-    private translate: TranslateService,
-  ) {}
 
   searchOperationsList(searchCriteria: any) {
     this.filterMap.categories = [];

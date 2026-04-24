@@ -34,24 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
 
-export class AccessionRegisterFixtures {
-  public static valueNotUndefined(value: any) {
-    return value !== undefined && value !== null;
-  }
-
-  public static newOperations(name: RegisterValueEventType): RegisterValueEventModel {
-    const date = new Date();
-    date.setHours(Math.floor(Math.random() * (12 + 1)));
-    return {
-      Opc: name,
-      OpType: name,
-      Gots: Math.floor(Math.random() * (10 + 1)),
-      Units: Math.floor(Math.random() * (10 + 1)),
-      Objects: Math.floor(Math.random() * (10 + 1)),
-      ObjSize: Math.floor(Math.random() * (100 + 1)),
-      CreationDate: date.toISOString(),
-    };
-  }
+export enum ReclassificationMode {
+  FILING_PLAN = 'FILING_PLAN',
+  ARCHIVE_UNIT_ID = 'ARCHIVE_UNIT_ID',
 }

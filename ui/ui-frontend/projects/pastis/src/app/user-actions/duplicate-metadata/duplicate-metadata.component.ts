@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PopupService } from '../../core/services/popup.service';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
@@ -47,12 +47,10 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
   standalone: false,
 })
 export class DuplicateMetadataComponent implements OnInit {
-  dataToSend: string;
+  dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
+  private popUpService = inject(PopupService);
 
-  constructor(
-    public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private popUpService: PopupService,
-  ) {}
+  dataToSend: string;
 
   ngOnInit(): void {
     this.popUpService.setPopUpDataOnClose(this.dialogRef.componentInstance.dialogReceivedData.fileNode.name);

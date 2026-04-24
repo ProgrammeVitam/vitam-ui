@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -52,7 +52,7 @@ import { ManagementContractToFormGroupConverterService } from '../components/man
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -69,7 +69,6 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
   templateUrl: './management-contract-create.component.html',
   styleUrls: ['./management-contract-create.component.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     MatButtonToggleModule,
     MatCheckboxModule,
@@ -88,18 +87,22 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
   ],
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
-  constructor(
-    public dialogRef: MatDialogRef<ManagementContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { isSlaveMode: boolean },
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private managementContractService: ManagementContractService,
-    private managementContractCreateValidators: ManagementContractCreateValidators,
-    private managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService,
-    private formGroupToManagementContractConverterService: FormGroupToManagementContractConverterService,
-    private logger: Logger,
-    private translateService: TranslateService,
-  ) {
+  dialogRef = inject<MatDialogRef<ManagementContractCreateComponent>>(MatDialogRef);
+  data = inject<{
+    isSlaveMode: boolean;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private managementContractService = inject(ManagementContractService);
+  private managementContractCreateValidators = inject(ManagementContractCreateValidators);
+  private managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);
+  private formGroupToManagementContractConverterService = inject(FormGroupToManagementContractConverterService);
+  private logger = inject(Logger);
+  private translateService = inject(TranslateService);
+
+  constructor() {
+    const data = this.data;
+
     this.isSlaveMode = data.isSlaveMode;
   }
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -48,6 +48,11 @@ import { Customer, LanguageService, Option, StartupService } from 'vitamui-libra
   standalone: false,
 })
 export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewInit {
+  dialogRef = inject<MatDialogRef<HomepageMessageComponent>>(MatDialogRef);
+  private formBuilder = inject(FormBuilder);
+  private startupService = inject(StartupService);
+  private languageService = inject(LanguageService);
+
   @Input() homepageMessageForm: FormGroup;
   @Input() customer: Customer;
 
@@ -70,13 +75,6 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
   private portalTitles: { [language: string]: string } = {};
   private portalMessages: { [language: string]: string } = {};
   private destroy = new Subject<void>();
-
-  constructor(
-    public dialogRef: MatDialogRef<HomepageMessageComponent>,
-    private formBuilder: FormBuilder,
-    private startupService: StartupService,
-    private languageService: LanguageService,
-  ) {}
 
   ngOnInit() {
     this.homepageMessageForm = this.formBuilder.group({

@@ -34,26 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MenuOption } from '../../../models/menu-option.interface';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-tenant-select-content',
   templateUrl: './tenant-select-content.component.html',
   styleUrls: ['./tenant-select-content.component.scss'],
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
 })
 export class TenantSelectContentComponent {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   @Input() tenants: MenuOption[];
 
   @Output() tenantSelected: EventEmitter<number> = new EventEmitter<number>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
 
   selectTenantIdentifier(tenantIdentifier: number) {
     this.router.navigate(['./' + tenantIdentifier], { relativeTo: this.route });

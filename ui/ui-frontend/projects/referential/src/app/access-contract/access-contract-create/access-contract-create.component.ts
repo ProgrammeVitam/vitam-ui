@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -64,7 +64,7 @@ import { AccessContractCreateValidators } from './access-contract-create.validat
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AccessContractPreviewModule } from '../access-contract-preview/access-contract-preview.module';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -80,7 +80,6 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./access-contract-create.component.scss'],
   imports: [
     AccessContractPreviewModule,
-    CommonModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -97,6 +96,17 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<AccessContractCreateComponent>>(MatDialogRef);
+  data = inject<{
+    tenantIdentifier: number;
+    isSlaveMode: boolean;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private accessContractCreateValidators = inject(AccessContractCreateValidators);
+  private accessContractService = inject(AccessContractService);
+  private agencyService = inject(AgencyService);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   protected readonly FILLING_PLAN_MODE = FilingPlanMode;
   protected readonly tenantIdentifier: number;
   protected readonly isSlaveMode: boolean;
@@ -122,15 +132,9 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   ];
   private secondStepData: AccessContract;
 
-  constructor(
-    public dialogRef: MatDialogRef<AccessContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { tenantIdentifier: number; isSlaveMode: boolean },
-    private formBuilder: FormBuilder,
-    private accessContractCreateValidators: AccessContractCreateValidators,
-    private accessContractService: AccessContractService,
-    private agencyService: AgencyService,
-    private confirmDialogService: ConfirmDialogService,
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.tenantIdentifier = data.tenantIdentifier;
     this.isSlaveMode = data.isSlaveMode;
   }

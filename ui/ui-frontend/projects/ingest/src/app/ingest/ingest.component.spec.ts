@@ -1,3 +1,4 @@
+import type { Mock } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -43,7 +44,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { IngestComponent } from './ingest.component';
 
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -72,11 +73,16 @@ describe('IngestComponent test:', () => {
     ingest: () => of('test ingest'),
     search: () => of([]),
   };
-  const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}), filesStatus: of([]) });
+  const uploadServiceSpy = {
+    uploadFile: vi.fn().mockName('UploadService.uploadFile').mockReturnValue(of({})),
+    filesStatus: vi.fn().mockName('UploadService.filesStatus').mockReturnValue(of([])),
+  };
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,
@@ -103,8 +109,9 @@ describe('IngestComponent test:', () => {
         },
         { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideTemplate(IngestComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -119,16 +126,16 @@ describe('IngestComponent test:', () => {
   });
 
   it('should call open', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     component.openImportSipDialog(IngestType.DEFAULT_WORKFLOW);
     expect(matDialogSpy.open).toHaveBeenCalled();
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect(vi.mocked(matDialogSpy.open as Mock).mock.calls.length).toBe(1);
   });
 
   it('should open a modal with IngestComponent', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     component.openImportSipDialog(IngestType.DEFAULT_WORKFLOW);
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect(vi.mocked(matDialogSpy.open as Mock).mock.calls.length).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalled();
   });
 });

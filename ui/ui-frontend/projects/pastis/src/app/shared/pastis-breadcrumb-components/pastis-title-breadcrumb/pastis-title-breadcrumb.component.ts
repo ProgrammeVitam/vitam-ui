@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Location } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 //TODO: delete ?
 @Component({
@@ -46,13 +46,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: false,
 })
 export class PastisTitleBreadcrumbComponent {
+  private location = inject(Location);
+
   @Input()
   public data?: Array<any>;
 
   @Output()
   public selected = new EventEmitter<any>();
-
-  constructor(private location: Location) {}
 
   public bubbleEvent(d: any): void {
     this.selected.emit(d);

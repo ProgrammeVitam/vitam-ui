@@ -16,46 +16,54 @@
     </cdk-step>
 
     <!-- Step 2 -->
-    <cdk-step *ngIf="showSteps"><vitamui-file-selector></vitamui-file-selector></cdk-step>
+    @if (showSteps) {
+      <cdk-step><vitamui-file-selector></vitamui-file-selector></cdk-step>
+    }
 
     <!-- Step 3 -->
-    <cdk-step *ngIf="showSteps">
-      <div class="text medium bold primary">Sélectionner le périmètre des autorisations</div>
-      <mat-radio-group [(ngModel)]="radioValue">
-        <mat-radio-button [value]="1">
-          Accès à toutes les archives sans restriction sur les services producteurs ou les règles de gestion
-        </mat-radio-button>
-        <mat-radio-button [value]="2">Accès aux archives par service(s) producteur(s)</mat-radio-button>
-        <mat-radio-button [value]="3">Accès aux archives par règle(s) de gestion arrivée(s) à échéance</mat-radio-button>
-        <mat-radio-button [value]="4">
-          Accès aux archives d’une liste de services producteurs et, pour les autres services, accès par règle(s) de gestion arrivée(s) à
-          échéance
-        </mat-radio-button>
-        <mat-radio-button [value]="5">
-          Accès aux archives d’une liste de services producteurs en appliquant un filtre par règle(s) de gestion arrivée(s) à échéance
-        </mat-radio-button>
-      </mat-radio-group>
-    </cdk-step>
+    @if (showSteps) {
+      <cdk-step>
+        <div class="text medium bold primary">Sélectionner le périmètre des autorisations</div>
+        <mat-radio-group [(ngModel)]="radioValue">
+          <mat-radio-button [value]="1">
+            Accès à toutes les archives sans restriction sur les services producteurs ou les règles de gestion
+          </mat-radio-button>
+          <mat-radio-button [value]="2">Accès aux archives par service(s) producteur(s)</mat-radio-button>
+          <mat-radio-button [value]="3">Accès aux archives par règle(s) de gestion arrivée(s) à échéance</mat-radio-button>
+          <mat-radio-button [value]="4">
+            Accès aux archives d’une liste de services producteurs et, pour les autres services, accès par règle(s) de gestion arrivée(s) à
+            échéance
+          </mat-radio-button>
+          <mat-radio-button [value]="5">
+            Accès aux archives d’une liste de services producteurs en appliquant un filtre par règle(s) de gestion arrivée(s) à échéance
+          </mat-radio-button>
+        </mat-radio-group>
+      </cdk-step>
+    }
 
     <!-- Step 4 -->
-    <cdk-step *ngIf="showSteps">
-      <vitamui-dialog-content-with-state state="invalid" title="In y a une erreur">
-        <div class="text normal bold">Lorem ipsum dolor sit amet</div>
-        <div class="text normal">
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </div>
-      </vitamui-dialog-content-with-state>
-    </cdk-step>
+    @if (showSteps) {
+      <cdk-step>
+        <vitamui-dialog-content-with-state state="invalid" title="In y a une erreur">
+          <div class="text normal bold">Lorem ipsum dolor sit amet</div>
+          <div class="text normal">
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </div>
+        </vitamui-dialog-content-with-state>
+      </cdk-step>
+    }
 
     <!-- Step 5 -->
-    <cdk-step *ngIf="showSteps">
-      <vitamui-dialog-content-with-state state="valid" title="Tout est OK">
-        <div class="text normal bold">Lorem ipsum dolor sit amet</div>
-        <div class="text normal">
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </div>
-      </vitamui-dialog-content-with-state>
-    </cdk-step>
+    @if (showSteps) {
+      <cdk-step>
+        <vitamui-dialog-content-with-state state="valid" title="Tout est OK">
+          <div class="text normal bold">Lorem ipsum dolor sit amet</div>
+          <div class="text normal">
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </div>
+        </vitamui-dialog-content-with-state>
+      </cdk-step>
+    }
   </vitamui-stepper>
 </mat-dialog-content>
 <mat-dialog-actions>

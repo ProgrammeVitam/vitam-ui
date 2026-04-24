@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -49,6 +49,13 @@ import { CustomerService } from '../../../../core/customer.service';
   standalone: false,
 })
 export class HomepageMessageUpdateComponent implements OnDestroy {
+  dialogRef = inject<MatDialogRef<HomepageMessageUpdateComponent>>(MatDialogRef);
+  data = inject<{
+    customer: Customer;
+  }>(MAT_DIALOG_DATA);
+  private customerService = inject(CustomerService);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   private destroy = new Subject<void>();
 
   private _customForm: FormGroup;
@@ -69,13 +76,6 @@ export class HomepageMessageUpdateComponent implements OnDestroy {
   public portalMessages: {
     [language: string]: string;
   };
-
-  constructor(
-    public dialogRef: MatDialogRef<HomepageMessageUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer },
-    private customerService: CustomerService,
-    private confirmDialogService: ConfirmDialogService,
-  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();

@@ -94,8 +94,12 @@ describe('RuleComponent', () => {
   let fixture: ComponentFixture<RuleComponent>;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const snackBarSpy = {
+      open: vi.fn().mockName('SnackBarService.open'),
+    };
 
     const authServiceMock = {
       user: {

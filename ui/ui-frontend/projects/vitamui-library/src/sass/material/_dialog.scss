@@ -29,11 +29,11 @@
   }
 
   .mat-mdc-dialog-container {
-    --mdc-dialog-container-shape: 20px;
-    --mdc-dialog-supporting-text-color: var(--vitamui-grey-900);
-    --mdc-dialog-supporting-text-size: 16px;
-    --mdc-dialog-supporting-text-line-height: 24px;
-    --mdc-dialog-supporting-text-weight: 400;
+    --mat-dialog-container-shape: 20px;
+    --mat-dialog-supporting-text-color: var(--vitamui-grey-900);
+    --mat-dialog-supporting-text-size: 16px;
+    --mat-dialog-supporting-text-line-height: 24px;
+    --mat-dialog-supporting-text-weight: 400;
     padding: 0;
     max-height: 90vh;
     width: 800px;

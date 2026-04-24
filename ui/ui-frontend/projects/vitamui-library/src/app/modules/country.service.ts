@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -75,6 +75,8 @@ const COUNTRY_TRANSLATION_PATH = 'COUNTRY';
   providedIn: 'root',
 })
 export class CountryService {
+  private translateService = inject(TranslateService);
+
   private availableCountries: CountryOption[] = [
     { code: CountryCode.FR, name: CountryName.FRANCE },
     { code: CountryCode.GB, name: CountryName.UNITED_KINGDOM },
@@ -85,8 +87,6 @@ export class CountryService {
     { code: CountryCode.BE, name: CountryName.BELGIUM },
     { code: CountryCode.PT, name: CountryName.PORTUGAL },
   ];
-
-  constructor(private translateService: TranslateService) {}
 
   public getTranslatedCountryNameByCode(countryCode: CountryCode): string {
     const name = this.availableCountries.find((value: CountryOption) => value.code === countryCode)?.name;

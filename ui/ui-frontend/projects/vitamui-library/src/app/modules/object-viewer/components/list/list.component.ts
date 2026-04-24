@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { TypeService } from '../../services/type.service';
@@ -47,17 +47,15 @@ import { DisplayObjectType } from '../../types';
   standalone: false,
 })
 export class ListComponent implements OnChanges {
+  private typeService = inject(TypeService);
+  private favoriteEntryService = inject(FavoriteEntryService);
+
   @Input() displayObject: DisplayObject;
 
   isPrimitiveList: boolean;
 
   readonly DisplayObjectType = DisplayObjectType;
   childrenValues: any[];
-
-  constructor(
-    private typeService: TypeService,
-    private favoriteEntryService: FavoriteEntryService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { displayObject } = changes;

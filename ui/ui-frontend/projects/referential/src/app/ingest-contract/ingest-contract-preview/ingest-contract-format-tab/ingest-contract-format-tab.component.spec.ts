@@ -76,6 +76,10 @@ describe('IngestContractFormatTabComponent', () => {
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(IngestContractFormatTabComponent, {
+      set: { template: '' },
+    });
+
     const fileFormatServiceMock = {
       getAllForTenant: () => of([]),
     };

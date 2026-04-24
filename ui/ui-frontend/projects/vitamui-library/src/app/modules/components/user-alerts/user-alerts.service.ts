@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { UserApiService } from '../../api/user-api.service';
@@ -47,15 +47,13 @@ import { buildAlertUrl } from './user-alerts.util';
 
 @Injectable({ providedIn: 'root' })
 export class UserAlertsService {
+  private authService = inject(AuthService);
+  private userApiService = inject(UserApiService);
+  private appService = inject(ApplicationService);
+
   // Set by the analytics resolver
   private userAlerts = new BehaviorSubject<AlertAnalytics[]>(null);
   private seeMoreAlerts = new BehaviorSubject<boolean>(false);
-
-  constructor(
-    private authService: AuthService,
-    private userApiService: UserApiService,
-    private appService: ApplicationService,
-  ) {}
 
   public getUserAlerts(): AlertAnalytics[] {
     return this.userAlerts.value;

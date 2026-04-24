@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ConfirmActionComponent, Rule, RuleService } from 'vitamui-library';
@@ -48,6 +48,9 @@ import { switchMap } from 'rxjs/operators';
   standalone: false,
 })
 export class RulePreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private ruleService = inject(RuleService);
+
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() rule: Rule;
   @Input() readOnly: boolean;
@@ -66,11 +69,6 @@ export class RulePreviewComponent implements AfterViewInit {
       return '';
     }
   }
-
-  constructor(
-    private matDialog: MatDialog,
-    private ruleService: RuleService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import {
@@ -56,6 +56,12 @@ import { ArchiveService } from '../../archive.service';
   standalone: false,
 })
 export class FoundObjectModalComponent {
+  private dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
+  private router = inject(Router);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private archiveService = inject(ArchiveService);
+  private accessContractService = inject(AccessContractService);
+
   ark: string;
   usageVersion: string;
   private readonly qualifier: string;
@@ -65,14 +71,12 @@ export class FoundObjectModalComponent {
   isPhysicalMaster = false;
   versionWithQualifier: VersionWithQualifierDto;
 
-  constructor(
-    private dialogRef: MatDialogRef<PurgedPersistentIdentifierDto>,
-    private router: Router,
-    private tenantSelectionService: TenantSelectionService,
-    private archiveService: ArchiveService,
-    private accessContractService: AccessContractService,
-    @Inject(MAT_DIALOG_DATA) data: { ark: string; object: ApiUnitObject },
-  ) {
+  constructor() {
+    const data = inject<{
+      ark: string;
+      object: ApiUnitObject;
+    }>(MAT_DIALOG_DATA);
+
     this.ark = data.ark;
     this.unitId = data.object['#unitups'][0];
     this.versionWithQualifier = qualifiersToVersionsWithQualifier(data.object['#qualifiers']).find((version) =>

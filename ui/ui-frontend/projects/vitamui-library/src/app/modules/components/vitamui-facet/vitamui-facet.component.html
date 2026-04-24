@@ -6,20 +6,22 @@
     <span class="sub-title-text">{{ facetSubTitle }}</span>
   </div>
   <div class="row-data">
-    <div class="facet-item-content" *ngFor="let facet of facetDetails">
-      <div
-        class="layout-data"
-        [ngStyle]="{ backgroundColor: facet.backgroundColor || 'white' }"
-        [ngClass]="{ clickable: facet.clickable }"
-        (click)="onFilter(facet)"
-      >
-        <div class="mb-2">
-          <span class="status-text" [ngStyle]="{ color: facet.color }">{{ facet.title }}</span>
-        </div>
-        <div class="result-text">
-          <span>{{ facet.totalResults }}</span>
+    @for (facet of facetDetails; track facet) {
+      <div class="facet-item-content">
+        <div
+          class="layout-data"
+          [ngStyle]="{ backgroundColor: facet.backgroundColor || 'white' }"
+          [ngClass]="{ clickable: facet.clickable }"
+          (click)="onFilter(facet)"
+        >
+          <div class="mb-2">
+            <span class="status-text" [ngStyle]="{ color: facet.color }">{{ facet.title }}</span>
+          </div>
+          <div class="result-text">
+            <span>{{ facet.totalResults }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    }
   </div>
 </div>

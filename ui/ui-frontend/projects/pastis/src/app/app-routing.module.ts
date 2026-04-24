@@ -35,8 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { QuicklinkStrategy } from 'ngx-quicklink';
+import { PreloadAllModules, Route, RouterModule } from '@angular/router';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -88,7 +87,7 @@ const routes: Route[] = standalone
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy,
+      preloadingStrategy: PreloadAllModules,
     }),
   ],
   exports: [RouterModule],

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
@@ -62,6 +62,10 @@ import { first } from 'rxjs/operators';
   standalone: false,
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private archiveService = inject(ArchiveService);
+  private configurationsService = inject(ConfigurationsApiService);
+
   @Input() loadingNodeUnit: boolean;
   // Already a graph
   @Input() nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
@@ -84,11 +88,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   leavesTreeService: LeavesTreeService;
 
-  constructor(
-    private archiveSharedDataService: ArchiveSharedDataService,
-    private archiveService: ArchiveService,
-    private configurationsService: ConfigurationsApiService,
-  ) {
+  constructor() {
     this.leavesTreeService = new LeavesTreeService(this.archiveService, this.configurationsService);
     this.subscriptions.add(
       this.leavesTreeService.virtualPathSearchLimitReached.pipe(first((status) => status === true)).subscribe(() => {
@@ -181,11 +181,11 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   nodeIsUAWithChildren(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.unitType === UnitType.INGEST && node.descriptionLevel !== DescriptionLevel.ITEM;
+    return node.unitType === UnitType.INGEST && node.descriptionLevel !== (DescriptionLevel.ITEM as any);
   }
 
   nodeIsUAWithoutChildrenOrWithChildrenFromDetachedSignature(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.unitType === UnitType.INGEST && node.descriptionLevel === DescriptionLevel.ITEM;
+    return node.unitType === UnitType.INGEST && node.descriptionLevel === (DescriptionLevel.ITEM as any);
   }
 
   nodeIsOrphansNode(_: number, node: FilingHoldingSchemeNode): boolean {

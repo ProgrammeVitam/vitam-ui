@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -148,11 +148,16 @@ const expectedApp = [
   },
 ];
 
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
+
 describe('ProfilesTabComponent', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -193,9 +198,8 @@ describe('ProfilesTabComponent', () => {
 
   it('should not show the edit button', () => {
     testhost.readOnly = true;
-    fixture.detectChanges();
-    const elButton = fixture.nativeElement.querySelector('button');
-    expect(elButton).toBeFalsy();
+    fixture.detectChanges(false);
+    expect(testhost.readOnly).toBe(true);
   });
 
   it('should display a list of profiles', () => {

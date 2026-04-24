@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -46,12 +46,13 @@ import { AppConfiguration, ApplicationInfo, AttachmentType } from '../models';
   providedIn: 'root',
 })
 export class ApplicationApiService {
+  private http = inject(HttpClient);
+
   private readonly apiUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) baseUrl: string,
-  ) {
+  constructor() {
+    const baseUrl = inject(BASE_URL);
+
     this.apiUrl = baseUrl + '/ui/applications';
   }
 

@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
@@ -86,7 +86,6 @@ type RuleForm = {
   styleUrls: ['./management-rule-search.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     TranslateModule,
     SelectComponent,
@@ -104,6 +103,10 @@ type RuleForm = {
   ],
 })
 export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
+  protected formBuilder = inject(FormBuilder);
+  protected sharedDataService = inject<ManagementRuleSharedDataService>(MANAGEMENT_RULE_SHARED_DATA_SERVICE);
+  protected managementRuleCriteriaService = inject(ManagementRuleCriteriaService);
+
   @Input() type: ManagementRuleType;
   @Input() updateOn: Observable<SearchCriteriaRemoveAction>;
   @Input() hasWaitingToRecalculateCriteria: boolean;
@@ -127,12 +130,9 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   previousCriteriaValue: Record<string, any>;
   public destroyed$ = new Subject<void>();
 
-  constructor(
-    protected formBuilder: FormBuilder,
-    @Inject(MANAGEMENT_RULE_SHARED_DATA_SERVICE) protected sharedDataService: ManagementRuleSharedDataService,
-    @Inject(MANAGEMENT_RULE_SEARCH_CONFIG) managementRuleSearchConfig: Record<ManagementRuleType, ManagementRuleSearchConfig>,
-    protected managementRuleCriteriaService: ManagementRuleCriteriaService,
-  ) {
+  constructor() {
+    const managementRuleSearchConfig = inject<Record<ManagementRuleType, ManagementRuleSearchConfig>>(MANAGEMENT_RULE_SEARCH_CONFIG);
+
     this.MANAGEMENT_RULE_SEARCH_CONFIG = managementRuleSearchConfig;
   }
 

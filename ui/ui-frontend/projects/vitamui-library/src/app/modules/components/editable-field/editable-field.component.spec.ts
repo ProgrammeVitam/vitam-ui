@@ -131,7 +131,7 @@ describe('EditableFieldComponent', () => {
 
   describe('confirm', () => {
     it('should leave the edit mode, emit the new value and reset the control', () => {
-      spyOn(component, 'onChange');
+      vi.spyOn(component, 'onChange');
       component.enterEditMode();
       component.control.setValue('New value');
       component.control.markAsDirty();
@@ -143,7 +143,7 @@ describe('EditableFieldComponent', () => {
     });
 
     it('should not do anything', () => {
-      spyOn(component, 'onChange');
+      vi.spyOn(component, 'onChange');
       component.enterEditMode();
       component.control.setValue('New value');
       component.control.markAsDirty();
@@ -158,7 +158,7 @@ describe('EditableFieldComponent', () => {
 
   describe('cancel', () => {
     it('should leave the edit mode and reset the value', () => {
-      spyOn(component, 'onChange');
+      vi.spyOn(component, 'onChange');
       component.writeValue('Original value');
       component.enterEditMode();
       component.control.setValue('New value');
@@ -180,13 +180,13 @@ describe('EditableFieldComponent', () => {
   });
 
   it('should call confirm', () => {
-    spyOn(component, 'confirm');
+    vi.spyOn(component, 'confirm');
     component.onEnter(new KeyboardEvent('Enter'));
     expect(component.confirm).toHaveBeenCalled();
   });
 
   it('should call cancel', () => {
-    spyOn(component, 'cancel');
+    vi.spyOn(component, 'cancel');
     component.onEscape(new KeyboardEvent('Escape'));
     expect(component.cancel).toHaveBeenCalled();
   });

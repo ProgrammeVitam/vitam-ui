@@ -42,9 +42,11 @@ import { AgencyCreateValidators } from './agency-create.validators';
 describe('Agency Create Validators', () => {
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
-      const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
-      agencyServiceSpy.existsProperties.and.returnValue(of(false));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
+      const agencyServiceSpy = {
+        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
+      };
+      agencyServiceSpy.existsProperties.mockReturnValue(of(false));
+      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
       from(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -55,9 +57,11 @@ describe('Agency Create Validators', () => {
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
-      const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
-      agencyServiceSpy.existsProperties.and.returnValue(of(true));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
+      const agencyServiceSpy = {
+        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
+      };
+      agencyServiceSpy.existsProperties.mockReturnValue(of(true));
+      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
       from(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
@@ -70,17 +74,21 @@ describe('Agency Create Validators', () => {
     }));
 
     it('should return { onlyWhitespaces: true }', fakeAsync(() => {
-      const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['']);
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
+      const agencyServiceSpy = {
+        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
+      };
+      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
       expect(agencyCreateValidators.onlyWhitespaces(new FormControl('   '))).toEqual({
         onlyWhitespaces: true,
       });
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
-      agencyServiceSpy.existsProperties.and.returnValue(of(true));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
+      const agencyServiceSpy = {
+        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
+      };
+      agencyServiceSpy.existsProperties.mockReturnValue(of(true));
+      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
       from(agencyCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -90,9 +98,11 @@ describe('Agency Create Validators', () => {
     }));
 
     it('should call the service and return { nameExists: true }', fakeAsync(() => {
-      const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
-      agencyServiceSpy.existsProperties.and.returnValue(of(true));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
+      const agencyServiceSpy = {
+        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
+      };
+      agencyServiceSpy.existsProperties.mockReturnValue(of(true));
+      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
       from(agencyCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();

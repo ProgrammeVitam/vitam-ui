@@ -5,15 +5,15 @@
 ></vitamui-dialog-header>
 
 <div class="text medium light">
-  <ng-container *ngIf="selectedItemCountKnown && itemSelected > 1"
-    >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
-  </ng-container>
-  <ng-container *ngIf="selectedItemCountKnown && itemSelected === 1"
-    >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
-  </ng-container>
-  <ng-container *ngIf="!selectedItemCountKnown"
-    >{{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
-  </ng-container>
+  @if (selectedItemCountKnown && itemSelected > 1) {
+    {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+  }
+  @if (selectedItemCountKnown && itemSelected === 1) {
+    {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
+  }
+  @if (!selectedItemCountKnown) {
+    {{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+  }
 </div>
 
 <vitamui-stepper #stepper>
@@ -106,48 +106,55 @@
               </mat-button-toggle-group>
             </div>
 
-            <div class="gap-2" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION" formArrayName="usages">
-              @for (usage of usages.controls; track usage; let i = $index) {
-                <div class="hgap-6">
-                  <div class="hgap-4" [formGroupName]="i">
-                    <vitamui-select
-                      *ngIf="usageOptions[i]"
-                      [multiple]="false"
-                      [enableSearch]="false"
-                      [enableSelectAll]="false"
-                      [placeholder]="'ARCHIVE_SEARCH.DIP.TARGET_USAGE_#' | translate: { i: i + 1 }"
-                      formControlName="usage"
-                      [options]="usageOptions[i]"
-                    ></vitamui-select>
-
-                    <div class="gap-2">
-                      <label class="text caption bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
-                      <mat-radio-group class="hgap-2" formControlName="version">
-                        <mat-radio-button value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }} </mat-radio-button>
-                        <mat-radio-button value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }} </mat-radio-button>
-                        <mat-radio-button value="LAST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.LAST' | translate }} </mat-radio-button>
-                      </mat-radio-group>
+            @if (formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION) {
+              <div class="gap-2" formArrayName="usages">
+                @for (usage of usages.controls; track usage; let i = $index) {
+                  <div class="hgap-6">
+                    <div class="hgap-4" [formGroupName]="i">
+                      @if (usageOptions[i]) {
+                        <vitamui-select
+                          [multiple]="false"
+                          [enableSearch]="false"
+                          [enableSelectAll]="false"
+                          [placeholder]="'ARCHIVE_SEARCH.DIP.TARGET_USAGE_#' | translate: { i: i + 1 }"
+                          formControlName="usage"
+                          [options]="usageOptions[i]"
+                        ></vitamui-select>
+                      }
+                      <div class="gap-2">
+                        <label class="text caption bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
+                        <mat-radio-group class="hgap-2" formControlName="version">
+                          <mat-radio-button value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }} </mat-radio-button>
+                          <mat-radio-button value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }} </mat-radio-button>
+                          <mat-radio-button value="LAST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.LAST' | translate }} </mat-radio-button>
+                        </mat-radio-group>
+                      </div>
                     </div>
+                    @if (i > 0) {
+                      <button class="btn btn-circle outline-primary small" type="button" (click)="removeUsage(i)">
+                        <i class="vitamui-icon vitamui-icon-delete"></i>
+                      </button>
+                    }
                   </div>
-                  <button *ngIf="i > 0" class="btn btn-circle outline-primary small" type="button" (click)="removeUsage(i)">
-                    <i class="vitamui-icon vitamui-icon-delete"></i>
+                }
+                @if (usages.length < dataObjectVersions.length) {
+                  <button type="button" class="btn link" (click)="addUsage()">
+                    <i class="vitamui-icon vitamui-icon-add"></i>
+                    {{ 'ARCHIVE_SEARCH.DIP.ADD_USAGE' | translate }}
                   </button>
-                </div>
-              }
+                }
+              </div>
+            }
+          </div>
 
-              <button *ngIf="usages.length < dataObjectVersions.length" type="button" class="btn link" (click)="addUsage()">
-                <i class="vitamui-icon vitamui-icon-add"></i>
-                {{ 'ARCHIVE_SEARCH.DIP.ADD_USAGE' | translate }}
-              </button>
+          @if (showWarning()) {
+            <div class="text large danger bold">
+              <span class="mr-1">
+                <i class="vitamui-icon vitamui-icon-anomalie"></i>
+              </span>
+              <span class="text normal danger">{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_WARNING_MESSAGE' | translate }}</span>
             </div>
-          </div>
-
-          <div class="text large danger bold" *ngIf="showWarning()">
-            <span class="mr-1">
-              <i class="vitamui-icon vitamui-icon-anomalie"></i>
-            </span>
-            <span class="text normal danger">{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_WARNING_MESSAGE' | translate }}</span>
-          </div>
+          }
         </div>
       </mat-dialog-content>
 

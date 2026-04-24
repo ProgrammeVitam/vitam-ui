@@ -112,8 +112,14 @@ describe('BlockCategoryInheritanceComponent', () => {
   let component: BlockCategoryInheritanceComponent;
   let fixture: ComponentFixture<BlockCategoryInheritanceComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
 
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of({}),
@@ -199,7 +205,7 @@ describe('BlockCategoryInheritanceComponent', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     component.ruleTypeDUA = ruleCategoryAction;
-    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
+    vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
 
     // When
     component.onBlockCategoryInheritance();

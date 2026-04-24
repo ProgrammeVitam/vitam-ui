@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IngestContract, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
@@ -46,13 +46,17 @@ import { IngestContractApiService } from '../core/api/ingest-contract-api.servic
   providedIn: 'root',
 })
 export class IngestContractService extends SearchService<IngestContract> {
+  private ingestContractApi: IngestContractApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<IngestContract>();
 
-  constructor(
-    private ingestContractApi: IngestContractApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const ingestContractApi = inject(IngestContractApiService);
+
     super(ingestContractApi, 'ALL');
+
+    this.ingestContractApi = ingestContractApi;
   }
 
   get(id: string): Observable<IngestContract> {

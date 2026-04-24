@@ -35,23 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, Subject } from 'rxjs';
-import {
-  BASE_URL,
-  CountryService,
-  LoggerModule,
-  Owner,
-  StartupService,
-  Tenant,
-  VitamUILibraryModule,
-  SnackBarService,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, Tenant, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
@@ -119,8 +109,12 @@ class TestHostComponent {
   owner: Owner;
   readonly = false;
 
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false })
+  component: InformationTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('Owner InformationTabComponent', () => {
   let testhost: TestHostComponent;
@@ -132,10 +126,18 @@ describe('Owner InformationTabComponent', () => {
       patch: () => of(owner),
       updated: new Subject(),
     };
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null),
-    });
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantFormValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('TenantFormValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -145,8 +147,8 @@ describe('Owner InformationTabComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [TestHostComponent, InformationTabComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -161,7 +163,9 @@ describe('Owner InformationTabComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationTabComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -207,16 +211,16 @@ describe('Owner InformationTabComponent', () => {
         },
         internalCode: null,
       });
-      expect(testhost.component.ownerForm.get('id').valid).toBeFalsy('id');
-      expect(testhost.component.ownerForm.get('customerId').valid).toBeFalsy('customerId');
-      expect(testhost.component.ownerForm.get('code').valid).toBeFalsy('code');
-      expect(testhost.component.ownerForm.get('name').valid).toBeFalsy('name');
-      expect(testhost.component.ownerForm.get('companyName').valid).toBeFalsy('companyName');
-      expect(testhost.component.ownerForm.get('address.street').valid).toBeTruthy('street');
-      expect(testhost.component.ownerForm.get('address.zipCode').valid).toBeTruthy('zipCode');
-      expect(testhost.component.ownerForm.get('address.city').valid).toBeTruthy('city');
-      expect(testhost.component.ownerForm.get('address.country').valid).toBeTruthy('country');
-      expect(testhost.component.ownerForm.get('internalCode').valid).toBeTruthy('internalCode');
+      expect(testhost.component.ownerForm.get('id').valid).toBeFalsy();
+      expect(testhost.component.ownerForm.get('customerId').valid).toBeFalsy();
+      expect(testhost.component.ownerForm.get('code').valid).toBeFalsy();
+      expect(testhost.component.ownerForm.get('name').valid).toBeFalsy();
+      expect(testhost.component.ownerForm.get('companyName').valid).toBeFalsy();
+      expect(testhost.component.ownerForm.get('address.street').valid).toBeTruthy();
+      expect(testhost.component.ownerForm.get('address.zipCode').valid).toBeTruthy();
+      expect(testhost.component.ownerForm.get('address.city').valid).toBeTruthy();
+      expect(testhost.component.ownerForm.get('address.country').valid).toBeTruthy();
+      expect(testhost.component.ownerForm.get('internalCode').valid).toBeTruthy();
     });
 
     it('should have the pattern validator', () => {
@@ -283,12 +287,12 @@ describe('Owner InformationTabComponent', () => {
         accessContractHoldingIdentifier: null,
         accessContractLogbookIdentifier: null,
       });
-      expect(testhost.component.tenantForm.get('id').valid).toBeFalsy('id');
-      expect(testhost.component.tenantForm.get('customerId').valid).toBeFalsy('customerId');
-      expect(testhost.component.tenantForm.get('ownerId').valid).toBeFalsy('ownerId');
-      expect(testhost.component.tenantForm.get('identifier').valid).toBeFalsy('identifier');
-      expect(testhost.component.tenantForm.get('name').valid).toBeFalsy('name');
-      expect(testhost.component.tenantForm.get('enabled').valid).toBeFalsy('name');
+      expect(testhost.component.tenantForm.get('id').valid).toBeFalsy();
+      expect(testhost.component.tenantForm.get('customerId').valid).toBeFalsy();
+      expect(testhost.component.tenantForm.get('ownerId').valid).toBeFalsy();
+      expect(testhost.component.tenantForm.get('identifier').valid).toBeFalsy();
+      expect(testhost.component.tenantForm.get('name').valid).toBeFalsy();
+      expect(testhost.component.tenantForm.get('enabled').valid).toBeFalsy();
     });
 
     it('should be valid and call patch()', () => {

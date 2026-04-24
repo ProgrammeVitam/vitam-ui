@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL, PaginatedHttpClient, SKIP_ERROR_NOTIFICATION } from 'vitamui-library';
@@ -49,7 +49,11 @@ const HTTP_STATUS_OK = 200;
 })
 export class ArchivalProfileUnitApiService extends PaginatedHttpClient<ArchivalProfileUnit> {
   // @ts-ignore
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, pastisConfiguration: PastisConfiguration) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+    const pastisConfiguration = inject(PastisConfiguration);
+
     // console.log('passage dans service archival API');
     super(http, baseUrl + pastisConfiguration.archivalProfileUnitApiPath);
   }

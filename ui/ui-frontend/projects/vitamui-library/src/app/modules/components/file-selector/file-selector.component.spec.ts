@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileSelectorComponent } from './file-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -42,8 +42,6 @@ import { LoggerModule } from '../../logger';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
-import objectContaining = jasmine.objectContaining;
-import anything = jasmine.anything;
 
 @Component({
   template: ` <vitamui-file-selector [formControl]="control" /> `,
@@ -51,7 +49,8 @@ import anything = jasmine.anything;
 })
 class TestHostComponent {
   control: FormControl = new FormControl();
-  @ViewChild(FileSelectorComponent, { static: false }) component: FileSelectorComponent;
+  @ViewChild(FileSelectorComponent, { static: false })
+  component: FileSelectorComponent;
 }
 
 describe('FileSelectorComponent', () => {
@@ -69,6 +68,10 @@ describe('FileSelectorComponent', () => {
     fixture.detectChanges();
     component = fixture.componentInstance.component;
   });
+
+  async function waitForValidation() {
+    await fixture.whenStable();
+  }
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
@@ -90,7 +93,7 @@ describe('FileSelectorComponent', () => {
 
   it('should emit filesChanged event with updated files', async () => {
     const file1 = file('file1.json');
-    spyOn(component.filesChanged, 'emit');
+    vi.spyOn(component.filesChanged, 'emit');
     await component.handleFilesSelection([file1]);
     expect(component.filesChanged.emit).toHaveBeenCalledWith([file1]);
   });
@@ -101,7 +104,7 @@ describe('FileSelectorComponent', () => {
     component.multiple = true;
     control.setValue([file1]);
 
-    spyOn(component.filesChanged, 'emit');
+    vi.spyOn(component.filesChanged, 'emit');
     await component.handleFilesSelection([file2]);
 
     expect(control.value).toEqual([file1, file2]);
@@ -145,17 +148,16 @@ describe('FileSelectorComponent', () => {
     expect((control.value[0] as File).name).toEqual('file2.json');
   });
 
-  it('should allow multiple files when multiple=true', fakeAsync(async () => {
+  it('should allow multiple files when multiple=true', async () => {
     component.multiple = true;
 
     await component.handleFilesSelection([file('file1.json'), file('file2.json')]);
-
-    tick();
+    await waitForValidation();
 
     expect(control.value.length).toBe(2);
     expect(component.displayFiles.length).toBe(2);
-    expect(control.valid).toBeTrue();
-  }));
+    expect(control.valid).toBe(true);
+  });
 
   it('should have an error if multiples files are added when multiple=false', async () => {
     component.multiple = false;
@@ -164,11 +166,11 @@ describe('FileSelectorComponent', () => {
 
     expect(control.value.length).toBe(2);
     expect(component.displayFiles.length).toBe(2);
-    expect(control.valid).toBeFalse();
-    expect(control.hasError('maxFiles')).toBeTrue();
+    expect(control.valid).toBe(false);
+    expect(control.hasError('maxFiles')).toBe(true);
   });
 
-  it('should sort correctly', fakeAsync(async () => {
+  it('should sort correctly', async () => {
     component.multiple = true;
     component.directoryMode = true;
 
@@ -189,8 +191,6 @@ describe('FileSelectorComponent', () => {
       file('aaa_dir_duplicate/file.json'),
     ]);
 
-    tick();
-
     expect(control.value.length).toBe(12);
     expect(component.displayFiles.length).toBe(12);
     expect(component.displayFiles.map((df) => df.name)).toEqual([
@@ -209,7 +209,7 @@ describe('FileSelectorComponent', () => {
       'bbb.json',
       'yyyy.json',
     ]);
-  }));
+  });
 
   describe('Global validations', () => {
     it('should have an error if file size is greater than max allowed size', async () => {
@@ -218,8 +218,8 @@ describe('FileSelectorComponent', () => {
 
       await component.handleFilesSelection([file('file1.json', 'X'.repeat(component.maxSizeInBytes + 1))]);
 
-      expect(control.valid).toBeFalse();
-      expect(control.hasError('maxSizeInBytes')).toBeTrue();
+      expect(control.valid).toBe(false);
+      expect(control.hasError('maxSizeInBytes')).toBe(true);
       expect(control.getError('maxSizeInBytes')).toEqual({
         size: `${component.maxSizeInBytes + 1} octets`,
         maxSize: `${component.maxSizeInBytes} octets`,
@@ -237,8 +237,8 @@ describe('FileSelectorComponent', () => {
         file('file.json', 'X'.repeat(component.maxSizeInBytes / 4 + 1)),
       ]);
 
-      expect(control.valid).toBeFalse();
-      expect(control.hasError('maxSizeInBytes')).toBeTrue();
+      expect(control.valid).toBe(false);
+      expect(control.hasError('maxSizeInBytes')).toBe(true);
       expect(control.getError('maxSizeInBytes')).toEqual({
         size: `${component.maxSizeInBytes + 1} octets`,
         maxSize: `${component.maxSizeInBytes} octets`,
@@ -247,119 +247,112 @@ describe('FileSelectorComponent', () => {
   });
 
   describe('Individual file validation', () => {
-    it('should show an error for invalid extension', fakeAsync(async () => {
+    it('should show an error for invalid extension', async () => {
       component.extensions = ['.json'];
 
       await component.handleFilesSelection([file('file1.txt')]);
+      await waitForValidation();
 
-      tick();
-
-      expect(component.displayFiles[0].errors).toEqual(objectContaining({ invalidExtension: { extensions: '.json' } }));
-      expect(control.valid).toBeFalse();
-      expect(control.hasError('invalidFiles')).toBeTrue();
-    }));
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ invalidExtension: { extensions: '.json' } }));
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+    });
 
     describe('Duplication', () => {
       beforeEach(() => {
         component.multiple = true;
       });
 
-      it('should show an error for duplicated file', fakeAsync(async () => {
+      it('should show an error for duplicated file', async () => {
         await component.handleFilesSelection([file('file.txt')]);
         await component.handleFilesSelection([file('FILE.txt')]);
+        await waitForValidation();
 
-        tick();
+        expect(control.valid).toBe(false);
+        expect(control.hasError('invalidFiles')).toBe(true);
+        expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ duplicatedFile: expect.anything() }));
+        expect(component.displayFiles[1].errors).toEqual(expect.objectContaining({ duplicatedFile: expect.anything() }));
+      });
 
-        expect(control.valid).toBeFalse();
-        expect(control.hasError('invalidFiles')).toBeTrue();
-        expect(component.displayFiles[0].errors).toEqual(objectContaining({ duplicatedFile: anything() }));
-        expect(component.displayFiles[1].errors).toEqual(objectContaining({ duplicatedFile: anything() }));
-      }));
-
-      it('should show an error for duplicated directory', fakeAsync(async () => {
+      it('should show an error for duplicated directory', async () => {
         await component.handleFilesSelection([file('dir/file1.txt')]);
         await component.handleFilesSelection([file('DIR/file2.txt')]);
+        await waitForValidation();
 
-        tick();
+        expect(control.valid).toBe(false);
+        expect(control.hasError('invalidFiles')).toBe(true);
+        expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ duplicatedDirectory: expect.anything() }));
+        expect(component.displayFiles[1].errors).toEqual(expect.objectContaining({ duplicatedDirectory: expect.anything() }));
+      });
 
-        expect(control.valid).toBeFalse();
-        expect(control.hasError('invalidFiles')).toBeTrue();
-        expect(component.displayFiles[0].errors).toEqual(objectContaining({ duplicatedDirectory: anything() }));
-        expect(component.displayFiles[1].errors).toEqual(objectContaining({ duplicatedDirectory: anything() }));
-      }));
-
-      it('should show an error for file and directory having the same name', fakeAsync(async () => {
+      it('should show an error for file and directory having the same name', async () => {
         await component.handleFilesSelection([file('DIR_OR_FILE/file1.txt')]);
         await component.handleFilesSelection([file('dir_or_file')]);
+        await waitForValidation();
 
-        tick();
-
-        expect(control.valid).toBeFalse();
-        expect(control.hasError('invalidFiles')).toBeTrue();
-        expect(component.displayFiles[0].errors).toEqual(objectContaining({ duplicatedDirectory: anything() }));
-        expect(component.displayFiles[1].errors).toEqual(objectContaining({ duplicatedFile: anything() }));
-      }));
+        expect(control.valid).toBe(false);
+        expect(control.hasError('invalidFiles')).toBe(true);
+        expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ duplicatedDirectory: expect.anything() }));
+        expect(component.displayFiles[1].errors).toEqual(expect.objectContaining({ duplicatedFile: expect.anything() }));
+      });
     });
 
-    it('should show an error for a directory when only files are allowed', fakeAsync(async () => {
+    it('should show an error for a directory when only files are allowed', async () => {
       component.directoryMode = false;
 
       await component.handleFilesSelection([file('dir/file.txt')]);
+      await waitForValidation();
 
-      tick();
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ directoryForbidden: expect.anything() }));
+    });
 
-      expect(control.valid).toBeFalse();
-      expect(control.hasError('invalidFiles')).toBeTrue();
-      expect(component.displayFiles[0].errors).toEqual(objectContaining({ directoryForbidden: anything() }));
-    }));
-
-    it('should show custom validation error', fakeAsync(async () => {
+    it('should show custom validation error', async () => {
       component.fileValidators = (file: File) =>
         Promise.resolve(
           file.name === 'file1.json' ? { fileErrors: { 'CUSTOM.ERROR': true }, controlErrors: { invalidFiles: true } } : null,
         );
 
       await component.handleFilesSelection([file('file1.json')]);
+      await waitForValidation();
 
-      tick();
+      expect(component.displayFiles[0].errors).toEqual(expect.objectContaining({ 'CUSTOM.ERROR': expect.anything() }));
+      expect(control.valid).toBe(false);
+      expect(control.hasError('invalidFiles')).toBe(true);
+    });
 
-      expect(component.displayFiles[0].errors).toEqual(objectContaining({ 'CUSTOM.ERROR': anything() }));
-      expect(control.valid).toBeFalse();
-      expect(control.hasError('invalidFiles')).toBeTrue();
-    }));
-
-    it('should accumulate errors', fakeAsync(async () => {
+    it('should accumulate errors', async () => {
       component.multiple = true;
       component.extensions = ['.png'];
       component.fileValidators = (file: File) =>
         Promise.resolve(file.name === 'file2.json' ? { fileErrors: { 'CUSTOM.ERROR': true }, controlErrors: { toto: true } } : null);
 
       await component.handleFilesSelection([file('file1.txt'), file('file2.json')]);
-
-      tick();
+      await waitForValidation();
 
       expect(component.displayFiles.length).toBe(2);
 
       expect(component.displayFiles[0].name).toBe('file1.txt');
       expect(component.displayFiles[0].errors).toEqual(
-        objectContaining({
-          invalidExtension: anything(),
+        expect.objectContaining({
+          invalidExtension: expect.anything(),
         }),
       );
 
       expect(component.displayFiles[1].name).toBe('file2.json');
       expect(component.displayFiles[1].errors).toEqual(
-        objectContaining({
-          invalidExtension: anything(),
-          'CUSTOM.ERROR': anything(),
+        expect.objectContaining({
+          invalidExtension: expect.anything(),
+          'CUSTOM.ERROR': expect.anything(),
         }),
       );
 
-      expect(control.hasError('invalidFiles')).toBeTrue();
-      expect(control.getError('invalidFiles')).toEqual(objectContaining({ files: anything() }));
+      expect(control.hasError('invalidFiles')).toBe(true);
+      expect(control.getError('invalidFiles')).toEqual(expect.objectContaining({ files: expect.anything() }));
       expect(control.getError('invalidFiles').files).toContain(`file1.txt`);
       expect(control.getError('invalidFiles').files).toContain(`file2.json`);
-    }));
+    });
   });
 });
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
@@ -47,14 +47,12 @@ import { SnackBarService } from './components/snack-bar/snack-bar.service';
   providedIn: 'root',
 })
 export class TenantSelectionGuard {
-  constructor(
-    private authService: AuthService,
-    private appService: ApplicationService,
-    private router: Router,
-    private tenantSelectionService: TenantSelectionService,
-    @Inject(WINDOW_LOCATION) private location: any,
-    private snackBarService: SnackBarService,
-  ) {}
+  private authService = inject(AuthService);
+  private appService = inject(ApplicationService);
+  private router = inject(Router);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private location = inject(WINDOW_LOCATION);
+  private snackBarService = inject(SnackBarService);
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     if (route.params.tenantIdentifier) {

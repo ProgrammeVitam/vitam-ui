@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogModule } from '@angular/material/dialog';
 import { VitamError, VitamErrorDetails } from '../../../../app/modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -51,10 +51,8 @@ const TRANSLATION_PREFIX = 'COLLECT.UPDATE_UNITS_METADATA.ERRORS.';
   styleUrl: './errors-details-dialog.component.scss',
 })
 export class ErrorsDetailsDialogComponent {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: VitamError,
-    private translateService: TranslateService,
-  ) {}
+  data = inject<VitamError>(MAT_DIALOG_DATA);
+  private translateService = inject(TranslateService);
 
   translateErrorKeys(errorDetails: VitamErrorDetails) {
     return this.translateService.instant(TRANSLATION_PREFIX + errorDetails.key, errorDetails.args);

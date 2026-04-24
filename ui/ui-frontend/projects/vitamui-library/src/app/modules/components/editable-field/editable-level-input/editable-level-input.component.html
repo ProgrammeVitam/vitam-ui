@@ -1,4 +1,4 @@
-<ng-container *ngIf="!disabled">
+@if (!disabled) {
   <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
@@ -10,12 +10,12 @@
           <vitamui-common-level-input [formControl]="control" [prefix]="prefix" [isEditableComponent]="true"></vitamui-common-level-input>
         </div>
       </div>
-      <i *ngIf="!editMode" class="material-icons edit-icon">edit</i>
+      @if (!editMode) {
+        <i class="material-icons edit-icon">edit</i>
+      }
     </div>
   </div>
-
   <div class="vitamui-input-errors"></div>
-
   <ng-template
     cdkConnectedOverlay
     [cdkConnectedOverlayOpen]="editMode"
@@ -29,13 +29,15 @@
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-</ng-container>
+}
 
-<div *ngIf="disabled" class="read-only-field">
-  <div>
-    <label>{{ 'LEVEL_INPUT.SUBLEVEL' | translate }}</label>
+@if (disabled) {
+  <div class="read-only-field">
     <div>
-      <span>{{ control.value | subLevel: prefix }}</span>
+      <label>{{ 'LEVEL_INPUT.SUBLEVEL' | translate }}</label>
+      <div>
+        <span>{{ control.value | subLevel: prefix }}</span>
+      </div>
     </div>
   </div>
-</div>
+}

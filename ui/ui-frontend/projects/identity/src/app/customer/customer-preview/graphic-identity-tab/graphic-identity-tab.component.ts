@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -50,6 +50,10 @@ import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
   standalone: false,
 })
 export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
+  private customerService = inject(CustomerService);
+  private dialog = inject(MatDialog);
+  private themeService = inject(ThemeService);
+
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
@@ -76,12 +80,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   public theme: Theme;
   public COLOR_NAME: { [colorId: string]: string };
   public THEME_COLORS = ThemeColorType;
-
-  constructor(
-    private customerService: CustomerService,
-    private dialog: MatDialog,
-    private themeService: ThemeService,
-  ) {}
   ngOnDestroy(): void {
     this.destroy.next();
   }

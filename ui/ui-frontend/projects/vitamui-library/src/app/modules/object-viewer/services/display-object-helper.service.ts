@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DisplayObject, DisplayRule } from '../models';
 import { ComponentType, DisplayObjectType } from '../types';
 import { DataStructureService } from './data-structure.service';
@@ -45,11 +45,9 @@ export const internationalizedKeys = ['Title_', 'Description_'];
 
 @Injectable()
 export class DisplayObjectHelperService {
-  constructor(
-    private typeService: TypeService,
-    private dataStructureService: DataStructureService,
-    private displayRuleHelperService: DisplayRuleHelperService,
-  ) {}
+  private typeService = inject(TypeService);
+  private dataStructureService = inject(DataStructureService);
+  private displayRuleHelperService = inject(DisplayRuleHelperService);
 
   public getComponentType(data: any, template: DisplayRule[] = [], path: string = ''): ComponentType {
     const type: DisplayObjectType = this.typeService.dataType(data);

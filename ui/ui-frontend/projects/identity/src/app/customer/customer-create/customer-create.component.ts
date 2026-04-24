@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
@@ -70,6 +70,18 @@ interface CustomerInfo {
   standalone: false,
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<CustomerCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private customerService = inject(CustomerService);
+  private customerCreateValidators = inject(CustomerCreateValidators);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private tenantFormValidators = inject(TenantFormValidators);
+  private countryService = inject(CountryService);
+  private startupService = inject(StartupService);
+  private tenantService = inject(TenantService);
+  private matDialog = inject(MatDialog);
+
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
   public maxStreetLength: number;
   public stepIndex = 0;
@@ -113,19 +125,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   customer: Customer;
   tenantOptions: VitamuiSelectOptions;
 
-  constructor(
-    public dialogRef: MatDialogRef<CustomerCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private customerService: CustomerService,
-    private customerCreateValidators: CustomerCreateValidators,
-    private confirmDialogService: ConfirmDialogService,
-    private tenantFormValidators: TenantFormValidators,
-    private countryService: CountryService,
-    private startupService: StartupService,
-    private tenantService: TenantService,
-    private matDialog: MatDialog,
-  ) {
+  constructor() {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
       gdprAlert: true,

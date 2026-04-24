@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Logger } from '../logger/logger';
 import { Schema, SchemaElement } from '../models';
 import { DisplayObject, DisplayRule } from '../object-viewer/models';
@@ -44,12 +44,10 @@ import { SchemaElementToDisplayRuleService } from '../object-viewer/services/sch
 
 @Injectable({ providedIn: 'root' })
 export class ArchiveUnitTemplateService {
-  constructor(
-    private componentMapperService: SchemaElementToDisplayRuleService,
-    private displayRuleHelper: DisplayRuleHelperService,
-    private displayObjectHelper: DisplayObjectHelperService,
-    private logger: Logger,
-  ) {}
+  private componentMapperService = inject(SchemaElementToDisplayRuleService);
+  private displayRuleHelper = inject(DisplayRuleHelperService);
+  private displayObjectHelper = inject(DisplayObjectHelperService);
+  private logger = inject(Logger);
 
   public computeTemplate(_originalData: any, customTemplate: DisplayRule[], originalSchema: Schema): DisplayRule[] {
     const schemaByOrigin = this.groupSchemaByOrigin(originalSchema);

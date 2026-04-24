@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { IEvent, LogbookService } from 'vitamui-library';
 import { OperationDetails } from '../../../models/operation-response.interface';
 
@@ -45,12 +45,12 @@ import { OperationDetails } from '../../../models/operation-response.interface';
   standalone: false,
 })
 export class LogbookManagementOperationInformationTabComponent implements OnInit, OnChanges {
+  private logbookService = inject(LogbookService);
+
   @Input() operation: OperationDetails;
   @Input() tenantIdentifier: number;
   @Input() tenant: any;
   event: IEvent;
-
-  constructor(private logbookService: LogbookService) {}
 
   ngOnInit(): void {
     this.getLogbookOperationDetails(this.operation);

@@ -34,17 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
+import { TenantService } from '../tenant.service';
 import { TenantFormValidators } from './tenant-form.validators';
 
 describe('Tenant Form Validators', () => {
+  const createValidators = (tenantServiceSpy: { exists: ReturnType<typeof vi.fn> }) => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: TenantService, useValue: tenantServiceSpy }],
+    });
+    return TestBed.runInInjectionContext(() => new TenantFormValidators());
+  };
+
   it('should return null', fakeAsync(() => {
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
-    tenantServiceSpy.exists.and.returnValue(of(false));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantServiceSpy = {
+      exists: vi.fn().mockName('TenantService.exists'),
+    };
+    tenantServiceSpy.exists.mockReturnValue(of(false));
+    const tenantFormValidators = createValidators(tenantServiceSpy);
     from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toBeNull();
     });
@@ -53,9 +63,11 @@ describe('Tenant Form Validators', () => {
   }));
 
   it('should return { uniqueName: true }', fakeAsync(() => {
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
-    tenantServiceSpy.exists.and.returnValue(of(true));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantServiceSpy = {
+      exists: vi.fn().mockName('TenantService.exists'),
+    };
+    tenantServiceSpy.exists.mockReturnValue(of(true));
+    const tenantFormValidators = createValidators(tenantServiceSpy);
     from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });
@@ -64,9 +76,11 @@ describe('Tenant Form Validators', () => {
   }));
 
   it('should not call the service', fakeAsync(() => {
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
-    tenantServiceSpy.exists.and.returnValue(of(true));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantServiceSpy = {
+      exists: vi.fn().mockName('TenantService.exists'),
+    };
+    tenantServiceSpy.exists.mockReturnValue(of(true));
+    const tenantFormValidators = createValidators(tenantServiceSpy);
     from(tenantFormValidators.uniqueName('name')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
@@ -75,9 +89,11 @@ describe('Tenant Form Validators', () => {
   }));
 
   it('should call the service', fakeAsync(() => {
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['exists']);
-    tenantServiceSpy.exists.and.returnValue(of(true));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantServiceSpy = {
+      exists: vi.fn().mockName('TenantService.exists'),
+    };
+    tenantServiceSpy.exists.mockReturnValue(of(true));
+    const tenantFormValidators = createValidators(tenantServiceSpy);
     from(tenantFormValidators.uniqueName('tenantName')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });

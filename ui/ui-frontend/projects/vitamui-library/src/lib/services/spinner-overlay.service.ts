@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -49,9 +49,9 @@ class SpinnerComponent {}
   providedIn: 'root',
 })
 export class SpinnerOverlayService {
-  private spinnerOverlayRef: MatDialogRef<any>;
+  private dialog = inject(MatDialog);
 
-  constructor(private dialog: MatDialog) {}
+  private spinnerOverlayRef: MatDialogRef<any>;
 
   public open() {
     this.spinnerOverlayRef = this.dialog.open(SpinnerComponent, {

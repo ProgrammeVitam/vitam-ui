@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { EditObject } from '../../../object-editor/models/edit-object.model';
@@ -52,14 +52,14 @@ import { ArchiveUnitEditorService } from './archive-unit-editor.service';
   standalone: false,
 })
 export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy {
+  private archiveUnitEditorService = inject(ArchiveUnitEditorService);
+
   @Input() data!: ArchiveUnit;
   @Input() template: DisplayRule[] = customTemplate;
 
   editObject$ = new BehaviorSubject<EditObject>(null);
 
   private subscriptions = new Subscription();
-
-  constructor(private archiveUnitEditorService: ArchiveUnitEditorService) {}
 
   ngOnInit(): void {
     this.archiveUnitEditorService.setTemplate(this.template);

@@ -1,236 +1,240 @@
-<form [formGroup]="form" *ngIf="user?.status !== 'REMOVED'" class="gap-3 align-items-stretch">
-  <div class="row">
-    <div class="col-10">
-      <p *ngIf="user?.status === 'ENABLED'">{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</p>
-      <p *ngIf="user?.status === 'DISABLED'">{{ 'USER.INFORMATIONS.INACTIVE_SWITCH' | translate }}</p>
-      <p class="status-warning" *ngIf="user?.status === 'BLOCKED'">
-        {{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT' | translate }}
-        <ng-container *ngIf="user?.lastConnection"
-          >({{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT_SINCE' | translate }} {{ user?.lastConnection | dateTime: 'medium' }})
-        </ng-container>
-      </p>
-      <p class="status-warning" *ngIf="user?.status === 'ANONYM'">
-        {{ 'USER.INFORMATIONS.ERASED_ACCOUNT' | translate }}
-      </p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-8">
-      <vitamui-common-editable-input
-        formControlName="identifier"
-        [label]="'COMMON.ID' | translate"
-        [validator]="form?.get('identifier')?.validator"
-        [asyncValidator]="form?.get('identifier')?.asyncValidator"
-      >
-      </vitamui-common-editable-input>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="lastname"
-        [validator]="form?.get('lastname')?.validator"
-        [label]="'USER.INFORMATIONS.LASTNAME' | translate"
-      >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
-      </vitamui-common-editable-input>
-    </div>
-    <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="firstname"
-        [validator]="form?.get('firstname')?.validator"
-        [label]="'USER.INFORMATIONS.FIRSTNAME' | translate"
-      >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
-      </vitamui-common-editable-input>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <vitamui-common-editable-email-input
-        formControlName="email"
-        [validator]="form?.get('email')?.validator"
-        [asyncValidator]="form?.get('email')?.asyncValidator"
-        [domains]="customerEmailDomains"
-        [label]="'USER.INFORMATIONS.MAIL' | translate"
-      >
-        <vitamui-common-field-error errorKey="email">{{ 'COMMON.ERROR.REQUIRED' | translate }} </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueEmail">
-          {{ 'USER.INFORMATIONS.MAIL_ALREADY_EXIST' | translate }}</vitamui-common-field-error
-        >
-      </vitamui-common-editable-email-input>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="mobile"
-        [validator]="form?.get('mobile')?.validator"
-        [label]="'USER.INFORMATIONS.PHONE.MOBILE' | translate"
-      >
-        <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern">{{ 'USER.INFORMATIONS.PHONE_FIELD_FORMAT' | translate }}</vitamui-common-field-error>
-      </vitamui-common-editable-input>
-    </div>
-    <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="phone"
-        [validator]="form?.get('phone')?.validator"
-        [label]="'USER.INFORMATIONS.PHONE.FIX' | translate"
-      >
-        <vitamui-common-field-error errorKey="pattern">{{ 'USER.INFORMATIONS.PHONE_FIELD_FORMAT' | translate }}</vitamui-common-field-error>
-      </vitamui-common-editable-input>
-    </div>
-  </div>
-
-  <ng-container formGroupName="address">
+@if (user?.status !== 'REMOVED') {
+  <form [formGroup]="form" class="gap-3 align-items-stretch">
     <div class="row">
-      <div class="col-12">
+      <div class="col-10">
+        @if (user?.status === 'ENABLED') {
+          <p>{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</p>
+        }
+        @if (user?.status === 'DISABLED') {
+          <p>{{ 'USER.INFORMATIONS.INACTIVE_SWITCH' | translate }}</p>
+        }
+        @if (user?.status === 'BLOCKED') {
+          <p class="status-warning">
+            {{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT' | translate }}
+            @if (user?.lastConnection) {
+              ({{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT_SINCE' | translate }} {{ user?.lastConnection | dateTime: 'medium' }})
+            }
+          </p>
+        }
+        @if (user?.status === 'ANONYM') {
+          <p class="status-warning">
+            {{ 'USER.INFORMATIONS.ERASED_ACCOUNT' | translate }}
+          </p>
+        }
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-8">
         <vitamui-common-editable-input
-          formControlName="street"
-          maxlength="{{ maxStreetLength }}"
-          [label]="'COMMON.ADRESS.STREET' | translate"
-          [validator]="form?.get('address.street')?.validator"
-          [asyncValidator]="form?.get('address.street')?.asyncValidator"
+          formControlName="identifier"
+          [label]="'COMMON.ID' | translate"
+          [validator]="form?.get('identifier')?.validator"
+          [asyncValidator]="form?.get('identifier')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
-
     <div class="row">
       <div class="col-6">
         <vitamui-common-editable-input
-          formControlName="zipCode"
-          maxlength="10"
-          [label]="'COMMON.ADRESS.ZIPCODE' | translate"
-          [validator]="form?.get('address.zipCode')?.validator"
-          [asyncValidator]="form?.get('address.zipCode')?.asyncValidator"
+          formControlName="lastname"
+          [validator]="form?.get('lastname')?.validator"
+          [label]="'USER.INFORMATIONS.LASTNAME' | translate"
         >
           <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
       <div class="col-6">
         <vitamui-common-editable-input
-          formControlName="city"
-          maxlength="100"
-          [label]="'COMMON.ADRESS.CITY' | translate"
-          [validator]="form?.get('address.city')?.validator"
-          [asyncValidator]="form?.get('address.city')?.asyncValidator"
+          formControlName="firstname"
+          [validator]="form?.get('firstname')?.validator"
+          [label]="'USER.INFORMATIONS.FIRSTNAME' | translate"
         >
           <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
-
     <div class="row">
       <div class="col-12">
-        <vitamui-form-field-value-wrapper formControlName="country">
-          <vitamui-select
-            [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-            [options]="countries"
-            [multiple]="false"
-            [enableSearch]="false"
-          ></vitamui-select>
-        </vitamui-form-field-value-wrapper>
+        <vitamui-common-editable-email-input
+          formControlName="email"
+          [validator]="form?.get('email')?.validator"
+          [asyncValidator]="form?.get('email')?.asyncValidator"
+          [domains]="customerEmailDomains"
+          [label]="'USER.INFORMATIONS.MAIL' | translate"
+        >
+          <vitamui-common-field-error errorKey="email">{{ 'COMMON.ERROR.REQUIRED' | translate }} </vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="uniqueEmail">
+            {{ 'USER.INFORMATIONS.MAIL_ALREADY_EXIST' | translate }}</vitamui-common-field-error
+          >
+        </vitamui-common-editable-email-input>
       </div>
     </div>
-  </ng-container>
-
-  <div class="row">
-    <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="centerCodes" [label]="'USER.INFORMATIONS.CENTER_CODES' | translate">
-      </vitamui-common-editable-input>
+    <div class="row">
+      <div class="col-6">
+        <vitamui-common-editable-input
+          formControlName="mobile"
+          [validator]="form?.get('mobile')?.validator"
+          [label]="'USER.INFORMATIONS.PHONE.MOBILE' | translate"
+        >
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="pattern">{{
+            'USER.INFORMATIONS.PHONE_FIELD_FORMAT' | translate
+          }}</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-6">
+        <vitamui-common-editable-input
+          formControlName="phone"
+          [validator]="form?.get('phone')?.validator"
+          [label]="'USER.INFORMATIONS.PHONE.FIX' | translate"
+        >
+          <vitamui-common-field-error errorKey="pattern">{{
+            'USER.INFORMATIONS.PHONE_FIELD_FORMAT' | translate
+          }}</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
     </div>
-    <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="siteCode" [label]="'USER.INFORMATIONS.SITE_CODE' | translate">
-      </vitamui-common-editable-input>
+    <ng-container formGroupName="address">
+      <div class="row">
+        <div class="col-12">
+          <vitamui-common-editable-input
+            formControlName="street"
+            maxlength="{{ maxStreetLength }}"
+            [label]="'COMMON.ADRESS.STREET' | translate"
+            [validator]="form?.get('address.street')?.validator"
+            [asyncValidator]="form?.get('address.street')?.asyncValidator"
+          >
+            <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          </vitamui-common-editable-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <vitamui-common-editable-input
+            formControlName="zipCode"
+            maxlength="10"
+            [label]="'COMMON.ADRESS.ZIPCODE' | translate"
+            [validator]="form?.get('address.zipCode')?.validator"
+            [asyncValidator]="form?.get('address.zipCode')?.asyncValidator"
+          >
+            <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          </vitamui-common-editable-input>
+        </div>
+        <div class="col-6">
+          <vitamui-common-editable-input
+            formControlName="city"
+            maxlength="100"
+            [label]="'COMMON.ADRESS.CITY' | translate"
+            [validator]="form?.get('address.city')?.validator"
+            [asyncValidator]="form?.get('address.city')?.asyncValidator"
+          >
+            <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
+          </vitamui-common-editable-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <vitamui-form-field-value-wrapper formControlName="country">
+            <vitamui-select
+              [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+              [options]="countries"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </vitamui-form-field-value-wrapper>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row">
+      <div class="col-6 form-control">
+        <vitamui-common-editable-input formControlName="centerCodes" [label]="'USER.INFORMATIONS.CENTER_CODES' | translate">
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-6 form-control">
+        <vitamui-common-editable-input formControlName="siteCode" [label]="'USER.INFORMATIONS.SITE_CODE' | translate">
+        </vitamui-common-editable-input>
+      </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 form-control">
-      <vitamui-common-editable-input
-        formControlName="internalCode"
-        [label]="'USER.INFORMATIONS.INTERNAL_CODE' | translate"
-        [maxlength]="20"
-      >
-      </vitamui-common-editable-input>
+    <div class="row">
+      <div class="col-6 form-control">
+        <vitamui-common-editable-input
+          formControlName="internalCode"
+          [label]="'USER.INFORMATIONS.INTERNAL_CODE' | translate"
+          [maxlength]="20"
+        >
+        </vitamui-common-editable-input>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-6">
-      <form [formGroup]="userInfoForm">
-        <vitamui-form-field-value-wrapper formControlName="language">
+    <div class="row">
+      <div class="col-6">
+        <form [formGroup]="userInfoForm">
+          <vitamui-form-field-value-wrapper formControlName="language">
+            <vitamui-select
+              [placeholder]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
+              [options]="[
+                { key: 'ENGLISH', label: 'COMMON.LANGUAGE.ENGLISH' | translate },
+                { key: 'FRENCH', label: 'COMMON.LANGUAGE.FRENCH' | translate },
+              ]"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </vitamui-form-field-value-wrapper>
+        </form>
+      </div>
+      <div class="col-6">
+        <vitamui-common-editable-input
+          formControlName="level"
+          [label]="'USER.INFORMATIONS.GROUP_LEVEL' | translate"
+        ></vitamui-common-editable-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <vitamui-form-field-value-wrapper formControlName="type">
           <vitamui-select
-            [placeholder]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
+            [placeholder]="'USER.INFORMATIONS.TYPE' | translate"
             [options]="[
-              { key: 'ENGLISH', label: 'COMMON.LANGUAGE.ENGLISH' | translate },
-              { key: 'FRENCH', label: 'COMMON.LANGUAGE.FRENCH' | translate },
+              { key: 'NOMINATIVE', label: 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_NOMINATIVE' | translate },
+              { key: 'GENERIC', label: 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_GENERIC' | translate },
             ]"
             [multiple]="false"
             [enableSearch]="false"
           ></vitamui-select>
         </vitamui-form-field-value-wrapper>
-      </form>
+      </div>
     </div>
-    <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="level"
-        [label]="'USER.INFORMATIONS.GROUP_LEVEL' | translate"
-      ></vitamui-common-editable-input>
+    <div class="row">
+      <div class="col-6">
+        <vitamui-slide-toggle formControlName="subrogeable"> {{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }}</vitamui-slide-toggle>
+      </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <vitamui-form-field-value-wrapper formControlName="type">
-        <vitamui-select
-          [placeholder]="'USER.INFORMATIONS.TYPE' | translate"
-          [options]="[
-            { key: 'NOMINATIVE', label: 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_NOMINATIVE' | translate },
-            { key: 'GENERIC', label: 'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_GENERIC' | translate },
-          ]"
-          [multiple]="false"
-          [enableSearch]="false"
-        ></vitamui-select>
-      </vitamui-form-field-value-wrapper>
+    <div class="row">
+      <div class="col-6">
+        <vitamui-slide-toggle formControlName="otp">
+          <span
+            vitamuiTooltip="{{ 'USER.INFORMATIONS.VALIDATIONS_TOOLTIP' | translate }}"
+            vitamuiTooltipPosition="TOP"
+            vitamuiTooltipDisabled="{{ !showTooltip }}"
+          >
+            {{ 'USER.INFORMATIONS.VALIDATIONS' | translate }}
+          </span>
+        </vitamui-slide-toggle>
+      </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <vitamui-slide-toggle formControlName="subrogeable"> {{ 'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate }}</vitamui-slide-toggle>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <vitamui-slide-toggle formControlName="otp">
-        <span
-          vitamuiTooltip="{{ 'USER.INFORMATIONS.VALIDATIONS_TOOLTIP' | translate }}"
-          vitamuiTooltipPosition="TOP"
-          vitamuiTooltipDisabled="{{ !showTooltip }}"
+    <div class="row">
+      <div class="col-6">
+        <vitamui-slide-toggle formControlName="autoProvisioningEnabled">
+          {{ 'USER.INFORMATIONS.ACTIVATE_AUTO_PROVISIONING' | translate }}</vitamui-slide-toggle
         >
-          {{ 'USER.INFORMATIONS.VALIDATIONS' | translate }}
-        </span>
-      </vitamui-slide-toggle>
+      </div>
     </div>
-  </div>
+  </form>
+}
 
-  <div class="row">
-    <div class="col-6">
-      <vitamui-slide-toggle formControlName="autoProvisioningEnabled">
-        {{ 'USER.INFORMATIONS.ACTIVATE_AUTO_PROVISIONING' | translate }}</vitamui-slide-toggle
-      >
-    </div>
+@if (user?.status === 'REMOVED') {
+  <div>
+    <h2>ATTENTION</h2>
+    L'utilisateur que vous cherchez est déja supprimé
   </div>
-</form>
-
-<div *ngIf="user?.status === 'REMOVED'">
-  <h2>ATTENTION</h2>
-  L'utilisateur que vous cherchez est déja supprimé
-</div>
+}

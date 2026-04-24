@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Logger } from '../../logger/logger';
 import { DisplayObject, Layout } from '../models';
 import { LayoutSize } from '../types';
@@ -43,12 +43,12 @@ import { LayoutSize } from '../types';
   providedIn: 'root',
 })
 export class LayoutService {
+  private logger = inject(Logger);
+
   MAX_COLUMNS = 2;
   DEFAULT_COLUMNS = this.MAX_COLUMNS;
   DEFAULT_SIZE: LayoutSize = 'medium';
   COMPLETE_ROWS = true;
-
-  constructor(private logger: Logger) {}
 
   private keepNodeWithDisplayRuleFilter(displayObject: DisplayObject): boolean {
     const hasDisplayRule = Boolean(displayObject.displayRule);

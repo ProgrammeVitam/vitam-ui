@@ -44,7 +44,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { CollapseModule, ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
+import { CollapseModule, ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
@@ -57,10 +57,19 @@ describe('ExternalParamProfileCreateComponent', () => {
   let component: ExternalParamProfileCreateComponent;
   let fixture: ComponentFixture<ExternalParamProfileCreateComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
 
-  const externalParamProfileValidators = jasmine.createSpyObj('ExternalParamProfileValidators', { nameExists: () => of(null) });
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const externalParamProfileValidators = {
+    nameExists: vi
+      .fn()
+      .mockName('ExternalParamProfileValidators.nameExists')
+      .mockReturnValue(() => of(null)),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
   const externalParamProfileService = {
     getAllActiveAccessContracts: () => of([]),
     create: of({}),
@@ -82,7 +91,6 @@ describe('ExternalParamProfileCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       providers: [
         DecimalPipe,
@@ -99,7 +107,22 @@ describe('ExternalParamProfileCreateComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ExternalParamProfileCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <input formControlName="enabled" />
+              <input formControlName="accessContract" />
+              <input formControlName="description" />
+              <input formControlName="name" />
+              <input formControlName="usePlatformThreshold" />
+              <input formControlName="bulkOperationsThreshold" />
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -170,7 +170,7 @@ describe('FilingHoldingSchemeComponent', () => {
         // Then: Check the nodeData object recieved
         expect(component.nodeData.title).toEqual('RootTitle');
         expect(component.nodeData.id).toEqual('rootId');
-        expect(component.nodeData.checked).toBeTruthy('Root node should be checked');
+        expect(component.nodeData.checked).toBeTruthy();
       });
     });
     describe('showAllTreeNodes', () => {

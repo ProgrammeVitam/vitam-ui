@@ -88,15 +88,20 @@ let page: Page;
 
 describe('RuleCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
-      create: of({}),
-      existsProperties: of(false),
-    });
-    const ruleCreateValidatorsSpy = jasmine.createSpyObj('RuleCreateValidators', {
-      uniqueRuleId: () => of(null),
-      ruleIdPattern: ManagementRuleValidators.ruleIdPattern,
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const ruleServiceSpy = {
+      create: vi.fn().mockName('RuleService.create').mockReturnValue(of({})),
+      existsProperties: vi.fn().mockName('RuleService.existsProperties').mockReturnValue(of(false)),
+    };
+    const ruleCreateValidatorsSpy = {
+      uniqueRuleId: vi
+        .fn()
+        .mockName('RuleCreateValidators.uniqueRuleId')
+        .mockReturnValue(() => of(null)),
+      ruleIdPattern: vi.fn().mockName('RuleCreateValidators.ruleIdPattern').mockReturnValue(ManagementRuleValidators.ruleIdPattern),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [RuleCreateComponent],
@@ -121,7 +126,23 @@ describe('RuleCreateComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(RuleCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="ruleId" />
+              <input formControlName="ruleType" />
+              <input formControlName="ruleValue" />
+              <input formControlName="ruleDescription" />
+              <input formControlName="ruleDuration" />
+              <input formControlName="ruleMeasurement" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -172,29 +193,29 @@ describe('RuleCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('ruleId', '').invalid).toBeTruthy('empty ruleId invalid');
-          expect(setControlValue('ruleId', 'ÀÖØöøÿ ').invalid).toBeTruthy('ruleId pattern invalid');
-          expect(setControlValue('ruleId', 'azerty').valid).toBeTruthy('ruleId valid');
+          expect(setControlValue('ruleId', '').invalid).toBeTruthy();
+          expect(setControlValue('ruleId', 'ÀÖØöøÿ ').invalid).toBeTruthy();
+          expect(setControlValue('ruleId', 'azerty').valid).toBeTruthy();
 
-          expect(setControlValue('ruleType', '').invalid).toBeTruthy('empty ruleType invalid');
-          expect(setControlValue('ruleType', RULE_TYPES[0].key).valid).toBeTruthy('ruleType valid');
+          expect(setControlValue('ruleType', '').invalid).toBeTruthy();
+          expect(setControlValue('ruleType', RULE_TYPES[0].key).valid).toBeTruthy();
 
-          expect(setControlValue('ruleValue', '').invalid).toBeTruthy('empty ruleValue invalid');
-          expect(setControlValue('ruleValue', '111').valid).toBeTruthy('ruleValue valid');
+          expect(setControlValue('ruleValue', '').invalid).toBeTruthy();
+          expect(setControlValue('ruleValue', '111').valid).toBeTruthy();
 
-          expect(setControlValue('ruleDuration', '').invalid).toBeTruthy('empty ruleDuration invalid');
-          expect(setControlValue('ruleDuration', '10').valid).toBeTruthy('ruleDuration valid');
+          expect(setControlValue('ruleDuration', '').invalid).toBeTruthy();
+          expect(setControlValue('ruleDuration', '10').valid).toBeTruthy();
 
-          expect(setControlValue('ruleDescription', '').invalid).toBeTruthy('empty ruleDescription invalid');
-          expect(setControlValue('ruleDescription', 'azerty').valid).toBeTruthy('ruleDescription valid');
+          expect(setControlValue('ruleDescription', '').invalid).toBeTruthy();
+          expect(setControlValue('ruleDescription', 'azerty').valid).toBeTruthy();
 
-          expect(setControlValue('ruleMeasurement', '').invalid).toBeTruthy('empty ruleMeasurement invalid');
-          expect(setControlValue('ruleMeasurement', RULE_MEASUREMENTS[0].key).valid).toBeTruthy('ruleMeasurement valid');
+          expect(setControlValue('ruleMeasurement', '').invalid).toBeTruthy();
+          expect(setControlValue('ruleMeasurement', RULE_MEASUREMENTS[0].key).valid).toBeTruthy();
         });
 
         it('should the requested ruleId be valid', () => {
-          expect(setControlValue('ruleId', '123456789').valid).toBeTruthy('ruleId valid');
-          expect(setControlValue('ruleId', 'APP//??').valid).toBeTruthy('ruleId valid');
+          expect(setControlValue('ruleId', '123456789').valid).toBeTruthy();
+          expect(setControlValue('ruleId', 'APP//??').valid).toBeTruthy();
         });
       });
 

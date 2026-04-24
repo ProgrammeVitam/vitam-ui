@@ -453,12 +453,12 @@
             <vitamui-common-data
               [label]="'COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION' | translate"
               [value]="
-            project().connectedToArchivingSystem
-              ? project().archivingSystemId === LOCAL_ARCHIVING_SYSTEM_ID
-                ? ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION_LOCAL' | translate)
-                : `${getExternalSystemName$(project().archivingSystemId) | async}${TENANT_SEPARATOR}${project().archivingSystemTenant}`
-              : ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION_NO' | translate)
-          "
+                project().connectedToArchivingSystem
+                  ? project().archivingSystemId === LOCAL_ARCHIVING_SYSTEM_ID
+                    ? ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION_LOCAL' | translate)
+                    : `${(getExternalSystemName$(project().archivingSystemId) | async)}${TENANT_SEPARATOR}${project().archivingSystemTenant}`
+                  : ('COLLECT.PROJECT_UNIT_PREVIEW.CONFIGURATION.ARCHIVING_SYSTEM_CONNECTION_NO' | translate)
+              "
             ></vitamui-common-data>
 
             @if (getProjectWorkflow(project()) === Workflow.FLOW) {

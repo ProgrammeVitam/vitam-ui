@@ -38,7 +38,7 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Owner } from 'vitamui-library';
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { OwnerService } from './owner.service';
@@ -47,10 +47,8 @@ import { OwnerService } from './owner.service';
   providedIn: 'root',
 })
 export class OwnerResolver {
-  constructor(
-    private ownerService: OwnerService,
-    private router: Router,
-  ) {}
+  private ownerService = inject(OwnerService);
+  private router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Owner> {
     const id = route.paramMap.get('id');

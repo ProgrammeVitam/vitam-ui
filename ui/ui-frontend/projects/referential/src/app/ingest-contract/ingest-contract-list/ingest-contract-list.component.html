@@ -44,43 +44,39 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let accessContract of dataSource" (click)="ingestContractClick.emit(accessContract)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-1">
-            <i
-              class="vitamui-icon vitamui-icon-contrat"
-              [ngClass]="accessContract?.status === 'ACTIVE' ? 'status-badge-green' : 'status-badge-grey'"
-            ></i>
+      @for (accessContract of dataSource; track accessContract) {
+        <div class="vitamui-table-rows" (click)="ingestContractClick.emit(accessContract)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-1">
+              <i
+                class="vitamui-icon vitamui-icon-contrat"
+                [ngClass]="accessContract?.status === 'ACTIVE' ? 'status-badge-green' : 'status-badge-grey'"
+              ></i>
+            </div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ accessContract.identifier }}</div>
+            <div class="col-5" vitamuiCommonEllipsis>{{ accessContract.name }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ accessContract.archiveProfiles?.length }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ accessContract.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
           </div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ accessContract.identifier }}</div>
-          <div class="col-5" vitamuiCommonEllipsis>{{ accessContract.name }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ accessContract.archiveProfiles?.length }}</div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ accessContract.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
         </div>
-      </div>
+      }
     </div>
 
-    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && ingestContractService.canLoadMore && !pending; then loadMore"></div>
+    @if (!dataSource || pending) {
+      <div class="vitamui-min-content">
+        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+      </div>
+    }
+    @if (!pending && dataSource?.length === 0) {
+      <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+    }
+    @if (infiniteScrollDisabled && ingestContractService.canLoadMore && !pending) {
+      <div class="vitamui-min-content vitamui-table-message" (click)="ingestContractService.loadMore()">
+        <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+      </div>
+    }
   </div>
 </div>
-
-<ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
-</ng-template>
-
-<ng-template #loadMore>
-  <div class="vitamui-min-content vitamui-table-message" (click)="ingestContractService.loadMore()">
-    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
-  </div>
-</ng-template>
-
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
 
 <ng-template #statusFilterTemplate>
   <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">

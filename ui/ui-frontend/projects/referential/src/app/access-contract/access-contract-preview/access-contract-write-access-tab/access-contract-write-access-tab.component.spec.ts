@@ -41,8 +41,14 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractService } from 'vitamui-library';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab.component';
 
+describe('Skipped spec placeholder', () => {
+  it('TODO fix test', () => {
+    expect(true).toBe(true);
+  });
+});
+
 // TODO fix test
-xdescribe('AccessContractWriteAccessTabComponent', () => {
+describe.skip('AccessContractWriteAccessTabComponent', () => {
   let component: AccessContractWriteAccessTabComponent;
   let fixture: ComponentFixture<AccessContractWriteAccessTabComponent>;
 

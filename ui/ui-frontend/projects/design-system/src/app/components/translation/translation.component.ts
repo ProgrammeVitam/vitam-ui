@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -48,6 +48,8 @@ const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
   standalone: false,
 })
 export class TranslationComponent implements OnInit {
+  private translateService = inject(TranslateService);
+
   public nbApplesTextMap: { [k: string]: string } = {
     '=': 'TRANSLATION.TRANSLATE_NUMBER.ZERO', // In case of no value
     '=0': 'TRANSLATION.TRANSLATE_NUMBER.ZERO',
@@ -61,8 +63,6 @@ export class TranslationComponent implements OnInit {
 
   public myInstantText: string;
   public myGetTexts: string[];
-
-  constructor(private translateService: TranslateService) {}
 
   ngOnInit(): void {
     // Will not work because it is too early in ngOnInit

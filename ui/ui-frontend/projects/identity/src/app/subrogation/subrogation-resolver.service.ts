@@ -38,7 +38,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MenuOption } from 'vitamui-library';
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CustomerSelectService } from './customer-select.service';
@@ -47,10 +47,8 @@ import { CustomerSelectService } from './customer-select.service';
   providedIn: 'root',
 })
 export class SubrogationResolver {
-  constructor(
-    private customerSearchService: CustomerSelectService,
-    private router: Router,
-  ) {}
+  private customerSearchService = inject(CustomerSelectService);
+  private router = inject(Router);
 
   resolve(): Observable<MenuOption[]> {
     return this.customerSearchService.getAll(true).pipe(

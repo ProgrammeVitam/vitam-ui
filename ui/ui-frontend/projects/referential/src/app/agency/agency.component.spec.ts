@@ -50,8 +50,6 @@ import { AgencyComponent } from './agency.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
 
 @Component({
   selector: 'app-agency-preview',
@@ -76,8 +74,7 @@ describe('AgencyComponent', () => {
 
   beforeEach(async () => {
     TestBed.overrideComponent(AgencyComponent, {
-      remove: { imports: [AgencyListComponent, AgencyPreviewComponent] },
-      add: { imports: [AgencyListStub, AgencyPreviewStub] },
+      set: { template: '' },
     });
 
     await TestBed.configureTestingModule({

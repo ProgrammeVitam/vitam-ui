@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApplicationService } from 'vitamui-library';
@@ -51,9 +50,10 @@ describe('IngestInformationTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [IngestInformationTabComponent],
       imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
-      schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ApplicationService, useValue: { getUrl$: () => of('') } }],
-    }).compileComponents();
+    })
+      .overrideTemplate(IngestInformationTabComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {

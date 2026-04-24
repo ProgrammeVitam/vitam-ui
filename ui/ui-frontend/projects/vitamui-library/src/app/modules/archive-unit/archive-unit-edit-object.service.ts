@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Logger } from '../logger/logger';
 import { Schema, SchemaElement } from '../models';
 import { EditObject } from '../object-editor/models/edit-object.model';
@@ -49,14 +49,11 @@ export type SchemaElementByApiPath = { [key: string]: SchemaElement };
 
 @Injectable({ providedIn: 'root' })
 export class ArchiveUnitEditObjectService {
-  constructor(
-    private editObjectService: EditObjectService,
-    private templateService: TemplateService,
-    // For utils methods
-    private logger: Logger,
-    private displayRuleHelper: DisplayRuleHelperService,
-    private typeService: TypeService,
-  ) {}
+  private editObjectService = inject(EditObjectService);
+  private templateService = inject(TemplateService);
+  private logger = inject(Logger);
+  private displayRuleHelper = inject(DisplayRuleHelperService);
+  private typeService = inject(TypeService);
 
   public computeEditObject(data: any, template: DisplayRule[], schema: Schema): EditObject {
     const projectedData = this.templateService.toProjected(data, template);

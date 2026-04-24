@@ -46,6 +46,7 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -100,6 +101,8 @@ type FileValidatorFunction = (file: File) => Promise<FileValidationErrors | null
   providers: [FILE_SELECTOR_VALUE_ACCESSOR, BytesPipe],
 })
 export class FileSelectorComponent extends AbstractFormInputDirective implements OnInit {
+  private bytesPipe = inject(BytesPipe);
+
   /**
    * Allowed extensions. Ex: ['.json', '.rng']
    */
@@ -133,10 +136,9 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     other: 'FILE_SELECTOR.ALLOWED_FORMATS_PLURAL',
   };
 
-  constructor(
-    injector: Injector,
-    private bytesPipe: BytesPipe,
-  ) {
+  constructor() {
+    const injector = inject(Injector);
+
     super(injector);
   }
 

@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
@@ -98,6 +98,10 @@ function constantToTranslate() {
   standalone: false,
 })
 export class UserActionAddPuaControlComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
+  private popUpService = inject(PopupService);
+  private translateService = inject(TranslateService);
+
   btnIsDisabled: boolean;
   enumerationsLabel = 'Enumération';
   expressionReguliereLabel = 'Expression régulière';
@@ -112,11 +116,7 @@ export class UserActionAddPuaControlComponent implements OnInit {
   atLeastOneIsSelected: boolean;
   isStandalone: boolean = environment.standalone;
 
-  constructor(
-    public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private popUpService: PopupService,
-    private translateService: TranslateService,
-  ) {
+  constructor() {
     if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();

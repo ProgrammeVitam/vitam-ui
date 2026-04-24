@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BASE_URL } from '../injection-tokens';
 import { SearchCriteriaDto, SearchResponse } from '../models';
@@ -50,7 +50,10 @@ import { tap } from 'rxjs/operators';
 export class ReclassificationApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl);
     this.baseUrl = baseUrl;
   }

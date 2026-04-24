@@ -8,44 +8,54 @@
   </div>
 
   <!-- The selected items -->
-  <div *ngIf="addedItems?.length > 0" class="pastis-container-selected-items">
-    <div *ngFor="let item of addedItems; let i = index" style="display: inline-flex">
-      <div class="selected-items-box">
-        <span style="padding: 12px">
-          <i *ngIf="isElementComplex(item)" class="vitamui-icon vitamui-icon-ic24-arborescence"></i>
-          <span class="item-text">{{ onResolveName(item) }}</span>
-        </span>
-        <mat-divider class="selected-items-separator" vertical></mat-divider>
-        <span (click)="onRemoveSelectedElement(item)" class="selected-items-close">&times;</span>
-      </div>
+  @if (addedItems?.length > 0) {
+    <div class="pastis-container-selected-items">
+      @for (item of addedItems; track item; let i = $index) {
+        <div style="display: inline-flex">
+          <div class="selected-items-box">
+            <span style="padding: 12px">
+              @if (isElementComplex(item)) {
+                <i class="vitamui-icon vitamui-icon-ic24-arborescence"></i>
+              }
+              <span class="item-text">{{ onResolveName(item) }}</span>
+            </span>
+            <mat-divider class="selected-items-separator" vertical></mat-divider>
+            <span (click)="onRemoveSelectedElement(item)" class="selected-items-close">&times;</span>
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  }
 
   <!-- The list of items to be selected-->
-  <mat-list *ngIf="allowedChildren?.length; else noItemsLeftToAdd" class="list-box-head">
-    <span class="list-box-content-title">
-      <span [ngStyle]="{ 'margin-top': atLeastOneIsSelected ? '40px' : '0px' }" class="paragraph-metadata-subtitle">{{
-        'USER_ACTION.ADD_METADATA.METADATA_ADD' | translate
-      }}</span>
-      <i class="vitamui-icon vitamui-icon-chevron-down" style="margin-left: 20px; font-weight: bold"></i>
-    </span>
-    <i class="vita"></i>
-    <mat-divider class="pastis-popup-separator"></mat-divider>
-    <mat-selection-list (ngModelChange)="selectSedaElement($event)" [disableRipple]="true" [ngModel]="addedItems" class="list-box">
-      <mat-list *ngFor="let element of allowedChildren | filterByName: filterName : sedaLanguage" class="list-item">
-        <span class="list-box-content">
-          <span *ngIf="element.external">EXT-</span>
-          <span class="text medium" [vitamuiTooltip]="getDefinition(element)">{{ onResolveName(element) }}</span>
-        </span>
-        <span (click)="onAddSelectedElement(element)" class="ajouter">{{ 'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate }}</span>
-        <mat-divider class="pastis-popup-separator"></mat-divider>
-      </mat-list>
-    </mat-selection-list>
-  </mat-list>
-
-  <ng-template #noItemsLeftToAdd>
+  @if (allowedChildren?.length) {
+    <mat-list class="list-box-head">
+      <span class="list-box-content-title">
+        <span [ngStyle]="{ 'margin-top': atLeastOneIsSelected ? '40px' : '0px' }" class="paragraph-metadata-subtitle">{{
+          'USER_ACTION.ADD_METADATA.METADATA_ADD' | translate
+        }}</span>
+        <i class="vitamui-icon vitamui-icon-chevron-down" style="margin-left: 20px; font-weight: bold"></i>
+      </span>
+      <i class="vita"></i>
+      <mat-divider class="pastis-popup-separator"></mat-divider>
+      <mat-selection-list (ngModelChange)="selectSedaElement($event)" [disableRipple]="true" [ngModel]="addedItems" class="list-box">
+        @for (element of allowedChildren | filterByName: filterName : sedaLanguage; track element) {
+          <mat-list class="list-item">
+            <span class="list-box-content">
+              @if (element.external) {
+                <span>EXT-</span>
+              }
+              <span class="text medium" [vitamuiTooltip]="getDefinition(element)">{{ onResolveName(element) }}</span>
+            </span>
+            <span (click)="onAddSelectedElement(element)" class="ajouter">{{ 'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate }}</span>
+            <mat-divider class="pastis-popup-separator"></mat-divider>
+          </mat-list>
+        }
+      </mat-selection-list>
+    </mat-list>
+  } @else {
     <p class="paragraph-metadata-subtitle" style="margin-top: 40px">
       {{ 'USER_ACTION.ADD_METADATA.MESSAGE_PLUS_METADONNEE' | translate }}
     </p>
-  </ng-template>
+  }
 </div>

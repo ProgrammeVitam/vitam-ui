@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -107,6 +107,19 @@ function constantToTranslate() {
   standalone: false,
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {
+  profileService = inject(ProfileService);
+  private fileService = inject(FileService);
+  private fileMetadataService = inject(FileTreeMetadataService);
+  private sedaService = inject(SedaService);
+  private router = inject(Router);
+  private startupService = inject(StartupService);
+  private fileTreeService = inject(FileTreeService);
+  private metadataLanguageService = inject(PastisPopupMetadataLanguageService);
+  private translateService = inject(TranslateService);
+  private logger = inject(Logger);
+  private breadcrumbService = inject(BreadcrumbService);
+  private snackBarService = inject(SnackBarService);
+
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
   sedaVersionLabel: string;
@@ -182,20 +195,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   private _fileMetadataServiceSubscriptionDataSource: Subscription;
   private _sedalanguageSub: Subscription;
 
-  constructor(
-    public profileService: ProfileService,
-    private fileService: FileService,
-    private fileMetadataService: FileTreeMetadataService,
-    private sedaService: SedaService,
-    private router: Router,
-    private startupService: StartupService,
-    private fileTreeService: FileTreeService,
-    private metadataLanguageService: PastisPopupMetadataLanguageService,
-    private translateService: TranslateService,
-    private logger: Logger,
-    private breadcrumbService: BreadcrumbService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     this.config = {
       locale: 'fr',
       showGoToCurrent: false,

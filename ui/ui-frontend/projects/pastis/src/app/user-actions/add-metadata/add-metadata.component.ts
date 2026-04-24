@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { FileService } from '../../core/services/file.service';
@@ -92,6 +92,13 @@ import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-me
   standalone: false,
 })
 export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
+  private fileService = inject(FileService);
+  private sedaService = inject(SedaService);
+  private popUpService = inject(PopupService);
+  private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
+  private profileService = inject(ProfileService);
+
   btnIsDisabled: boolean;
 
   sedaData: SedaData;
@@ -105,15 +112,6 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   fileNode: FileNode;
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
-
-  constructor(
-    public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private fileService: FileService,
-    private sedaService: SedaService,
-    private popUpService: PopupService,
-    private sedaLanguageService: PastisPopupMetadataLanguageService,
-    private profileService: ProfileService,
-  ) {}
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe({

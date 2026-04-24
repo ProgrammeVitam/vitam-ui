@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'vitamui-library';
@@ -48,6 +48,9 @@ import { AccessionRegistersService } from '../accession-register.service';
   standalone: false,
 })
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
+  accessionRegistersService: AccessionRegistersService;
+  private locale = inject(LOCALE_ID);
+
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
 
   @Input()
@@ -76,11 +79,12 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
 
   selectedRow: AccessionRegisterDetail;
 
-  constructor(
-    public accessionRegistersService: AccessionRegistersService,
-    @Inject(LOCALE_ID) private locale: string,
-  ) {
+  constructor() {
+    const accessionRegistersService = inject(AccessionRegistersService);
+
     super(accessionRegistersService);
+
+    this.accessionRegistersService = accessionRegistersService;
   }
 
   ngOnInit() {

@@ -1,16 +1,26 @@
 <div class="download-bar-container">
   <div class="download-bar-content">
     <i class="vitamui-icon vitamui-icon-download"></i>
-    <div *ngIf="isCompressed" class="download-label">
-      {{ count | i18nPlural: downloadCountMap | translate: { count: count } }}
-      <ng-container *ngIf="count !== total">
-        {{ notDownloadable | i18nPlural: downloadCountOverTotalMap | translate: { total: total, count: notDownloadable } }}
-      </ng-container>
-    </div>
-    <div *ngIf="!isCompressed" class="download-label">{{ 'DOWNLOAD.DOWNLOAD_FILE' | translate }} : {{ progressionValue | percent }}</div>
-    <div *ngIf="progressionValue; else interdeterminateProgress" class="download-progress-bar-container">
-      <mat-progress-bar class="download-progress-bar" mode="determinate" [value]="progressionInPercentage"></mat-progress-bar>
-    </div>
+    @if (isCompressed) {
+      <div class="download-label">
+        {{ count | i18nPlural: downloadCountMap | translate: { count: count } }}
+        @if (count !== total) {
+          {{ notDownloadable | i18nPlural: downloadCountOverTotalMap | translate: { total: total, count: notDownloadable } }}
+        }
+      </div>
+    }
+    @if (!isCompressed) {
+      <div class="download-label">{{ 'DOWNLOAD.DOWNLOAD_FILE' | translate }} : {{ progressionValue | percent }}</div>
+    }
+    @if (progressionValue) {
+      <div class="download-progress-bar-container">
+        <mat-progress-bar class="download-progress-bar" mode="determinate" [value]="progressionInPercentage"></mat-progress-bar>
+      </div>
+    } @else {
+      <div class="download-progress-bar-container">
+        <mat-progress-bar class="download-progress-bar" mode="indeterminate"></mat-progress-bar>
+      </div>
+    }
     <ng-template #interdeterminateProgress>
       <div class="download-progress-bar-container">
         <mat-progress-bar class="download-progress-bar" mode="indeterminate"></mat-progress-bar>

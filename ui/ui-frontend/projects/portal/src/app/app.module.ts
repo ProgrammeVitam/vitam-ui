@@ -43,7 +43,6 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -80,7 +79,6 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
     InjectorModule,
     MatDialogModule,
     AppRoutingModule,
-    QuicklinkModule,
     LoggerModule.forRoot(),
     AngularSvgIconModule.forRoot({
       loader: {

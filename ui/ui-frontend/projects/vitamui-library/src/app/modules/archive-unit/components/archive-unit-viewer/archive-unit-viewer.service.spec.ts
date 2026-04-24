@@ -93,13 +93,13 @@ describe('ArchiveUnitViewerService', () => {
       service.displayObject$.subscribe((displayObject: DisplayObject) => {
         expect(displayObject).toBeTruthy();
         expect(displayObject.children).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({
+          expect.arrayContaining([
+            expect.objectContaining({
               path: 'Title',
               value: 'La ville de Paris',
-              displayRule: jasmine.objectContaining({
+              displayRule: expect.objectContaining({
                 Path: 'Title',
-                ui: jasmine.objectContaining({
+                ui: expect.objectContaining({
                   component: 'textfield',
                 }),
               }),
@@ -127,13 +127,13 @@ describe('ArchiveUnitViewerService', () => {
       service.displayObject$.subscribe((displayObject: DisplayObject) => {
         expect(displayObject).toBeTruthy();
         expect(displayObject.children).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({
+          expect.arrayContaining([
+            expect.objectContaining({
               path: 'notOntologicKey',
               value: 'La ville de Paris',
-              displayRule: jasmine.objectContaining({
+              displayRule: expect.objectContaining({
                 Path: 'notOntologicKey',
-                ui: jasmine.objectContaining({
+                ui: expect.objectContaining({
                   component: 'textfield',
                 }),
               }),
