@@ -82,6 +82,7 @@
         "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT_ONE": "Action on one archive unit",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE": "Are you sure you want to launch this action on the selected archive units?",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Do you confirm this action?",
+        "ACTION_NOT_ALLOWED": "The requested action is not possible on this selection",
         "CONFIRM": "Confirm",
         "CANCEL": "Cancel",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, the operation reaches the platform allowed threshold.",

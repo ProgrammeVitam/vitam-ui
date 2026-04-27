@@ -1226,7 +1226,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
-      subhead: 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ALERTE_MESSAGES.SUBHEAD',
+      subhead: 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_NOT_ALLOWED',
       title: 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE',
       icon: 'cancel',
       message: 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2',

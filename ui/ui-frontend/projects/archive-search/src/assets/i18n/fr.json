@@ -82,6 +82,7 @@
         "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE": "Vous êtes sur le point d'effectuer cette action sur une unité archivistique sélectionnée.",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_WITHOUT_EXACT_COUNT": "Vous êtes sur le point d'effectuer cette action sur + de 10 000 unités archivistiques sélectionnées.",
         "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirmez-vous votre action ?",
+        "ACTION_NOT_ALLOWED": "L’action demandée n’est pas possible sur cette sélection",
         "CONFIRM": "Confirmer",
         "CANCEL": "Annuler",
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE": "Attention, l'opération demandée dépasse le seuil de plateforme autorisé.",
