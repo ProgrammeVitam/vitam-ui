@@ -37,9 +37,7 @@
 package fr.gouv.vitamui.iam.server.cas.service;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -480,7 +478,7 @@ public class CasService {
         user.setAddress(providedUserInfo.getAddress());
         user.setInternalCode(providedUserInfo.getInternalCode());
         user.setSiteCode(providedUserInfo.getSiteCode());
-        GroupDto groupDto = getGroupByUnit(providedUserInfo.getUnit());
+        GroupDto groupDto = groupService.getGroupByUnitInternal(providedUserInfo.getUnit());
         user.setGroupId(groupDto.getId());
         user.setCustomerId(groupDto.getCustomerId());
 
@@ -496,13 +494,6 @@ public class CasService {
         UserInfoDto userInfoDto = new UserInfoDto();
         userInfoDto.setLanguage(language);
         return userInfoService.create(userInfoDto);
-    }
-
-    private GroupDto getGroupByUnit(final String unit) {
-        QueryDto criteria = QueryDto.criteria("units", List.of(unit), CriterionOperator.IN);
-        final List<GroupDto> groups = groupService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.notEmpty(groups, "No group found for the given unit : %s".formatted(unit));
-        return groups.get(0);
     }
 
     private void updateUser(final UserDto userDto, final ProvidedUserDto userProvidedInfo) {
@@ -552,11 +543,9 @@ public class CasService {
         final ProvidedUserDto userInfo,
         final Map<String, Object> userUpdate
     ) {
-        QueryDto criteria = QueryDto.criteria("units", List.of(userInfo.getUnit()), CriterionOperator.IN);
-        final List<GroupDto> groups = groupService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.notEmpty(groups, "No group found for the given unit : %s".formatted(userInfo.getUnit()));
-        if (!StringUtils.equals(userDto.getGroupId(), groups.get(0).getId())) {
-            userUpdate.put("groupId", groups.get(0).getId());
+        final GroupDto group = groupService.getGroupByUnitInternal(userInfo.getUnit());
+        if (!StringUtils.equals(userDto.getGroupId(), group.getId())) {
+            userUpdate.put("groupId", group.getId());
         }
     }
 

@@ -112,10 +112,10 @@ public class DispatcherAction extends AbstractAction {
             superUserCustomerId
         );
 
-        if (ensureUserIsEnabled(superUserEmail, superUserCustomerId)) {
+        if (isUserDisabledOrMissing(superUserEmail, superUserCustomerId)) {
             return handleUserDisabled(superUserEmail, superUserCustomerId);
         }
-        if (ensureUserIsEnabled(surrogateEmail, surrogateCustomerId)) {
+        if (isUserDisabledOrMissing(surrogateEmail, surrogateCustomerId)) {
             return handleUserDisabled(superUserEmail, surrogateCustomerId);
         }
 
@@ -131,7 +131,7 @@ public class DispatcherAction extends AbstractAction {
 
         ParameterChecker.checkParameter("Missing authn params", userEmail, customerId);
 
-        if (ensureUserIsEnabled(userEmail, customerId)) {
+        if (isUserDisabledOrMissing(userEmail, customerId)) {
             return handleUserDisabled(userEmail, customerId);
         }
 
@@ -190,15 +190,10 @@ public class DispatcherAction extends AbstractAction {
         }
     }
 
-    private boolean ensureUserIsEnabled(String email, String customerId) {
-        UserDto userDto = this.casApi.getUser(email, customerId, null, null, null);
-        if (userDto == null) {
-            // To avoid account existence disclosure, unknown users are silently ignored.
-            // Once they enter their credentials, they will get a generic "login or password
-            // invalid" error message.
-            return false;
-        }
-        return (userDto.getStatus() != UserStatusEnum.ENABLED);
+    private boolean isUserDisabledOrMissing(String email, String customerId) {
+        return findUserAcrossProviders(email, customerId)
+            .map(user -> user.getStatus() != UserStatusEnum.ENABLED)
+            .orElse(false);
     }
 
     private Event handleUserDisabled(final String emailUser, String customerId) {
@@ -208,5 +203,18 @@ public class DispatcherAction extends AbstractAction {
 
     private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {
         return flowScope.contains(Constants.FLOW_SURROGATE_EMAIL);
+    }
+
+    private Optional<UserDto> findUserAcrossProviders(String login, String customerId) {
+        IdentityProviderDto provider = identityProviderHelper
+            .findByUserIdentifierAndCustomerId(providersService.getProviders(), login, customerId)
+            .orElse(null);
+
+        if (provider == null) {
+            LOGGER.error("No provider found for login {} and customer id {}", login, customerId);
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(casApi.getUser(login, customerId, provider.getId(), null, null));
     }
 }

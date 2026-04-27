@@ -49,6 +49,8 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
@@ -777,5 +779,23 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
     @Override
     protected String getVersionApiCriteria() {
         return CRITERIA_VERSION_V2;
+    }
+
+    /**
+     * Finds a group by one of its attached units, without customerId restriction.
+     * Main use case is for the CAS server during auto-provisioning.
+     */
+    public GroupDto getGroupByUnitInternal(String unit) {
+        // Security check: ensure that only the CAS technical identity can call this service
+        if (!securityService.hasRole(ServicesData.ROLE_CAS_USERS)) {
+            throw new ForbiddenException("Access restricted to CAS service.");
+        }
+
+        // Use the repository to search across the ENTIRE database (all customers)
+        // This assumes the unit is unique across all customers
+        return groupRepository
+            .findByUnits(unit)
+            .map(groupConverter::convertEntityToDto)
+            .orElseThrow(() -> new NotFoundException("No group found for unit: " + unit));
     }
 }
