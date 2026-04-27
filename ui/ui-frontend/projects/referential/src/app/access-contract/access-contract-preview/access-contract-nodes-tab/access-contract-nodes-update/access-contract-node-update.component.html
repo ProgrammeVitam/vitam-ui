@@ -25,7 +25,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" class="btn primary">
+    <button type="submit" class="btn primary" [disabled]="isInvalid()">
       {{ 'COMMON.VALIDATE' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">
