@@ -42,11 +42,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.client.BaseVitamuiRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
@@ -106,14 +106,15 @@ import fr.gouv.vitamui.iam.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.server.user.converter.UserInfoConverter;
 import fr.gouv.vitamui.iam.server.user.dao.UserInfoRepository;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.server.user.password.reset.ResetPasswordNotifier;
 import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
-import fr.gouv.vitamui.iam.server.user.service.UserEmailService;
 import fr.gouv.vitamui.iam.server.user.service.UserExportService;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -404,7 +405,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final SequenceGeneratorService sequenceGeneratorService,
         final UserRepository userRepository,
         final ProfileService profileService,
-        final UserEmailService userEmailService,
+        @Qualifier("laxResetPasswordNotifier") final ResetPasswordNotifier<UserDto> laxResetPasswordNotifier,
+        @Qualifier("strictResetPasswordNotifier") final ResetPasswordNotifier<UserDto> strictResetPasswordNotifier,
         final TenantRepository tenantRepository,
         final SecurityService securityService,
         final CustomerRepository customerRepository,
@@ -425,7 +427,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             userRepository,
             groupService,
             profileService,
-            userEmailService,
+            laxResetPasswordNotifier,
+            strictResetPasswordNotifier,
             tenantRepository,
             securityService,
             customerRepository,
@@ -517,18 +520,6 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             logbookService,
             customerInitConfig
         );
-    }
-
-    @Bean
-    public UserEmailService userEmailService(
-        final RestClient.Builder restClientBuilder,
-        final RestClientConfiguration casClientProperties
-    ) {
-        final BaseVitamuiRestClientFactory factory = new BaseVitamuiRestClientFactory(
-            casClientProperties,
-            restClientBuilder
-        );
-        return new UserEmailService(factory);
     }
 
     @Bean

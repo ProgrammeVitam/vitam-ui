@@ -18,8 +18,8 @@ import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
+import fr.gouv.vitamui.iam.server.user.password.reset.ResetPasswordNotifier;
 import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
-import fr.gouv.vitamui.iam.server.user.service.UserEmailService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.AfterEach;
@@ -88,13 +88,13 @@ public final class UserControllerTest implements CrudControllerTest {
     private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
-    private UserEmailService userEmailService;
-
-    @Mock
     private UserConverter userConverter;
 
     @Mock
     private ConnectionHistoryService connectionHistoryService;
+
+    @Mock
+    private ResetPasswordNotifier<UserDto> laxResetPasswordNotifier;
 
     @Mock
     private SignedDownloadTokenService signedDownloadTokenService;

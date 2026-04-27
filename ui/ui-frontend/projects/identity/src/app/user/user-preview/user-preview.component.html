@@ -12,6 +12,9 @@
     <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">
       {{ 'USER.OTHER_ACTION.DEACTIVATE' | translate }}
     </button>
+    <button mat-menu-item (click)="resetPassword()" [disabled]="!canUpdate()">
+      {{ 'USER.OTHER_ACTION.RESET_PASSWORD.ACTION' | translate }}
+    </button>
     <button
       mat-menu-item
       (click)="deleteUser(user, 'REMOVED')"
@@ -58,7 +61,15 @@
 <ng-template #confirmDisabledUserDialog>
   <mat-dialog-content>
     <p>
-      {{ 'USER.OTHER_ACTION.DEACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
+      {{
+        'USER.OTHER_ACTION.DEACTIVATE_MESSAGE'
+          | translate
+            : {
+                param1: user?.firstname,
+                param2: user?.lastname,
+                param3: user?.email,
+              }
+      }}
     </p></mat-dialog-content
   >
 
@@ -71,7 +82,15 @@
 <ng-template #confirmEnabledUserDialog>
   <mat-dialog-content>
     <p>
-      {{ 'USER.OTHER_ACTION.REACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
+      {{
+        'USER.OTHER_ACTION.REACTIVATE_MESSAGE'
+          | translate
+            : {
+                param1: user?.firstname,
+                param2: user?.lastname,
+                param3: user?.email,
+              }
+      }}
     </p>
   </mat-dialog-content>
 
@@ -81,7 +100,7 @@
   </mat-dialog-actions>
 </ng-template>
 
-<ng-template #confirmdeleteUserDialog>
+<ng-template #confirmDeleteUserDialog>
   <mat-dialog-content>
     <p>
       {{ 'USER.OTHER_ACTION.DELETE_MESSAGE' | translate: { firstname: user?.firstname, lastname: user?.lastname } }}
