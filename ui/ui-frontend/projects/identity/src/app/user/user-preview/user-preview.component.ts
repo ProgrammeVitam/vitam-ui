@@ -34,18 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { exhaustMap, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
 import type { AdminUserProfile, Customer, Group, User, UserInfo } from 'vitamui-library';
+import { AuthService, ConfirmDialogComponent, isLevelAllowed, StartupService } from 'vitamui-library';
 import { UserInfoService } from './../user-info.service';
-
-import { UserApiService } from '../../core/api/user-api.service';
 import { GroupService } from '../../group/group.service';
-import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-preview',
@@ -54,13 +52,13 @@ import { UserService } from '../user.service';
   standalone: false,
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
-  private matDialog = inject(MatDialog);
+  private dialog = inject(MatDialog);
   private userService = inject(UserService);
   private authService = inject(AuthService);
-  userApi = inject(UserApiService);
   private startupService = inject(StartupService);
   groupService = inject(GroupService);
   private userInfoService = inject(UserInfoService);
+  private translateService = inject(TranslateService);
 
   @Input() isPopup: boolean;
 
@@ -69,6 +67,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   get user(): User {
     return this._user;
   }
+
   @Input()
   set user(user: User) {
     this._user = user;
@@ -93,17 +92,17 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       }
     }
   }
+
   @Input() customer: Customer;
 
   @Output() previewClose = new EventEmitter();
 
   @ViewChild('confirmDisabledUserDialog', { static: true }) confirmDisabledUserDialog: TemplateRef<UserPreviewComponent>;
   @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
-  @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
+  @ViewChild('confirmDeleteUserDialog', { static: true }) confirmDeleteUserDialog: TemplateRef<UserPreviewComponent>;
 
   public connectedUserInfo: AdminUserProfile;
   public userUpdatedSub: Subscription;
-  public attribaGroups: GroupSelection[];
   public userInfo: UserInfo;
   public collectionsMap: Map<string, string>;
   public identifiers: string[];
@@ -112,6 +111,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   get groups(): Group[] {
     return this._groups;
   }
+
   set groups(groupList: Group[]) {
     this._groups = groupList;
   }
@@ -140,8 +140,9 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     } else if (status === 'DISABLED') {
       dialogToOpen = this.confirmDisabledUserDialog;
     }
-    const dialogRef = this.matDialog.open(dialogToOpen);
-    dialogRef
+
+    this.dialog
+      .open(dialogToOpen)
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
@@ -177,10 +178,8 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       country: '',
     };
 
-    let dialogToOpen;
-    dialogToOpen = this.confirmdeleteUserDialog;
-    const dialogRef = this.matDialog.open(dialogToOpen);
-    dialogRef
+    this.dialog
+      .open(this.confirmDeleteUserDialog)
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
@@ -203,5 +202,29 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             this.emitClose();
           });
       });
+  }
+
+  canUpdate(): boolean {
+    return this.connectedUserInfo?.standardAttrsAllowed && !this.levelNotAllowed();
+  }
+
+  resetPassword() {
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        disableClose: false,
+        data: {
+          title: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.TITLE',
+          subTitle: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.SUBTITLE',
+          message: this.translateService.instant('USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.MESSAGE'),
+          confirmLabel: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.CONFIRM',
+          cancelLabel: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.CANCEL',
+        },
+      })
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        exhaustMap(() => this.userService.resetPassword(this.user)),
+      )
+      .subscribe();
   }
 }

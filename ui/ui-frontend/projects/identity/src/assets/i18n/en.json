@@ -85,7 +85,8 @@
       "USER_ALREADY_DELETED": "User already deleted",
       "USER_TO_DELETE": "One or several inactif user in your organization need to clean personal info",
       "USER_EXPORT_SUCCESS": "Users exported successfully.",
-      "GROUP_EXPORT_SUCCESS": "Export of profile groups successfully completed."
+      "GROUP_EXPORT_SUCCESS": "Export of profile groups successfully completed.",
+      "USER_RESET_PASSWORD": "A password reset email has been successfully sent to the user {{ param1 }} {{ param2 }}"
     }
   },
   "CUSTOMER": {
@@ -373,6 +374,16 @@
     "OTHER_ACTION": {
       "ACTIVATE": "Activate",
       "DEACTIVATE": "Deactivate",
+      "RESET_PASSWORD": {
+        "ACTION": "Reset password",
+        "DIALOG": {
+          "TITLE": "Are you sure you want to reset user password?",
+          "SUBTITLE": "",
+          "MESSAGE": "A user password reset email is about to be sent.",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        }
+      },
       "DELETE_PERSONAL_DATA": "Delete personal data",
       "DEACTIVATE_MESSAGE": "Are you sure you want to deactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?",
       "REACTIVATE_MESSAGE": "Are you sure you want to reactivate user {{ param1 }} {{ param2 }} - {{ param3 }} ?",

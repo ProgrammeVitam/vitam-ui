@@ -51,6 +51,7 @@ import {
 
 import { UserApiService } from '../core/api/user-api.service';
 import { ProfileService } from '../profile/profile.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -147,5 +148,32 @@ export class UserService extends SearchService<User> {
 
   prepareSignedExport(): Observable<string> {
     return this.userApi.prepareSignedExport();
+  }
+
+  resetPassword(user: User): Observable<void> {
+    return this.userApi.resetPassword(user.id).pipe(
+      tap({
+        next: () => {
+          this.snackBarService.open({
+            message: 'SHARED.SNACKBAR.USER_RESET_PASSWORD',
+            translateParams: { param1: user.firstname, param2: user.lastname },
+            icon: 'vitamui-icon-key',
+          });
+        },
+        error: (response: HttpErrorResponse) => {
+          const { error } = response;
+          const errorKey: string = error.error;
+
+          if (errorKey === 'USER_NOT_ELIGIBLE_FOR_RESET_PASSWORD') {
+            this.snackBarService
+              .open({
+                message: 'ACCOUNT.ERROR.USER_NOT_ELIGIBLE_FOR_RESET_PASSWORD',
+                icon: 'vitamui-icon-danger',
+              })
+              .then();
+          }
+        },
+      }),
+    );
   }
 }

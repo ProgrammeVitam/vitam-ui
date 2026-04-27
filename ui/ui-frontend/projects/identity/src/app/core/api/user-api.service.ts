@@ -87,4 +87,7 @@ export class UserApiService extends PaginatedHttpClient<User> {
   prepareSignedExport(): Observable<string> {
     return this.http.get(`${this.apiUrl}/export/signed-url`, { responseType: 'text' }).pipe(map((signedUrl) => this.baseUrl + signedUrl));
   }
+  resetPassword(id: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${id}/password-reset`, {});
+  }
 }
