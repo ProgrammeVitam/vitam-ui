@@ -93,6 +93,13 @@ export class AccessContractNodeUpdateComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  isInvalid(): boolean {
+    return (
+      this.allRootUnitsControl.value === false &&
+      (!this.selectNodesForm.get('rootUnits').value || this.selectNodesForm.get('rootUnits').value.length === 0)
+    );
+  }
+
   updateAccessContractNodes() {
     const rootUnits: string[] = this.allRootUnitsControl.value ? [] : this.selectNodesForm.get('rootUnits').value;
     const excludedRootUnits: string[] = this.allRootUnitsControl.value ? [] : this.selectNodesForm.get('excludedRootUnits').value;
