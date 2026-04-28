@@ -27,7 +27,7 @@
     </vitamui-library-filing-plan>
 
     <div class="actions">
-      <button type="submit" class="btn primary">
+      <button type="submit" class="btn primary" [disabled]="isInvalid()">
         {{ 'COMMON.VALIDATE' | translate }}
       </button>
       <button type="button" class="btn cancel" (click)="onCancel()">
