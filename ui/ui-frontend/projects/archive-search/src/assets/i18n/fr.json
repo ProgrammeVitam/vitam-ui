@@ -62,8 +62,9 @@
       "ERRORS": {
         "WHITESPACE_ONLY": "Le champ ne peut contenir uniquement des espaces",
         "EMPTY_AFTER_TRIM": "Aucun identifiant valide trouvé après nettoyage",
-        "INVALID_FORMAT": "Les identifiants suivants ne respectent pas le format attendu (36 caractères alphanumériques en minuscules) : {{invalidIds}}",
-        "INVALID_IDS": "Les identifiants suivants n'existent pas en base : {{invalidIds}}"
+        "INVALID_FORMAT": "Le(s) identifiant(s) suivant(s) ne respectent pas le format attendu (36 caractères alphanumériques en minuscules) : {{invalidIds}}",
+        "DUPLICATE_IDS": "Le(s) identifiant(s) suivant(s) sont en doublon : {{duplicateIds}}",
+        "INVALID_IDS": "Le(s) identifiant(s) suivant(s) n'existent pas en base : {{invalidIds}}"
       },
       "ERROR_MULTIPLE_SP_MODAL": {
         "SUBHEAD": "L'action demandée n'est pas possible sur cette sélection",
