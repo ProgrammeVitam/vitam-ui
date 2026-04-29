@@ -63,6 +63,7 @@
         "WHITESPACE_ONLY": "The field cannot contain only whitespace",
         "EMPTY_AFTER_TRIM": "No valid identifier found after trimming",
         "INVALID_FORMAT": "The following identifiers do not match the expected format (36 lowercase alphanumeric characters): {{invalidIds}}",
+        "DUPLICATE_IDS": "The following identifiers are duplicates: {{duplicateIds}}",
         "INVALID_IDS": "The following identifiers do not exist in the database: {{invalidIds}}"
       },
       "ERROR_MULTIPLE_SP_MODAL": {

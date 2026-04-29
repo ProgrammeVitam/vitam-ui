@@ -81,6 +81,13 @@ export class EntryOperationValidatorService {
             return of({ emptyAfterTrim: true });
           }
 
+          // Check for duplicates
+          const uniqueIds = new Set(idsArray);
+          if (uniqueIds.size !== idsArray.length) {
+            const duplicateIds = idsArray.filter((id: string, index: number) => idsArray.indexOf(id) !== index);
+            return of({ duplicateIds: { duplicateIds: [...new Set(duplicateIds)].join(', ') } });
+          }
+
           // Validate format: 36 lowercase alphanumeric characters
           const operationIdPattern = /^[a-z0-9]{36}$/;
           const invalidFormatIds = idsArray.filter((id: string) => !operationIdPattern.test(id));
