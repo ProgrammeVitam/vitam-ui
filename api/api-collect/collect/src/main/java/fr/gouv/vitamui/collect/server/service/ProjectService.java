@@ -209,7 +209,16 @@ public class ProjectService {
                 projectDtos.add(objectMapper.treeToValue(result, ProjectDto.class));
             }
             List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiCollectProjectDtos(projectDtos);
-            return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
+
+            int p = Math.max(0, page != null ? page : 0);
+            int s = (size == null || size <= 0) ? 10 : size;
+            int total = collectProjectDtos.size();
+            int fromIndex = Math.min(p * s, total);
+            int toIndex = Math.min(fromIndex + s, total);
+            List<CollectProjectDto> pagedList = collectProjectDtos.subList(fromIndex, toIndex);
+            boolean hasMore = toIndex < total;
+
+            return new PaginatedValuesDto<>(pagedList, p, total, hasMore);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT, e);
             throw new InternalServerException(UNABLE_TO_RETRIEVE_PROJECT, e);
@@ -407,7 +416,15 @@ public class ProjectService {
             }
             List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
 
-            return new PaginatedValuesDto<>(collectTransactionDtos, 1, MAX_RESULTS, false);
+            int p = Math.max(0, page != null ? page : 0);
+            int s = (size == null || size <= 0) ? 10 : size;
+            int total = collectTransactionDtos.size();
+            int fromIndex = Math.min(p * s, total);
+            int toIndex = Math.min(fromIndex + s, total);
+            List<CollectTransactionDto> pagedList = collectTransactionDtos.subList(fromIndex, toIndex);
+            boolean hasMore = toIndex < total;
+
+            return new PaginatedValuesDto<>(pagedList, p, total, hasMore);
         } catch (VitamClientException | InvalidParseOperationException e) {
             throw new VitamClientException("Unable to find transaction : ", e);
         }
