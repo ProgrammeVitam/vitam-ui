@@ -82,7 +82,7 @@ interface ActionOption extends Option {
 const atLeastOneFilingPlan: ValidatorFn = (control) => {
   if (control.value?.included?.length > 0) return;
 
-  return { required: 'Requires at least one selection' };
+  return { required: true };
 };
 
 @Component({
