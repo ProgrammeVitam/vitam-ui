@@ -39,7 +39,21 @@ import { from, Observable } from 'rxjs';
 import { AuthenticatorService } from './authenticator.service';
 import { map, tap } from 'rxjs/operators';
 
-const OIDC_PARAMS = ['code', 'state', 'id_token', 'access_token', 'token_type', 'session_state', 'nonce', 'client_id'];
+const OIDC_PARAMS = [
+  'code',
+  'state',
+  'id_token',
+  'access_token',
+  'token_type',
+  'session_state',
+  'nonce',
+  'client_id',
+  'isSubrogation',
+  'superUserEmail',
+  'superUserCustomerId',
+  'surrogateEmail',
+  'surrogateCustomerId',
+];
 
 export class OidcAuthenticatorService implements AuthenticatorService {
   constructor(
@@ -49,13 +63,15 @@ export class OidcAuthenticatorService implements AuthenticatorService {
 
   public login(): Observable<boolean> {
     const url = new URL(this.location.href);
+    const isSubrogation = url.searchParams.get('isSubrogation');
+    const username = url.searchParams.get('username');
     const returnUrl = this.cleanOidcParams(this.location.pathname + this.location.search);
 
-    if (url.searchParams.get('isSubrogation')) {
+    if (isSubrogation) {
       return from(this.startSubrogationFlow(url, returnUrl));
     }
 
-    if (url.searchParams.get('username')) {
+    if (username) {
       return from(this.startLoginWithUsername(url, returnUrl));
     }
 
