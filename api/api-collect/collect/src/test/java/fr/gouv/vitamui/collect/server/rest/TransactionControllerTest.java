@@ -46,13 +46,13 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -66,21 +66,21 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = { TransactionController.class })
 class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionControllerTest.class);
 
-    @MockitoBean
+    @Mock
     private TransactionService transactionService;
 
-    @MockitoBean
+    @Mock
     private ExternalParametersService externalParametersService;
 
     private TransactionController transactionController;
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         transactionController = new TransactionController(transactionService, externalParametersService);
     }
 

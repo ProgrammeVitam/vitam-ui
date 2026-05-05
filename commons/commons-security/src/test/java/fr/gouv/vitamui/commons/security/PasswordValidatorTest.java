@@ -55,13 +55,13 @@ public class PasswordValidatorTest {
     }
 
     @Test
-    public void givenPasswordValidThenOK() {
+    void givenPasswordValidThenOK() {
         boolean valid = passwordValidator.isValid(POLICY_PATTERN, jsonNode.findValue("PASSWORD_VALID_1").textValue());
         Assertions.assertThat(valid).isTrue();
     }
 
     @Test
-    public void givenPassword1ValidButContainsOccurrenceOfUserLastNameThenTrue() {
+    void givenPassword1ValidButContainsOccurrenceOfUserLastNameThenTrue() {
         boolean valid = passwordValidator.isContainsUserOccurrences(
             jsonNode.findValue("USER_LASTNAME").textValue(),
             jsonNode.findValue("PASSWORD_VALID_2").textValue(),
@@ -71,7 +71,7 @@ public class PasswordValidatorTest {
     }
 
     @Test
-    public void givenPassword2ValidButContainsOccurrenceOfUserLastNameThenTrue() {
+    void givenPassword2ValidButContainsOccurrenceOfUserLastNameThenTrue() {
         boolean valid = passwordValidator.isContainsUserOccurrences(
             jsonNode.findValue("USER_LASTNAME").textValue(),
             jsonNode.findValue("PASSWORD_VALID_3").textValue(),
@@ -81,7 +81,7 @@ public class PasswordValidatorTest {
     }
 
     @Test
-    public void givenPassword3ValidButContainsOccurrenceOfUserLastNameThenFalse() {
+    void givenPassword3ValidButContainsOccurrenceOfUserLastNameThenFalse() {
         boolean valid = passwordValidator.isContainsUserOccurrences(
             jsonNode.findValue("USER_LASTNAME").textValue(),
             jsonNode.findValue("PASSWORD_VALID_1").textValue(),
@@ -91,7 +91,7 @@ public class PasswordValidatorTest {
     }
 
     @Test
-    public void givenPasswordConfirmationOKThenTrue() {
+    void givenPasswordConfirmationOKThenTrue() {
         boolean valid = passwordValidator.isEqualConfirmed(
             jsonNode.findValue("PASSWORD_VALID_1").textValue(),
             jsonNode.findValue("PASSWORD_VALID_1").textValue()
@@ -100,7 +100,7 @@ public class PasswordValidatorTest {
     }
 
     @Test
-    public void givenPasswordConfirmationKOThenFalse() {
+    void givenPasswordConfirmationKOThenFalse() {
         boolean valid = passwordValidator.isEqualConfirmed(
             jsonNode.findValue("PASSWORD_VALID_1").textValue(),
             jsonNode.findValue("PASSWORD_VALID_2").textValue()

@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExternalParamProfileConverterTest {
+class ExternalParamProfileConverterTest {
 
     private final ExternalParamProfileConverter externalParamProfileConverter = new ExternalParamProfileConverter();
 
     @Test
-    public void testConvertEntityToDto() throws Exception {
+    void testConvertEntityToDto() throws Exception {
         ExternalParamProfileDto externalParamProfileDto = new ExternalParamProfileDto();
         externalParamProfileDto.setDescription("Description");
         externalParamProfileDto.setEnabled(true);

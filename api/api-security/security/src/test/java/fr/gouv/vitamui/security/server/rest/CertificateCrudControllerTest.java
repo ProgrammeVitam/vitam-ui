@@ -51,7 +51,7 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
     }
 
     @Test
-    public void testCreationFailsAsTheContextMissesRoles() {
+    void testCreationFailsAsTheContextMissesRoles() {
         try {
             prepareServices();
             when(contextService.getMany(CONTEXT_ID)).thenReturn(null);
@@ -64,7 +64,7 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
     }
 
     @Test
-    public void testUpdateFailsAsTheContextDoesNotExist() {
+    void testUpdateFailsAsTheContextDoesNotExist() {
         try {
             final CertificateDto dto = buildDto();
             dto.setId(ID);

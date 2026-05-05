@@ -17,7 +17,7 @@ public class RestApplicationTest {
     RestTestApplicationConfiguration applicationConfiguration;
 
     @Test
-    public void testContextLoads() {
+    void testContextLoads() {
         assertThat(applicationConfiguration).isNotNull();
     }
 }

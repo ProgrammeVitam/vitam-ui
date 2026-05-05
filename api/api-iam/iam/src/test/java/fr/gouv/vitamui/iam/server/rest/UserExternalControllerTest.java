@@ -15,7 +15,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -28,7 +28,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = { UserController.class })
-public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
+class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserExternalControllerTest.class);
 
@@ -41,7 +41,7 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
     private final UserController userController = MvcUriComponentsBuilder.on(UserController.class);
 
     @Test
-    public void updateUserStatus_thenOk() throws Exception {
+    void updateUserStatus_thenOk() throws Exception {
         LOGGER.debug("testUpdateUserStatus");
         final String id = "iduser";
         final String status = UserStatusEnum.DISABLED.toString();
@@ -55,13 +55,13 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
     }
 
     @Test
-    public void findHistoryById_thenOk() throws Exception {
+    void findHistoryById_thenOk() throws Exception {
         ResultActions result = super.performGet("/2626/history");
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.findHistoryById(null)));
     }
 
     @Test
-    public void getLevels_thenOk() throws Exception {
+    void getLevels_thenOk() throws Exception {
         LOGGER.debug("testGetLevels");
         ResultActions result = super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(), status().isOk());
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.getLevels(Optional.empty())));
@@ -69,7 +69,7 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
     }
 
     @Test
-    public void patchAnalytics_thenOk() throws Exception {
+    void patchAnalytics_thenOk() throws Exception {
         Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
         ResultActions result =
             this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isOk());

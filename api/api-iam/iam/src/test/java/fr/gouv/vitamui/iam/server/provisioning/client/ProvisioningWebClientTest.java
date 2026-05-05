@@ -61,7 +61,7 @@ import static org.mockito.Mockito.when;
 class ProvisioningWebClientTest {
 
     @InjectMocks
-    private ProvisioningWebClient provisioningWebClient;
+    private ProvisioningWebClientVitamui provisioningWebClient;
 
     @Mock
     private WebClient webClientMock;

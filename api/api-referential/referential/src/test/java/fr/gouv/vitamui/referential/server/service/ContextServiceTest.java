@@ -61,7 +61,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.io.IOException;
 import java.util.List;
@@ -71,8 +73,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-public class ContextServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class ContextServiceTest {
 
     @Mock
     private VitamContextCommonService vitamContextCommonService;
@@ -101,7 +104,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -113,7 +116,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -125,7 +128,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException()
+    void getOne_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -140,7 +143,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(vitamContextCommonService.findContexts(any(VitamContext.class), any(JsonNode.class))).thenReturn(
@@ -151,7 +154,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(vitamContextCommonService.findContexts(any(VitamContext.class), any(JsonNode.class))).thenReturn(
@@ -162,7 +165,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException()
+    void getAll_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
@@ -174,7 +177,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void findAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
@@ -186,7 +189,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void findAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void findAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
@@ -198,7 +201,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void findAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
@@ -211,7 +214,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok() {
+    void check_should_return_ok_when_vitamclient_ok() {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
@@ -223,7 +226,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_400() {
+    void check_should_return_ok_when_vitamclient_400() {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
@@ -237,7 +240,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
+    void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
@@ -249,7 +252,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok()
+    void create_should_return_ok_when_vitamclient_ok()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
@@ -262,7 +265,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
@@ -277,7 +280,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
@@ -292,7 +295,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
@@ -307,7 +310,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_ok()
+    void patch_should_return_ok_when_vitamclient_ok()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
@@ -321,7 +324,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_400()
+    void patch_should_return_ok_when_vitamclient_400()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
@@ -335,7 +338,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
@@ -351,7 +354,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
@@ -367,7 +370,7 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "id_0";

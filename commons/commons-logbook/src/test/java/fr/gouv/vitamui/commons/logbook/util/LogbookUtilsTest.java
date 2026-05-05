@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LogbookUtilsTest {
 
     @Test
-    public void testRetrieveJsonData() throws InvalidParseOperationException {
+    void testRetrieveJsonData() throws InvalidParseOperationException {
         EventDiffDto evData = new EventDiffDto("Identifiant du contrat d'accès pour l'arbre", "AC-00001", "AC-00002");
         String evDetDataString = LogbookUtils.getEvData(Arrays.asList(evData)).toString();
         JsonNode evDetData = JsonHandler.getFromString(evDetDataString);
@@ -30,7 +30,7 @@ public class LogbookUtilsTest {
     }
 
     @Test
-    public void testGetLogbookOperationStatus_whenParentOperationCompleted() throws JsonProcessingException {
+    void testGetLogbookOperationStatus_whenParentOperationCompleted() throws JsonProcessingException {
         // Given
         final LogbookOperation operation = new LogbookOperation();
         operation.setEvId("1");
@@ -47,7 +47,7 @@ public class LogbookUtilsTest {
     }
 
     @Test
-    public void testGetLogbookOperationStatus_whenChildOperationCompleted() throws JsonProcessingException {
+    void testGetLogbookOperationStatus_whenChildOperationCompleted() throws JsonProcessingException {
         // Given
         final LogbookOperation operation = new LogbookOperation();
         operation.setEvId("0");
@@ -74,7 +74,7 @@ public class LogbookUtilsTest {
     }
 
     @Test
-    public void testGetLogbookOperationStatus_whenChildOperationNotParentType() throws JsonProcessingException {
+    void testGetLogbookOperationStatus_whenChildOperationNotParentType() throws JsonProcessingException {
         // Given
         final LogbookOperation operation = new LogbookOperation();
         operation.setEvId("0");

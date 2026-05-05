@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class RandomObjectFillerTest {
 
     @Test
-    public void testRandomObjectFiller() {
+    void testRandomObjectFiller() {
         try {
             SingleValueDto classTest = RandomObjectFiller.createAndFill(SingleValueDto.class);
             //Assert.assertTrue();

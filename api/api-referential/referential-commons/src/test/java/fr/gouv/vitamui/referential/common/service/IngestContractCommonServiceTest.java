@@ -53,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IngestContractCommonServiceTest {
+class IngestContractCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -62,7 +62,7 @@ public class IngestContractCommonServiceTest {
     private IngestContractCommonService ingestContractCommonService;
 
     @Test
-    public void findIngestContract_should_return_ingestContracts_when_vitamclient_ok() throws VitamClientException {
+    void findIngestContract_should_return_ingestContracts_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String contractId = "IC-0";
 
@@ -76,7 +76,7 @@ public class IngestContractCommonServiceTest {
     }
 
     @Test
-    public void findIngestContract_should_throw_VitamClienException_when_vitamclient_returns_400()
+    void findIngestContract_should_throw_VitamClienException_when_vitamclient_returns_400()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String contractId = "IC-1";
@@ -91,7 +91,7 @@ public class IngestContractCommonServiceTest {
     }
 
     @Test
-    public void findIngestContract_should_throw_VitamClienException_when_vitamclient_throws_VitamClientException()
+    void findIngestContract_should_throw_VitamClienException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String contractId = "IC-2";

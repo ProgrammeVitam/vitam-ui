@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link UserRepository}
- *
  */
 
 @SpringBootTest
@@ -41,7 +40,7 @@ public class CustomerRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testSaveProfile() {
+    void testSaveProfile() {
         final Customer c = repository.save(
             IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("julien@vitamui.com"))
         );
@@ -49,7 +48,7 @@ public class CustomerRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testCheckExistByEmailDomains() {
+    void testCheckExistByEmailDomains() {
         final String emailJulien = "julien@vitamui.com";
         final String emailMoctar = "moctar@vitamui.com";
         String emailToTest;
@@ -77,7 +76,7 @@ public class CustomerRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindByCodeIgnoreCaseOrNameIgnoreCase() {
+    void testFindByCodeIgnoreCaseOrNameIgnoreCase() {
         final Customer julien = IamServerUtilsTest.buildCustomer(
             "id1",
             "julien",

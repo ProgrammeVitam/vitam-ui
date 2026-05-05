@@ -59,12 +59,12 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
-public class JsonFromPuaTest {
+class JsonFromPuaTest {
 
     JsonFromPUA jsonFromPUA = new JsonFromPUA();
 
     @Test
-    public void testImportOK() throws IOException {
+    void testImportOK() throws IOException {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream("pua/pua_OK.json");
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
@@ -79,7 +79,7 @@ public class JsonFromPuaTest {
     }
 
     @Test
-    public void testImportOK_with_management() throws IOException {
+    void testImportOK_with_management() throws IOException {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream("pua/pua_OK_with_management.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
@@ -97,7 +97,7 @@ public class JsonFromPuaTest {
     }
 
     @Test
-    public void testImportNOK_missing_definitions() throws IOException {
+    void testImportNOK_missing_definitions() throws IOException {
         InputStream inputStreamPua = getClass()
             .getClassLoader()
             .getResourceAsStream("pua/pua_NOK_missing_definitions.json");
@@ -111,7 +111,7 @@ public class JsonFromPuaTest {
     }
 
     @Test
-    public void testImportNOK_missing_management() throws IOException {
+    void testImportNOK_missing_management() throws IOException {
         InputStream inputStreamPua = getClass()
             .getClassLoader()
             .getResourceAsStream("pua/pua_NOK_missing_management.json");
@@ -125,7 +125,7 @@ public class JsonFromPuaTest {
     }
 
     @Test
-    public void testImportNOK_missing_properties() throws IOException {
+    void testImportNOK_missing_properties() throws IOException {
         InputStream inputStreamPua = getClass()
             .getClassLoader()
             .getResourceAsStream("pua/pua_NOK_missing_properties.json");
@@ -139,7 +139,7 @@ public class JsonFromPuaTest {
     }
 
     @Test
-    public void testImportNOK_both_management_present() throws IOException {
+    void testImportNOK_both_management_present() throws IOException {
         InputStream inputStreamPua = getClass()
             .getClassLoader()
             .getResourceAsStream("pua/pua_NOK_both_management_present.json");

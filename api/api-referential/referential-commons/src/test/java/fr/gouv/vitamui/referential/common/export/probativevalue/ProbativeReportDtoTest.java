@@ -50,10 +50,10 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ProbativeReportDtoTest {
+class ProbativeReportDtoTest {
 
     @Test
-    public void testProbativeReportDtoFromJsonWARNING() throws JsonParseException, JsonMappingException, IOException {
+    void testProbativeReportDtoFromJsonWARNING() throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream =
@@ -67,7 +67,7 @@ public class ProbativeReportDtoTest {
     }
 
     @Test
-    public void testProbativeReportDtoFromJsonKO() throws JsonParseException, JsonMappingException, IOException {
+    void testProbativeReportDtoFromJsonKO() throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream =

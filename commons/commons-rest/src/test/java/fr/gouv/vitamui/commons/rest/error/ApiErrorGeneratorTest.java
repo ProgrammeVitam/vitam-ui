@@ -11,7 +11,7 @@ import java.io.IOException;
 public class ApiErrorGeneratorTest {
 
     @Test
-    public void testKeyException() {
+    void testKeyException() {
         final String buildKey = ApiErrorGenerator.buildKey(InternalServerException.class);
         Assertions.assertEquals(
             buildKey,
@@ -21,7 +21,7 @@ public class ApiErrorGeneratorTest {
     }
 
     @Test
-    public void testUnknownKeyException() {
+    void testUnknownKeyException() {
         Assertions.assertNull(ApiErrorGenerator.buildKey(IOException.class), "Key for Exception is incorrect.");
     }
 }

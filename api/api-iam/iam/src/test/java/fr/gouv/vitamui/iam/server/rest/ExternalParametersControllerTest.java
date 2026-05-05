@@ -66,10 +66,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ExternalParametersController}.
- *
- *
  */
-public class ExternalParametersControllerTest {
+class ExternalParametersControllerTest {
 
     private AutoCloseable mocks;
 
@@ -113,7 +111,7 @@ public class ExternalParametersControllerTest {
     }
 
     @Test
-    public void testGetMyExternalParameters() {
+    void testGetMyExternalParameters() {
         ProfileDto profile = new ProfileDto();
         profile.setApplicationName(Application.EXTERNAL_PARAMS.toString());
         profile.setExternalParamId(PARAMETER_ID);

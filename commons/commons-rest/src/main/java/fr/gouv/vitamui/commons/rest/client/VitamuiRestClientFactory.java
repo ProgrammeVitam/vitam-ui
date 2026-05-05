@@ -36,27 +36,14 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 /**
  * The base interface for all Rest Client Factories
- *
- *
  */
 
-public interface RestClientFactory {
-    /**
-     * @return the RestTemplate
-     * <p>
-     * <strong>RestTemplate is Spring's central class for synchronous client-side HTTP access.</strong>
-     * It simplifies communication with HTTP servers, and enforces RESTful principles.
-     * It handles HTTP connections, leaving application code to provide URLs
-     * (with possible template variables) and extract results.</p>
-     * <p>
-     * <strong>Note:</strong> In VITAMUI the RestTemplate relies on the Apache Http Client
-     * library to establish HTTP connections</p>
-     */
-    RestTemplate getRestTemplate();
+public interface VitamuiRestClientFactory {
+    RestClient getRestClient();
 
     /**
      * @return the base url (ie. http[s]://server:port)

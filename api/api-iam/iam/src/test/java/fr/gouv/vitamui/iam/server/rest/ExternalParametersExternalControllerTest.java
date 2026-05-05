@@ -47,14 +47,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @WebMvcTest(controllers = { ExternalParametersController.class })
-public class ExternalParametersExternalControllerTest extends ApiIamControllerTest<ExternalParametersDto> {
+class ExternalParametersExternalControllerTest extends ApiIamControllerTest<ExternalParametersDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParametersExternalControllerTest.class);
 
@@ -66,7 +66,7 @@ public class ExternalParametersExternalControllerTest extends ApiIamControllerTe
     );
 
     @Test
-    public void getMyExternalParameters_thenOk() throws Exception {
+    void getMyExternalParameters_thenOk() throws Exception {
         LOGGER.debug("getMyExternalParameters_thenOk");
         Mockito.when(externalParametersService.getMyExternalParameters()).thenReturn(new ExternalParametersDto());
 

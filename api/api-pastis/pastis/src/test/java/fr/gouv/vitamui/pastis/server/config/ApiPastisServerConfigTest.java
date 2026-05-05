@@ -57,7 +57,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("dev")
-public class ApiPastisServerConfigTest extends AbstractContextConfiguration {
+class ApiPastisServerConfigTest extends AbstractContextConfiguration {
 
     @MockitoBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
@@ -90,7 +90,7 @@ public class ApiPastisServerConfigTest extends AbstractContextConfiguration {
     private PuaPastisValidator puaPastisValidator;
 
     @Test
-    public void testPuaDefinition() {
+    void testPuaDefinition() {
         assertThat(pastisService).isNotNull();
     }
 }

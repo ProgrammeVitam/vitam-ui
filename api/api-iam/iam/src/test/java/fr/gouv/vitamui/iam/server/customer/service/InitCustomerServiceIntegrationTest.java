@@ -13,6 +13,7 @@ import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
@@ -26,6 +27,7 @@ import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.server.group.domain.Group;
+import fr.gouv.vitamui.iam.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
@@ -33,6 +35,7 @@ import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.tenant.service.InitVitamTenantService;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
@@ -42,18 +45,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,22 +65,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles("test")
 @Import(VitamClientTestConfig.class)
-@Testcontainers
-public class InitCustomerServiceIntegrationTest {
+public class InitCustomerServiceIntegrationTest extends AbstractMongoTests {
 
-    @Configuration
+    @TestConfiguration
     @ComponentScan({ "fr.gouv.vitamui.commons.logbook.dao", "fr.gouv.vitamui.commons.mongo.dao" })
     private static class CommonRepositoriesConfig {}
-
-    @Container
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(
-        "mongodb/mongodb-community-server:8.0.23-ubuntu2204-slim"
-    );
-
-    @DynamicPropertySource
-    static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-    }
 
     private static final String PROFILE_NAME_1 = "profile1";
     private static final String PROFILE_NAME_2 = "profile2";
@@ -127,6 +114,9 @@ public class InitCustomerServiceIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private OwnerRepository ownerRepository;
+
     @MockitoBean
     private SecurityService securityService;
 
@@ -148,6 +138,15 @@ public class InitCustomerServiceIntegrationTest {
         Mockito.when(securityService.getHttpContext()).thenReturn(httpContext);
         Mockito.when(securityService.userIsRootLevel()).thenReturn(true);
         Mockito.when(securityService.isLevelAllowed(ArgumentMatchers.any())).thenReturn(true);
+
+        customerRepository.deleteAll();
+        profileRepository.deleteAll();
+        groupRepository.deleteAll();
+        userRepository.deleteAll();
+        eventRepository.deleteAll();
+        sequenceRepository.deleteAll();
+        ownerRepository.deleteAll();
+
         initSeq();
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
@@ -159,12 +158,21 @@ public class InitCustomerServiceIntegrationTest {
                 ArgumentMatchers.any(ExternalParametersDto.class)
             )
         ).thenAnswer(AdditionalAnswers.returnsFirstArg());
+    }
 
+    @AfterEach
+    public void cleanUp() {
         customerRepository.deleteAll();
+        profileRepository.deleteAll();
+        groupRepository.deleteAll();
+        userRepository.deleteAll();
+        eventRepository.deleteAll();
+        sequenceRepository.deleteAll();
+        ownerRepository.deleteAll();
     }
 
     @Test
-    public void testCreateCustomer() {
+    void testCreateCustomer() {
         Integer someTenantId = 2;
         final CustomerCreationFormData customerDta = new CustomerCreationFormData(buildCustomerDto());
         VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();

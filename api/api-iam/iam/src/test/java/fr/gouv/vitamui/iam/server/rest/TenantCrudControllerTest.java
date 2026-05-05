@@ -241,7 +241,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsCustomerDoesNotExist() throws Exception {
+    void testCreationFailsAsCustomerDoesNotExist() throws Exception {
         final TenantDto dto = buildTenantDto();
         dto.setId(null);
         dto.setCustomerId("Bad customerId");
@@ -257,7 +257,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsOwnerDoesNotExist() throws Exception {
+    void testCreationFailsAsOwnerDoesNotExist() throws Exception {
         final TenantDto dto = buildTenantDto();
         dto.setId(null);
 
@@ -298,8 +298,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsIdentifierIsDifferent()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testUpdateFailsAsIdentifierIsDifferent() throws InvalidParseOperationException, PreconditionFailedException {
         final TenantDto dto = buildTenantDto();
         dto.setIdentifier(8435455);
 
@@ -327,7 +326,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCannotDelete() {
+    void testCannotDelete() {
         assertThrows(UnsupportedOperationException.class, () -> {
             prepareServices();
             controller.delete(TENANT_ID);
@@ -335,7 +334,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
+    void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
         final TenantDto dto = buildTenantDto();
         dto.setCustomerId("Bad customerId");
 

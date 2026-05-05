@@ -55,7 +55,7 @@ import java.nio.charset.StandardCharsets;
 
 public class PastisMarshaller {
 
-    public static final String CHAR_ESCAPE_HANDLER = "org.glassfish.jaxb.marshaller.CharacterEscapeHandler";
+    public static final String CHAR_ESCAPE_HANDLER = "org.glassfish.jaxb.characterEscapeHandler";
     public static final String MARSHALLER_FORMAT = Marshaller.JAXB_FORMATTED_OUTPUT;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisMarshaller.class);

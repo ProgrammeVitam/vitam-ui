@@ -52,7 +52,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application.yml")
 @Import(VitamClientTestConfig.class)
-public class ApiReferentialApplicationTest {
+class ApiReferentialApplicationTest {
+    static {
+        System.setProperty("vitam.config.folder", "src/test/resources");
+    }
 
     @Autowired
     private Environment env;
@@ -61,7 +64,7 @@ public class ApiReferentialApplicationTest {
     private ApiReferentialApplicationProperties referentialProperties;
 
     @Test
-    public void testContextLoads() {
+    void testContextLoads() {
         assertThat(env).isNotNull();
         assertThat(env.getProperty("spring.config.name")).isEqualTo("referential-application");
 

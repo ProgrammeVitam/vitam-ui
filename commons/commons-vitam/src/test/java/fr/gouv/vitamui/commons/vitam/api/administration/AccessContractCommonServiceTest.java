@@ -17,7 +17,7 @@ public class AccessContractCommonServiceTest {
     AccessContractCommonService accessContractCommonService = new AccessContractCommonService(null);
 
     @Test
-    public void serializeAccessContracts() throws Exception {
+    void serializeAccessContracts() throws Exception {
         ByteArrayInputStream byteArrayInputStream = accessContractCommonService.serializeAccessContracts(
             List.of(accessContractModelDto_01(), accessContractModelDto_02())
         );

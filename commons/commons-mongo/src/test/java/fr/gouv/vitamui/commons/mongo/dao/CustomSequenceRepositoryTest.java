@@ -29,17 +29,17 @@ public class CustomSequenceRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testSetup() {
+    void testSetup() {
         assertThat(repository).isNotNull();
     }
 
     @Test
-    public void testCreateSequence() {
+    void testCreateSequence() {
         createSequence();
     }
 
     @Test
-    public void testIncrementSequence() {
+    void testIncrementSequence() {
         createSequence();
         Optional<CustomSequence> sequence = repository.incrementSequence(
             TEST_IDENTIFIER,

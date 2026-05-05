@@ -8,11 +8,7 @@ spring:
     name: API Archive Search
     description: This API is used to manage Vitam's archives
     version: v1
-  # This property is deprecated and will be removed in future Spring Boot versions
-      # enabled: false
-  jackson:
-    serialization:
-      write-dates-as-timestamps: false
+
   jmx:
     unique-names: true
 

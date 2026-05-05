@@ -31,7 +31,7 @@ public class EventRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void createEvent() {
+    void createEvent() {
         Event log = new Event();
         log.setEvTypeProc(EventTypeProc.EXTERNAL_LOGBOOK);
         log.setTenantIdentifier(10);

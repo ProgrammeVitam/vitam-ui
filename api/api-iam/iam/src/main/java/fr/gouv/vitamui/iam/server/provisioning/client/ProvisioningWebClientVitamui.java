@@ -36,8 +36,8 @@
  */
 package fr.gouv.vitamui.iam.server.provisioning.client;
 
-import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClient;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
+import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClientVitamui;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClientVitamui;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import org.apache.commons.lang3.StringUtils;
@@ -48,14 +48,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * External WebClient for Customer operations.
- *
- *
  */
-public class ProvisioningWebClient extends BaseWebClient<HttpContext> {
+public class ProvisioningWebClientVitamui extends BaseWebClientVitamui<HttpContext> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProvisioningWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProvisioningWebClientVitamui.class);
 
-    public ProvisioningWebClient(final WebClient webClient, final String baseUrl) {
+    public ProvisioningWebClientVitamui(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
@@ -90,7 +88,7 @@ public class ProvisioningWebClient extends BaseWebClient<HttpContext> {
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(ProvidedUserDto.class)
             .block();
     }

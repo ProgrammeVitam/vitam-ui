@@ -20,7 +20,7 @@ public class EventMessagesTests {
     private EventMessages msg;
 
     @Test
-    public void testLogbookMessages() {
+    void testLogbookMessages() {
         assertThat(msg).isNotNull();
         assertThat(msg.getOutMessg()).isNotNull();
 

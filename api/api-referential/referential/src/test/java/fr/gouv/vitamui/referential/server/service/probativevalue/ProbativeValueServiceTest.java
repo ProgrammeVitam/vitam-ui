@@ -72,7 +72,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class ProbativeValueServiceTest {
+class ProbativeValueServiceTest {
 
     private AutoCloseable mocks;
 
@@ -95,7 +95,7 @@ public class ProbativeValueServiceTest {
     }
 
     @Test
-    public void shoudl_generate_report_on_probativereport()
+    void shoudl_generate_report_on_probativereport()
         throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
         File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
@@ -129,7 +129,7 @@ public class ProbativeValueServiceTest {
     }
 
     @Test
-    public void shoudl_generate_report_on_probativereport_multiple_entries()
+    void shoudl_generate_report_on_probativereport_multiple_entries()
         throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
         File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
@@ -172,7 +172,7 @@ public class ProbativeValueServiceTest {
     }
 
     @Test
-    public void shoudl_generate_report_on_probativereport_ko()
+    void shoudl_generate_report_on_probativereport_ko()
         throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
         File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(

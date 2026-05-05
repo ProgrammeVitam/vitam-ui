@@ -52,6 +52,8 @@ public class ExternalParamProfileCustomRepositoryTest extends AbstractMongoTests
 
     @BeforeEach
     public void init() {
+        profileRepository.deleteAll();
+        externalParametersRepository.deleteAll();
         externalParamProfileRepository = new ExternalParamProfileRepository(mongoOperations);
         Profile profile = IamServerUtilsTest.buildProfile(
             "id",
@@ -71,7 +73,7 @@ public class ExternalParamProfileCustomRepositoryTest extends AbstractMongoTests
     }
 
     @Test
-    public void testFindExternalParamProfile() {
+    void testFindExternalParamProfile() {
         final ExternalParamProfileDto externalParamProfileDto = externalParamProfileRepository.findByIdProfile("id");
         assertThat(externalParamProfileDto.getId()).isEqualTo("id");
         assertThat(externalParamProfileDto.getIdExternalParam()).isEqualTo("externalparamidentifier");
@@ -79,7 +81,7 @@ public class ExternalParamProfileCustomRepositoryTest extends AbstractMongoTests
     }
 
     @Test
-    public void testGetAllPaginated() {
+    void testGetAllPaginated() {
         PaginatedValuesDto<ExternalParamProfileDto> allPaginated = externalParamProfileRepository.getAllPaginated(
             0,
             20,

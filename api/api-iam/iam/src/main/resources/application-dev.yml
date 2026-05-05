@@ -1,6 +1,10 @@
 debug: false
 
 spring:
+  web:
+    error:
+      path: /error
+
   config:
     use-legacy-processing: true
   servlet:
@@ -14,9 +18,8 @@ spring:
       discovery:
         enabled: false
         register: false
-  data:
-    mongodb:
-      uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
+  mongodb:
+    uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
 
 server:
   host:
@@ -31,8 +34,7 @@ server:
     enabled-protocols: TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
     client-certificate-header-name: x-ssl-cert
-  error:
-    path: /error
+
   tomcat:
     connection-timeout: 60000
     accesslog:

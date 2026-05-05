@@ -40,7 +40,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    public void testBuildPaginatedNestedValues() throws JsonParseException, JsonMappingException, IOException {
+    void testBuildPaginatedNestedValues() throws JsonParseException, JsonMappingException, IOException {
         initializeData();
         final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
             Address.class,
@@ -76,7 +76,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    public void testBuildPaginatedNestedValuesWithOrder() throws JsonParseException, JsonMappingException, IOException {
+    void testBuildPaginatedNestedValuesWithOrder() throws JsonParseException, JsonMappingException, IOException {
         initializeData();
         final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
             Address.class,
@@ -101,7 +101,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    public void testBuildPaginatedNestedValuesWithoutOrderAndDirection() throws IOException {
+    void testBuildPaginatedNestedValuesWithoutOrderAndDirection() throws IOException {
         initializeData();
         final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
             Address.class,
@@ -121,7 +121,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    public void testBuildPaginatedNestedValuesWithOrderByEmptyAndWithDirection() {
+    void testBuildPaginatedNestedValuesWithOrderByEmptyAndWithDirection() {
         initializeData();
         Assertions.assertThrows(
             IllegalArgumentException.class,
@@ -140,7 +140,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    public void getPaginatedValues_WhenSortIsNull_ThenReturnListPaginated() {
+    void getPaginatedValues_WhenSortIsNull_ThenReturnListPaginated() {
         initializeData();
 
         PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
@@ -154,13 +154,13 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    public void generateSuperId_thenReturnSuperIdFormatted() {
+    void generateSuperId_thenReturnSuperIdFormatted() {
         String superId = repository.generateSuperId();
         Assertions.assertFalse(superId.contains("-"), "superId must be formatted");
     }
 
     @Test
-    public void findAll_thenReturnAll() {
+    void findAll_thenReturnAll() {
         initializeData();
         Collection<CriteriaDefinition> c = List.of(Criteria.where("age").is(20));
         Collection<Person> persons = repository.findAll(c, Optional.of("firstName"), Optional.empty(), true);

@@ -14,10 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests the {@link IdentityProviderController}.
- *
- *
  */
-public final class IdentityProviderCrudControllerTest {
+final class IdentityProviderCrudControllerTest {
 
     private AutoCloseable mocks;
 
@@ -35,7 +33,7 @@ public final class IdentityProviderCrudControllerTest {
     private void prepareServices() {}
 
     @Test
-    public void testCannotUpdate() {
+    void testCannotUpdate() {
         assertThrows(UnsupportedOperationException.class, () -> {
             final IdentityProviderDto dto = buildIdentityProviderDto();
             controller.update("id", dto);
@@ -43,7 +41,7 @@ public final class IdentityProviderCrudControllerTest {
     }
 
     @Test
-    public void testCannotDelete() {
+    void testCannotDelete() {
         assertThrows(UnsupportedOperationException.class, () -> {
             prepareServices();
             controller.delete("Id");

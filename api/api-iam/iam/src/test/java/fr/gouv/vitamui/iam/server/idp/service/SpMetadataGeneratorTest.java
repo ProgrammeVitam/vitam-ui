@@ -13,10 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link Pac4jClientBuilder} and {@link SpMetadataGenerator}.
- *
- *
  */
-public final class SpMetadataGeneratorTest {
+final class SpMetadataGeneratorTest {
 
     private static final String CAS_URL = "http://cas/login";
 
@@ -29,12 +27,12 @@ public final class SpMetadataGeneratorTest {
     }
 
     @Test
-    public void testSimpleProvider() {
+    void testSimpleProvider() {
         assertFalse(builder.buildClient(new IdentityProviderDto()).isPresent());
     }
 
     @Test
-    public void testRealProvider() throws Exception {
+    void testRealProvider() throws Exception {
         final IdentityProviderDto provider = new IdentityProviderBuilder(
             "google",
             "idp0",

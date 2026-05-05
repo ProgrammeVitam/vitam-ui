@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CustomerConverterTest {
+class CustomerConverterTest {
 
     @Mock
     private OwnerConverter ownerConverter;
@@ -30,7 +30,7 @@ public class CustomerConverterTest {
     }
 
     @Test
-    public void convertToLogbookTest() {
+    void convertToLogbookTest() {
         CustomerDto customer = new CustomerDto();
         customer.setEmailDomains(new ArrayList<>());
         String json = customerConverter.convertToLogbook(customer);

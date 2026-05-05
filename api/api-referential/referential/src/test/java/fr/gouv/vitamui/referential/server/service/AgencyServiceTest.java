@@ -67,8 +67,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -80,8 +82,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-public class AgencyServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class AgencyServiceTest {
 
     @Mock
     private AgencyCommonService agencyCommonService;
@@ -115,7 +118,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -127,7 +130,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_400() throws VitamClientException {
+    void getOne_should_throw_InternalServerException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -139,7 +142,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception()
+    void getOne_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -154,7 +157,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(agencyCommonService.findAgencies(vitamContext, new Select().getFinalSelect())).thenReturn(
@@ -165,7 +168,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_400() throws VitamClientException {
+    void getAll_should_throw_InternalServerException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(agencyCommonService.findAgencies(vitamContext, new Select().getFinalSelect())).thenReturn(
@@ -176,7 +179,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception()
+    void getAll_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
@@ -188,7 +191,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok() {
+    void check_should_return_ok_when_vitamclient_ok() {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
         AgencyDto agencyDto = new AgencyDto();
@@ -202,7 +205,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
+    void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
         AgencyDto agencyDto = new AgencyDto();
@@ -216,7 +219,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok()
+    void create_should_return_ok_when_vitamclient_ok()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
@@ -231,7 +234,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_400()
+    void create_should_throw_InternalServerException_when_vitamclient_400()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
@@ -246,7 +249,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
@@ -261,7 +264,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
@@ -276,7 +279,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
@@ -291,7 +294,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
@@ -306,7 +309,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void delete_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
         String identifier = "identifier";
@@ -321,7 +324,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void delete_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("ASId_1");
         String identifier = "identifier";
@@ -336,7 +339,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         String identifier = "identifier";
 
@@ -348,7 +351,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         String identifier = "identifier";
 
@@ -360,7 +363,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         String identifier = "identifier";
 
@@ -372,7 +375,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         String identifier = "identifier";
 
@@ -384,7 +387,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void export_should_return_ok_when_vitamclient_ok()
+    void export_should_return_ok_when_vitamclient_ok()
         throws VitamClientException, InvalidCreateOperationException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
 
@@ -394,7 +397,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void export_should_return_ok_when_vitamclient_400()
+    void export_should_return_ok_when_vitamclient_400()
         throws VitamClientException, InvalidCreateOperationException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
 
@@ -404,7 +407,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void export_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void export_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException, InvalidCreateOperationException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
 
@@ -416,7 +419,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void export_should_throw_InternalServerException_when_vitamclient_throws_InvalidCreateOperationException()
+    void export_should_throw_InternalServerException_when_vitamclient_throws_InvalidCreateOperationException()
         throws VitamClientException, InvalidCreateOperationException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
 
@@ -428,7 +431,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void export_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void export_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws VitamClientException, InvalidCreateOperationException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
 
@@ -440,7 +443,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
@@ -452,7 +455,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
@@ -464,7 +467,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -479,7 +482,7 @@ public class AgencyServiceTest {
     }
 
     @Test
-    public void import_should_return_ok()
+    void import_should_return_ok()
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         File file = new File("src/test/resources/data/import_agencies_valid.csv");

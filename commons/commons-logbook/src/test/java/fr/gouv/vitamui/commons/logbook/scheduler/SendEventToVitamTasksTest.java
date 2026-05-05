@@ -57,12 +57,12 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void run_then_ok() {
+    void run_then_ok() {
         sendEventToVitamTasks.run();
     }
 
     @Test
-    public void getEventsElligibleToBeSentToVitam_when_oneEventsIsElligible_then_return_oneEvents() {
+    void getEventsElligibleToBeSentToVitam_when_oneEventsIsElligible_then_return_oneEvents() {
         List<Event> mockResults = new ArrayList<>();
         mockResults.add(new Event());
 
@@ -73,7 +73,7 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void sendToVitam_when_vitamIsUnreacheable_then_eventSatusIsError()
+    void sendToVitam_when_vitamIsUnreacheable_then_eventSatusIsError()
         throws InvalidParseOperationException, IllegalArgumentException, IOException, LogbookExternalClientException {
         Comparator<Event> byPersistedDate = (final Event e1, final Event e2) ->
             e1.getCreationDate().compareTo(e2.getCreationDate());
@@ -99,7 +99,7 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void sendToVitam_when_vitamResponseIs201_then_eventSatusIsSuccess()
+    void sendToVitam_when_vitamResponseIs201_then_eventSatusIsSuccess()
         throws InvalidParseOperationException, IllegalArgumentException, IOException, LogbookExternalClientException {
         Comparator<Event> byPersistedDate = (final Event e1, final Event e2) ->
             e1.getCreationDate().compareTo(e2.getCreationDate());
@@ -128,7 +128,7 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void convertEventToMaster_when_eventIsCorrectFormed_then_ok() throws IllegalArgumentException, IOException {
+    void convertEventToMaster_when_eventIsCorrectFormed_then_ok() throws IllegalArgumentException, IOException {
         Event event = new Event();
         event.setId("id");
         event.setEvType(EventType.EXT_VITAMUI_CREATE_USER.toString());
@@ -145,7 +145,7 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void convertEventToMaster_when_eventIsMalFormed_then_throws_IllegalArgumentException()
+    void convertEventToMaster_when_eventIsMalFormed_then_throws_IllegalArgumentException()
         throws IllegalArgumentException, IOException {
         Event event = new Event();
         event.setEvType(EventType.EXT_VITAMUI_CREATE_USER.toString());
@@ -166,7 +166,7 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void convertEventToLogbookOperationParams_when_eventIsCorrectFormed_then_ok()
+    void convertEventToLogbookOperationParams_when_eventIsCorrectFormed_then_ok()
         throws IllegalArgumentException, IOException {
         Event event = new Event();
         event.setId("id");
@@ -184,17 +184,17 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void addDateInformation_when_evDetDataIsEmpty_then_ok() throws IOException {
+    void addDateInformation_when_evDetDataIsEmpty_then_ok() throws IOException {
         sendEventToVitamTasks.addDateInformation(StringUtils.EMPTY, OffsetDateTime.now().toString());
     }
 
     @Test
-    public void addDateInformation_when_evDetDataIsEmptyJson_then_ok() throws IOException {
+    void addDateInformation_when_evDetDataIsEmptyJson_then_ok() throws IOException {
         sendEventToVitamTasks.addDateInformation("{}", OffsetDateTime.now().toString());
     }
 
     @Test
-    public void addDateInformation_when_evDetDataFormatIsNotValid_then_IOException() throws IOException {
+    void addDateInformation_when_evDetDataFormatIsNotValid_then_IOException() throws IOException {
         Assertions.assertThrows(
             IOException.class,
             () -> sendEventToVitamTasks.addDateInformation("{,,}", OffsetDateTime.now().toString())
@@ -202,7 +202,7 @@ public class SendEventToVitamTasksTest {
     }
 
     @Test
-    public void addDateInformation_when_evDetDataIsNull_then_ok() throws IOException {
+    void addDateInformation_when_evDetDataIsNull_then_ok() throws IOException {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> sendEventToVitamTasks.addDateInformation(null, OffsetDateTime.now().toString())

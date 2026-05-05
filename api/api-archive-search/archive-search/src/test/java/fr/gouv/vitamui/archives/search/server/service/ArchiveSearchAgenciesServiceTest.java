@@ -59,7 +59,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("unchecked")
-public class ArchiveSearchAgenciesServiceTest {
+class ArchiveSearchAgenciesServiceTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchAgenciesServiceTest.class);
 

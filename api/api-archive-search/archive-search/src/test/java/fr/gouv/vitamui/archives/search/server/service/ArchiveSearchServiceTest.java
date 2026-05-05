@@ -88,7 +88,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class ArchiveSearchServiceTest {
+class ArchiveSearchServiceTest {
 
     VitamContext defaultVitamContext = new VitamContext(1);
     private ObjectMapper simpleObjectMapper = new ObjectMapper();
@@ -198,7 +198,7 @@ public class ArchiveSearchServiceTest {
     }
 
     @Test
-    public void getFinalFillingHoldingSchemeQuery() throws Exception {
+    void getFinalFillingHoldingSchemeQuery() throws Exception {
         // Given
         JsonNode expectedQuery = JsonHandler.getFromFile(
             PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_EXPECTED_QUERY)
@@ -218,7 +218,7 @@ public class ArchiveSearchServiceTest {
     }
 
     @Test
-    public void testReclassificationThenOK() throws Exception {
+    void testReclassificationThenOK() throws Exception {
         // Given
         when(unitCommonService.reclassification(any(), any())).thenReturn(
             responseFromFile(UPDATE_RULES_ASYNC_RESPONSE)

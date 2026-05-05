@@ -71,7 +71,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     );
 
     @Test
-    public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -82,7 +82,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -93,7 +93,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaOnDate()
+    void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaOnDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -115,7 +115,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaIntervalDate()
+    void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaIntervalDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -141,7 +141,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaRuleCode()
+    void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaRuleCode()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -165,7 +165,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesWithOnlyInheritedRules()
+    void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesWithOnlyInheritedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -196,7 +196,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesWithOnlyInheritedOrScopedRules()
+    void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesWithOnlyInheritedOrScopedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -234,7 +234,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesInWaitingToCalculate()
+    void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesInWaitingToCalculate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -272,7 +272,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesHasNoRule()
+    void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesHasNoRule()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();

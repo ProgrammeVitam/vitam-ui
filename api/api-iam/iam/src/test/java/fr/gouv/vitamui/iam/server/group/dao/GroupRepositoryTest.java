@@ -16,7 +16,6 @@ import java.util.List;
 
 /**
  * Tests for {@link UserRepository}
- *
  */
 @SpringBootTest
 @ActiveProfiles("test")
@@ -32,7 +31,7 @@ public class GroupRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindByProfileIds() {
+    void testFindByProfileIds() {
         final Group groupAdmin = new Group();
         final String profileToFind = "adminFirstProfile";
         final String expectedId = "adminFirstProfile";

@@ -148,7 +148,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testCheckExist() {
+    void testCheckExist() {
         final String userLevel = "TEST";
 
         repository.save(
@@ -236,7 +236,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testCheckExistAdminUser() {
+    void testCheckExistAdminUser() {
         repository.save(
             IamServerUtilsTest.buildProfile(
                 "profileIdTest",
@@ -283,7 +283,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void checkNameExistByTenantIdentifierAndLevel() {
+    void checkNameExistByTenantIdentifierAndLevel() {
         repository.save(
             IamServerUtilsTest.buildProfile(
                 "id",
@@ -308,7 +308,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testGetSubLevels() {
+    void testGetSubLevels() {
         repository.save(
             IamServerUtilsTest.buildProfile(
                 "id",
@@ -377,7 +377,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testCreateProfile() {
+    void testCreateProfile() {
         final ProfileDto profile = createProfile(Collections.singletonList(new Role(ServicesData.ROLE_CREATE_USERS)));
         assertThat(profile.getIdentifier()).isNotBlank();
 
@@ -428,7 +428,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testPatch() {
+    void testPatch() {
         final ProfileDto profile = createProfile(
             Arrays.asList(new Role(ServicesData.ROLE_CREATE_USERS), new Role(ServicesData.ROLE_GET_USERS))
         );
@@ -470,7 +470,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testCreateProfilesWithDuplicateIdentifier() {
+    void testCreateProfilesWithDuplicateIdentifier() {
         final String identifier = "duplicateIdentifier";
         try {
             repository.save(
@@ -504,7 +504,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void should_raised_exception_when_trying_to_create_two_same_profile() {
+    void should_raised_exception_when_trying_to_create_two_same_profile() {
         // Given
         when(customerRepository.findById(any())).thenReturn(Optional.of(dummyData.customer()));
         when(tenantRepository.findByIdentifier(any())).thenReturn(dummyData.tenant());
@@ -523,7 +523,7 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testGetLevels() {
+    void testGetLevels() {
         final String profileLevel = "TEST";
         final String profileSupportLevel = "SUPPORT";
         repository.save(

@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AddressServiceTest {
+class AddressServiceTest {
 
     private AddressService service;
 
@@ -21,7 +21,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void processPatch() {
+    void processPatch() {
         final Address entity = new Address();
         final Address other = IamServerUtilsTest.buildAddress();
         final Map<String, Object> partialDto = TestUtils.getMapFromObject(other);

@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
-public class InitVitamTenantServiceTest {
+class InitVitamTenantServiceTest {
 
     @InjectMocks
     private InitVitamTenantService initVitamTenantService;
@@ -122,13 +122,13 @@ public class InitVitamTenantServiceTest {
     }
 
     @Test
-    public void initTenantIsNotMandatory() {
+    void initTenantIsNotMandatory() {
         initVitamTenantService.setMandatory(false);
         initVitamTenantService.init(new Tenant(), new ExternalParametersDto());
     }
 
     @Test
-    public void initTenantSucceedAsAccessAndIngestContractAlreadyExist()
+    void initTenantSucceedAsAccessAndIngestContractAlreadyExist()
         throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
         TenantDto tenantDto = new TenantDto();
         tenantDto.setIdentifier(10);

@@ -24,7 +24,7 @@ public class OperationServiceTest {
     }
 
     @Test
-    public void testCreationVitamUIOperationOk() {
+     void testCreationVitamUIOperationOk() {
 
         List<OperationDto> results = service.getAll(Optional.empty());
         Assert.assertEquals(0, results.size());
@@ -47,7 +47,7 @@ public class OperationServiceTest {
     }
 
     @Test
-    public void testCreationVitamOperationOk() {
+     void testCreationVitamOperationOk() {
 
         List<OperationDto> results = service.getAll(Optional.empty());
         Assert.assertEquals(0, results.size());
@@ -70,7 +70,7 @@ public class OperationServiceTest {
     }
 
     @Test
-    public void testCreationWithUsefullInformation() {
+     void testCreationWithUsefullInformation() {
 
         List<OperationDto> results = service.getAll(Optional.empty());
         Assert.assertEquals(0, results.size());
@@ -89,7 +89,7 @@ public class OperationServiceTest {
     }
 
     @Test
-    public void testCheckIntegrityWithValidationError() {
+     void testCheckIntegrityWithValidationError() {
 
         final OperationDto operation = OperationFactory.createOperation("system", OperationType.VITAMUI);
         operation.setAuthor(null);
@@ -104,7 +104,7 @@ public class OperationServiceTest {
     }
 
     @Test
-    public void testCheckIntegrityOnVitemOperationWithoutVitamOperation() {
+     void testCheckIntegrityOnVitemOperationWithoutVitamOperation() {
 
         final OperationDto operation = OperationFactory.createOperation("system", OperationType.VITAM);
         operation.setVitamOperation(null);

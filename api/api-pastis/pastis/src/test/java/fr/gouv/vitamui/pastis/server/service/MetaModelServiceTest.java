@@ -61,7 +61,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class MetaModelServiceTest {
+class MetaModelServiceTest {
 
     @InjectMocks
     MetaModelService metaModelService;

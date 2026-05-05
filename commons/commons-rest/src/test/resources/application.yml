@@ -10,9 +10,6 @@ spring:
       discovery:
         enabled: false
         register: false
-  jackson:
-    serialization:
-      write-dates-as-timestamps: true
 
 vitam-ingest-client:
   config-path: "@project.build.testOutputDirectory@/"
@@ -50,14 +47,14 @@ http-pool:
   max-total: 500
   max-per-route: 50
   host-configurations:
-  - scheme: http
-    host: localhost
-    port: 12345678
-    max-per-route: 20
-  - scheme: https
-    host: localhost
-    port: 87654321
-    max-per-route: 10
+    - scheme: http
+      host: localhost
+      port: 12345678
+      max-per-route: 20
+    - scheme: https
+      host: localhost
+      port: 87654321
+      max-per-route: 10
 
 logging:
   level:

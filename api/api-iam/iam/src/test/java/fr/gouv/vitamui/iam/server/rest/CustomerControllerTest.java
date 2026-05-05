@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @WebMvcTest(controllers = { CustomerController.class })
-public class CustomerControllerTest extends ApiIamControllerTest<CustomerDto> {
+class CustomerControllerTest extends ApiIamControllerTest<CustomerDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerControllerTest.class);
 
@@ -28,7 +28,7 @@ public class CustomerControllerTest extends ApiIamControllerTest<CustomerDto> {
     private CustomerService customerService;
 
     @Test
-    public void testCreateCustomer() {
+    void testCreateCustomer() {
         final CustomerCreationFormData creationFormData = new CustomerCreationFormData();
         creationFormData.setCustomerDto(buildDto());
         creationFormData.setHeader(Optional.empty());
@@ -45,7 +45,7 @@ public class CustomerControllerTest extends ApiIamControllerTest<CustomerDto> {
     }
 
     @Test
-    public void testGetPaginatedCustomers() {
+    void testGetPaginatedCustomers() {
         super.testGetPaginatedEntities();
     }
 

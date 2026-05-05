@@ -10,6 +10,9 @@ spring:
       discovery:
         enabled: false
         register: false
+  web:
+    error:
+      path: /error
 
 server:
   host:

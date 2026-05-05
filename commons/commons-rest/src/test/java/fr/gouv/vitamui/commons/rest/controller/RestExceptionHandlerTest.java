@@ -18,700 +18,801 @@ import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.client.EntityExchangeResult;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import java.util.List;
 
 @SpringBootTest(classes = RestTestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@AutoConfigureRestTestClient
 public class RestExceptionHandlerTest {
 
     @LocalServerPort
     private int port;
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private RestTestClient restTestClient;
 
     /**
      * Test a VITAMUI Exception that wans't mapped with a key.
      */
     @Test
-    public void testVitamUIException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.VITAMUI_EXCEPTION,
-            new VitamUIError(),
-            VitamUIError.class
+    void testVitamUIException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.VITAMUI_EXCEPTION)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertNull(result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
         );
-        Assertions.assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertNull(result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
     }
 
     /**
      * Test a ApplicationServerException and the JSON object in response.
      */
     @Test
-    public void testApplicationServerException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.APPLICATION_SERVER_EXCEPTION,
-            VitamUIError.class
-        );
+    void testApplicationServerException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.APPLICATION_SERVER_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
         Assertions.assertEquals(
             HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
+            result.getStatus(),
             "Status code should be correctly defined."
         );
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertNotNull(result.getBody().getTimestamp(), "Timestamp should be defined");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertNotNull(result.getResponseBody().getTimestamp(), "Timestamp should be defined");
         Assertions.assertEquals(
             ApplicationServerException.class.getName(),
-            result.getBody().getException(),
+            result.getResponseBody().getException(),
             "Exception should be correctly defined."
         );
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a ApplicationServerException and the JSON object in response.
      */
     @Test
-    public void testApplicationServerExceptionWithMessageAndThrowable() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testApplicationServerExceptionWithMessageAndThrowable() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a BadRequestException and the JSON object in response.
      */
     @Test
-    public void testBadRequestException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.BAD_REQUEST_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.BAD_REQUEST_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Spring BindException and the JSON object in response.
      */
     @Test
-    public void testBadRequestBindException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.SPRING_BIND_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestBindException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.SPRING_BIND_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a BadRequestException and the JSON object in response.
      */
     @Test
-    public void testBadRequestExceptionWithThrowable() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.BAD_REQUEST_EXCEPTION_WITH_THROWABLE,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestExceptionWithThrowable() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.BAD_REQUEST_EXCEPTION_WITH_THROWABLE)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Spring HttpMessageNotReadableException and the JSON object in response.
      */
     @Test
-    public void testBadRequestHttpMessageNotReadableException() {
+    void testBadRequestHttpMessageNotReadableException() {
         final VitamUIError vitamuiDto = new VitamUIError();
         vitamuiDto.setArgs(List.of("msg"));
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_POST,
-            vitamuiDto,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_POST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body("invalid json")
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Unsupported Media Type Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestMediaTypeException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_POST_BAD_REQUEST_EXCEPTION,
-            "",
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestMediaTypeException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_POST_BAD_REQUEST_EXCEPTION)
+            .contentType(MediaType.APPLICATION_XML)
+            .body("<xml/>")
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Not Acceptable Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestMediaTypeNotAcceptableException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_POST_BAD_REQUEST_EXCEPTION,
-            new VitamUIError(),
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.NOT_ACCEPTABLE,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
-        final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+    void testBadRequestMediaTypeNotAcceptableException() {
+        restTestClient
+            .post()
+            .uri(TestController.SPRING_POST_BAD_REQUEST_EXCEPTION)
+            .accept(MediaType.APPLICATION_XML)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.NOT_ACCEPTABLE);
     }
 
     /**
      * Test a Method Not Allowed Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestMethodException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_BAD_REQUEST_EXCEPTION,
-            "",
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.METHOD_NOT_ALLOWED,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestMethodException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_BAD_REQUEST_EXCEPTION)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.METHOD_NOT_ALLOWED)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Method Argument Not Valid Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestMethodArgumentNotValidException() {
+    void testBadRequestMethodArgumentNotValidException() {
         final VitamUIError vitamuiError = new VitamUIError();
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_POST,
-            vitamuiError,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_POST)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Missing Servlet Request Parameter Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestMissingServletRequestParameterException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.SPRING_BAD_REQUEST_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestMissingServletRequestParameterException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.SPRING_BAD_REQUEST_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Missing Servlet Request Part Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestMissingServletRequestPartException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.SPRING_MISSING_SERVLET_REQUEST_PART_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestMissingServletRequestPartException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.SPRING_MISSING_SERVLET_REQUEST_PART_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Bad Request Parameter Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestParameterException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.SPRING_BAD_REQUEST_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestParameterException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.SPRING_BAD_REQUEST_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Bad Request Servlet Binding Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestServletRequestBindingException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=1",
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestServletRequestBindingException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=1")
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Type Mismatch Exception and the JSON object in response.
      */
     @Test
-    public void testBadRequestTypeMismatchException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=name",
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestTypeMismatchException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.SPRING_BAD_REQUEST_EXCEPTION + "?name=1")
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a ForbiddenException and the JSON object in response.
      */
     @Test
-    public void testForbiddenException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.FORBIDDEN_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.FORBIDDEN,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testForbiddenException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.FORBIDDEN_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.FORBIDDEN)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(ForbiddenException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a InternalServerException and the JSON object in response.
      */
     @Test
-    public void testInternalServerException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.INTERNAL_SERVER_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testInternalServerException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.INTERNAL_SERVER_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Spring AsyncRequestTimeoutException and the JSON object in response.
      */
     @Test
-    public void testInternalServerExceptionAsyncRequestTimeoutException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_ASYNC_REQUEST_TIMEOUT_EXCEPTION,
-            new VitamUIError(),
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.SERVICE_UNAVAILABLE,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testInternalServerExceptionAsyncRequestTimeoutException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_ASYNC_REQUEST_TIMEOUT_EXCEPTION)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.SERVICE_UNAVAILABLE)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Spring ConversionNotSupportedException and the JSON object in response.
      */
     @Test
-    public void testInternalServerExceptionConversionNotSupportedException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_CONVERSION_NOT_SUPPORTED_EXCEPTION,
-            new VitamUIError(),
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testInternalServerExceptionConversionNotSupportedException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_CONVERSION_NOT_SUPPORTED_EXCEPTION)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Spring SPRING_HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION and the JSON object in response.
      */
     @Test
-    public void testInternalServerExceptionHttpMessageNotWritableException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION,
-            new VitamUIError(),
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testInternalServerExceptionHttpMessageNotWritableException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a Spring MissingPathVariableException and the JSON object in response.
      */
     @Test
-    public void testInternalServerExceptionMissingPathVariableException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(
-            TestController.SPRING_MISSING_PATH_VARIABLE_EXCEPTION,
-            new VitamUIError(),
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testInternalServerExceptionMissingPathVariableException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .post()
+            .uri(TestController.SPRING_MISSING_PATH_VARIABLE_EXCEPTION)
+            .body(new VitamUIError())
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(InternalServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a InvalidAuthenticationException and the JSON object in response.
      */
     @Test
-    public void testInvalidAuthenticationException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.INVALID_AUTHENTICATION_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.UNAUTHORIZED,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testInvalidAuthenticationException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.INVALID_AUTHENTICATION_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.UNAUTHORIZED)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(InvalidAuthenticationException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a InvalidFormatException and the JSON object in response.
      */
     @Test
-    public void testInvalidFormatException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.INVALID_FORMAT_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testInvalidFormatException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.INVALID_FORMAT_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(InvalidFormatException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a NoRightsException and the JSON object in response.
      */
     @Test
-    public void testNoRightsException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.NO_RIGHTS_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.FORBIDDEN,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testNoRightsException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.NO_RIGHTS_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.FORBIDDEN)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(NoRightsException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a NotImplementedException and the JSON object in response.
      */
     @Test
-    public void testNotImplementedException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.APPLICATION_SERVER_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testNotImplementedException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.APPLICATION_SERVER_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a ParseOperationException and the JSON object in response.
      */
     @Test
-    public void testParseOperationException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.PARSE_OPERATION_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testParseOperationException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.PARSE_OPERATION_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(ParseOperationException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a ParseOperationException and the JSON object in response.
      */
     @Test
-    public void testParseOperationExceptionWithThrowable() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.PARSE_OPERATION_EXCEPTION_WITH_THROWABLE,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testParseOperationExceptionWithThrowable() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.PARSE_OPERATION_EXCEPTION_WITH_THROWABLE)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(ParseOperationException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a RouteNotFoundException and the JSON object in response.
      */
     @Test
-    public void testRouteNotFoundException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.ROUTE_NOT_FOUND_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.NOT_FOUND,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testRouteNotFoundException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.ROUTE_NOT_FOUND_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.NOT_FOUND)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(RouteNotFoundException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a UnAuthorizedException and the JSON object in response.
      */
     @Test
-    public void testUnAuthorizedException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.UN_AUTHORIZED_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.UNAUTHORIZED,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testUnAuthorizedException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.UN_AUTHORIZED_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.UNAUTHORIZED)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(UnAuthorizedException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a ValidationException and the JSON object in response.
      */
     @Test
-    public void testValidationException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.VALIDATION_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testValidationException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.VALIDATION_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(ValidationException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a IllegalArgumentException and the JSON object in response.
      */
     @Test
-    public void testIllegalArgumentException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.ILLEGAL_ARGUMENT_SERVER_EXCEPTION,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.BAD_REQUEST,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testIllegalArgumentException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.ILLEGAL_ARGUMENT_SERVER_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.BAD_REQUEST)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 
     /**
      * Test a RequestTimeOutException and the JSON object in response.
      */
     @Test
-    public void testRequestTimeOutException() {
-        final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(
-            TestController.REQUEST_TIMEOUT_ERROR,
-            VitamUIError.class
-        );
-        Assertions.assertEquals(
-            HttpStatus.REQUEST_TIMEOUT,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testRequestTimeOutException() {
+        final EntityExchangeResult<VitamUIError> result = restTestClient
+            .get()
+            .uri(TestController.REQUEST_TIMEOUT_ERROR)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.REQUEST_TIMEOUT)
+            .expectBody(VitamUIError.class)
+            .returnResult();
+
         final String key = ApiErrorGenerator.buildKey(RequestTimeOutException.class);
-        Assertions.assertNotNull(result.getBody(), "Exception informations are empty.");
-        Assertions.assertEquals(key, result.getBody().getError(), "ExceptionKey should be correctly defined.");
-        Assertions.assertNotNull(result.getBody().getMessage(), "Exception message should be correctly defined.");
+        Assertions.assertNotNull(result.getResponseBody(), "Exception informations are empty.");
+        Assertions.assertEquals(key, result.getResponseBody().getError(), "ExceptionKey should be correctly defined.");
+        Assertions.assertNotNull(
+            result.getResponseBody().getMessage(),
+            "Exception message should be correctly defined."
+        );
     }
 }

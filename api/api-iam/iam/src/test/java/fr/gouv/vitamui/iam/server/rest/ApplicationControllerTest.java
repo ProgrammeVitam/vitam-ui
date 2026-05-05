@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -25,11 +25,9 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ApplicationController}.
- *
- *
  */
 @WebMvcTest(controllers = { ApplicationController.class })
-public final class ApplicationControllerTest extends ApiIamControllerTest<ApplicationDto> {
+final class ApplicationControllerTest extends ApiIamControllerTest<ApplicationDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationControllerTest.class);
 
@@ -47,7 +45,7 @@ public final class ApplicationControllerTest extends ApiIamControllerTest<Applic
     }
 
     @Test
-    public void testGetAll() {
+    void testGetAll() {
         List<ApplicationDto> apps = Arrays.asList(buildDto());
 
         when(applicationService.getAll(any(), any())).thenReturn(apps);
@@ -60,23 +58,23 @@ public final class ApplicationControllerTest extends ApiIamControllerTest<Applic
     }
 
     @Test
-    public void testGetAllApplications() {
+    void testGetAllApplications() {
         LOGGER.debug("testGetAllEntity");
         super.testGetAllEntity();
     }
 
     @Test
-    public void testCreateNotSupported() {
+    void testCreateNotSupported() {
         super.testCreateEntityNotSupported();
     }
 
     @Test
-    public void testUpdateNotSupported() {
+    void testUpdateNotSupported() {
         super.testUpdateEntityNotSupported();
     }
 
     @Test
-    public void testPatchNotSupported() {
+    void testPatchNotSupported() {
         super.testPatchEntityNotSupported();
     }
 

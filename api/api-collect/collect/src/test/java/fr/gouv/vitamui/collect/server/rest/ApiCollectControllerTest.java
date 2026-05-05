@@ -34,17 +34,17 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import org.mockito.Mock;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import(value = { WebSecurityConfig.class, RestExceptionHandler.class })
 @TestPropertySource(properties = { "spring.config.name=collect-application" })
 public abstract class ApiCollectControllerTest<T extends IdDto> extends ApiControllerTest<T> {
 
-    @MockitoBean
+    @Mock
     private ApiAuthenticationProvider apiAuthenticationProvider;
 
-    @MockitoBean
+    @Mock
     protected SecurityService securityService;
 }

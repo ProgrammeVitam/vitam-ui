@@ -17,7 +17,7 @@ public class ApiSecurityApplicationTest extends AbstractMongoTests {
     private Environment env;
 
     @Test
-    public void testContextLoads() {
+    void testContextLoads() {
         assertThat(env).isNotNull();
     }
 }

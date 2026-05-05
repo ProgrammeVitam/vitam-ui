@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CommonPropertiesTest {
 
     @Test
-    public void testProperties() {
+    void testProperties() {
         CommonProperties properties = new CommonProperties();
 
         String adminPath = properties.getAdminPath();

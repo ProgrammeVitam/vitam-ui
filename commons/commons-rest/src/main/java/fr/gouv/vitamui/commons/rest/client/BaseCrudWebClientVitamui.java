@@ -43,33 +43,32 @@ import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- *
  * Abstract class with crud operations.
- *
  *
  * @param <C>
  * @param <D>
  */
-public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> extends BaseWebClient<C> {
+public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends IdDto> extends BaseWebClientVitamui<C> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseCrudWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseCrudWebClientVitamui.class);
 
     private static final String CRITERIA_QUERY_PARAM = "criteria";
 
-    public BaseCrudWebClient(final WebClient webClient, final String baseUrl) {
+    public BaseCrudWebClientVitamui(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
     /**
      * Create
+     *
      * @param context
      * @param dto
      * @return
@@ -79,15 +78,16 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
             .post()
             .uri(getPathUrl())
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
-            .syncBody(dto)
+            .bodyValue(dto)
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
 
     /**
      * Retrieve one
+     *
      * @param context
      * @param id
      * @return
@@ -98,13 +98,14 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
             .uri(getPathUrl() + "/" + id)
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
 
     /**
      * Retrieve one
+     *
      * @param context
      * @param id
      * @param criteria
@@ -119,13 +120,14 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
 
     /**
      * Retrieve all
+     *
      * @param context
      * @return
      */
@@ -135,13 +137,14 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
             .uri(getPathUrl())
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(getDtoListClass())
             .block();
     }
 
     /**
      * Retrieve all By Criteria
+     *
      * @param context
      * @param criteria
      * @return
@@ -155,13 +158,12 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(getDtoListClass())
             .block();
     }
 
     /**
-     *
      * @param context
      * @param id
      * @param partialDto
@@ -172,15 +174,16 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
             .patch()
             .uri(getPathUrl() + "/" + id)
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
-            .syncBody(partialDto)
+            .bodyValue(partialDto)
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
 
     /**
      * Delete
+     *
      * @param context
      * @param id
      * @return
@@ -191,7 +194,7 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
             .uri(getPathUrl() + "/" + id)
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
             .bodyToMono(Void.class)
             .block();
     }
@@ -200,14 +203,14 @@ public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> 
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_CHECK);
         builder.addParameter(CRITERIA_QUERY_PARAM, criteria);
 
-        final HttpStatusCode httpStatusCode = webClient
-            .head()
-            .uri(buildUriBuilder(builder))
-            .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
-            .exchange()
-            .block()
-            .statusCode();
-        return httpStatusCode.is2xxSuccessful();
+        return Boolean.TRUE.equals(
+            webClient
+                .head()
+                .uri(buildUriBuilder(builder))
+                .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
+                .exchangeToMono(response -> Mono.just(response.statusCode().is2xxSuccessful()))
+                .block()
+        );
     }
 
     protected abstract ParameterizedTypeReference<List<D>> getDtoListClass();

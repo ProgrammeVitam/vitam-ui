@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.14</version>
+        <version>4.0.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -115,7 +115,7 @@
         <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
         <spotless-maven-plugin.prettier.version>3.2.4</spotless-maven-plugin.prettier.version>
         <spotless-maven-plugin.prettier-plugin-java.version>2.6.0</spotless-maven-plugin.prettier-plugin-java.version>
-        <openapi-generator-maven-plugin.version>7.4.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.21.0</openapi-generator-maven-plugin.version>
 
         <!-- Profile properties -->
         <rpm.jar-file>${project.build.finalName}.jar</rpm.jar-file>

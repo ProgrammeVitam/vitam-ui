@@ -71,7 +71,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class VitamRuleCommonServiceTest {
+class VitamRuleCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -90,7 +90,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void findRules_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findRules_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
@@ -102,7 +102,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void findRules_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
+    void findRules_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
@@ -116,7 +116,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void findRules_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findRules_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
@@ -131,7 +131,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void findRuleById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findRuleById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "id_0";
 
@@ -143,7 +143,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void findRuleById_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
+    void findRuleById_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "id_0";
 
@@ -157,7 +157,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void findRuleById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findRuleById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "id_0";
@@ -172,7 +172,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void export_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void export_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         LogbookOperation logbookOperation = new LogbookOperation();
         logbookOperation.setEvId("1");
@@ -189,7 +189,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void export_should_throw_VitamClientException_when_vitamclient_400() throws VitamClientException {
+    void export_should_throw_VitamClientException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         LogbookOperation logbookOperation = new LogbookOperation();
         logbookOperation.setEvId("1");
@@ -202,7 +202,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void export_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException()
+    void export_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         LogbookOperation logbookOperation = new LogbookOperation();
@@ -216,7 +216,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void patchRule_should_return_ok_when_findRules_ok()
+    void patchRule_should_return_ok_when_findRules_ok()
         throws VitamClientException, InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -234,7 +234,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void patchRule_should_throw_BadRequestException_when_findRules_400() throws VitamClientException {
+    void patchRule_should_throw_BadRequestException_when_findRules_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
         FileRulesModel patchRule = new FileRulesModel();
@@ -249,7 +249,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void patchRule_should_throw_VitamClientException_when_vitamclient_VitamClientException()
+    void patchRule_should_throw_VitamClientException_when_vitamclient_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -265,7 +265,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void deleteRule_should_return_ok_when_findRules_ok()
+    void deleteRule_should_return_ok_when_findRules_ok()
         throws VitamClientException, InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -282,7 +282,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void deleteRule_should_throw_BadRequestException_when_findRules_400() throws VitamClientException {
+    void deleteRule_should_throw_BadRequestException_when_findRules_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
@@ -296,7 +296,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void deleteRule_should_throw_VitamClientException_when_findRules_VitamClientException()
+    void deleteRule_should_throw_VitamClientException_when_findRules_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -311,7 +311,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_findRules_ok()
+    void create_should_return_ok_when_findRules_ok()
         throws VitamClientException, InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(1);
         FileRulesModel newRule = new FileRulesModel();
@@ -330,7 +330,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void create_should_throw_BadRequestException_when_findRules_400() throws VitamClientException {
+    void create_should_throw_BadRequestException_when_findRules_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         FileRulesModel newRule = new FileRulesModel();
 
@@ -344,8 +344,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void create_should_throw_VitamClientException_when_findRules_VitamClientException()
-        throws VitamClientException {
+    void create_should_throw_VitamClientException_when_findRules_VitamClientException() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         FileRulesModel newRule = new FileRulesModel();
 
@@ -359,7 +358,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void checkRule_should_return_exception_when_vitam_response_is_null() throws VitamClientException {
+    void checkRule_should_return_exception_when_vitam_response_is_null() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         RuleDto ruleDto = new RuleDto();
 
@@ -372,7 +371,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void checkRule_should_not_throw_ConflictException_when_requested_ruleId_and_ruleType_already_exist_in_vitam()
+    void checkRule_should_not_throw_ConflictException_when_requested_ruleId_and_ruleType_already_exist_in_vitam()
         throws VitamClientException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
@@ -406,7 +405,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void checkRule_should_throw_ConflictException_when_requested_rule_does_not_exists_in_vitam()
+    void checkRule_should_throw_ConflictException_when_requested_rule_does_not_exists_in_vitam()
         throws VitamClientException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
@@ -434,7 +433,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void checkRule_should_not_throw_ConflictException_when_requested_ruleId_already_exist_in_vitam()
+    void checkRule_should_not_throw_ConflictException_when_requested_ruleId_already_exist_in_vitam()
         throws VitamClientException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
@@ -473,7 +472,7 @@ public class VitamRuleCommonServiceTest {
     }
 
     @Test
-    public void checkRule_should_throw_BadRequestException_when_requested_rule_is_null() throws VitamClientException {
+    void checkRule_should_throw_BadRequestException_when_requested_rule_is_null() throws VitamClientException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
         final FileRulesModel existingRule = new FileRulesModel();

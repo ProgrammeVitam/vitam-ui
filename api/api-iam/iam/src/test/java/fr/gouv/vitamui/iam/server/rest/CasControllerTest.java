@@ -11,10 +11,10 @@ import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -28,11 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = { CasController.class })
-public class CasControllerTest extends ApiIamControllerTest<IdDto> {
+class CasControllerTest extends ApiIamControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CasControllerTest.class);
 
-    @InjectMocks
+    @Autowired
     private CasController casController;
 
     @MockitoBean
@@ -55,7 +55,7 @@ public class CasControllerTest extends ApiIamControllerTest<IdDto> {
     }
 
     @Test
-    public void test_login_withMissingLoginEmail() throws Exception {
+    void test_login_withMissingLoginEmail() throws Exception {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setPassword("1234");
         loginRequestDto.setLoginEmail(null);
@@ -75,7 +75,7 @@ public class CasControllerTest extends ApiIamControllerTest<IdDto> {
     }
 
     @Test
-    public void test_login_withMissingCustomerId() throws Exception {
+    void test_login_withMissingCustomerId() throws Exception {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setPassword("1234");
         loginRequestDto.setLoginEmail("user@email.com");

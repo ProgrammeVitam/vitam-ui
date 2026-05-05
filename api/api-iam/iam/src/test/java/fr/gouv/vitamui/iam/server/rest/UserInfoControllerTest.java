@@ -8,11 +8,11 @@ import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @WebMvcTest(controllers = { UserInfoController.class })
-public class UserInfoControllerTest extends ApiIamControllerTest<UserInfoDto> {
+class UserInfoControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoControllerTest.class);
 
@@ -20,19 +20,19 @@ public class UserInfoControllerTest extends ApiIamControllerTest<UserInfoDto> {
     private UserInfoService userInfoService;
 
     @Test
-    public void testGetAllProfiles() {
+    void testGetAllProfiles() {
         LOGGER.debug("testGetAllEntity");
         super.testGetAllEntityWithCriteria();
     }
 
     @Test
-    public void testPatchProfile() {
+    void testPatchProfile() {
         LOGGER.debug("testPatchProfile");
         super.testPatchEntity();
     }
 
     @Test
-    public void testGetPaginatedProfile() {
+    void testGetPaginatedProfile() {
         LOGGER.debug("testGetPaginatedProfile");
         super.testGetPaginatedEntities();
     }

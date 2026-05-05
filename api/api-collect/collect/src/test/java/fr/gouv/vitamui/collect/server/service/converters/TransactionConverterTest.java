@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TransactionConverterTest {
 
     @Test
-    public void convertTransactionDtotoVitamUiDto() {
+    void convertTransactionDtotoVitamUiDto() {
         TransactionDto transactionDto = buildTransactionDto();
         CollectTransactionDto collectTransactionDto = TransactionConverter.toVitamUiDto(transactionDto);
         assertNotNull(collectTransactionDto);
@@ -23,7 +23,7 @@ public class TransactionConverterTest {
     }
 
     @Test
-    public void convertTransactionDtotoVitamDto() {
+    void convertTransactionDtotoVitamDto() {
         CollectTransactionDto collectTransactionDto = buildCollectTransactionDto();
         TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
         assertNotNull(transactionDto);
@@ -33,7 +33,7 @@ public class TransactionConverterTest {
     }
 
     @Test
-    public void convertListTransactionDtotoVitamUiDtos() {
+    void convertListTransactionDtotoVitamUiDtos() {
         TransactionDto transactionDto1 = buildTransactionDto();
         TransactionDto transactionDto2 = buildTransactionDto();
         List<TransactionDto> transactionDtos = List.of(transactionDto1, transactionDto2);

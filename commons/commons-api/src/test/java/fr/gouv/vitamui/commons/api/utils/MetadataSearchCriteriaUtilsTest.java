@@ -52,7 +52,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.fill
 public class MetadataSearchCriteriaUtilsTest {
 
     @Test
-    public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = and();
@@ -63,7 +63,7 @@ public class MetadataSearchCriteriaUtilsTest {
     }
 
     @Test
-    public void handleSimpleFieldCriteria() throws InvalidCreateOperationException {
+    void handleSimpleFieldCriteria() throws InvalidCreateOperationException {
         BooleanQuery queryToFill = and();
         SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
             .setCriteria("ActivationDate")
@@ -81,7 +81,7 @@ public class MetadataSearchCriteriaUtilsTest {
     }
 
     @Test
-    public void handleSimpleDateFieldCriteria() throws InvalidCreateOperationException {
+    void handleSimpleDateFieldCriteria() throws InvalidCreateOperationException {
         BooleanQuery queryToFill = and();
         SearchCriteriaEltDto startSearchCriteria = new SearchCriteriaEltDto()
             .setCriteria("START_DATE")
@@ -108,7 +108,7 @@ public class MetadataSearchCriteriaUtilsTest {
     }
 
     @Test
-    public void handleValidationErrors() throws InvalidCreateOperationException {
+    void handleValidationErrors() throws InvalidCreateOperationException {
         BooleanQuery queryToFill = and();
         SearchCriteriaEltDto searchCriteria1 = new SearchCriteriaEltDto()
             .setCriteria("ActivationDate")
@@ -128,7 +128,7 @@ public class MetadataSearchCriteriaUtilsTest {
     }
 
     @Test
-    public void handleSimpleFieldCriteria_with_DATE_and_EQ() throws InvalidCreateOperationException {
+    void handleSimpleFieldCriteria_with_DATE_and_EQ() throws InvalidCreateOperationException {
         BooleanQuery queryToFill = and();
         SearchCriteriaEltDto searchCriteria = new SearchCriteriaEltDto()
             .setCriteria("ontologyFieldDate")

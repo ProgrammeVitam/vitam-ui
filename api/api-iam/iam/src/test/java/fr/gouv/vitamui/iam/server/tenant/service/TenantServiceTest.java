@@ -52,7 +52,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class TenantServiceTest {
+class TenantServiceTest {
 
     private static final Integer TENANT_IDENTIFIER = 10;
 
@@ -168,7 +168,7 @@ public class TenantServiceTest {
     }
 
     @Test
-    public void createTenant_searchProfileCreated() {
+    void createTenant_searchProfileCreated() {
         final TenantDto tenantDto = buildTenantDto();
         VitamContext vitamContext = new VitamContext(TENANT_IDENTIFIER);
         Integer someTenantId = 2;
@@ -187,7 +187,7 @@ public class TenantServiceTest {
     }
 
     @Test
-    public void testProcessPatchSuccess() {
+    void testProcessPatchSuccess() {
         final Tenant entity = new Tenant();
         final Tenant other = IamServerUtilsTest.buildTenant();
 

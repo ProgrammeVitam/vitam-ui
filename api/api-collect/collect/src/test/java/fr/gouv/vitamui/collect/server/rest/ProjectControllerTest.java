@@ -43,12 +43,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,21 +57,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = { ProjectController.class })
-public class ProjectControllerTest extends ApiCollectControllerTest<IdDto> {
+class ProjectControllerTest extends ApiCollectControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectControllerTest.class);
 
-    @MockitoBean
+    @Mock
     private ProjectService projectService;
 
-    @MockitoBean
+    @Mock
     private ExternalParametersService externalParametersService;
 
     private ProjectController projectController;
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         projectController = new ProjectController(projectService, externalParametersService);
     }
 

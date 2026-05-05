@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CastUtilsTest {
 
     @Test
-    public void testCastToInteger() {
+    void testCastToInteger() {
         Integer a = CastUtils.toInteger(Integer.valueOf(5));
         assertThat(a).isEqualTo(5);
 
@@ -24,7 +24,7 @@ public class CastUtilsTest {
     }
 
     @Test
-    public void testCastToIntegerFail() {
+    void testCastToIntegerFail() {
         assertThrows(InvalidTypeException.class, () -> {
             Integer a = CastUtils.toInteger("abcd");
         });

@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link UserRepository}
- *
  */
 
 @SpringBootTest
@@ -39,7 +38,7 @@ public class ProfileRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testSaveProfile() {
+    void testSaveProfile() {
         final Profile p = repository.save(
             IamServerUtilsTest.buildProfile(
                 "id",
@@ -54,7 +53,7 @@ public class ProfileRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testCheckExistByNameAndTenantId() {
+    void testCheckExistByNameAndTenantId() {
         final Profile profilep = IamServerUtilsTest.buildProfile();
         repository.save(profilep);
 
@@ -68,7 +67,7 @@ public class ProfileRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindByEnabledAndTenantIdIn() {
+    void testFindByEnabledAndTenantIdIn() {
         final Profile p1 = IamServerUtilsTest.buildProfile(
             "id",
             "identifier1",

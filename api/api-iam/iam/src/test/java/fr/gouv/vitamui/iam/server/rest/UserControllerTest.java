@@ -37,7 +37,9 @@ import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -147,7 +149,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsCustomerDoesNotExist() throws Exception {
+    void testCreationFailsAsCustomerDoesNotExist() throws Exception {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(null);
@@ -166,8 +168,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUserCreationFailsAsCustomerIsNull()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testUserCreationFailsAsCustomerIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(null);
@@ -187,8 +188,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsUserIdIsNotNull()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsUserIdIsNotNull() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setIdentifier(null);
 
@@ -203,8 +203,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsIdenfierIsNotNull()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsIdenfierIsNotNull() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(IDENTIFIER);
@@ -223,7 +222,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsEmailAlreadyExistsForSameCustomer()
+    void testCreationFailsAsEmailAlreadyExistsForSameCustomer()
         throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
@@ -246,7 +245,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationDoesNotFailAsEmailAlreadyExistsForOtherCustomer()
+    void testCreationDoesNotFailAsEmailAlreadyExistsForOtherCustomer()
         throws InvalidParseOperationException, PreconditionFailedException {
         String SOME_CUSTOMER_ID = "SOME_CUSTOMER_ID";
         final UserDto userDto = buildUserDto();
@@ -266,8 +265,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsGroupDoesNotExist()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsGroupDoesNotExist() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
         userDto.setIdentifier(null);
@@ -284,8 +282,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsLevelIsNotValid()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsLevelIsNotValid() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setId(null);
 
@@ -320,7 +317,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
+    void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
         final UserDto userDto = buildUserDto();
         userDto.setCustomerId(UNKNOWN_CUSTOMER_ID);
 
@@ -339,8 +336,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsTheGroupDoesNotExist()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testUpdateFailsAsTheGroupDoesNotExist() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
 
         prepareServices();
@@ -355,8 +351,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsTheEmailAlreadyExists()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testUpdateFailsAsTheEmailAlreadyExists() throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setEmail("test" + userDto.getEmail());
 
@@ -374,7 +369,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUpdateSuccessAsTheEmailAlreadyExistsOnlyForOtherCustomer()
+    void testUpdateSuccessAsTheEmailAlreadyExistsOnlyForOtherCustomer()
         throws InvalidParseOperationException, PreconditionFailedException {
         final UserDto userDto = buildUserDto();
         userDto.setEmail("test" + userDto.getEmail());
@@ -408,7 +403,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testPatchAnalyticsOk() throws InvalidParseOperationException {
+    void testPatchAnalyticsOk() throws InvalidParseOperationException {
         UserDto userDto = buildUserDto();
         UserService userService1 = Mockito.mock(UserService.class);
         when(userService1.patchAnalytics(any())).thenReturn(userDto);
@@ -424,7 +419,7 @@ public final class UserControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCannotDelete() {
+    void testCannotDelete() {
         assertThrows(UnsupportedOperationException.class, () -> userController.delete("dummy"));
     }
 

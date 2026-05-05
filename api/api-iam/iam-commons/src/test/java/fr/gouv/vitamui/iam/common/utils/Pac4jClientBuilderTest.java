@@ -10,12 +10,14 @@ import org.pac4j.oidc.config.OidcConfiguration;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link Pac4jClientBuilder}.
  */
-public class Pac4jClientBuilderTest {
+class Pac4jClientBuilderTest {
 
     private static final String LOGIN_URL = "casLoginUrl";
 
@@ -27,7 +29,7 @@ public class Pac4jClientBuilderTest {
     private static final Map CUSTOM_PARAMS = Map.of("prompt", "login");
 
     @Test
-    public void testOidcProviderCreationSuccessful() {
+    void testOidcProviderCreationSuccessful() {
         final IdentityProviderDto provider = new IdentityProviderDto();
         provider.setClientId(CLIENT_ID);
         provider.setClientSecret(CLIENT_SECRET);
@@ -60,7 +62,7 @@ public class Pac4jClientBuilderTest {
     }
 
     @Test
-    public void shouldClientCreationFailsWhenNoProviderClientId() {
+    void shouldClientCreationFailsWhenNoProviderClientId() {
         final IdentityProviderDto provider = new IdentityProviderDto();
         provider.setClientSecret(CLIENT_SECRET);
         provider.setDiscoveryUrl("http://url");
@@ -73,7 +75,7 @@ public class Pac4jClientBuilderTest {
     }
 
     @Test
-    public void shouldClientCreationFailsWhenNoProviderClientSecret() {
+    void shouldClientCreationFailsWhenNoProviderClientSecret() {
         final IdentityProviderDto provider = new IdentityProviderDto();
         provider.setClientId(CLIENT_ID);
         provider.setDiscoveryUrl("http://url");
@@ -86,7 +88,7 @@ public class Pac4jClientBuilderTest {
     }
 
     @Test
-    public void shouldClientCreationFailsWhenNoProviderDiscoveryUrl() {
+    void shouldClientCreationFailsWhenNoProviderDiscoveryUrl() {
         final IdentityProviderDto provider = new IdentityProviderDto();
         provider.setClientId(CLIENT_ID);
         provider.setClientSecret(CLIENT_SECRET);
@@ -99,7 +101,7 @@ public class Pac4jClientBuilderTest {
     }
 
     @Test
-    public void shouldClientCreationFailsWhenNoBuilderLoginUrl() {
+    void shouldClientCreationFailsWhenNoBuilderLoginUrl() {
         final IdentityProviderDto provider = new IdentityProviderDto();
         provider.setClientId(CLIENT_ID);
         provider.setClientSecret(CLIENT_SECRET);

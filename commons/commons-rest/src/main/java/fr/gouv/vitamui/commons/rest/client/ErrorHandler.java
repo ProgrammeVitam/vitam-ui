@@ -44,24 +44,23 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 /**
- *
  * Error Handler for HTTP Response.
- *
- *
  */
 public class ErrorHandler extends DefaultResponseErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
 
     @Override
-    public void handleError(final ClientHttpResponse response) throws IOException {
+    public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
         final String body = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8);
         LOGGER.debug("handle error, body response : " + body);
         final VitamUIError error;

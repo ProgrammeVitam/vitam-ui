@@ -36,8 +36,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ApiAuthenticationProvider}.
- *
- *
  */
 public final class ExternalApiAuthenticationProviderTest {
 
@@ -87,7 +85,7 @@ public final class ExternalApiAuthenticationProviderTest {
     }
 
     @Test
-    public void testBadToken() {
+    void testBadToken() {
         assertThrows(BadCredentialsException.class, () -> {
             final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("test", "test");
             provider.authenticate(token);
@@ -95,7 +93,7 @@ public final class ExternalApiAuthenticationProviderTest {
     }
 
     @Test
-    public void testNoPrincipalOrCredential() {
+    void testNoPrincipalOrCredential() {
         assertThrows(BadCredentialsException.class, () -> {
             final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(null, null);
             provider.authenticate(token);
@@ -103,7 +101,7 @@ public final class ExternalApiAuthenticationProviderTest {
     }
 
     @Test
-    public void testOk() {
+    void testOk() {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
@@ -131,7 +129,7 @@ public final class ExternalApiAuthenticationProviderTest {
     }
 
     @Test
-    public void testOkBadContextTenantButFullAccess() {
+    void testOkBadContextTenantButFullAccess() {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
@@ -154,7 +152,7 @@ public final class ExternalApiAuthenticationProviderTest {
     }
 
     @Test
-    public void testBadContextTenant() {
+    void testBadContextTenant() {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
@@ -187,7 +185,7 @@ public final class ExternalApiAuthenticationProviderTest {
     }
 
     @Test
-    public void testBadUserTenant() {
+    void testBadUserTenant() {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,
@@ -220,7 +218,7 @@ public final class ExternalApiAuthenticationProviderTest {
     }
 
     @Test
-    public void testNoMatchingRole() {
+    void testNoMatchingRole() {
         final HttpContext httpContext = new HttpContext(
             TENANT_IDENTIFIER,
             USER_TOKEN,

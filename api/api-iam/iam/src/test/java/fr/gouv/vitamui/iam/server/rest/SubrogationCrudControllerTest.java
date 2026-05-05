@@ -178,7 +178,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     }
 
     @Test
-    public void testCreationFailed() throws PreconditionFailedException {
+    void testCreationFailed() throws PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
         prepareServices();

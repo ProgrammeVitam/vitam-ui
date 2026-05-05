@@ -25,7 +25,7 @@ public class ApiIamApplicationTest {
     }
 
     @Test
-    public void testContextLoads() {
+    void testContextLoads() {
         assertThat(env).isNotNull();
         assertThat(env.getProperty("spring.config.name")).isEqualTo("iam-application");
     }

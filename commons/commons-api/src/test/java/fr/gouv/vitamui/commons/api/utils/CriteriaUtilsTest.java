@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CriteriaUtilsTest {
 
     @Test
-    public void testTransformCriteriaToJsonString() {
+    void testTransformCriteriaToJsonString() {
         final QueryDto criteria = new QueryDto();
         final Criterion criterion1 = new Criterion(
             "creationDate",
@@ -34,7 +34,7 @@ public class CriteriaUtilsTest {
     }
 
     @Test
-    public void test_checkFormat_with_invalid_subquery() {
+    void test_checkFormat_with_invalid_subquery() {
         final QueryDto criteria = new QueryDto();
         final Criterion criterion1 = new Criterion(
             "creationDate",
@@ -62,7 +62,7 @@ public class CriteriaUtilsTest {
     }
 
     @Test
-    public void test_criterion_equals_null() {
+    void test_criterion_equals_null() {
         final QueryDto criteria = new QueryDto();
         final Criterion criterion1 = new Criterion("externalParamId", null, CriterionOperator.EQUALS);
         criteria.addCriterion(criterion1);
@@ -76,7 +76,7 @@ public class CriteriaUtilsTest {
     }
 
     @Test
-    public void test_criterion_other_than_equals_null() {
+    void test_criterion_other_than_equals_null() {
         final QueryDto criteria = new QueryDto();
         final Criterion criterion1 = new Criterion("externalParamId", null, CriterionOperator.NOTEQUALS);
         criteria.addCriterion(criterion1);

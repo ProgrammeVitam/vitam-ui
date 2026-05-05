@@ -50,14 +50,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-public class ManagementContractServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class ManagementContractServiceTest {
 
     @Mock
     private LogbookService logbookService;
@@ -90,7 +93,7 @@ public class ManagementContractServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
         when(
@@ -101,7 +104,7 @@ public class ManagementContractServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_400() throws VitamClientException {
+    void getOne_should_throw_InternalServerException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -113,7 +116,7 @@ public class ManagementContractServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception()
+    void getOne_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -128,7 +131,7 @@ public class ManagementContractServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(
@@ -139,7 +142,7 @@ public class ManagementContractServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
         when(logbookService.selectOperations(any(JsonNode.class), any(VitamContext.class))).thenReturn(
@@ -152,7 +155,7 @@ public class ManagementContractServiceTest {
     }
 
     @Test
-    public void findAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonQuery = new Select().getFinalSelect();
 

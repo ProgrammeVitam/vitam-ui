@@ -82,7 +82,7 @@ import static org.mockito.Mockito.when;
  * Tests the {@link CustomerController}.
  */
 
-public final class CustomerCrudControllerTest {
+final class CustomerCrudControllerTest {
 
     private AutoCloseable mocks;
 
@@ -263,7 +263,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutTenantOK() throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationWithoutTenantOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -274,7 +274,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutIdpOK() throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationWithoutIdpOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoService.create(any())).thenReturn(buildUserInfoDto());
 
         final CustomerDto customerDto = buildFullCustomerDto();
@@ -286,7 +286,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsOwnersIsNull() throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsOwnersIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setOwners(null);
 
@@ -303,7 +303,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsOwnersIsEmpty() throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsOwnersIsEmpty() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setOwners(Collections.emptyList());
 
@@ -320,7 +320,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsIdIsProvided() throws Exception {
+    void testCreationFailsAsIdIsProvided() throws Exception {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setId("customerId");
 
@@ -333,8 +333,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsTheCodeIsAlreadyUsed()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsTheCodeIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setId(null);
 
@@ -353,7 +352,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testRollbackOnIdpError() {
+    void testRollbackOnIdpError() {
         assertThrows(InternalServerException.class, () -> {
             final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -367,7 +366,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testRollbackOnOwnerError() {
+    void testRollbackOnOwnerError() {
         assertThrows(InternalServerException.class, () -> {
             final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -380,7 +379,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testRollbackOnTenantError() {
+    void testRollbackOnTenantError() {
         assertThrows(InternalServerException.class, () -> {
             final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -393,7 +392,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testRollbackOnGroupError() {
+    void testRollbackOnGroupError() {
         assertThrows(InternalServerException.class, () -> {
             final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -406,7 +405,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testRollbackOnProfileError() {
+    void testRollbackOnProfileError() {
         assertThrows(InternalServerException.class, () -> {
             final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -419,7 +418,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testRollbackOnUserError() {
+    void testRollbackOnUserError() {
         assertThrows(InternalServerException.class, () -> {
             when(userInfoService.create(any())).thenReturn(buildUserInfoDto());
             final CustomerDto customerDto = buildFullCustomerDto();
@@ -439,7 +438,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testUpdateOK() throws Exception {
+    void testUpdateOK() throws Exception {
         final CustomerDto customerDto = buildCustomerDto();
 
         prepareServices();
@@ -447,7 +446,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() throws Exception {
+    void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() throws Exception {
         final CustomerDto customerDto = buildCustomerDto();
 
         try {
@@ -461,8 +460,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsTheNewCodeIsAlreadyUsed()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testUpdateFailsAsTheNewCodeIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildCustomerDto();
         final Customer conlictedCustomerDto = new Customer();
         conlictedCustomerDto.setId("conflict");
@@ -486,7 +484,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCannotDelete() {
+    void testCannotDelete() {
         assertThrows(UnsupportedOperationException.class, () -> {
             prepareServices();
             customerController.delete("id");
@@ -494,7 +492,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCheckExist() throws Exception {
+    void testCheckExist() throws Exception {
         prepareServices();
         final ResponseEntity<Void> result = customerController.checkExist(QueryDto.criteria().toJson());
         Assertions.assertNotNull(result, "Customers should be returned.");
@@ -502,7 +500,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testGetOne() throws Exception {
+    void testGetOne() throws Exception {
         final CustomerDto dto = buildCustomerDto();
         prepareServices();
 
@@ -517,7 +515,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testGetPaginatedValues() throws Exception {
+    void testGetPaginatedValues() throws Exception {
         final CustomerDto dto = buildCustomerDto();
         prepareServices();
 
@@ -538,7 +536,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationSuccessDespiteTheDomainMailIsAlreadyUsed()
+    void testCreationSuccessDespiteTheDomainMailIsAlreadyUsed()
         throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();

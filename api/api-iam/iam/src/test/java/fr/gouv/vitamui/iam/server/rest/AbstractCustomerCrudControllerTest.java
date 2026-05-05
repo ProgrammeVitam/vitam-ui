@@ -34,8 +34,6 @@ import static org.mockito.Mockito.*;
 
 /**
  * Base tests for any {@link fr.gouv.vitamui.commons.rest.CrudController}.
- *
- *
  */
 public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto, E extends CustomerIdDocument>
     extends AbstractCrudControllerTest<D, E> {
@@ -72,7 +70,7 @@ public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto
 
     @Disabled
     @Test
-    public void testCreationFailsAsCustomerDoesNotExist() throws Exception {
+    void testCreationFailsAsCustomerDoesNotExist() throws Exception {
         final D dto = buildDto();
         dto.setId(null);
 
@@ -86,7 +84,7 @@ public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto
 
     @Disabled
     @Test
-    public void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
+    void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
         final D dto = buildDto();
         dto.setId(ID);
 

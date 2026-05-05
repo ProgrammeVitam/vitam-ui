@@ -73,7 +73,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class VitamAgencyCommonServiceTest {
+class VitamAgencyCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -101,7 +101,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void export_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void export_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         LogbookOperation logbookOperation = new LogbookOperation();
         logbookOperation.setEvId("1");
@@ -120,7 +120,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void export_should_throw_VitamClientException_when_vitamclient_400() throws VitamClientException {
+    void export_should_throw_VitamClientException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         LogbookOperation logbookOperation = new LogbookOperation();
         logbookOperation.setEvId("1");
@@ -139,7 +139,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void export_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException()
+    void export_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         LogbookOperation logbookOperation = new LogbookOperation();
@@ -159,7 +159,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_ok_when_vitamclient_ok() throws Exception {
+    void patchAgency_should_return_ok_when_vitamclient_ok() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
         AgenciesModel patchAgency = new AgenciesModel();
@@ -177,7 +177,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_400_when_vitamclient_400() throws Exception {
+    void patchAgency_should_return_400_when_vitamclient_400() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
         AgenciesModel patchAgency = new AgenciesModel();
@@ -195,7 +195,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void patchAgency_should_throw_VitamClientException_when_vitamclient_VitamClientException()
+    void patchAgency_should_throw_VitamClientException_when_vitamclient_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -211,7 +211,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_ok_with_additional_properties() throws Exception {
+    void patchAgency_should_return_ok_with_additional_properties() throws Exception {
         // Given
         VitamContext vitamContext = new VitamContext(1);
         AgenciesModel patchAgency = new AgenciesModel();
@@ -250,7 +250,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_ok_with_additionnal_properties_and_existing() throws Exception {
+    void patchAgency_should_return_ok_with_additionnal_properties_and_existing() throws Exception {
         // Given
         VitamContext vitamContext = new VitamContext(1);
         AgenciesModel patchAgency = new AgenciesModel();
@@ -307,7 +307,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void deleteAgency_should_return_ok_when_vitamclient_ok()
+    void deleteAgency_should_return_ok_when_vitamclient_ok()
         throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -326,7 +326,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void deleteAgency_should_return_400_when_vitamclient_400()
+    void deleteAgency_should_return_400_when_vitamclient_400()
         throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -345,7 +345,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void deleteAgency_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void deleteAgency_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -360,7 +360,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok() throws Exception {
+    void create_should_return_ok_when_vitamclient_ok() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         AgenciesModel newAgency = new AgenciesModel();
 
@@ -377,7 +377,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws Exception {
+    void create_should_return_ok_when_vitamclient_400() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         AgenciesModel newAgency = new AgenciesModel();
 
@@ -394,8 +394,7 @@ public class VitamAgencyCommonServiceTest {
     }
 
     @Test
-    public void create_should_throw_VitamClientException_when_vitamclient_VitamClientException()
-        throws VitamClientException {
+    void create_should_throw_VitamClientException_when_vitamclient_VitamClientException() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         AgenciesModel newAgency = new AgenciesModel();
 

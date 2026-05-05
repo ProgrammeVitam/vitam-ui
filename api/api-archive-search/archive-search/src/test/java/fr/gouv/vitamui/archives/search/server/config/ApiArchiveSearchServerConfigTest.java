@@ -43,7 +43,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
-public class ApiArchiveSearchServerConfigTest {
+class ApiArchiveSearchServerConfigTest {
 
     @MockitoBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;

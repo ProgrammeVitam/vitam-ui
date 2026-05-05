@@ -31,6 +31,9 @@ spring:
     multipart:
       max-file-size: -1
       max-request-size: -1
+  web:
+    error:
+      path: /error
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
@@ -51,8 +54,6 @@ server:
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
 
-  error:
-    path: /error
   max-http-request-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     connection-timeout: {{ vitamui_struct.server_connection_timeout }}

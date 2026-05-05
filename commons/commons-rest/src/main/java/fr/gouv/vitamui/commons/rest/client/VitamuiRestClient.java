@@ -40,11 +40,9 @@ import fr.gouv.vitamui.commons.utils.VitamUIAutoClosable;
 
 /**
  * The Rest client interface
- *
- *
  */
 
-public interface RestClient extends VitamUIAutoClosable {
+public interface VitamuiRestClient extends VitamUIAutoClosable {
     /**
      * @return the base url (ie. http[s]://server:port)
      */

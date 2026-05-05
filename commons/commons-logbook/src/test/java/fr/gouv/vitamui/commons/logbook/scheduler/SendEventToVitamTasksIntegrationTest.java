@@ -45,12 +45,12 @@ public class SendEventToVitamTasksIntegrationTest extends AbstractMongoTests {
     }
 
     @Test
-    public void run_then_ok() {
+    void run_then_ok() {
         sendEventToVitamTasks.run();
     }
 
     @Test
-    public void getEventsElligibleToBeSentToVitam_when_oneEventsIsCreated_then_return_oneEvent() {
+    void getEventsElligibleToBeSentToVitam_when_oneEventsIsCreated_then_return_oneEvent() {
         List<Event> mockResults = new ArrayList<>();
         mockResults.add(new Event());
 
@@ -68,7 +68,7 @@ public class SendEventToVitamTasksIntegrationTest extends AbstractMongoTests {
     }
 
     @Test
-    public void getEventsElligibleToBeSentToVitam_when_oneEventsIsOnError_and_isElligibleToBeResend_then_return_oneEvents() {
+    void getEventsElligibleToBeSentToVitam_when_oneEventsIsOnError_and_isElligibleToBeResend_then_return_oneEvents() {
         List<Event> mockResults = new ArrayList<>();
         mockResults.add(new Event());
 
@@ -84,7 +84,7 @@ public class SendEventToVitamTasksIntegrationTest extends AbstractMongoTests {
     }
 
     @Test
-    public void getEventsElligibleToBeSentToVitam_when_oneEventsIsOnError_and_isNotElligibleToBeResend_then_return_emptyList() {
+    void getEventsElligibleToBeSentToVitam_when_oneEventsIsOnError_and_isNotElligibleToBeResend_then_return_emptyList() {
         List<Event> mockResults = new ArrayList<>();
         mockResults.add(new Event());
 

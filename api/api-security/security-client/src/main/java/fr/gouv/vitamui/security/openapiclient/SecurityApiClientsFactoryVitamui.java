@@ -25,49 +25,33 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.iam.openapiclient;
+package fr.gouv.vitamui.security.openapiclient;
 
-import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseVitamuiRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.iam.openapiclient.invoker.ApiClient;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import fr.gouv.vitamui.security.openapiclient.invoker.ApiClient;
+import org.springframework.web.client.RestClient;
 
-public class IamApiClientsFactory extends BaseRestClientFactory {
+public class SecurityApiClientsFactoryVitamui extends BaseVitamuiRestClientFactory {
 
-    public IamApiClientsFactory(
+    public SecurityApiClientsFactoryVitamui(
         final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder
+        final RestClient.Builder restClientBuilder
     ) {
-        super(restClientConfiguration, restTemplateBuilder);
+        super(restClientConfiguration, restClientBuilder);
     }
 
     protected ApiClient createApiClient() {
-        ApiClient apiClient = new IamApiClient(getRestTemplate());
+        ApiClient apiClient = new SecurityApiClient(getRestClient());
         apiClient.setBasePath(getBaseUrl());
         return apiClient;
     }
 
-    public CustomersApi getCustomersApi() {
-        return new CustomersApi(createApiClient());
+    public CertificatesApi getCertificatesApi() {
+        return new CertificatesApi(createApiClient());
     }
 
-    public IdentityProvidersApi getIdentityProvidersApi() {
-        return new IdentityProvidersApi(createApiClient());
-    }
-
-    public UsersApi getUsersApi() {
-        return new UsersApi(createApiClient());
-    }
-
-    public CasApi getCasApi() {
-        return new CasApi(createApiClient());
-    }
-
-    public ApplicationsApi getApplicationsApi() {
-        return new ApplicationsApi(createApiClient());
-    }
-
-    public ExternalParametersApi getExternalParametersApi() {
-        return new ExternalParametersApi(createApiClient());
+    public ContextsApi getContextsApi() {
+        return new ContextsApi(createApiClient());
     }
 }

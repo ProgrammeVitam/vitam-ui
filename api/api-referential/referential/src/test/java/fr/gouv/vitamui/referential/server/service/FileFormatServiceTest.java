@@ -62,8 +62,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -79,7 +81,8 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class FileFormatServiceTest {
 
     @Mock
@@ -109,7 +112,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -123,7 +126,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -137,7 +140,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -152,7 +155,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(vitamFileFormatCommonService.findFileFormats(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
@@ -165,7 +168,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(vitamFileFormatCommonService.findFileFormats(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
@@ -178,7 +181,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void getAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
@@ -192,7 +195,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void check_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
@@ -206,7 +209,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
+    void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
@@ -220,7 +223,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok()
+    void create_should_return_ok_when_vitamclient_ok()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
@@ -235,7 +238,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400()
+    void create_should_return_ok_when_vitamclient_400()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
@@ -250,7 +253,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
@@ -265,7 +268,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
@@ -280,7 +283,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
@@ -295,7 +298,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
@@ -310,7 +313,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
@@ -325,7 +328,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_ok()
+    void patch_should_return_ok_when_vitamclient_ok()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
@@ -357,7 +360,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_400()
+    void patch_should_return_ok_when_vitamclient_400()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
@@ -389,7 +392,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
+    void patch_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
@@ -421,7 +424,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
@@ -453,7 +456,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
@@ -485,7 +488,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void patch_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
@@ -517,7 +520,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void patch_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
@@ -549,7 +552,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_ok()
+    void delete_should_return_ok_when_vitamclient_ok()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
@@ -564,7 +567,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_400()
+    void delete_should_return_ok_when_vitamclient_400()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
@@ -579,7 +582,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
@@ -594,7 +597,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
@@ -609,7 +612,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
@@ -624,7 +627,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
@@ -639,7 +642,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
@@ -654,7 +657,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
@@ -674,7 +677,7 @@ public class FileFormatServiceTest {
     }
 
     @Test
-    public void import_should_return_ok()
+    void import_should_return_ok()
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(1);
         File file = new File("src/test/resources/data/import_fileFormats_valid.xml");

@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link IdentityProviderHelper}.
  */
-public final class IdentityProviderHelperTest {
+final class IdentityProviderHelperTest {
 
     private final IdentityProviderHelper helper = new IdentityProviderHelper();
 
@@ -28,7 +30,7 @@ public final class IdentityProviderHelperTest {
     private static final String NAME_2 = "idp008";
 
     @Test
-    public void testFindByUserIdentifierOk() {
+    void testFindByUserIdentifierOk() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         final Optional<IdentityProviderDto> result = helper.findByUserIdentifierAndCustomerId(
@@ -41,7 +43,7 @@ public final class IdentityProviderHelperTest {
     }
 
     @Test
-    public void testFindByUserIdentifierOkWhenEmailWithDifferentCase() {
+    void testFindByUserIdentifierOkWhenEmailWithDifferentCase() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         final List<IdentityProviderDto> result = helper.findAllProvidersByUserIdentifier(
@@ -52,7 +54,7 @@ public final class IdentityProviderHelperTest {
     }
 
     @Test
-    public void testFindByUserIdentifierOkWhenEmailUpperCase() {
+    void testFindByUserIdentifierOkWhenEmailUpperCase() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         final Optional<IdentityProviderDto> result = helper.findByUserIdentifierAndCustomerId(
@@ -65,7 +67,7 @@ public final class IdentityProviderHelperTest {
     }
 
     @Test
-    public void testFindByUserIdentifierKo() {
+    void testFindByUserIdentifierKo() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         final Optional<IdentityProviderDto> result = helper.findByUserIdentifierAndCustomerId(
@@ -78,7 +80,7 @@ public final class IdentityProviderHelperTest {
     }
 
     @Test
-    public void testFindByTechnicalNameOk() {
+    void testFindByTechnicalNameOk() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         final Optional<IdentityProviderDto> result = helper.findByTechnicalName(providers, NAME_1);
@@ -87,7 +89,7 @@ public final class IdentityProviderHelperTest {
     }
 
     @Test
-    public void testFindByTechnicalNameKo() {
+    void testFindByTechnicalNameKo() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         final Optional<IdentityProviderDto> result = helper.findByTechnicalName(providers, NAME_1.toUpperCase());
@@ -96,21 +98,21 @@ public final class IdentityProviderHelperTest {
     }
 
     @Test
-    public void testIsInternalOk() {
+    void testIsInternalOk() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         assertTrue(helper.identifierMatchProviderPattern(providers, GOOD_EMAIL, CUSTOMER_ID_1));
     }
 
     @Test
-    public void testIsInternalKoNotInternal() {
+    void testIsInternalKoNotInternal() {
         final List<IdentityProviderDto> providers = buildProviders(false);
 
         assertFalse(helper.identifierMatchProviderPattern(providers, GOOD_EMAIL, CUSTOMER_ID_1));
     }
 
     @Test
-    public void testIsInternalKoNotFound() {
+    void testIsInternalKoNotFound() {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         assertFalse(helper.identifierMatchProviderPattern(providers, BAD_EMAIL, CUSTOMER_ID_1));

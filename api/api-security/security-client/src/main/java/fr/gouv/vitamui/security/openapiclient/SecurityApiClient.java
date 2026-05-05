@@ -28,13 +28,42 @@
 package fr.gouv.vitamui.security.openapiclient;
 
 import fr.gouv.vitamui.security.openapiclient.invoker.ApiClient;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.client.RestClient;
 
 public class SecurityApiClient extends ApiClient {
 
     // No auth needed for security
 
-    public SecurityApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public SecurityApiClient(RestClient restClient) {
+        super(restClient);
+    }
+
+    @Override
+    protected void addHeadersToRequest(HttpHeaders headers, RestClient.RequestBodySpec requestBuilder) {
+        try {
+            java.util.Set<java.util.Map.Entry<String, java.util.List<String>>> entries;
+            try {
+                java.lang.reflect.Method headerSetMethod = HttpHeaders.class.getMethod("headerSet");
+                entries = (java.util.Set<java.util.Map.Entry<String, java.util.List<String>>>) headerSetMethod.invoke(
+                    headers
+                );
+            } catch (NoSuchMethodException e) {
+                java.lang.reflect.Method entrySetMethod = HttpHeaders.class.getMethod("entrySet");
+                entries = (java.util.Set<java.util.Map.Entry<String, java.util.List<String>>>) entrySetMethod.invoke(
+                    headers
+                );
+            }
+            for (java.util.Map.Entry<String, java.util.List<String>> entry : entries) {
+                java.util.List<String> values = entry.getValue();
+                for (String value : values) {
+                    if (value != null) {
+                        requestBuilder.header(entry.getKey(), value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to add headers to request", e);
+        }
     }
 }

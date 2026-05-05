@@ -44,7 +44,7 @@ import java.io.FileNotFoundException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-public class RulesUpdateCommonServiceTest {
+class RulesUpdateCommonServiceTest {
 
     public final String SEARCH_UA_QUERY = "data/search_UA_query.json";
     public final String EXPECTED_SEARCH_UA_QUERY_WITHOUT_FILTER_AND_PROJECTION =

@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -90,6 +91,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.openMocks(this);
         service = new GroupService(
             new SequenceGeneratorService(sequenceRepository),
             repository,
@@ -121,7 +123,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testCheckExistByCustomerIdAndName() {
+    void testCheckExistByCustomerIdAndName() {
         final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com", CUSTOMER_ID);
         mainUserDto.setLevel(ApiIamConstants.ADMIN_LEVEL);
         Mockito.when(securityService.userIsRootLevel()).thenCallRealMethod();
@@ -148,7 +150,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testGetSubLevels() {
+    void testGetSubLevels() {
         repository.save(IamServerUtilsTest.buildGroup(ID, "id1", "nametest", CUSTOMER_ID, "EDF.RH"));
         repository.save(IamServerUtilsTest.buildGroup("id25", "id2", "nametest25", CUSTOMER_ID, "EDF.RH.PARIS"));
         repository.save(IamServerUtilsTest.buildGroup("id30", "id3", "nametest30", CUSTOMER_ID, "EDF.INFRA"));
@@ -166,7 +168,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testCheckExist() {
+    void testCheckExist() {
         repository.save(IamServerUtilsTest.buildGroup(ID, "id1", "name", CUSTOMER_ID, LEVEL));
         repository.save(IamServerUtilsTest.buildGroup("idLevel", "id2", "nameLevel", CUSTOMER_ID, LEVEL));
         repository.save(
@@ -212,7 +214,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testCheckExistAdminUser() {
+    void testCheckExistAdminUser() {
         final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com", CUSTOMER_ID);
         mainUserDto.setLevel(ApiIamConstants.ADMIN_LEVEL);
         mainUserDto.setCustomerId(CUSTOMER_ID);
@@ -245,7 +247,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testCreateGroup() {
+    void testCreateGroup() {
         final GroupDto group = createGroup();
         assertThat(group.getIdentifier()).isNotBlank();
 
@@ -260,7 +262,7 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testPatch() {
+    void testPatch() {
         final GroupDto group = createGroup();
 
         final Map<String, Object> partialDto = new HashMap<>();

@@ -17,7 +17,7 @@ public class ReflectionUtilsTest {
     }
 
     @Test
-    public void testBuildPath() {
+    void testBuildPath() {
         Assertions.assertTrue(ReflectionUtils.hasField(MainDto.class, "field"));
         Assertions.assertFalse(ReflectionUtils.hasField(MainDto.class, "unknownField"));
         Assertions.assertFalse(ReflectionUtils.hasField(MainDto.class, "field.unknownSubField"));

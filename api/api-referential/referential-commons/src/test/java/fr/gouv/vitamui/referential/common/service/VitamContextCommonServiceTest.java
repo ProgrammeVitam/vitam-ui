@@ -69,7 +69,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class VitamContextCommonServiceTest {
+class VitamContextCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -86,7 +86,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void patchContext_should_return_ok_when_vitamclient_ok()
+    void patchContext_should_return_ok_when_vitamclient_ok()
         throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
@@ -102,7 +102,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void patchContext_should_return_ok_when_vitamclient_400()
+    void patchContext_should_return_ok_when_vitamclient_400()
         throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
@@ -118,7 +118,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void patchContext_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
+    void patchContext_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
@@ -134,7 +134,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void patchContext_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
+    void patchContext_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         final String id = "0";
@@ -150,7 +150,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void findContexts_should_return_ok_when_vitamclient_return_ok() throws VitamClientException {
+    void findContexts_should_return_ok_when_vitamclient_return_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
@@ -162,8 +162,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void findContexts_should_throw_BadRequestException_when_vitamclient_return_400()
-        throws VitamClientException {
+    void findContexts_should_throw_BadRequestException_when_vitamclient_return_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
@@ -177,7 +176,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void findContexts_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findContexts_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
@@ -192,7 +191,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void findContextById_should_return_ok_when_vitamclient_return_ok() throws VitamClientException {
+    void findContextById_should_return_ok_when_vitamclient_return_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
 
@@ -206,7 +205,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void findContextById_should_throw_InternalServerException_when_vitamclient_return_400()
+    void findContextById_should_throw_InternalServerException_when_vitamclient_return_400()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
@@ -221,7 +220,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void findContextById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findContextById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
@@ -236,7 +235,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void should_convert_contextDto_to_vitamContextDto() {
+    void should_convert_contextDto_to_vitamContextDto() {
         ContextDto contextModels = ReferentialDtoBuilder.getContextDto();
         List<ContextVitamDto> contextVitamDtos = ContextDtoConverterUtil.convertContextsToModelOfCreation(
             Collections.singletonList(contextModels)
@@ -251,7 +250,7 @@ public class VitamContextCommonServiceTest {
     }
 
     @Test
-    public void should_convert_contextDtos_to_vitamContextDtos() {
+    void should_convert_contextDtos_to_vitamContextDtos() {
         ContextDto contextModels = ReferentialDtoBuilder.buildContextDto(null);
         Set<PermissionDto> permissionDtos = ReferentialDtoBuilder.buildPermissions();
         contextModels.setPermissions(permissionDtos);

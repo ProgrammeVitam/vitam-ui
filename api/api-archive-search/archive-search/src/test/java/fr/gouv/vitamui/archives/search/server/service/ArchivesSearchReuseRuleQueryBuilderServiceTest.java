@@ -140,7 +140,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -151,7 +151,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -162,7 +162,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaOnDate()
+    void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaOnDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -184,7 +184,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaIntervalDate()
+    void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaIntervalDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -210,7 +210,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaRuleCode()
+    void testFillQueryFromCriteriaListWhenReuseMgtRulesSimpleCriteriaRuleCode()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -234,7 +234,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesWithOnlyInheritedRules()
+    void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesWithOnlyInheritedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -265,7 +265,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesWithOnlyInheritedOrScopedRules()
+    void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesWithOnlyInheritedOrScopedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -303,7 +303,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesInWaitingToCalculate()
+    void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesInWaitingToCalculate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -341,7 +341,7 @@ class ArchivesSearchReuseRuleQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesHasNoRule()
+    void testfillQueryFromMgtRulesCriteriaListWhenReuseMgtRulesHasNoRule()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();

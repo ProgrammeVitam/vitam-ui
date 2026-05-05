@@ -56,7 +56,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
-public class ApiReferentialServerConfigTest extends AbstractContextConfiguration {
+class ApiReferentialServerConfigTest extends AbstractContextConfiguration {
+    static {
+        System.setProperty("vitam.config.folder", "src/test/resources");
+    }
 
     @MockitoBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
@@ -86,7 +89,7 @@ public class ApiReferentialServerConfigTest extends AbstractContextConfiguration
     private LogbookManagementOperationService logbookManagementOperationService;
 
     @Test
-    public void testAgency() {
+    void testAgency() {
         assertThat(agencyCommonService).isNotNull();
     }
 }

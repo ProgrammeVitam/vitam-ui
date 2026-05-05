@@ -53,7 +53,7 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
-import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
 import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.validation.constraints.NotNull;
@@ -115,8 +115,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.mongo.MongoClientSettingsBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.client.RestTemplateCustomizer;
+import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -128,6 +127,7 @@ import org.springframework.data.mongodb.observability.ContextProviderFactory;
 import org.springframework.data.mongodb.observability.MongoObservationCommandListener;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -243,34 +243,30 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
      * We must define our customizer to replace X_ORIGIN header from
      * IamApiClient.java for CAS usage.
      *
-     * @return a rest template customizer.
+     * @return a rest client customizer.
      */
     @Bean
-    @Qualifier(CasBeans.REST_TEMPLATE_CUSTOMIZER)
-    public RestTemplateCustomizer restTemplateCustomizer() {
-        return restTemplate ->
-            restTemplate
-                .getInterceptors()
-                .add((request, body, execution) -> {
-                    // Hack for CAS - CAS is considered as an external server requiring proper roles
-                    request.getHeaders().set(X_ORIGIN_HEADER_NAME, X_ORIGIN_HEADER_EXTERNAL);
+    @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER)
+    public RestClientCustomizer restClientCustomizer() {
+        return builder ->
+            builder.requestInterceptor((request, body, execution) -> {
+                request.getHeaders().set(X_ORIGIN_HEADER_NAME, X_ORIGIN_HEADER_EXTERNAL);
 
-                    LOGGER.debug("Final request URI: {}, headers: {}", request.getURI(), request.getHeaders());
+                LOGGER.debug("Final request URI: {}, headers: {}", request.getURI(), request.getHeaders());
 
-                    return execution.execute(request, body);
-                });
+                return execution.execute(request, body);
+            });
     }
 
     @Bean
-    public IamApiClientsFactory iamApiClientsFactory(
+    public IamApiClientsFactoryVitamui iamApiClientsFactory(
         final IamClientConfigurationProperties iamClientProperties,
-        final RestTemplateBuilder restTemplateBuilder,
-        @Qualifier(CasBeans.REST_TEMPLATE_CUSTOMIZER) final RestTemplateCustomizer restTemplateCustomizer
+        final RestClient.Builder restClientBuilder,
+        @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER) final RestClientCustomizer restClientCustomizer
     ) {
-        return new IamApiClientsFactory(
-            iamClientProperties,
-            restTemplateBuilder.additionalCustomizers(restTemplateCustomizer)
-        );
+        restClientCustomizer.customize(restClientBuilder);
+
+        return new IamApiClientsFactoryVitamui(iamClientProperties, restClientBuilder);
     }
 
     @Bean
@@ -279,13 +275,16 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public CasApi casApi(final IamApiClientsFactory iamApiClientsFactory, final IamApiDecorator iamApiDecorator) {
+    public CasApi casApi(
+        final IamApiClientsFactoryVitamui iamApiClientsFactory,
+        final IamApiDecorator iamApiDecorator
+    ) {
         return iamApiDecorator.decorate(iamApiClientsFactory.getCasApi());
     }
 
     @Bean
     public CustomersApi customersApi(
-        final IamApiClientsFactory iamApiClientsFactory,
+        final IamApiClientsFactoryVitamui iamApiClientsFactory,
         final IamApiDecorator iamApiDecorator
     ) {
         return iamApiDecorator.decorate(iamApiClientsFactory.getCustomersApi());
@@ -293,7 +292,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public IdentityProvidersApi identityProvidersApi(
-        final IamApiClientsFactory iamApiClientsFactory,
+        final IamApiClientsFactoryVitamui iamApiClientsFactory,
         final IamApiDecorator iamApiDecorator
     ) {
         return iamApiDecorator.decorate(iamApiClientsFactory.getIdentityProvidersApi());

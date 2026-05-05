@@ -123,7 +123,7 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
     }
 
     @Test
-    public void testCheckExist() {
+    void testCheckExist() {
         customerRepository.save(
             IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("vitamui.com", "gmail.com"))
         );
@@ -161,7 +161,7 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
     }
 
     @Test
-    public void testCreateCustomer() {
+    void testCreateCustomer() {
         final CustomerDto customer = createCustomer();
         assertThat(customer.getIdentifier()).isNotBlank();
 
@@ -184,7 +184,7 @@ public class CustomerServiceIntegrationTest extends AbstractLogbookIntegrationTe
     }
 
     @Test
-    public void testPatch() {
+    void testPatch() {
         final CustomerDto customer = createCustomer();
         final CustomerPatchFormData customerPatchFormData = new CustomerPatchFormData();
         final Map<String, Object> partialDtoInit = new HashMap<>();

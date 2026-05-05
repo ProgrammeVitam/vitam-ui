@@ -68,7 +68,7 @@ public final class CasBeans {
     public static final String PASSWORD_MANAGEMENT_CIPHER_EXECUTOR = "passwordManagementCipherExecutor";
 
     // === Spring / REST ===
-    public static final String REST_TEMPLATE_CUSTOMIZER = "restTemplateCustomizer";
+    public static final String REST_CLIENT_CUSTOMIZER = "restClientCustomizer";
 
     // === Spring / Web ===
     public static final String MESSAGE_SOURCE = "messageSource";

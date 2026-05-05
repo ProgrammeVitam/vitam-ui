@@ -74,7 +74,7 @@ public class ExternalParametersRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         final ExternalParameters parameters = new ExternalParameters();
         parameters.setId(EXTERNAL_PARAMETERS_ID);
 
@@ -83,7 +83,7 @@ public class ExternalParametersRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindById() {
+    void testFindById() {
         final ExternalParameters parameters = new ExternalParameters();
         parameters.setId(EXTERNAL_PARAMETERS_ID);
 

@@ -16,7 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ExternalParametersConverterTest {
+class ExternalParametersConverterTest {
 
     private DummyData dummyData;
     final ExternalParametersConverter externalParametersConverter = new ExternalParametersConverter();
@@ -27,7 +27,7 @@ public class ExternalParametersConverterTest {
     }
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         // GIVEN
         ExternalParameters externalParameters = dummyData.externalParameters();
 
@@ -40,7 +40,7 @@ public class ExternalParametersConverterTest {
     }
 
     @Test
-    public void testConvertDtoToEntity() {
+    void testConvertDtoToEntity() {
         // GIVEN
         ExternalParametersDto dto = dummyData.externalParametersDto();
 
@@ -53,7 +53,7 @@ public class ExternalParametersConverterTest {
     }
 
     @Test
-    public void testConvertToLogbook() throws InvalidParseOperationException {
+    void testConvertToLogbook() throws InvalidParseOperationException {
         // GIVEN
         ExternalParametersDto dto = dummyData.externalParametersDto();
 

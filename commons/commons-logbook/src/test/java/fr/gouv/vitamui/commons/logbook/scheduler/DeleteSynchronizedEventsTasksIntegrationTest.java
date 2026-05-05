@@ -44,7 +44,7 @@ public class DeleteSynchronizedEventsTasksIntegrationTest extends AbstractMongoT
     }
 
     @Test
-    public void run_then_ok() {
+    void run_then_ok() {
         Event ev = new Event();
         ev.setStatus(EventStatus.SUCCESS);
         ev.setSynchronizedVitamDate(OffsetDateTime.now().minusDays(ttlInDays));
@@ -54,7 +54,7 @@ public class DeleteSynchronizedEventsTasksIntegrationTest extends AbstractMongoT
     }
 
     @Test
-    public void getEventsElligibleToBeDeleted_when_noneIsElligible_then_returnEmptyList() {
+    void getEventsElligibleToBeDeleted_when_noneIsElligible_then_returnEmptyList() {
         Event ev = new Event();
         ev.setSynchronizedVitamDate(OffsetDateTime.now());
         ev.setStatus(EventStatus.SUCCESS);
@@ -65,7 +65,7 @@ public class DeleteSynchronizedEventsTasksIntegrationTest extends AbstractMongoT
     }
 
     @Test
-    public void getEventsElligibleToBeDeleted_when_oneIsElligible_then_returnOneEvent() {
+    void getEventsElligibleToBeDeleted_when_oneIsElligible_then_returnOneEvent() {
         Event ev = new Event();
         ev.setSynchronizedVitamDate(OffsetDateTime.now().minusDays(ttlInDays));
         ev.setStatus(EventStatus.SUCCESS);

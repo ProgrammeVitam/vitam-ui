@@ -1,5 +1,8 @@
 #jinja2: lstrip_blocks: True
 spring:
+  web:
+    error:
+      path: /error
   application:
     name: vitamui-{{ vitamui_struct.vitamui_component }}
   cloud:
@@ -13,9 +16,9 @@ spring:
         healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
         tags: vitamui, {{ vitamui_struct.vitamui_component }}
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
-  data:
-    mongodb:
-      uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
+
+  mongodb:
+    uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
 
 cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 
@@ -33,8 +36,7 @@ server:
     client-certificate-header-name: {{ vitamui.api_gateway.client_certificate_header_name | default('x-ssl-cert') }}
 {% endif %}
 
-  error:
-    path: /error
+
   max-http-request-header-size: {{ vitamui_struct.server_max_http_header_size | default('10KB') }}
   tomcat:
     accesslog:

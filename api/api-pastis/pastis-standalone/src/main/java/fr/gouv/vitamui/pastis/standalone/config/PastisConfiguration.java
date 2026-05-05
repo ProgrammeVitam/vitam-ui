@@ -47,9 +47,12 @@ import fr.gouv.vitamui.pastis.server.service.MetaModelService;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
 import fr.gouv.vitamui.pastis.standalone.service.ExternalSchemaServiceStandaloneImpl;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
+import org.springframework.boot.webmvc.autoconfigure.error.ErrorViewResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.ModelAndView;
 
 import static java.util.Collections.emptyMap;
@@ -57,6 +60,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @Configuration
+@EnableWebSecurity
 public class PastisConfiguration {
 
     @Value("${pastis.client.url}")
@@ -84,8 +88,12 @@ public class PastisConfiguration {
     }
 
     @Bean
-    public PastisService pastisService() {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    public PastisService pastisService(ObjectMapper objectMapper) {
         return new PastisService(
             objectMapper,
             null,
@@ -101,5 +109,12 @@ public class PastisConfiguration {
     @Bean
     public PuaPastisValidator puaPastisValidator() {
         return new PuaPastisValidator();
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) {
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
+        return http.build();
     }
 }

@@ -38,7 +38,7 @@ public class EventServiceIntegrationTest extends AbstractMongoTests {
     }
 
     @Test
-    public void createLogbook() {
+    void createLogbook() {
         String evIdReq = UUID.randomUUID().toString();
         HttpContext context = new HttpContext(10, "", true, "x-application-id", "identity", evIdReq, "", null);
         service.logCreate(context, "AC-000002", 10, "obId", "TEST", EventType.EXT_VITAMUI_CREATE_USER, "data");

@@ -16,14 +16,14 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TenantConverterTest {
+class TenantConverterTest {
 
     private final OwnerRepository ownerRepository = Mockito.mock(OwnerRepository.class);
 
     private final TenantConverter tenantConverter = new TenantConverter(ownerRepository);
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         Tenant tenant = new Tenant();
         tenant.setAccessContractHoldingIdentifier("AC-000002");
         tenant.setAccessContractLogbookIdentifier("AC-00001");
@@ -41,14 +41,14 @@ public class TenantConverterTest {
     }
 
     @Test
-    public void testConvertToToEntity() {
+    void testConvertToToEntity() {
         TenantDto tenantDto = IamDtoBuilder.buildTenantDto("id", "name", 10, "ownerId", "customerId");
         Tenant res = tenantConverter.convertDtoToEntity(tenantDto);
         assertThat(res).isEqualToComparingFieldByField(tenantDto);
     }
 
     @Test
-    public void testConvertToLogbook() throws InvalidParseOperationException {
+    void testConvertToLogbook() throws InvalidParseOperationException {
         TenantDto tenantDto = IamDtoBuilder.buildTenantDto("id", "name", 10, "ownerId", "customerId");
         Owner owner = new Owner();
         tenantDto.setAccessContractHoldingIdentifier("AC-000001");

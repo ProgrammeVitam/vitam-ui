@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IdentityProviderConverterTest {
+class IdentityProviderConverterTest {
 
     private static final String CUSTOMER_ID = "customerId";
     private static final boolean ENABLED = true;
@@ -49,7 +49,7 @@ public class IdentityProviderConverterTest {
     private final IdentityProviderConverter converter = new IdentityProviderConverter(spMetadataGenerator);
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         IdentityProvider idp = new IdentityProvider();
         idp.setCustomerId(CUSTOMER_ID);
         idp.setEnabled(ENABLED);
@@ -82,7 +82,7 @@ public class IdentityProviderConverterTest {
     }
 
     @Test
-    public void testConvertDtoToEntity() {
+    void testConvertDtoToEntity() {
         IdentityProviderDto idp = new IdentityProviderDto();
         idp.setCustomerId(CUSTOMER_ID);
         idp.setEnabled(ENABLED);
@@ -115,7 +115,7 @@ public class IdentityProviderConverterTest {
     }
 
     @Test
-    public void testConvertToLogbook() throws InvalidParseOperationException {
+    void testConvertToLogbook() throws InvalidParseOperationException {
         IdentityProviderDto idp = new IdentityProviderDto();
         idp.setCustomerId(CUSTOMER_ID);
         idp.setEnabled(ENABLED);

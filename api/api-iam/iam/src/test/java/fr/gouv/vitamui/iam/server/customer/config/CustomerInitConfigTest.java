@@ -47,12 +47,12 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyConfig() {
+    void testAfterPropertiesWithEmptyConfig() {
         customerInitConfig.afterPropertiesSet();
     }
 
     @Test
-    public void testAfterPropertiesWithValidConfig() {
+    void testAfterPropertiesWithValidConfig() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
             List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_1, EMAIl, LEVEL_2))
@@ -61,7 +61,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyProfileNameForProfile() {
+    void testAfterPropertiesWithEmptyProfileNameForProfile() {
         customerInitConfig.setProfiles(List.of(new CustomerInitConfig.ProfileInitConfig("", null, null, null, null)));
         assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
@@ -69,7 +69,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyAppNameForProfile() {
+    void testAfterPropertiesWithEmptyAppNameForProfile() {
         customerInitConfig.setProfiles(
             List.of(new CustomerInitConfig.ProfileInitConfig(PROFILE_NAME_1, DESCRIPTION_1, LEVEL_1, "", null))
         );
@@ -79,7 +79,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyRolesForProfile() {
+    void testAfterPropertiesWithEmptyRolesForProfile() {
         customerInitConfig.setProfiles(
             List.of(
                 new CustomerInitConfig.ProfileInitConfig(
@@ -97,7 +97,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithDuplicateRolesForProfile() {
+    void testAfterPropertiesWithDuplicateRolesForProfile() {
         customerInitConfig.setProfiles(
             List.of(
                 new CustomerInitConfig.ProfileInitConfig(
@@ -115,7 +115,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithDuplicateProfileName() {
+    void testAfterPropertiesWithDuplicateProfileName() {
         customerInitConfig.setProfiles(
             Arrays.asList(
                 new CustomerInitConfig.ProfileInitConfig(
@@ -140,7 +140,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyProfileNameForTenantProfile() {
+    void testAfterPropertiesWithEmptyProfileNameForTenantProfile() {
         customerInitConfig.setTenantProfiles(
             List.of(new CustomerInitConfig.ProfileInitConfig("", null, null, null, null))
         );
@@ -150,7 +150,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyAppNameForTenantProfile() {
+    void testAfterPropertiesWithEmptyAppNameForTenantProfile() {
         customerInitConfig.setTenantProfiles(
             List.of(new CustomerInitConfig.ProfileInitConfig(PROFILE_NAME_1, DESCRIPTION_1, LEVEL_1, "", null))
         );
@@ -160,7 +160,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyRolesForTenantProfile() {
+    void testAfterPropertiesWithEmptyRolesForTenantProfile() {
         customerInitConfig.setTenantProfiles(
             List.of(
                 new CustomerInitConfig.ProfileInitConfig(
@@ -178,7 +178,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithDuplicateRolesForTenantProfile() {
+    void testAfterPropertiesWithDuplicateRolesForTenantProfile() {
         customerInitConfig.setTenantProfiles(
             List.of(
                 new CustomerInitConfig.ProfileInitConfig(
@@ -196,7 +196,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithDuplicateTenantProfileName() {
+    void testAfterPropertiesWithDuplicateTenantProfileName() {
         customerInitConfig.setTenantProfiles(
             Arrays.asList(
                 new CustomerInitConfig.ProfileInitConfig(
@@ -221,7 +221,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyProfileNameForGroup() {
+    void testAfterPropertiesWithEmptyProfileNameForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
             List.of(new CustomerInitConfig.ProfilesGroupInitConfig("", null, null, false, null))
@@ -232,7 +232,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyProfilesForGroup() {
+    void testAfterPropertiesWithEmptyProfilesForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
             List.of(new CustomerInitConfig.ProfilesGroupInitConfig(GROUP_NAME_1, DESCRIPTION_2, LEVEL_2, false, null))
@@ -243,7 +243,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithUndefinedProfileForGroup() {
+    void testAfterPropertiesWithUndefinedProfileForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
             List.of(
@@ -262,7 +262,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithDuplicateProfilesForGroup() {
+    void testAfterPropertiesWithDuplicateProfilesForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
             List.of(
@@ -281,7 +281,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithDuplicateProfilesGroups() {
+    void testAfterPropertiesWithDuplicateProfilesGroups() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
             Arrays.asList(
@@ -332,7 +332,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyLastNameForUser() {
+    void testAfterPropertiesWithEmptyLastNameForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(List.of(new CustomerInitConfig.UserInitConfig("", null, null, null, null)));
         assertThatThrownBy(customerInitConfig::afterPropertiesSet)
@@ -341,7 +341,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyFirstNameForUser() {
+    void testAfterPropertiesWithEmptyFirstNameForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, "", null, null, null)));
         assertThatThrownBy(customerInitConfig::afterPropertiesSet)
@@ -350,7 +350,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyGroupNameForUser() {
+    void testAfterPropertiesWithEmptyGroupNameForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
             List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, "", null, null))
@@ -361,7 +361,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithUndefinedProfilesGroupForUser() {
+    void testAfterPropertiesWithUndefinedProfilesGroupForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
             List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_2, "", null))
@@ -372,7 +372,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyEmailForUser() {
+    void testAfterPropertiesWithEmptyEmailForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
             List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_1, "", LEVEL_2))
@@ -383,7 +383,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithDuplicateEmailForUser() {
+    void testAfterPropertiesWithDuplicateEmailForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
             Arrays.asList(
@@ -397,7 +397,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithUnfoundOtherRoles() {
+    void testAfterPropertiesWithUnfoundOtherRoles() {
         setValidProfiles();
         customerInitConfig.setAdminProfiles(
             List.of(
@@ -420,7 +420,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAfterPropertiesWithOtherRoles() {
+    void testAfterPropertiesWithOtherRoles() {
         setValidProfiles();
         customerInitConfig.setAdminProfiles(
             List.of(

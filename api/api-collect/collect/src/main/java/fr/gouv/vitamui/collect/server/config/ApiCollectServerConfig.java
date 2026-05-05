@@ -27,7 +27,9 @@
 
 package fr.gouv.vitamui.collect.server.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.collect.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
@@ -39,7 +41,7 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
-import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
@@ -48,11 +50,11 @@ import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 @Import(
@@ -67,15 +69,26 @@ import org.springframework.context.annotation.Import;
 public class ApiCollectServerConfig extends AbstractContextConfiguration {
 
     @Bean
-    public SecurityApiClientsFactory securityApiClientsFactory(
-        final ApiCollectApplicationProperties apiCollectApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder
-    ) {
-        return new SecurityApiClientsFactory(apiCollectApplicationProperties.getSecurityClient(), restTemplateBuilder);
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
     }
 
     @Bean
-    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
+    public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
+        final ApiCollectApplicationProperties apiCollectApplicationProperties,
+        final RestClient.Builder restClientBuilder
+    ) {
+        return new SecurityApiClientsFactoryVitamui(
+            apiCollectApplicationProperties.getSecurityClient(),
+            restClientBuilder
+        );
+    }
+
+    @Bean
+    public ContextsApi contextsApi(final SecurityApiClientsFactoryVitamui securityApiClientsFactory) {
         return securityApiClientsFactory.getContextsApi();
     }
 
@@ -101,15 +114,15 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamApiClientsFactory iamApiClientsFactory(
+    public IamApiClientsFactoryVitamui iamApiClientsFactory(
         final ApiCollectApplicationProperties apiCollectApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder
+        final RestClient.Builder restClientBuilder
     ) {
-        return new IamApiClientsFactory(apiCollectApplicationProperties.getIamClient(), restTemplateBuilder);
+        return new IamApiClientsFactoryVitamui(apiCollectApplicationProperties.getIamClient(), restClientBuilder);
     }
 
     @Bean
-    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
+    public UsersApi usersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
         return iamApiClientsFactory.getUsersApi();
     }
 
@@ -119,7 +132,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
         return iamApiClientsFactory.getExternalParametersApi();
     }
 
