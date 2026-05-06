@@ -4,13 +4,19 @@
     "outDir": "../../out-tsc/spec",
     "types": [
       "node"
-    ]
+    ],
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strict": false,
+    "noImplicitOverride": false
   },
   "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
+    "src/**/*.ts"
   ],
   "files": [
     "../../test.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
 }
