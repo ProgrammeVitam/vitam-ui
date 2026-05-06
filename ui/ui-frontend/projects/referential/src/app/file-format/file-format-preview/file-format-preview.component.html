@@ -9,13 +9,7 @@
     </mat-tab>
 
     <mat-tab [label]="'FILE_FORMATS.TAB.HISTORY.TITLE' | translate">
-      <vitamui-common-operation-history-tab
-        [id]="fileFormat?.puid"
-        [identifier]="fileFormat?.puid"
-        collectionName="fileformat"
-        [filter]="filterEvents"
-      >
-      </vitamui-common-operation-history-tab>
+      <vitamui-common-operation-history-tab [id]="fileFormat?.puid" [identifier]="fileFormat?.puid" collectionName="fileformat" />
     </mat-tab>
   </mat-tab-group>
 </div>

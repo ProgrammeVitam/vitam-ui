@@ -108,6 +108,8 @@ import { VitamuiTreeNodeComponent } from './components/vitamui-tree-node/vitamui
 import { InputComponent } from '../../lib/components/input/input.component';
 import { VitamUIFieldErrorComponent } from './components/vitamui-field-error/vitamui-field-error.component';
 import { ElementsComponent } from './components/elements/elements.component';
+import { EventTypeLabelComponent } from './logbook';
+import { HistoryEventsComponent } from './logbook/history/history-events/history-events.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -157,9 +159,11 @@ export function startupServiceFactory(startupService: StartupService, authServic
     DragAndDropDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
+    EventTypeLabelComponent,
     FileSelectorComponent,
     FooterComponent,
     HeaderModule,
+    HistoryEventsComponent,
     InfiniteScrollModule,
     InputComponent,
     LogbookModule,
@@ -219,9 +223,11 @@ export function startupServiceFactory(startupService: StartupService, authServic
     DragAndDropDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
+    EventTypeLabelComponent,
     FileSelectorComponent,
     FooterComponent,
     HeaderModule,
+    HistoryEventsComponent,
     InfiniteScrollModule,
     InputComponent,
     LogbookModule,

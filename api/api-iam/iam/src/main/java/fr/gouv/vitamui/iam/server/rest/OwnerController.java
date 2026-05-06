@@ -47,7 +47,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.owner.service.OwnerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,6 +72,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -166,7 +167,8 @@ public class OwnerController implements CrudController<OwnerDto> {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     @Operation(operationId = "owners_findHistoryById", summary = "Get owner history by its id")
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
+    @Secured(ServicesData.ROLE_GET_OWNERS)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);

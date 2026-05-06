@@ -38,9 +38,6 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { LogbookApiService } from './api/logbook-api.service';
-import { ApiEvent, IEvent } from './models';
-
 const HTTP_STATUS_OK = 200;
 
 export abstract class BaseHttpClient<T extends { id: string }> {
@@ -94,11 +91,5 @@ export abstract class BaseHttpClient<T extends { id: string }> {
 
   protected patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<T> {
     return this.http.patch<T>(this.apiUrl + '/' + data.id, data, { headers });
-  }
-
-  public logbook(id: string, headers?: HttpHeaders): Observable<{ $results: IEvent[] }> {
-    return this.http
-      .get<{ $results: ApiEvent[] }>(this.apiUrl + '/' + id + '/logbook', { headers })
-      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 }

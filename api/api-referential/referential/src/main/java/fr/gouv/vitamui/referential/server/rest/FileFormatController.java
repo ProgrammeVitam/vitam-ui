@@ -49,7 +49,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.fileformat.FileFormatService;
@@ -80,6 +80,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -182,8 +183,7 @@ public class FileFormatController {
         return fileFormatService.patch(partialDto);
     }
 
-    private LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException {
+    private List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);

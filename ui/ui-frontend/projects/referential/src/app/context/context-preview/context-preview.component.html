@@ -17,13 +17,7 @@
     </mat-tab>
 
     <mat-tab [label]="'CONTEXTS_APP.TAB.HISTORY.TITLE' | translate">
-      <vitamui-common-operation-history-tab
-        [id]="context?.identifier"
-        [identifier]="context?.identifier"
-        collectionName="context"
-        [filter]="filterEvents"
-      >
-      </vitamui-common-operation-history-tab>
+      <vitamui-common-operation-history-tab [id]="context?.identifier" [identifier]="context?.identifier" collectionName="context" />
     </mat-tab>
   </mat-tab-group>
 </div>

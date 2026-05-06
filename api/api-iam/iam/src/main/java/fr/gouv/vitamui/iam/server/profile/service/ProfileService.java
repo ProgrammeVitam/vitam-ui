@@ -37,8 +37,6 @@
 
 package fr.gouv.vitamui.iam.server.profile.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -49,17 +47,15 @@ import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.QueryOperator;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
+import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.ApiIamConstants;
@@ -528,7 +524,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         return profileConverter;
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
@@ -547,18 +543,12 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             MongoDbCollections.PROFILES,
             vitamContext
         );
-        final JsonNode body = logbookService
-            .findEventsByIdentifierAndCollectionNames(
-                profile.get().getIdentifier(),
-                MongoDbCollections.PROFILES,
-                vitamContext
-            )
-            .toJsonNode();
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            profile.get().getIdentifier(),
+            MongoDbCollections.PROFILES,
+            vitamContext,
+            List.of(EventType.EXT_VITAMUI_CREATE_PROFILE.name(), EventType.EXT_VITAMUI_UPDATE_PROFILE.name())
+        );
     }
 
     /**

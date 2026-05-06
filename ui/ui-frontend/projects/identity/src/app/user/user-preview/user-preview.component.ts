@@ -171,20 +171,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this.previewClose.emit();
   }
 
-  filterAuthenticationEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_CREATE_USER') ||
-        event.outDetail.includes('EXT_VITAMUI_UPDATE_USER') ||
-        event.outDetail.includes('EXT_VITAMUI_BLOCK_USER') ||
-        event.outDetail.includes('EXT_VITAMUI_PASSWORD_REVOCATION') ||
-        event.outDetail.includes('EXT_VITAMUI_PASSWORD_INIT') ||
-        event.outDetail.includes('EXT_VITAMUI_PASSWORD_CHANGE') ||
-        event.outDetail.includes('EXT_VITAMUI_CREATE_USER_INFO') ||
-        event.outDetail.includes('EXT_VITAMUI_UPDATE_USER_INFO'))
-    );
-  }
-
   deleteUser(user: User, status: string) {
     const emailadress = user.email.split('@');
     const email = 'anonyme-' + user.identifier + '@' + emailadress[1];
