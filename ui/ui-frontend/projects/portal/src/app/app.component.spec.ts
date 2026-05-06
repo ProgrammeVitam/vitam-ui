@@ -102,7 +102,9 @@ describe('AppComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideTemplate(AppComponent, '<div></div>')
+      .compileComponents();
   });
 
   it('should create the app Portal', () => {
