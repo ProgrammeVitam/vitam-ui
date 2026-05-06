@@ -104,6 +104,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/identity/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
@@ -216,6 +217,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/portal/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
@@ -334,6 +336,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/referential/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
@@ -481,6 +484,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/design-system/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
@@ -583,6 +587,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/ingest/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
@@ -687,6 +692,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/archive-search/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
@@ -791,6 +797,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/collect/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
@@ -905,6 +912,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "buildTarget": "::development",
             "tsConfig": "projects/pastis/tsconfig.spec.json",
             "providersFile": "test.ts"
           }
