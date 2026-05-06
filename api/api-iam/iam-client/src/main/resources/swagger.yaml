@@ -4,46 +4,46 @@ info:
     contact:
         name: Programme Vitam
         email: contact@programmevitam.fr
-    version: 9.0.0-SNAPSHOT
+    version: 9.1.0-SNAPSHOT
 servers:
-    - url: https://dev.vitamui.com:8083
-      description: Generated server url
+    -   url: https://dev.vitamui.com:8083
+        description: Generated server url
 security:
-    - bearer: []
-      x-tenant-id: []
+    -   bearer: [ ]
+        x-tenant-id: [ ]
 tags:
-    - name: Owners
-      description: Owners Management
-    - name: IdentityProviders
-      description: Identity Providers Management
-    - name: Tenants
-      description: Tenants Management
-    - name: Logbooks
-      description: Logbooks Management
-    - name: ExternalParamProfile
-      description: Access Contract External Parameters Profile
-    - name: Applications
-      description: Applications Management
-    - name: Groups
-      description: Profiles Groups Management
-    - name: Subrogations
-      description: Subrogation Management
-    - name: Customers
-      description: Customers Management
-    - name: Users
-      description: Users Management
-    - name: Cas
-      description: User authentication management for CAS
-    - name: Status
-      description: Status check and autotest
-    - name: Profiles
-      description: Profiles Management
-    - name: ExternalParameters
-      description: External Parameters Management
-    - name: UserInfo
-      description: User Information Management
-    - name: Security
-      description: Security Management
+    -   name: Owners
+        description: Owners Management
+    -   name: IdentityProviders
+        description: Identity Providers Management
+    -   name: Tenants
+        description: Tenants Management
+    -   name: Logbooks
+        description: Logbooks Management
+    -   name: ExternalParamProfile
+        description: Access Contract External Parameters Profile
+    -   name: Applications
+        description: Applications Management
+    -   name: Groups
+        description: Profiles Groups Management
+    -   name: Subrogations
+        description: Subrogation Management
+    -   name: Customers
+        description: Customers Management
+    -   name: Users
+        description: Users Management
+    -   name: Cas
+        description: User authentication management for CAS
+    -   name: Status
+        description: Status check and autotest
+    -   name: Profiles
+        description: Profiles Management
+    -   name: ExternalParameters
+        description: External Parameters Management
+    -   name: UserInfo
+        description: User Information Management
+    -   name: Security
+        description: Security Management
 paths:
     /iam/v1/users/{id}:
         get:
@@ -52,12 +52,12 @@ paths:
             summary: Get a user by its id
             operationId: users_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -72,12 +72,12 @@ paths:
             summary: Patch a user
             operationId: users_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -104,12 +104,12 @@ paths:
             summary: Get a tenant by its identifier
             operationId: tenants_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -124,12 +124,12 @@ paths:
             summary: Update a tenant
             operationId: tenants_update
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -151,12 +151,12 @@ paths:
             summary: Patch a tenant
             operationId: tenants_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -183,12 +183,12 @@ paths:
             summary: Get subrogation by id
             operationId: subrogations_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -203,12 +203,12 @@ paths:
             summary: Update a subrogation
             operationId: subrogations_update
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -230,12 +230,12 @@ paths:
             summary: Delete a subrogation by id
             operationId: subrogations_delete
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -245,12 +245,12 @@ paths:
             summary: Check the existence of a subrogation by id
             operationId: subrogations_checkExist
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -261,12 +261,12 @@ paths:
             summary: Get an owner by its id
             operationId: owners_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -281,12 +281,12 @@ paths:
             summary: Update an owner
             operationId: owners_update
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -308,12 +308,12 @@ paths:
             summary: Patch an owner
             operationId: owners_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -340,12 +340,12 @@ paths:
             summary: Get external parameter profile by id
             operationId: externalParamProfile_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -361,12 +361,12 @@ paths:
             summary: Get a customer by its id
             operationId: customers_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -381,12 +381,12 @@ paths:
             summary: Update a customer
             operationId: customers_update
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -408,12 +408,12 @@ paths:
             summary: Patch a customer entity
             operationId: customers_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -435,20 +435,20 @@ paths:
             summary: Get log book operation by json select
             operationId: logbooks_findOperations
             parameters:
-                - name: X-Tenant-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: vitamTenantIdentifier
-                  in: query
-                  required: false
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
+                -   name: X-Tenant-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: vitamTenantIdentifier
+                    in: query
+                    required: false
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -471,41 +471,41 @@ paths:
             summary: "Get all users, paginated"
             operationId: users_getAllPaginated
             parameters:
-                - name: page
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: size
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: orderBy
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: direction
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                      enum:
-                          - ASC
-                          - DESC
+                -   name: page
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: size
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: orderBy
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: direction
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                        enum:
+                            - ASC
+                            - DESC
             responses:
                 "200":
                     description: OK
@@ -587,12 +587,12 @@ paths:
             summary: Get all tenants
             operationId: tenants_getAll
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -631,12 +631,12 @@ paths:
             summary: Get all subrogations
             operationId: subrogations_getAll
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -675,18 +675,18 @@ paths:
             summary: Get all identity providers
             operationId: identityProviders_getAll
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -739,18 +739,18 @@ paths:
             summary: Get all profiles
             operationId: profiles_getAll
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -810,18 +810,18 @@ paths:
             summary: Get all groups
             operationId: groups_getAll
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -860,47 +860,47 @@ paths:
             summary: "Get external parameters profile, paginated result"
             operationId: externalParamProfile_getAllPaginated
             parameters:
-                - name: page
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: size
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: orderBy
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: direction
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                      enum:
-                          - ASC
-                          - DESC
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: page
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: size
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: orderBy
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: direction
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                        enum:
+                            - ASC
+                            - DESC
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -936,12 +936,12 @@ paths:
             summary: Get all customer objects
             operationId: customers_getAll
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -979,24 +979,24 @@ paths:
             summary: Change password of a user
             operationId: cas_changePassword
             parameters:
-                - name: username
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: password
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: customerId
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: username
+                    in: header
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: password
+                    in: header
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: customerId
+                    in: header
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1034,12 +1034,12 @@ paths:
             summary: Get user info by id
             operationId: userInfo_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1054,12 +1054,12 @@ paths:
             summary: Patch user info by id
             operationId: userInfo_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -1124,12 +1124,12 @@ paths:
             summary: Accept a subrogation
             operationId: subrogations_accept
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1145,24 +1145,24 @@ paths:
             summary: Get an identity provider by its id
             operationId: identityProviders_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1177,12 +1177,12 @@ paths:
             summary: Patch an identity provider
             operationId: identityProviders_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -1209,12 +1209,12 @@ paths:
             summary: Patch a keystore provider
             operationId: identityProviders_patchProviderKeystore
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -1248,12 +1248,12 @@ paths:
             summary: Get an identity provider's idp metadata by its id
             operationId: identityProviders_getIdpMetadataProviderByProviderId
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1270,12 +1270,12 @@ paths:
             summary: Update idpMetadata provider
             operationId: identityProviders_patchProviderIdpMetadata
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -1309,18 +1309,18 @@ paths:
             summary: Get a profile by its id
             operationId: profiles_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1335,12 +1335,12 @@ paths:
             summary: Patch a profile
             operationId: profiles_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -1367,24 +1367,24 @@ paths:
             summary: Get group by id
             operationId: groups_getOne
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1399,12 +1399,12 @@ paths:
             summary: Patch a group
             operationId: groups_patch
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             requestBody:
                 content:
                     application/json:
@@ -1456,12 +1456,12 @@ paths:
             summary: Check the existence of a user by criteria
             operationId: users_checkExist
             parameters:
-                - name: criteria
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1472,12 +1472,12 @@ paths:
             summary: Check if a tenant exists
             operationId: tenants_checkExist
             parameters:
-                - name: criteria
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1488,12 +1488,12 @@ paths:
             summary: Check the existence of a profile by criteria
             operationId: profiles_checkExist
             parameters:
-                - name: criteria
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1504,12 +1504,12 @@ paths:
             summary: Check the existence of an owner by criteria
             operationId: owners_checkExist
             parameters:
-                - name: criteria
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1520,12 +1520,12 @@ paths:
             summary: Check group existence
             operationId: groups_checkExist
             parameters:
-                - name: criteria
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1552,12 +1552,12 @@ paths:
             summary: Check that a customer exists
             operationId: customers_checkExist
             parameters:
-                - name: criteria
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1568,25 +1568,25 @@ paths:
             summary: Get unit lifecycle by id
             operationId: logbooks_findUnitLifeCyclesByUnitId
             parameters:
-                - name: X-Tenant-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: X-Access-Contract-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: X-Tenant-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: X-Access-Contract-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1602,25 +1602,25 @@ paths:
             summary: Get operation by id
             operationId: logbooks_findOperationByUnitId
             parameters:
-                - name: X-Tenant-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: X-Access-Contract-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: X-Tenant-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: X-Access-Contract-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1636,31 +1636,31 @@ paths:
             summary: Download the report file for a given operation
             operationId: logbooks_downloadReport
             parameters:
-                - name: X-Tenant-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: X-Access-Contract-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: downloadType
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: X-Tenant-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: X-Access-Contract-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: downloadType
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1671,19 +1671,19 @@ paths:
             summary: Download the manifest for a given operation
             operationId: logbooks_downloadManifest
             parameters:
-                - name: X-Tenant-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: X-Tenant-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1694,19 +1694,19 @@ paths:
             summary: Download the ATR file for a given operation
             operationId: logbooks_downloadAtr
             parameters:
-                - name: X-Tenant-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: X-Tenant-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1717,25 +1717,25 @@ paths:
             summary: Get object lifecycle by id
             operationId: logbooks_findObjectGroupLifeCyclesByUnitId
             parameters:
-                - name: X-Tenant-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: X-Access-Contract-Id
-                  in: header
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: X-Tenant-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: X-Access-Contract-Id
+                    in: header
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1766,12 +1766,12 @@ paths:
             summary: Get user history by its id
             operationId: users_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1801,12 +1801,12 @@ paths:
             summary: Get levels by criteria
             operationId: users_getLevels
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1826,12 +1826,12 @@ paths:
             summary: Export users to xlsx file
             operationId: users_exportUsers
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1849,12 +1849,12 @@ paths:
             summary: Get user info history by id
             operationId: userInfo_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1870,12 +1870,12 @@ paths:
             summary: Get history by tenant's id
             operationId: tenants_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -1910,41 +1910,41 @@ paths:
             summary: Get all generic users with criteria
             operationId: subrogations_getGenericUsers
             parameters:
-                - name: page
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: size
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: orderBy
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: direction
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                      enum:
-                          - ASC
-                          - DESC
+                -   name: page
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: size
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: orderBy
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: direction
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                        enum:
+                            - ASC
+                            - DESC
             responses:
                 "200":
                     description: OK
@@ -1988,12 +1988,12 @@ paths:
             summary: Get group by id
             operationId: subrogations_getGroupById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2023,12 +2023,12 @@ paths:
             summary: Get an identity provider's sp metadata by its id
             operationId: identityProviders_getSpMetadataProviderByProviderId
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2046,12 +2046,12 @@ paths:
             summary: Get profile history by its id
             operationId: profiles_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2067,47 +2067,47 @@ paths:
             summary: "Get all profiles, paginated result"
             operationId: profiles_getAllPaginated
             parameters:
-                - name: page
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: size
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: orderBy
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: direction
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                      enum:
-                          - ASC
-                          - DESC
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: page
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: size
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: orderBy
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: direction
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                        enum:
+                            - ASC
+                            - DESC
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2123,12 +2123,12 @@ paths:
             summary: Get levels by criteria
             operationId: profiles_getLevels
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2148,12 +2148,12 @@ paths:
             summary: Get owner history by its id
             operationId: owners_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2169,12 +2169,12 @@ paths:
             summary: Get group history by id
             operationId: groups_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2190,47 +2190,47 @@ paths:
             summary: "Get all groups, paginated"
             operationId: groups_getAllPaginated
             parameters:
-                - name: page
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: size
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: orderBy
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: direction
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                      enum:
-                          - ASC
-                          - DESC
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: page
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: size
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: orderBy
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: direction
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                        enum:
+                            - ASC
+                            - DESC
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2246,12 +2246,12 @@ paths:
             summary: Get levels by criteria
             operationId: groups_getLevels
             parameters:
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2287,12 +2287,12 @@ paths:
             summary: Get history by external parameter profile profile's id
             operationId: externalParamProfile_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2326,23 +2326,23 @@ paths:
             summary: Get customer logo
             operationId: customers_getLogo
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: type
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                      enum:
-                          - HEADER
-                          - FOOTER
-                          - PORTAL
-                          - USER
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: type
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                        enum:
+                            - HEADER
+                            - FOOTER
+                            - PORTAL
+                            - USER
             responses:
                 "200":
                     description: OK
@@ -2360,12 +2360,12 @@ paths:
             summary: Find history for a customer by its id
             operationId: customers_findHistoryById
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2381,41 +2381,41 @@ paths:
             summary: Get all customers using pagination
             operationId: customers_getAllPaginated
             parameters:
-                - name: page
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: size
-                  in: query
-                  required: true
-                  schema:
-                      type: integer
-                      format: int32
-                      example: null
-                - name: criteria
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: orderBy
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: direction
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                      enum:
-                          - ASC
-                          - DESC
+                -   name: page
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: size
+                    in: query
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: orderBy
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: direction
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                        enum:
+                            - ASC
+                            - DESC
             responses:
                 "200":
                     description: OK
@@ -2460,18 +2460,18 @@ paths:
             summary: Get all users having a given email address
             operationId: cas_getUsersByEmail
             parameters:
-                - name: email
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: email
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2490,36 +2490,36 @@ paths:
             summary: "Get a user by their loginEmail, loginCustomerId and idp"
             operationId: cas_getUser
             parameters:
-                - name: loginEmail
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: loginCustomerId
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: idp
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: userIdentifier
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: loginEmail
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: loginCustomerId
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: idp
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: userIdentifier
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2536,24 +2536,24 @@ paths:
                 super user email and customerId
             operationId: getSubrogationsBySuperUserIdOrEmailAndCustomerId
             parameters:
-                - name: superUserId
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: superUserEmail
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: superUserCustomerId
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: superUserId
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: superUserEmail
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: superUserCustomerId
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2572,24 +2572,24 @@ paths:
             summary: "Logout a user, remove the token and delete the subrogation if needed"
             operationId: cas_logout
             parameters:
-                - name: authToken
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: superUser
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: superUserCustomerId
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: authToken
+                    in: query
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: superUser
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: superUserCustomerId
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2600,15 +2600,15 @@ paths:
             summary: Get all customers by ids
             operationId: cas_getCustomersByIds
             parameters:
-                - name: customerIds
-                  in: query
-                  required: true
-                  schema:
-                      type: array
-                      example: null
-                      items:
-                          type: string
-                          example: null
+                -   name: customerIds
+                    in: query
+                    required: true
+                    schema:
+                        type: array
+                        example: null
+                        items:
+                            type: string
+                            example: null
             responses:
                 "200":
                     description: OK
@@ -2627,19 +2627,19 @@ paths:
             summary: Return all applications matching user privileges
             operationId: applications_getAll
             parameters:
-                - name: criteria
-                  in: query
-                  description: Criteria to filter the applications
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
+                -   name: criteria
+                    in: query
+                    description: Criteria to filter the applications
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+                -   name: embedded
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2658,12 +2658,12 @@ paths:
             summary: Check if an application can have an external identifier
             operationId: isApplicationExternalIdentifierEnabled
             parameters:
-                - name: identifier
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: identifier
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
@@ -2680,13 +2680,13 @@ paths:
             summary: Return config about applications and categories
             operationId: applications_getApplicationsFromUi
             parameters:
-                - name: filterApp
-                  in: query
-                  required: false
-                  schema:
-                      type: boolean
-                      example: null
-                      default: true
+                -   name: filterApp
+                    in: query
+                    required: false
+                    schema:
+                        type: boolean
+                        example: null
+                        default: true
             responses:
                 "200":
                     description: OK
@@ -2723,12 +2723,12 @@ paths:
             summary: Decline a subrogation
             operationId: subrogations_decline
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      example: null
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
             responses:
                 "200":
                     description: OK
