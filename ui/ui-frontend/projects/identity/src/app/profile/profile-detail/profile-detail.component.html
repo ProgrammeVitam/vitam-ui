@@ -13,12 +13,7 @@
     </mat-tab>
 
     <mat-tab [label]="'USER_PROFILE.TAB.HISTORY' | translate">
-      <vitamui-common-operation-history-tab
-        [id]="profile?.id"
-        [identifier]="profile?.identifier"
-        collectionName="profiles"
-        [filter]="filterEvents"
-      ></vitamui-common-operation-history-tab>
+      <vitamui-common-operation-history-tab [id]="profile?.id" [identifier]="profile?.identifier" collectionName="profiles" />
     </mat-tab>
   </mat-tab-group>
 </div>

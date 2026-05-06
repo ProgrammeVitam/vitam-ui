@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.iam.server.group.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -49,7 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.QueryOperator;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
@@ -57,8 +54,8 @@ import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
@@ -642,7 +639,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         return groupConverter;
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
@@ -651,18 +648,12 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
 
         final Optional<Group> group = getRepository().findById(id);
         group.orElseThrow(() -> new NotFoundException(String.format("No group found with id : %s", id)));
-        final JsonNode body = logbookService
-            .findEventsByIdentifierAndCollectionNames(
-                group.get().getIdentifier(),
-                MongoDbCollections.GROUPS,
-                vitamContext
-            )
-            .toJsonNode();
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            group.get().getIdentifier(),
+            MongoDbCollections.GROUPS,
+            vitamContext,
+            List.of(EXT_VITAMUI_CREATE_GROUP.name(), EXT_VITAMUI_UPDATE_GROUP.name())
+        );
     }
 
     /**

@@ -38,8 +38,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { Context } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { ConfirmActionComponent, Context } from 'vitamui-library';
 import { ContextService } from '../context.service';
 import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
 import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
@@ -111,13 +110,6 @@ export class ContextPreviewComponent implements AfterViewInit {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') || event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT'))
-    );
   }
 
   async emitClose() {

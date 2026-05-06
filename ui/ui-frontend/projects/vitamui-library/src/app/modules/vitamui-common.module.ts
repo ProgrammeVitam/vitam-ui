@@ -114,6 +114,8 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
 import { VitamuiSupHeaderModule } from './components/vitamui-sup-header/vitamui-sup-header.module';
 import { ElementsComponent } from './components/elements/elements.component';
+import { EventTypeLabelComponent } from './logbook';
+import { HistoryEventsComponent } from './logbook/history/history-events/history-events.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -160,7 +162,10 @@ export function startupServiceFactory(startupService: StartupService, authServic
     EditableFieldModule,
     EllipsisDirectiveModule,
     FooterModule,
+    EventTypeLabelComponent,
+    FileSelectorComponent,
     HeaderModule,
+    HistoryEventsComponent,
     InfiniteScrollModule,
     LogbookModule,
     LogbookOperationFacetModule,
@@ -228,7 +233,10 @@ export function startupServiceFactory(startupService: StartupService, authServic
     EditableFieldModule,
     EllipsisDirectiveModule,
     FooterModule,
+    EventTypeLabelComponent,
+    FileSelectorComponent,
     HeaderModule,
+    HistoryEventsComponent,
     InfiniteScrollModule,
     LogbookModule,
     LogbookOperationFacetModule,

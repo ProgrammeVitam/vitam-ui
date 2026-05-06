@@ -37,8 +37,6 @@
 
 package fr.gouv.vitamui.iam.server.tenant.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -54,18 +52,16 @@ import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NoRightsException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
+import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.ApiIamExternalConstants;
@@ -590,7 +586,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         internalGroupService.updateProfilesById(adminGroupDto.getId(), adminGroupDto.getProfileIds());
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
 
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
@@ -605,18 +601,12 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
             "Tenant History EvIdAppSession : {} ",
             securityService.buildVitamContext(securityService.getTenantIdentifier()).getApplicationSessionId()
         );
-        final JsonNode body = logbookService
-            .findEventsByIdentifierAndCollectionNames(
-                String.valueOf(tenant.get().getIdentifier()),
-                MongoDbCollections.TENANTS,
-                vitamContext
-            )
-            .toJsonNode();
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            String.valueOf(tenant.get().getIdentifier()),
+            MongoDbCollections.TENANTS,
+            vitamContext,
+            List.of(EventType.EXT_VITAMUI_CREATE_TENANT.name(), EventType.EXT_VITAMUI_UPDATE_TENANT.name())
+        );
     }
 
     @Override

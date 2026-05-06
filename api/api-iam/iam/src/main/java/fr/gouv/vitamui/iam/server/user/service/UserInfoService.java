@@ -37,23 +37,19 @@
 
 package fr.gouv.vitamui.iam.server.user.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
+import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.domain.SequencesConstants;
@@ -69,10 +65,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -176,7 +172,7 @@ public class UserInfoService extends AbstractResourceClientService<UserInfoDto, 
         return userInfoConverter;
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id " + id);
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
@@ -185,18 +181,12 @@ public class UserInfoService extends AbstractResourceClientService<UserInfoDto, 
 
         final Optional<UserInfo> userInfo = getRepository().findById(id);
         userInfo.orElseThrow(() -> new NotFoundException(String.format("No user information found with id : %s", id)));
-        final JsonNode body = logbookService
-            .findEventsByIdentifierAndCollectionNames(
-                userInfo.get().getIdentifier(),
-                MongoDbCollections.USER_INFOS,
-                vitamContext
-            )
-            .toJsonNode();
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            userInfo.get().getIdentifier(),
+            MongoDbCollections.USER_INFOS,
+            vitamContext,
+            List.of(EventType.EXT_VITAMUI_CREATE_USER_INFO.name(), EventType.EXT_VITAMUI_UPDATE_USER_INFO.name())
+        );
     }
 
     @Override
@@ -206,14 +196,6 @@ public class UserInfoService extends AbstractResourceClientService<UserInfoDto, 
         super.checkIdentifier(dto.getIdentifier(), message);
 
         dto.setIdentifier(getNextSequenceId(SequencesConstants.USER_INFOS_IDENTIFIER));
-    }
-
-    private UserInfo find(final String id, final String message) {
-        Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
-
-        return getRepository()
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException(message + ": no user info found for id " + id));
     }
 
     @Override

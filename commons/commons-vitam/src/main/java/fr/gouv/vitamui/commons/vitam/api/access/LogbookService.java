@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.access;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
@@ -56,20 +57,27 @@ import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.util.EvIdAppSessionParser;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import org.apache.http.HttpStatus;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils.responseMapping;
 
@@ -83,6 +91,8 @@ public class LogbookService {
     private static final String BATCH_REPORT = "batchreport";
     private static final String RULE_REPORT = "report";
     private static final String OBJECT_REPORT = "object";
+
+    private static final String CAS_CONTEXT = "Contexte CAS";
 
     private static final Set<String> INGEST_ALLOWED_TYPES_PROC = Set.of("MASTERDATA", "INGEST", "INGEST_TEST");
     private final AccessExternalClient accessExternalClient;
@@ -164,6 +174,7 @@ public class LogbookService {
 
     public RequestResponse<LogbookOperation> selectOperations(final JsonNode select, final VitamContext vitamContext)
         throws VitamClientException {
+        LOGGER.debug("selectOperations : select query {}, vitamContext {}", select, vitamContext);
         final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperations(vitamContext, select);
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;
@@ -172,27 +183,64 @@ public class LogbookService {
     /**
      *
      * @param identifier
-     * @param collectionNames
+     * @param collectionName
      * @param vitamContext
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<LogbookOperation> findEventsByIdentifierAndCollectionNames(
+    public List<HistoryEventDto> findEventsByIdentifierAndCollectionNames(
         final String identifier,
-        final String collectionNames,
-        final VitamContext vitamContext
+        final String collectionName,
+        final VitamContext vitamContext,
+        @Nullable final List<String> eventTypesFilter
     ) throws VitamClientException {
         LOGGER.debug(
             "findEventsByIdentifierAndCollectionNames for : identifier {}, collection {}, vitamContext {}",
             identifier,
-            collectionNames,
+            collectionName,
             vitamContext
         );
-        final ObjectNode select = buildOperationQuery(buildQuery(identifier, collectionNames));
-        LOGGER.debug("selectOperations : select query {}, vitamContext {}", select, vitamContext);
-        final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperations(vitamContext, select);
-        VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
-        return response;
+        final ObjectNode select = buildOperationQuery(buildQuery(identifier, collectionName));
+
+        final RequestResponse<LogbookOperation> response = selectOperations(select, vitamContext);
+
+        return toHistoryEvents(response, eventTypesFilter)
+            .stream()
+            // Only keep events matching collection name
+            .filter(e -> collectionName.equalsIgnoreCase(e.getObIdReq()))
+            .collect(Collectors.toList());
+    }
+
+    public @NonNull List<HistoryEventDto> toHistoryEvents(
+        RequestResponse<LogbookOperation> response,
+        @Nullable final List<String> eventTypesFilter
+    ) {
+        final JsonNode body = response.toJsonNode();
+        try {
+            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false)
+                .getResults()
+                .stream()
+                // Using flatMap to mix events from potentially several results in a unique list
+                .flatMap(logbookOperationDto -> {
+                    final String evIdAppSession = logbookOperationDto.getEvIdAppSession();
+                    final boolean isCAS = CAS_CONTEXT.equals(EvIdAppSessionParser.parseApiContextId(evIdAppSession));
+
+                    final String user = EvIdAppSessionParser.parseUserId(isCAS ? null : evIdAppSession);
+                    final String subrogator = EvIdAppSessionParser.parseSubrogatorId(isCAS ? null : evIdAppSession);
+
+                    return logbookOperationDto.getEvents().stream().map(e -> new HistoryEventDto(e, user, subrogator));
+                })
+                // Only keep events of the corresponding types (if set)
+                // FIXME: why are we filtering on outDetail and not type (N.B.: this is a port of some code that was previously in Angular)?
+                .filter(
+                    e ->
+                        CollectionUtils.isEmpty(eventTypesFilter) ||
+                        eventTypesFilter.stream().anyMatch(et -> e.getOutDetail().contains(et))
+                )
+                .collect(Collectors.toList());
+        } catch (final JsonProcessingException e) {
+            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
+        }
     }
 
     public RequestResponse<LogbookOperation> findEvents(
@@ -232,7 +280,7 @@ public class LogbookService {
             select.addOrderByDescFilter("events.evDateTime");
             return select.getFinalSelect();
         } catch (final InvalidCreateOperationException | InvalidParseOperationException e) {
-            throw new ApplicationServerException("An error occured while creating vitam query", e);
+            throw new ApplicationServerException("An error occurred while creating vitam query", e);
         }
     }
 
@@ -244,7 +292,7 @@ public class LogbookService {
             andQuery.add(obIdQuery, obIdReqQuery);
             return andQuery;
         } catch (InvalidCreateOperationException exception) {
-            throw new ApplicationServerException("An error occured while creating vitam query", exception);
+            throw new ApplicationServerException("An error occurred while creating vitam query", exception);
         }
     }
 
@@ -259,7 +307,7 @@ public class LogbookService {
             andQuery.add(obIdQuery, obIdReqQuery);
             return andQuery;
         } catch (InvalidCreateOperationException e) {
-            throw new ApplicationServerException("An error occured while creating vitam query", e);
+            throw new ApplicationServerException("An error occurred while creating vitam query", e);
         }
     }
 
@@ -306,7 +354,7 @@ public class LogbookService {
                 selectOperationbyId(id, vitamContext).toJsonNode(),
                 LogbookOperationsCommonResponseDto.class
             );
-            if (operation == null || operation.getResults() == null || operation.getResults().size() == 0) {
+            if (operation == null || operation.getResults() == null || operation.getResults().isEmpty()) {
                 throw new IllegalArgumentException(
                     "Unable to download object of operation " + id + ": the operation does not exist"
                 );
@@ -328,7 +376,7 @@ public class LogbookService {
             contentDispositionBuilder.filename(String.format(collection + "_%s.xml", id));
             response
                 .getHeaders()
-                .put(HttpHeaders.CONTENT_DISPOSITION, Arrays.asList(contentDispositionBuilder.build().toString()));
+                .put(HttpHeaders.CONTENT_DISPOSITION, List.of(contentDispositionBuilder.build().toString()));
 
             return response;
         } catch (final VitamClientException exception) {

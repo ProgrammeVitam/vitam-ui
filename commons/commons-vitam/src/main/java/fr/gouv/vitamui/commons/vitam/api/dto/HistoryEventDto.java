@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,15 +34,56 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import { EventTypeLabelComponent } from './event-type-label.component';
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@NgModule({
-  declarations: [EventTypeLabelComponent],
-  exports: [EventTypeLabelComponent],
-  imports: [CommonModule, TranslateModule],
-})
-export class EventTypeLabelModule {}
+import java.io.Serializable;
+
+@Getter
+@Setter
+@ToString
+public class HistoryEventDto implements Serializable {
+
+    @JsonProperty("type")
+    private String type;
+
+    @JsonProperty("dateTime")
+    private String dateTime;
+
+    @JsonProperty("outcome")
+    private String outcome;
+
+    @JsonProperty("outDetail")
+    private String outDetail;
+
+    @JsonProperty("data")
+    private String data;
+
+    @JsonProperty("obId")
+    private String obId;
+
+    @JsonProperty("obIdReq")
+    private String obIdReq;
+
+    @JsonProperty("user")
+    private String userIdentifier;
+
+    @JsonProperty("subrogator")
+    private String subrogatorIdentifier;
+
+    public HistoryEventDto(final LogbookEventDto logbookEventDto, String user, String subrogator) {
+        this.type = logbookEventDto.getEvType();
+        this.dateTime = logbookEventDto.getEvDateTime();
+        this.outcome = logbookEventDto.getOutcome();
+        this.outDetail = logbookEventDto.getOutDetail();
+        this.data = logbookEventDto.getEvDetData();
+        this.obId = logbookEventDto.getObId();
+        this.obIdReq = logbookEventDto.getObIdReq();
+        this.userIdentifier = user;
+        this.subrogatorIdentifier = subrogator;
+    }
+}

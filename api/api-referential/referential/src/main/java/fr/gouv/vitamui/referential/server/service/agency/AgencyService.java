@@ -55,11 +55,9 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
@@ -323,23 +321,22 @@ public class AgencyService extends AbstractService {
         return null;
     }
 
-    public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryByIdentifier(VitamContext vitamContext, final String id)
+        throws VitamClientException {
         try {
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
+            return logbookService.toHistoryEvents(
+                logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext),
+                List.of("EXT_VITAMUI_UPDATE_ACCESS_CONTRACT", "EXT_VITAMUI_CREATE_ACCESS_CONTRACT")
+            );
         } catch (InvalidCreateOperationException e) {
             throw new InternalServerException("Unable to fetch history", e);
         }
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         final VitamContext vitamContext = this.buildVitamContext();
 
-        final JsonNode body = this.findHistoryByIdentifier(vitamContext, id);
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return this.findHistoryByIdentifier(vitamContext, id);
     }
 
     public JsonNode importAgencies(String fileName, MultipartFile file) {

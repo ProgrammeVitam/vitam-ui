@@ -30,13 +30,7 @@
     </mat-tab>
 
     <mat-tab [label]="'AGENCY.TAB.HISTORY' | translate">
-      <vitamui-common-operation-history-tab
-        [id]="agency?.identifier"
-        [identifier]="agency?.identifier"
-        collectionName="agency"
-        [filter]="filterEvents"
-      >
-      </vitamui-common-operation-history-tab>
+      <vitamui-common-operation-history-tab [id]="agency?.identifier" [identifier]="agency?.identifier" collectionName="agency" />
     </mat-tab>
   </mat-tab-group>
 </div>

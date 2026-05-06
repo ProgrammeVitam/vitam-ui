@@ -35,17 +35,6 @@ public class OperationParser {
         return parse(json, NEW_VALUE_PREFIX);
     }
 
-    public String parseUserId(String evIdAppSession) {
-        if (evIdAppSession == null) {
-            return null;
-        }
-        String[] sessionData = evIdAppSession.split(":");
-        if (sessionData.length < 4) {
-            return null;
-        }
-        return sessionData[3];
-    }
-
     private String parse(String json, String prefix) {
         try {
             final HashMap<String, HashMap<String, String>> updateOperation = objectMapper.readValue(

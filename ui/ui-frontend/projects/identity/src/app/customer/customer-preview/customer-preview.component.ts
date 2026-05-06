@@ -82,11 +82,4 @@ export class CustomerPreviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.customerUpdatedSub.unsubscribe();
   }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_UPDATE_CUSTOMER') || event.outDetail.includes('EXT_VITAMUI_CREATE_CUSTOMER'))
-    );
-  }
 }

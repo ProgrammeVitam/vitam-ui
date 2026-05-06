@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.iam.server.externalparamprofile.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -51,13 +49,11 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.builder.ExternalParamDtoBuilder;
 import fr.gouv.vitamui.iam.server.common.builder.ProfileDtoBuilder;
@@ -197,7 +193,7 @@ public class ExternalParamProfileService {
         return externalParamProfileRepository.findByIdProfile(id);
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
             .setAccessContract(securityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
@@ -214,14 +210,15 @@ public class ExternalParamProfileService {
             "externalparamprofile",
             vitamContext
         );
-        final JsonNode body = logbookService
-            .findEventsByIdentifierAndCollectionNames(id, EXTERNAL_PARAM_PROFILE, vitamContext)
-            .toJsonNode();
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            id,
+            EXTERNAL_PARAM_PROFILE,
+            vitamContext,
+            List.of(
+                EventType.EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE.name(),
+                EventType.EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE.name()
+            )
+        );
     }
 
     @Transactional

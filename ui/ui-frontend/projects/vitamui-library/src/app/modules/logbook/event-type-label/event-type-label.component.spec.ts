@@ -38,6 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('EventTypeLabelComponent', () => {
   let component: EventTypeLabelComponent;
@@ -45,8 +46,7 @@ describe('EventTypeLabelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule],
-      declarations: [EventTypeLabelComponent],
+      imports: [EventTypeLabelComponent, VitamUICommonTestModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

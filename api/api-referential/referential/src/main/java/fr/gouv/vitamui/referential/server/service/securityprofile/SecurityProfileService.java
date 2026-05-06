@@ -59,7 +59,7 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
@@ -291,17 +291,16 @@ public class SecurityProfileService extends AbstractService {
         }
     }
 
-    public JsonNode findHistoryByIdentifier(VitamContext vitamSecurityProfile, final String identifier)
+    public List<HistoryEventDto> findHistoryByIdentifier(VitamContext vitamSecurityProfile, final String identifier)
         throws VitamClientException {
         LOGGER.debug("findHistoryById for identifier" + identifier);
         LOGGER.info(" Security Profile History EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
-        return logbookService
-            .findEventsByIdentifierAndCollectionNames(
-                identifier,
-                AdminCollections.ACCESS_CONTRACTS.getName(),
-                vitamSecurityProfile
-            )
-            .toJsonNode();
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            identifier,
+            AdminCollections.ACCESS_CONTRACTS.getName(),
+            vitamSecurityProfile,
+            List.of("EXT_VITAMUI_UPDATE_ACCESS_CONTRACT", "EXT_VITAMUI_CREATE_ACCESS_CONTRACT")
+        );
     }
 
     public SecurityProfileDto getOne(final String id) {
@@ -352,13 +351,8 @@ public class SecurityProfileService extends AbstractService {
         return delete(vitamContext, id);
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         VitamContext vitamContext = buildVitamContext();
-        JsonNode history = this.findHistoryByIdentifier(vitamContext, id);
-        try {
-            return objectMapper.treeToValue(history, LogbookOperationsCommonResponseDto.class);
-        } catch (JsonProcessingException e) {
-            throw new InternalServerException("Error parsing history data", e);
-        }
+        return this.findHistoryByIdentifier(vitamContext, id);
     }
 }
