@@ -39,11 +39,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ManagementContract } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { ConfirmActionComponent, ManagementContract } from 'vitamui-library';
 import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
+
 @Component({
   selector: 'app-management-contract-preview',
   templateUrl: './management-contract-preview.component.html',
@@ -92,14 +92,6 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
 
   updatedChange(updated: boolean, index: number) {
     this.tabUpdated[index] = updated;
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.toString().includes('STP_UPDATE_MANAGEMENT_CONTRACT') ||
-        event.outDetail.toString().includes('STP_IMPORT_MANAGEMENT_CONTRACT'))
-    );
   }
 
   async emitClose() {

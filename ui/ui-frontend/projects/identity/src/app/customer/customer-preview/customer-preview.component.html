@@ -28,12 +28,7 @@
     </mat-tab>
 
     <mat-tab [label]="'CUSTOMER.TAB.HISTORY' | translate">
-      <vitamui-common-operation-history-tab
-        [id]="customer?.id"
-        [identifier]="customer?.identifier"
-        collectionName="customers"
-        [filter]="filterEvents"
-      ></vitamui-common-operation-history-tab>
+      <vitamui-common-operation-history-tab [id]="customer?.id" [identifier]="customer?.identifier" collectionName="customers" />
     </mat-tab>
   </mat-tab-group>
 </div>

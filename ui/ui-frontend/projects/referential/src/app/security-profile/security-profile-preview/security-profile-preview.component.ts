@@ -38,8 +38,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { SecurityProfile } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { ConfirmActionComponent, SecurityProfile } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';
@@ -118,13 +117,6 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
   updateFullAccess(newValue: boolean) {
     this.securityProfile.fullAccess = newValue;
     this.permsTab.SecurityProfile = this.securityProfile;
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') || event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT'))
-    );
   }
 
   async emitClose() {

@@ -38,8 +38,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges,
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { IngestContract } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { ConfirmActionComponent, IngestContract } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
@@ -158,13 +157,6 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST_CONTRACT') || event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST_CONTRACT'))
-    );
   }
 
   async emitClose() {

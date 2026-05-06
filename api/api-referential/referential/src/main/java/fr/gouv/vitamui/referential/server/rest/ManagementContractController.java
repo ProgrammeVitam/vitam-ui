@@ -39,7 +39,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.managementcontract.service.ManagementContractService;
 import jakarta.validation.Valid;
@@ -65,6 +65,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -169,7 +170,7 @@ public class ManagementContractController {
 
     @GetMapping(CommonConstants.PATH_ID + "/history")
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);

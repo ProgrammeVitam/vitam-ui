@@ -37,21 +37,16 @@
 
 package fr.gouv.vitamui.iam.server.owner.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.common.domain.Address;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
@@ -82,6 +77,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_OWNER;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_TENANT;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDATE_OWNER;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDATE_TENANT;
 
 /**
  * The service to read, create, update and delete the tenants.
@@ -290,7 +290,7 @@ public class OwnerService extends AbstractResourceClientService<OwnerDto, Owner>
         );
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id {}", id);
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
@@ -302,18 +302,17 @@ public class OwnerService extends AbstractResourceClientService<OwnerDto, Owner>
 
         LOGGER.info("Find History EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
-        final JsonNode body = logbookService
-            .findEventsByIdentifierAndCollectionNames(
-                owner.get().getIdentifier(),
-                MongoDbCollections.OWNERS,
-                vitamContext
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            owner.get().getIdentifier(),
+            MongoDbCollections.OWNERS,
+            vitamContext,
+            List.of(
+                EXT_VITAMUI_CREATE_OWNER.name(),
+                EXT_VITAMUI_UPDATE_OWNER.name(),
+                EXT_VITAMUI_CREATE_TENANT.name(),
+                EXT_VITAMUI_UPDATE_TENANT.name()
             )
-            .toJsonNode();
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        );
     }
 
     private void checkIsReadonly(final boolean readonly, final String message) {

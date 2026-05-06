@@ -26,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.spy;
 
@@ -166,5 +167,19 @@ public class LogbookServiceTest {
 
         final Response response = logbookService.downloadAtr("vitamId", new VitamContext(10));
         VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void toHistoryEvents_should_return_ok_when_vitamclient_ok() {
+        assertThatCode(
+            () -> logbookService.toHistoryEvents(new RequestResponseOK<LogbookOperation>().setHttpCode(200), null)
+        ).doesNotThrowAnyException();
+    }
+
+    @Test
+    public void toHistoryEvents_should_return_ok_when_vitamclient_400() {
+        assertThatCode(
+            () -> logbookService.toHistoryEvents(new RequestResponseOK<LogbookOperation>().setHttpCode(400), null)
+        ).doesNotThrowAnyException();
     }
 }

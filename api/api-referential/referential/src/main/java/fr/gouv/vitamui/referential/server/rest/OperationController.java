@@ -51,7 +51,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
@@ -86,6 +86,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -94,7 +95,7 @@ import java.util.Optional;
 @Setter
 public class OperationController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AgencyController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationController.class);
 
     @Autowired
     private OperationService operationService;
@@ -129,7 +130,7 @@ public class OperationController {
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException {
         LOGGER.debug("get logbook for audit with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);

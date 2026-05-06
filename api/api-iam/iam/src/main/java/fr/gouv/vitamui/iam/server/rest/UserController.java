@@ -49,7 +49,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
@@ -222,7 +222,8 @@ public class UserController implements CrudController<UserDto> {
 
     @Operation(operationId = "users_findHistoryById", summary = "Get user history by its id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
+    @Secured(ServicesData.ROLE_GET_USERS)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
