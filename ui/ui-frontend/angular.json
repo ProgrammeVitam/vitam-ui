@@ -102,26 +102,9 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/identity/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/identity/src/polyfills.ts",
-            "tsConfig": "projects/identity/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/identity/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/identity/src/assets",
-              "projects/identity/src/favicon.ico",
-              "projects/identity/src/manifest.webmanifest"
-            ]
+            "tsConfig": "projects/identity/tsconfig.spec.json"
           }
         },
         "lint": {
@@ -230,26 +213,9 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/portal/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/portal/src/polyfills.ts",
-            "tsConfig": "projects/portal/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/portal/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/portal/src/assets",
-              "projects/portal/src/favicon.ico",
-              "projects/portal/src/manifest.webmanifest"
-            ]
+            "tsConfig": "projects/portal/tsconfig.spec.json"
           }
         },
         "lint": {
@@ -364,26 +330,9 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/referential/src/test.ts",
-            "polyfills": "projects/referential/src/polyfills.ts",
-            "tsConfig": "projects/referential/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js",
-            "assets": [
-              "projects/referential/src/favicon.ico",
-              "projects/referential/src/assets",
-              "projects/referential/src/manifest.webmanifest"
-            ],
-            "styles": [
-              "projects/referential/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "scripts": []
+            "tsConfig": "projects/referential/tsconfig.spec.json"
           }
         },
         "lint": {
@@ -429,11 +378,10 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/vitamui-library/src/test.ts",
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js"
+            "buildTarget": "portal:build:development"
           }
         },
         "lint": {
@@ -527,26 +475,9 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/design-system/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/design-system/src/polyfills.ts",
-            "tsConfig": "projects/design-system/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/design-system/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/design-system/src/assets",
-              "projects/design-system/src/favicon.ico",
-              "projects/design-system/src/manifest.webmanifest"
-            ]
+            "tsConfig": "projects/design-system/tsconfig.spec.json"
           }
         },
         "lint": {
@@ -645,26 +576,9 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/ingest/src/test.ts",
-            "polyfills": "projects/ingest/src/polyfills.ts",
-            "tsConfig": "projects/ingest/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js",
-            "assets": [
-              "projects/ingest/src/favicon.ico",
-              "projects/ingest/src/assets",
-              "projects/ingest/src/manifest.webmanifest"
-            ],
-            "styles": [
-              "projects/ingest/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "scripts": []
+            "tsConfig": "projects/ingest/tsconfig.spec.json"
           }
         },
         "lint": {
@@ -765,26 +679,9 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/archive-search/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/archive-search/src/polyfills.ts",
-            "tsConfig": "projects/archive-search/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/archive-search/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/archive-search/src/assets",
-              "projects/archive-search/src/favicon.ico",
-              "projects/archive-search/src/manifest.webmanifest"
-            ]
+            "tsConfig": "projects/archive-search/tsconfig.spec.json"
           }
         },
         "lint": {
@@ -885,26 +782,9 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/collect/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/collect/src/polyfills.ts",
-            "tsConfig": "projects/collect/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/collect/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/collect/src/assets",
-              "projects/collect/src/favicon.ico",
-              "projects/collect/src/manifest.webmanifest"
-            ]
+            "tsConfig": "projects/collect/tsconfig.spec.json"
           }
         },
         "lint": {
@@ -1015,26 +895,9 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/pastis/src/test.ts",
-            "polyfills": "projects/pastis/src/polyfills.ts",
-            "tsConfig": "projects/pastis/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js",
-            "assets": [
-              "projects/pastis/src/favicon.ico",
-              "projects/pastis/src/assets",
-              "projects/pastis/src/manifest.webmanifest"
-            ],
-            "styles": [
-              "projects/pastis/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "scripts": []
+            "tsConfig": "projects/pastis/tsconfig.spec.json"
           }
         },
         "lint": {
