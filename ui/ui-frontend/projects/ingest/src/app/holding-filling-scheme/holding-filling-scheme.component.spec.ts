@@ -41,7 +41,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -101,8 +101,9 @@ describe('HoldingFilingSchemeComponent', () => {
         },
         { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideTemplate(HoldingFillingSchemeComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {

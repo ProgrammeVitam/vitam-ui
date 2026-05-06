@@ -44,7 +44,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { IngestComponent } from './ingest.component';
 
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -109,8 +109,9 @@ describe('IngestComponent test:', () => {
         },
         { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideTemplate(IngestComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {

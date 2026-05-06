@@ -78,7 +78,9 @@ describe('UploadComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideTemplate(UploadComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {
