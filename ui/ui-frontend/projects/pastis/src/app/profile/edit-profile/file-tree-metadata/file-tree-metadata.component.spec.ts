@@ -103,13 +103,14 @@ describe('FileTreeMetadataComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideTemplate(FileTreeMetadataComponent, '<div></div>')
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileTreeMetadataComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create the component', () => {

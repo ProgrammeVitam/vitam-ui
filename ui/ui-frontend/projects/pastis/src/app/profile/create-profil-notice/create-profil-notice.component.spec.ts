@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateProfilNoticeComponent } from './create-profil-notice.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProfileService } from '../../core/services/profile.service';
 import { ApplicationService, InputComponent, SelectComponent, SlideToggleComponent } from 'vitamui-library';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfileType } from '../../models/profile-type.enum';
@@ -100,16 +100,16 @@ describe('CreateProfilNoticeComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should validate identifier via checkPaProfile when not PUA', fakeAsync(() => {
+  it('should validate identifier via checkPaProfile when not PUA', async () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
     mockProfileService.checkPaProfile.mockReturnValue(of(true));
     component.noticeForm.controls.identifier?.setValue('DUPLICATE');
 
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE' }));
-  }));
+  });
 
-  it('should disable identifier validators if External ID is disabled', fakeAsync(() => {
+  it('should disable identifier validators if External ID is disabled', async () => {
     fixture.detectChanges();
     component.noticeForm.controls.profileType?.setValue(ProfileType.PUA);
 
@@ -130,9 +130,9 @@ describe('CreateProfilNoticeComponent', () => {
     identifierCtrl?.setValue('');
     expect(identifierCtrl?.valid).toBe(true);
     expect(identifierCtrl?.validator).toBeNull();
-  }));
+  });
 
-  it('should check PA and set isIdentifierOK to true if unique', fakeAsync(() => {
+  it('should check PA and set isIdentifierOK to true if unique', async () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
     mockProfileService.checkPaProfile.mockReturnValue(of(false));
@@ -140,9 +140,9 @@ describe('CreateProfilNoticeComponent', () => {
 
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_TEST' }));
     expect(component.noticeForm.controls.identifier.invalid).toBe(false);
-  }));
+  });
 
-  it('should check PA and alert if duplicated', fakeAsync(() => {
+  it('should check PA and alert if duplicated', async () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
@@ -152,9 +152,9 @@ describe('CreateProfilNoticeComponent', () => {
 
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_PA' }));
     expect(component.noticeForm.controls.identifier.invalid).toBe(true);
-  }));
+  });
 
-  it('should check PUA and set isIdentifierOK to true if unique', fakeAsync(() => {
+  it('should check PUA and set isIdentifierOK to true if unique', async () => {
     component.profileTypeSignal.set(ProfileType.PUA);
     fixture.detectChanges();
     mockProfileService.checkPuaProfile.mockReturnValue(of(false));
@@ -162,9 +162,9 @@ describe('CreateProfilNoticeComponent', () => {
 
     expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_PUA' }));
     expect(component.noticeForm.controls.identifier.invalid).toBe(false);
-  }));
+  });
 
-  it('should check PUA and alert if duplicated', fakeAsync(() => {
+  it('should check PUA and alert if duplicated', async () => {
     component.profileTypeSignal.set(ProfileType.PUA);
     fixture.detectChanges();
     mockProfileService.checkPuaProfile.mockReturnValue(of(true));
@@ -173,7 +173,7 @@ describe('CreateProfilNoticeComponent', () => {
     expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_TEST' }));
     component.noticeForm.controls.profileType?.setValue(ProfileType.PUA);
     expect(component.noticeForm.controls.identifier.invalid).toBe(true);
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

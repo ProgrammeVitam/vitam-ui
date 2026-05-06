@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SaveProfilePopupComponent } from './save-profile-popup.component';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -160,7 +160,7 @@ describe('SaveProfilePopupComponent', () => {
     });
   });
 
-  it('should check PA and call validate identifier', fakeAsync(() => {
+  it('should check PA and call validate identifier', async () => {
     fixture.detectChanges();
 
     mockProfileService.profileType = ProfileType.PA;
@@ -169,9 +169,9 @@ describe('SaveProfilePopupComponent', () => {
     component.noticeForm.controls.identifier.setValue('UNIQUE_PA');
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_PA' }));
     expect(component.noticeForm.controls.identifier.invalid).toBe(false);
-  }));
+  });
 
-  it('should check PUA and alert if identifier is duplicated', fakeAsync(() => {
+  it('should check PUA and alert if identifier is duplicated', async () => {
     const MOCK_PROFILE_DESCRIPTIONS = [
       { identifier: 'PUA_001', name: 'Profile PUA One' },
       { identifier: 'PUA_002', name: 'Profile PUA Two' },
@@ -184,9 +184,9 @@ describe('SaveProfilePopupComponent', () => {
     component.noticeForm.controls.identifier.setValue('DUPLICATE_PUA');
     expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_PUA' }));
     expect(component.noticeForm.controls.identifier.invalid).toBe(true);
-  }));
+  });
 
-  it('should set validators on identifier when external ID is enabled', fakeAsync(() => {
+  it('should set validators on identifier when external ID is enabled', async () => {
     fixture.detectChanges();
 
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
@@ -199,9 +199,9 @@ describe('SaveProfilePopupComponent', () => {
 
     expect(ctrl?.hasValidator(Validators.required)).toBe(true);
     expect(ctrl.valid).toBe(false);
-  }));
+  });
 
-  it('should clear validators on identifier when external ID is disabled', fakeAsync(() => {
+  it('should clear validators on identifier when external ID is disabled', async () => {
     fixture.detectChanges();
 
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(false));
@@ -214,5 +214,5 @@ describe('SaveProfilePopupComponent', () => {
     const ctrl = component.noticeForm.controls.identifier;
     expect(ctrl.validator).toBeNull();
     expect(ctrl.valid).toBe(true);
-  }));
+  });
 });
