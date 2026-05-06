@@ -23,7 +23,7 @@
       </div>
     }
   </div>
-  @for (error of contractForm.errors; track error) {
+  @for (error of $any(contractForm.errors) ?? []; track error) {
     <vitamui-common-input-error>
       {{ error }}
     </vitamui-common-input-error>

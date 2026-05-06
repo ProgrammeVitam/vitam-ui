@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of, Subject } from 'rxjs';
@@ -96,6 +96,9 @@ class TestHostComponent {
   @ViewChild(SsoTabComponent, { static: false })
   component: SsoTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('SsoTabComponent', () => {
   let testhost: TestHostComponent;

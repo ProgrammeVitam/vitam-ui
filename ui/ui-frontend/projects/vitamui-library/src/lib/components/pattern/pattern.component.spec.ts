@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -65,6 +65,9 @@ class TestHostComponent {
   @ViewChild(PatternComponent, { static: false })
   component: PatternComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('PatternComponent', () => {
   let testhost: TestHostComponent;

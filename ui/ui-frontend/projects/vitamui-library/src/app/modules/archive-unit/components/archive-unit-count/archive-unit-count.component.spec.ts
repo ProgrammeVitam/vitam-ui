@@ -184,8 +184,8 @@ describe('ArchiveUnitCountComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.canLoadExactCount).toEqual(true, 'canLoadExactCount must be true');
-    expect(component.search).toBeTruthy('component.search is not truthy');
+    expect(component.canLoadExactCount).toEqual(true);
+    expect(component.search).toBeTruthy();
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
@@ -203,7 +203,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     const element = fixture.debugElement.query(By.css('a'));
 
-    expect(element).toBeTruthy('element <a> is not truthy');
+    expect(element).toBeTruthy();
   });
 
   it('should allow exact count loading again when the search query has changed', async () => {

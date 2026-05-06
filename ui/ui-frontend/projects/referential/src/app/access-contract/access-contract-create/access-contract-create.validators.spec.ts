@@ -47,7 +47,7 @@ describe('AccessContract Create Validators', () => {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
       accessContractServiceSpy.existsProperties.mockReturnValue(of(false));
-      const accessContractCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
+      const accessContractCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy as any);
       from(accessContractCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -60,7 +60,7 @@ describe('AccessContract Create Validators', () => {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
       accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -73,7 +73,7 @@ describe('AccessContract Create Validators', () => {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
       accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -115,7 +115,7 @@ describe('AccessContract Create Validators', () => {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
       accessContractServiceSpy.existsProperties.mockReturnValue(of(null));
-      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy as any);
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -128,7 +128,7 @@ describe('AccessContract Create Validators', () => {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
       accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy as any);
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -141,7 +141,7 @@ describe('AccessContract Create Validators', () => {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
       accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy as any);
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });

@@ -83,9 +83,12 @@ describe('SearchCriteriaSaverService', () => {
         savingDate: '02/05/2022',
         searchCriteriaList: [],
       };
-      service
-        .saveSearchCriteriaHistory(saveSearchCriteriaHistory)
-        .subscribe((searchCriteriaSaved) => expect(searchCriteriaSaved).toEqual(expectedSaveSearchCriteriaHistory), fail);
+      service.saveSearchCriteriaHistory(saveSearchCriteriaHistory).subscribe(
+        (searchCriteriaSaved) => expect(searchCriteriaSaved).toEqual(expectedSaveSearchCriteriaHistory),
+        (e: unknown) => {
+          throw e;
+        },
+      );
       const req = httpTestingController.expectOne('/fake-api/projects/archive-units/searchcriteriahistory');
       expect(req.request.method).toEqual('POST');
       req.flush(expectedSaveSearchCriteriaHistory);
@@ -109,9 +112,12 @@ describe('SearchCriteriaSaverService', () => {
         savingDate: '02/05/2022',
         searchCriteriaList: [],
       };
-      service
-        .updateSearchCriteriaHistory(saveSearchCriteriaHistory)
-        .subscribe((searchCriteriaSaved) => expect(searchCriteriaSaved).toEqual(expectedSaveSearchCriteriaHistory), fail);
+      service.updateSearchCriteriaHistory(saveSearchCriteriaHistory).subscribe(
+        (searchCriteriaSaved) => expect(searchCriteriaSaved).toEqual(expectedSaveSearchCriteriaHistory),
+        (e: unknown) => {
+          throw e;
+        },
+      );
       const req = httpTestingController.expectOne('/fake-api/projects/archive-units/searchcriteriahistory/saveSearchCriteriaId');
       expect(req.request.method).toEqual('PUT');
       req.flush(expectedSaveSearchCriteriaHistory);

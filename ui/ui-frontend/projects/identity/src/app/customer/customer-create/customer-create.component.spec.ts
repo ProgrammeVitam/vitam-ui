@@ -320,8 +320,8 @@ describe('CustomerCreateComponent', () => {
           expect(setControlValue('code', 'A1A1AazZ').valid).toBeTruthy();
           expect(setControlValue('code', 'A1A1AazZ_').invalid).toBeTruthy();
           expect(setControlValue('code', '12345678901234567890123455').invalid).toBeTruthy();
-          expect(setControlValue('code', '000000000').valid).toBeTruthy('000000000');
-          expect(setControlValue('code', '999999').valid).toBeTruthy('999999');
+          expect(setControlValue('code', '000000000').valid).toBeTruthy();
+          expect(setControlValue('code', '999999').valid).toBeTruthy();
         });
       });
 

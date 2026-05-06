@@ -73,7 +73,7 @@ import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/trans
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../models/nodedata.interface';
-const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr);
+const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const translations: any = { TEST: 'Mock translate test' };
@@ -294,7 +294,7 @@ describe('ArchiveSearchComponent', () => {
     describe('checkChildrenBoxChange', () => {
       it('should include the unselected child when parent is checked, into the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
-        const event: MatCheckboxChange = {
+        const event = {
           checked: false,
         };
         const unit = {
@@ -304,7 +304,7 @@ describe('ArchiveSearchComponent', () => {
           '#unitType': UnitType.HOLDING_UNIT,
           '#opi': '1234',
         };
-        component.checkChildrenBoxChange(unit, event);
+        component.checkChildrenBoxChange(unit, event as any);
         expect(component.listOfUAIdToExclude.length).toBe(1);
         expect(component.listOfUAIdToExclude[0]).toEqual({ value: '1234', id: '1234' });
         expect(component.listOfUAIdToInclude.length).toBe(0);
@@ -317,7 +317,7 @@ describe('ArchiveSearchComponent', () => {
       it('should exclude the selected child when parent is checked, from the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
         component.itemNotSelected = 1;
-        const event: MatCheckboxChange = {
+        const event = {
           checked: true,
         };
         const unit = {
@@ -327,7 +327,7 @@ describe('ArchiveSearchComponent', () => {
           '#unitType': UnitType.HOLDING_UNIT,
           '#opi': '1234',
         };
-        component.checkChildrenBoxChange(unit, event);
+        component.checkChildrenBoxChange(unit, event as any);
         expect(component.listOfUAIdToExclude.length).toBe(0);
         expect(component.listOfUAIdToInclude.length).toBe(0);
         expect(component.isIndeterminate).toBeFalsy();
@@ -338,7 +338,7 @@ describe('ArchiveSearchComponent', () => {
 
       it('should include the selected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: MatCheckboxChange = {
+        const event = {
           checked: true,
         };
         const unit = {
@@ -348,7 +348,7 @@ describe('ArchiveSearchComponent', () => {
           '#unitType': UnitType.HOLDING_UNIT,
           '#opi': '1234',
         };
-        component.checkChildrenBoxChange(unit, event);
+        component.checkChildrenBoxChange(unit, event as any);
         expect(component.listOfUAIdToInclude.length).toBe(1);
         expect(component.listOfUAIdToInclude[0]).toEqual({ value: '1234', id: '1234' });
         expect(component.listOfUAIdToExclude.length).toBe(0);
@@ -360,7 +360,7 @@ describe('ArchiveSearchComponent', () => {
 
       it('should not include the unselected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: MatCheckboxChange = {
+        const event = {
           checked: false,
         };
         const unit = {
@@ -370,7 +370,7 @@ describe('ArchiveSearchComponent', () => {
           '#unitType': UnitType.HOLDING_UNIT,
           '#opi': '1234',
         };
-        component.checkChildrenBoxChange(unit, event);
+        component.checkChildrenBoxChange(unit, event as any);
         expect(component.listOfUAIdToInclude.length).toBe(0);
         expect(component.listOfUAIdToExclude.length).toBe(0);
         expect(component.isIndeterminate).toBeFalsy();
@@ -381,7 +381,7 @@ describe('ArchiveSearchComponent', () => {
 
       it('should not increase selectedHoldingUnitItemCount if unitType is not HOLDING_UNIT', () => {
         component.isAllChecked = false;
-        const event: MatCheckboxChange = {
+        const event = {
           checked: true,
         };
         const unit = {
@@ -391,7 +391,7 @@ describe('ArchiveSearchComponent', () => {
           '#unitType': UnitType.FILING_UNIT,
           '#opi': '1234',
         };
-        component.checkChildrenBoxChange(unit, event);
+        component.checkChildrenBoxChange(unit, event as any);
         expect(component.listOfUAIdToInclude.length).toBe(1);
         expect(component.listOfUAIdToInclude[0]).toEqual({ value: '1234', id: '1234' });
         expect(component.listOfUAIdToExclude.length).toBe(0);
@@ -406,7 +406,7 @@ describe('ArchiveSearchComponent', () => {
   describe('queryParams', () => {
     it('should be set to archives with or without object by default', async () => {
       const { routerSpy } = await setupTest({});
-      expect(vi.mocked(routerSpy.navigate).mock.calls[0].args[1].queryParams).toEqual({
+      expect(vi.mocked(routerSpy.navigate).mock.calls[0][1].queryParams).toEqual({
         archiveUnitType: 'ARCHIVE_UNIT_WITH_OBJECTS,ARCHIVE_UNIT_WITHOUT_OBJECTS',
       });
     });
@@ -416,7 +416,7 @@ describe('ArchiveSearchComponent', () => {
 
       await fixture.whenStable();
 
-      const firstCall = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls[0].args[0];
+      const firstCall = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls[0][0];
 
       expect(firstCall).toEqual(
         expect.objectContaining({

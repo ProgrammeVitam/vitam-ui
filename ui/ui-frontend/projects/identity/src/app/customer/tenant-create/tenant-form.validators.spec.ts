@@ -46,7 +46,7 @@ describe('Tenant Form Validators', () => {
       exists: vi.fn().mockName('TenantService.exists'),
     };
     tenantServiceSpy.exists.mockReturnValue(of(false));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy as any);
     from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toBeNull();
     });
@@ -59,7 +59,7 @@ describe('Tenant Form Validators', () => {
       exists: vi.fn().mockName('TenantService.exists'),
     };
     tenantServiceSpy.exists.mockReturnValue(of(true));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy as any);
     from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });
@@ -72,7 +72,7 @@ describe('Tenant Form Validators', () => {
       exists: vi.fn().mockName('TenantService.exists'),
     };
     tenantServiceSpy.exists.mockReturnValue(of(true));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy as any);
     from(tenantFormValidators.uniqueName('name')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
@@ -85,7 +85,7 @@ describe('Tenant Form Validators', () => {
       exists: vi.fn().mockName('TenantService.exists'),
     };
     tenantServiceSpy.exists.mockReturnValue(of(true));
-    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy);
+    const tenantFormValidators = new TenantFormValidators(tenantServiceSpy as any);
     from(tenantFormValidators.uniqueName('tenantName')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });

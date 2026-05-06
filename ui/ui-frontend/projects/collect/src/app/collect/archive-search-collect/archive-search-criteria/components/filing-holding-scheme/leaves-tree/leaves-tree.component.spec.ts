@@ -103,7 +103,7 @@ describe('LeavesTreeComponent', () => {
     archiveFacetsServicStube = {};
 
     archiveSharedDataServiceStub.getSearchCriterias.mockReturnValue(of(searchCriteria));
-    archiveSharedDataServiceStub.selectedUnit$ = of();
+    (archiveSharedDataServiceStub as any).selectedUnit$ = of();
 
     await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, TranslateModule.forRoot()],

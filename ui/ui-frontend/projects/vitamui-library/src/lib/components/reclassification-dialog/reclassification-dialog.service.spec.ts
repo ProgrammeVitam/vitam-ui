@@ -1,4 +1,3 @@
-import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -49,8 +48,8 @@ const fakeArchiveUnits = (count: number): ArchiveUnit[] => {
 
 describe('ReclassificationDialogService', () => {
   let service: BaseReclassificationDialogService;
-  let reclassificationServiceSpy: MockedObject<ReclassificationService>;
-  let translateServiceSpy: MockedObject<TranslateService>;
+  let reclassificationServiceSpy: any;
+  let translateServiceSpy: any;
 
   beforeEach(() => {
     reclassificationServiceSpy = {

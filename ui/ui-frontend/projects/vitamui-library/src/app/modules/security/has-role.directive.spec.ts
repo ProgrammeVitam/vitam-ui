@@ -159,6 +159,6 @@ describe('HasRoleDirective', () => {
     fixture.detectChanges();
 
     const elContent = fixture.nativeElement.querySelectorAll('span');
-    expect(elContent.length).toBe(1, 'should only find one element');
+    expect(elContent.length).toBe(1);
   });
 });

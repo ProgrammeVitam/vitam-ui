@@ -46,7 +46,7 @@ describe('ProfileValidators', () => {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
     profileServiceSpy.exists.mockReturnValue(of(false));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileValidators = new ProfileValidators(profileServiceSpy as any);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
@@ -59,7 +59,7 @@ describe('ProfileValidators', () => {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
     profileServiceSpy.exists.mockReturnValue(of(true));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileValidators = new ProfileValidators(profileServiceSpy as any);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
@@ -72,7 +72,7 @@ describe('ProfileValidators', () => {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
     profileServiceSpy.exists.mockReturnValue(of(true));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileValidators = new ProfileValidators(profileServiceSpy as any);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
@@ -85,7 +85,7 @@ describe('ProfileValidators', () => {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
     profileServiceSpy.exists.mockReturnValue(of(true));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileValidators = new ProfileValidators(profileServiceSpy as any);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });

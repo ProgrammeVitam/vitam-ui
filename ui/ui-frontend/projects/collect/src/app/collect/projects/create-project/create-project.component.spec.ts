@@ -1,4 +1,3 @@
-import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -65,7 +64,6 @@ import { TenantSelectionService } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import SpyObj = MockedObject;
 
 @Pipe({
   name: 'fileSize',
@@ -129,9 +127,9 @@ describe('CreateProjectComponent', () => {
   };
 
   let tenantSelectionServiceMock: any;
-  let projectsServiceMock: SpyObj<ProjectsService>;
-  let transactionServiceMock: SpyObj<TransactionsService>;
-  let uploadServiceMock: SpyObj<CollectUploadService>;
+  let projectsServiceMock: any;
+  let transactionServiceMock: any;
+  let uploadServiceMock: any;
 
   beforeEach(async () => {
     tenantSelectionServiceMock = {

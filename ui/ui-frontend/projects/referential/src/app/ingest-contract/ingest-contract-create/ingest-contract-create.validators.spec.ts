@@ -41,6 +41,6 @@ describe('IngestContractCreateValidators', () => {
     const ingestContractServiceSpy = {
       existsProperties: vi.fn().mockName('IngestContractService.existsProperties'),
     };
-    expect(new IngestContractCreateValidators(ingestContractServiceSpy)).toBeTruthy();
+    expect(new IngestContractCreateValidators(ingestContractServiceSpy as any)).toBeTruthy();
   });
 });

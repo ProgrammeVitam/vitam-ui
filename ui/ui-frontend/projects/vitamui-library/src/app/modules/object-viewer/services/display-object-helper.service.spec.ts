@@ -475,7 +475,7 @@ describe('DisplayObjectHelperService', () => {
 
         const displayObject = service.toDisplayObject(data, template);
 
-        expect(displayObject, `failed on index ${i}`).toEqual(expected, `failed on index ${i}`);
+        expect(displayObject).toEqual(expected);
       });
     });
   });

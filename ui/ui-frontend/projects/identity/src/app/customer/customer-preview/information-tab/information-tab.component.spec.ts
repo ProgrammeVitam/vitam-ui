@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -153,6 +153,9 @@ class TestHostComponent {
   @ViewChild(InformationTabComponent, { static: false })
   component: InformationTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('Customer InformationTabComponent', () => {
   let testhost: TestHostComponent;
@@ -276,19 +279,19 @@ describe('Customer InformationTabComponent', () => {
       gdprAlert: null,
       gdprAlertDelay: null,
     });
-    expect(testhost.component.form.get('id').valid).toBeFalsy('id');
-    expect(testhost.component.form.get('code').valid).toBeFalsy('code');
-    expect(testhost.component.form.get('name').valid).toBeFalsy('name');
-    expect(testhost.component.form.get('companyName').valid).toBeFalsy('companyName');
-    expect(testhost.component.form.get('passwordRevocationDelay').valid).toBeFalsy('passwordRevocationDelay');
-    expect(testhost.component.form.get('otp').valid).toBeTruthy('otp');
-    expect(testhost.component.form.get('address.street').valid).toBeFalsy('street');
-    expect(testhost.component.form.get('address.zipCode').valid).toBeFalsy('zipCode');
-    expect(testhost.component.form.get('address.city').valid).toBeFalsy('city');
-    expect(testhost.component.form.get('address.country').valid).toBeFalsy('country');
-    expect(testhost.component.form.get('language').valid).toBeFalsy('language');
-    expect(testhost.component.form.get('emailDomains').valid).toBeFalsy('emailDomains');
-    expect(testhost.component.form.get('defaultEmailDomain').valid).toBeFalsy('defaultEmailDomain');
+    expect(testhost.component.form.get('id').valid).toBeFalsy();
+    expect(testhost.component.form.get('code').valid).toBeFalsy();
+    expect(testhost.component.form.get('name').valid).toBeFalsy();
+    expect(testhost.component.form.get('companyName').valid).toBeFalsy();
+    expect(testhost.component.form.get('passwordRevocationDelay').valid).toBeFalsy();
+    expect(testhost.component.form.get('otp').valid).toBeTruthy();
+    expect(testhost.component.form.get('address.street').valid).toBeFalsy();
+    expect(testhost.component.form.get('address.zipCode').valid).toBeFalsy();
+    expect(testhost.component.form.get('address.city').valid).toBeFalsy();
+    expect(testhost.component.form.get('address.country').valid).toBeFalsy();
+    expect(testhost.component.form.get('language').valid).toBeFalsy();
+    expect(testhost.component.form.get('emailDomains').valid).toBeFalsy();
+    expect(testhost.component.form.get('defaultEmailDomain').valid).toBeFalsy();
   });
 
   it('should have the pattern validator', () => {

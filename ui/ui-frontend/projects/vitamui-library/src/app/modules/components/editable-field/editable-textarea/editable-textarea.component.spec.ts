@@ -37,7 +37,7 @@
 /* eslint-disable no-magic-numbers */
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -74,6 +74,9 @@ class TesthostComponent {
     return of(control.value !== 'invalid value' ? null : { async: true });
   };
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('EditableTextareaComponent', () => {
   let testhost: TesthostComponent;
@@ -165,14 +168,14 @@ describe('EditableTextareaComponent', () => {
     });
 
     it('should have a spinner', () => {
-      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(true);
+      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(true);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(false);
+      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(false);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();

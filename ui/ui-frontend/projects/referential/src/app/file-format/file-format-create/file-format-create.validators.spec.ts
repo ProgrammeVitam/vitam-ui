@@ -47,7 +47,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -60,7 +60,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -73,7 +73,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy as any);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -86,7 +86,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -101,7 +101,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -114,7 +114,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ puidExists: true });
       });
@@ -127,7 +127,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy as any);
       from(customerCreateValidators.uniquePuid('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -140,7 +140,7 @@ describe('FileFormat Create Validators', () => {
         existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniquePuid('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ puidExists: true });
       });

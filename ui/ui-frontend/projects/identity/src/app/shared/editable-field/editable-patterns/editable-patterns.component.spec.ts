@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -91,6 +91,9 @@ class TesthostComponent {
   @ViewChild(EditablePatternsComponent, { static: false })
   component: EditablePatternsComponent;
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('EditablePatternsComponent', () => {
   let testhost: TesthostComponent;
@@ -177,14 +180,14 @@ describe('EditablePatternsComponent', () => {
     });
 
     it('should have a spinner', () => {
-      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(true);
+      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(true);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(false);
+      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(false);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();

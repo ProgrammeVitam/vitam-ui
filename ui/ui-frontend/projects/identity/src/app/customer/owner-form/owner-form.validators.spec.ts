@@ -46,7 +46,7 @@ describe('Owner Form Validators', () => {
       exists: vi.fn().mockName('OwnerService.exists'),
     };
     ownerServiceSpy.exists.mockReturnValue(of(false));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy as any);
     from(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
@@ -59,7 +59,7 @@ describe('Owner Form Validators', () => {
       exists: vi.fn().mockName('OwnerService.exists'),
     };
     ownerServiceSpy.exists.mockReturnValue(of(true));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy as any);
     from(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ uniqueCode: true });
     });
@@ -72,7 +72,7 @@ describe('Owner Form Validators', () => {
       exists: vi.fn().mockName('OwnerService.exists'),
     };
     ownerServiceSpy.exists.mockReturnValue(of(true));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy as any);
     from(ownerFormValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
@@ -85,7 +85,7 @@ describe('Owner Form Validators', () => {
       exists: vi.fn().mockName('OwnerService.exists'),
     };
     ownerServiceSpy.exists.mockReturnValue(of(true));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy as any);
     from(ownerFormValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ uniqueCode: true });
     });

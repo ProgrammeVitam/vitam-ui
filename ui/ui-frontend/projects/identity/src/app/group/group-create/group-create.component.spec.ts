@@ -246,15 +246,15 @@ describe('GroupCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy('name');
-          expect(setControlValue('name', 'nn').valid).toBeTruthy('name');
+          expect(setControlValue('name', '').invalid).toBeTruthy();
+          expect(setControlValue('name', 'nn').valid).toBeTruthy();
 
-          expect(setControlValue('description', '').invalid).toBeTruthy('description');
-          expect(setControlValue('description', 'tttt').valid).toBeTruthy('description');
+          expect(setControlValue('description', '').invalid).toBeTruthy();
+          expect(setControlValue('description', 'tttt').valid).toBeTruthy();
 
-          expect(setControlValue('profileIds', '').invalid).toBeTruthy('profileIds');
-          expect(setControlValue('profileIds', []).invalid).toBeTruthy('profileIds');
-          expect(setControlValue('profileIds', ['test1']).valid).toBeTruthy('profileIds');
+          expect(setControlValue('profileIds', '').invalid).toBeTruthy();
+          expect(setControlValue('profileIds', []).invalid).toBeTruthy();
+          expect(setControlValue('profileIds', ['test1']).valid).toBeTruthy();
         });
       });
 

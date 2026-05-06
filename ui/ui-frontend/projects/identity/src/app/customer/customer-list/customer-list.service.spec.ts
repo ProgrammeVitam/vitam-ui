@@ -319,7 +319,12 @@ describe('CustomerListService', () => {
   });
 
   it('should call /fake-api/customers/paginated?page=0&size=20&orderBy=code&direction=ASC', () => {
-    customerListService.search().subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
+    customerListService.search().subscribe(
+      (response) => expect(response).toEqual(expectedCustomersPage.values),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne(
       '/fake-api/customers/paginated?page=0&size=20&orderBy=code&direction=ASC&embedded=OWNER,TENANT',
     );
@@ -328,9 +333,12 @@ describe('CustomerListService', () => {
   });
 
   it('should call /fake-api/customers/paginated?page=42&size=15&orderBy=code&direction=DESC', () => {
-    customerListService
-      .search(new PageRequest(42, 15, 'name', Direction.DESCENDANT))
-      .subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
+    customerListService.search(new PageRequest(42, 15, 'name', Direction.DESCENDANT)).subscribe(
+      (response) => expect(response).toEqual(expectedCustomersPage.values),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne(
       '/fake-api/customers/paginated?page=42&size=15&orderBy=name&direction=DESC&embedded=OWNER,TENANT',
     );
@@ -341,9 +349,12 @@ describe('CustomerListService', () => {
   it('should call /fake-api/customers/paginated?page=0&size=15&orderBy=companyName&direction=DESC', () => {
     customersPage.hasMore = true;
     customersPage.pageSize = 15;
-    customerListService
-      .search(new PageRequest(0, 15, 'companyName', Direction.DESCENDANT))
-      .subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
+    customerListService.search(new PageRequest(0, 15, 'companyName', Direction.DESCENDANT)).subscribe(
+      (response) => expect(response).toEqual(expectedCustomersPage.values),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     let req = httpTestingController.expectOne(
       '/fake-api/customers/paginated?page=0&size=15&orderBy=companyName&direction=DESC&embedded=OWNER,TENANT',
     );
@@ -352,9 +363,12 @@ describe('CustomerListService', () => {
 
     customersPage.pageNum = 1;
     customersPage.hasMore = false;
-    customerListService
-      .loadMore()
-      .subscribe((response) => expect(response).toEqual(expectedCustomersPage.values.concat(expectedCustomersPage.values)), fail);
+    customerListService.loadMore().subscribe(
+      (response) => expect(response).toEqual(expectedCustomersPage.values.concat(expectedCustomersPage.values)),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     req = httpTestingController.expectOne(
       '/fake-api/customers/paginated?page=1&size=15&orderBy=companyName&direction=DESC&embedded=OWNER,TENANT',
     );
@@ -365,14 +379,24 @@ describe('CustomerListService', () => {
   it('should not load more results', () => {
     customersPage.hasMore = false;
     customersPage.pageSize = 20;
-    customerListService.search().subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
+    customerListService.search().subscribe(
+      (response) => expect(response).toEqual(expectedCustomersPage.values),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne(
       '/fake-api/customers/paginated?page=0&size=20&orderBy=code&direction=ASC&embedded=OWNER,TENANT',
     );
     expect(req.request.method).toEqual('GET');
     req.flush(customersPage);
 
-    customerListService.loadMore().subscribe((response) => expect(response).toEqual(expectedCustomersPage.values), fail);
+    customerListService.loadMore().subscribe(
+      (response) => expect(response).toEqual(expectedCustomersPage.values),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     httpTestingController.expectNone('/fake-api/customers/paginated?page=1&size=20&orderBy=code&direction=ASC&embedded=OWNER,TENANT');
   });
 
@@ -382,10 +406,15 @@ describe('CustomerListService', () => {
 
   it('should return true', () => {
     customersPage.hasMore = true;
-    customerListService.search().subscribe((response) => {
-      expect(response).toEqual(expectedCustomersPage.values);
-      expect(customerListService.canLoadMore).toBeTruthy();
-    }, fail);
+    customerListService.search().subscribe(
+      (response) => {
+        expect(response).toEqual(expectedCustomersPage.values);
+        expect(customerListService.canLoadMore).toBeTruthy();
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne(
       '/fake-api/customers/paginated?page=0&size=20&orderBy=code&direction=ASC&embedded=OWNER,TENANT',
     );

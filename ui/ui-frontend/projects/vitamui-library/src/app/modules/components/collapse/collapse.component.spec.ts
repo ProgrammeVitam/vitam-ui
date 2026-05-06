@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -47,6 +47,9 @@ import { CollapseComponent } from './collapse.component';
 class TesthostComponent {
   @ViewChild(CollapseComponent) component: CollapseComponent;
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('CollapseComponent', () => {
   let testhost: TesthostComponent;

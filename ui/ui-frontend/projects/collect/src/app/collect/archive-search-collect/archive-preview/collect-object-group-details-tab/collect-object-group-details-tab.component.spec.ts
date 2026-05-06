@@ -68,8 +68,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
   let component: CollectObjectGroupDetailsTabComponent;
   let fixture: ComponentFixture<CollectObjectGroupDetailsTabComponent>;
 
-  const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
-  const archiveCollectServiceSpy = createSpyObj<ArchiveCollectService>('ArchiveService', [
+  const clipboardSpy = createSpyObj('Clipboard', ['copy']);
+  const archiveCollectServiceSpy = createSpyObj('ArchiveService', [
     'downloadObjectFromUnit',
     'getObjectGroupDetailsById',
     'hasCollectRole',

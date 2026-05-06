@@ -59,8 +59,8 @@ import { ActivatedRoute } from '@angular/router';
 describe('ArchiveUnitObjectsDetailsTabComponent', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitObjectsDetailsTabComponent>;
-  const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
-  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', [
+  const clipboardSpy = createSpyObj('Clipboard', ['copy']);
+  const archiveServiceSpy = createSpyObj('ArchiveService', [
     'downloadObjectFromUnit',
     'getObjectById',
     'getAccessContractById',

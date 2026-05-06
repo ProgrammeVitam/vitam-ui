@@ -92,7 +92,12 @@ describe('OwnerService', () => {
   }));
 
   it('should call /fake-api/owners/42', () => {
-    ownerService.get('42').subscribe((response) => expect(response).toEqual(expectedOwner), fail);
+    ownerService.get('42').subscribe(
+      (response) => expect(response).toEqual(expectedOwner),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/owners/42');
     expect(req.request.method).toEqual('GET');
     req.flush(expectedOwner);
@@ -100,15 +105,20 @@ describe('OwnerService', () => {
 
   it('should call /fake-api/owners and display a success message', () => {
     const snackBarService = TestBed.inject(SnackBarService);
-    ownerService.create(expectedOwner).subscribe((response: Owner) => {
-      expect(response).toEqual(expectedOwner);
-      expect(snackBarService.open).toHaveBeenCalledWith({
-        message: 'SHARED.SNACKBAR.OWNER_CREATE',
-        translateParams: {
-          param1: expectedOwner.name,
-        },
-      });
-    }, fail);
+    ownerService.create(expectedOwner).subscribe(
+      (response: Owner) => {
+        expect(response).toEqual(expectedOwner);
+        expect(snackBarService.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.OWNER_CREATE',
+          translateParams: {
+            param1: expectedOwner.name,
+          },
+        });
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/owners');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedOwner);
@@ -116,9 +126,14 @@ describe('OwnerService', () => {
 
   it('should display an error message', () => {
     const snackBarService = TestBed.inject(SnackBarService);
-    ownerService.create(expectedOwner).subscribe(fail, () => {
-      expect(snackBarService.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
-    });
+    ownerService.create(expectedOwner).subscribe(
+      (e: unknown) => {
+        throw e;
+      },
+      () => {
+        expect(snackBarService.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/owners');
     expect(req.request.method).toEqual('POST');
     req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });

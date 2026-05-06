@@ -45,7 +45,7 @@ import { DisplayRuleHelperService } from '../../../object-viewer/services/displa
 import { SchemaElementToDisplayRuleService } from '../../../object-viewer/services/schema-element-to-display-rule.service';
 import { SchemaService } from '../../../schema';
 import { ArchiveUnitEditorService } from './archive-unit-editor.service';
-const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr);
+const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
 
 describe('ArchiveUnitEditorService', () => {
   let service: ArchiveUnitEditorService;

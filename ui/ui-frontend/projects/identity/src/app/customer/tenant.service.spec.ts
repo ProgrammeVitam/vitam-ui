@@ -153,14 +153,24 @@ describe('TenantService', () => {
   }));
 
   it('should call /fake-api/tenants/42', () => {
-    tenantService.get('42').subscribe((response) => expect(response).toEqual(expectedTenant), fail);
+    tenantService.get('42').subscribe(
+      (response) => expect(response).toEqual(expectedTenant),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/tenants/42');
     expect(req.request.method).toEqual('GET');
     req.flush(expectedTenant);
   });
 
   it('should call /fake-api/tenants with criteria', () => {
-    tenantService.getTenantsByCustomerIds(['42']).subscribe((response) => expect(response).toEqual(expectedTenants), fail);
+    tenantService.getTenantsByCustomerIds(['42']).subscribe(
+      (response) => expect(response).toEqual(expectedTenants),
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'customerId', value: ['42'], operator: Operators.in }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };
@@ -171,17 +181,22 @@ describe('TenantService', () => {
 
   it('should call /fake-api/tenants and display a success message', () => {
     const snackBar = TestBed.inject(SnackBarService);
-    tenantService.create(expectedTenant, expectedOwner.name).subscribe((response: Tenant) => {
-      expect(response).toEqual(expectedTenant);
-      expect(snackBar.open).toHaveBeenCalledWith({
-        message: 'SHARED.SNACKBAR.SAFE_CREATE',
-        translateParams: {
-          param1: expectedTenant.name,
-          param2: expectedOwner.name,
-        },
-        icon: 'vitamui-icon-safe',
-      });
-    }, fail);
+    tenantService.create(expectedTenant, expectedOwner.name).subscribe(
+      (response: Tenant) => {
+        expect(response).toEqual(expectedTenant);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.SAFE_CREATE',
+          translateParams: {
+            param1: expectedTenant.name,
+            param2: expectedOwner.name,
+          },
+          icon: 'vitamui-icon-safe',
+        });
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/tenants');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedTenant);
@@ -189,21 +204,31 @@ describe('TenantService', () => {
 
   it('should display an error message', () => {
     const snackBar = TestBed.inject(SnackBarService);
-    tenantService.create(expectedTenant, expectedOwner.name).subscribe(fail, () => {
-      expect(snackBar.open).toHaveBeenCalledWith({
-        message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
-        icon: 'vitamui-icon-danger',
-      });
-    });
+    tenantService.create(expectedTenant, expectedOwner.name).subscribe(
+      (e: unknown) => {
+        throw e;
+      },
+      () => {
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.SAFE_CREATE_ERROR',
+          icon: 'vitamui-icon-danger',
+        });
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/tenants');
     expect(req.request.method).toEqual('POST');
     req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
   });
 
   it('should return true if the tenant exists', () => {
-    tenantService.exists('tenantName').subscribe((found) => {
-      expect(found).toBeTruthy();
-    }, fail);
+    tenantService.exists('tenantName').subscribe(
+      (found) => {
+        expect(found).toBeTruthy();
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'name', value: 'tenantName', operator: Operators.equals }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };

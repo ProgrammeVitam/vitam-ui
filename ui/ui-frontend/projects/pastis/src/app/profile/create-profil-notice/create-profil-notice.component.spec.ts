@@ -1,4 +1,3 @@
-import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -51,10 +50,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 describe('CreateProfilNoticeComponent', () => {
   let component: CreateProfilNoticeComponent;
   let fixture: ComponentFixture<CreateProfilNoticeComponent>;
-  let mockDialogRef: MockedObject<MatDialogRef<CreateProfilNoticeComponent>>;
-  let mockProfileService: MockedObject<ProfileService>;
-  let mockAppService: MockedObject<ApplicationService>;
-  let mockTranslate: MockedObject<TranslateService>;
+  let mockDialogRef: any;
+  let mockProfileService: any;
+  let mockAppService: any;
+  let mockTranslate: any;
   let externalIdSubject: BehaviorSubject<boolean>;
 
   beforeEach(() => {

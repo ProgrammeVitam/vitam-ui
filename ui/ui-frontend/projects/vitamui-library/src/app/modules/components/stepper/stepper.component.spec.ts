@@ -36,7 +36,7 @@
  */
 /* eslint-disable no-magic-numbers */
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -58,6 +58,9 @@ class TesthostComponent {
 
 let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('StepperComponent', () => {
   beforeEach(async () => {

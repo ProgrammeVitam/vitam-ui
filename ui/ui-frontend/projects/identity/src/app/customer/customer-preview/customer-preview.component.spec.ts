@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
@@ -98,6 +98,9 @@ class TestHostComponent {
   component: CustomerPreviewComponent;
 }
 
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
+
 describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
@@ -144,7 +147,7 @@ describe('CustomerPreviewComponent', () => {
 
   it('should call window.open', () => {
     const openSpy = vi.spyOn(window, 'open');
-    openSpy.mockImplementation(() => {});
+    openSpy.mockImplementation(() => null as any);
     testhost.component.openPopup();
     expect(openSpy).toHaveBeenCalledWith(
       'https://dev.vitamui.com/identity/customer/11',

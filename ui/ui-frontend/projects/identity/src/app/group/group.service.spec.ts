@@ -75,7 +75,12 @@ describe('GroupService', () => {
   }));
 
   it('should call /fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC', () => {
-    groupService.search().subscribe((response) => expect(response).toEqual([]), fail);
+    groupService.search().subscribe(
+      (response) => expect(response).toEqual([]),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC');
     expect(req.request.method).toEqual('GET');
     const result: any = { values: [] };
@@ -83,7 +88,12 @@ describe('GroupService', () => {
   });
 
   it('should call /fake-api/groups/paginated?page=42&size=15&orderBy=name&direction=DESC', () => {
-    groupService.search(new PageRequest(42, 15, 'name', Direction.DESCENDANT)).subscribe((response) => expect(response).toEqual([]), fail);
+    groupService.search(new PageRequest(42, 15, 'name', Direction.DESCENDANT)).subscribe(
+      (response) => expect(response).toEqual([]),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=42&size=15&orderBy=name&direction=DESC');
     expect(req.request.method).toEqual('GET');
     const result: any = { values: [] };
@@ -91,13 +101,23 @@ describe('GroupService', () => {
   });
 
   it('should call /fake-api/groups/paginated?page=0&size=15&orderBy=&direction=DESC', () => {
-    groupService.search(new PageRequest(0, 15, '', Direction.DESCENDANT)).subscribe((response) => expect(response).toEqual([null]), fail);
+    groupService.search(new PageRequest(0, 15, '', Direction.DESCENDANT)).subscribe(
+      (response) => expect(response).toEqual([null]),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     let req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=15&orderBy=&direction=DESC');
     expect(req.request.method).toEqual('GET');
     let result: any = { pageNum: 0, hasMore: true, pageSize: 15, values: [null] };
     req.flush(result);
 
-    groupService.loadMore().subscribe((response) => expect(response).toEqual([null, null]), fail);
+    groupService.loadMore().subscribe(
+      (response) => expect(response).toEqual([null, null]),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     req = httpTestingController.expectOne('/fake-api/groups/paginated?page=1&size=15&orderBy=&direction=DESC');
     expect(req.request.method).toEqual('GET');
     result = { pageNum: 1, pageSize: 15, hasMore: false, values: [null] };
@@ -105,13 +125,23 @@ describe('GroupService', () => {
   });
 
   it('should not load more results', () => {
-    groupService.search().subscribe((response) => expect(response).toEqual([null]), fail);
+    groupService.search().subscribe(
+      (response) => expect(response).toEqual([null]),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC');
     expect(req.request.method).toEqual('GET');
     const result: any = { hasMore: false, pageSize: 20, pageNum: 0, values: [null] };
     req.flush(result);
 
-    groupService.loadMore().subscribe((response) => expect(response).toEqual([null]), fail);
+    groupService.loadMore().subscribe(
+      (response) => expect(response).toEqual([null]),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     httpTestingController.expectNone('/fake-api/groups/paginated?page=1&size=20&orderBy=name&direction=ASC');
   });
 
@@ -120,10 +150,15 @@ describe('GroupService', () => {
   });
 
   it('should return true', () => {
-    groupService.search().subscribe((response) => {
-      expect(response).toEqual([null]);
-      expect(groupService.canLoadMore).toBeTruthy();
-    }, fail);
+    groupService.search().subscribe(
+      (response) => {
+        expect(response).toEqual([null]);
+        expect(groupService.canLoadMore).toBeTruthy();
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups/paginated?page=0&size=20&orderBy=name&direction=ASC');
     expect(req.request.method).toEqual('GET');
     const result: any = { hasMore: true, values: [null] };
@@ -144,17 +179,22 @@ describe('GroupService', () => {
       units: [],
       readonly: false,
     };
-    groupService.create(expectedGroup).subscribe((response: Group) => {
-      expect(response).toEqual(expectedGroup);
-      expect(snackBar.open).toHaveBeenCalledTimes(1);
-      expect(snackBar.open).toHaveBeenCalledWith({
-        message: 'SHARED.SNACKBAR.GROUP_CREATE',
-        translateParams: {
-          param1: expectedGroup.name,
-        },
-        icon: 'vitamui-icon-keys',
-      });
-    }, fail);
+    groupService.create(expectedGroup).subscribe(
+      (response: Group) => {
+        expect(response).toEqual(expectedGroup);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.GROUP_CREATE',
+          translateParams: {
+            param1: expectedGroup.name,
+          },
+          icon: 'vitamui-icon-keys',
+        });
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedGroup);
@@ -174,10 +214,15 @@ describe('GroupService', () => {
       units: [],
       readonly: false,
     };
-    groupService.create(expectedProfileGroup).subscribe(fail, () => {
-      expect(snackBar.open).toHaveBeenCalledTimes(1);
-      expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
-    });
+    groupService.create(expectedProfileGroup).subscribe(
+      (e: unknown) => {
+        throw e;
+      },
+      () => {
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups');
     expect(req.request.method).toEqual('POST');
     req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
@@ -196,16 +241,26 @@ describe('GroupService', () => {
       units: [],
       readonly: false,
     };
-    groupService.get('42').subscribe((profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup), fail);
+    groupService.get('42').subscribe(
+      (profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups/42?embedded=ALL');
     expect(req.request.method).toEqual('GET');
     req.flush(expectedProfileGroup);
   });
 
   it('should return true if the profiles group exists', () => {
-    groupService.exists('4242', 'profileGroupName').subscribe((found) => {
-      expect(found).toBeTruthy();
-    }, fail);
+    groupService.exists('4242', 'profileGroupName').subscribe(
+      (found) => {
+        expect(found).toBeTruthy();
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [
       { key: 'customerId', value: '4242', operator: Operators.equals },
@@ -218,9 +273,14 @@ describe('GroupService', () => {
   });
 
   it('should return false if the profiles group does not exist', () => {
-    groupService.exists('4242', 'profileGroupName').subscribe((found) => {
-      expect(found).toBeFalsy();
-    }, fail);
+    groupService.exists('4242', 'profileGroupName').subscribe(
+      (found) => {
+        expect(found).toBeFalsy();
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const criterionArray: any[] = [
       { key: 'customerId', value: '4242', operator: Operators.equals },
       { key: 'name', value: 'profileGroupName', operator: Operators.equals },
@@ -232,9 +292,14 @@ describe('GroupService', () => {
   });
 
   it('should return true if the group exists', () => {
-    groupService.unitExists('customerId', 'unit1').subscribe((found) => {
-      expect(found).toBeTruthy();
-    }, fail);
+    groupService.unitExists('customerId', 'unit1').subscribe(
+      (found) => {
+        expect(found).toBeTruthy();
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [
       { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
@@ -247,9 +312,14 @@ describe('GroupService', () => {
   });
 
   it('should return false if the group does not exist', () => {
-    groupService.unitExists('customerId', 'unit1').subscribe((found) => {
-      expect(found).toBeFalsy();
-    }, fail);
+    groupService.unitExists('customerId', 'unit1').subscribe(
+      (found) => {
+        expect(found).toBeFalsy();
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const criterionArray: any[] = [
       { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
       { key: 'customerId', value: 'customerId', operator: Operators.equals },
@@ -274,18 +344,28 @@ describe('GroupService', () => {
       units: [],
       readonly: false,
     };
-    groupService.updated.subscribe((profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup), fail);
-    groupService.patch({ id: '42', name: expectedProfileGroup.name }).subscribe((profileGroup) => {
-      expect(profileGroup).toEqual(expectedProfileGroup);
-      expect(snackBar.open).toHaveBeenCalledTimes(1);
-      expect(snackBar.open).toHaveBeenCalledWith({
-        message: 'SHARED.SNACKBAR.GROUP_UPDATE',
-        translateParams: {
-          param1: expectedProfileGroup.name,
-        },
-        icon: 'vitamui-icon-keys',
-      });
-    }, fail);
+    groupService.updated.subscribe(
+      (profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup),
+      (e: unknown) => {
+        throw e;
+      },
+    );
+    groupService.patch({ id: '42', name: expectedProfileGroup.name }).subscribe(
+      (profileGroup) => {
+        expect(profileGroup).toEqual(expectedProfileGroup);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.GROUP_UPDATE',
+          translateParams: {
+            param1: expectedProfileGroup.name,
+          },
+          icon: 'vitamui-icon-keys',
+        });
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups/42');
     expect(req.request.method).toEqual('PATCH');
     expect(req.request.body).toEqual({ id: '42', name: expectedProfileGroup.name });
@@ -306,10 +386,15 @@ describe('GroupService', () => {
       units: [],
       readonly: false,
     };
-    groupService.patch({ id: '42', name: expectedGroup.name }).subscribe(fail, () => {
-      expect(snackBar.open).toHaveBeenCalledTimes(1);
-      expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
-    });
+    groupService.patch({ id: '42', name: expectedGroup.name }).subscribe(
+      (e: unknown) => {
+        throw e;
+      },
+      () => {
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/groups/42');
     expect(req.request.method).toEqual('PATCH');
     req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });

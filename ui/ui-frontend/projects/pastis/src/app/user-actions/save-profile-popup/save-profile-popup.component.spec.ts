@@ -1,4 +1,3 @@
-import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -61,10 +60,10 @@ const mockTranslatedStrings = {
 describe('SaveProfilePopupComponent', () => {
   let component: SaveProfilePopupComponent;
   let fixture: ComponentFixture<SaveProfilePopupComponent>;
-  let mockDialogRef: MockedObject<MatDialogRef<SaveProfilePopupComponent>>;
+  let mockDialogRef: any;
   let mockProfileService: any;
-  let mockAppService: MockedObject<ApplicationService>;
-  let mockTranslateService: MockedObject<TranslateService>;
+  let mockAppService: any;
+  let mockTranslateService: any;
   let externalIdSubject: BehaviorSubject<boolean>;
 
   beforeEach(() => {

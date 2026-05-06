@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -81,6 +81,9 @@ class TestHostComponent {
 
   @ViewChild(HierarchyDetailComponent, { static: false }) component: HierarchyDetailComponent;
 }
+
+@NgModule({ declarations: [SidePanelStubComponent, TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('HierarchyDetailComponent', () => {
   let testhost: TestHostComponent;

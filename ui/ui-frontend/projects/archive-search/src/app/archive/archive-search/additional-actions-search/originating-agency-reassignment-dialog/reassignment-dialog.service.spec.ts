@@ -1,4 +1,3 @@
-import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -46,9 +45,9 @@ import { ReassignmentMode } from '../../../models/reassign-request.interface';
 
 describe('ReassignmentDialogService', () => {
   let service: ReassignmentDialogService;
-  let dialogSpy: MockedObject<MatDialog>;
-  let archiveServiceSpy: MockedObject<ArchiveService>;
-  let snackBarSpy: MockedObject<SnackBarService>;
+  let dialogSpy: any;
+  let archiveServiceSpy: any;
+  let snackBarSpy: any;
 
   const mockCriteria: SearchCriteriaEltDto[] = [
     {

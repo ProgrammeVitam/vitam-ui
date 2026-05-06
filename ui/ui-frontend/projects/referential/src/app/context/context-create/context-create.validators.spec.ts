@@ -46,7 +46,7 @@ describe('Context Create Validators', () => {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
       contextServiceSpy.existsProperties.mockReturnValue(of(false));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
 
       from(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
@@ -62,7 +62,7 @@ describe('Context Create Validators', () => {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
       contextServiceSpy.existsProperties.mockReturnValue(of(true));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
       from(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
@@ -79,7 +79,7 @@ describe('Context Create Validators', () => {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
       contextServiceSpy.existsProperties.mockReturnValue(of(true));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
       from(contextCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -93,7 +93,7 @@ describe('Context Create Validators', () => {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
       contextServiceSpy.existsProperties.mockReturnValue(of(true));
-      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy as any);
       from(contextCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();

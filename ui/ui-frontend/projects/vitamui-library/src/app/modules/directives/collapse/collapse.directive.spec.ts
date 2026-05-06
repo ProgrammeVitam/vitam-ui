@@ -36,7 +36,8 @@
  */
 /* eslint-disable no-magic-numbers, max-classes-per-file */
 
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, QueryList, ViewChildren } from '@angular/core';
+import { CollapseDirectiveModule } from './collapse.directive.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -67,6 +68,9 @@ class TesthostComponent {
   @ViewChildren(CollapseDirective) collapseDirectives: QueryList<CollapseDirective>;
   showCollapse = false;
 }
+
+@NgModule({ declarations: [TesthostComponent], imports: [CollapseDirectiveModule], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 let fixture: ComponentFixture<TesthostComponent>;
 let testhost: TesthostComponent;
@@ -142,10 +146,10 @@ describe('CollapseContainerDirective', () => {
 
   it('should collapse all other divs', () => {
     page.buttons[0].triggerEventHandler('click', null);
-    expect(testhost.collapseDirectives.toArray()[0].state).toBe('expanded', 'first');
+    expect(testhost.collapseDirectives.toArray()[0].state).toBe('expanded');
     page.buttons[1].triggerEventHandler('click', null);
-    expect(testhost.collapseDirectives.toArray()[1].state).toBe('expanded', 'second');
-    expect(testhost.collapseDirectives.toArray()[0].state).toBe('collapsed', 'first');
+    expect(testhost.collapseDirectives.toArray()[1].state).toBe('expanded');
+    expect(testhost.collapseDirectives.toArray()[0].state).toBe('collapsed');
   });
 
   it('should work when the template changes', () => {

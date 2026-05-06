@@ -47,7 +47,7 @@ describe('Customer Create Validators', () => {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
       customerServiceSpy.exists.mockReturnValue(of(false));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -60,7 +60,7 @@ describe('Customer Create Validators', () => {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
       customerServiceSpy.exists.mockReturnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
@@ -73,7 +73,7 @@ describe('Customer Create Validators', () => {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
       customerServiceSpy.exists.mockReturnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -86,7 +86,7 @@ describe('Customer Create Validators', () => {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
       customerServiceSpy.exists.mockReturnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
@@ -101,7 +101,7 @@ describe('Customer Create Validators', () => {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
       customerServiceSpy.exists.mockReturnValue(of(false));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -114,7 +114,7 @@ describe('Customer Create Validators', () => {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
       customerServiceSpy.exists.mockReturnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toEqual({ uniqueDomain: true });
       });

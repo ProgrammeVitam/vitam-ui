@@ -47,7 +47,7 @@ describe('Ontology Create Validators', () => {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
       ontologyServiceSpy.exists.mockReturnValue(of(false));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
       from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -62,7 +62,7 @@ describe('Ontology Create Validators', () => {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
       ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
       from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
@@ -78,7 +78,7 @@ describe('Ontology Create Validators', () => {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
       ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
       from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ idExists: true });
       });
@@ -92,7 +92,7 @@ describe('Ontology Create Validators', () => {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
       ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
       from(ontologyCreateValidators.uniqueID()(new FormControl('111111'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();
@@ -111,7 +111,7 @@ describe('Ontology Create Validators', () => {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
       ontologyServiceSpy.exists.mockReturnValue(of(false));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
       from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -126,7 +126,7 @@ describe('Ontology Create Validators', () => {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
       ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
       from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeDefined();
         expect(result).not.toBeNull();

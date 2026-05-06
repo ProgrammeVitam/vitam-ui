@@ -47,7 +47,7 @@ describe('SecurityProfile Create Validators', () => {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -60,7 +60,7 @@ describe('SecurityProfile Create Validators', () => {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -73,7 +73,7 @@ describe('SecurityProfile Create Validators', () => {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -86,7 +86,7 @@ describe('SecurityProfile Create Validators', () => {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
+      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });

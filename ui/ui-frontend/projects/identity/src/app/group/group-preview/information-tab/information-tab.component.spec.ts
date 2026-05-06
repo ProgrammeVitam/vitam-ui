@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -60,6 +60,9 @@ class TestHostComponent {
   @ViewChild(InformationTabComponent, { static: false })
   component: InformationTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('Profile Group InformationTabComponent', () => {
   let testhost: TestHostComponent;
@@ -138,9 +141,9 @@ describe('Profile Group InformationTabComponent', () => {
         enabled: false,
         description: null,
       });
-      expect(testhost.component.form.get('id').valid).toBeFalsy('id');
-      expect(testhost.component.form.get('name').valid).toBeFalsy('name');
-      expect(testhost.component.form.get('description').valid).toBeFalsy('description');
+      expect(testhost.component.form.get('id').valid).toBeFalsy();
+      expect(testhost.component.form.get('name').valid).toBeFalsy();
+      expect(testhost.component.form.get('description').valid).toBeFalsy();
     });
 
     it('should be valid and call patch()', () => {

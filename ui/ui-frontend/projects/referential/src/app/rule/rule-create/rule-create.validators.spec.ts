@@ -47,7 +47,7 @@ describe('Rule Create Validators', () => {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -60,7 +60,7 @@ describe('Rule Create Validators', () => {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });
@@ -73,7 +73,7 @@ describe('Rule Create Validators', () => {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
       ruleServiceSpy.existsProperties.mockReturnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
+      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -86,7 +86,7 @@ describe('Rule Create Validators', () => {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
       customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy as any);
       from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });

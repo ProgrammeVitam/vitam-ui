@@ -57,7 +57,7 @@ describe('ManagementContractCreateValidators', () => {
     const managementContractServiceSpy = {
       existsProperties: vi.fn().mockName('ManagementContractService.existsProperties'),
     };
-    expect(new ManagementContractCreateValidators(managementContractServiceSpy)).toBeTruthy();
+    expect(new ManagementContractCreateValidators(managementContractServiceSpy as any)).toBeTruthy();
   });
 
   it('should the service be created', () => {

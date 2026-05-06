@@ -70,7 +70,12 @@ describe('ProfileService', () => {
 
   describe('list', () => {
     it('should call the API', () => {
-      rngProfileService.list().subscribe((response) => expect(response).toEqual([]), fail);
+      rngProfileService.list().subscribe(
+        (response) => expect(response).toEqual([]),
+        (e: unknown) => {
+          throw e;
+        },
+      );
 
       // eslint-disable-next-line max-len
       const req = httpTestingController.expectOne(

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
@@ -107,6 +107,9 @@ class TestHostComponent {
   component: InformationTabComponent;
 }
 
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
+
 describe('Hierarchy InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
@@ -146,17 +149,17 @@ describe('Hierarchy InformationTabComponent', () => {
   describe('DOM', () => {
     it('should have all the fields', () => {
       let element = fixture.nativeElement.querySelector('vitamui-common-editable-input[formControlName=name]');
-      expect(element).toBeTruthy('name input');
+      expect(element).toBeTruthy();
       expect(element.textContent).toContain('ProfileName');
       expect(element.attributes.maxlength.value).toBe('100');
 
       element = fixture.nativeElement.querySelector('vitamui-common-editable-textarea[formControlName=description]');
-      expect(element).toBeTruthy('description textarea');
+      expect(element).toBeTruthy();
       expect(element.textContent).toContain('Profile description...');
       expect(element.attributes.maxlength.value).toBe('250');
 
       element = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=enabled]');
-      expect(element).toBeTruthy('enabled toggle');
+      expect(element).toBeTruthy();
       expect(element.textContent).toContain('HIERARCHY.INFORMATIONS.ACTIVE_SWITCH');
     });
   });

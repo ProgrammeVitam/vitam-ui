@@ -250,9 +250,9 @@ describe('SecurityProfileCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy('empty name invalid');
-          expect(setControlValue('name', 'n').invalid).toBeTruthy('minlength name invalid');
-          expect(setControlValue('name', 'name').valid).toBeTruthy('name valid');
+          expect(setControlValue('name', '').invalid).toBeTruthy();
+          expect(setControlValue('name', 'n').invalid).toBeTruthy();
+          expect(setControlValue('name', 'name').valid).toBeTruthy();
         });
       });
 

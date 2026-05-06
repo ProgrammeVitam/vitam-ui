@@ -1,4 +1,3 @@
-import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -51,10 +50,10 @@ import { ManagementRuleCriteriaService } from './services/management-rule-criter
 describe('ManagementRuleSearchComponent', () => {
   let component: ManagementRuleSearchComponent;
   let fixture: ComponentFixture<ManagementRuleSearchComponent>;
-  let mockQueryParamsService: MockedObject<QueryParamsService>;
-  let mockSearchCriteriaService: MockedObject<SearchCriteriaService>;
+  let mockQueryParamsService: any;
+  let mockSearchCriteriaService: any;
 
-  let mockManagementRuleCriteriaService: MockedObject<ManagementRuleCriteriaService>;
+  let mockManagementRuleCriteriaService: any;
 
   beforeEach(async () => {
     mockManagementRuleCriteriaService = {
