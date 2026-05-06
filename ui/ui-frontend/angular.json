@@ -104,7 +104,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/identity/tsconfig.spec.json"
+            "tsConfig": "projects/identity/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -215,7 +216,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/portal/tsconfig.spec.json"
+            "tsConfig": "projects/portal/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -332,7 +334,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/referential/tsconfig.spec.json"
+            "tsConfig": "projects/referential/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -381,7 +384,8 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
-            "buildTarget": "portal:build:development"
+            "buildTarget": "portal:build:development",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -477,7 +481,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/design-system/tsconfig.spec.json"
+            "tsConfig": "projects/design-system/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -578,7 +583,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/ingest/tsconfig.spec.json"
+            "tsConfig": "projects/ingest/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -681,7 +687,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/archive-search/tsconfig.spec.json"
+            "tsConfig": "projects/archive-search/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -784,7 +791,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/collect/tsconfig.spec.json"
+            "tsConfig": "projects/collect/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
@@ -897,7 +905,8 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/pastis/tsconfig.spec.json"
+            "tsConfig": "projects/pastis/tsconfig.spec.json",
+            "providersFile": "test.ts"
           }
         },
         "lint": {
