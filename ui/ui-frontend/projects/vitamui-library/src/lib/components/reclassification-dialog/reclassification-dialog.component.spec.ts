@@ -50,8 +50,12 @@ import { ReclassificationService } from '../../../app/modules/services/reclassif
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 
-const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+const matDialogRefSpy = {
+  close: vi.fn().mockName('MatDialogRef.close'),
+};
+const matDialogSpy = {
+  open: vi.fn().mockName('MatDialog.open'),
+};
 
 const confirmDialogServiceMock = {
   confirm: () => of(true),
@@ -147,7 +151,7 @@ describe('ReclassificationDialogComponent', () => {
 
   it('should call reclassification of reclassificationService', () => {
     // Given
-    spyOn(reclassificationServiceMock, 'reclassification').and.callThrough();
+    vi.spyOn(reclassificationServiceMock, 'reclassification');
     component.form.controls.action.setValue('PULL' as any);
 
     // When

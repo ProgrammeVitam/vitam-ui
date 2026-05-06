@@ -43,8 +43,10 @@ import { AccessContractCreateValidators } from './access-contract-create.validat
 describe('AccessContract Create Validators', () => {
   describe('uniqueName', () => {
     it('uniqueName should return null', fakeAsync(() => {
-      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
-      accessContractServiceSpy.existsProperties.and.returnValue(of(false));
+      const accessContractServiceSpy = {
+        existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
+      };
+      accessContractServiceSpy.existsProperties.mockReturnValue(of(false));
       const accessContractCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       from(accessContractCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
@@ -54,8 +56,10 @@ describe('AccessContract Create Validators', () => {
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
-      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
-      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const accessContractServiceSpy = {
+        existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
+      };
+      accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
       const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
@@ -65,8 +69,10 @@ describe('AccessContract Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
-      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const accessContractServiceSpy = {
+        existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
+      };
+      accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
       const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       from(customerCreateValidators.uniqueName()(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
@@ -105,8 +111,10 @@ describe('AccessContract Create Validators', () => {
     });
 
     it('should return null', fakeAsync(() => {
-      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
-      accessContractServiceSpy.existsProperties.and.returnValue(of(null));
+      const accessContractServiceSpy = {
+        existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
+      };
+      accessContractServiceSpy.existsProperties.mockReturnValue(of(null));
       const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
@@ -116,8 +124,10 @@ describe('AccessContract Create Validators', () => {
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
-      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
-      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const accessContractServiceSpy = {
+        existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
+      };
+      accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
       const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
@@ -127,8 +137,10 @@ describe('AccessContract Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
-      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const accessContractServiceSpy = {
+        existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
+      };
+      accessContractServiceSpy.existsProperties.mockReturnValue(of(true));
       const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });

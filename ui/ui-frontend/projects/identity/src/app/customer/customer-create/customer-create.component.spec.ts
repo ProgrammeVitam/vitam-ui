@@ -81,11 +81,15 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() selected: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  selected: string;
+  @Input()
+  spinnerDiameter = 25;
 
-  @Output() selectedChange = new EventEmitter<string>();
+  @Output()
+  selectedChange = new EventEmitter<string>();
 
   writeValue() {}
 
@@ -107,7 +111,8 @@ class DomainInputStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
-  @Input() customerInfo: any;
+  @Input()
+  customerInfo: any;
 
   writeValue() {}
 
@@ -129,8 +134,10 @@ class OwnerFormStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  spinnerDiameter = 25;
 
   writeValue() {}
 
@@ -196,21 +203,42 @@ let page: Page;
 
 describe('CustomerCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}), getMyCustomer: of({}) });
-    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
-      uniqueCode: () => of(null),
-      uniqueDomain: of(null),
-    });
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
-      getTenantsByCustomerIds: of([]),
-      getAvailableTenants: of([2, 3, 4]),
-    });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const customerServiceSpy = {
+      create: vi.fn().mockName('CustomerService.create').mockReturnValue(of({})),
+      getMyCustomer: vi.fn().mockName('CustomerService.getMyCustomer').mockReturnValue(of({})),
+    };
+    const customerCreateValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('CustomerCreateValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+      uniqueDomain: vi.fn().mockName('CustomerCreateValidators.uniqueDomain').mockReturnValue(of(null)),
+    };
+    const ownerServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of({})),
+    };
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantServiceSpy = {
+      getTenantsByCustomerIds: vi.fn().mockName('TenantService.getTenantsByCustomerIds').mockReturnValue(of([])),
+      getAvailableTenants: vi
+        .fn()
+        .mockName('TenantService.getAvailableTenants')
+        .mockReturnValue(of([2, 3, 4])),
+    };
+    const tenantFormValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('TenantFormValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
     await TestBed.configureTestingModule({
       declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
       schemas: [NO_ERRORS_SCHEMA],

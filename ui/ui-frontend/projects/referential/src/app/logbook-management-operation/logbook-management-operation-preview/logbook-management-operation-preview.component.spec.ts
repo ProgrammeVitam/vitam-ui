@@ -66,8 +66,10 @@ describe('LogbookManagementOperationPreviewComponent', () => {
     }
   }
 
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   const logbookManagementOperationServiceMock = {
     listOperationsDetails: () => of(operationsResults),

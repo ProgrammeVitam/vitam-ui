@@ -102,11 +102,15 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() selected: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  selected: string;
+  @Input()
+  spinnerDiameter = 25;
 
-  @Output() selectedChange = new EventEmitter<string>();
+  @Output()
+  selectedChange = new EventEmitter<string>();
 
   writeValue() {}
   registerOnChange() {}
@@ -157,13 +161,23 @@ let page: Page;
 
 describe('SecurityProfileCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', { create: of({}) });
-    const customerCreateValidatorsSpy = jasmine.createSpyObj('SecurityProfileCreateValidators', {
-      uniqueName: () => of(null),
-      uniqueIdentifier: () => of(null),
-      identifierToIgnore: '',
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const customerServiceSpy = {
+      create: vi.fn().mockName('SecurityProfileService.create').mockReturnValue(of({})),
+    };
+    const customerCreateValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('SecurityProfileCreateValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+      uniqueIdentifier: vi
+        .fn()
+        .mockName('SecurityProfileCreateValidators.uniqueIdentifier')
+        .mockReturnValue(() => of(null)),
+      identifierToIgnore: vi.fn().mockName('SecurityProfileCreateValidators.identifierToIgnore').mockReturnValue(''),
+    };
     await TestBed.configureTestingModule({
       imports: [
         SecurityProfileCreateComponent,

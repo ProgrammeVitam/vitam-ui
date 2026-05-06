@@ -92,7 +92,7 @@ describe('EditObjectService', () => {
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(51);
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining(
+            expect.arrayContaining(
               [
                 'Addressee',
                 'Agent',
@@ -110,13 +110,13 @@ describe('EditObjectService', () => {
                 'Writer',
                 '#originating_agency',
                 '#originating_agencies',
-              ].map((path) => jasmine.objectContaining({ path })),
+              ].map((path) => expect.objectContaining({ path })),
             ),
           );
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
-                displayRule: jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
+                displayRule: expect.objectContaining({
                   Path: 'Title',
                 }),
               }),
@@ -148,7 +148,7 @@ describe('EditObjectService', () => {
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(51);
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining(
+            expect.arrayContaining(
               [
                 'Addressee',
                 'Agent',
@@ -166,16 +166,16 @@ describe('EditObjectService', () => {
                 'Writer',
                 '#originating_agency',
                 '#originating_agencies',
-              ].map((path) => jasmine.objectContaining({ path })),
+              ].map((path) => expect.objectContaining({ path })),
             ),
           );
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
                 path: 'Addressee',
-                displayRule: jasmine.objectContaining({
+                displayRule: expect.objectContaining({
                   Path: 'Addressee',
-                  ui: jasmine.objectContaining({
+                  ui: expect.objectContaining({
                     component: 'group',
                   }),
                 }),
@@ -212,7 +212,7 @@ describe('EditObjectService', () => {
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining(
+            expect.arrayContaining(
               [
                 'AuthorizedAgent',
                 'Coverage',
@@ -226,12 +226,12 @@ describe('EditObjectService', () => {
                 'Title',
                 '#originating_agency',
                 '#originating_agencies',
-              ].map((path) => jasmine.objectContaining({ path })),
+              ].map((path) => expect.objectContaining({ path })),
             ),
           );
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
                 path: 'Actors',
                 default: {
                   Addressee: [{ BirthDate: '01/01/2000' }],
@@ -239,11 +239,11 @@ describe('EditObjectService', () => {
                   Transmitter: [],
                   Writer: [],
                 },
-                children: jasmine.arrayContaining([
-                  jasmine.objectContaining({ path: 'Actors.Addressee' }),
-                  jasmine.objectContaining({ path: 'Actors.Agent' }),
-                  jasmine.objectContaining({ path: 'Actors.Transmitter' }),
-                  jasmine.objectContaining({ path: 'Actors.Writer' }),
+                children: expect.arrayContaining([
+                  expect.objectContaining({ path: 'Actors.Addressee' }),
+                  expect.objectContaining({ path: 'Actors.Agent' }),
+                  expect.objectContaining({ path: 'Actors.Transmitter' }),
+                  expect.objectContaining({ path: 'Actors.Writer' }),
                 ]),
               }),
             ]),
@@ -276,7 +276,7 @@ describe('EditObjectService', () => {
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining(
+            expect.arrayContaining(
               [
                 'AuthorizedAgent',
                 'Coverage',
@@ -290,12 +290,12 @@ describe('EditObjectService', () => {
                 'Title',
                 '#originating_agency',
                 '#originating_agencies',
-              ].map((path) => jasmine.objectContaining({ path })),
+              ].map((path) => expect.objectContaining({ path })),
             ),
           );
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
                 path: 'Actors',
                 default: {
                   Addressee: [{ BirthDate: '01/01/2000' }],
@@ -303,11 +303,11 @@ describe('EditObjectService', () => {
                   Transmitter: [],
                   Writer: [],
                 },
-                children: jasmine.arrayContaining([
-                  jasmine.objectContaining({ path: 'Actors.Addressee' }),
-                  jasmine.objectContaining({ path: 'Actors.Agent' }),
-                  jasmine.objectContaining({ path: 'Actors.Transmitter' }),
-                  jasmine.objectContaining({ path: 'Actors.Writer' }),
+                children: expect.arrayContaining([
+                  expect.objectContaining({ path: 'Actors.Addressee' }),
+                  expect.objectContaining({ path: 'Actors.Agent' }),
+                  expect.objectContaining({ path: 'Actors.Transmitter' }),
+                  expect.objectContaining({ path: 'Actors.Writer' }),
                 ]),
               }),
             ]),
@@ -348,7 +348,7 @@ describe('EditObjectService', () => {
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining(
+            expect.arrayContaining(
               [
                 'AuthorizedAgent',
                 'Coverage',
@@ -362,12 +362,12 @@ describe('EditObjectService', () => {
                 'Title',
                 '#originating_agency',
                 '#originating_agencies',
-              ].map((path) => jasmine.objectContaining({ path })),
+              ].map((path) => expect.objectContaining({ path })),
             ),
           );
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
                 path: 'Actors',
                 default: {
                   Addressee: [{ BirthDate: '01/01/2000' }],
@@ -375,11 +375,11 @@ describe('EditObjectService', () => {
                   Transmitter: [],
                   Writer: [],
                 },
-                children: jasmine.arrayContaining([
-                  jasmine.objectContaining({ path: 'Actors.Addressee' }),
-                  jasmine.objectContaining({ path: 'Actors.Agent' }),
-                  jasmine.objectContaining({ path: 'Actors.Transmitter' }),
-                  jasmine.objectContaining({ path: 'Actors.Writer' }),
+                children: expect.arrayContaining([
+                  expect.objectContaining({ path: 'Actors.Addressee' }),
+                  expect.objectContaining({ path: 'Actors.Agent' }),
+                  expect.objectContaining({ path: 'Actors.Transmitter' }),
+                  expect.objectContaining({ path: 'Actors.Writer' }),
                 ]),
               }),
             ]),
@@ -420,7 +420,7 @@ describe('EditObjectService', () => {
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining(
+            expect.arrayContaining(
               [
                 'AuthorizedAgent',
                 'Coverage',
@@ -434,12 +434,12 @@ describe('EditObjectService', () => {
                 'Title',
                 '#originating_agency',
                 '#originating_agencies',
-              ].map((path) => jasmine.objectContaining({ path })),
+              ].map((path) => expect.objectContaining({ path })),
             ),
           );
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
                 path: 'Actors',
                 default: {
                   Addressee: [{ BirthDate: '01/01/2000' }],
@@ -447,11 +447,11 @@ describe('EditObjectService', () => {
                   Transmitter: [],
                   Writer: [],
                 },
-                children: jasmine.arrayContaining([
-                  jasmine.objectContaining({ path: 'Actors.Addressee' }),
-                  jasmine.objectContaining({ path: 'Actors.Agent' }),
-                  jasmine.objectContaining({ path: 'Actors.Transmitter' }),
-                  jasmine.objectContaining({ path: 'Actors.Writer' }),
+                children: expect.arrayContaining([
+                  expect.objectContaining({ path: 'Actors.Addressee' }),
+                  expect.objectContaining({ path: 'Actors.Agent' }),
+                  expect.objectContaining({ path: 'Actors.Transmitter' }),
+                  expect.objectContaining({ path: 'Actors.Writer' }),
                 ]),
               }),
             ]),
@@ -471,8 +471,8 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject.children.length).toEqual(3);
           expect(addresseesEditObject.control.value).not.toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
                 FirstName: 'Daniel',
               }),
             ]),
@@ -495,7 +495,7 @@ describe('EditObjectService', () => {
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(51);
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining(
+            expect.arrayContaining(
               [
                 'Addressee',
                 'Agent',
@@ -513,12 +513,12 @@ describe('EditObjectService', () => {
                 'Writer',
                 '#originating_agency',
                 '#originating_agencies',
-              ].map((path) => jasmine.objectContaining({ path })),
+              ].map((path) => expect.objectContaining({ path })),
             ),
           );
           expect(editObject.children).toEqual(
-            jasmine.arrayContaining([
-              jasmine.objectContaining({
+            expect.arrayContaining([
+              expect.objectContaining({
                 path: 'Addressee',
                 kind: 'object-array',
               }),
@@ -658,40 +658,40 @@ describe('EditObjectService', () => {
         expect(editObject).toBeTruthy();
         expect(editObject.children.length).toEqual(1);
         expect(editObject.children).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({
+          expect.arrayContaining([
+            expect.objectContaining({
               path: 'Invoice',
               kind: 'object-array',
             }),
           ]),
         );
         expect(editObject.children[0].children).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({
+          expect.arrayContaining([
+            expect.objectContaining({
               path: 'Invoice[0]',
               kind: 'object',
             }),
           ]),
         );
         expect(editObject.children[0].children[0].children).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({
+          expect.arrayContaining([
+            expect.objectContaining({
               path: 'Invoice[0].Provider',
               kind: 'object-array',
             }),
           ]),
         );
         expect(editObject.children[0].children[0].children[0].children).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({
+          expect.arrayContaining([
+            expect.objectContaining({
               path: 'Invoice[0].Provider[0]',
               kind: 'object',
             }),
           ]),
         );
         expect(editObject.children[0].children[0].children[0].children[0].children).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({
+          expect.arrayContaining([
+            expect.objectContaining({
               path: 'Invoice[0].Provider[0].MyText',
               kind: 'primitive',
               value: 'Hello',
@@ -708,7 +708,7 @@ describe('EditObjectService', () => {
     });
 
     // TODO: Determine which kind is empty array
-    xit('should empty array be object-array kind', () => {
+    it.skip('should empty array be object-array kind', () => {
       expect(service.kind([])).toEqual('object-array');
     });
 
@@ -824,8 +824,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({
+                  expect.arrayContaining([
+                    expect.objectContaining({
                       path,
                       kind,
                       cardinality: effectiveCardinality,
@@ -867,8 +867,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({
+                  expect.arrayContaining([
+                    expect.objectContaining({
                       path,
                       kind,
                       cardinality: effectiveCardinality,
@@ -910,8 +910,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({
+                  expect.arrayContaining([
+                    expect.objectContaining({
                       path,
                       kind,
                       cardinality: effectiveCardinality,
@@ -953,8 +953,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({
+                  expect.arrayContaining([
+                    expect.objectContaining({
                       path,
                       kind,
                       cardinality: effectiveCardinality,
@@ -996,8 +996,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({
+                  expect.arrayContaining([
+                    expect.objectContaining({
                       path,
                       kind,
                       cardinality: effectiveCardinality,
@@ -1045,8 +1045,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({ path, kind, pattern: control.Value, cardinality: effectiveCardinality }),
+                  expect.arrayContaining([
+                    expect.objectContaining({ path, kind, pattern: control.Value, cardinality: effectiveCardinality }),
                   ]),
                 );
               },
@@ -1087,8 +1087,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({ path, kind, pattern: control.Value, cardinality: effectiveCardinality }),
+                  expect.arrayContaining([
+                    expect.objectContaining({ path, kind, pattern: control.Value, cardinality: effectiveCardinality }),
                   ]),
                 );
               },
@@ -1131,8 +1131,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({ path, kind, options: control.Values, cardinality: effectiveCardinality }),
+                  expect.arrayContaining([
+                    expect.objectContaining({ path, kind, options: control.Values, cardinality: effectiveCardinality }),
                   ]),
                 );
               },
@@ -1173,8 +1173,8 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([
-                    jasmine.objectContaining({ path, kind, options: control.Values, cardinality: effectiveCardinality }),
+                  expect.arrayContaining([
+                    expect.objectContaining({ path, kind, options: control.Values, cardinality: effectiveCardinality }),
                   ]),
                 );
               },
@@ -1277,7 +1277,7 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality })]),
+                  expect.arrayContaining([expect.objectContaining({ path, kind, cardinality: effectiveCardinality })]),
                 );
                 editObject.children.filter((eo) => eo.path === path).forEach((eo) => expect(eo.control.value).toBeNull());
               },
@@ -1372,7 +1372,7 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality })]),
+                  expect.arrayContaining([expect.objectContaining({ path, kind, cardinality: effectiveCardinality })]),
                 );
                 editObject.children.filter((eo) => eo.path === path).forEach((eo) => expect(eo.control.value).toEqual([]));
               },
@@ -1461,9 +1461,9 @@ describe('EditObjectService', () => {
         expect(templatedSchema).toBeTruthy();
         expect(templatedSchema.length).toEqual(subschema.length + 1);
         expect(templatedSchema).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({ Path: 'Generalities', ApiPath: 'Generalities' }),
-            jasmine.objectContaining({ Path: 'Title', ApiPath: 'Generalities.Title' }),
+          expect.arrayContaining([
+            expect.objectContaining({ Path: 'Generalities', ApiPath: 'Generalities' }),
+            expect.objectContaining({ Path: 'Title', ApiPath: 'Generalities.Title' }),
           ]),
         );
       });
@@ -1490,10 +1490,10 @@ describe('EditObjectService', () => {
         expect(templatedSchema.length).toEqual(uniquePaths.length);
 
         expect(templatedSchema).toEqual(
-          jasmine.arrayContaining([
-            jasmine.objectContaining({ Path: 'Generalities', ApiPath: 'Generalities' }),
-            jasmine.objectContaining({ Path: 'Addressee', ApiPath: 'Generalities.Addressee' }),
-            jasmine.objectContaining({ Path: 'Addressee.Activity', ApiPath: 'Generalities.Addressee.Activity' }),
+          expect.arrayContaining([
+            expect.objectContaining({ Path: 'Generalities', ApiPath: 'Generalities' }),
+            expect.objectContaining({ Path: 'Addressee', ApiPath: 'Generalities.Addressee' }),
+            expect.objectContaining({ Path: 'Addressee.Activity', ApiPath: 'Generalities.Addressee.Activity' }),
           ]),
         );
       });

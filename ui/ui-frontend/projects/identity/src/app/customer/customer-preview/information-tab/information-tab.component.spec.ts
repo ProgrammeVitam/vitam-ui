@@ -100,9 +100,12 @@ let expectedCustomer: Customer = {
   standalone: false,
 })
 class EditableDomainInputStubComponent implements ControlValueAccessor {
-  @Input() validator: Validator;
-  @Input() asyncValidator: AsyncValidator;
-  @Input() defaultDomain: string;
+  @Input()
+  validator: Validator;
+  @Input()
+  asyncValidator: AsyncValidator;
+  @Input()
+  defaultDomain: string;
 
   writeValue() {}
 
@@ -124,8 +127,10 @@ class EditableDomainInputStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  spinnerDiameter = 25;
 
   writeValue() {}
 
@@ -145,7 +150,8 @@ class TestHostComponent {
   readOnly = false;
   gdprReadOnlyStatus = false;
 
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false })
+  component: InformationTabComponent;
 }
 
 describe('Customer InformationTabComponent', () => {
@@ -182,11 +188,19 @@ describe('Customer InformationTabComponent', () => {
       gdprAlert: false,
       gdprAlertDelay: 72,
     };
-    const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
-    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
-      uniqueCode: () => of(null),
-      uniqueDomain: () => of(null),
-    });
+    const customerServiceSpy = {
+      patch: vi.fn().mockName('CustomerService.patch').mockReturnValue(of({})),
+    };
+    const customerCreateValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('CustomerCreateValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+      uniqueDomain: vi
+        .fn()
+        .mockName('CustomerCreateValidators.uniqueDomain')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

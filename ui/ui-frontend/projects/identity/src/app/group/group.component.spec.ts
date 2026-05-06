@@ -72,7 +72,8 @@ let page: Page;
 })
 class GroupListStubComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search') searchText: string;
+  @Input('search')
+  searchText: string;
 
   search() {}
 }
@@ -83,15 +84,21 @@ class GroupListStubComponent {
   standalone: false,
 })
 class GroupPreviewStubComponent {
-  @Input() isPopup: boolean;
-  @Input() group: Group;
+  @Input()
+  isPopup: boolean;
+  @Input()
+  group: Group;
 }
 
 describe('GroupComponent', () => {
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
+    const snackBarSpy = {
+      open: vi.fn().mockName('SnackBarService.open'),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

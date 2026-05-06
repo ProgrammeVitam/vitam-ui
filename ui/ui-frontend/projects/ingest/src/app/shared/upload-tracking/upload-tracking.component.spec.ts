@@ -51,7 +51,9 @@ describe('UploadTrackingComponent', () => {
   let component: UploadTrackingComponent;
   let fixture: ComponentFixture<UploadTrackingComponent>;
 
-  const UploadServiceSpy = jasmine.createSpyObj('UploadService', { filesStatus: of(new IngestList()) });
+  const UploadServiceSpy = {
+    filesStatus: vi.fn().mockName('UploadService.filesStatus').mockReturnValue(of(new IngestList())),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

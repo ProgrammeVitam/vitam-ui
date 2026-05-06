@@ -152,7 +152,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
-    const spy = spyOn(component, 'loadExactCount').and.callThrough();
+    const spy = vi.spyOn(component, 'loadExactCount');
 
     linkNativeElement.click();
 
@@ -189,14 +189,14 @@ describe('ArchiveUnitCountComponent', () => {
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
-    const spy = spyOn(component, 'loadExactCount').and.callThrough();
+    const spy = vi.spyOn(component, 'loadExactCount');
 
     linkNativeElement.click();
 
     await fixture.whenStable();
 
     expect(spy).toHaveBeenCalled();
-    expect(component.canLoadExactCount).withContext('canLoadExactCount must be true').toEqual(true);
+    expect(component.canLoadExactCount, 'canLoadExactCount must be true').toEqual(true);
     expect(component.archiveUnitCount).toEqual(10000);
 
     fixture.detectChanges();
@@ -227,7 +227,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
-    const spy = spyOn(component, 'loadExactCount').and.callThrough();
+    const spy = vi.spyOn(component, 'loadExactCount');
 
     linkNativeElement.click();
 
@@ -283,7 +283,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
-    const spy = spyOn(component, 'loadExactCount').and.callThrough();
+    const spy = vi.spyOn(component, 'loadExactCount');
 
     linkNativeElement.click();
 

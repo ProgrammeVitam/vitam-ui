@@ -51,8 +51,13 @@ describe('TransferRequestModalComponent tests', () => {
   let component: TransferRequestModalComponent;
   let fixture: ComponentFixture<TransferRequestModalComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+    keydownEvents: vi.fn().mockName('MatDialogRef.keydownEvents'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   const archiveServiceMock = {
     archive: () => of('test archive'),
@@ -104,7 +109,7 @@ describe('TransferRequestModalComponent tests', () => {
 
   it('should not call transferRequestService of archiveService when transferRequestFormGroup is invalid', () => {
     // Given
-    spyOn(archiveServiceMock, 'transferRequestService').and.callThrough();
+    vi.spyOn(archiveServiceMock, 'transferRequestService');
 
     // When
     component.onSubmit();
@@ -120,7 +125,10 @@ describe('TransferRequestModalComponent tests', () => {
   });
 
   it('should have "Original numérique" usage with "Initiale" version by default', () => {
-    const usage: { usage: string; version: string } = component.formGroups[1].get('usages').value[0];
+    const usage: {
+      usage: string;
+      version: string;
+    } = component.formGroups[1].get('usages').value[0];
     expect(usage.usage).toBe('BinaryMaster');
     expect(usage.version).toBe('FIRST');
   });

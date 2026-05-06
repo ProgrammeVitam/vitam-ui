@@ -66,11 +66,17 @@ describe('IngestContractCreateComponent', () => {
   let fixture: ComponentFixture<IngestContractCreateComponent>;
 
   beforeEach(async () => {
-    const ingestContractCreateValidatorsSpy = jasmine.createSpyObj('IngestContractCreateValidators', {
-      uniqueName: () => of(null),
-      uniqueIdentifier: () => of(null),
-      identifierToIgnore: '',
-    });
+    const ingestContractCreateValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('IngestContractCreateValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+      uniqueIdentifier: vi
+        .fn()
+        .mockName('IngestContractCreateValidators.uniqueIdentifier')
+        .mockReturnValue(() => of(null)),
+      identifierToIgnore: vi.fn().mockName('IngestContractCreateValidators.identifierToIgnore').mockReturnValue(''),
+    };
 
     const accessContractServiceMock = {
       getAll: () => of([]),

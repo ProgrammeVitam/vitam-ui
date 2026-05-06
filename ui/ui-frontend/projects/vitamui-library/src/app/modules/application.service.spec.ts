@@ -50,7 +50,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;
   let appService: ApplicationService;
-  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const routerSpy = {
+    navigate: vi.fn().mockName('Router.navigate'),
+  };
 
   beforeEach(() => {
     const authStubService = { token: 'fakeToken', user: {}, getAnyTenantIdentifier: () => 10 };

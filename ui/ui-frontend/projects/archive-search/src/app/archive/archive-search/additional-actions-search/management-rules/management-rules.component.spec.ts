@@ -104,8 +104,12 @@ describe('ManagementRulesComponent', () => {
   let component: ManagementRulesComponent;
   let fixture: ComponentFixture<ManagementRulesComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   const rulesCatygories = [
     { id: 'StorageRule', name: 'name', isDisabled: true },

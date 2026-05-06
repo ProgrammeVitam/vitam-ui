@@ -66,9 +66,14 @@ describe('ManagementContractCreateComponent', () => {
   let component: ManagementContractCreateComponent;
   let fixture: ComponentFixture<ManagementContractCreateComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+    keydownEvents: vi.fn().mockName('MatDialogRef.keydownEvents'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   const managementContractServiceMock = {
     get: () => of({}),
@@ -159,7 +164,7 @@ describe('ManagementContractCreateComponent', () => {
     }));
 
     it('first step should be valid after async validation', fakeAsync(() => {
-      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(false));
+      vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(false));
 
       const managementContractForm: any = {
         identifier: 'Contract identifier',
@@ -176,7 +181,7 @@ describe('ManagementContractCreateComponent', () => {
     }));
 
     it('first step should be invalid after async validation if properties already exist', fakeAsync(() => {
-      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(true));
+      vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(true));
 
       const managementContractForm: any = {
         identifier: 'Contract identifier',
@@ -225,7 +230,7 @@ describe('ManagementContractCreateComponent', () => {
 
     it('should call create of ManagementContractService', () => {
       // Given
-      spyOn(managementContractServiceMock, 'create').and.callThrough();
+      vi.spyOn(managementContractServiceMock, 'create');
 
       // When
       const managementContractForm: any = {
@@ -259,7 +264,7 @@ describe('ManagementContractCreateComponent', () => {
     });
 
     it('first step should be valid after async validation', fakeAsync(() => {
-      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(false));
+      vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(false));
 
       const managementContractForm: any = {
         // No "identifier" when no slave mode
@@ -276,7 +281,7 @@ describe('ManagementContractCreateComponent', () => {
     }));
 
     it('first step should be invalid after async validation if properties already exist', fakeAsync(() => {
-      spyOn(managementContractServiceMock, 'existsProperties').and.returnValue(of(true));
+      vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(true));
 
       const managementContractForm: any = {
         // No "identifier" when no slave mode

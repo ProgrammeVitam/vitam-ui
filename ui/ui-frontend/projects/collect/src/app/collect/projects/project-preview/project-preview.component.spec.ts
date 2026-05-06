@@ -214,7 +214,7 @@ describe('ProjectPreviewComponent', () => {
   }));
 
   it('should update project without transactions', waitForAsync(() => {
-    spyOn(projectServiceMock, 'updateProjectDescription').and.returnValue(of(projectAfterUpdate));
+    vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
     fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
@@ -228,7 +228,7 @@ describe('ProjectPreviewComponent', () => {
   }));
 
   it('should update project with transactions', waitForAsync(() => {
-    spyOn(projectServiceMock, 'updateProjectDescription').and.returnValue(of(projectAfterUpdate));
+    vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
     fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);

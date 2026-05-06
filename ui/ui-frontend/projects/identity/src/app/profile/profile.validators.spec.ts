@@ -42,8 +42,10 @@ import { ProfileValidators } from './profile.validators';
 
 describe('ProfileValidators', () => {
   it('should return null', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(false));
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(false));
     const profileValidators = new ProfileValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
@@ -53,8 +55,10 @@ describe('ProfileValidators', () => {
   }));
 
   it('should return { nameExists: true }', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(true));
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(true));
     const profileValidators = new ProfileValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
@@ -64,8 +68,10 @@ describe('ProfileValidators', () => {
   }));
 
   it('should not call the service', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(true));
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(true));
     const profileValidators = new ProfileValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
@@ -75,8 +81,10 @@ describe('ProfileValidators', () => {
   }));
 
   it('should call the service', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(true));
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(true));
     const profileValidators = new ProfileValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });

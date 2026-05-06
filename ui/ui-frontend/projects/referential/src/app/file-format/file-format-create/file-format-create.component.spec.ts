@@ -76,14 +76,24 @@ class Page {
 
 let page: Page;
 
-xdescribe('  FileFormatCreateComponent', () => {
+describe.skip('  FileFormatCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', { create: of({}) });
-    const fileFormatCreateValidatorsSpy = jasmine.createSpyObj('FileFormatCreateValidators', {
-      uniquePuid: () => of(null),
-      uniqueName: () => of(null),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const fileFormatServiceSpy = {
+      create: vi.fn().mockName('FileFormatService.create').mockReturnValue(of({})),
+    };
+    const fileFormatCreateValidatorsSpy = {
+      uniquePuid: vi
+        .fn()
+        .mockName('FileFormatCreateValidators.uniquePuid')
+        .mockReturnValue(() => of(null)),
+      uniqueName: vi
+        .fn()
+        .mockName('FileFormatCreateValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

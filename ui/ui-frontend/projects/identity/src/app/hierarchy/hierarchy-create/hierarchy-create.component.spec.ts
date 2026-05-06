@@ -60,8 +60,10 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
   standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
-  @Input() applicationNameExclude: string[];
-  @Input() tenantIdentifier: number;
+  @Input()
+  applicationNameExclude: string[];
+  @Input()
+  tenantIdentifier: number;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
@@ -72,8 +74,12 @@ let component: HierarchyCreateComponent;
 
 describe('HierarchyCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const hierarchyServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const hierarchyServiceSpy = {
+      create: vi.fn().mockName('GroupService.create').mockReturnValue(of({})),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

@@ -91,7 +91,9 @@ describe('IdentityProviderService', () => {
         idpMetadata,
       },
     ];
-    const snackBarSpy = jasmine.createSpyObj(['open']);
+    const snackBarSpy = {
+      open: vi.fn(),
+    };
 
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],

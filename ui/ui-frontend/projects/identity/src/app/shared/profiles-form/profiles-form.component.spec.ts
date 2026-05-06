@@ -147,7 +147,8 @@ const expectedApp = {
 class TesthostComponent {
   profiles: string[];
 
-  @ViewChild(ProfilesFormComponent, { static: false }) component: ProfilesFormComponent;
+  @ViewChild(ProfilesFormComponent, { static: false })
+  component: ProfilesFormComponent;
 }
 
 describe('ProfilesFormComponent', () => {
@@ -196,7 +197,7 @@ describe('ProfilesFormComponent', () => {
       const elAddButton = fixture.nativeElement.querySelector('button[type=button]');
       expect(elAddButton).toBeTruthy();
       expect(elAddButton.textContent).toContain('COMMON.ADD');
-      spyOn(testhost.component, 'add');
+      vi.spyOn(testhost.component, 'add');
       testhost.component.profileSelect.setValue(expectedProfiles[3].id);
       fixture.detectChanges();
       elAddButton.click();
@@ -218,7 +219,7 @@ describe('ProfilesFormComponent', () => {
       expect(elCells[2].textContent).toContain('profile 2');
       const elDelButton = elCells[3].querySelector('button');
       expect(elDelButton).toBeTruthy();
-      spyOn(testhost.component, 'remove');
+      vi.spyOn(testhost.component, 'remove');
       elDelButton.click();
       expect(testhost.component.remove).toHaveBeenCalledWith(0);
     });
@@ -227,7 +228,7 @@ describe('ProfilesFormComponent', () => {
   describe('Component', () => {
     it('should fill the application tree', () => {
       expect(testhost.component.applications).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           {
             key: 'GROUPS_APP',
             label: 'Groupes de profils',

@@ -177,7 +177,8 @@ class TestHostComponent {
   adminUserProfile = expectedAdminUserProfile;
   userInfo = userInfolanguage;
 
-  @ViewChild(UserInfoTabComponent, { static: false }) component: UserInfoTabComponent;
+  @ViewChild(UserInfoTabComponent, { static: false })
+  component: UserInfoTabComponent;
 }
 
 describe('UserInfoTabComponent', () => {
@@ -279,10 +280,19 @@ describe('UserInfoTabComponent', () => {
       id: '1',
       language: 'fr',
     };
-    const userServiceSpy = jasmine.createSpyObj('UserService', { patch: of({}) });
-    const userInfoServiceSpy = jasmine.createSpyObj('UserInfoService', { patch: of({}) });
+    const userServiceSpy = {
+      patch: vi.fn().mockName('UserService.patch').mockReturnValue(of({})),
+    };
+    const userInfoServiceSpy = {
+      patch: vi.fn().mockName('UserInfoService.patch').mockReturnValue(of({})),
+    };
 
-    const userCreateValidatorsSpy = jasmine.createSpyObj('userCreateValidators', { uniqueEmail: () => of(null) });
+    const userCreateValidatorsSpy = {
+      uniqueEmail: vi
+        .fn()
+        .mockName('userCreateValidators.uniqueEmail')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

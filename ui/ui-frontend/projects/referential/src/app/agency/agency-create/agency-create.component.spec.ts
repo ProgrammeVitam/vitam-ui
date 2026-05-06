@@ -64,11 +64,15 @@ import { AgencyCreateValidators } from './agency-create.validators';
   standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() selected: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  selected: string;
+  @Input()
+  spinnerDiameter = 25;
 
-  @Output() selectedChange = new EventEmitter<string>();
+  @Output()
+  selectedChange = new EventEmitter<string>();
 
   writeValue() {}
   registerOnChange() {}
@@ -98,14 +102,27 @@ let page: Page;
 
 describe('AgencyCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
 
-    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { create: of({}) });
-    const agencyValidatorSpy = jasmine.createSpyObj('AgencyCreateValidators', {
-      uniqueIdentifier: () => of(null),
-      uniqueName: () => of(null),
-      onlyWhitespaces: () => {},
-    });
+    const agencyServiceSpy = {
+      create: vi.fn().mockName('AgencyService.create').mockReturnValue(of({})),
+    };
+    const agencyValidatorSpy = {
+      uniqueIdentifier: vi
+        .fn()
+        .mockName('AgencyCreateValidators.uniqueIdentifier')
+        .mockReturnValue(() => of(null)),
+      uniqueName: vi
+        .fn()
+        .mockName('AgencyCreateValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+      onlyWhitespaces: vi
+        .fn()
+        .mockName('AgencyCreateValidators.onlyWhitespaces')
+        .mockReturnValue(() => {}),
+    };
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

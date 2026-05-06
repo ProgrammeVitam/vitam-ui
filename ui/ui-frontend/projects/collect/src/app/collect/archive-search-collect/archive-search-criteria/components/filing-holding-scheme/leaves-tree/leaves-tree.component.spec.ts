@@ -86,7 +86,9 @@ describe('LeavesTreeComponent', () => {
   const configurationsApiServiceStube = {
     getVirtualPathsFields: () => of(['SomeField']),
   };
-  const archiveSharedDataServiceStub = jasmine.createSpyObj<ArchiveSharedDataService>('ArchiveSharedDataService', ['getSearchCriterias']);
+  const archiveSharedDataServiceStub = {
+    getSearchCriterias: vi.fn().mockName('ArchiveSharedDataService.getSearchCriterias'),
+  };
   const searchCriteria: SearchCriteriaDto = {
     pageNumber: 0,
     size: 1,
@@ -100,7 +102,7 @@ describe('LeavesTreeComponent', () => {
     archiveServiceStub = {};
     archiveFacetsServicStube = {};
 
-    archiveSharedDataServiceStub.getSearchCriterias.and.returnValue(of(searchCriteria));
+    archiveSharedDataServiceStub.getSearchCriterias.mockReturnValue(of(searchCriteria));
     archiveSharedDataServiceStub.selectedUnit$ = of();
 
     await TestBed.configureTestingModule({

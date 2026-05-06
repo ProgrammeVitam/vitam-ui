@@ -59,8 +59,13 @@ describe('DipRequestCreateComponent', () => {
   let component: DipRequestCreateComponent;
   let fixture: ComponentFixture<DipRequestCreateComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+    keydownEvents: vi.fn().mockName('MatDialogRef.keydownEvents'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   const archiveServiceMock = {
     archive: () => of('test archive'),
@@ -119,7 +124,7 @@ describe('DipRequestCreateComponent', () => {
 
   it('should not call exportDIPService of archiveService when exportDIPform is invalid', () => {
     // Given
-    spyOn(archiveServiceMock, 'exportDIPService').and.callThrough();
+    vi.spyOn(archiveServiceMock, 'exportDIPService');
 
     // When
     component.onSubmit();
@@ -135,7 +140,10 @@ describe('DipRequestCreateComponent', () => {
   });
 
   it('should have "Original numérique" usage with "Initiale" version by default', () => {
-    const usage: { usage: string; version: string } = component.formGroups[1].get('usages').value[0];
+    const usage: {
+      usage: string;
+      version: string;
+    } = component.formGroups[1].get('usages').value[0];
     expect(usage.usage).toBe('BinaryMaster');
     expect(usage.version).toBe('FIRST');
   });

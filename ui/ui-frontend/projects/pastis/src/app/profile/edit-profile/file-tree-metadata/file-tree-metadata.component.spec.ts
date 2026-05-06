@@ -65,8 +65,14 @@ describe('FileTreeMetadataComponent', () => {
     enumeration: [],
     external: false,
   };
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
   const PA_MANDATORY_ENUM_FIELDS = [
     'NeedAuthorization',
     'LegalStatus',

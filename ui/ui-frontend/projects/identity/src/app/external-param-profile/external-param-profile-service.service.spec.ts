@@ -42,7 +42,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 describe('ExternalParamProfileService', () => {
   let service: ExternalParamProfileService;
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],

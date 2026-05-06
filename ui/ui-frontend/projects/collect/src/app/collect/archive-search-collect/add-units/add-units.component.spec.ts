@@ -76,8 +76,12 @@ describe('AddUnitsComponent', () => {
   let component: AddUnitsComponent;
   let fixture: ComponentFixture<AddUnitsComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   const archiveCollectServiceMock = {
     searchArchiveUnitsByCriteria: () =>

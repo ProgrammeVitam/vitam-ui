@@ -56,8 +56,12 @@ class FakeLoader implements TranslateLoader {
 }
 
 describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   let component: TitleAndDescriptionCriteriaSearchCollectComponent;
   let fixture: ComponentFixture<TitleAndDescriptionCriteriaSearchCollectComponent>;

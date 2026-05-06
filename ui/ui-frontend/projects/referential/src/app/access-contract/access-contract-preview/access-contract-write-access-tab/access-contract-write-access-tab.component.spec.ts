@@ -42,7 +42,7 @@ import { AccessContractService } from 'vitamui-library';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab.component';
 
 // TODO fix test
-xdescribe('AccessContractWriteAccessTabComponent', () => {
+describe.skip('AccessContractWriteAccessTabComponent', () => {
   let component: AccessContractWriteAccessTabComponent;
   let fixture: ComponentFixture<AccessContractWriteAccessTabComponent>;
 

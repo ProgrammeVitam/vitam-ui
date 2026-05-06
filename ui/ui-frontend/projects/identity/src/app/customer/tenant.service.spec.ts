@@ -127,7 +127,9 @@ const expectedTenants = [
 describe('TenantService', () => {
   let httpTestingController: HttpTestingController;
   let tenantService: TenantService;
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({

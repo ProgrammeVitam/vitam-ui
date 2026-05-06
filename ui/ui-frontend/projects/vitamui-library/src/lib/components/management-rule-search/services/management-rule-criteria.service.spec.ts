@@ -1,3 +1,4 @@
+import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -55,26 +56,30 @@ import { ManagementRuleCriteriaService } from './management-rule-criteria.servic
 
 describe('ManagementRuleCriteriaService', () => {
   let service: ManagementRuleCriteriaService;
-  let sharedDataService: jasmine.SpyObj<ManagementRuleSharedDataService>;
-  let searchCriteriaService: jasmine.SpyObj<SearchCriteriaService>;
-  let queryParamsService: jasmine.SpyObj<QueryParamsService>;
+  let sharedDataService: MockedObject<ManagementRuleSharedDataService>;
+  let searchCriteriaService: MockedObject<SearchCriteriaService>;
+  let queryParamsService: MockedObject<QueryParamsService>;
   let mockBuilder: any;
 
   beforeEach(() => {
     mockBuilder = {
-      addQueryParam: jasmine.createSpy('addQueryParam').and.returnValue(mockBuilder),
-      navigate: jasmine.createSpy('navigate'),
+      addQueryParam: vi.fn().mockReturnValue(mockBuilder),
+      navigate: vi.fn(),
     };
 
-    sharedDataService = jasmine.createSpyObj('ManagementRuleSharedDataService', [
-      'addSimpleSearchCriteriaSubjects',
-      'addSimpleSearchCriteriaSubject',
-    ]);
+    sharedDataService = {
+      addSimpleSearchCriteriaSubjects: vi.fn().mockName('ManagementRuleSharedDataService.addSimpleSearchCriteriaSubjects'),
+      addSimpleSearchCriteriaSubject: vi.fn().mockName('ManagementRuleSharedDataService.addSimpleSearchCriteriaSubject'),
+    };
 
-    searchCriteriaService = jasmine.createSpyObj('SearchCriteriaService', ['toSearchCriteria']);
+    searchCriteriaService = {
+      toSearchCriteria: vi.fn().mockName('SearchCriteriaService.toSearchCriteria'),
+    };
 
-    queryParamsService = jasmine.createSpyObj('QueryParamsService', ['builder']);
-    queryParamsService.builder.and.returnValue(mockBuilder);
+    queryParamsService = {
+      builder: vi.fn().mockName('QueryParamsService.builder'),
+    };
+    queryParamsService.builder.mockReturnValue(mockBuilder);
 
     TestBed.configureTestingModule({
       providers: [
@@ -93,7 +98,7 @@ describe('ManagementRuleCriteriaService', () => {
   });
 
   describe('initializeFromSearchCriteria', () => {
-    it('should update additional criteria when filtered criterias exist', (done) => {
+    it('should update additional criteria when filtered criterias exist', async () => {
       const mockSearchCriteria = new Map<string, CriteriaSearchCriteria>([
         [
           'key1',
@@ -106,30 +111,28 @@ describe('ManagementRuleCriteriaService', () => {
       const keysList = ['key1'];
       const additionalCriteria = new Map<string, boolean>();
       const destroyed$ = new Subject<void>();
-      const onDefault = jasmine.createSpy('onDefault');
+      const onDefault = vi.fn();
 
       service.initializeFromSearchCriteria(searchCriteria$, keysList, additionalCriteria, destroyed$, onDefault);
 
       setTimeout(() => {
         expect(additionalCriteria.get('value1')).toBe(true);
         expect(onDefault).not.toHaveBeenCalled();
-        done();
       }, 10);
     });
 
-    it('should call onDefault when no filtered criterias exist', (done) => {
+    it('should call onDefault when no filtered criterias exist', async () => {
       const mockSearchCriteria = new Map<string, CriteriaSearchCriteria>();
       const searchCriteria$ = of(mockSearchCriteria);
       const keysList = ['key1'];
       const additionalCriteria = new Map<string, boolean>();
       const destroyed$ = new Subject<void>();
-      const onDefault = jasmine.createSpy('onDefault');
+      const onDefault = vi.fn();
 
       service.initializeFromSearchCriteria(searchCriteria$, keysList, additionalCriteria, destroyed$, onDefault);
 
       setTimeout(() => {
         expect(onDefault).toHaveBeenCalled();
-        done();
       }, 10);
     });
   });
@@ -140,7 +143,9 @@ describe('ManagementRuleCriteriaService', () => {
       const mockCriteria1 = [{ key: 'key1' }] as any;
       const mockCriteria2 = [{ key: 'key2' }] as any;
 
-      searchCriteriaService.toSearchCriteria.and.returnValues(Promise.resolve(mockCriteria1), Promise.resolve(mockCriteria2));
+      searchCriteriaService.toSearchCriteria
+        .mockReturnValueOnce(Promise.resolve(mockCriteria1))
+        .mockReturnValueOnce(Promise.resolve(mockCriteria2));
 
       await service.addFromParams(params);
 

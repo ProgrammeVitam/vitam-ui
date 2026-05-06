@@ -58,10 +58,16 @@ import { EditablePatternsComponent } from './editable-patterns.component';
   standalone: false,
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input() options: Array<{ value: string; disabled?: boolean }>;
-  @Input() vitamuiMiniMode = false;
+  @Input()
+  options: Array<{
+    value: string;
+    disabled?: boolean;
+  }>;
+  @Input()
+  vitamuiMiniMode = false;
 
-  @ViewChild('select', { static: true }) select: MatSelect;
+  @ViewChild('select', { static: true })
+  select: MatSelect;
 
   writeValue() {}
   registerOnChange() {}
@@ -82,7 +88,8 @@ class TesthostComponent {
     { value: 'test5.com', disabled: true },
   ];
   label = 'Test label';
-  @ViewChild(EditablePatternsComponent, { static: false }) component: EditablePatternsComponent;
+  @ViewChild(EditablePatternsComponent, { static: false })
+  component: EditablePatternsComponent;
 }
 
 describe('EditablePatternsComponent', () => {
@@ -113,7 +120,7 @@ describe('EditablePatternsComponent', () => {
 
   describe('DOM', () => {
     it('should call enterEditMode() on click', () => {
-      spyOn(testhost.component, 'enterEditMode');
+      vi.spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
       element.click();
       expect(testhost.component.enterEditMode).toHaveBeenCalled();
@@ -148,7 +155,7 @@ describe('EditablePatternsComponent', () => {
     });
 
     it('should have a confirm button', () => {
-      spyOn(testhost.component, 'confirm');
+      vi.spyOn(testhost.component, 'confirm');
       testhost.component.enterEditMode();
       testhost.component.control.setValue(['test1.com', 'test3.com']);
       testhost.component.control.markAsDirty();
@@ -160,7 +167,7 @@ describe('EditablePatternsComponent', () => {
     });
 
     it('should have a cancel button', () => {
-      spyOn(testhost.component, 'cancel');
+      vi.spyOn(testhost.component, 'cancel');
       testhost.component.enterEditMode();
       fixture.detectChanges();
       const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-cancel') as HTMLButtonElement;
@@ -170,14 +177,14 @@ describe('EditablePatternsComponent', () => {
     });
 
     it('should have a spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(true);
+      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(true);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(false);
+      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(false);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();

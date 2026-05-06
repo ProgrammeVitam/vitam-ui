@@ -57,7 +57,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 class TesthostComponent {
   owner: Owner = null;
   customerId = '4242';
-  @ViewChild(OwnerFormComponent, { static: false }) ownerFormComponent: OwnerFormComponent;
+  @ViewChild(OwnerFormComponent, { static: false })
+  ownerFormComponent: OwnerFormComponent;
 }
 
 let testhost: TesthostComponent;
@@ -65,10 +66,15 @@ let fixture: ComponentFixture<TesthostComponent>;
 
 describe('OwnerFormComponent', () => {
   beforeEach(async () => {
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', {
-      uniqueCode: () => timer(10).pipe(map((): any => null)),
-    });
+    const ownerServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of({})),
+    };
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => timer(10).pipe(map((): any => null))),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [OwnerFormComponent, TesthostComponent],

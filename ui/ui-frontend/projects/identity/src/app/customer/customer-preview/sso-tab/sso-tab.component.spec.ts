@@ -53,9 +53,12 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   standalone: false,
 })
 class IdentityProviderDetailsStubComponent {
-  @Input() identityProvider: IdentityProvider;
-  @Input() domains: any;
-  @Input() readOnly: boolean;
+  @Input()
+  identityProvider: IdentityProvider;
+  @Input()
+  domains: any;
+  @Input()
+  readOnly: boolean;
 }
 
 @Component({
@@ -90,7 +93,8 @@ class TestHostComponent {
     portalMessages: {},
     portalTitles: {},
   };
-  @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
+  @ViewChild(SsoTabComponent, { static: false })
+  component: SsoTabComponent;
 }
 
 describe('SsoTabComponent', () => {
@@ -141,8 +145,10 @@ describe('SsoTabComponent', () => {
       },
     ];
 
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
       declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent],
@@ -194,14 +200,14 @@ describe('SsoTabComponent', () => {
       });
 
       it('should call openCreateIDPDialog()', () => {
-        spyOn(testhost.component, 'openCreateIDPDialog').and.stub();
+        vi.spyOn(testhost.component, 'openCreateIDPDialog').mockImplementation(() => {});
         const elButton = fixture.nativeElement.querySelector('button');
         elButton.click();
         expect(testhost.component.openCreateIDPDialog).toHaveBeenCalled();
       });
 
       it('should be disabled', () => {
-        spyOn(testhost.component, 'openCreateIDPDialog').and.stub();
+        vi.spyOn(testhost.component, 'openCreateIDPDialog').mockImplementation(() => {});
         testhost.component.domains = [];
         fixture.detectChanges();
         const elButton = fixture.nativeElement.querySelector('button');

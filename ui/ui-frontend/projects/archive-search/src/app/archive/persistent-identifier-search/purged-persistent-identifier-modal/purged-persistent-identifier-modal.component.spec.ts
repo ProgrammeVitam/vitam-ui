@@ -64,7 +64,10 @@ class FakeTranslateLoader implements TranslateLoader {
 describe('ErrorResponseModalComponent', () => {
   let component: PurgedPersistentIdentifierModalComponent;
   let fixture: ComponentFixture<PurgedPersistentIdentifierModalComponent>;
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+    keydownEvents: vi.fn().mockName('MatDialogRef.keydownEvents'),
+  };
 
   async function init(type: any, operationType: any) {
     await TestBed.configureTestingModule({

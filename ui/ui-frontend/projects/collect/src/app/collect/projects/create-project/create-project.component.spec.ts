@@ -1,3 +1,4 @@
+import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -64,7 +65,7 @@ import { TenantSelectionService } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import SpyObj = jasmine.SpyObj;
+import SpyObj = MockedObject;
 
 @Pipe({
   name: 'fileSize',
@@ -80,8 +81,12 @@ describe('CreateProjectComponent', () => {
   let component: CreateProjectComponent;
   let fixture: ComponentFixture<CreateProjectComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
   const defaultProject: Project = {
     id: '',
     name: '',
@@ -130,24 +135,30 @@ describe('CreateProjectComponent', () => {
 
   beforeEach(async () => {
     tenantSelectionServiceMock = {
-      getSelectedTenant: jasmine.createSpy('getSelectedTenant').and.returnValue({ identifier: 'tenant1' }),
+      getSelectedTenant: vi.fn().mockReturnValue({ identifier: 'tenant1' }),
     };
 
-    projectsServiceMock = jasmine.createSpyObj<ProjectsService>('ProjectsService', {
-      create: of(defaultProject),
-      updateProjectDescription: of(defaultProject),
-    });
+    projectsServiceMock = {
+      create: vi.fn().mockName('ProjectsService.create').mockReturnValue(of(defaultProject)),
+      updateProjectDescription: vi.fn().mockName('ProjectsService.updateProjectDescription').mockReturnValue(of(defaultProject)),
+    };
 
-    transactionServiceMock = jasmine.createSpyObj<TransactionsService>('TransactionsService', {
-      create: of(defaultTransation),
-    });
+    transactionServiceMock = {
+      create: vi.fn().mockName('TransactionsService.create').mockReturnValue(of(defaultTransation)),
+    };
 
-    uploadServiceMock = jasmine.createSpyObj<CollectUploadService>('UploadService', {
-      uploadZip: of(of({})).toPromise(), // FIXME: Maybe change promise of observable chain call...
-      getUploadingFiles: of([]),
-      getZipFile: of({} as CollectZippedUploadFile),
-      reinitializeZip: null,
-    });
+    uploadServiceMock = {
+      uploadZip: vi
+        .fn()
+        .mockName('UploadService.uploadZip')
+        .mockReturnValue(of(of({})).toPromise()),
+      getUploadingFiles: vi.fn().mockName('UploadService.getUploadingFiles').mockReturnValue(of([])),
+      getZipFile: vi
+        .fn()
+        .mockName('UploadService.getZipFile')
+        .mockReturnValue(of({} as CollectZippedUploadFile)),
+      reinitializeZip: vi.fn().mockName('UploadService.reinitializeZip').mockReturnValue(null),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [CreateProjectComponent, MockFileSizePipe],
@@ -221,7 +232,7 @@ describe('CreateProjectComponent', () => {
     // Then
     expect(projectsServiceMock.create).toHaveBeenCalled();
     expect(transactionServiceMock.create).toHaveBeenCalled();
-    const arg = projectsServiceMock.create.calls.mostRecent().args[0] as Project;
+    const arg = vi.mocked(projectsServiceMock.create).mock.lastCall[0] as Project;
     expect(arg.name).toBe(form.messageIdentifier);
     expect(arg.messageIdentifier).toBe(form.messageIdentifier);
     expect(arg.unitUp).toBe(form.unitUp);
@@ -250,7 +261,7 @@ describe('CreateProjectComponent', () => {
 
     // Then
     expect(projectsServiceMock.create).toHaveBeenCalled();
-    const arg = projectsServiceMock.create.calls.mostRecent().args[0] as Project;
+    const arg = vi.mocked(projectsServiceMock.create).mock.lastCall[0] as Project;
     expect(arg.name).toBe(form.messageIdentifier);
     expect(arg.messageIdentifier).toBe(form.messageIdentifier);
     expect(arg.unitUp).toBeUndefined();

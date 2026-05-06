@@ -79,24 +79,27 @@ describe('TransactionListComponent', () => {
     legalStatus: 'A legal status',
   };
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
-  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+  };
+  matDialogRefSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
-  const TransactionsServiceStub = jasmine.createSpyObj(
-    'TransactionsService',
-
-    {
-      sendTransaction: of({}),
-      abortTransaction: of({}),
-      editTransaction: of({}),
-      validateTransaction: of({}),
-      validate: of({}),
-      search: of([transaction]),
-    },
-  );
+  const TransactionsServiceStub = {
+    sendTransaction: vi.fn().mockName('TransactionsService.sendTransaction').mockReturnValue(of({})),
+    abortTransaction: vi.fn().mockName('TransactionsService.abortTransaction').mockReturnValue(of({})),
+    editTransaction: vi.fn().mockName('TransactionsService.editTransaction').mockReturnValue(of({})),
+    validateTransaction: vi.fn().mockName('TransactionsService.validateTransaction').mockReturnValue(of({})),
+    validate: vi.fn().mockName('TransactionsService.validate').mockReturnValue(of({})),
+    search: vi
+      .fn()
+      .mockName('TransactionsService.search')
+      .mockReturnValue(of([transaction])),
+  };
 
   const TransactionResolverStub = {
     resolve: () => {

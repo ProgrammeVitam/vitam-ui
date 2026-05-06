@@ -80,7 +80,13 @@ describe('SelectComponent', () => {
 
   function init(
     isMultiple?: boolean,
-    { enableSelectAll, options }: { enableSelectAll: boolean; options: VitamuiSelectOptions | any[] } = {
+    {
+      enableSelectAll,
+      options,
+    }: {
+      enableSelectAll: boolean;
+      options: VitamuiSelectOptions | any[];
+    } = {
       enableSelectAll: true,
       options: defaultOptions,
     },
@@ -133,8 +139,8 @@ describe('SelectComponent', () => {
     beforeEach(init(false));
 
     it('should be non multiple and with search', () => {
-      expect(testHostComponent.selectComponent.multiple).toBeFalse();
-      expect(testHostComponent.selectComponent.enableSearch).toBeTrue();
+      expect(testHostComponent.selectComponent.multiple).toBe(false);
+      expect(testHostComponent.selectComponent.enableSearch).toBe(true);
     });
 
     commonBetweenMultiAndNoMulti();
@@ -179,10 +185,10 @@ describe('SelectComponent', () => {
     beforeEach(init(true));
 
     it('should be multiple and with search, selectAll and displaySelected', () => {
-      expect(testHostComponent.selectComponent.multiple).toBeTrue();
-      expect(testHostComponent.selectComponent.enableSearch).toBeTrue();
-      expect(testHostComponent.selectComponent.enableSelectAll).toBeTrue();
-      expect(testHostComponent.selectComponent.enableDisplaySelected).toBeTrue();
+      expect(testHostComponent.selectComponent.multiple).toBe(true);
+      expect(testHostComponent.selectComponent.enableSearch).toBe(true);
+      expect(testHostComponent.selectComponent.enableSelectAll).toBe(true);
+      expect(testHostComponent.selectComponent.enableDisplaySelected).toBe(true);
     });
 
     commonBetweenMultiAndNoMulti();
@@ -205,7 +211,7 @@ describe('SelectComponent', () => {
         expectedValues.push(option.key);
         const valueElement = hostFixture.debugElement.query(By.css('mat-select-trigger')).nativeElement;
         expect(testHostComponent.control.value).toEqual(expectedValues);
-        expect(valueElement.textContent.trim().startsWith(expectedValues.length)).toBeTrue();
+        expect(valueElement.textContent.trim().startsWith(expectedValues.length)).toBe(true);
       }
     });
 
@@ -263,7 +269,7 @@ describe('SelectComponent', () => {
       await hostFixture.whenStable();
 
       const valueElement = hostFixture.debugElement.query(By.css('mat-select-trigger')).nativeElement;
-      expect(valueElement.textContent.trim().startsWith('2')).toBeTrue();
+      expect(valueElement.textContent.trim().startsWith('2')).toBe(true);
     });
 
     it('should maintain selection integrity when options are reloaded', async () => {

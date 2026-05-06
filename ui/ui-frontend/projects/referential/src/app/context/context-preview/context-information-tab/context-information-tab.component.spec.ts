@@ -46,7 +46,7 @@ import { ContextService } from '../../context.service';
 import { ContextInformationTabComponent } from './context-information-tab.component';
 
 // TODO fix tests
-xdescribe('ContextInformationTabComponent', () => {
+describe.skip('ContextInformationTabComponent', () => {
   let component: ContextInformationTabComponent;
   let fixture: ComponentFixture<ContextInformationTabComponent>;
 

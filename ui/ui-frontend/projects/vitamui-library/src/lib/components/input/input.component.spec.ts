@@ -105,7 +105,7 @@ describe('VitamuiInputComponent', () => {
     });
 
     it('should update component item value and call onChange on input change', fakeAsync(() => {
-      const onChangeSpy = spyOn(component, 'onChange');
+      const onChangeSpy = vi.spyOn(component, 'onChange');
       const initialValues = ['value1'];
       component.writeValue(initialValues);
       fixture.detectChanges();
@@ -152,7 +152,7 @@ describe('VitamuiInputComponent', () => {
       expect(getInputs().length).toBe(2);
 
       // We set a value to that new input
-      const onChangeSpy = spyOn(component, 'onChange');
+      const onChangeSpy = vi.spyOn(component, 'onChange');
       const newValue = 'value2';
       input(getInputs()[1], newValue);
       fixture.detectChanges();
@@ -160,7 +160,7 @@ describe('VitamuiInputComponent', () => {
     });
 
     it('should remove input', () => {
-      const onChangeSpy = spyOn(component, 'onChange');
+      const onChangeSpy = vi.spyOn(component, 'onChange');
       const initialValues = ['value1', 'value2'];
       component.writeValue(initialValues);
       fixture.detectChanges();
@@ -177,7 +177,7 @@ describe('VitamuiInputComponent', () => {
       component.writeValue(initialValues);
       fixture.detectChanges();
 
-      const onChangeSpy = spyOn(component, 'onChange');
+      const onChangeSpy = vi.spyOn(component, 'onChange');
       expect(getInputs().length).toBe(2);
       input(getInputs()[1], '');
       component.onBlur(1);

@@ -1,3 +1,4 @@
+import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -48,12 +49,16 @@ const fakeArchiveUnits = (count: number): ArchiveUnit[] => {
 
 describe('ReclassificationDialogService', () => {
   let service: BaseReclassificationDialogService;
-  let reclassificationServiceSpy: jasmine.SpyObj<ReclassificationService>;
-  let translateServiceSpy: jasmine.SpyObj<TranslateService>;
+  let reclassificationServiceSpy: MockedObject<ReclassificationService>;
+  let translateServiceSpy: MockedObject<TranslateService>;
 
   beforeEach(() => {
-    reclassificationServiceSpy = jasmine.createSpyObj('ReclassificationService', ['searchArchiveUnitsByCriteria']);
-    translateServiceSpy = jasmine.createSpyObj('TranslateService', ['instant']);
+    reclassificationServiceSpy = {
+      searchArchiveUnitsByCriteria: vi.fn().mockName('ReclassificationService.searchArchiveUnitsByCriteria'),
+    };
+    translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -78,20 +83,20 @@ describe('ReclassificationDialogService', () => {
   });
 
   it('should compute shouldProposeExactChildrenCount correctly', () => {
-    service.childrenCount.set(100_000); // > RECLASSIFICATION_THRESHOLD
+    service.childrenCount.set(100000); // > RECLASSIFICATION_THRESHOLD
     service.exactChildrenCountLoaded.set(false);
-    expect(service.shouldProposeExactChildrenCount()).toBeTrue();
+    expect(service.shouldProposeExactChildrenCount()).toBe(true);
 
     service.exactChildrenCountLoaded.set(true);
-    expect(service.shouldProposeExactChildrenCount()).toBeFalse();
+    expect(service.shouldProposeExactChildrenCount()).toBe(false);
   });
 
   it('should return badgeMessage with "more than" when shouldProposeExactChildrenCount is true', () => {
-    service.childrenCount.set(100_000);
+    service.childrenCount.set(100000);
     service.exactChildrenCountLoaded.set(false);
 
-    translateServiceSpy.instant.withArgs('ARCHIVE_SEARCH.MORE_THAN').and.returnValue('Plus de');
-    translateServiceSpy.instant.withArgs('RECLASSIFICATION.FIRST_STEP.CHILDS').and.returnValue('éléments');
+    translateServiceSpy.instant.withArgs('ARCHIVE_SEARCH.MORE_THAN').mockReturnValue('Plus de');
+    translateServiceSpy.instant.withArgs('RECLASSIFICATION.FIRST_STEP.CHILDS').mockReturnValue('éléments');
 
     const message = service.badgeMessage();
     expect(message).toBe('Plus de 100000 éléments');
@@ -103,7 +108,7 @@ describe('ReclassificationDialogService', () => {
 
     translateServiceSpy.instant
       .withArgs('RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS', { nbDocuments: 42 })
-      .and.returnValue('Inclut 42 documents/dossiers');
+      .mockReturnValue('Inclut 42 documents/dossiers');
 
     const message = service.badgeMessage();
     expect(message).toBe('Inclut 42 documents/dossiers');
@@ -114,10 +119,9 @@ describe('ReclassificationDialogService', () => {
     const mockArchiveUnits = fakeArchiveUnits(mockTotal);
 
     // Le mock sera appelé 2 fois : pour unitIdsFromResult$ puis pour childrenCount$
-    reclassificationServiceSpy.searchArchiveUnitsByCriteria.and.returnValues(
-      of({ results: mockArchiveUnits, totalResults: mockArchiveUnits.length, pageNumbers: 1 }),
-      of({ results: [], totalResults: mockTotal, pageNumbers: 1 }),
-    );
+    reclassificationServiceSpy.searchArchiveUnitsByCriteria
+      .mockReturnValueOnce(of({ results: mockArchiveUnits, totalResults: mockArchiveUnits.length, pageNumbers: 1 }))
+      .mockReturnValueOnce(of({ results: [], totalResults: mockTotal, pageNumbers: 1 }));
 
     const mockQuery = {
       criteriaList: [
@@ -145,7 +149,7 @@ describe('ReclassificationDialogService', () => {
     tick(); // Laisse le temps aux observables de se résoudre
 
     expect(service.childrenCount()).toBe(mockTotal);
-    expect(service.childrenCountLoaded()).toBeTrue();
+    expect(service.childrenCountLoaded()).toBe(true);
     expect(reclassificationServiceSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(2);
   }));
 
@@ -154,10 +158,9 @@ describe('ReclassificationDialogService', () => {
     const mockArchiveUnits = fakeArchiveUnits(mockTotal);
 
     // Le mock sera appelé 2 fois : pour unitIdsFromResult$ puis pour childrenCount$
-    reclassificationServiceSpy.searchArchiveUnitsByCriteria.and.returnValues(
-      of({ results: mockArchiveUnits, totalResults: mockArchiveUnits.length, pageNumbers: 1 }),
-      of({ results: [], totalResults: mockTotal, pageNumbers: 1 }),
-    );
+    reclassificationServiceSpy.searchArchiveUnitsByCriteria
+      .mockReturnValueOnce(of({ results: mockArchiveUnits, totalResults: mockArchiveUnits.length, pageNumbers: 1 }))
+      .mockReturnValueOnce(of({ results: [], totalResults: mockTotal, pageNumbers: 1 }));
 
     const mockQuery = {
       criteriaList: [
@@ -176,7 +179,7 @@ describe('ReclassificationDialogService', () => {
     service.transactionId.set(null);
     service.initialQuery.set(mockQuery);
 
-    reclassificationServiceSpy.searchArchiveUnitsByCriteria.and.returnValue(
+    reclassificationServiceSpy.searchArchiveUnitsByCriteria.mockReturnValue(
       of({ results: [], totalResults: mockTotal }) as Observable<PagedResult>,
     );
 
@@ -187,7 +190,7 @@ describe('ReclassificationDialogService', () => {
     tick();
 
     expect(service.childrenCount()).toBe(mockTotal);
-    expect(service.exactChildrenCountLoaded()).toBeTrue();
+    expect(service.exactChildrenCountLoaded()).toBe(true);
   }));
 
   it('should load parent units and compute hasParent', fakeAsync(() => {
@@ -195,10 +198,12 @@ describe('ReclassificationDialogService', () => {
 
     const mockParents = [{ '#id': 'parent1' }, { '#id': 'parent2' }];
 
-    reclassificationServiceSpy.searchArchiveUnitsByCriteria.and.returnValues(
-      of({ results: mockUnits }) as Observable<PagedResult>, // targetedUnits$
-      of({ results: mockParents }) as Observable<PagedResult>, // parents$
-    );
+    reclassificationServiceSpy.searchArchiveUnitsByCriteria
+      .mockReturnValueOnce(of({ results: mockUnits }) as Observable<PagedResult>)
+      .mockReturnValueOnce(
+        // targetedUnits$
+        of({ results: mockParents }) as Observable<PagedResult>,
+      );
 
     TestBed.flushEffects();
     tick(); // Laisse le temps au toObservable de s'initialiser
@@ -206,6 +211,6 @@ describe('ReclassificationDialogService', () => {
     const parents = service.parents();
     expect(parents.length).toBe(2);
     expect(parents).toEqual(mockParents);
-    expect(service.hasParent()).toBeTrue();
+    expect(service.hasParent()).toBe(true);
   }));
 });

@@ -74,7 +74,9 @@ describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
   let fixture: ComponentFixture<ArchiveUnitInformationTabComponent>;
 
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   const activatedRouteMock = {
     params: of({ tenantIdentifier: 1 }),
@@ -207,8 +209,10 @@ describe('ArchiveUnitInformationTabComponent', () => {
       dataObjectVersion: [],
     } as AccessContract;
 
-    spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
-    spyOn<AccessContractService, any>(accessContractServiceMock, 'currentAccessContract$').and.returnValue(of(accessContractEveryObject));
+    vi.spyOn(archiveServiceMock, 'downloadObjectFromUnit');
+    vi.spyOn<AccessContractService, any>(accessContractServiceMock, 'currentAccessContract$').mockReturnValue(
+      of(accessContractEveryObject),
+    );
     component.archiveUnit = archiveUnit;
     component.ngOnChanges({
       archiveUnit: new SimpleChange(null, archiveUnit, true),

@@ -65,7 +65,8 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
-  @Input() customerId: any;
+  @Input()
+  customerId: any;
 
   writeValue() {}
 
@@ -97,16 +98,31 @@ describe('OwnerCreateComponent', () => {
       readonly: false,
     };
 
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of(owner) });
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null),
-    });
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
-      create: of({}),
-      getAvailableTenants: of([2, 3, 4]),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const ownerServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of(owner)),
+    };
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantFormValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('TenantFormValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantServiceSpy = {
+      create: vi.fn().mockName('TenantService.create').mockReturnValue(of({})),
+      getAvailableTenants: vi
+        .fn()
+        .mockName('TenantService.getAvailableTenants')
+        .mockReturnValue(of([2, 3, 4])),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

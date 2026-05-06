@@ -62,7 +62,7 @@ describe('InfiniteScrollTable', () => {
     it('should set the dataSource', fakeAsync(() => {
       const serviceMock = new SearchServiceMock();
       const infiniteScrollTable = new InfiniteScrollTable(serviceMock);
-      spyOn(serviceMock, 'search').and.returnValue(timer(10).pipe(map(() => ['value1', 'value2'])));
+      vi.spyOn(serviceMock, 'search').mockReturnValue(timer(10).pipe(map(() => ['value1', 'value2'])));
       expect(infiniteScrollTable.pending).toBe(false);
       infiniteScrollTable.search();
       expect(infiniteScrollTable.pending).toBe(true);
@@ -81,7 +81,7 @@ describe('InfiniteScrollTable', () => {
       }
       const serviceMock = new SearchServiceMock();
       const infiniteScrollTable = new InfiniteScrollTable(serviceMock);
-      spyOn(serviceMock, 'loadMore').and.returnValue(timer(10).pipe(map(() => bigList)));
+      vi.spyOn(serviceMock, 'loadMore').mockReturnValue(timer(10).pipe(map(() => bigList)));
       expect(infiniteScrollTable.infiniteScrollDisabled).toBe(false);
       expect(infiniteScrollTable.pending).toBe(false);
       infiniteScrollTable.loadMore();

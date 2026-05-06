@@ -58,8 +58,10 @@ import { InformationTabComponent } from './information-tab.component';
   standalone: false,
 })
 class EditableTextAreaStubComponent implements ControlValueAccessor {
-  @Input() validator: Validator;
-  @Input() asyncValidator: AsyncValidator;
+  @Input()
+  validator: Validator;
+  @Input()
+  asyncValidator: AsyncValidator;
   value: string;
   writeValue(value: string) {
     this.value = value;
@@ -101,7 +103,8 @@ class TestHostComponent {
   };
   readOnly = false;
 
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false })
+  component: InformationTabComponent;
 }
 
 describe('Hierarchy InformationTabComponent', () => {
@@ -110,7 +113,12 @@ describe('Hierarchy InformationTabComponent', () => {
 
   beforeEach(async () => {
     const hierarchyServiceMock = { update: of({}), updated: new Subject() };
-    const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { nameExists: () => of(null) });
+    const profileValidatorsSpy = {
+      nameExists: vi
+        .fn()
+        .mockName('ProfileValidators.nameExists')
+        .mockReturnValue(() => of(null)),
+    };
     const authServiceMock = { user: { level: '' } };
 
     await TestBed.configureTestingModule({

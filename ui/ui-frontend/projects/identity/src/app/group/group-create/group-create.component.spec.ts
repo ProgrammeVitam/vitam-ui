@@ -99,7 +99,8 @@ import { GroupCreateComponent } from './group-create.component';
   standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
-  @Input() level: string;
+  @Input()
+  level: string;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
@@ -153,9 +154,18 @@ let page: Page;
 
 describe('GroupCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const profileGroupServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
-    const groupValidatorsSpy = jasmine.createSpyObj('GroupValidators', { nameExists: () => of(null) });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const profileGroupServiceSpy = {
+      create: vi.fn().mockName('GroupService.create').mockReturnValue(of({})),
+    };
+    const groupValidatorsSpy = {
+      nameExists: vi
+        .fn()
+        .mockName('GroupValidators.nameExists')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

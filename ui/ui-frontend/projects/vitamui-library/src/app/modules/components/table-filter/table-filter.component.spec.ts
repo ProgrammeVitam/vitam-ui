@@ -142,7 +142,7 @@ describe('TableFilterComponent', () => {
   });
 
   it('should emit the search text on input', () => {
-    spyOn(testhost, 'onSearch');
+    vi.spyOn(testhost, 'onSearch');
 
     testhost.showSearchBar = true;
 

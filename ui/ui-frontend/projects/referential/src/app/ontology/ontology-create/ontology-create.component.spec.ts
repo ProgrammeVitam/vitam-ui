@@ -81,15 +81,23 @@ let page: Page;
 
 describe('OntologyCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', {
-      create: of({}),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const ontologyServiceSpy = {
+      create: vi.fn().mockName('OntologyService.create').mockReturnValue(of({})),
+    };
 
-    const ontologyCreateValidatorsSpy = jasmine.createSpyObj('OntologyCreateValidators', {
-      uniqueID: () => () => of(null),
-      patternID: () => of(null),
-    });
+    const ontologyCreateValidatorsSpy = {
+      uniqueID: vi
+        .fn()
+        .mockName('OntologyCreateValidators.uniqueID')
+        .mockReturnValue(() => () => of(null)),
+      patternID: vi
+        .fn()
+        .mockName('OntologyCreateValidators.patternID')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

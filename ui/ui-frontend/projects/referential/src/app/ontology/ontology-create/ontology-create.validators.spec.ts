@@ -43,8 +43,10 @@ import { OntologyCreateValidators } from './ontology-create.validators';
 describe('Ontology Create Validators', () => {
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
-      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
-      ontologyServiceSpy.exists.and.returnValue(of(false));
+      const ontologyServiceSpy = {
+        exists: vi.fn().mockName('OntologyService.exists'),
+      };
+      ontologyServiceSpy.exists.mockReturnValue(of(false));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
       from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
@@ -56,8 +58,10 @@ describe('Ontology Create Validators', () => {
     }));
 
     it('should return { idExists: true }', fakeAsync(() => {
-      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
-      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyServiceSpy = {
+        exists: vi.fn().mockName('OntologyService.exists'),
+      };
+      ontologyServiceSpy.exists.mockReturnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
       from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeDefined();
@@ -70,8 +74,10 @@ describe('Ontology Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
-      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyServiceSpy = {
+        exists: vi.fn().mockName('OntologyService.exists'),
+      };
+      ontologyServiceSpy.exists.mockReturnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
       from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ idExists: true });
@@ -82,8 +88,10 @@ describe('Ontology Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
-      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyServiceSpy = {
+        exists: vi.fn().mockName('OntologyService.exists'),
+      };
+      ontologyServiceSpy.exists.mockReturnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
       from(ontologyCreateValidators.uniqueID()(new FormControl('111111'))).subscribe((result) => {
         expect(result).toBeDefined();
@@ -99,8 +107,10 @@ describe('Ontology Create Validators', () => {
 
   describe('uniqueDomain', () => {
     it('should return null', fakeAsync(() => {
-      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
-      ontologyServiceSpy.exists.and.returnValue(of(false));
+      const ontologyServiceSpy = {
+        exists: vi.fn().mockName('OntologyService.exists'),
+      };
+      ontologyServiceSpy.exists.mockReturnValue(of(false));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
       from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
@@ -112,8 +122,10 @@ describe('Ontology Create Validators', () => {
     }));
 
     it('should return { idExists: true }', fakeAsync(() => {
-      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
-      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyServiceSpy = {
+        exists: vi.fn().mockName('OntologyService.exists'),
+      };
+      ontologyServiceSpy.exists.mockReturnValue(of(true));
       const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
       from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeDefined();

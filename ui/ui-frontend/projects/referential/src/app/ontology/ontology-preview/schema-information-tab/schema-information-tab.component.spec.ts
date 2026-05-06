@@ -113,14 +113,14 @@ describe('SchemaInformationTabComponent', () => {
   });
 
   it('should set isExternal to true when Origin is EXTERNAL', () => {
-    expect(component.isExternal).toBeTrue();
+    expect(component.isExternal).toBe(true);
   });
 
   it('should show stringSize when Type is TEXT', () => {
-    expect(component.stringSizeVisible).toBeTrue();
+    expect(component.stringSizeVisible).toBe(true);
   });
 
   it('should show custom search types when Type is not OBJECT and CustomSearchTypes is not empty', () => {
-    expect(component.showCustomSearchTypes).toBeTrue();
+    expect(component.showCustomSearchTypes).toBe(true);
   });
 });

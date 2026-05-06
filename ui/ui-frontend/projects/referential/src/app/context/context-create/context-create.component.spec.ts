@@ -65,7 +65,8 @@ import { ContextCreateValidators } from './context-create.validators';
   standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
-  @Input() contextInfo: any;
+  @Input()
+  contextInfo: any;
 
   writeValue() {}
 
@@ -122,14 +123,21 @@ class Page {
 let page: Page;
 
 // TODO gafou : boom tomorrow
-xdescribe('ContextCreateComponent', () => {
+describe.skip('ContextCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const contextServiceSpy = jasmine.createSpyObj('ContextService', { create: of({}) });
-    const contextCreateValidatorsSpy = jasmine.createSpyObj('ContextCreateValidators', {
-      uniqueCode: () => of(null),
-      uniqueDomain: of(null),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const contextServiceSpy = {
+      create: vi.fn().mockName('ContextService.create').mockReturnValue(of({})),
+    };
+    const contextCreateValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('ContextCreateValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+      uniqueDomain: vi.fn().mockName('ContextCreateValidators.uniqueDomain').mockReturnValue(of(null)),
+    };
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

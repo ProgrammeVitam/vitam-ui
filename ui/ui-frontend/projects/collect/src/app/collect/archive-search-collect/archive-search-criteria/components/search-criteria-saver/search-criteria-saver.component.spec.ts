@@ -82,11 +82,15 @@ describe('SearchCriteriaSaverComponent', () => {
   let component: SearchCriteriaSaverComponent;
   let fixture: ComponentFixture<SearchCriteriaSaverComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
-  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+  };
+  matDialogRefSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   const SearchCriteriaSaverServiceStub = {
     getSearchCriteriaHistory: () => of([]),

@@ -94,7 +94,9 @@ const expectedCustomer: Customer = {
 describe('CustomerService', () => {
   let httpTestingController: HttpTestingController;
   let customerService: CustomerService;
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({

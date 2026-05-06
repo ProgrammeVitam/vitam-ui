@@ -173,8 +173,14 @@ describe('ArchiveUnitRulesComponent', () => {
   let component: ArchiveUnitRulesComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
 
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of(searchCriteriaDto),
@@ -326,7 +332,7 @@ describe('ArchiveUnitRulesComponent', () => {
   });
 
   it('should call getRuleActions of ManagementRulesSharedDataService', () => {
-    spyOn(managementRulesSharedDataServiceMock, 'getRuleActions').and.callThrough();
+    vi.spyOn(managementRulesSharedDataServiceMock, 'getRuleActions');
     // When
     component.cancelStep(1);
 
@@ -335,7 +341,7 @@ describe('ArchiveUnitRulesComponent', () => {
   });
 
   it('should call getRuleActions of ManagementRulesSharedDataService', () => {
-    spyOn(managementRulesSharedDataServiceMock, 'getRuleActions').and.callThrough();
+    vi.spyOn(managementRulesSharedDataServiceMock, 'getRuleActions');
     // When
     component.deleteForm(1, 'ruleId', 'ADD_PROPERTY');
 

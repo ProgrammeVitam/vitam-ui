@@ -222,11 +222,17 @@ describe('UnlockCategoryInheritanceComponent', () => {
   let component: UnlockCategoryInheritanceComponent;
   let fixture: ComponentFixture<UnlockCategoryInheritanceComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  matDialogRefSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of(searchCriteriaDto),
@@ -289,7 +295,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     component.ruleTypeDUA = ruleCategoryAction;
-    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
+    vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
 
     // When
     component.onCancelUnlockCategoryInheritance();
@@ -338,7 +344,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     component.ruleActions = ruleActions;
     component.criteriaSearchDSLQuery = searchCriteriaDto;
-    spyOn(archiveServiceMock, 'searchArchiveUnitsByCriteria').and.callThrough();
+    vi.spyOn(archiveServiceMock, 'searchArchiveUnitsByCriteria');
 
     // When
     component.hasExactCount = true;
@@ -354,7 +360,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     component.ruleTypeDUA = ruleCategoryAction;
-    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
+    vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
 
     // When
     component.onUnlockCategoryInheritance();

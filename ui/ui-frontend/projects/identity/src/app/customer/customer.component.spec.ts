@@ -80,9 +80,12 @@ class CustomerListStubComponent {
   standalone: false,
 })
 class CustomerPreviewStubComponent {
-  @Input() customer: any;
-  @Output() previewClose = new EventEmitter();
-  @Input() gdprReadOnlySettingStatus: boolean;
+  @Input()
+  customer: any;
+  @Output()
+  previewClose = new EventEmitter();
+  @Input()
+  gdprReadOnlySettingStatus: boolean;
 }
 
 @Component({
@@ -91,9 +94,12 @@ class CustomerPreviewStubComponent {
   standalone: false,
 })
 class OwnerPreviewStubComponent {
-  @Input() owner: any;
-  @Input() tenant: any;
-  @Output() previewClose = new EventEmitter();
+  @Input()
+  owner: any;
+  @Input()
+  tenant: any;
+  @Output()
+  previewClose = new EventEmitter();
 }
 
 describe('CustomerComponent', () => {
@@ -102,8 +108,10 @@ describe('CustomerComponent', () => {
   };
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
       imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],

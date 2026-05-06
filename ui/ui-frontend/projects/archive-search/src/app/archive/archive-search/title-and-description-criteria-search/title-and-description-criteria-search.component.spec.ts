@@ -52,8 +52,10 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
   };
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
       declarations: [TitleAndDescriptionCriteriaSearchComponent],
       providers: [
@@ -85,7 +87,7 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
       id: 'criteriaId',
       value: 'criteriaValue',
     };
-    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+    vi.spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject');
 
     // When
     component.addCriteria(null, criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true);
@@ -104,7 +106,7 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
       id: 'criteriaId',
       value: 'criteriaValue',
     };
-    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+    vi.spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject');
 
     // When
     component.addCriteria('keyElt', criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true);

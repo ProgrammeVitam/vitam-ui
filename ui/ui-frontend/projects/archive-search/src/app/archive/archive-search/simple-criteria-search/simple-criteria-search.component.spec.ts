@@ -81,8 +81,10 @@ describe('SimpleCriteriaSearchComponent', () => {
   let schema: BehaviorSubject<ItemNode<SchemaElement>[]>;
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     schema = new BehaviorSubject<ItemNode<SchemaElement>[]>([]);
     const schemaServiceMock = {
@@ -130,7 +132,7 @@ describe('SimpleCriteriaSearchComponent', () => {
       keyElt: null,
     };
 
-    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+    vi.spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject');
 
     // When
     component.addCriteria(criteria as SearchCriteriaAddAction);
@@ -166,7 +168,7 @@ describe('SimpleCriteriaSearchComponent', () => {
       },
     };
 
-    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+    vi.spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject');
 
     // When
     component.addCriteria(criteria as SearchCriteriaAddAction);

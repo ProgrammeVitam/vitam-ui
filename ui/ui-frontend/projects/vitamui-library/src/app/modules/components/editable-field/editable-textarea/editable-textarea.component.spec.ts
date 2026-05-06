@@ -66,7 +66,8 @@ class TesthostComponent {
   value: string;
   label = 'Test label';
   maxlength = 42;
-  @ViewChild(EditableTextareaComponent) component: EditableTextareaComponent;
+  @ViewChild(EditableTextareaComponent)
+  component: EditableTextareaComponent;
 
   validator = Validators.required;
   asyncValidator = (control: AbstractControl) => {
@@ -102,7 +103,7 @@ describe('EditableTextareaComponent', () => {
 
   describe('DOM', () => {
     it('should call enterEditMode() on click', () => {
-      spyOn(testhost.component, 'enterEditMode');
+      vi.spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
       element.click();
       expect(testhost.component.enterEditMode).toHaveBeenCalled();
@@ -142,7 +143,7 @@ describe('EditableTextareaComponent', () => {
     });
 
     it('should have a confirm button', () => {
-      spyOn(testhost.component, 'confirm');
+      vi.spyOn(testhost.component, 'confirm');
       testhost.component.enterEditMode();
       testhost.component.control.setValue('valid value');
       testhost.component.control.markAsDirty();
@@ -154,7 +155,7 @@ describe('EditableTextareaComponent', () => {
     });
 
     it('should have a cancel button', () => {
-      spyOn(testhost.component, 'cancel');
+      vi.spyOn(testhost.component, 'cancel');
       testhost.component.enterEditMode();
       fixture.detectChanges();
       const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-cancel') as HTMLButtonElement;
@@ -164,14 +165,14 @@ describe('EditableTextareaComponent', () => {
     });
 
     it('should have a spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(true);
+      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(true);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(false);
+      vi.spyOn(testhost.component, 'showSpinner').mockReturnValue(false);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();

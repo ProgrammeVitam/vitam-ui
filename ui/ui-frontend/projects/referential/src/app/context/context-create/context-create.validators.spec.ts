@@ -42,8 +42,10 @@ import { ContextCreateValidators } from './context-create.validators';
 describe('Context Create Validators', () => {
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
-      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
-      contextServiceSpy.existsProperties.and.returnValue(of(false));
+      const contextServiceSpy = {
+        existsProperties: vi.fn().mockName('ContextService.existsProperties'),
+      };
+      contextServiceSpy.existsProperties.mockReturnValue(of(false));
       const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
 
       from(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
@@ -56,8 +58,10 @@ describe('Context Create Validators', () => {
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
-      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
-      contextServiceSpy.existsProperties.and.returnValue(of(true));
+      const contextServiceSpy = {
+        existsProperties: vi.fn().mockName('ContextService.existsProperties'),
+      };
+      contextServiceSpy.existsProperties.mockReturnValue(of(true));
       const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
       from(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeDefined();
@@ -71,8 +75,10 @@ describe('Context Create Validators', () => {
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
-      contextServiceSpy.existsProperties.and.returnValue(of(true));
+      const contextServiceSpy = {
+        existsProperties: vi.fn().mockName('ContextService.existsProperties'),
+      };
+      contextServiceSpy.existsProperties.mockReturnValue(of(true));
       const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
       from(contextCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
@@ -83,8 +89,10 @@ describe('Context Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
-      contextServiceSpy.existsProperties.and.returnValue(of(true));
+      const contextServiceSpy = {
+        existsProperties: vi.fn().mockName('ContextService.existsProperties'),
+      };
+      contextServiceSpy.existsProperties.mockReturnValue(of(true));
       const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
       from(contextCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toBeDefined();

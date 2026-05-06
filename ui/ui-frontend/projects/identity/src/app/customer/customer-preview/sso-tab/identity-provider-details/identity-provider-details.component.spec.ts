@@ -58,10 +58,14 @@ import { IdentityProviderDetailsComponent } from './identity-provider-details.co
   standalone: false,
 })
 class EditableKeystoreStubComponent implements ControlValueAccessor {
-  @Input() validator: Validator;
-  @Input() asyncValidator: AsyncValidator;
-  @Input() identityProvider: any;
-  @Input() disabled: boolean;
+  @Input()
+  validator: Validator;
+  @Input()
+  asyncValidator: AsyncValidator;
+  @Input()
+  identityProvider: any;
+  @Input()
+  disabled: boolean;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
@@ -80,9 +84,12 @@ class EditableKeystoreStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class EditablePatternStubComponent implements ControlValueAccessor {
-  @Input() validator: Validator;
-  @Input() asyncValidator: AsyncValidator;
-  @Input() options: any;
+  @Input()
+  validator: Validator;
+  @Input()
+  asyncValidator: AsyncValidator;
+  @Input()
+  options: any;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
@@ -95,7 +102,8 @@ class EditablePatternStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class TestHostComponent {
-  @ViewChild(IdentityProviderDetailsComponent, { static: false }) component: IdentityProviderDetailsComponent;
+  @ViewChild(IdentityProviderDetailsComponent, { static: false })
+  component: IdentityProviderDetailsComponent;
   provider: IdentityProvider = {
     propagateLogout: false,
     id: '42',
@@ -129,7 +137,7 @@ class TestHostComponent {
   readOnly: boolean;
 }
 
-xdescribe('IdentityProviderDetailsComponent', () => {
+describe.skip('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
@@ -233,7 +241,7 @@ xdescribe('IdentityProviderDetailsComponent', () => {
 
     it('should be valid and call patch()', waitForAsync(() => {
       const providerService = TestBed.inject(IdentityProviderService);
-      spyOn(providerService, 'patch').and.returnValue(of(null));
+      vi.spyOn(providerService, 'patch').mockReturnValue(of(null));
       testhost.component.form.setValue({
         identifier: testhost.provider.identifier,
         enabled: false,

@@ -45,7 +45,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { PatternComponent } from './pattern.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SelectComponent } from '../select/select.component';
-import objectContaining = jasmine.objectContaining;
+const objectContaining = expect.objectContaining;
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
 
@@ -62,7 +62,8 @@ class TestHostComponent {
     { value: 'option4.com', disabled: true },
   ];
 
-  @ViewChild(PatternComponent, { static: false }) component: PatternComponent;
+  @ViewChild(PatternComponent, { static: false })
+  component: PatternComponent;
 }
 
 describe('PatternComponent', () => {
@@ -243,16 +244,16 @@ describe('PatternComponent', () => {
       const selectOptions = await selectHarness.getOptions();
 
       expect(await selectOptions[0].getText()).toContain('option1.com');
-      expect(await selectOptions[0].isDisabled()).toBeFalse();
+      expect(await selectOptions[0].isDisabled()).toBe(false);
 
       expect(await selectOptions[1].getText()).toContain('option2.com');
-      expect(await selectOptions[1].isDisabled()).toBeFalse();
+      expect(await selectOptions[1].isDisabled()).toBe(false);
 
       expect(await selectOptions[2].getText()).toContain('option3.com');
-      expect(await selectOptions[2].isDisabled()).toBeTrue();
+      expect(await selectOptions[2].isDisabled()).toBe(true);
 
       expect(await selectOptions[3].getText()).toContain('option4.com');
-      expect(await selectOptions[3].isDisabled()).toBeTrue();
+      expect(await selectOptions[3].isDisabled()).toBe(true);
     });
 
     it('should have a list of selected patterns', () => {
@@ -266,7 +267,7 @@ describe('PatternComponent', () => {
     });
 
     it('should remove the pattern', () => {
-      spyOn(testhost.component, 'remove').and.callThrough();
+      vi.spyOn(testhost.component, 'remove');
       add('option1.com');
       add('option2.com');
       fixture.detectChanges();
@@ -277,7 +278,7 @@ describe('PatternComponent', () => {
     });
 
     it('should call add() on click', () => {
-      spyOn(testhost.component, 'add').and.callThrough();
+      vi.spyOn(testhost.component, 'add');
       testhost.component.control.setValue('option2.com');
       fixture.detectChanges();
       const elAddButton = fixture.nativeElement.querySelector('button');

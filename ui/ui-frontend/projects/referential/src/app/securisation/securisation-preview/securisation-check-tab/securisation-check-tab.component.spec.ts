@@ -97,7 +97,9 @@ describe('SecurisationCheckTabComponent', () => {
     ],
   };
 
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
 
   beforeEach(async () => {
     const accessContractServiceMock = {

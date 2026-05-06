@@ -50,7 +50,8 @@ import { DomainsInputComponent } from './domains-input.component';
   standalone: false,
 })
 export class TestHostComponent {
-  @ViewChild(DomainsInputComponent, { static: false }) component: DomainsInputComponent;
+  @ViewChild(DomainsInputComponent, { static: false })
+  component: DomainsInputComponent;
   domains: string[];
   selected: string;
 }
@@ -60,7 +61,9 @@ let fixture: ComponentFixture<TestHostComponent>;
 
 describe('DomainsInputComponent', () => {
   beforeEach(async () => {
-    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', { uniqueDomain: of(null) });
+    const customerCreateValidatorsSpy = {
+      uniqueDomain: vi.fn().mockName('CustomerCreateValidators.uniqueDomain').mockReturnValue(of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot()],

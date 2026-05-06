@@ -57,17 +57,27 @@ class TestHostComponent {
   group = expectedGroup;
   readOnly = false;
 
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false })
+  component: InformationTabComponent;
 }
 
 describe('Profile Group InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
-  const groupServiceSpy = jasmine.createSpyObj('GroupService', { patch: of({}) });
-  const groupValidatorsSpy = jasmine.createSpyObj('GroupValidators', { nameExists: () => of(null) });
+  const groupServiceSpy = {
+    patch: vi.fn().mockName('GroupService.patch').mockReturnValue(of({})),
+  };
+  const groupValidatorsSpy = {
+    nameExists: vi
+      .fn()
+      .mockName('GroupValidators.nameExists')
+      .mockReturnValue(() => of(null)),
+  };
   const authServiceMock = { user: { level: '' } };
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   beforeEach(async () => {
     expectedGroup = {

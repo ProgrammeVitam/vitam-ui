@@ -55,7 +55,9 @@ describe('AccessionRegisterListComponent', () => {
     getDateIntervalChanges: () => BehaviorSubject<any>;
     getAdvancedSearchData: () => BehaviorSubject<any>;
   };
-  let searchService: { search: () => Observable<{}> };
+  let searchService: {
+    search: () => Observable<{}>;
+  };
 
   beforeEach(async () => {
     accessionRegistersService = {
@@ -85,7 +87,7 @@ describe('AccessionRegisterListComponent', () => {
   describe('searchRequest', () => {
     it('searchRequest should work', () => {
       // Given
-      const searchEmit = spyOn(InfiniteScrollTable.prototype, 'search');
+      const searchEmit = vi.spyOn(InfiniteScrollTable.prototype, 'search');
       accessionRegistersService.getDateIntervalChanges = () =>
         new BehaviorSubject({
           endDateMin: '',

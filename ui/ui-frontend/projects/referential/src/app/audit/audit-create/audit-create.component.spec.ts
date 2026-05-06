@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuditCreateComponent } from './audit-create.component';
 
 // TODO make it work
-xdescribe('AuditCreateComponent', () => {
+describe.skip('AuditCreateComponent', () => {
   let component: AuditCreateComponent;
   let fixture: ComponentFixture<AuditCreateComponent>;
 

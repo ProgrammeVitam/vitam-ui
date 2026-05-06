@@ -55,9 +55,12 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   standalone: false,
 })
 export class InformationTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
-  @Input() gdprReadOnlyStatus: boolean;
+  @Input()
+  customer: Customer;
+  @Input()
+  readOnly: boolean;
+  @Input()
+  gdprReadOnlyStatus: boolean;
 }
 
 @Component({
@@ -66,8 +69,10 @@ export class InformationTabStubComponent {
   standalone: false,
 })
 export class SsoTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
+  @Input()
+  customer: Customer;
+  @Input()
+  readOnly: boolean;
 }
 
 @Component({
@@ -76,8 +81,10 @@ export class SsoTabStubComponent {
   standalone: false,
 })
 export class GraphicIdentityTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
+  @Input()
+  customer: Customer;
+  @Input()
+  readOnly: boolean;
 }
 
 @Component({
@@ -87,7 +94,8 @@ export class GraphicIdentityTabStubComponent {
 class TestHostComponent {
   customer: any;
 
-  @ViewChild(CustomerPreviewComponent, { static: false }) component: CustomerPreviewComponent;
+  @ViewChild(CustomerPreviewComponent, { static: false })
+  component: CustomerPreviewComponent;
 }
 
 describe('CustomerPreviewComponent', () => {
@@ -135,8 +143,8 @@ describe('CustomerPreviewComponent', () => {
   });
 
   it('should call window.open', () => {
-    const openSpy = spyOn(window, 'open');
-    openSpy.and.stub();
+    const openSpy = vi.spyOn(window, 'open');
+    openSpy.mockImplementation(() => {});
     testhost.component.openPopup();
     expect(openSpy).toHaveBeenCalledWith(
       'https://dev.vitamui.com/identity/customer/11',

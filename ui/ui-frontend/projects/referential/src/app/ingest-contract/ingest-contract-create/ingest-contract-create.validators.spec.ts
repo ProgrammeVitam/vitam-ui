@@ -38,7 +38,9 @@ import { IngestContractCreateValidators } from './ingest-contract-create.validat
 
 describe('IngestContractCreateValidators', () => {
   it('should create an instance', () => {
-    const ingestContractServiceSpy = jasmine.createSpyObj('IngestContractService', ['existsProperties']);
+    const ingestContractServiceSpy = {
+      existsProperties: vi.fn().mockName('IngestContractService.existsProperties'),
+    };
     expect(new IngestContractCreateValidators(ingestContractServiceSpy)).toBeTruthy();
   });
 });

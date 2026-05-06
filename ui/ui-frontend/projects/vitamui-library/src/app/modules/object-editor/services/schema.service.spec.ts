@@ -74,7 +74,7 @@ describe('SchemaService', () => {
           const data = service.data(path, schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
 
           expect(data).toEqual(
-            jasmine.objectContaining({
+            expect.objectContaining({
               Title: null,
             }),
           );
@@ -111,7 +111,7 @@ describe('SchemaService', () => {
           expect(children.length).toEqual(keys.length);
           expect(children.map((child) => child.split('.').pop())).toEqual(pathService.paths(data));
           expect(data).toEqual(
-            jasmine.objectContaining({
+            expect.objectContaining({
               BirthDate: null,
             }),
           );
@@ -132,7 +132,7 @@ describe('SchemaService', () => {
           expect(children.length).toEqual(keys.length);
           expect(children.map((child) => child.split('.').pop())).toEqual(pathService.paths(data));
           expect(data).toEqual(
-            jasmine.objectContaining({
+            expect.objectContaining({
               Address: null,
               City: null,
               Country: null,

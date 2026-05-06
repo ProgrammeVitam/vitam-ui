@@ -88,15 +88,20 @@ let page: Page;
 
 describe('RuleCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
-      create: of({}),
-      existsProperties: of(false),
-    });
-    const ruleCreateValidatorsSpy = jasmine.createSpyObj('RuleCreateValidators', {
-      uniqueRuleId: () => of(null),
-      ruleIdPattern: ManagementRuleValidators.ruleIdPattern,
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const ruleServiceSpy = {
+      create: vi.fn().mockName('RuleService.create').mockReturnValue(of({})),
+      existsProperties: vi.fn().mockName('RuleService.existsProperties').mockReturnValue(of(false)),
+    };
+    const ruleCreateValidatorsSpy = {
+      uniqueRuleId: vi
+        .fn()
+        .mockName('RuleCreateValidators.uniqueRuleId')
+        .mockReturnValue(() => of(null)),
+      ruleIdPattern: vi.fn().mockName('RuleCreateValidators.ruleIdPattern').mockReturnValue(ManagementRuleValidators.ruleIdPattern),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [RuleCreateComponent],

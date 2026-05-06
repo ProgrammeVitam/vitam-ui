@@ -59,8 +59,12 @@ describe('GroupResolver', () => {
   let groupResolver: GroupResolver;
 
   beforeEach(() => {
-    const profileGroupServiceSpy = jasmine.createSpyObj('ProfileGroupService', ['get']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const profileGroupServiceSpy = {
+      get: vi.fn().mockName('ProfileGroupService.get'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     TestBed.configureTestingModule({
       providers: [GroupResolver, { provide: GroupService, useValue: profileGroupServiceSpy }, { provide: Router, useValue: routerSpy }],
@@ -75,10 +79,10 @@ describe('GroupResolver', () => {
 
   it('should get the profile group with the id', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
 
     const profileGroupService = TestBed.inject(GroupService);
-    profileGroupService.get = jasmine.createSpy().and.returnValue(of(expectedGroup));
+    profileGroupService.get = vi.fn().mockReturnValue(of(expectedGroup));
     groupResolver.resolve(route).subscribe((profileGroup) => {
       expect(profileGroup).toEqual(expectedGroup);
     });
@@ -89,9 +93,9 @@ describe('GroupResolver', () => {
 
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
     const profileGroupService = TestBed.inject(GroupService);
-    profileGroupService.get = jasmine.createSpy().and.returnValue(of(null));
+    profileGroupService.get = vi.fn().mockReturnValue(of(null));
     const router = TestBed.inject(Router);
     groupResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);

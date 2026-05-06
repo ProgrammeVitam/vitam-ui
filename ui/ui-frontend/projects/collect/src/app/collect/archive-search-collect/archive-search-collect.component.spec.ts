@@ -70,7 +70,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
-import arrayWithExactContents = jasmine.arrayWithExactContents;
+const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr);
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const translations: any = { TEST: 'Mock translate test' };
@@ -86,8 +86,10 @@ describe('ArchiveSearchCollectComponent', () => {
   let fixture: ComponentFixture<ArchiveSearchCollectComponent>;
   const pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
   let archiveSharedDataService: ArchiveSharedDataService;
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   const project: Project = {} as Project;
 
@@ -136,15 +138,23 @@ describe('ArchiveSearchCollectComponent', () => {
   };
 
   const setupTest = async (queryParams: Params, withSimpleCriteria = false) => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate', 'createUrlTree', 'serializeUrl', 'parseUrl']);
-    routerSpy.createUrlTree.and.returnValue({});
-    routerSpy.serializeUrl.and.returnValue('/test-url');
-    routerSpy.parseUrl.and.returnValue({ queryParams: {} });
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+      createUrlTree: vi.fn().mockName('Router.createUrlTree'),
+      serializeUrl: vi.fn().mockName('Router.serializeUrl'),
+      parseUrl: vi.fn().mockName('Router.parseUrl'),
+    };
+    routerSpy.createUrlTree.mockReturnValue({});
+    routerSpy.serializeUrl.mockReturnValue('/test-url');
+    routerSpy.parseUrl.mockReturnValue({ queryParams: {} });
 
-    const locationSpy = jasmine.createSpyObj('Location', ['replaceState', 'path']);
-    locationSpy.path.and.returnValue('/test-url');
+    const locationSpy = {
+      replaceState: vi.fn().mockName('Location.replaceState'),
+      path: vi.fn().mockName('Location.path'),
+    };
+    locationSpy.path.mockReturnValue('/test-url');
 
-    spyOn(archiveCollectServiceStub, 'searchArchiveUnitsByCriteria').and.callThrough();
+    vi.spyOn(archiveCollectServiceStub, 'searchArchiveUnitsByCriteria');
 
     const declarations = withSimpleCriteria
       ? [ArchiveSearchCollectComponent, SimpleCriteriaSearchComponent]
@@ -220,9 +230,9 @@ describe('ArchiveSearchCollectComponent', () => {
     describe('checkChildrenBoxChange', () => {
       it('should include the unselected child when parent is checked, into the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
-        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+        const event: MatCheckboxChange = {
           checked: false,
-        });
+        };
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -234,7 +244,7 @@ describe('ArchiveSearchCollectComponent', () => {
         expect(component.listOfUAIdToExclude.length).toBe(1);
         expect(component.listOfUAIdToExclude[0]).toEqual({ value: '1234', id: '1234' });
         expect(component.listOfUAIdToInclude.length).toBe(0);
-        expect(component.isIndeterminate).toBeTrue();
+        expect(component.isIndeterminate).toBe(true);
         expect(component.itemSelected).toBe(0);
         expect(component.itemNotSelected).toBe(0);
       });
@@ -242,9 +252,9 @@ describe('ArchiveSearchCollectComponent', () => {
       it('should exclude the selected child when parent is checked, from the list listOfUAIdToExclude', () => {
         component.isAllChecked = true;
         component.itemNotSelected = 1;
-        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+        const event: MatCheckboxChange = {
           checked: true,
-        });
+        };
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -262,9 +272,9 @@ describe('ArchiveSearchCollectComponent', () => {
 
       it('should include the selected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+        const event: MatCheckboxChange = {
           checked: true,
-        });
+        };
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -283,9 +293,9 @@ describe('ArchiveSearchCollectComponent', () => {
 
       it('should not include the unselected child when parent is unchecked, into the list listOfUAIdToInclude', () => {
         component.isAllChecked = false;
-        const event: MatCheckboxChange = jasmine.createSpyObj<MatCheckboxChange>([], {
+        const event: MatCheckboxChange = {
           checked: false,
-        });
+        };
         const unit = {
           '#id': '1234',
           '#unitups': [''],
@@ -306,19 +316,21 @@ describe('ArchiveSearchCollectComponent', () => {
   describe('queryParams', () => {
     it('should be set to archives with or without object by default', async () => {
       const { routerSpy } = await setupTest({});
-      expect(routerSpy.navigate.calls.first().args[1].queryParams).toEqual({
+      expect(vi.mocked(routerSpy.navigate).mock.calls[0].args[1].queryParams).toEqual({
         archiveUnitType: 'ARCHIVE_UNIT_WITH_OBJECTS,ARCHIVE_UNIT_WITHOUT_OBJECTS',
       });
     });
 
     // FIXME: disabled because for some reason it raises an ExpressionChangedAfterItHasBeenCheckedError
-    xit('should trigger a search with criteria matching the queryParams in the URL on page access', async () => {
+    it.skip('should trigger a search with criteria matching the queryParams in the URL on page access', async () => {
       await setupTest({ guid: '1234' }, true);
 
       await fixture.whenStable();
 
-      expect(archiveCollectServiceStub.searchArchiveUnitsByCriteria).toHaveBeenCalledOnceWith(
-        jasmine.objectContaining({
+      expect(archiveCollectServiceStub.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(1);
+
+      expect(archiveCollectServiceStub.searchArchiveUnitsByCriteria).toHaveBeenCalledWith(
+        expect.objectContaining({
           criteriaList: [
             {
               criteria: 'GUID',
@@ -362,7 +374,7 @@ describe('ArchiveSearchCollectComponent', () => {
       archiveSharedDataService.emitNode(virtualNode2);
       fixture.detectChanges();
 
-      expect(component.searchCriterias.has('VIRTUAL')).toBeTrue();
+      expect(component.searchCriterias.has('VIRTUAL')).toBe(true);
 
       const virtualCriteria = component.searchCriterias.get('VIRTUAL');
       expect(virtualCriteria?.values?.length).toEqual(2);
@@ -406,7 +418,7 @@ describe('ArchiveSearchCollectComponent', () => {
       archiveSharedDataService.emitNode(virtualNode2);
       fixture.detectChanges();
 
-      expect(component.searchCriterias.has('VIRTUAL')).toBeTrue();
+      expect(component.searchCriterias.has('VIRTUAL')).toBe(true);
 
       let virtualCriteria = component.searchCriterias.get('VIRTUAL');
       expect(virtualCriteria?.values?.length).toEqual(2);
@@ -415,7 +427,7 @@ describe('ArchiveSearchCollectComponent', () => {
 
       virtualNode1.checked = false;
       archiveSharedDataService.emitNode(virtualNode1);
-      expect(component.searchCriterias.has('VIRTUAL')).toBeTrue();
+      expect(component.searchCriterias.has('VIRTUAL')).toBe(true);
       expect(virtualCriteria?.values?.length).toEqual(1);
 
       expect('someRealParentId').toEqual(virtualValues[0].value.virtualNodeRealParentId);

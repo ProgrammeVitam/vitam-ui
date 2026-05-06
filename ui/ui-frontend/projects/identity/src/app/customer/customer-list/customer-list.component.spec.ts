@@ -1,3 +1,4 @@
+import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -57,7 +58,8 @@ import { CustomerListService } from './customer-list.service';
   selector: '[vitamuiCommonCollapseTriggerFor]',
 })
 class CollapseTriggerForStubDirective {
-  @Input() vitamuiCommonCollapseTriggerFor: any;
+  @Input()
+  vitamuiCommonCollapseTriggerFor: any;
 }
 
 @Directive({
@@ -66,7 +68,8 @@ class CollapseTriggerForStubDirective {
   exportAs: 'vitamuiCommonCollapse',
 })
 class CollapseStubDirective {
-  @Input() vitamuiCommonCollapse: any;
+  @Input()
+  vitamuiCommonCollapse: any;
 }
 
 @Component({
@@ -74,7 +77,8 @@ class CollapseStubDirective {
   template: '',
 })
 class OwnerListStubComponent {
-  @Input() customer: any;
+  @Input()
+  customer: any;
 }
 
 let component: CustomerListComponent;
@@ -263,9 +267,13 @@ describe('CustomerListComponent', () => {
     const tenantServiceSpy = {
       getTenantsByCustomerIds: () => of(tenants),
     };
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
       imports: [
@@ -288,12 +296,12 @@ describe('CustomerListComponent', () => {
     }).compileComponents();
 
     const customerListService = TestBed.inject(CustomerListService);
-    spyOn(customerListService, 'search').and.callThrough();
-    spyOn(customerListService, 'loadMore').and.callThrough();
+    vi.spyOn(customerListService, 'search');
+    vi.spyOn(customerListService, 'loadMore');
 
     const customerDataService = TestBed.inject(CustomerDataService);
-    spyOn(customerDataService, 'addTenants').and.callThrough();
-    spyOn(customerDataService, 'updateTenant').and.callThrough();
+    vi.spyOn(customerDataService, 'addTenants');
+    vi.spyOn(customerDataService, 'updateTenant');
   });
 
   beforeEach(() => {
@@ -345,8 +353,8 @@ describe('CustomerListComponent', () => {
   });
 
   it('should hide the "load more" button ', () => {
-    const customerListService = TestBed.inject(CustomerListService) as jasmine.SpyObj<CustomerListService>;
-    spyOnProperty(customerListService, 'canLoadMore', 'get').and.returnValue(false);
+    const customerListService = TestBed.inject(CustomerListService) as MockedObject<CustomerListService>;
+    vi.spyOn(customerListService, 'canLoadMore', 'get').mockReturnValue(false);
     fixture.detectChanges();
     expect(page.loadMoreButton.length).toBe(0);
   });
@@ -369,8 +377,8 @@ describe('CustomerListComponent', () => {
 
   it('should open the owner creation dialog', () => {
     page.ownerBtn[2].click();
-    const matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    const matDialogSpy = TestBed.inject(MatDialog) as MockedObject<MatDialog>;
+    expect(vi.mocked(matDialogSpy.open).mock.calls.length).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(OwnerCreateComponent, {
       data: { customer: customers[2] },
       disableClose: true,
@@ -393,16 +401,16 @@ describe('CustomerListComponent', () => {
       },
       readonly: false,
     };
-    const matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of({ owner: newOwner }) } as any);
+    const matDialogSpy = TestBed.inject(MatDialog) as MockedObject<MatDialog>;
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of({ owner: newOwner }) } as any);
     const addOwnerBtn = page.rows[0].querySelector('.btn.btn-circle.primary');
     addOwnerBtn.click();
     expect(customers[0].owners).toContain(newOwner);
   });
 
   it('should not add anything to the owners list', () => {
-    const matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(undefined) } as any);
+    const matDialogSpy = TestBed.inject(MatDialog) as MockedObject<MatDialog>;
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(undefined) } as any);
     page.ownerBtn[0].click();
     expect(customers[0].owners.length).toBe(0);
   });

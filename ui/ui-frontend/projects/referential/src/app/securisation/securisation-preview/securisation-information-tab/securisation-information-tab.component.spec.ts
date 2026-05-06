@@ -43,7 +43,7 @@ import { Event } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationInformationTabComponent } from './securisation-information-tab.component';
 
-xdescribe('SecurisationInformationTabComponent', () => {
+describe.skip('SecurisationInformationTabComponent', () => {
   let component: SecurisationInformationTabComponent;
   let fixture: ComponentFixture<SecurisationInformationTabComponent>;
 

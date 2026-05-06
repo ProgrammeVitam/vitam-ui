@@ -58,12 +58,17 @@ describe('AuditComponent', () => {
   let fixture: ComponentFixture<AuditComponent>;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['afterClosed', 'open']);
+    const matDialogRefSpy = {
+      afterClosed: vi.fn().mockName('MatDialogRef.afterClosed'),
+      open: vi.fn().mockName('MatDialogRef.open'),
+    };
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'AUDIT_APP' }),
     };
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

@@ -61,10 +61,16 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
   standalone: false,
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input() options: Array<{ value: string; disabled?: boolean }>;
-  @Input() vitamuiMiniMode = false;
+  @Input()
+  options: Array<{
+    value: string;
+    disabled?: boolean;
+  }>;
+  @Input()
+  vitamuiMiniMode = false;
 
-  @ViewChild('select', { static: true }) select: MatSelect;
+  @ViewChild('select', { static: true })
+  select: MatSelect;
 
   writeValue() {}
   registerOnChange() {}
@@ -78,8 +84,12 @@ describe('IdentityProviderCreateComponent', () => {
   let idpMetadata: File;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const identityProviderServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const identityProviderServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of({})),
+    };
     keystore = newFile(['keystore content'], 'test.jks');
     idpMetadata = newFile(['metadata content'], 'test.jks');
 
@@ -153,8 +163,8 @@ describe('IdentityProviderCreateComponent', () => {
     });
 
     it('should set the files', () => {
-      spyOn(component, 'setKeystore').and.callThrough();
-      spyOn(component, 'setIdpMetadata').and.callThrough();
+      vi.spyOn(component, 'setKeystore');
+      vi.spyOn(component, 'setIdpMetadata');
       const elInputs = fixture.nativeElement.querySelectorAll('input[type=file]');
       expect(elInputs.length).toBe(2);
       const customEvent = document.createEvent('CustomEvent');
@@ -186,7 +196,7 @@ describe('IdentityProviderCreateComponent', () => {
     it('should set an error', () => {
       const idpService = TestBed.inject(IdentityProviderService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      idpService.create = jasmine.createSpy().and.returnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
+      idpService.create = vi.fn().mockReturnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -257,7 +267,7 @@ describe('IdentityProviderCreateComponent', () => {
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
       fixture.detectChanges();
-      spyOn(component, 'onSubmit');
+      vi.spyOn(component, 'onSubmit');
       elSubmit.click();
       expect(component.onSubmit).toHaveBeenCalledTimes(1);
     });
@@ -266,7 +276,7 @@ describe('IdentityProviderCreateComponent', () => {
       const elCancel = fixture.nativeElement.querySelector('button[type=button].btn.cancel');
       expect(elCancel).toBeTruthy();
       expect(elCancel.textContent).toContain('COMMON.UNDO');
-      spyOn(component, 'onCancel');
+      vi.spyOn(component, 'onCancel');
       elCancel.click();
       expect(component.onCancel).toHaveBeenCalledTimes(1);
     });

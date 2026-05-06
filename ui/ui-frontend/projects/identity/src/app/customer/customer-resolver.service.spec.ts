@@ -75,8 +75,12 @@ describe('CustomerResolver', () => {
   let customerResolver: CustomerResolver;
 
   beforeEach(() => {
-    const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['get']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const customerServiceSpy = {
+      get: vi.fn().mockName('CustomerService.get'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     TestBed.configureTestingModule({
       providers: [CustomerResolver, { provide: CustomerService, useValue: customerServiceSpy }, { provide: Router, useValue: routerSpy }],
@@ -91,10 +95,10 @@ describe('CustomerResolver', () => {
 
   it('should get the client with the id', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
 
     const customerService = TestBed.inject(CustomerService);
-    customerService.get = jasmine.createSpy().and.returnValue(of(expectedCustomer));
+    customerService.get = vi.fn().mockReturnValue(of(expectedCustomer));
     customerResolver.resolve(route).subscribe((customer) => {
       expect(customer).toEqual(expectedCustomer);
     });
@@ -105,9 +109,9 @@ describe('CustomerResolver', () => {
 
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
     const customerService = TestBed.inject(CustomerService);
-    customerService.get = jasmine.createSpy().and.returnValue(of(null));
+    customerService.get = vi.fn().mockReturnValue(of(null));
     const router = TestBed.inject(Router);
     customerResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);

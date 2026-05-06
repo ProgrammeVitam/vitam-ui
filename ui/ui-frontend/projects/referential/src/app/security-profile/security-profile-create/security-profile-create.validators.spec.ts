@@ -43,8 +43,10 @@ import { SecurityProfileCreateValidators } from './security-profile-create.valid
 describe('SecurityProfile Create Validators', () => {
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(false));
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(false));
       const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
@@ -54,8 +56,10 @@ describe('SecurityProfile Create Validators', () => {
     }));
 
     it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
       const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
@@ -65,8 +69,10 @@ describe('SecurityProfile Create Validators', () => {
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
       const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
@@ -76,8 +82,10 @@ describe('SecurityProfile Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
       const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });

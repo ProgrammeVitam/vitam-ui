@@ -42,8 +42,10 @@ import { GroupValidators } from './group.validators';
 
 describe('ProfileGroupValidators nameExist', () => {
   it('should return null', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
-    groupServiceSpy.exists.and.returnValue(of(false));
+    const groupServiceSpy = {
+      exists: vi.fn().mockName('GroupService.exists'),
+    };
+    groupServiceSpy.exists.mockReturnValue(of(false));
     const groupValidators = new GroupValidators(groupServiceSpy);
     from(groupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
@@ -53,8 +55,10 @@ describe('ProfileGroupValidators nameExist', () => {
   }));
 
   it('should return { nameExists: true }', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
-    groupServiceSpy.exists.and.returnValue(of(true));
+    const groupServiceSpy = {
+      exists: vi.fn().mockName('GroupService.exists'),
+    };
+    groupServiceSpy.exists.mockReturnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
     from(profileGroupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
@@ -64,8 +68,10 @@ describe('ProfileGroupValidators nameExist', () => {
   }));
 
   it('should not call the service', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
-    groupServiceSpy.exists.and.returnValue(of(true));
+    const groupServiceSpy = {
+      exists: vi.fn().mockName('GroupService.exists'),
+    };
+    groupServiceSpy.exists.mockReturnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
     from(profileGroupValidators.nameExists('42', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
@@ -75,8 +81,10 @@ describe('ProfileGroupValidators nameExist', () => {
   }));
 
   it('should call the service', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
-    groupServiceSpy.exists.and.returnValue(of(true));
+    const groupServiceSpy = {
+      exists: vi.fn().mockName('GroupService.exists'),
+    };
+    groupServiceSpy.exists.mockReturnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
     from(profileGroupValidators.nameExists('42', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
@@ -88,8 +96,10 @@ describe('ProfileGroupValidators nameExist', () => {
 
 describe('ProfileGroupValidators unitExists', () => {
   it('should return null', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
-    groupServiceSpy.unitExists.and.returnValue(of(false));
+    const groupServiceSpy = {
+      unitExists: vi.fn().mockName('GroupService.unitExists'),
+    };
+    groupServiceSpy.unitExists.mockReturnValue(of(false));
     const groupValidators = new GroupValidators(groupServiceSpy);
     from(groupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
       expect(result).toBeNull();
@@ -99,8 +109,10 @@ describe('ProfileGroupValidators unitExists', () => {
   }));
 
   it('should return { unitExists: true }', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
-    groupServiceSpy.unitExists.and.returnValue(of(true));
+    const groupServiceSpy = {
+      unitExists: vi.fn().mockName('GroupService.unitExists'),
+    };
+    groupServiceSpy.unitExists.mockReturnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
     from(profileGroupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
       expect(result).toEqual({ unitExists: true });
@@ -110,8 +122,10 @@ describe('ProfileGroupValidators unitExists', () => {
   }));
 
   it('should not call the service', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
-    groupServiceSpy.unitExists.and.returnValue(of(true));
+    const groupServiceSpy = {
+      unitExists: vi.fn().mockName('GroupService.unitExists'),
+    };
+    groupServiceSpy.unitExists.mockReturnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
     from(profileGroupValidators.unitExists('customerId', ['unite2'])(new FormControl('unite2'))).subscribe((result) => {
       expect(result).toEqual(null);
@@ -121,8 +135,10 @@ describe('ProfileGroupValidators unitExists', () => {
   }));
 
   it('should call the service', fakeAsync(() => {
-    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
-    groupServiceSpy.unitExists.and.returnValue(of(true));
+    const groupServiceSpy = {
+      unitExists: vi.fn().mockName('GroupService.unitExists'),
+    };
+    groupServiceSpy.unitExists.mockReturnValue(of(true));
     const profileGroupValidators = new GroupValidators(groupServiceSpy);
     from(profileGroupValidators.unitExists('customerId')(new FormControl('unite2'))).subscribe((result) => {
       expect(result).toEqual({ unitExists: true });

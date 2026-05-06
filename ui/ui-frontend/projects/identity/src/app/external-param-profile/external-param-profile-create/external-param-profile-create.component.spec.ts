@@ -57,10 +57,19 @@ describe('ExternalParamProfileCreateComponent', () => {
   let component: ExternalParamProfileCreateComponent;
   let fixture: ComponentFixture<ExternalParamProfileCreateComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
 
-  const externalParamProfileValidators = jasmine.createSpyObj('ExternalParamProfileValidators', { nameExists: () => of(null) });
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const externalParamProfileValidators = {
+    nameExists: vi
+      .fn()
+      .mockName('ExternalParamProfileValidators.nameExists')
+      .mockReturnValue(() => of(null)),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
   const externalParamProfileService = {
     getAllActiveAccessContracts: () => of([]),
     create: of({}),

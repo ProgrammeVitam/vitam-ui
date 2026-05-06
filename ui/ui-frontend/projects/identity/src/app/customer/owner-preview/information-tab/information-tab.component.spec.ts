@@ -119,7 +119,8 @@ class TestHostComponent {
   owner: Owner;
   readonly = false;
 
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+  @ViewChild(InformationTabComponent, { static: false })
+  component: InformationTabComponent;
 }
 
 describe('Owner InformationTabComponent', () => {
@@ -132,10 +133,18 @@ describe('Owner InformationTabComponent', () => {
       patch: () => of(owner),
       updated: new Subject(),
     };
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null),
-    });
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantFormValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('TenantFormValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

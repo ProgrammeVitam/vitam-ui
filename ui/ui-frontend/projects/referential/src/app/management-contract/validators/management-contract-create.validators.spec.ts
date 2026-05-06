@@ -54,7 +54,9 @@ describe('ManagementContractCreateValidators', () => {
   });
 
   it('should create an instance', () => {
-    const managementContractServiceSpy = jasmine.createSpyObj('ManagementContractService', ['existsProperties']);
+    const managementContractServiceSpy = {
+      existsProperties: vi.fn().mockName('ManagementContractService.existsProperties'),
+    };
     expect(new ManagementContractCreateValidators(managementContractServiceSpy)).toBeTruthy();
   });
 

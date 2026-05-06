@@ -56,14 +56,22 @@ describe('TenantCreateComponent', () => {
   let fixture: ComponentFixture<TenantCreateComponent>;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
-      create: of({}),
-      getAvailableTenants: of([2, 3, 4]),
-    });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const tenantServiceSpy = {
+      create: vi.fn().mockName('TenantService.create').mockReturnValue(of({})),
+      getAvailableTenants: vi
+        .fn()
+        .mockName('TenantService.getAvailableTenants')
+        .mockReturnValue(of([2, 3, 4])),
+    };
+    const tenantFormValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('TenantFormValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [

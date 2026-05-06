@@ -145,11 +145,11 @@ export function newPagedResult(results: Unit[] = [], totalResults = 0, pageNumbe
 
 describe('FilingHoldingSchemeNodeService', () => {
   let leavesTreeApiService: LeavesTreeApiService;
-  const searchArchiveUnitsByCriteriaSpy = jasmine.createSpyObj<SearchArchiveUnitsInterface>('SearchArchiveUnitsInterface', [
-    'searchArchiveUnitsByCriteria',
-  ]);
+  const searchArchiveUnitsByCriteriaSpy = {
+    searchArchiveUnitsByCriteria: vi.fn().mockName('SearchArchiveUnitsInterface.searchArchiveUnitsByCriteria'),
+  };
   beforeEach(() => {
-    searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.calls.reset();
+    searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.mockClear();
     leavesTreeApiService = new LeavesTreeApiService(searchArchiveUnitsByCriteriaSpy);
   });
 

@@ -53,7 +53,8 @@ import { GroupListComponent } from './group-list.component';
   selector: '[vitamuiCollapseTriggerFor]',
 })
 class CollapseTriggerForStubDirective {
-  @Input() vitamuiCollapseTriggerFor: any;
+  @Input()
+  vitamuiCollapseTriggerFor: any;
 }
 
 @Directive({
@@ -62,7 +63,8 @@ class CollapseTriggerForStubDirective {
   exportAs: 'vitamuiCollapse',
 })
 class CollapseStubDirective {
-  @Input() vitamuiCollapse: any;
+  @Input()
+  vitamuiCollapse: any;
 }
 
 @Component({
@@ -70,9 +72,12 @@ class CollapseStubDirective {
   template: '',
 })
 class OwnerListStubComponent {
-  @Input() profileGroup: any;
-  @Input() owners: any;
-  @Input() tenants: any;
+  @Input()
+  profileGroup: any;
+  @Input()
+  owners: any;
+  @Input()
+  tenants: any;
 }
 
 let component: GroupListComponent;
@@ -137,9 +142,13 @@ describe('GroupListComponent', () => {
       updated: new Subject(),
       getNonEmptyLevels: () => of(levels),
     };
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
       imports: [
@@ -160,8 +169,8 @@ describe('GroupListComponent', () => {
     }).compileComponents();
 
     const groupService = TestBed.inject(GroupService);
-    spyOn(groupService, 'search').and.callThrough();
-    spyOn(groupService, 'loadMore').and.callThrough();
+    vi.spyOn(groupService, 'search');
+    vi.spyOn(groupService, 'loadMore');
   });
 
   beforeEach(() => {
@@ -242,7 +251,7 @@ describe('GroupListComponent', () => {
       profiles: [],
       readonly: false,
       usersCount: 0,
-      units: []
+      units: [],
     });
     expect(component.dataSource[1].name).toBe('Updated profileGroup');
   });
