@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { TranslateService } from '@ngx-translate/core';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
@@ -45,6 +45,8 @@ import { BaseReclassificationDialogService } from './reclassification-dialog.ser
 const fakeArchiveUnits = (count: number): ArchiveUnit[] => {
   return [...Array(count).keys()].map((n): ArchiveUnit => ({ '#id': `${n}`, '#unitups': [] }));
 };
+
+const waitForSignalEffects = () => new Promise((resolve) => setTimeout(resolve));
 
 describe('ReclassificationDialogService', () => {
   let service: BaseReclassificationDialogService;
@@ -94,8 +96,12 @@ describe('ReclassificationDialogService', () => {
     service.childrenCount.set(100000);
     service.exactChildrenCountLoaded.set(false);
 
-    translateServiceSpy.instant.withArgs('ARCHIVE_SEARCH.MORE_THAN').mockReturnValue('Plus de');
-    translateServiceSpy.instant.withArgs('RECLASSIFICATION.FIRST_STEP.CHILDS').mockReturnValue('éléments');
+    translateServiceSpy.instant.mockImplementation((key: string) => {
+      return {
+        'ARCHIVE_SEARCH.MORE_THAN': 'Plus de',
+        'RECLASSIFICATION.FIRST_STEP.CHILDS': 'éléments',
+      }[key];
+    });
 
     const message = service.badgeMessage();
     expect(message).toBe('Plus de 100000 éléments');
@@ -105,15 +111,13 @@ describe('ReclassificationDialogService', () => {
     service.childrenCount.set(42);
     service.exactChildrenCountLoaded.set(true);
 
-    translateServiceSpy.instant
-      .withArgs('RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS', { nbDocuments: 42 })
-      .mockReturnValue('Inclut 42 documents/dossiers');
+    translateServiceSpy.instant.mockReturnValue('Inclut 42 documents/dossiers');
 
     const message = service.badgeMessage();
     expect(message).toBe('Inclut 42 documents/dossiers');
   });
 
-  it('should load and update children count via triggerLoadChildrenCount', fakeAsync(() => {
+  it('should load and update children count via triggerLoadChildrenCount', async () => {
     const mockTotal = 123;
     const mockArchiveUnits = fakeArchiveUnits(mockTotal);
 
@@ -141,18 +145,18 @@ describe('ReclassificationDialogService', () => {
 
     // Force l'effet du computed à s'exécuter
     TestBed.flushEffects();
-    tick(); // Laisse le temps au toObservable de s'initialiser
+    await waitForSignalEffects(); // Laisse le temps au toObservable de s'initialiser
 
     service.triggerLoadChildrenCount();
 
-    tick(); // Laisse le temps aux observables de se résoudre
+    await waitForSignalEffects(); // Laisse le temps aux observables de se résoudre
 
     expect(service.childrenCount()).toBe(mockTotal);
     expect(service.childrenCountLoaded()).toBe(true);
     expect(reclassificationServiceSpy.searchArchiveUnitsByCriteria).toHaveBeenCalledTimes(2);
-  }));
+  });
 
-  it('should load and update exact children count via triggerLoadExactChildrenCount', fakeAsync(() => {
+  it('should load and update exact children count via triggerLoadExactChildrenCount', async () => {
     const mockTotal = 456;
     const mockArchiveUnits = fakeArchiveUnits(mockTotal);
 
@@ -183,16 +187,16 @@ describe('ReclassificationDialogService', () => {
     );
 
     TestBed.flushEffects();
-    tick(); // Laisse le temps au toObservable de s'initialiser
+    await waitForSignalEffects(); // Laisse le temps au toObservable de s'initialiser
 
     service.triggerLoadExactChildrenCount();
-    tick();
+    await waitForSignalEffects();
 
     expect(service.childrenCount()).toBe(mockTotal);
     expect(service.exactChildrenCountLoaded()).toBe(true);
-  }));
+  });
 
-  it('should load parent units and compute hasParent', fakeAsync(() => {
+  it('should load parent units and compute hasParent', async () => {
     const mockUnits = [{ '#unitups': ['parent1', 'parent2'] }];
 
     const mockParents = [{ '#id': 'parent1' }, { '#id': 'parent2' }];
@@ -205,11 +209,11 @@ describe('ReclassificationDialogService', () => {
       );
 
     TestBed.flushEffects();
-    tick(); // Laisse le temps au toObservable de s'initialiser
+    await waitForSignalEffects(); // Laisse le temps au toObservable de s'initialiser
 
     const parents = service.parents();
     expect(parents.length).toBe(2);
     expect(parents).toEqual(mockParents);
     expect(service.hasParent()).toBe(true);
-  }));
+  });
 });

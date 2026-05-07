@@ -105,9 +105,9 @@ describe('RoleToggleComponent', () => {
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(slideToggles[0].attributes['ng-reflect-model']).toBe('true');
-      expect(slideToggles[1].attributes['ng-reflect-model']).toBe('false');
-      expect(slideToggles[2].attributes['ng-reflect-model']).toBe('false');
+      expect(slideToggles[0].componentInstance.checked).toBe(true);
+      expect(slideToggles[1].componentInstance.checked).toBe(false);
+      expect(slideToggles[2].componentInstance.checked).toBe(false);
     });
   }));
 

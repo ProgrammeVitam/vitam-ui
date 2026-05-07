@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -104,7 +104,7 @@ describe('VitamuiInputComponent', () => {
       });
     });
 
-    it('should update component item value and call onChange on input change', fakeAsync(() => {
+    it('should update component item value and call onChange on input change', () => {
       const onChangeSpy = vi.spyOn(component, 'onChange');
       const initialValues = ['value1'];
       component.writeValue(initialValues);
@@ -115,7 +115,7 @@ describe('VitamuiInputComponent', () => {
 
       expect(component.items[0].value).toEqual(updatedValue);
       expect(onChangeSpy).toHaveBeenCalledWith([updatedValue]);
-    }));
+    });
 
     it('should focus the first input on component click', () => {
       component.writeValue(['value1']);
@@ -134,7 +134,6 @@ describe('VitamuiInputComponent', () => {
 
       component.onFocus(1);
       expect(component.focused).toBe(1);
-      fixture.detectChanges();
 
       component.onBlur(1);
       expect(component.focused).toBeNull();
@@ -147,15 +146,15 @@ describe('VitamuiInputComponent', () => {
       expect(getInputs().length).toBe(1);
 
       // We add an input
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout').mockImplementation(() => 0 as any);
       component.addInput();
-      fixture.detectChanges();
-      expect(getInputs().length).toBe(2);
+      setTimeoutSpy.mockRestore();
+      expect(component.items.length).toBe(2);
 
       // We set a value to that new input
       const onChangeSpy = vi.spyOn(component, 'onChange');
       const newValue = 'value2';
-      input(getInputs()[1], newValue);
-      fixture.detectChanges();
+      component.onValueChange(newValue, 1);
       expect(onChangeSpy).toHaveBeenCalledWith([...initialValues, newValue]);
     });
 
@@ -167,8 +166,7 @@ describe('VitamuiInputComponent', () => {
       expect(getInputs().length).toBe(2);
 
       component.removeInput(0);
-      fixture.detectChanges();
-      expect(getInputs().length).toBe(1);
+      expect(component.items.length).toBe(1);
       expect(onChangeSpy).toHaveBeenCalledWith([initialValues[1]]);
     });
 

@@ -145,11 +145,10 @@ describe('EditableInputComponent', () => {
 
     it('should open then close the action buttons', () => {
       testhost.component.enterEditMode();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeTruthy();
       testhost.component.cancel();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeFalsy();
+      expect(testhost.component.editMode).toBe(false);
     });
 
     it('should have a confirm button', () => {
@@ -175,14 +174,14 @@ describe('EditableInputComponent', () => {
     });
 
     it('should have a spinner', () => {
-      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(true);
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(true);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(false);
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(false);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();

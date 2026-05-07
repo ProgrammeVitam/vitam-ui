@@ -69,11 +69,9 @@ import { tap } from 'rxjs/operators';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { searchAllRecordsQuery } from './reclassification-dialog.queries';
 import { BaseReclassificationDialogService, BuildQueryParams } from './reclassification-dialog.service';
+import { ReclassificationMode } from './reclassification-dialog.types';
 
-export enum ReclassificationMode {
-  FILING_PLAN = 'FILING_PLAN',
-  ARCHIVE_UNIT_ID = 'ARCHIVE_UNIT_ID',
-}
+export { ReclassificationMode };
 
 interface ActionOption extends Option {
   key: 'ADD' | 'PULL' | 'REPLACE';

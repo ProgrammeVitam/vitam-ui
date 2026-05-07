@@ -56,7 +56,7 @@ import {
   ReclassificationCriteriaDto,
   ReclassificationQuery,
 } from '../../../app/modules/services/reclassification.interface';
-import { ReclassificationMode } from './reclassification-dialog.component';
+import { ReclassificationMode } from './reclassification-dialog.types';
 
 export const RECLASSIFICATION_THRESHOLD = 10_000;
 

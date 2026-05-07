@@ -384,7 +384,6 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
-            "buildTarget": "portal:build:development",
             "providersFile": "test.ts"
           }
         },

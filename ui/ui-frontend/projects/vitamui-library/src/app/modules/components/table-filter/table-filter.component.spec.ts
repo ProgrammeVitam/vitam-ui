@@ -137,7 +137,7 @@ describe('TableFilterComponent', () => {
 
     testhost.showSearchBar = true;
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     searchInput = fixture.nativeElement.querySelector('input');
 
@@ -149,14 +149,14 @@ describe('TableFilterComponent', () => {
 
     testhost.showSearchBar = true;
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const searchInput = fixture.nativeElement.querySelector('input');
 
     searchInput.value = 'toto';
     searchInput.dispatchEvent(new Event('input'));
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(testhost.onSearch).toHaveBeenCalledWith('toto');
   });

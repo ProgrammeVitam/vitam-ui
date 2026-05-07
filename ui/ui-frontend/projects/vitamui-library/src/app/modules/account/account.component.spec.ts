@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 
 import { VitamUICommonTestModule } from '../../../../testing/src/public_api';
@@ -73,12 +73,28 @@ describe('AccountComponent', () => {
     getMyUserInfo: () => of({}),
   };
 
+  const translateServiceSpy = {
+    instant: () => '',
+    get: () => of(''),
+    stream: () => of(''),
+    onTranslationChange: EMPTY,
+    onLangChange: EMPTY,
+    onDefaultLangChange: EMPTY,
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
+      imports: [
+        InjectorModule,
+        MatTabsModule,
+        NoopAnimationsModule,
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [AccountComponent, InformationTabStubComponent],
       providers: [
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        { provide: TranslateService, useValue: translateServiceSpy },
         { provide: AccountService, useValue: accountServiceSpy },
         { provide: BaseUserInfoApiService, useValue: userInfoApiServiceSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },

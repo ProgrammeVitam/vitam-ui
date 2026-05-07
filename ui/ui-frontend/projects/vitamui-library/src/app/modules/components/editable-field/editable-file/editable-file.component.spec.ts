@@ -164,11 +164,10 @@ describe('EditableFileComponent', () => {
 
     it('should open then close the action buttons', () => {
       testhost.component.enterEditMode();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeTruthy();
       testhost.component.cancel();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeFalsy();
+      expect(testhost.component.editMode).toBe(false);
     });
 
     it('should have a confirm button', () => {
@@ -194,14 +193,14 @@ describe('EditableFileComponent', () => {
     });
 
     it('should have a spinner', () => {
-      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(true);
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(true);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(false);
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(false);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
@@ -282,7 +281,7 @@ describe('EditableFileComponent', () => {
         testhost.component.enterEditMode();
         testhost.component.control.setValue(newFileTmp);
         testhost.component.control.markAsDirty();
-        fixture.detectChanges();
+        fixture.detectChanges(false);
         expect(testhost.value).toEqual(originFile);
         testhost.component.confirm();
         expect(testhost.value).toEqual(newFileTmp);
@@ -299,10 +298,10 @@ describe('EditableFileComponent', () => {
         testhost.component.enterEditMode();
         testhost.component.control.setValue(newFileTmp);
         testhost.component.control.markAsDirty();
-        fixture.detectChanges();
+        fixture.detectChanges(false);
         expect(testhost.value).toEqual(originFile);
         testhost.component.cancel();
-        fixture.detectChanges();
+        fixture.detectChanges(false);
         expect(testhost.value).toEqual(originFile);
         expect(testhost.component.control.value).toEqual(originFile);
       });

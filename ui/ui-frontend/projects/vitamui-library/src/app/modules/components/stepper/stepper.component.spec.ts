@@ -38,6 +38,7 @@
 
 import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StepperComponent } from './stepper.component';
@@ -65,7 +66,7 @@ class TestHostModule {}
 describe('StepperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StepperComponent, NoopAnimationsModule],
+      imports: [StepperComponent, CdkStepperModule, NoopAnimationsModule],
       declarations: [TesthostComponent],
     }).compileComponents();
   });

@@ -142,8 +142,10 @@ describe('SearchWithTypeSelectorComponent', () => {
 
     expect(await firstMenuElement.getAttribute('disabled')).toBeNull();
     testHostComponent.types[0].disabled = true;
+    hostFixture.changeDetectorRef.detectChanges();
     expect(await firstMenuElement.getAttribute('disabled')).toEqual('true');
     testHostComponent.types[0].disabled = false;
+    hostFixture.changeDetectorRef.detectChanges();
     expect(await firstMenuElement.getAttribute('disabled')).toBeNull();
   });
 });

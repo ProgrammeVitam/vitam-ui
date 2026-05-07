@@ -36,6 +36,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
+import { TranslateService } from '@ngx-translate/core';
 import { SchemaService } from './schema.service';
 import { of } from 'rxjs';
 import { Schema, SchemaElement } from '../models';
@@ -202,12 +203,17 @@ describe('SchemaService', () => {
   let schemaService: SchemaService;
   const schemaApiServiceMock = {
     getSchemas: of(schema),
+    getSchema: () => of(schema[0]),
     getArchiveUnitProfileSchema: of({}),
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SchemaService, { provide: SchemaApiService, useValue: schemaApiServiceMock }],
+      providers: [
+        SchemaService,
+        { provide: SchemaApiService, useValue: schemaApiServiceMock },
+        { provide: TranslateService, useValue: { instant: (key: string) => key } },
+      ],
     });
     schemaService = TestBed.inject(SchemaService);
   });
@@ -217,11 +223,11 @@ describe('SchemaService', () => {
   });
 
   describe('getDescriptiveSchemaTree', () => {
-    const nodes: ItemNode<SchemaElement>[] = [];
-    it('should ', () => {
+    it('should build the descriptive schema tree', () => {
       const result = schemaService.getDescriptiveSchemaTree();
       result.subscribe((results) => {
-        expect(results).toEqual(nodes);
+        expect(results.length).toBeGreaterThan(0);
+        expect(results.every((node: ItemNode<SchemaElement>) => node.item.Type !== 'OBJECT' || node.children.length > 0)).toBe(true);
       });
     });
   });

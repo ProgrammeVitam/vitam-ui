@@ -34,7 +34,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-// TODO Fix
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+
+import { DownloadSnackBarComponent } from './download-snack-bar.component';
+
+describe('DownloadSnackBarComponent', () => {
+  let component: DownloadSnackBarComponent;
+  let fixture: ComponentFixture<DownloadSnackBarComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DownloadSnackBarComponent],
+      imports: [MatDialogModule, MatProgressBarModule, TranslateModule.forRoot()],
+      providers: [
+        {
+          provide: MatDialog,
+          useValue: {
+            open: () => ({ afterClosed: () => of(false) }),
+          },
+        },
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DownloadSnackBarComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
 
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 // import { MatDialog } from '@angular/material/dialog';

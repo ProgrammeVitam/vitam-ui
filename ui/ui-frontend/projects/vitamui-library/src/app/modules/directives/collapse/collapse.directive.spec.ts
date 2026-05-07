@@ -154,7 +154,7 @@ describe('CollapseContainerDirective', () => {
 
   it('should work when the template changes', () => {
     testhost.showCollapse = true;
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
     expect(testhost.collapseDirectives.toArray()[0].state).toBe('collapsed');
     expect(testhost.collapseDirectives.toArray()[4].state).toBe('collapsed');
     page.buttons[4].triggerEventHandler('click', null);

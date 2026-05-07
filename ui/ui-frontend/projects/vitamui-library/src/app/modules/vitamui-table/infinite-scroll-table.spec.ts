@@ -36,7 +36,6 @@
  */
 /* eslint-disable no-magic-numbers */
 
-import { fakeAsync, tick } from '@angular/core/testing';
 import { Observable, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -58,8 +57,16 @@ class SearchServiceMock extends SearchService<any> {
 }
 
 describe('InfiniteScrollTable', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('search', () => {
-    it('should set the dataSource', fakeAsync(() => {
+    it('should set the dataSource', async () => {
       const serviceMock = new SearchServiceMock();
       const infiniteScrollTable = new InfiniteScrollTable(serviceMock);
       vi.spyOn(serviceMock, 'search').mockReturnValue(timer(10).pipe(map(() => ['value1', 'value2'])));
@@ -67,14 +74,14 @@ describe('InfiniteScrollTable', () => {
       infiniteScrollTable.search();
       expect(infiniteScrollTable.pending).toBe(true);
       expect(serviceMock.search).toHaveBeenCalledTimes(1);
-      tick(10);
+      await vi.advanceTimersByTimeAsync(10);
       expect(infiniteScrollTable.pending).toBe(false);
       expect(infiniteScrollTable.dataSource).toEqual(['value1', 'value2']);
-    }));
+    });
   });
 
   describe('loadMore', () => {
-    it('should set infiniteScrollDisabled to true', fakeAsync(() => {
+    it('should set infiniteScrollDisabled to true', async () => {
       const bigList: any[] = [];
       for (let i = 0; i < 150; i++) {
         bigList.push('value' + i);
@@ -86,9 +93,9 @@ describe('InfiniteScrollTable', () => {
       expect(infiniteScrollTable.pending).toBe(false);
       infiniteScrollTable.loadMore();
       expect(infiniteScrollTable.pending).toBe(true);
-      tick(10);
+      await vi.advanceTimersByTimeAsync(10);
       expect(infiniteScrollTable.pending).toBe(false);
       expect(infiniteScrollTable.infiniteScrollDisabled).toBe(true);
-    }));
+    });
   });
 });

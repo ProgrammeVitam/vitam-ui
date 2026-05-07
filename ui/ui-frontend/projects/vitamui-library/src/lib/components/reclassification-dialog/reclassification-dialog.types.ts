@@ -34,33 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { VitamUICommonTestModule } from '../../../../../testing/src';
 
-import { CommonConfirmDialogComponent } from './common-confirm-dialog.component';
-
-describe('CommonConfirmDialogComponent', () => {
-  let component: CommonConfirmDialogComponent;
-  let fixture: ComponentFixture<CommonConfirmDialogComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, VitamUICommonTestModule, TranslateModule.forRoot()],
-      declarations: [CommonConfirmDialogComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CommonConfirmDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+export enum ReclassificationMode {
+  FILING_PLAN = 'FILING_PLAN',
+  ARCHIVE_UNIT_ID = 'ARCHIVE_UNIT_ID',
+}

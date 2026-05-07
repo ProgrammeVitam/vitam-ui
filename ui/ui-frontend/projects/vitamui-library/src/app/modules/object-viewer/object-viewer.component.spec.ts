@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { DatePipe } from '@angular/common';
 import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
@@ -44,7 +45,7 @@ import { customTemplate } from '../archive-unit/archive-unit-template';
 import { BASE_URL } from '../injection-tokens';
 import { LoggerModule } from '../logger/logger.module';
 import { VitamuiMissingTranslationHandler } from '../missing-translation-handler';
-import { PipesModule } from '../pipes/pipes.module';
+import { EmptyPipe } from '../pipes/empty.pipe';
 import { GroupComponent } from './components/group/group.component';
 import { ListComponent } from './components/list/list.component';
 import { PrimitiveComponent } from './components/primitive/primitive.component';
@@ -90,7 +91,7 @@ describe('ObjectViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
+      declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent, EmptyPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TranslateModule.forRoot({
@@ -102,7 +103,6 @@ describe('ObjectViewerComponent', () => {
             deps: [HttpBackend],
           },
         }),
-        PipesModule,
         LoggerModule.forRoot(),
       ],
       providers: [
@@ -114,6 +114,7 @@ describe('ObjectViewerComponent', () => {
         DateDisplayService,
         LayoutService,
         FavoriteEntryService,
+        DatePipe,
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
         provideHttpClient(withInterceptorsFromDi()),

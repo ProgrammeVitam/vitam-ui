@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { LoggerModule } from '../../logger';
 import { Collection, Schema } from '../../models';
 import { MockSchemaService } from '../../schema/mock-schema.service';
@@ -45,7 +46,10 @@ describe('SchemaService', () => {
   let service: SchemaService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [LoggerModule.forRoot()], providers: [MockSchemaService, SchemaService, PathService] });
+    TestBed.configureTestingModule({
+      imports: [LoggerModule.forRoot(), TranslateModule.forRoot()],
+      providers: [MockSchemaService, SchemaService, PathService],
+    });
     service = TestBed.inject(SchemaService);
   });
 

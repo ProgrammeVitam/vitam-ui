@@ -124,6 +124,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@analogjs/vitest-angular": "^2.5.0",
     "@angular-devkit/build-angular": "^21.2.8",
     "@angular-devkit/core": "^21.2.8",
     "@angular-eslint/builder": "21.3.1",

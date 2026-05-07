@@ -36,7 +36,7 @@
  */
 import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
@@ -44,7 +44,7 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import { Observable, of, throwError } from 'rxjs';
 import { LoggerModule } from '../../../logger';
 import { VitamuiMissingTranslationHandler } from '../../../missing-translation-handler';
-import { PipesModule } from '../../../pipes/pipes.module';
+import { PluralPipe } from '../../../pipes/plural.pipe';
 import { ArchiveUnitCountComponent } from './archive-unit-count.component';
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -75,8 +75,8 @@ describe('ArchiveUnitCountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitCountComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ArchiveUnitCountComponent, PluralPipe],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       imports: [
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
@@ -88,7 +88,6 @@ describe('ArchiveUnitCountComponent', () => {
             deps: [HttpBackend],
           },
         }),
-        PipesModule,
         MatProgressSpinnerModule,
         LoggerModule.forRoot(),
       ],
@@ -99,7 +98,7 @@ describe('ArchiveUnitCountComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitCountComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
   });
 
   it('should create', () => {
@@ -114,7 +113,7 @@ describe('ArchiveUnitCountComponent', () => {
       threshold: new SimpleChange(null, 10000, true),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(false);
   });
@@ -127,7 +126,7 @@ describe('ArchiveUnitCountComponent', () => {
       threshold: new SimpleChange(null, 10000, true),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
   });
@@ -145,7 +144,7 @@ describe('ArchiveUnitCountComponent', () => {
       threshold: new SimpleChange(null, 10000, true),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
     expect(component.search).toBeTruthy();
@@ -162,7 +161,7 @@ describe('ArchiveUnitCountComponent', () => {
     expect(component.canLoadExactCount).toEqual(false);
     expect(component.archiveUnitCount).toEqual(1000001);
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const element = fixture.debugElement.query(By.css('a'));
 
@@ -182,7 +181,7 @@ describe('ArchiveUnitCountComponent', () => {
       threshold: new SimpleChange(null, 10000, true),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
     expect(component.search).toBeTruthy();
@@ -199,7 +198,7 @@ describe('ArchiveUnitCountComponent', () => {
     expect(component.canLoadExactCount, 'canLoadExactCount must be true').toEqual(true);
     expect(component.archiveUnitCount).toEqual(10000);
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const element = fixture.debugElement.query(By.css('a'));
 
@@ -220,7 +219,7 @@ describe('ArchiveUnitCountComponent', () => {
       threshold: new SimpleChange(null, 10000, true),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
     expect(component.search).toBeTruthy();
@@ -237,7 +236,7 @@ describe('ArchiveUnitCountComponent', () => {
     expect(component.canLoadExactCount).toEqual(false);
     expect(component.archiveUnitCount).toEqual(1000001);
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const element = fixture.debugElement.query(By.css('a'));
 
@@ -255,7 +254,7 @@ describe('ArchiveUnitCountComponent', () => {
       search: new SimpleChange(firstSearch, secondSearch, false),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const elementAfterSearchQueryUpdate = fixture.debugElement.query(By.css('a'));
 
@@ -276,7 +275,7 @@ describe('ArchiveUnitCountComponent', () => {
       threshold: new SimpleChange(null, 10000, true),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
     expect(component.search).toBeTruthy();
@@ -293,7 +292,7 @@ describe('ArchiveUnitCountComponent', () => {
     expect(component.canLoadExactCount).toEqual(false);
     expect(component.archiveUnitCount).toEqual(1000001);
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const element = fixture.debugElement.query(By.css('a'));
 
@@ -311,7 +310,7 @@ describe('ArchiveUnitCountComponent', () => {
       search: new SimpleChange(firstSearch, secondSearch, false),
     });
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const elementAfterSearchQueryUpdate = fixture.debugElement.query(By.css('a'));
 
@@ -330,7 +329,7 @@ describe('ArchiveUnitCountComponent', () => {
     expect(component.canLoadExactCount).toEqual(false);
     expect(component.archiveUnitCount).toEqual(25000);
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const elementAfterSecondLoadExactCount = fixture.debugElement.query(By.css('a'));
 

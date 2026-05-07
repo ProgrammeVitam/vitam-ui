@@ -46,10 +46,27 @@ import {
   Unit,
   UnitType,
 } from '../models';
-import { newNode } from '../models/nodes/filing-holding-scheme.handler.spec';
 import { LeavesTreeApiService } from './leaves-tree-api.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { DescriptionLevel } from '../models/units/description-level.enum';
+
+function newNode(
+  currentId: string,
+  currentChildren: FilingHoldingSchemeNode[] = [],
+  currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
+  currentCount?: number,
+): FilingHoldingSchemeNode {
+  return {
+    id: currentId,
+    title: currentId,
+    unitType: UnitType.INGEST,
+    descriptionLevel: currentDescriptionLevel,
+    checked: false,
+    children: currentChildren,
+    vitamId: 'whatever',
+    count: currentCount,
+  };
+}
 
 export function newToggledNode(
   currentId: string,
