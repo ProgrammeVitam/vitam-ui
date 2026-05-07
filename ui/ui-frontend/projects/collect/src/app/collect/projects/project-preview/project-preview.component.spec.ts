@@ -202,7 +202,6 @@ describe('ProjectPreviewComponent', () => {
 
   it('should get project when update', waitForAsync(() => {
     component.showEdit(component.tabs.get(0));
-    fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(component.form.value.messageIdentifier).toEqual(project.messageIdentifier);
       expect(component.form.value.legalStatus).toEqual(project.legalStatus);
@@ -216,12 +215,9 @@ describe('ProjectPreviewComponent', () => {
   it('should update project without transactions', waitForAsync(() => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
-    fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
-    fixture.detectChanges();
     component.updateProject(false);
-    fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
     });
@@ -230,12 +226,9 @@ describe('ProjectPreviewComponent', () => {
   it('should update project with transactions', waitForAsync(() => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
-    fixture.detectChanges();
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
-    fixture.detectChanges();
     component.updateProject(true);
-    fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
     });

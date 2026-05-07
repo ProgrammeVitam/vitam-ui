@@ -74,6 +74,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     'getObjectGroupDetailsById',
     'hasCollectRole',
   ]);
+  archiveCollectServiceSpy.hasCollectRole.mockReturnValue(of(true));
 
   const tenantSelectionServiceSpy = {
     getSelectedTenant: vi.fn().mockName('TenantSelectionService.getSelectedTenant').mockReturnValue({

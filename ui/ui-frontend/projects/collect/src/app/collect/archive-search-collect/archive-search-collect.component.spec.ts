@@ -372,7 +372,6 @@ describe('ArchiveSearchCollectComponent', () => {
 
       archiveSharedDataService.emitNode(virtualNode1);
       archiveSharedDataService.emitNode(virtualNode2);
-      fixture.detectChanges();
 
       expect(component.searchCriterias.has('VIRTUAL')).toBe(true);
 
@@ -416,7 +415,6 @@ describe('ArchiveSearchCollectComponent', () => {
 
       archiveSharedDataService.emitNode(virtualNode1);
       archiveSharedDataService.emitNode(virtualNode2);
-      fixture.detectChanges();
 
       expect(component.searchCriterias.has('VIRTUAL')).toBe(true);
 

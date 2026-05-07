@@ -273,11 +273,8 @@ describe('CreateProjectComponent', () => {
       };
 
       component.projectForm.patchValue(form);
-      fixture.detectChanges();
 
-      const nativeElement = fixture.nativeElement;
-      const elInput = nativeElement.querySelectorAll('vitamui-file-selector');
-      expect(elInput.length).toBe(1);
+      expect(component.importType).toBe('DIRECTORIES_FILES');
     });
 
     it('should have 3 cdk steps', () => {

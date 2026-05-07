@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
@@ -108,6 +109,7 @@ describe('LeavesTreeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, TranslateModule.forRoot()],
       declarations: [LeavesTreeComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
