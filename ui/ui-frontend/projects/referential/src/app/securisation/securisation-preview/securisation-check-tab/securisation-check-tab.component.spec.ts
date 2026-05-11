@@ -117,10 +117,7 @@ describe('SecurisationCheckTabComponent', () => {
         {
           provide: ExternalParametersService,
           useValue: {
-            getUserExternalParameters: () =>
-              of({
-                [ExternalParameters.PARAM_ACCESS_CONTRACT]: 'contractID',
-              }),
+            getUserExternalParameters: () => of(new Map([[ExternalParameters.PARAM_ACCESS_CONTRACT, 'contractID']])),
           },
         },
         { provide: SnackBarService, useValue: snackBarSpy },

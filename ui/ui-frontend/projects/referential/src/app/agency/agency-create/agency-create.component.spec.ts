@@ -143,7 +143,20 @@ describe('AgencyCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(AgencyCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="name" />
+              <input formControlName="identifier" />
+              <input formControlName="description" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

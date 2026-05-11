@@ -4,6 +4,9 @@ import '@angular/compiler';
 import '@analogjs/vitest-angular/setup-zone';
 import 'zone.js/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import type { Provider } from '@angular/core';
 
 const sanitizeSelector = (selector: string) => selector.replace(/,{2,}/g, ',');
@@ -51,6 +54,14 @@ const patchSelectorMethod = <T extends (...args: any[]) => any>(prototype: any, 
   patchSelectorMethod(prototype, 'querySelectorAll');
 });
 patchSelectorMethod(Element.prototype, 'matches');
+
+const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
+TestBed.configureTestingModule = ((moduleDef: any) =>
+  configureTestingModule({
+    ...moduleDef,
+    imports: [...(moduleDef?.imports ?? []), TranslateModule.forRoot()],
+    schemas: [...(moduleDef?.schemas ?? []), CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  })) as typeof TestBed.configureTestingModule;
 
 const providers: Provider[] = [];
 

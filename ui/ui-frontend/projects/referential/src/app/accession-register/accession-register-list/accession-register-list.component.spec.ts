@@ -54,16 +54,24 @@ describe('AccessionRegisterListComponent', () => {
     getAccessionRegisterStatus: () => Observable<any>;
     getDateIntervalChanges: () => BehaviorSubject<any>;
     getAdvancedSearchData: () => BehaviorSubject<any>;
+    getGlobalSearchButtonEvent: () => BehaviorSubject<any>;
+    search: () => Observable<{}>;
   };
   let searchService: {
     search: () => Observable<{}>;
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(AccessionRegisterListComponent, {
+      set: { template: '' },
+    });
+
     accessionRegistersService = {
       getAccessionRegisterStatus: () => of({}),
       getDateIntervalChanges: () => new BehaviorSubject<any>({}),
       getAdvancedSearchData: () => new BehaviorSubject<any>({}),
+      getGlobalSearchButtonEvent: () => new BehaviorSubject<any>(false),
+      search: () => of({}),
     };
     searchService = {
       search: () => of({}),

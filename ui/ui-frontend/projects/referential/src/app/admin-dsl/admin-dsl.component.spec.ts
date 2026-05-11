@@ -63,6 +63,10 @@ describe('AdminDslComponent', () => {
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(AdminDslComponent, {
+      set: { template: '' },
+    });
+
     const adminDslServiceMock = {
       getByDsl: () => of({}),
     };

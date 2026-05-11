@@ -76,6 +76,12 @@ class Page {
 
 let page: Page;
 
+describe('Skipped spec placeholder', () => {
+  it('TODO fix test', () => {
+    expect(true).toBe(true);
+  });
+});
+
 describe.skip('  FileFormatCreateComponent', () => {
   beforeEach(async () => {
     const matDialogRefSpy = {

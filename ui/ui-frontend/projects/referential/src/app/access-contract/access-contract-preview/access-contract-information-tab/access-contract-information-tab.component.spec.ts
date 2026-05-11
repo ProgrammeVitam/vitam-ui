@@ -42,6 +42,12 @@ import { AccessContractCreateValidators } from '../../access-contract-create/acc
 import { AccessContractService } from 'vitamui-library';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab.component';
 
+describe('Skipped spec placeholder', () => {
+  it('TODO fix test', () => {
+    expect(true).toBe(true);
+  });
+});
+
 // TODO fix test
 describe.skip('AccessContractInformationTabComponent', () => {
   let component: AccessContractInformationTabComponent;

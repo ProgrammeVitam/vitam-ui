@@ -82,7 +82,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
@@ -202,7 +202,15 @@ describe('SecurityProfileCreateComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(SecurityProfileCreateComponent, {
-        remove: { imports: [VitamUILibraryModule] },
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="name" />
+              <input formControlName="fullAccess" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
       })
       .compileComponents();
   });

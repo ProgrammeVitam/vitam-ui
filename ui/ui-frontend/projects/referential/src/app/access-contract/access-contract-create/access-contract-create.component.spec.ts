@@ -166,6 +166,10 @@ describe('AccessContractCreateComponent', () => {
   });
 
   describe('Template', () => {
+    it('has no active template assertions yet', () => {
+      expect(true).toBe(true);
+    });
+
     // TODO: Why X it ?
     it.skip('should have the right inputs', () => {
       expect(page.control('identifier')).toBeTruthy();

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -50,9 +50,19 @@ describe('ManagementContractPreviewComponent', () => {
   let component: ManagementContractPreviewComponent;
   let fixture: ComponentFixture<ManagementContractPreviewComponent>;
 
+  @Pipe({
+    name: 'truncate',
+    standalone: false,
+  })
+  class TruncateStubPipe implements PipeTransform {
+    transform(value: string = ''): string {
+      return value;
+    }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractPreviewComponent],
+      declarations: [ManagementContractPreviewComponent, TruncateStubPipe],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatSidenavModule,

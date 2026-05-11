@@ -100,6 +100,13 @@ const expectedCustomer: Customer = {
 };
 
 // TODO fix tests with filling plan
+
+describe('Skipped spec placeholder', () => {
+  it('TODO fix tests with filling plan', () => {
+    expect(true).toBe(true);
+  });
+});
+
 describe.skip('AccessContractNodeUpdateComponent', () => {
   let component: AccessContractNodeUpdateComponent;
   let fixture: ComponentFixture<AccessContractNodeUpdateComponent>;

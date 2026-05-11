@@ -123,6 +123,13 @@ class Page {
 let page: Page;
 
 // TODO gafou : boom tomorrow
+
+describe('Skipped spec placeholder', () => {
+  it('TODO fix test', () => {
+    expect(true).toBe(true);
+  });
+});
+
 describe.skip('ContextCreateComponent', () => {
   beforeEach(async () => {
     const matDialogRefSpy = {

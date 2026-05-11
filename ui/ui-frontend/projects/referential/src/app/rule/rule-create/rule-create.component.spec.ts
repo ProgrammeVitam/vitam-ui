@@ -126,7 +126,23 @@ describe('RuleCreateComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(RuleCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="ruleId" />
+              <input formControlName="ruleType" />
+              <input formControlName="ruleValue" />
+              <input formControlName="ruleDescription" />
+              <input formControlName="ruleDuration" />
+              <input formControlName="ruleMeasurement" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

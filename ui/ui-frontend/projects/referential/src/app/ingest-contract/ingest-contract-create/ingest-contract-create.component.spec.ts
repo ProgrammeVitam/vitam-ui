@@ -93,10 +93,10 @@ describe('IngestContractCreateComponent', () => {
       getAllForTenant: () => of([]),
     };
     const managementContractApiServiceMock = {
-      getAllByParams: (_params: any) => of(null),
+      getAllByParams: (_params: any) => of([]),
     };
     const archiveProfileApiServiceMock = {
-      getAllByParams: (_params: any) => of(null),
+      getAllByParams: (_params: any) => of([]),
     };
 
     await TestBed.configureTestingModule({

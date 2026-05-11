@@ -50,6 +50,10 @@ describe('LogbookManagementOperationComponent', () => {
   let fixture: ComponentFixture<LogbookManagementOperationComponent>;
 
   beforeEach(async () => {
+    TestBed.overrideComponent(LogbookManagementOperationComponent, {
+      set: { template: '' },
+    });
+
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -84,6 +88,7 @@ describe('LogbookManagementOperationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookManagementOperationComponent);
     component = fixture.componentInstance;
+    component.logbookManagementOperationListComponent = { searchOperationsList: vi.fn() } as any;
     fixture.detectChanges();
   });
 

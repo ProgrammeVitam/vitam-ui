@@ -73,7 +73,7 @@ describe('LogbookOperationComponent', () => {
         provideNativeDateAdapter(),
         DatePipe,
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
+        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({}) } },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: Router, useValue: { navigate: () => {} } },
         GlobalEventService,
