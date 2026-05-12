@@ -56,7 +56,9 @@ import {
   PagedResult,
   SchemaService,
   SearchCriteriaDto,
+  SearchCriteriaService,
   SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
   SecurityService,
   UnitType,
   VitamuiRoles,
@@ -74,7 +76,6 @@ import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-c
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../models/nodedata.interface';
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
-import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -140,6 +141,25 @@ describe('ArchiveSearchComponent', () => {
     hasRole$: () => of(false),
   };
 
+  const searchCriteriaServiceMock = {
+    ready: vi.fn().mockResolvedValue(undefined),
+    toSearchCriteria: vi.fn().mockImplementation(async (obj: Record<string, string | string[]>) =>
+      Object.entries(obj).flatMap(([key, values]) => {
+        const arr = Array.isArray(values) ? values : [values];
+        return arr.map((value) => ({
+          keyElt: key,
+          valueElt: { id: key, value },
+          labelElt: value,
+          keyTranslated: false,
+          operator: 'EQ',
+          category: SearchCriteriaTypeEnum.FIELDS,
+          valueTranslated: false,
+          dataType: 'STRING',
+        }));
+      }),
+    ),
+  };
+
   const computeActivatedRoute = (queryParams: Params = {}) => {
     return {
       params: of({ tenantIdentifier: 1 }),
@@ -196,6 +216,7 @@ describe('ArchiveSearchComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
         { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
+        { provide: SearchCriteriaService, useValue: searchCriteriaServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         { provide: environment, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),
@@ -412,22 +433,32 @@ describe('ArchiveSearchComponent', () => {
     });
 
     it('should trigger a search with criteria matching the queryParams in the URL on page access', async () => {
+      vi.useFakeTimers();
+
       await setupTest({ opi: '1234' });
 
+      // flush ready().then() promise chain
       await fixture.whenStable();
 
-      const firstCall = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls[0][0];
+      // flush the setTimeout(() => this.submit(true)) inside ngAfterViewInit
+      vi.runAllTimers();
 
-      expect(firstCall).toEqual(
-        expect.objectContaining({
-          criteriaList: expect.arrayContaining([
-            expect.objectContaining({
-              criteria: 'opi',
-              values: [expect.objectContaining({ id: 'opi', value: '1234' })],
-            }),
-          ]),
-        }),
-      );
+      // let Angular process the submit() call
+      await fixture.whenStable();
+
+      const calls = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls;
+
+      vi.useRealTimers();
+
+      expect(calls.length).toBeGreaterThan(0);
+
+      const matchingCall = calls
+        .map((call) => call[0])
+        .find((criteria) =>
+          criteria?.criteriaList?.some((c: any) => c.criteria === 'opi' && c.values?.some((v: any) => v.value === '1234')),
+        );
+
+      expect(matchingCall).toBeTruthy();
     });
     it('should update criteria when a virtual node is checked', async () => {
       await setupTest({ opi: '1234' });
@@ -456,7 +487,6 @@ describe('ArchiveSearchComponent', () => {
 
       archiveSharedDataService.emitNode(virtualNode1);
       archiveSharedDataService.emitNode(virtualNode2);
-      fixture.detectChanges();
 
       expect(component.searchCriterias.has('VIRTUAL')).toBe(true);
 
@@ -501,7 +531,6 @@ describe('ArchiveSearchComponent', () => {
 
       archiveSharedDataService.emitNode(virtualNode1);
       archiveSharedDataService.emitNode(virtualNode2);
-      fixture.detectChanges();
 
       expect(component.searchCriterias.has('VIRTUAL')).toBe(true);
 

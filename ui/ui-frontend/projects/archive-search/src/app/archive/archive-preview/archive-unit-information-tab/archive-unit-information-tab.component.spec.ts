@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -73,6 +73,26 @@ import { ArchiveUnitInformationTabComponent } from './archive-unit-information-t
 describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
   let fixture: ComponentFixture<ArchiveUnitInformationTabComponent>;
+
+  @Pipe({
+    name: 'unitI18n',
+    standalone: false,
+  })
+  class UnitI18nStubPipe implements PipeTransform {
+    transform(value: any, _attribute: string): string {
+      return value?.Title ?? '';
+    }
+  }
+
+  @Pipe({
+    name: 'dateTime',
+    standalone: false,
+  })
+  class DateTimeStubPipe implements PipeTransform {
+    transform(value: string = ''): string {
+      return value;
+    }
+  }
 
   const matDialogSpy = {
     open: vi.fn().mockName('MatDialog.open'),
@@ -124,7 +144,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
         DataComponent,
         PipesModule,
       ],
-      declarations: [ArchiveUnitInformationTabComponent],
+      declarations: [ArchiveUnitInformationTabComponent, UnitI18nStubPipe, DateTimeStubPipe],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
@@ -210,9 +230,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     } as AccessContract;
 
     vi.spyOn(archiveServiceMock, 'downloadObjectFromUnit');
-    vi.spyOn<AccessContractService, any>(accessContractServiceMock, 'currentAccessContract$').mockReturnValue(
-      of(accessContractEveryObject),
-    );
+    (accessContractServiceMock as any).currentAccessContract$ = of(accessContractEveryObject);
     component.archiveUnit = archiveUnit;
     component.ngOnChanges({
       archiveUnit: new SimpleChange(null, archiveUnit, true),
