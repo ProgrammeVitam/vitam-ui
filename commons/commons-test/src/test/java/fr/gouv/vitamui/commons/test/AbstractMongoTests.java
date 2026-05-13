@@ -34,7 +34,9 @@ import org.testcontainers.containers.MongoDBContainer;
 
 public class AbstractMongoTests {
 
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:8.0.20");
+    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(
+        "mongodb/mongodb-community-server:8.0.23-ubuntu2204-slim"
+    );
 
     @BeforeAll
     static void startContainers() {
