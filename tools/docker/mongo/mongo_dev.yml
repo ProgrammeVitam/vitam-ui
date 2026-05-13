@@ -1,14 +1,10 @@
-version: "3.5"
 name: vitamui-mongo-dev
 services:
   mongo-dev:
-    image: mongo:8.0.20
+    image: mongodb/mongodb-community-server:8.0.23-ubuntu2204
     container_name: vitamui-mongo
     hostname: vitamui-mongo
-    #    environment:
-    # provide your credentials here
-    #        - MONGO_INITDB_ROOT_USERNAME=root
-    #        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
+
     ports:
       # 27018 is selected in order to avoid a conflict with Vitam docker instance
       - "27018:27018"
