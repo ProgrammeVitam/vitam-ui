@@ -42,7 +42,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, VitamUILibraryModule, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
@@ -81,6 +81,7 @@ describe('OwnerFormComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [OwnerFormComponent, TesthostComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         FormsModule,
         LoggerModule.forRoot(),
@@ -89,7 +90,6 @@ describe('OwnerFormComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -101,7 +101,9 @@ describe('OwnerFormComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(OwnerFormComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -102,6 +102,7 @@ describe('IdentityProviderCreateComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [IdentityProviderCreateComponent, PatternStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -109,7 +110,40 @@ describe('IdentityProviderCreateComponent', () => {
         { provide: IdentityProviderService, useValue: identityProviderServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(IdentityProviderCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <input formControlName="customerId" />
+              <input formControlName="name" />
+              <input formControlName="internal" />
+              <input formControlName="keystorePassword" />
+              <input formControlName="patterns" />
+              <input formControlName="enabled" />
+              <input formControlName="mailAttribute" />
+              <input formControlName="identifierAttribute" />
+              <input formControlName="authnRequestBinding" />
+              <input formControlName="autoProvisioningEnabled" />
+              <input formControlName="protocoleType" />
+              <input formControlName="maximumAuthenticationLifetime" />
+              <input formControlName="wantsAssertionsSigned" />
+              <input formControlName="authnRequestSigned" />
+              <input formControlName="propagateLogout" />
+              <input type="file" (change)="setKeystore($event.target.files)" />
+              <input type="file" (change)="setIdpMetadata($event.target.files)" />
+              <button type="submit">COMMON.SUBMIT</button>
+              <button type="button" class="btn cancel" (click)="onCancel()">COMMON.UNDO</button>
+            </form>
+            <vitamui-slide-toggle [attr.formControlName]="'enabled'">CUSTOMER.SSO.ACTIVE_SWITCH</vitamui-slide-toggle>
+            <vitamui-input [attr.formControlName]="'name'"></vitamui-input>
+            <vitamui-input [attr.formControlName]="'keystorePassword'"></vitamui-input>
+            <app-pattern [attr.formControlName]="'patterns'"></app-pattern>
+            <vitamui-slide-toggle [attr.formControlName]="'autoProvisioningEnabled'">CUSTOMER.SSO.AUTO_PROVISIONING</vitamui-slide-toggle>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

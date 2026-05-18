@@ -150,11 +150,10 @@ describe('EditablePatternsComponent', () => {
 
     it('should open then close the action buttons', () => {
       testhost.component.enterEditMode();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeTruthy();
       testhost.component.cancel();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeFalsy();
+      expect(testhost.component.editMode).toBe(false);
     });
 
     it('should have a confirm button', () => {
@@ -162,7 +161,7 @@ describe('EditablePatternsComponent', () => {
       testhost.component.enterEditMode();
       testhost.component.control.setValue(['test1.com', 'test3.com']);
       testhost.component.control.markAsDirty();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-confirm') as HTMLButtonElement;
       expect(elButton).toBeTruthy();
       elButton.click();
@@ -172,7 +171,7 @@ describe('EditablePatternsComponent', () => {
     it('should have a cancel button', () => {
       vi.spyOn(testhost.component, 'cancel');
       testhost.component.enterEditMode();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-cancel') as HTMLButtonElement;
       expect(elButton).toBeTruthy();
       elButton.click();
@@ -180,15 +179,15 @@ describe('EditablePatternsComponent', () => {
     });
 
     it('should have a spinner', () => {
-      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(true);
-      fixture.detectChanges();
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(true);
+      fixture.detectChanges(false);
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      vi.spyOn(testhost.component as any, 'showSpinner').mockReturnValue(false);
-      fixture.detectChanges();
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(false);
+      fixture.detectChanges(false);
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();
     });

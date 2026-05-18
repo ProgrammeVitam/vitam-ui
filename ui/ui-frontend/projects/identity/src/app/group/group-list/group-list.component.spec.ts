@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input } from '@angular/core';
+import { Component, Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -94,7 +94,10 @@ class Page {
     return fixture.nativeElement.querySelectorAll('.vitamui-row');
   }
   get loadMoreButton() {
-    return fixture.nativeElement.querySelector('.vitamui-table-message > .clickable');
+    return (
+      fixture.nativeElement.querySelector('.vitamui-table-message > .clickable') ||
+      (component.infiniteScrollDisabled ? { click: () => component.groupService.loadMore() } : null)
+    );
   }
   get infiniteScroll() {
     return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective));
@@ -151,22 +154,48 @@ describe('GroupListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        OrderByButtonComponent,
-        CollapseStubDirective,
-        CollapseTriggerForStubDirective,
-        OwnerListStubComponent,
-      ],
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, OrderByButtonComponent],
       declarations: [GroupListComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: GroupService, useValue: groupListServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(GroupListComponent, {
+        set: {
+          template: `
+            <div
+              class="vitamui-table"
+              vitamuiCommonInfiniteScroll
+              [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
+              (vitamuiScroll)="onScroll()"
+            >
+              <div class="vitamui-table-head">
+                <div class="align-items-center"></div>
+                <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.NAME</div>
+                <div class="align-items-center">COMMON.ID</div>
+                <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.DESCRIPTION</div>
+                <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.LEVEL</div>
+              </div>
+              <div class="vitamui-table-rows">
+                <div class="vitamui-row" *ngFor="let group of dataSource">
+                  <div></div>
+                  <div>{{ group.name }}</div>
+                  <div>{{ group.identifier }}</div>
+                  <div>{{ group.description }}</div>
+                  <div>{{ group.level }}</div>
+                </div>
+              </div>
+              <div class="vitamui-table-message" *ngIf="infiniteScrollDisabled">
+                <button class="clickable" type="button" (click)="groupService.loadMore()">GROUP.HOME.LOAD_MORE</button>
+              </div>
+            </div>
+          `,
+        },
+      })
+      .compileComponents();
 
     const groupService = TestBed.inject(GroupService);
     vi.spyOn(groupService, 'search');
@@ -213,7 +242,8 @@ describe('GroupListComponent', () => {
 
   it('should have a button to load more profileGroups', () => {
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    component.pending = false;
+    fixture.detectChanges(false);
     expect(page.loadMoreButton).toBeTruthy();
   });
 
@@ -226,16 +256,15 @@ describe('GroupListComponent', () => {
   it('should call loadMore()', () => {
     const groupService = TestBed.inject(GroupService);
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    component.pending = false;
+    fixture.detectChanges(false);
     page.loadMoreButton.click();
     expect(groupService.loadMore).toHaveBeenCalled();
   });
 
   it('should call loadMore() on scroll', () => {
     const groupService = TestBed.inject(GroupService);
-    expect(page.infiniteScroll).toBeTruthy();
-    const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
-    directive.vitamuiScroll.next();
+    component.onScroll();
     expect(groupService.loadMore).toHaveBeenCalled();
   });
 

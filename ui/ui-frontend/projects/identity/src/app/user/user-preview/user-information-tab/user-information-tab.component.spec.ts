@@ -46,7 +46,6 @@ import {
   OtpState,
   User,
   UserInfo,
-  VitamUILibraryModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -305,9 +304,9 @@ describe('UserInfoTabComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       declarations: [UserInfoTabComponent, TestHostComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -319,7 +318,9 @@ describe('UserInfoTabComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(UserInfoTabComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -361,11 +362,15 @@ describe('UserInfoTabComponent', () => {
   });
 
   it('should disable then enable the form', () => {
-    testhost.readOnly = true;
-    fixture.detectChanges();
+    testhost.component.readOnly = true;
+    testhost.component.ngOnChanges({
+      readOnly: { previousValue: false, currentValue: true, firstChange: false, isFirstChange: () => false },
+    });
     expect(testhost.component.form.disabled).toBe(true);
-    testhost.readOnly = false;
-    fixture.detectChanges();
+    testhost.component.readOnly = false;
+    testhost.component.ngOnChanges({
+      readOnly: { previousValue: true, currentValue: false, firstChange: false, isFirstChange: () => false },
+    });
     expect(testhost.component.form.disabled).toBe(false);
   });
 });

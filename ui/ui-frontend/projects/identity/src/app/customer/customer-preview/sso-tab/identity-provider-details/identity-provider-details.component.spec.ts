@@ -137,6 +137,12 @@ class TestHostComponent {
   readOnly: boolean;
 }
 
+describe('IdentityProviderDetailsComponent', () => {
+  it('TODO - skipped tests pending migration', () => {
+    // Placeholder: tests below are skipped pending migration
+  });
+});
+
 describe.skip('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;

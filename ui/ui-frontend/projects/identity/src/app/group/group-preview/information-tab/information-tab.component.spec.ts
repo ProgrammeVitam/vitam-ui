@@ -100,6 +100,7 @@ describe('Profile Group InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [InformationTabComponent, TestHostComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot()],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -112,7 +113,9 @@ describe('Profile Group InformationTabComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationTabComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -159,11 +162,15 @@ describe('Profile Group InformationTabComponent', () => {
     });
 
     it('should disable then enable the form', () => {
-      testhost.readOnly = true;
-      fixture.detectChanges();
+      testhost.component.readOnly = true;
+      testhost.component.ngOnChanges({
+        readOnly: { previousValue: false, currentValue: true, firstChange: false, isFirstChange: () => false },
+      });
       expect(testhost.component.form.disabled).toBe(true);
-      testhost.readOnly = false;
-      fixture.detectChanges();
+      testhost.component.readOnly = false;
+      testhost.component.ngOnChanges({
+        readOnly: { previousValue: true, currentValue: false, firstChange: false, isFirstChange: () => false },
+      });
       expect(testhost.component.form.disabled).toBe(false);
     });
   });

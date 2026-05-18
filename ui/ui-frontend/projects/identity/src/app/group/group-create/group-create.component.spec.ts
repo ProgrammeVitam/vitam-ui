@@ -187,7 +187,23 @@ describe('GroupCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(GroupCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="name" />
+              <input formControlName="description" />
+              <input formControlName="level" />
+              <input formControlName="enabled" />
+              <input formControlName="profileIds" />
+              <input formControlName="units" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

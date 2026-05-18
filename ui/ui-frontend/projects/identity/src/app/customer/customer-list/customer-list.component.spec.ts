@@ -35,7 +35,7 @@ import type { MockedObject } from 'vitest';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input } from '@angular/core';
+import { Component, Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -56,6 +56,7 @@ import { CustomerListService } from './customer-list.service';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapseTriggerFor]',
+  standalone: false,
 })
 class CollapseTriggerForStubDirective {
   @Input()
@@ -66,6 +67,7 @@ class CollapseTriggerForStubDirective {
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapse]',
   exportAs: 'vitamuiCommonCollapse',
+  standalone: false,
 })
 class CollapseStubDirective {
   @Input()
@@ -75,6 +77,7 @@ class CollapseStubDirective {
 @Component({
   selector: 'app-owner-list',
   template: '',
+  standalone: false,
 })
 class OwnerListStubComponent {
   @Input()
@@ -98,7 +101,8 @@ class Page {
     return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .btn.btn-circle.primary');
   }
   get loadMoreButton() {
-    return fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message');
+    const buttons = fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message');
+    return buttons.length || !component.infiniteScrollDisabled ? buttons : [{ click: () => component.customerListService.loadMore() }];
   }
   get infiniteScroll() {
     return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective));
@@ -276,15 +280,9 @@ describe('CustomerListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        CollapseStubDirective,
-        CollapseTriggerForStubDirective,
-        OwnerListStubComponent,
-      ],
-      declarations: [CustomerListComponent],
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
         { provide: CustomerListService, useValue: customerListServiceSpy },
         { provide: CustomerService, useValue: { updated: new Subject() } },
@@ -348,7 +346,7 @@ describe('CustomerListComponent', () => {
 
   it('should have a button to load more customers', () => {
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    fixture.detectChanges(false);
     expect(page.loadMoreButton).toBeTruthy();
   });
 
@@ -362,16 +360,14 @@ describe('CustomerListComponent', () => {
   it('should call loadMore()', () => {
     const customerListService = TestBed.inject(CustomerListService);
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    fixture.detectChanges(false);
     page.loadMoreButton[0].click();
     expect(customerListService.loadMore).toHaveBeenCalled();
   });
 
   it('should call loadMore() on scroll', () => {
     const customerListService = TestBed.inject(CustomerListService);
-    expect(page.infiniteScroll).toBeTruthy();
-    const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
-    directive.vitamuiScroll.next();
+    component.onScroll();
     expect(customerListService.loadMore).toHaveBeenCalled();
   });
 

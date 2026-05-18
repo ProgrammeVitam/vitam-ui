@@ -35,10 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Tenant, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, Tenant } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -82,8 +83,8 @@ describe('TenantCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [TenantCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -95,7 +96,19 @@ describe('TenantCreateComponent', () => {
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(TenantCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="name" />
+              <input formControlName="identifier" />
+              <input formControlName="enabled" />
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

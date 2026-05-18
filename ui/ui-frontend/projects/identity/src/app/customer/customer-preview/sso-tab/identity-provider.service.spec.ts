@@ -351,7 +351,7 @@ describe('IdentityProviderService', () => {
       const req = httpTestingController.expectOne('/fake-api/providers/42/keystore');
       expect(req.request.method).toEqual('PATCH');
       const formData = new FormData();
-      formData.append('idpMetadata', expectedFile, expectedFile.name);
+      formData.append('keystore', expectedFile, expectedFile.name);
       formData.append('provider', JSON.stringify({ id: identityProviders[0].id, keystorePassword: 'password' }));
       expect(req.request.body).toEqual(formData);
       req.flush(identityProviders[0]);

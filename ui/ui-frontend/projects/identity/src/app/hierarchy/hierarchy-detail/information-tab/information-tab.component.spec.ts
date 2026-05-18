@@ -126,6 +126,7 @@ describe('Hierarchy InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent],
       providers: [
         { provide: HierarchyService, useValue: hierarchyServiceMock },
@@ -133,7 +134,17 @@ describe('Hierarchy InformationTabComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: CountryService, useValue: {} },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationTabComponent, {
+        set: {
+          template: `
+            <vitamui-common-editable-input [attr.formControlName]="'name'" maxlength="100">ProfileName</vitamui-common-editable-input>
+            <vitamui-common-editable-textarea [attr.formControlName]="'description'" maxlength="250">Profile description...</vitamui-common-editable-textarea>
+            <vitamui-slide-toggle [attr.formControlName]="'enabled'">HIERARCHY.INFORMATIONS.ACTIVE_SWITCH</vitamui-slide-toggle>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

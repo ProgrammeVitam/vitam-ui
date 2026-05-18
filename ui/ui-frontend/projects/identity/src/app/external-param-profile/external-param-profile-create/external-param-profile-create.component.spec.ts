@@ -44,7 +44,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { CollapseModule, ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
+import { CollapseModule, ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
@@ -91,7 +91,6 @@ describe('ExternalParamProfileCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       providers: [
         DecimalPipe,
@@ -108,7 +107,22 @@ describe('ExternalParamProfileCreateComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ExternalParamProfileCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <input formControlName="enabled" />
+              <input formControlName="accessContract" />
+              <input formControlName="description" />
+              <input formControlName="name" />
+              <input formControlName="usePlatformThreshold" />
+              <input formControlName="bulkOperationsThreshold" />
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

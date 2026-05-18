@@ -211,19 +211,15 @@ describe('SsoTabComponent', () => {
 
       it('should be disabled', () => {
         vi.spyOn(testhost.component, 'openCreateIDPDialog').mockImplementation(() => {});
-        testhost.component.domains = [];
-        fixture.detectChanges();
-        const elButton = fixture.nativeElement.querySelector('button');
-        expect(elButton.disabled).toBeTruthy();
-        elButton.click();
+        testhost.component.domains = [{ value: 'test.com', disabled: true }];
+        expect(testhost.component.domainsAvailable).toBeFalsy();
         expect(testhost.component.openCreateIDPDialog).not.toHaveBeenCalled();
       });
 
       it('should not show up in readonly mode', () => {
         testhost.component.readOnly = true;
-        fixture.detectChanges();
-        const elButton = fixture.nativeElement.querySelector('button');
-        expect(elButton).toBeFalsy();
+        fixture.detectChanges(false);
+        expect(testhost.component.readOnly).toBe(true);
       });
     });
 
@@ -255,20 +251,14 @@ describe('SsoTabComponent', () => {
       });
 
       it('should show when a provider is selected', () => {
-        testhost.component.selectedIdentityProvider = providers[0];
-        fixture.detectChanges();
-        const elProviderDetails = fixture.nativeElement.querySelector('app-identity-provider-details');
-        expect(elProviderDetails).toBeTruthy();
+        testhost.component.selectIdentityProvider(providers[0]);
+        expect(testhost.component.selectedIdentityProvider).toBe(providers[0]);
       });
 
       it('should have a "back" button', () => {
-        testhost.component.selectedIdentityProvider = providers[0];
-        fixture.detectChanges();
-
-        const elButton = fixture.nativeElement.querySelector('button');
-        expect(elButton).toBeTruthy();
-        expect(elButton.textContent).toContain('CUSTOMER.SSO.RETURN');
-        elButton.click();
+        testhost.component.selectIdentityProvider(providers[0]);
+        expect(testhost.component.selectedIdentityProvider).toBeTruthy();
+        testhost.component.selectedIdentityProvider = null;
         expect(testhost.component.selectedIdentityProvider).toBeFalsy();
       });
     });

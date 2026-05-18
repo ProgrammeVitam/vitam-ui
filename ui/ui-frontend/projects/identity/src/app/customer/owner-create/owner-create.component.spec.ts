@@ -41,7 +41,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Owner, Tenant, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
@@ -133,7 +133,6 @@ describe('OwnerCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       declarations: [OwnerCreateComponent, OwnerFormStubComponent],
       providers: [
@@ -146,7 +145,22 @@ describe('OwnerCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(OwnerCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="ownerForm">
+              <input formControlName="owner" />
+            </form>
+            <form [formGroup]="tenantForm">
+              <input formControlName="name" />
+              <input formControlName="identifier" />
+              <input formControlName="enabled" />
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

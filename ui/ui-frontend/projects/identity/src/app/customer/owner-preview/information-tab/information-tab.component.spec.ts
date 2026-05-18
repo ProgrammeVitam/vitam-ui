@@ -41,17 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, Subject } from 'rxjs';
-import {
-  BASE_URL,
-  CountryService,
-  LoggerModule,
-  Owner,
-  StartupService,
-  Tenant,
-  VitamUILibraryModule,
-  SnackBarService,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, Tenant, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
@@ -157,8 +147,8 @@ describe('Owner InformationTabComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [TestHostComponent, InformationTabComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -173,7 +163,9 @@ describe('Owner InformationTabComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationTabComponent, { set: { template: '' } })
+      .compileComponents();
   });
 
   beforeEach(() => {

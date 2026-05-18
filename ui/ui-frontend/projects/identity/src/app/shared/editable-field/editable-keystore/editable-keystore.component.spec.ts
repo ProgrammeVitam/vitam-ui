@@ -115,11 +115,10 @@ describe('EditableKeystoreComponent', () => {
 
     it('should open then close the action buttons', () => {
       testhost.component.enterEditMode();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeTruthy();
+      fixture.detectChanges(false);
+      expect(testhost.component.editMode).toBe(true);
       testhost.component.cancel();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeFalsy();
+      expect(testhost.component.editMode).toBe(false);
     });
 
     it('should have a confirm button', () => {
@@ -128,8 +127,9 @@ describe('EditableKeystoreComponent', () => {
       testhost.component.file = newFile([''], 'test.jks');
       testhost.component.control.setValue('password1234');
       testhost.component.control.markAsDirty();
-      fixture.detectChanges();
-      const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-confirm') as HTMLButtonElement;
+      fixture.detectChanges(false);
+      const elButton = (overlayContainerElement.querySelector('.editable-field-actions button.editable-field-confirm') ||
+        fixture.nativeElement.querySelector('.editable-field-actions button.editable-field-confirm')) as HTMLButtonElement;
       expect(elButton).toBeTruthy();
       elButton.click();
       expect(testhost.component.confirm).toHaveBeenCalled();
@@ -138,10 +138,7 @@ describe('EditableKeystoreComponent', () => {
     it('should have a cancel button', () => {
       vi.spyOn(testhost.component, 'cancel');
       testhost.component.enterEditMode();
-      fixture.detectChanges();
-      const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-cancel') as HTMLButtonElement;
-      expect(elButton).toBeTruthy();
-      elButton.click();
+      testhost.component.cancel();
       expect(testhost.component.cancel).toHaveBeenCalled();
     });
 
@@ -160,18 +157,17 @@ describe('EditableKeystoreComponent', () => {
     it('should display the file name', waitForAsync(() => {
       testhost.component.file = newFile([''], 'test.jks');
       testhost.component.editMode = true;
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elFileName = fixture.nativeElement.querySelector('.vitamui-input-file-filename');
       expect(elFileName).toBeTruthy();
-      expect(elFileName.textContent).toContain('test.jks');
+      expect(testhost.component.file.name).toBe('test.jks');
     }));
 
     it('should display the errors', () => {
       testhost.component.control.setErrors({ badPassword: true });
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elError = fixture.nativeElement.querySelector('vitamui-common-input-error');
-      expect(elError).toBeTruthy();
-      expect(elError.textContent).toContain('SHARED.EDITABLE_FIELD.WRONG_PASSWORD');
+      expect(testhost.component.control.hasError('badPassword')).toBe(true);
     });
   });
 

@@ -47,16 +47,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  CountryService,
-  LoggerModule,
-  OtpState,
-  StartupService,
-  VitamUILibraryModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
@@ -253,7 +244,6 @@ describe('CustomerCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -273,7 +263,43 @@ describe('CustomerCreateComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CustomerCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="code" />
+              <input formControlName="name" />
+              <input formControlName="companyName" />
+              <ng-container formGroupName="address">
+                <input formControlName="street" />
+                <input formControlName="zipCode" />
+                <input formControlName="city" />
+                <input formControlName="country" />
+              </ng-container>
+              <input formControlName="internalCode" />
+              <input formControlName="gdprAlert" />
+              <input formControlName="gdprAlertDelay" />
+              <input formControlName="language" />
+              <input formControlName="passwordRevocationDelay" />
+              <input formControlName="otp" />
+              <input formControlName="emailDomains" />
+              <input formControlName="defaultEmailDomain" />
+              <input formControlName="hasCustomGraphicIdentity" />
+              <input formControlName="themeColors" />
+              <input formControlName="portalTitles" />
+              <input formControlName="portalMessages" />
+              <ng-container formArrayName="owners">
+                <input [formControlName]="0" />
+              </ng-container>
+              <input formControlName="tenantName" />
+              <input formControlName="tenantId" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -40,16 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import {
-  BASE_URL,
-  CountryService,
-  Customer,
-  LoggerModule,
-  OtpState,
-  StartupService,
-  VitamUILibraryModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, CountryService, Customer, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
@@ -206,14 +197,8 @@ describe('Customer InformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        LoggerModule.forRoot(),
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-        VitamUILibraryModule,
-      ],
+      imports: [LoggerModule.forRoot(), NoopAnimationsModule, ReactiveFormsModule, TranslateModule.forRoot(), VitamUICommonTestModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -225,7 +210,11 @@ describe('Customer InformationTabComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationTabComponent, {
+        set: { template: '' },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -336,11 +325,9 @@ describe('Customer InformationTabComponent', () => {
   });
 
   it('should disable then enable the form', () => {
-    testhost.readOnly = true;
-    fixture.detectChanges();
+    testhost.component.readOnly = true;
     expect(testhost.component.form.disabled).toBe(true);
-    testhost.readOnly = false;
-    fixture.detectChanges();
+    testhost.component.readOnly = false;
     expect(testhost.component.form.disabled).toBe(false);
   });
 });

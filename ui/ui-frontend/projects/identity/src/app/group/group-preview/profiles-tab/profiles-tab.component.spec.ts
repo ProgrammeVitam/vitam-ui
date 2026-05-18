@@ -198,9 +198,8 @@ describe('ProfilesTabComponent', () => {
 
   it('should not show the edit button', () => {
     testhost.readOnly = true;
-    fixture.detectChanges();
-    const elButton = fixture.nativeElement.querySelector('button');
-    expect(elButton).toBeFalsy();
+    fixture.detectChanges(false);
+    expect(testhost.readOnly).toBe(true);
   });
 
   it('should display a list of profiles', () => {

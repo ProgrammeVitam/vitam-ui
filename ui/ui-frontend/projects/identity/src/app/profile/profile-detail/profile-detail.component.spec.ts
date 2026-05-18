@@ -157,7 +157,7 @@ describe('ProfileDetailComponent', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
+        // TranslateService provided by VitamUICommonTestModule (TranslateModule.forRoot())
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
