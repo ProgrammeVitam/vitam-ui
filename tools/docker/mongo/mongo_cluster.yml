@@ -1,14 +1,8 @@
-version: "3"
-
+name: vitamui-mongo-cluster
 services:
-  mongo-dev:
-    image: mongo:8.0.20
-    container_name:
-      vitamui-mongo
-      #    environment:
-    # provide your credentials here
-    #        - MONGO_INITDB_ROOT_USERNAME=root
-    #        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
+  mongo-dev1:
+    image: mongodb/mongodb-community-server:8.0.23-ubuntu2204
+    container_name: vitamui-mongo1
 
     networks:
       - mongo-cluster
@@ -25,13 +19,8 @@ services:
     command: mongod --replSet "rs0" --port=27018
 
   mongo-dev2:
-    image: mongo:8.0.20
-    container_name:
-      vitamui-mongo2
-      #    environment:
-    # provide your credentials here
-    #        - MONGO_INITDB_ROOT_USERNAME=root
-    #        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
+    image: mongodb/mongodb-community-server:8.0.23-ubuntu2204
+    container_name: vitamui-mongo2
 
     networks:
       - mongo-cluster
@@ -47,12 +36,8 @@ services:
     command: mongod --replSet "rs0" --port=27019
 
   mongo-dev3:
-    image: mongo:8.0.20
+    image: mongodb/mongodb-community-server:8.0.23-ubuntu2204
     container_name: vitamui-mongo3
-    #    environment:
-    # provide your credentials here
-    #        - MONGO_INITDB_ROOT_USERNAME=root
-    #        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
 
     networks:
       - mongo-cluster
