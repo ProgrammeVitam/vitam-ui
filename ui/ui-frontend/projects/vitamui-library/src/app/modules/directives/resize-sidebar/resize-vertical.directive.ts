@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Directive, ElementRef, HostListener, Inject, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnInit, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
@@ -44,6 +44,9 @@ import { DOCUMENT } from '@angular/common';
   standalone: false,
 })
 export class ResizeVerticalDirective implements OnInit {
+  private elementRef = inject(ElementRef);
+  private document = inject(DOCUMENT);
+
   @Input('vitamuiVerticalResizeSidebar') orientation: 'top' | 'bottom' = 'top';
   @Input() paddingSize = 75;
   @Input() minSize = 150;
@@ -78,11 +81,6 @@ export class ResizeVerticalDirective implements OnInit {
     }
     this.siblingElement.setAttribute('style', `flex:0 0 auto;max-height:75%;${height}`);
   }
-
-  constructor(
-    private elementRef: ElementRef,
-    @Inject(DOCUMENT) private document: any,
-  ) {}
 
   ngOnInit(): void {
     const id = 'vitamui-vertical-resize-bar' + Math.floor(Math.random() * 10);

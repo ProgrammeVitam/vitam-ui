@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
@@ -55,6 +55,8 @@ export class IngestFilters {
   standalone: false,
 })
 export class IngestListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+  ingestService: IngestService;
+
   IngestStatus = IngestStatus;
 
   @Input()
@@ -93,8 +95,12 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
   private readonly orderChange = new Subject<void>();
   private readonly filterChange = new Subject<any>();
 
-  constructor(public ingestService: IngestService) {
+  constructor() {
+    const ingestService = inject(IngestService);
+
     super(ingestService);
+
+    this.ingestService = ingestService;
   }
 
   ngOnInit() {

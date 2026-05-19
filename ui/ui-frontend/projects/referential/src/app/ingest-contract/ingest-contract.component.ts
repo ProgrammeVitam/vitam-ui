@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -65,6 +65,14 @@ import { HttpResponse } from '@angular/common/http';
   standalone: false,
 })
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
+  dialog = inject(MatDialog);
+  private route: ActivatedRoute;
+  private applicationService = inject(ApplicationService);
+  private securityService = inject(SecurityService);
+  private translateService = inject(TranslateService);
+  private downloadSnackBarService = inject(DownloadSnackBarService);
+  private ingestContractService = inject(IngestContractService);
+
   @ViewChild(IngestContractListComponent, { static: true }) ingestContractListComponent: IngestContractListComponent;
 
   search = '';
@@ -76,17 +84,13 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('INGEST_CONTRACT').pipe(shareReplay(1));
 
-  constructor(
-    public dialog: MatDialog,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private applicationService: ApplicationService,
-    private securityService: SecurityService,
-    private translateService: TranslateService,
-    private downloadSnackBarService: DownloadSnackBarService,
-    private ingestContractService: IngestContractService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
+
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });

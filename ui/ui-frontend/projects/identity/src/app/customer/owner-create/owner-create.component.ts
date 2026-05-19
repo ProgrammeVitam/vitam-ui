@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { concatMap, finalize, Observable, Subscription } from 'rxjs';
@@ -51,22 +51,22 @@ import { map, tap } from 'rxjs/operators';
   standalone: false,
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<OwnerCreateComponent>>(MatDialogRef);
+  data = inject<{
+    customer: Customer;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private ownerService = inject(OwnerService);
+  private tenantService = inject(TenantService);
+  private tenantFormValidators = inject(TenantFormValidators);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   public ownerForm: FormGroup;
   public tenantForm: FormGroup;
 
   private keyPressSubscription: Subscription;
   availableTenants: number[];
   isLoading = false;
-
-  constructor(
-    public dialogRef: MatDialogRef<OwnerCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer },
-    private formBuilder: FormBuilder,
-    private ownerService: OwnerService,
-    private tenantService: TenantService,
-    private tenantFormValidators: TenantFormValidators,
-    private confirmDialogService: ConfirmDialogService,
-  ) {}
 
   ngOnInit() {
     this.ownerForm = this.formBuilder.group({

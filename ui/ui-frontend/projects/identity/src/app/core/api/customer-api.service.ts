@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, PaginatedHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { AttachmentType } from '../../customer/attachment.enum';
@@ -44,11 +44,12 @@ import { AttachmentType } from '../../customer/attachment.enum';
   providedIn: 'root',
 })
 export class CustomerApiService extends PaginatedHttpClient<Customer> {
-  constructor(
-    http: HttpClient,
-    @Inject(BASE_URL) baseUrl: string,
-    private logger: Logger,
-  ) {
+  private logger = inject(Logger);
+
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/customers');
   }
 

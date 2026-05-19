@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
@@ -69,6 +69,22 @@ const emailFirstPartValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
   standalone: false,
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<UserCreateComponent>>(MatDialogRef);
+  data = inject<{
+    userInfo: AdminUserProfile;
+    customer: Customer;
+    groups: Group[];
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private userService = inject(UserService);
+  private userInfoService = inject(UserInfoService);
+  private authService = inject(AuthService);
+  private userCreateValidators = inject(UserCreateValidators);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private countryService = inject(CountryService);
+  private startupService = inject(StartupService);
+  private loggerService = inject(Logger);
+
   public maxStreetLength: number;
   public form: FormGroup;
   public formEmail: FormGroup;
@@ -82,20 +98,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   public countries: Option[];
 
   LAST_STEP_INDEX = 2;
-
-  constructor(
-    public dialogRef: MatDialogRef<UserCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { userInfo: AdminUserProfile; customer: Customer; groups: Group[] },
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private userInfoService: UserInfoService,
-    private authService: AuthService,
-    private userCreateValidators: UserCreateValidators,
-    private confirmDialogService: ConfirmDialogService,
-    private countryService: CountryService,
-    private startupService: StartupService,
-    private loggerService: Logger,
-  ) {}
 
   ngOnInit() {
     this.fullGroup = this.data.groups;

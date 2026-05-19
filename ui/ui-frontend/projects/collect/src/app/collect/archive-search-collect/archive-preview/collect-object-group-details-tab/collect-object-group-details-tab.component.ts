@@ -36,7 +36,7 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, computed, input, InputSignal, OnChanges, Signal, SimpleChanges } from '@angular/core';
+import { Component, computed, input, InputSignal, OnChanges, Signal, SimpleChanges, inject } from '@angular/core';
 import {
   ApiUnitObject,
   DescriptionLevel,
@@ -67,6 +67,10 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   standalone: false,
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
+  private archiveCollectService = inject(ArchiveCollectService);
+  private clipboard = inject(Clipboard);
+  private tenantSelectionService = inject(TenantSelectionService);
+
   archiveUnit: InputSignal<Unit> = input(null);
 
   unitObject: ApiUnitObject;
@@ -81,12 +85,6 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   objectsGroupErrors: Signal<ValidationError[]> = computed(() => {
     return getErrorOnObjectsGroup(this.archiveUnit());
   });
-
-  constructor(
-    private archiveCollectService: ArchiveCollectService,
-    private clipboard: Clipboard,
-    private tenantSelectionService: TenantSelectionService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.checkDownloadPermissions();

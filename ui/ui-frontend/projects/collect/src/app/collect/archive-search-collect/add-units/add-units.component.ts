@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, from, Observable, of, switchMap } from 'rxjs';
 import {
@@ -72,6 +72,15 @@ export enum ImportType {
   standalone: false,
 })
 export class AddUnitsComponent implements OnInit {
+  data = inject<{
+    transaction: Transaction;
+  }>(MAT_DIALOG_DATA);
+  private startupService = inject(StartupService);
+  private snackBarService = inject(SnackBarService);
+  private dialog = inject(MatDialog);
+  private addUnitsDialogRef = inject<MatDialogRef<AddUnitsComponent>>(MatDialogRef);
+  private archiveCollectService = inject(ArchiveCollectService);
+
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
 
@@ -86,18 +95,6 @@ export class AddUnitsComponent implements OnInit {
 
   @ViewChild('confirmCancelDialog', { static: true }) confirmCancelDialogTemplate: TemplateRef<AddUnitsComponent>;
   private confirmCancelDialog: MatDialogRef<AddUnitsComponent>;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      transaction: Transaction;
-    },
-    private startupService: StartupService,
-    private snackBarService: SnackBarService,
-    private dialog: MatDialog,
-    private addUnitsDialogRef: MatDialogRef<AddUnitsComponent>,
-    private archiveCollectService: ArchiveCollectService,
-  ) {}
 
   ngOnInit() {
     this.loadAttachementUnits();

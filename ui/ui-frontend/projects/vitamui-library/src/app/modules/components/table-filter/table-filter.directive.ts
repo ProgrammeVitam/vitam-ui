@@ -36,24 +36,22 @@
  */
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewContainerRef, inject } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonTableFilter]',
   exportAs: 'vitamuiCommonTableFilter',
 })
 export class TableFilterDirective {
+  private overlay = inject(Overlay);
+  private elementRef = inject(ElementRef);
+  private viewContainerRef = inject(ViewContainerRef);
+
   @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;
 
   @Output() readonly filterClosed = new EventEmitter();
 
   private overlayRef: OverlayRef;
-
-  constructor(
-    private overlay: Overlay,
-    private elementRef: ElementRef,
-    private viewContainerRef: ViewContainerRef,
-  ) {}
 
   @HostListener('click')
   openTemplate() {

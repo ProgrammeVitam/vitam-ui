@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Event } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 
@@ -45,11 +45,11 @@ import { SecurisationService } from '../../securisation.service';
   standalone: false,
 })
 export class SecurisationInformationTabComponent implements OnInit {
+  private securisationService = inject(SecurisationService);
+
   @Input()
   securisation: Event;
   timestamp: { signerCertIssuer: string; genTime: Date };
-
-  constructor(private securisationService: SecurisationService) {}
 
   ngOnInit() {
     if (this.securisation.parsedData) {

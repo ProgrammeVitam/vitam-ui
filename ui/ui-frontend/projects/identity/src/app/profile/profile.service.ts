@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
@@ -53,13 +53,17 @@ import {
   providedIn: 'root',
 })
 export class ProfileService extends SearchService<Profile> {
+  private profileApi: ProfileApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<Profile>();
 
-  constructor(
-    private profileApi: ProfileApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const profileApi = inject(ProfileApiService);
+
     super(profileApi, 'ALL');
+
+    this.profileApi = profileApi;
   }
 
   get(id: string): Observable<Profile> {

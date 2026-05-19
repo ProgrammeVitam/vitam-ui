@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -81,6 +81,15 @@ import { map } from 'rxjs/operators';
   ],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
+  dialog = inject(MatDialog);
+  globalEventService: GlobalEventService;
+  private route: ActivatedRoute;
+  private securityService = inject(SecurityService);
+  private agencyService = inject(AgencyService);
+  private translateService = inject(TranslateService);
+  private router = inject(Router);
+  private queryParamsService = inject(QueryParamsService);
+
   @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
 
   search = '';
@@ -90,17 +99,14 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   hasExportRole = false;
   hasUpdateRole = false;
 
-  constructor(
-    public dialog: MatDialog,
-    public globalEventService: GlobalEventService,
-    private route: ActivatedRoute,
-    private securityService: SecurityService,
-    private agencyService: AgencyService,
-    private translateService: TranslateService,
-    private router: Router,
-    private queryParamsService: QueryParamsService,
-  ) {
+  constructor() {
+    const globalEventService = inject(GlobalEventService);
+    const route = inject(ActivatedRoute);
+
     super(route, globalEventService);
+
+    this.globalEventService = globalEventService;
+    this.route = route;
   }
 
   ngOnInit(): void {

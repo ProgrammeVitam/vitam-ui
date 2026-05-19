@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,6 +50,10 @@ import { AccessContractCreateValidators } from '../../access-contract-create/acc
   standalone: false,
 })
 export class AccessContractInformationTabComponent {
+  private formBuilder = inject(FormBuilder);
+  private accessContractService = inject(AccessContractService);
+  private accessContractCreateValidators = inject(AccessContractCreateValidators);
+
   @Input() set accessContract(accessContract: AccessContract) {
     this.setAccessContract(accessContract);
     this.resetForm(this.accessContract);
@@ -80,12 +84,6 @@ export class AccessContractInformationTabComponent {
       creationDate: this._accessContract.creationDate,
     };
   };
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private accessContractService: AccessContractService,
-    private accessContractCreateValidators: AccessContractCreateValidators,
-  ) {}
 
   public onSubmit() {
     this.submitted = true;

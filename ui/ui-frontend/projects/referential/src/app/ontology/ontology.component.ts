@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -64,6 +64,13 @@ import { OntologyService } from './ontology.service';
   standalone: false,
 })
 export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
+  dialog = inject(MatDialog);
+  private route: ActivatedRoute;
+  private translateService = inject(TranslateService);
+  private securityService = inject(SecurityService);
+  private ontologyService = inject(OntologyService);
+  private schemaService = inject(SchemaService);
+
   private previousTab: string | null = null;
   private subscription: Subscription;
   @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
@@ -74,16 +81,13 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
   canImportSchema: boolean;
   canCreateVocabulary: boolean;
 
-  constructor(
-    public dialog: MatDialog,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private translateService: TranslateService,
-    private securityService: SecurityService,
-    private ontologyService: OntologyService,
-    private schemaService: SchemaService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+
+    this.route = route;
   }
 
   ngOnInit(): void {

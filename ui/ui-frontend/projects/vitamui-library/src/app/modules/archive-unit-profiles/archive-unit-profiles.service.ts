@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BASE_URL } from '../injection-tokens';
 import { Observable } from 'rxjs';
@@ -49,10 +49,8 @@ export interface ArchiveUnitProfile {
   providedIn: 'root',
 })
 export class ArchiveUnitProfilesService {
-  constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) private baseUrl: string,
-  ) {}
+  private http = inject(HttpClient);
+  private baseUrl = inject(BASE_URL);
 
   getAll(): Observable<ArchiveUnitProfile[]> {
     const options = {

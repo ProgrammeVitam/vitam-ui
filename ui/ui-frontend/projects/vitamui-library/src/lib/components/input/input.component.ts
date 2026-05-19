@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, inject } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
@@ -59,6 +59,8 @@ type InternalValue = { id: number; value: string | number | boolean };
   imports: [FormsModule, TranslateModule, CommonTooltipModule, FormErrorsComponent, MatProgressSpinner],
 })
 export class InputComponent extends AbstractFormInputDirective {
+  private elRef = inject(ElementRef);
+
   @Input() placeholder: string;
   @Input() autofocus: boolean;
   @Input()
@@ -93,10 +95,9 @@ export class InputComponent extends AbstractFormInputDirective {
     }
   }
 
-  constructor(
-    injector: Injector,
-    private elRef: ElementRef,
-  ) {
+  constructor() {
+    const injector = inject(Injector);
+
     super(injector);
   }
 

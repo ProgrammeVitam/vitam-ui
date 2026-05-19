@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AccessContract, FilingPlanMode, AccessContractService } from 'vitamui-library';
@@ -46,6 +46,15 @@ import { AccessContract, FilingPlanMode, AccessContractService } from 'vitamui-l
   standalone: false,
 })
 export class AccessContractNodeUpdateComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<AccessContractNodeUpdateComponent>>(MatDialogRef);
+  data = inject<{
+    accessContract: AccessContract;
+    searchAccessContractId: string;
+    tenantIdentifier: number;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private accessContractService = inject(AccessContractService);
+
   accessContract: AccessContract;
   tenantIdentifier: number;
   selectNodesForm: FormGroup;
@@ -59,12 +68,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
-  constructor(
-    public dialogRef: MatDialogRef<AccessContractNodeUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { accessContract: AccessContract; searchAccessContractId: string; tenantIdentifier: number },
-    private formBuilder: FormBuilder,
-    private accessContractService: AccessContractService,
-  ) {
+  constructor() {
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.accessContract = this.data.accessContract;
     this.selectNodesForm = this.formBuilder.group({

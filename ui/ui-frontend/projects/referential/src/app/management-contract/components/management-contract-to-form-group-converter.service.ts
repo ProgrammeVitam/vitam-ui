@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ManagementContract,
@@ -49,7 +49,7 @@ import { Converter } from './converter';
   providedIn: 'root',
 })
 export class ManagementContractToFormGroupConverterService implements Converter<ManagementContract, FormGroup> {
-  constructor(private formBuilder: FormBuilder) {}
+  private formBuilder = inject(FormBuilder);
 
   convert(source: ManagementContract): FormGroup {
     return this.formBuilder.group({

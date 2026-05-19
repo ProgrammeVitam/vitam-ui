@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 
 @Pipe({
   name: 'dateTime',
   standalone: false,
 })
 export class DateTimePipe implements PipeTransform {
-  constructor(private datePipe: DatePipe) {}
+  private datePipe = inject(DatePipe);
 
   /**
    * Handles different kind of values:

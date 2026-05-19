@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription, of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
@@ -51,6 +51,11 @@ import { Action, EditObject } from '../../models/edit-object.model';
   standalone: false,
 })
 export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
+  private layoutService = inject(LayoutService);
+  private favoriteEntryService = inject(FavoriteEntryService);
+  private typeService = inject(TypeService);
+  private matDialog = inject(MatDialog);
+
   @Input() editObject: EditObject;
 
   @ViewChild('removeDialog') removeDialog: TemplateRef<GroupEditorComponent>;
@@ -64,13 +69,6 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   readonly DisplayObjectType = DisplayObjectType;
   private readonly dialogConfig: MatDialogConfig = { autoFocus: false };
   private subscription: Subscription;
-
-  constructor(
-    private layoutService: LayoutService,
-    private favoriteEntryService: FavoriteEntryService,
-    private typeService: TypeService,
-    private matDialog: MatDialog,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { editObject } = changes;

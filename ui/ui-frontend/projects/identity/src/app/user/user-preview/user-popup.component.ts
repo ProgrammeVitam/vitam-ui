@@ -36,7 +36,7 @@
  */
 import { Customer, User } from 'vitamui-library';
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { CustomerService } from '../../core/customer.service';
@@ -47,13 +47,13 @@ import { CustomerService } from '../../core/customer.service';
   standalone: false,
 })
 export class UserPopupComponent {
+  private route = inject(ActivatedRoute);
+  private customerService = inject(CustomerService);
+
   user: User;
   customer: Customer;
 
-  constructor(
-    private route: ActivatedRoute,
-    private customerService: CustomerService,
-  ) {
+  constructor() {
     this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
     this.user = this.route.snapshot.data.user;
   }

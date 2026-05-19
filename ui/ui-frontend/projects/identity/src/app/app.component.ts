@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { StartupService } from 'vitamui-library';
 
@@ -48,7 +48,10 @@ export class AppComponent {
   title = 'Identity App';
   subrogating = false;
 
-  constructor(titleService: Title, startupService: StartupService) {
+  constructor() {
+    const titleService = inject(Title);
+    const startupService = inject(StartupService);
+
     titleService.setTitle(startupService.getPlatformName());
   }
 }

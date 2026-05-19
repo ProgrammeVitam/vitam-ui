@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -61,6 +61,15 @@ import { sizes } from '../../ontology/ontology-form-options';
   standalone: false,
 })
 export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<ProbativeValueCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private probativeValueService = inject(ProbativeValueService);
+  private externalParameterService = inject(ExternalParametersService);
+  private searchUnitApiService = inject(SearchUnitApiService);
+  private snackBarService = inject(SnackBarService);
+
   public form: FormGroup;
   public isDisabledButton = false;
 
@@ -76,17 +85,6 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   showWarningMessage = false;
 
   private destroyer$ = new Subject<void>();
-
-  constructor(
-    public dialogRef: MatDialogRef<ProbativeValueCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private probativeValueService: ProbativeValueService,
-    private externalParameterService: ExternalParametersService,
-    private searchUnitApiService: SearchUnitApiService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

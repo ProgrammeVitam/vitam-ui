@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ResourceRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ResourceRef, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -64,29 +64,28 @@ import { rxResource } from '@angular/core/rxjs-interop';
   standalone: false,
 })
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
+  private translate = inject(TranslateService);
+  dialogRef = inject<MatDialogRef<DipRequestCreateComponent>>(MatDialogRef);
+  private fb = inject(FormBuilder);
+  private archiveService = inject(ArchiveService);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private logger = inject(Logger);
+  private agencyService = inject(AgencyService);
+  data = inject<{
+    itemSelected: number;
+    exportDIPSearchCriteria: SearchCriteriaEltDto[];
+    accessContract: string;
+    tenantIdentifier: string;
+    selectedItemCountKnown?: boolean;
+  }>(MAT_DIALOG_DATA);
+  private snackBarService = inject(SnackBarService);
+
   formGroups: FormGroup[];
   isLoading = false;
   usageOptions: VitamuiSelectOptions[] = [];
   readonly agencyOptionsResource: ResourceRef<VitamuiSelectOptions>;
 
-  constructor(
-    private translate: TranslateService,
-    public dialogRef: MatDialogRef<DipRequestCreateComponent>,
-    private fb: FormBuilder,
-    private archiveService: ArchiveService,
-    private confirmDialogService: ConfirmDialogService,
-    private logger: Logger,
-    private agencyService: AgencyService,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      itemSelected: number;
-      exportDIPSearchCriteria: SearchCriteriaEltDto[];
-      accessContract: string;
-      tenantIdentifier: string;
-      selectedItemCountKnown?: boolean;
-    },
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     this.agencyOptionsResource = rxResource<VitamuiSelectOptions, void>({
       stream: () =>
         this.agencyService.getAll().pipe(
@@ -150,9 +149,9 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     this.formGroups[1]
       .get('usages')
       .valueChanges.pipe(
-      map((usages) => usages.map((usage: any) => usage.usage)),
-      distinctUntilChanged((u1: string[], u2: string[]) => u1.length === u2.length && u1.every((v, i) => u2[i] === v)),
-    )
+        map((usages) => usages.map((usage: any) => usage.usage)),
+        distinctUntilChanged((u1: string[], u2: string[]) => u1.length === u2.length && u1.every((v, i) => u2[i] === v)),
+      )
       .subscribe(() => this.computeUsageOptions());
   }
 

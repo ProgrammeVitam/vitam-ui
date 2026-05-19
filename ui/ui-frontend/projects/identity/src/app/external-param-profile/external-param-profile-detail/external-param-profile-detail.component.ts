@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Event, ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
@@ -47,6 +47,9 @@ import { SharedService } from '../shared.service';
   standalone: false,
 })
 export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
+  private sharedService = inject(SharedService);
+  private externalParamProfileServiceService = inject(ExternalParamProfileService);
+
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() tenantIdentifier: string;
   @Input() isPopup: boolean;
@@ -54,10 +57,7 @@ export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
   readOnly: boolean;
   externalParamProfileUpdateSub: Subscription;
 
-  constructor(
-    private sharedService: SharedService,
-    private externalParamProfileServiceService: ExternalParamProfileService,
-  ) {
+  constructor() {
     this.sharedService.getReadOnly().subscribe((readOnly) => {
       this.readOnly = readOnly;
     });

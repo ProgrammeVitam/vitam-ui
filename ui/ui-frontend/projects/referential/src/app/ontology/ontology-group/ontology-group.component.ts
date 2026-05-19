@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Ontology, SchemaElement, SchemaService } from 'vitamui-library';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -54,17 +54,17 @@ import { OntologyService } from '../ontology.service';
   styleUrls: ['./ontology-group.component.scss'],
 })
 export class OntologyGroupComponent {
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private schemaService = inject(SchemaService);
+  private ontologyService = inject(OntologyService);
+
   @Input() searchText: string;
   @Output() selectElement = new EventEmitter<Ontology | SchemaElement>();
 
   tabIndex = 0;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private schemaService: SchemaService,
-    private ontologyService: OntologyService,
-  ) {
+  constructor() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.tabIndex = params.tab;
     });

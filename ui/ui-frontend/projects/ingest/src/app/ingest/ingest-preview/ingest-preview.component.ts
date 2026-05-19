@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { LogbookService } from 'vitamui-library';
 import { IngestStatus, LogbookOperation, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
@@ -47,6 +47,9 @@ import { IngestService } from '../ingest.service';
   standalone: false,
 })
 export class IngestPreviewComponent implements OnInit, OnChanges {
+  private logbookService = inject(LogbookService);
+  private ingestService = inject(IngestService);
+
   IngestStatus = IngestStatus;
 
   ingest: LogbookOperation;
@@ -54,11 +57,6 @@ export class IngestPreviewComponent implements OnInit, OnChanges {
   @Input() ingestFromParent: LogbookOperation;
   @Output() previewClose = new EventEmitter();
   @Output() ingestHasChanged = new EventEmitter<LogbookOperation>();
-
-  constructor(
-    private logbookService: LogbookService,
-    private ingestService: IngestService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.ingestFromParent) {

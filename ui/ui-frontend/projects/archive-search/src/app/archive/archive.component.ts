@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -59,6 +59,17 @@ import { ArchiveService } from './archive.service';
   standalone: false,
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit {
+  private route: ActivatedRoute;
+  private router = inject(Router);
+  dialog = inject(MatDialog);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private externalParameterService = inject(ExternalParametersService);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private archiveService = inject(ArchiveService);
+  private schemaService = inject(SchemaService);
+  private accessContractService = inject(AccessContractService);
+  private snackBarService = inject(SnackBarService);
+
   show = true;
   tenantIdentifier: string;
   foundAccessContract = false;
@@ -66,20 +77,13 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
   isLPExtended = false;
   hasUpdateDescriptiveUnitMetadataRole = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    globalEventService: GlobalEventService,
-    public dialog: MatDialog,
-    private archiveSharedDataService: ArchiveSharedDataService,
-    private externalParameterService: ExternalParametersService,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private archiveService: ArchiveService,
-    private schemaService: SchemaService,
-    private accessContractService: AccessContractService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
+
     this.schemaService.getSchema(Collection.ARCHIVE_UNIT);
   }
 

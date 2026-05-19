@@ -45,6 +45,7 @@ import {
   Input,
   OnDestroy,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
@@ -110,6 +111,9 @@ const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectWithTreeComponent<T> extends AbstractFormInputDirective implements ControlValueAccessor, AfterViewInit, OnDestroy {
+  private cd = inject(ChangeDetectorRef);
+  readonly sd = inject(ScrollDispatcher);
+
   @Input() placeholder: string;
   @Input() searchBarPlaceHolder: string;
 
@@ -170,11 +174,9 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
 
   private _multiple = false;
 
-  constructor(
-    injector: Injector,
-    private cd: ChangeDetectorRef,
-    readonly sd: ScrollDispatcher,
-  ) {
+  constructor() {
+    const injector = inject(Injector);
+
     super(injector);
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<ItemFlatNode<T>>(this.getLevel, this.isExpandable);

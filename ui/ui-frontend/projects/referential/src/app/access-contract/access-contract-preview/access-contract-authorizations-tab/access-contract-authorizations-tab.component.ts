@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   AccessContract,
@@ -56,6 +56,9 @@ import { RULE_TYPES } from '../../../rule/rules.constants';
   standalone: false,
 })
 export class AccessContractAuthorizationsTabComponent implements OnInit {
+  private agencyService = inject(AgencyService);
+  private dialog = inject(MatDialog);
+
   AccessRightType = AccessRightType;
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -84,11 +87,6 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
       ),
     };
   }
-
-  constructor(
-    private agencyService: AgencyService,
-    private dialog: MatDialog,
-  ) {}
 
   ngOnInit(): void {
     this.agencyService.getOriginatingAgenciesAsOptions().subscribe((options: Option[]) => {

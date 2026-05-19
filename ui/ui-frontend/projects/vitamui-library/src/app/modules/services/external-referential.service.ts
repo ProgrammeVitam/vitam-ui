@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { PaginatedHttpClient } from '../paginated-http-client';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BASE_URL } from '../injection-tokens';
@@ -52,7 +52,10 @@ export const TENANT_SEPARATOR = ' - Tenant ';
 export class ExternalReferentialService extends PaginatedHttpClient<any> {
   #electronicArchivingSystemList$ = this.http.get<ElectronicArchivingSystem[]>(`${this.apiUrl}/config`).pipe(shareReplay(1));
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/external-referential');
   }
 

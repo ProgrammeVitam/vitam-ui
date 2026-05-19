@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { SearchService, SnackBarService } from 'vitamui-library';
@@ -45,13 +45,17 @@ import { OperationDetails, OperationResponse, OperationsResults } from '../model
   providedIn: 'root',
 })
 export class LogbookManagementOperationService extends SearchService<any> {
+  private logbookManagementOperationApiService: LogbookManagementOperationApiService;
+  private snackBarService = inject(SnackBarService);
+
   operationUpdated = new Subject<OperationDetails>();
 
-  constructor(
-    private logbookManagementOperationApiService: LogbookManagementOperationApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const logbookManagementOperationApiService = inject(LogbookManagementOperationApiService);
+
     super(logbookManagementOperationApiService, 'ALL');
+
+    this.logbookManagementOperationApiService = logbookManagementOperationApiService;
   }
 
   getBaseUrl() {

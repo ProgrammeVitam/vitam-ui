@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
@@ -66,6 +66,11 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
+  private formBuilder = inject(FormBuilder);
+  private ownerFormValidators = inject(OwnerFormValidators);
+  private countryService = inject(CountryService);
+  private startupService = inject(StartupService);
+
   public form: FormGroup;
   public maxStreetLength: number;
   public countries: Option[];
@@ -109,12 +114,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
   private _customerInfo: any;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ownerFormValidators: OwnerFormValidators,
-    private countryService: CountryService,
-    private startupService: StartupService,
-  ) {
+  constructor() {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
       id: null,

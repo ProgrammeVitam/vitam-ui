@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -50,6 +50,13 @@ import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
   standalone: false,
 })
 export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<GraphicIdentityUpdateComponent>>(MatDialogRef);
+  data = inject<{
+    customer: Customer;
+    logos: LogosSafeResourceUrl;
+  }>(MAT_DIALOG_DATA);
+  private customerService = inject(CustomerService);
+
   private destroy = new Subject<void>();
   private _customForm: FormGroup;
   public get customForm(): FormGroup {
@@ -64,12 +71,6 @@ export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
   public customerLogosUrl: LogosSafeResourceUrl;
 
   public disabled = true;
-
-  constructor(
-    public dialogRef: MatDialogRef<GraphicIdentityUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; logos: LogosSafeResourceUrl },
-    private customerService: CustomerService,
-  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();

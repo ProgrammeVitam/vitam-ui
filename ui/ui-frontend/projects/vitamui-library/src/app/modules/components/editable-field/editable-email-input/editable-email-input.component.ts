@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
@@ -55,13 +55,14 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class EditableEmailInputComponent extends EditableFieldComponent {
+  private document = inject<Document>(DOCUMENT);
+
   @ViewChild('select') select: MatSelect;
 
-  constructor(
-    formBuilder: FormBuilder,
-    elementRef: ElementRef,
-    @Inject(DOCUMENT) private document: Document,
-  ) {
+  constructor() {
+    const formBuilder = inject(FormBuilder);
+    const elementRef = inject(ElementRef);
+
     super(elementRef);
 
     this.formEmail = formBuilder.group({

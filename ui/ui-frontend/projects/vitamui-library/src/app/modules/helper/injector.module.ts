@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injector, NgModule, Optional, SkipSelf } from '@angular/core';
+import { Injector, NgModule, inject } from '@angular/core';
 import { throwIfAlreadyLoaded } from '../module-import-guard';
 import { InjectorHelper } from './injector-helper';
 
@@ -45,7 +45,10 @@ This module must be loaded in AppModule only
   declarations: [],
 })
 export class InjectorModule {
-  constructor(injector: Injector, @Optional() @SkipSelf() injectorModule: InjectorModule) {
+  constructor() {
+    const injector = inject(Injector);
+    const injectorModule = inject(InjectorModule, { optional: true, skipSelf: true });
+
     throwIfAlreadyLoaded(injectorModule, this.constructor.name);
     InjectorHelper.injector = injector;
   }

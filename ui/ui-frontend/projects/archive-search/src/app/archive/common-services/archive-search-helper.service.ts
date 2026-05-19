@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -58,10 +58,8 @@ const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
   providedIn: 'root',
 })
 export class ArchiveSearchHelperService {
-  constructor(
-    private archiveExchangeDataService: ArchiveSharedDataService,
-    private archiveService: ArchiveService,
-  ) {}
+  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private archiveService = inject(ArchiveService);
 
   addCriteria(
     searchCriterias: Map<string, CriteriaSearchCriteria>,

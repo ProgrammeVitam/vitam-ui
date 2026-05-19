@@ -36,7 +36,7 @@
  */
 import { User } from 'vitamui-library';
 
-import { Component, forwardRef, Inject, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GroupSelection } from '../group-selection.interface';
@@ -57,17 +57,15 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class GroupAttributionComponent implements OnInit {
+  private userService = inject(UserService);
+  dialogRef = inject<MatDialogRef<GroupAttributionComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+
   user: User;
   activeGroups: GroupSelection[];
   selectedGroupName: string;
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
   userGroupName: string;
-
-  constructor(
-    private userService: UserService,
-    public dialogRef: MatDialogRef<GroupAttributionComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
 
   public ngOnInit(): void {
     this.user = this.data[0];

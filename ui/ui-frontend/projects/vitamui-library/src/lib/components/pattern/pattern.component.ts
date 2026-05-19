@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
@@ -58,6 +58,8 @@ export const PATTERN_VALUE_ACCESSOR: any = {
   providers: [PATTERN_VALUE_ACCESSOR],
 })
 export class PatternComponent implements ControlValueAccessor {
+  private translateService = inject(TranslateService);
+
   @Input() set options(options: Array<{ value: string; disabled?: boolean }>) {
     this.availableOptions = (options || [])
       .filter((option) => this.isAvailable(option.value))
@@ -78,8 +80,6 @@ export class PatternComponent implements ControlValueAccessor {
 
   onChange: (_: any) => void;
   onTouched: () => void;
-
-  constructor(private translateService: TranslateService) {}
 
   writeValue(patterns: string[]) {
     this.patterns = (patterns || []).slice();

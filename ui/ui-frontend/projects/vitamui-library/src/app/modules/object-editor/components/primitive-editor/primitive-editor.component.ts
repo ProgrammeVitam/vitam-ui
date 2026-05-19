@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Logger } from '../../../logger/logger';
 import { DateDisplayService } from '../../../object-viewer/services/date-display.service';
 import { ComponentType } from '../../../object-viewer/types';
@@ -49,15 +49,13 @@ import { DatePatternConstants } from '../../../dates.constants';
   standalone: false,
 })
 export class PrimitiveEditorComponent implements OnInit {
+  private logger = inject(Logger);
+  private dateDisplayService = inject(DateDisplayService);
+
   @Input() editObject: EditObject;
 
   uiComponent: ComponentType;
   dateFormat: string;
-
-  constructor(
-    private logger: Logger,
-    private dateDisplayService: DateDisplayService,
-  ) {}
 
   ngOnInit(): void {
     if (!this.editObject) return;

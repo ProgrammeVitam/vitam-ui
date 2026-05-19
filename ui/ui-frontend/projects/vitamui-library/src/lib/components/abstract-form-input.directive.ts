@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, EventEmitter, Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Directive, EventEmitter, Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import {
   AsyncValidatorFn,
   ControlContainer,
@@ -54,6 +54,8 @@ import { MiscValidators } from '../validators/misc.validators';
 
 @Directive()
 export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+  private injector = inject(Injector);
+
   @Input() errorMessageMap: { [p: string]: string };
   @Input({ transform: coerceBooleanProperty }) required: boolean;
   @Input({ transform: coerceBooleanProperty }) disabled: boolean;
@@ -64,8 +66,6 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   protected control: FormControl;
 
   #subscription?: Subscription;
-
-  constructor(private injector: Injector) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['required'] && this.control) {

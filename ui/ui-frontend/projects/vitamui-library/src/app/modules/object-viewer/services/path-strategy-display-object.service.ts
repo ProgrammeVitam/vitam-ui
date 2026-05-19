@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Logger } from '../../logger/logger';
 import { DisplayObject, DisplayObjectService, DisplayRule, Mode } from '../models';
@@ -58,6 +58,10 @@ const MIXED_MODE_MESSAGE =
 
 @Injectable()
 export class PathStrategyDisplayObjectService implements DisplayObjectService {
+  private logger = inject(Logger);
+  private displayObjectHelper = inject(DisplayObjectHelperService);
+  private typeService = inject(TypeService);
+
   private readonly configuration = {
     displayEmptyValues: false,
   };
@@ -68,11 +72,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
 
   displayObject$: Observable<DisplayObject> = this.displayObject.asObservable();
 
-  constructor(
-    private logger: Logger,
-    private displayObjectHelper: DisplayObjectHelperService,
-    private typeService: TypeService,
-  ) {
+  constructor() {
     const handleDisplayObjectComputing = (): void => {
       if (!this.data.value) {
         return;

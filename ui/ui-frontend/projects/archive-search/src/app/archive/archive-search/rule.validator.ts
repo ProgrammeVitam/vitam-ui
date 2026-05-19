@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -45,13 +45,11 @@ import { ArchiveSharedDataService } from '../../core/archive-shared-data.service
   providedIn: 'root',
 })
 export class RuleValidator {
+  private ruleService = inject(RuleService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   private debounceTime = 400;
   ruleCategorySelected: string;
-
-  constructor(
-    private ruleService: RuleService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {}
 
   uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {
     return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);

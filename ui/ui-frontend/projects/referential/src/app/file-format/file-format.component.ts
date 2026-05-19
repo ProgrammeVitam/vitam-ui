@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -54,6 +54,11 @@ import { FileFormatListComponent } from './file-format-list/file-format-list.com
   standalone: false,
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
+  dialog = inject(MatDialog);
+  private route: ActivatedRoute;
+  private translateService = inject(TranslateService);
+  private securityService = inject(SecurityService);
+
   search = '';
   tenantIdentifier: number;
   tenantIdentifierSubscription: Subscription;
@@ -62,14 +67,13 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
 
   @ViewChild(FileFormatListComponent, { static: true }) fileFormatListComponentListComponent: FileFormatListComponent;
 
-  constructor(
-    public dialog: MatDialog,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private translateService: TranslateService,
-    private securityService: SecurityService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+
+    this.route = route;
   }
 
   openCreateFileFormatDialog() {

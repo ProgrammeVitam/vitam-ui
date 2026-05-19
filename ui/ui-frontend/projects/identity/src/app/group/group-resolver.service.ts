@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -46,10 +46,8 @@ import { GroupService } from './group.service';
   providedIn: 'root',
 })
 export class GroupResolver {
-  constructor(
-    private groupService: GroupService,
-    private router: Router,
-  ) {}
+  private groupService = inject(GroupService);
+  private router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Group> {
     const id = route.paramMap.get('id');

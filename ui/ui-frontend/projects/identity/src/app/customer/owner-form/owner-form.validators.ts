@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -55,9 +55,9 @@ export const OWNER_CITY_MAX_LENGTH = 100;
   providedIn: 'root',
 })
 export class OwnerFormValidators {
-  private debounceTime = 400;
+  private ownerService = inject(OwnerService);
 
-  constructor(private ownerService: OwnerService) {}
+  private debounceTime = 400;
 
   uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

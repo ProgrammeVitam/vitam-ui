@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
@@ -48,6 +48,9 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
   standalone: false,
 })
 export class BlockCategoryInheritanceComponent implements OnDestroy {
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private dialog = inject(MatDialog);
+
   @Input()
   ruleCategory: string;
   ruleActions: ActionsRules[];
@@ -60,11 +63,6 @@ export class BlockCategoryInheritanceComponent implements OnDestroy {
   managementRules: ManagementRules[] = [];
   ruleTypeDUA: RuleCategoryAction;
   isValidValue = false;
-
-  constructor(
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private dialog: MatDialog,
-  ) {}
 
   ngOnDestroy(): void {
     this.managementRulesSubscription?.unsubscribe();

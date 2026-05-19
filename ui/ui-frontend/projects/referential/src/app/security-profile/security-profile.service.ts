@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SearchService, SecurityProfile, SnackBarService } from 'vitamui-library';
@@ -46,13 +46,17 @@ import { SecurityProfileApiService } from '../core/api/security-profile-api.serv
   providedIn: 'root',
 })
 export class SecurityProfileService extends SearchService<SecurityProfile> {
+  private securityProfileApiService: SecurityProfileApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<SecurityProfile>();
 
-  constructor(
-    private securityProfileApiService: SecurityProfileApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const securityProfileApiService = inject(SecurityProfileApiService);
+
     super(securityProfileApiService, 'ALL');
+
+    this.securityProfileApiService = securityProfileApiService;
   }
 
   get(id: string): Observable<SecurityProfile> {

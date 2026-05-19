@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -44,9 +44,9 @@ import { AccessContract, AccessContractService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class AccessContractCreateValidators {
-  private debounceTime = 400;
+  private accessContractService = inject(AccessContractService);
 
-  constructor(private accessContractService: AccessContractService) {}
+  private debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

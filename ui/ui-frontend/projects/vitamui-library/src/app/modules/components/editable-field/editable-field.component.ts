@@ -47,6 +47,7 @@ import {
   Output,
   QueryList,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from '@angular/forms';
 
@@ -59,6 +60,8 @@ import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field
 })
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
+  protected elementRef = inject(ElementRef);
+
   @Input() label: string;
   @Input()
   set disabled(disabled: boolean) {
@@ -120,8 +123,6 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   get canConfirm() {
     return this.editMode && !this.control.pending && this.control.valid && this.control.dirty;
   }
-
-  constructor(protected elementRef: ElementRef) {}
 
   ngAfterContentInit() {
     this.control.statusChanges.subscribe(() => {

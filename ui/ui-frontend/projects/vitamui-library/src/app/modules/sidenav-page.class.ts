@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Directive, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
@@ -46,16 +46,17 @@ import { GlobalEventService } from './global-event.service';
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
+  globalEventService = inject(GlobalEventService);
+
   openedItem: T;
 
   @ViewChild('panel') panel: MatSidenav;
 
   private destroy = new Subject<void>();
 
-  constructor(
-    route: ActivatedRoute,
-    public globalEventService: GlobalEventService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+
     super(route);
     merge(this.globalEventService.pageEvent, this.globalEventService.customerEvent, this.globalEventService.tenantEvent)
       .pipe(takeUntil(this.destroy))

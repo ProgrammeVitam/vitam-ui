@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from '../injection-tokens';
@@ -54,13 +54,14 @@ const API_CONTEXT_INDEX = 2;
   providedIn: 'root',
 })
 export class LogbookApiService implements PaginatedApi<IEvent> {
+  private http = inject(HttpClient);
+
   private readonly apiUrl: string;
   private readonly baseUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) baseUrl: string,
-  ) {
+  constructor() {
+    const baseUrl = inject(BASE_URL);
+
     this.apiUrl = baseUrl + '/logbooks';
     this.baseUrl = baseUrl;
   }

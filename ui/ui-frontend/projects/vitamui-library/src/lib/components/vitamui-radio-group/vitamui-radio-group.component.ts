@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentInit, Component, ContentChildren, forwardRef, Input, OnInit, QueryList, Self } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, forwardRef, Input, OnInit, QueryList, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { VitamUIRadioComponent } from '../vitamui-radio/vitamui-radio.component';
@@ -54,7 +54,7 @@ export const RADIO_GROUP_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
-  constructor(@Self() private radioGroupService: VitamUIRadioGroupService) {}
+  private radioGroupService = inject(VitamUIRadioGroupService, { self: true });
 
   @ContentChildren(VitamUIRadioComponent) private radios: QueryList<VitamUIRadioComponent>;
 

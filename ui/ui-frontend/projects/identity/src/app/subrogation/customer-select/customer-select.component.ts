@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -50,15 +50,13 @@ import { CustomerSelectContentComponent } from './customer-select-content/custom
   imports: [CustomerSelectContentComponent, RouterModule, TranslateModule],
 })
 export class CustomerSelectComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private globalEventService = inject(GlobalEventService);
+
   public customers: MenuOption[];
 
   private destroyer$ = new Subject<void>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private globalEventService: GlobalEventService,
-  ) {}
 
   ngOnInit() {
     this.route.data.pipe(takeUntil(this.destroyer$)).subscribe((data) => {

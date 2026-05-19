@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
@@ -60,6 +60,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class ProfileListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
+  rngProfileService: ProfileService;
+
   @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
@@ -79,8 +81,12 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
 
   private updatedProfileSub: Subscription;
 
-  constructor(public rngProfileService: ProfileService) {
+  constructor() {
+    const rngProfileService = inject(ProfileService);
+
     super(rngProfileService);
+    this.rngProfileService = rngProfileService;
+
     this.updatedProfileSub = this.rngProfileService.updated.subscribe((updatedProfile: Profile) => {
       const profileIndex = this.dataSource.findIndex((profile) => updatedProfile.id === profile.id);
       if (profileIndex > -1) {

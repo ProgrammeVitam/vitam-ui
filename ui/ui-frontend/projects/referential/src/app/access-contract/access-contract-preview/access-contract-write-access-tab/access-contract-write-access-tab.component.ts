@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -48,6 +48,9 @@ import { AccessContract, AccessContractService, diff, Option } from 'vitamui-lib
   standalone: false,
 })
 export class AccessContractWriteAccessTabComponent implements OnInit {
+  private formBuilder = inject(FormBuilder);
+  private accessContractService = inject(AccessContractService);
+
   public usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
     { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
@@ -81,10 +84,7 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     };
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private accessContractService: AccessContractService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       writingPermission: [false],
       writingAuthorizedDesc: [false],

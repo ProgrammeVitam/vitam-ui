@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -125,6 +125,20 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   ],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
+  private route: ActivatedRoute;
+  private externalParameterService = inject(ExternalParametersService);
+  private translateService = inject(TranslateService);
+  private archiveUnitCollectService = inject(ArchiveCollectService);
+  private archiveHelperService = inject(ArchiveSearchHelperService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private archiveFacetsService = inject(ArchiveFacetsService);
+  dialog = inject(MatDialog);
+  private queryParamsService = inject(QueryParamsService);
+  private searchCriteriaService = inject(SearchCriteriaService);
+  private ruleService = inject(RuleService);
+  private snackBarService = inject(SnackBarService);
+  private transactionService = inject(TransactionsService);
+
   readonly UnitType = UnitType;
 
   DEFAULT_DELETION_THRESHOLD = 10_000;
@@ -225,23 +239,13 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
-  constructor(
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private externalParameterService: ExternalParametersService,
-    private translateService: TranslateService,
-    private archiveUnitCollectService: ArchiveCollectService,
-    private archiveHelperService: ArchiveSearchHelperService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-    private archiveFacetsService: ArchiveFacetsService,
-    public dialog: MatDialog,
-    private queryParamsService: QueryParamsService,
-    private searchCriteriaService: SearchCriteriaService,
-    private ruleService: RuleService,
-    private snackBarService: SnackBarService,
-    private transactionService: TransactionsService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
+    const archiveSharedDataService = this.archiveSharedDataService;
 
     this.subscriptions.add(
       this.archiveSharedDataService.getNodes().subscribe((node) => {

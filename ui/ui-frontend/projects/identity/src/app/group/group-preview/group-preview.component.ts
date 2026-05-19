@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService, Group, isLevelAllowed, StartupService } from 'vitamui-library';
 
@@ -47,6 +47,10 @@ import { GroupService } from '../group.service';
   standalone: false,
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
+  private groupService = inject(GroupService);
+  private authService = inject(AuthService);
+  private startupService = inject(StartupService);
+
   @Input() isPopup: boolean;
 
   @Input() group: Group;
@@ -55,12 +59,6 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   private groupUpdateSub: Subscription;
   public groupUsersCount: number;
-
-  constructor(
-    private groupService: GroupService,
-    private authService: AuthService,
-    private startupService: StartupService,
-  ) {}
 
   ngOnInit(): void {
     if (this.group) {

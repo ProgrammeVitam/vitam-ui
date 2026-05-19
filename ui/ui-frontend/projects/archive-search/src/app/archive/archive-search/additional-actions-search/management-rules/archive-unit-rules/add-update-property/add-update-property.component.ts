@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -49,6 +49,9 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
   standalone: false,
 })
 export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private dialog = inject(MatDialog);
+
   @Input()
   ruleCategory: string;
   rulePropertyName: string;
@@ -64,11 +67,6 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
   @ViewChild('confirmDeleteAddRulePropertyDialog', { static: true })
   confirmDeleteAddRulePropertyDialog: TemplateRef<AddUpdatePropertyComponent>;
-
-  constructor(
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private dialog: MatDialog,
-  ) {}
 
   ngOnInit() {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {

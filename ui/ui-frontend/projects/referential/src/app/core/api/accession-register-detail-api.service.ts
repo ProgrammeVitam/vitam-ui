@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccessionRegisterDetail, BASE_URL, PaginatedHttpClient } from 'vitamui-library';
 
@@ -43,7 +43,10 @@ import { AccessionRegisterDetail, BASE_URL, PaginatedHttpClient } from 'vitamui-
   providedIn: 'root',
 })
 export class AccessionRegisterDetailApiService extends PaginatedHttpClient<AccessionRegisterDetail> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/accession-register/details');
   }
 

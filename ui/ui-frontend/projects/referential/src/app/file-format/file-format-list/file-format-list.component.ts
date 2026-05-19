@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
@@ -63,6 +63,12 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
+  fileFormatService: FileFormatService;
+  private matDialog = inject(MatDialog);
+  private snackBarService = inject(SnackBarService);
+  private translateService = inject(TranslateService);
+  private startupService = inject(StartupService);
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
@@ -99,14 +105,12 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
 
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(
-    public fileFormatService: FileFormatService,
-    private matDialog: MatDialog,
-    private snackBarService: SnackBarService,
-    private translateService: TranslateService,
-    private startupService: StartupService,
-  ) {
+  constructor() {
+    const fileFormatService = inject(FileFormatService);
+
     super(fileFormatService);
+
+    this.fileFormatService = fileFormatService;
   }
 
   ngOnInit() {

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -50,18 +50,16 @@ import { AuthService } from './../../../auth.service';
   standalone: false,
 })
 export class SelectSiteComponent implements OnInit {
+  protected http = inject(HttpClient);
+  private authService = inject(AuthService);
+  private authStorage = inject(OAuthStorage);
+  private siteApiService = inject(SiteApiService);
+
   public selectedSite: any;
   public sites: any[];
   private sessionExpireAt: any;
   private defaultSiteCode: string;
   private siteSession: { code: string; sessionExpireAt: string };
-
-  constructor(
-    protected http: HttpClient,
-    private authService: AuthService,
-    private authStorage: OAuthStorage,
-    private siteApiService: SiteApiService,
-  ) {}
 
   ngOnInit(): void {
     this.sessionExpireAt = this.authStorage.getItem('expires_at');

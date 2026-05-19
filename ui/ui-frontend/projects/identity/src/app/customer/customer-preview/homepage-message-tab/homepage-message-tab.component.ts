@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { Customer, StartupService } from 'vitamui-library';
@@ -47,6 +47,9 @@ import { HomepageMessageUpdateComponent } from './homepage-message-update/homepa
   standalone: false,
 })
 export class HomepageMessageTabComponent implements OnDestroy {
+  private dialog = inject(MatDialog);
+  private startupService = inject(StartupService);
+
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
@@ -79,11 +82,6 @@ export class HomepageMessageTabComponent implements OnDestroy {
   };
 
   public language: string;
-
-  constructor(
-    private dialog: MatDialog,
-    private startupService: StartupService,
-  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();

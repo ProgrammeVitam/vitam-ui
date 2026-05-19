@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -52,6 +52,19 @@ const ATR_EXTENSION = '.xml';
   standalone: false,
 })
 export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
+  dialog = inject(MatDialog);
+  private dialogRef = inject<MatDialogRef<TransferAcknowledgmentComponent>>(MatDialogRef);
+  private dialogRefToClose = inject<MatDialogRef<TransferAcknowledgmentComponent>>(MatDialogRef);
+  logger = inject(Logger);
+  data = inject<{
+    accessContract: string;
+    tenantIdentifier: string;
+  }>(MAT_DIALOG_DATA);
+  private archiveSearchService = inject(ArchiveService);
+  private translate = inject(TranslateService);
+  private bytesPipe = inject(BytesPipe);
+  private snackBarService = inject(SnackBarService);
+
   stepIndex = 0;
   fileSize = 0;
 
@@ -78,22 +91,6 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   confirmDeleteTransferAcknowledgmentDialog: TemplateRef<TransferAcknowledgmentComponent>;
 
   @ViewChild('atrXmlFile', { static: false }) atrXmlFile: any;
-
-  constructor(
-    public dialog: MatDialog,
-    private dialogRef: MatDialogRef<TransferAcknowledgmentComponent>,
-    private dialogRefToClose: MatDialogRef<TransferAcknowledgmentComponent>,
-    public logger: Logger,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      accessContract: string;
-      tenantIdentifier: string;
-    },
-    private archiveSearchService: ArchiveService,
-    private translate: TranslateService,
-    private bytesPipe: BytesPipe,
-    private snackBarService: SnackBarService,
-  ) {}
 
   async parseXmlToTransferDetails(xmlFileContent: string) {
     this.isLoadingData = true;

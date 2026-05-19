@@ -39,7 +39,7 @@ import { tap } from 'rxjs/operators';
 import { CriteriaSearchQuery, Criterion, Operators, Tenant, SnackBarService } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { TenantApiService } from './tenant-api.service';
 
@@ -47,12 +47,10 @@ import { TenantApiService } from './tenant-api.service';
   providedIn: 'root',
 })
 export class TenantService {
-  updated = new Subject<Tenant>();
+  private tenantApi = inject(TenantApiService);
+  private snackBarService = inject(SnackBarService);
 
-  constructor(
-    private tenantApi: TenantApiService,
-    private snackBarService: SnackBarService,
-  ) {}
+  updated = new Subject<Tenant>();
 
   get(id: string): Observable<Tenant> {
     return this.tenantApi.getOne(id);

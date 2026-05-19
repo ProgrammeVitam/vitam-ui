@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
@@ -49,6 +49,13 @@ import { SubrogationService } from '../subrogation.service';
   standalone: false,
 })
 export class SubrogationModalComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<SubrogationModalComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  builder = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private snackBarService = inject(SnackBarService);
+  private subrogationService = inject(SubrogationService);
+
   public stepIndex = 0;
   public domains: string[];
   public customerId: string;
@@ -58,14 +65,7 @@ export class SubrogationModalComponent implements OnInit {
 
   private subrogation: Subrogation;
 
-  constructor(
-    public dialogRef: MatDialogRef<SubrogationModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public builder: FormBuilder,
-    private authService: AuthService,
-    private snackBarService: SnackBarService,
-    private subrogationService: SubrogationService,
-  ) {
+  constructor() {
     this.form = this.builder.group({
       emailFirstPart: [null, Validators.required],
       domain: [null, Validators.required],

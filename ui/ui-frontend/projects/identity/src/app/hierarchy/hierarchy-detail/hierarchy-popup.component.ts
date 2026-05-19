@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Profile } from 'vitamui-library';
@@ -45,9 +45,11 @@ import { Profile } from 'vitamui-library';
   standalone: false,
 })
 export class HierarchyPopupComponent {
+  private route = inject(ActivatedRoute);
+
   profile: Profile;
 
-  constructor(private route: ActivatedRoute) {
+  constructor() {
     this.profile = this.route.snapshot.data.profile;
   }
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 
 import { of, timer } from 'rxjs';
@@ -45,9 +45,9 @@ import { FileFormatService } from '../file-format.service';
   providedIn: 'root',
 })
 export class FileFormatCreateValidators {
-  private debounceTime = 400;
+  private fileFormatService = inject(FileFormatService);
 
-  constructor(private fileFormatService: FileFormatService) {}
+  private debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

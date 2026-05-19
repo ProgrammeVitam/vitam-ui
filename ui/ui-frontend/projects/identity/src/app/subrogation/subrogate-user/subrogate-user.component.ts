@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -56,22 +56,26 @@ import { CustomerSelectService } from '../customer-select.service';
   standalone: false,
 })
 export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
+  dialog = inject(MatDialog);
+  globalEventService = inject(GlobalEventService);
+  private router = inject(Router);
+  private route: ActivatedRoute;
+  private subrogationModalService = inject(SubrogationModalService);
+  private customerSelectService = inject(CustomerSelectService);
+  private customerSelectionService = inject(CustomerSelectionService);
+
   public customer: Customer;
   public customers: MenuOption[];
   public search: string;
 
   private destroyer$ = new Subject<void>();
 
-  constructor(
-    public dialog: MatDialog,
-    public globalEventService: GlobalEventService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private subrogationModalService: SubrogationModalService,
-    private customerSelectService: CustomerSelectService,
-    private customerSelectionService: CustomerSelectionService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+
     super(route);
+
+    this.route = route;
   }
 
   ngOnInit() {

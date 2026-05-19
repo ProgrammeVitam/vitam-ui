@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   CriteriaSearchQuery,
@@ -54,10 +54,11 @@ import { UserGenericApiService } from './user-generic-api.service';
   providedIn: 'root',
 })
 export class SubrogationService extends SearchService<SubrogationUser> {
-  constructor(
-    userGenericApi: UserGenericApiService,
-    private subrogationApiService: SubrogationApiService,
-  ) {
+  private subrogationApiService = inject(SubrogationApiService);
+
+  constructor() {
+    const userGenericApi = inject(UserGenericApiService);
+
     super(userGenericApi);
   }
 

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map, withLatestFrom } from 'rxjs/operators';
@@ -58,6 +58,12 @@ import { AccessionRegisterDetailApiService } from '../core/api/accession-registe
   providedIn: 'root',
 })
 export class AccessionRegistersService extends SearchService<AccessionRegisterDetail> {
+  private accessionRegisterApiService: AccessionRegisterDetailApiService;
+  private translateService = inject(TranslateService);
+  private externalParameterService = inject(ExternalParametersService);
+  private bytesPipe = inject(BytesPipe);
+  private snackBarService = inject(SnackBarService);
+
   pageEvent = new Subject<string>();
   tenantEvent = new Subject<string>();
   customerEvent = new Subject<string>();
@@ -73,14 +79,12 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   private advancedFormHaveChanged$ = new BehaviorSubject<boolean>(false);
   private globalResetEvent$ = new BehaviorSubject<boolean>(false);
 
-  constructor(
-    private accessionRegisterApiService: AccessionRegisterDetailApiService,
-    private translateService: TranslateService,
-    private externalParameterService: ExternalParametersService,
-    private bytesPipe: BytesPipe,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const accessionRegisterApiService = inject(AccessionRegisterDetailApiService);
+
     super(accessionRegisterApiService, 'ALL');
+
+    this.accessionRegisterApiService = accessionRegisterApiService;
   }
 
   getAccessionRegisterStatus(locale: string) {

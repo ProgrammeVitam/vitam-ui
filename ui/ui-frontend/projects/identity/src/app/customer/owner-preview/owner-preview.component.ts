@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 import { Owner, StartupService, Tenant } from 'vitamui-library';
 
@@ -45,12 +45,12 @@ import { Owner, StartupService, Tenant } from 'vitamui-library';
   standalone: false,
 })
 export class OwnerPreviewComponent {
+  private startupService = inject(StartupService);
+
   @Input() owner: Owner;
   @Input() tenant: Tenant;
   @Input() isPopup: boolean;
   @Output() previewClose = new EventEmitter();
-
-  constructor(private startupService: StartupService) {}
 
   openPopup() {
     const url = this.tenant ? '/customer/tenant/' + this.tenant.id : '/customer/owner/' + this.owner.id;

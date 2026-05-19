@@ -36,20 +36,18 @@
  */
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, inject } from '@angular/core';
 import { MenuOverlayRef } from './menu-overlay-ref';
 import { MenuComponent } from './menu.component';
 
 @Injectable()
 export class MenuOverlayService {
+  private overlay = inject(Overlay);
+  private injector = inject(Injector);
+
   private overlayRef: OverlayRef;
 
   private dialogRef: MenuOverlayRef;
-
-  constructor(
-    private overlay: Overlay,
-    private injector: Injector,
-  ) {}
 
   public open(): void {
     const positionStrategy = this.overlay.position().global().top('0').right('0');

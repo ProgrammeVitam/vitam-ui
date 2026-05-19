@@ -79,7 +79,7 @@ import {
   TITLE_REUSE,
   translatedKeys,
 } from './search-criteria-configs';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SearchWithTypeSelectorValue } from '../../../../lib/components/search-with-type-selector/search-with-type-selector.component';
 import { SchemaService } from '../../schema';
 import { Collection, Schema } from '../schema';
@@ -95,7 +95,9 @@ export class SearchCriteriaService {
   private schemaPromise: Promise<Schema>;
   private schema: Schema;
 
-  constructor(schemaService: SchemaService) {
+  constructor() {
+    const schemaService = inject(SchemaService);
+
     this.schemaPromise = firstValueFrom(schemaService.getSchema(Collection.ARCHIVE_UNIT));
   }
 

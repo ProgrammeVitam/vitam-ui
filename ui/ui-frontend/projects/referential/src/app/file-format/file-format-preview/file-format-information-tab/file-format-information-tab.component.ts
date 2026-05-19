@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { formatDate } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output } from '@angular/core';
+import { Component, EventEmitter, Input, LOCALE_ID, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
@@ -51,6 +51,12 @@ import { FileFormatService } from '../../file-format.service';
   standalone: false,
 })
 export class FileFormatInformationTabComponent {
+  private locale = inject(LOCALE_ID);
+  private formBuilder = inject(FormBuilder);
+  private fileFormatService = inject(FileFormatService);
+  private route = inject(ActivatedRoute);
+  private securityService = inject(SecurityService);
+
   private _dateFormat = 'dd/MM/yyyy';
   private _fileFormat: FileFormat;
   private _subscriptions = new Subscription();
@@ -131,13 +137,7 @@ export class FileFormatInformationTabComponent {
     }
   }
 
-  constructor(
-    @Inject(LOCALE_ID) private locale: string,
-    private formBuilder: FormBuilder,
-    private fileFormatService: FileFormatService,
-    private route: ActivatedRoute,
-    private securityService: SecurityService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       puid: [{ value: null, disabled: true }, Validators.required],
       name: [{ value: null }, Validators.required],

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
@@ -53,18 +53,16 @@ const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
   standalone: false,
 })
 export class PersistentIdentifierSearchComponent {
+  private dialog = inject(MatDialog);
+  private persistentIdentifierService = inject(PersistentIdentifierService);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private router = inject(Router);
+
   appsHierarchy: BreadCrumbData[] = [
     { identifier: ApplicationId.PORTAL_APP },
     { identifier: ApplicationId.ARCHIVE_SEARCH_APP },
     { identifier: ApplicationId.PERSISTENT_IDENTIFIER_SEARCH_APP },
   ];
-
-  constructor(
-    private dialog: MatDialog,
-    private persistentIdentifierService: PersistentIdentifierService,
-    private tenantSelectionService: TenantSelectionService,
-    private router: Router,
-  ) {}
 
   onSearch(id: string) {
     combineLatest([

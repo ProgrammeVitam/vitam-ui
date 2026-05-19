@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { VitamUICommonModule, VitamUILibraryModule, SnackBarService } from 'vitamui-library';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -46,15 +46,17 @@ const INFINITE_DURATION = 0;
   imports: [VitamUICommonModule, VitamUILibraryModule, FormsModule, ReactiveFormsModule],
 })
 export class SnackbarComponent implements OnInit {
+  private snackBarService = inject(SnackBarService);
+  private fb = inject(FormBuilder);
+
   form: FormGroup;
   iconOptions: string[] = ['vitamui-icon-user', 'vitamui-icon-agent', 'vitamui-icon-contrat', 'vitamui-icon-link'];
 
   buttons: FormArray = this.fb.array([]);
 
-  constructor(
-    private snackBarService: SnackBarService,
-    private fb: FormBuilder,
-  ) {
+  constructor() {
+    const fb = this.fb;
+
     this.form = fb.group({
       icon: [],
       message: ['Some message', { updateOn: 'blur' }],

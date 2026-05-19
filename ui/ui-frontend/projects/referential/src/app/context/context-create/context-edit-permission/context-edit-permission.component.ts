@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AccessContractService, AuthService, ContextPermission, Option, Tenant } from 'vitamui-library';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
@@ -57,13 +57,12 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
-  constructor(
-    private customerApiService: CustomerApiService,
-    private tenantApiService: TenantApiService,
-    private authService: AuthService,
-    private accessService: AccessContractService,
-    private ingestService: IngestContractService,
-  ) {}
+  private customerApiService = inject(CustomerApiService);
+  private tenantApiService = inject(TenantApiService);
+  private authService = inject(AuthService);
+  private accessService = inject(AccessContractService);
+  private ingestService = inject(IngestContractService);
+
   permissions: ContextPermission[];
   selectedOrganisations: string[];
 

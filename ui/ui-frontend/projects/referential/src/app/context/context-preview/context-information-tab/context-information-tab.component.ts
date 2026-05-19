@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -52,6 +52,11 @@ import { ContextCreateValidators } from '../../context-create/context-create.val
   standalone: false,
 })
 export class ContextInformationTabComponent {
+  private formBuilder = inject(FormBuilder);
+  private contextService = inject(ContextService);
+  private securityProfileService = inject(SecurityProfileService);
+  private contextCreateValidators = inject(ContextCreateValidators);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
@@ -94,12 +99,7 @@ export class ContextInformationTabComponent {
     }
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private contextService: ContextService,
-    private securityProfileService: SecurityProfileService,
-    private contextCreateValidators: ContextCreateValidators,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       name: [
         null,

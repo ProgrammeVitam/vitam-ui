@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -65,13 +65,13 @@ const LANGUAGE_TRANSLATION_PATH = 'LANGUAGE';
   providedIn: 'root',
 })
 export class LanguageService {
+  private translateService = inject(TranslateService);
+
   private availableLanguages: VitamUILangague[] = [
     { fullLangString: FullLangString.FRENCH, minLangString: MinLangString.FR },
     { fullLangString: FullLangString.ENGLISH, minLangString: MinLangString.EN },
     { fullLangString: FullLangString.GERMAN, minLangString: MinLangString.DE },
   ];
-
-  constructor(private translateService: TranslateService) {}
 
   public getFullLangString(minLang: MinLangString): FullLangString {
     return this.availableLanguages.find((value: VitamUILangague) => value.minLangString === minLang).fullLangString;

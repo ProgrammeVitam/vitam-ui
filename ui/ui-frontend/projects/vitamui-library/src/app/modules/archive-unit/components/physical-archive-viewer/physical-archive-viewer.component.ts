@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ObjectQualifierType, ValidationError, VersionWithQualifierDto } from '../../../models';
 
@@ -67,6 +67,8 @@ type MeasurementDisplayMode = 'SYMBOL' | 'NAME';
   standalone: false,
 })
 export class PhysicalArchiveViewerComponent implements OnInit {
+  private translateService = inject(TranslateService);
+
   @Input() archive: VersionWithQualifierDto;
   @Input() errorMessages: Record<string, ValidationError[]>;
 
@@ -83,8 +85,6 @@ export class PhysicalArchiveViewerComponent implements OnInit {
     name: 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PhysicalDimensions',
     rows: [],
   };
-
-  constructor(private translateService: TranslateService) {}
 
   ngOnInit(): void {
     if (!this.archive) {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -65,6 +65,13 @@ const UPDATE_DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class UserInfoTabComponent implements OnChanges, OnInit {
+  private userService = inject(UserService);
+  private userInfoService = inject(UserInfoService);
+  private formBuilder = inject(FormBuilder);
+  private userCreateValidators = inject(UserCreateValidators);
+  private countryService = inject(CountryService);
+  private startupService = inject(StartupService);
+
   @Input() user: User;
   @Input() userInfo: UserInfo;
   @Input() customer: Customer;
@@ -108,14 +115,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
     language: string;
   };
 
-  constructor(
-    private userService: UserService,
-    private userInfoService: UserInfoService,
-    private formBuilder: FormBuilder,
-    private userCreateValidators: UserCreateValidators,
-    private countryService: CountryService,
-    private startupService: StartupService,
-  ) {
+  constructor() {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     this.form = this.formBuilder.group({
       id: [null],

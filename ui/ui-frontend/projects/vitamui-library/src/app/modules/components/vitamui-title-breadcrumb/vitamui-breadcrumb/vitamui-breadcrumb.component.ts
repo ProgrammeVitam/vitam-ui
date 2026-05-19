@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
@@ -50,16 +50,14 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [CommonModule, TranslateModule],
 })
 export class VitamuiBreadcrumbComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private applicationService = inject(ApplicationService);
+
   @Input()
   public data: BreadCrumbData[];
 
   @Output()
   public selected = new EventEmitter<BreadCrumbData>();
-
-  constructor(
-    private route: ActivatedRoute,
-    private applicationService: ApplicationService,
-  ) {}
 
   ngOnInit() {
     if (!this.data) {

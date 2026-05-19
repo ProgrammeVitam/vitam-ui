@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpEventType } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { IngestApiService } from '../api/ingest-api.service';
@@ -47,9 +47,9 @@ import { VitamuiHttpHeaders } from 'vitamui-library';
   providedIn: 'root',
 })
 export class UploadService {
-  uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
+  private ingestApiService = inject(IngestApiService);
 
-  constructor(private ingestApiService: IngestApiService) {}
+  uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
 
   filesStatus(): BehaviorSubject<IngestList> {
     return this.uploadStatus;

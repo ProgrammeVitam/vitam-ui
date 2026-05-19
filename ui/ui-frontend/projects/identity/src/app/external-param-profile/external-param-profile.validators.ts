@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -45,9 +45,9 @@ import { ExternalParamProfileService } from './external-param-profile.service';
   providedIn: 'root',
 })
 export class ExternalParamProfileValidators {
-  private debounceTime = 400;
+  private externalParamProfileService = inject(ExternalParamProfileService);
 
-  constructor(private externalParamProfileService: ExternalParamProfileService) {}
+  private debounceTime = 400;
 
   nameExists = (tenantIdentifier: number, nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

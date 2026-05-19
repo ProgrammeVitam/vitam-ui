@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -48,17 +48,20 @@ import { GroupService } from '../../../group.service';
   standalone: false,
 })
 export class ProfilesEditComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<ProfilesEditComponent>>(MatDialogRef);
+  data = inject<{
+    group: Group;
+  }>(MAT_DIALOG_DATA);
+  private groupService = inject(GroupService);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
 
-  constructor(
-    public dialogRef: MatDialogRef<ProfilesEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { group: Group },
-    private groupService: GroupService,
-    private confirmDialogService: ConfirmDialogService,
-    formBuilder: FormBuilder,
-  ) {
+  constructor() {
+    const formBuilder = inject(FormBuilder);
+
     this.form = formBuilder.group({
       profileIds: [this.data.group.profileIds, Validators.required],
     });

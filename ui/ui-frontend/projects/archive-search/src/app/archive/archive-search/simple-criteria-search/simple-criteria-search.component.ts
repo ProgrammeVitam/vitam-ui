@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -87,6 +87,19 @@ const COMPLEX_INPUTS = ['otherCriteriaList'];
   standalone: false,
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
+  dialog = inject(MatDialog);
+  private formBuilder = inject(FormBuilder);
+  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private translateService = inject(TranslateService);
+  private route = inject(ActivatedRoute);
+  private searchCriteriaService = inject(SearchCriteriaService);
+  private archiveHelperService = inject(ArchiveSearchHelperService);
+  private schemaService = inject(SchemaService);
+  private agencyService = inject(AgencyService);
+  private archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
+  private cdr = inject(ChangeDetectorRef);
+
   form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
@@ -109,20 +122,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     archiveUnitProfile: { options: [] as Option[] },
   } satisfies { [key: string]: VitamuiSelectOptions };
 
-  constructor(
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private archiveExchangeDataService: ArchiveSharedDataService,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private translateService: TranslateService,
-    private route: ActivatedRoute,
-    private searchCriteriaService: SearchCriteriaService,
-    private archiveHelperService: ArchiveSearchHelperService,
-    private schemaService: SchemaService,
-    private agencyService: AgencyService,
-    private archiveUnitProfilesService: ArchiveUnitProfilesService,
-    private cdr: ChangeDetectorRef,
-  ) {
+  constructor() {
     const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
     const otherCriteriaControl = this.formBuilder.group({});
 

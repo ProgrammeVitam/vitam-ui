@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Agency, ConfirmDialogService, AgencyService } from 'vitamui-library';
@@ -47,17 +47,15 @@ import { AgencyCreateValidators } from './agency-create.validators';
   standalone: false,
 })
 export class AgencyCreateComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<AgencyCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private agencyService = inject(AgencyService);
+  private agencyCreateValidators = inject(AgencyCreateValidators);
+
   form: FormGroup;
   isLoading = false;
-
-  constructor(
-    public dialogRef: MatDialogRef<AgencyCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private agencyService: AgencyService,
-    private agencyCreateValidators: AgencyCreateValidators,
-  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({

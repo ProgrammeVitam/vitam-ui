@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -47,14 +47,18 @@ import { ManagementContractsApiService } from '../core/api/management-contracts-
   providedIn: 'root',
 })
 export class ManagementContractService extends SearchService<ManagementContract> {
+  private managementContractApi: ManagementContractsApiService;
+  private snackBarService = inject(SnackBarService);
+  private translateService = inject(TranslateService);
+
   updated = new Subject<ManagementContract>();
 
-  constructor(
-    private managementContractApi: ManagementContractsApiService,
-    private snackBarService: SnackBarService,
-    private translateService: TranslateService,
-  ) {
+  constructor() {
+    const managementContractApi = inject(ManagementContractsApiService);
+
     super(managementContractApi, 'ALL');
+
+    this.managementContractApi = managementContractApi;
   }
 
   get(id: string): Observable<ManagementContract> {

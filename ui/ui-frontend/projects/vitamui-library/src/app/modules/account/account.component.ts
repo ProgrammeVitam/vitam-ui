@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
@@ -51,6 +51,10 @@ import { AccountService } from './account.service';
   standalone: false,
 })
 export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
+  private accountService = inject(AccountService);
+  private userInfoApiService = inject(BaseUserInfoApiService);
+  route: ActivatedRoute;
+
   public displayAppTab = false;
   public displayEditionAndAdminContact = false;
   public account: Account;
@@ -58,12 +62,12 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
 
   private sub: Subscription;
 
-  constructor(
-    private accountService: AccountService,
-    private userInfoApiService: BaseUserInfoApiService,
-    public route: ActivatedRoute,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+
     super(route);
+
+    this.route = route;
   }
 
   ngOnInit() {

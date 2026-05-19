@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -52,6 +52,12 @@ import { ManagementRulesValidatorService } from '../../../../../validators/manag
   standalone: false,
 })
 export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
+  private managementRulesValidatorService = inject(ManagementRulesValidatorService);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private formBuilder = inject(FormBuilder);
+  private dialog = inject(MatDialog);
+  private ruleService = inject(RuleService);
+
   @Input()
   ruleCategory: string;
   @Output() delete = new EventEmitter<any>();
@@ -84,13 +90,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   @ViewChild('confirmDeleteBlockBlocRuleDialog', { static: true })
   confirmDeleteBlockBlocRuleDialog: TemplateRef<BlockRulesInheritanceComponent>;
 
-  constructor(
-    private managementRulesValidatorService: ManagementRulesValidatorService,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private formBuilder: FormBuilder,
-    private dialog: MatDialog,
-    private ruleService: RuleService,
-  ) {
+  constructor() {
     this.previousRuleDetails = {
       rule: '',
     };

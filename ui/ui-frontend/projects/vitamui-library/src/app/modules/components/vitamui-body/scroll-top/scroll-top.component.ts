@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -48,13 +48,13 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatButtonModule, MatIconModule],
 })
 export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
+  private router = inject(Router);
+
   public windowScrolled = false;
   private contentRendered = false;
   private routerSubscription: Subscription;
   private scrollElement: Element;
   private scrollListener: () => void;
-
-  constructor(private router: Router) {}
 
   ngOnInit() {
     this.routerSubscription = this.router.events.subscribe((evt) => {

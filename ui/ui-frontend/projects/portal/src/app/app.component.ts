@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Logger, StartupService } from 'vitamui-library';
 
 @Component({
@@ -44,14 +44,12 @@ import { Logger, StartupService } from 'vitamui-library';
   standalone: false,
 })
 export class AppComponent implements OnInit {
+  private startupService = inject(StartupService);
+  private logger = inject(Logger);
+
   title = 'Portal App';
 
   hasLangSelection: boolean;
-
-  constructor(
-    private startupService: StartupService,
-    private logger: Logger,
-  ) {}
 
   ngOnInit() {
     this.hasLangSelection = true;

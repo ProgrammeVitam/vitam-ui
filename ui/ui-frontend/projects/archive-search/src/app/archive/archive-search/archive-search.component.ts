@@ -48,6 +48,7 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -135,6 +136,29 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
   ],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked, AfterViewInit {
+  archiveService = inject(ArchiveService);
+  private archiveFacetsService = inject(ArchiveFacetsService);
+  private translateService = inject(TranslateService);
+  private route = inject(ActivatedRoute);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  dialog = inject(MatDialog);
+  private router = inject(Router);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private archiveHelperService = inject(ArchiveSearchHelperService);
+  private logger = inject(Logger);
+  private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private archiveUnitEliminationService = inject(ArchiveUnitEliminationService);
+  private computeInheritedRulesService = inject(ComputeInheritedRulesService);
+  private archiveUnitDipService = inject(ArchiveUnitDipService);
+  private accessContractService = inject(AccessContractService);
+  private cdr = inject(ChangeDetectorRef);
+  private queryParamsService = inject(QueryParamsService);
+  private searchCriteriaService = inject(SearchCriteriaService);
+  private ruleService = inject(RuleService);
+  private reassignmentDialogService = inject(ReassignmentDialogService);
+  protected configService = inject(ConfigService);
+  private securityService = inject(SecurityService);
+
   readonly UnitType = UnitType;
   readonly ReassignmentMode = ReassignmentMode;
 
@@ -238,30 +262,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
   actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
-  constructor(
-    public archiveService: ArchiveService,
-    private archiveFacetsService: ArchiveFacetsService,
-    private translateService: TranslateService,
-    private route: ActivatedRoute,
-    private archiveSharedDataService: ArchiveSharedDataService,
-    public dialog: MatDialog,
-    private router: Router,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private archiveHelperService: ArchiveSearchHelperService,
-    private logger: Logger,
-    private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
-    private archiveUnitEliminationService: ArchiveUnitEliminationService,
-    private computeInheritedRulesService: ComputeInheritedRulesService,
-    private archiveUnitDipService: ArchiveUnitDipService,
-    private accessContractService: AccessContractService,
-    private cdr: ChangeDetectorRef,
-    private queryParamsService: QueryParamsService,
-    private searchCriteriaService: SearchCriteriaService,
-    private ruleService: RuleService,
-    private reassignmentDialogService: ReassignmentDialogService,
-    protected configService: ConfigService,
-    private securityService: SecurityService,
-  ) {
+  constructor() {
+    const archiveSharedDataService = this.archiveSharedDataService;
+
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
         this.bulkOperationsThreshold = bulkOperationsThreshold;

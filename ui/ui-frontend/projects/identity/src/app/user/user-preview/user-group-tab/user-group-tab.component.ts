@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -52,6 +52,11 @@ import { UserService } from '../../user.service';
   standalone: false,
 })
 export class UserGroupTabComponent implements OnChanges, OnDestroy {
+  groupAttrDialog = inject(MatDialog);
+  userService = inject(UserService);
+  groupService = inject(GroupService);
+  authService = inject(AuthService);
+
   @Input()
   set user(user: User) {
     this._user = user;
@@ -100,13 +105,6 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   public groupProfiles: Profile[] = [];
 
   private destroy = new Subject<void>();
-
-  constructor(
-    public groupAttrDialog: MatDialog,
-    public userService: UserService,
-    public groupService: GroupService,
-    public authService: AuthService,
-  ) {}
 
   ngOnDestroy(): void {
     this.destroy.next();

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Color, Option, ThemeColorType, ThemeService } from 'vitamui-library';
 import { Subscription } from 'rxjs';
@@ -47,6 +47,9 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class CustomerColorsInputComponent implements OnInit {
+  private themeService = inject(ThemeService);
+  private translateService = inject(TranslateService);
+
   @Input() formGroup: FormGroup;
 
   @Input() themeOverloadSelector: string;
@@ -65,11 +68,6 @@ export class CustomerColorsInputComponent implements OnInit {
   private primaryLightSubscription?: Subscription;
 
   backgroundColorsOptions: Option[];
-
-  constructor(
-    private themeService: ThemeService,
-    private translateService: TranslateService,
-  ) {}
 
   public ngOnInit(): void {
     this.baseColors = this.themeService.getBaseColors();

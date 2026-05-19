@@ -36,7 +36,7 @@
  */
 import { registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { isDevMode, LOCALE_ID, NgModule } from '@angular/core';
+import { isDevMode, LOCALE_ID, NgModule, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -101,7 +101,11 @@ registerLocaleData(localeFr, 'fr');
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(authService: AuthService, themeService: ThemeService, applicationApiService: ApplicationApiService) {
+  constructor() {
+    const authService = inject(AuthService);
+    const themeService = inject(ThemeService);
+    const applicationApiService = inject(ApplicationApiService);
+
     authService.userInfo = { id: '42', language: 'FRENCH' };
 
     applicationApiService.getLocalAsset('logo_USER.png').subscribe((userLogo) => {

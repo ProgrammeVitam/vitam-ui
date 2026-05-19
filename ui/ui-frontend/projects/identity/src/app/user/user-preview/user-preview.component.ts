@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -53,6 +53,14 @@ import { UserService } from '../user.service';
   standalone: false,
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
+  private matDialog = inject(MatDialog);
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+  userApi = inject(UserApiService);
+  private startupService = inject(StartupService);
+  groupService = inject(GroupService);
+  private userInfoService = inject(UserInfoService);
+
   @Input() isPopup: boolean;
 
   _user: User;
@@ -112,16 +120,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   }
 
   private _groups: Group[];
-
-  constructor(
-    private matDialog: MatDialog,
-    private userService: UserService,
-    private authService: AuthService,
-    public userApi: UserApiService,
-    private startupService: StartupService,
-    public groupService: GroupService,
-    private userInfoService: UserInfoService,
-  ) {}
 
   ngOnInit() {
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
   CriteriaSearchCriteria,
@@ -56,6 +56,8 @@ import { NodeData } from '../archive-search-collect/archive-search-criteria/mode
   providedIn: 'root',
 })
 export class ArchiveSharedDataService implements ManagementRuleSharedDataService {
+  private queryParamsService = inject(QueryParamsService);
+
   private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
   private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private selectedUnitSubject = new BehaviorSubject<Unit>(null);
@@ -94,8 +96,6 @@ export class ArchiveSharedDataService implements ManagementRuleSharedDataService
   accessFromMainSearchCriteriaObservable = this.searchAccessCriteriaActionFromMainSubject.asObservable();
   reuseFromMainSearchCriteriaObservable = this.searchReuseCriteriaActionFromMainSubject.asObservable();
   disseminationFromMainSearchCriteriaObservable = this.searchDisseminationCriteriaActionFromMainSubject.asObservable();
-
-  constructor(private queryParamsService: QueryParamsService) {}
 
   emitNumberOfAUsWithoutAttachment(value: number) {
     this.numberOfAUsWithoutAttachment.next(value);

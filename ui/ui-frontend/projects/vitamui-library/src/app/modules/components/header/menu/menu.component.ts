@@ -44,6 +44,7 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
+  inject,
 } from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -78,6 +79,14 @@ interface NgxTranslateApp {
   standalone: false,
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
+  private dialogRef = inject(MenuOverlayRef);
+  private applicationService = inject(ApplicationService);
+  private cdrRef = inject(ChangeDetectorRef);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private translateService = inject(TranslateService);
+  private router = inject(Router);
+  private startupService = inject(StartupService);
+
   public state = '';
   public appMap: Map<Category, Application[]>;
   public filteredApplications: Application[];
@@ -111,16 +120,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-
-  constructor(
-    private dialogRef: MenuOverlayRef,
-    private applicationService: ApplicationService,
-    private cdrRef: ChangeDetectorRef,
-    private tenantSelectionService: TenantSelectionService,
-    private translateService: TranslateService,
-    private router: Router,
-    private startupService: StartupService,
-  ) {}
 
   ngOnInit() {
     this.dialogRef.overlay

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -54,6 +54,12 @@ import { IngestContractService } from '../../ingest-contract.service';
   standalone: false,
 })
 export class IngestContractInformationTabComponent implements OnInit {
+  private formBuilder = inject(FormBuilder);
+  private ingestContractService = inject(IngestContractService);
+  private managementContractService = inject(ManagementContractApiService);
+  private archiveProfileService = inject(ArchiveProfileApiService);
+  private ingestContractCreateValidators = inject(IngestContractCreateValidators);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() updatedIngestContract: EventEmitter<IngestContract> = new EventEmitter<IngestContract>();
   @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -114,13 +120,7 @@ export class IngestContractInformationTabComponent implements OnInit {
     }
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService,
-    private managementContractService: ManagementContractApiService,
-    private archiveProfileService: ArchiveProfileApiService,
-    private ingestContractCreateValidators: IngestContractCreateValidators,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       status: ['ACTIVE'],

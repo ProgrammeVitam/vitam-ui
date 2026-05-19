@@ -113,8 +113,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/identity/**/*.ts",
-              "projects/identity/**/*.html"
+              "projects/identity/src/**/*.ts",
+              "projects/identity/src/**/*.html"
             ]
           }
         }
@@ -225,8 +225,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/portal/**/*.ts",
-              "projects/portal/**/*.html"
+              "projects/portal/src/**/*.ts",
+              "projects/portal/src/**/*.html"
             ]
           }
         }
@@ -343,8 +343,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/referential/**/*.ts",
-              "projects/referential/**/*.html"
+              "projects/referential/src/**/*.ts",
+              "projects/referential/src/**/*.html"
             ]
           }
         }
@@ -392,8 +392,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/vitamui-library/**/*.ts",
-              "projects/vitamui-library/**/*.html"
+              "projects/vitamui-library/src/**/*.ts",
+              "projects/vitamui-library/src/**/*.html"
             ]
           }
         }
@@ -489,8 +489,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/design-system/**/*.ts",
-              "projects/design-system/**/*.html"
+              "projects/design-system/src/**/*.ts",
+              "projects/design-system/src/**/*.html"
             ]
           }
         }
@@ -591,8 +591,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/ingest/**/*.ts",
-              "projects/ingest/**/*.html"
+              "projects/ingest/src/**/*.ts",
+              "projects/ingest/src/**/*.html"
             ]
           }
         }
@@ -695,8 +695,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/archive-search/**/*.ts",
-              "projects/archive-search/**/*.html"
+              "projects/archive-search/src/**/*.ts",
+              "projects/archive-search/src/**/*.html"
             ]
           }
         }
@@ -799,8 +799,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/collect/**/*.ts",
-              "projects/collect/**/*.html"
+              "projects/collect/src/**/*.ts",
+              "projects/collect/src/**/*.html"
             ]
           }
         }

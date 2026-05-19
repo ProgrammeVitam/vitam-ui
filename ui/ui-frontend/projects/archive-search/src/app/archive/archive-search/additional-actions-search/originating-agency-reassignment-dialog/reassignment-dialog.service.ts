@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OriginatingAgencyReassignmentDialogComponent } from './originating-agency-reassignment-dialog.component';
@@ -71,11 +71,9 @@ interface ReassignmentDialogResult {
   providedIn: 'root',
 })
 export class ReassignmentDialogService {
-  constructor(
-    public dialog: MatDialog,
-    private archiveService: ArchiveService,
-    private snackBarService: SnackBarService,
-  ) {}
+  dialog = inject(MatDialog);
+  private archiveService = inject(ArchiveService);
+  private snackBarService = inject(SnackBarService);
 
   launchReassignmentModal(listOfUACriteriaSearch: SearchCriteriaEltDto[], itemSelected: number, tenantIdentifier: number) {
     this.openReassignmentDialog(

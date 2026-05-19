@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SchemaElement, SchemaService, Option } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
@@ -50,6 +50,9 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
   imports: [FormsModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class SchemaInformationTabComponent {
+  private formBuilder = inject(FormBuilder);
+  schemaService = inject(SchemaService);
+
   form: FormGroup;
   isExternal = false;
   showCustomSearchTypes = false;
@@ -106,10 +109,7 @@ export class SchemaInformationTabComponent {
     return this._inputSchema;
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    public schemaService: SchemaService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       Path: [{ value: '', disabled: true }, [Validators.required]],
       ApiPath: [{ value: '', disabled: true }, [Validators.required]],

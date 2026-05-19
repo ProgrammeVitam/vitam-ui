@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { formatDate } from '@angular/common';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Injectable, LOCALE_ID, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 
@@ -53,20 +53,18 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
   providedIn: 'root',
 })
 export class SubrogationService {
+  private logger = inject(Logger);
+  private subrogationApi = inject(SubrogationApiService);
+  private snackBarService = inject(SnackBarService);
+  private authService = inject(AuthService);
+  private subrogationRefreshRateMs = inject(SUBROGRATION_REFRESH_RATE_MS);
+  private local = inject(LOCALE_ID);
+
   subrogationCancel = new Subject<void>();
 
   private subrogationSnackBarComponent: MatSnackBarRef<SubrogationSnackBarComponent>;
 
   private readonly TIMEOUT_SUBROGATION_MS = 300000;
-
-  constructor(
-    private logger: Logger,
-    private subrogationApi: SubrogationApiService,
-    private snackBarService: SnackBarService,
-    private authService: AuthService,
-    @Inject(SUBROGRATION_REFRESH_RATE_MS) private subrogationRefreshRateMs: number,
-    @Inject(LOCALE_ID) private local: string,
-  ) {}
 
   intervalCheck: number;
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'rxjs';
@@ -51,6 +51,10 @@ const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
   standalone: false,
 })
 export class TitleAndDescriptionCriteriaSearchComponent {
+  private formBuilder = inject(FormBuilder);
+  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  dialog = inject(MatDialog);
+
   quickSearchCriteriaForm: FormGroup;
 
   previousTitleDescriptionCriteriaValue: {
@@ -60,11 +64,7 @@ export class TitleAndDescriptionCriteriaSearchComponent {
     archiveCriteria: '',
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private archiveExchangeDataService: ArchiveSharedDataService,
-    public dialog: MatDialog,
-  ) {
+  constructor() {
     this.previousTitleDescriptionCriteriaValue = {
       archiveCriteria: '',
     };

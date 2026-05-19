@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -54,16 +54,17 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
+  private document = inject<Document>(DOCUMENT);
+
   @Input() options: Array<{ value: string; disabled: boolean }>;
 
   @ViewChild(PatternComponent, { static: false }) pattern: PatternComponent;
 
   private patternClicked = false;
 
-  constructor(
-    elementRef: ElementRef,
-    @Inject(DOCUMENT) private document: Document,
-  ) {
+  constructor() {
+    const elementRef = inject(ElementRef);
+
     super(elementRef);
   }
 

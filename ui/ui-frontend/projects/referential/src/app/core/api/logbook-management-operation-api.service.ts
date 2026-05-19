@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, PaginatedHttpClient } from 'vitamui-library';
 import { OperationResponse } from '../../models/operation-response.interface';
@@ -46,7 +46,10 @@ import { OperationResponse } from '../../models/operation-response.interface';
 export class LogbookManagementOperationApiService extends PaginatedHttpClient<any> {
   baseUrl: string;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/logbook-management-operation');
     this.baseUrl = baseUrl;
   }

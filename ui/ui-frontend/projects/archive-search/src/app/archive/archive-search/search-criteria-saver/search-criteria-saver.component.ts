@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -61,6 +61,16 @@ import { SearchCriteriaSaverService } from './search-criteria-saver.service';
   standalone: false,
 })
 export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
+  data = inject(MAT_DIALOG_DATA);
+  dialogRef = inject<MatDialogRef<SearchCriteriaSaverComponent>>(MatDialogRef);
+  private formBuilder = inject(FormBuilder);
+  private searchCriteriaSaverService = inject(SearchCriteriaSaverService);
+  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private datePipe = inject(DatePipe);
+  private translatePipe = inject(TranslatePipe);
+  private snackBarService = inject(SnackBarService);
+
   searchCriteriaForm: FormGroup;
   criteria: string;
   searchCriteriaHistory: SearchCriteriaHistory;
@@ -78,17 +88,9 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   updateSearchCriteriaHistorySubscription: Subscription;
   displaySearchCriterias: DisplaySearchCriteria[] = [];
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<SearchCriteriaSaverComponent>,
-    private formBuilder: FormBuilder,
-    private searchCriteriaSaverService: SearchCriteriaSaverService,
-    private archiveExchangeDataService: ArchiveSharedDataService,
-    private confirmDialogService: ConfirmDialogService,
-    private datePipe: DatePipe,
-    private translatePipe: TranslatePipe,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
       name: [null, [Validators.required, Validators.maxLength(150)]],

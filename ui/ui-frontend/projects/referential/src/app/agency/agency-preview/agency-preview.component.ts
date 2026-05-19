@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -72,6 +72,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class AgencyPreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private agencyService = inject(AgencyService);
+
   @Input() agency: Agency;
   @Input() tenantIdentifier: number;
   @Input() readOnly: boolean;
@@ -85,11 +88,6 @@ export class AgencyPreviewComponent implements AfterViewInit {
   tabLinks: Array<AgencyInformationTabComponent> = [];
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('infoTab', { static: false }) infoTab: AgencyInformationTabComponent;
-
-  constructor(
-    private matDialog: MatDialog,
-    private agencyService: AgencyService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

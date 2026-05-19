@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
-import { Inject, Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import moment from 'moment';
 import { Observable, throwError, timeout } from 'rxjs';
@@ -84,18 +84,16 @@ const CONTEXT_COLLECT = 'Collect';
 
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
+  private logger = inject(Logger);
+  private matDialog = inject(MatDialog);
+  private startupService = inject(StartupService);
+  private authService = inject(AuthService);
+  private injector = inject(Injector);
+  private environment = inject(ENVIRONMENT);
+
   private errorDialog: MatDialogRef<ErrorDialogComponent>;
   private errorsDetailsDialog: MatDialogRef<ErrorsDetailsDialogComponent>;
   private snackBarService: SnackBarService;
-
-  constructor(
-    private logger: Logger,
-    private matDialog: MatDialog,
-    private startupService: StartupService,
-    private authService: AuthService,
-    private injector: Injector,
-    @Inject(ENVIRONMENT) private environment: any,
-  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.initSnackBarService();

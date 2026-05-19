@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FilingHoldingSchemeNode } from '../../models';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -52,6 +52,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() node: FilingHoldingSchemeNode;
   @Input() icon: string;
   @Input() expanded: boolean;
@@ -62,8 +64,6 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
   @Output() nodeToggle = new EventEmitter<void>();
   @Output() checkboxClick = new EventEmitter<void>();
   @Output() labelClick = new EventEmitter<void>();
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterContentChecked(): void {
     this.cdr.detectChanges();

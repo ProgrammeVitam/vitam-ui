@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -49,6 +49,10 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
   standalone: false,
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
+  private route: ActivatedRoute;
+  dialog = inject(MatDialog);
+  private formBuilder = inject(FormBuilder);
+
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
   @ViewChild(VitamuiBannerComponent, { static: true }) bannerComponent: VitamuiBannerComponent;
 
@@ -58,13 +62,13 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   public filters: Readonly<EventFilter> = {};
   private openOperationDetailAfterLoading: boolean;
 
-  constructor(
-    private route: ActivatedRoute,
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    globalEventService: GlobalEventService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+
+    this.route = route;
   }
 
   ngOnInit() {

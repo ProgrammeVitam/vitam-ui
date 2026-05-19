@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LogbookApiService } from '../api/logbook-api.service';
@@ -48,10 +48,8 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class LogbookService {
-  constructor(
-    private logger: Logger,
-    private logbookApi: LogbookApiService,
-  ) {}
+  private logger = inject(Logger);
+  private logbookApi = inject(LogbookApiService);
 
   protected extractEvents(response: { $results: IEvent[] }): IEvent[] {
     if (response && response.$results) {

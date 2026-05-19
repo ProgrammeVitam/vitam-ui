@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -48,6 +48,10 @@ import { AccessionRegistersService } from '../accession-register.service';
   standalone: false,
 })
 export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestroy, AfterViewChecked {
+  private formBuilder = inject(FormBuilder);
+  private accessionRegistersService = inject(AccessionRegistersService);
+  private cdr = inject(ChangeDetectorRef);
+
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();
 
   advancedSearchForm: FormGroup;
@@ -58,12 +62,6 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
   globalResetEvent$: Observable<boolean>;
   valuesChangedSub: Subscription;
   resetSub: Subscription;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private accessionRegistersService: AccessionRegistersService,
-    private cdr: ChangeDetectorRef,
-  ) {}
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();

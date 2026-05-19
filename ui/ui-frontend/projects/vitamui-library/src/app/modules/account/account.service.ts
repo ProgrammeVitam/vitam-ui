@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { SecurityApiService } from '../api/security-api.service';
@@ -44,7 +44,7 @@ import { Account } from '../models/account/account.interface';
   providedIn: 'root',
 })
 export class AccountService {
-  constructor(private securityApi: SecurityApiService) {}
+  private securityApi = inject(SecurityApiService);
 
   public getMyAccount(): Observable<Account> {
     return this.securityApi.getAuthenticated();

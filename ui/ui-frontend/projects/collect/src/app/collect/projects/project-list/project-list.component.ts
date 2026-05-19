@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { DEFAULT_PAGE_SIZE, Direction, getProjectIcon, InfiniteScrollTable, PageRequest, Project } from 'vitamui-library';
@@ -47,6 +47,9 @@ import { ProjectsService } from '../projects.service';
   standalone: false,
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
+  projectsService: ProjectsService;
+  private router = inject(Router);
+
   @Input() tenantIdentifier: string;
   @Output() previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
   selectedProjectId$: Subject<string> = this.projectsService.selectedProjectId$;
@@ -60,11 +63,12 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   column = this.messageIdentifier;
   direction = Direction.DESCENDANT;
 
-  constructor(
-    public projectsService: ProjectsService,
-    private router: Router,
-  ) {
+  constructor() {
+    const projectsService = inject(ProjectsService);
+
     super(projectsService);
+
+    this.projectsService = projectsService;
   }
 
   ngOnInit(): void {

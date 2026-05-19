@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { UserApiService } from './api/user-api.service';
@@ -47,14 +47,12 @@ import { TenantSelectionService } from './tenant-selection.service';
   providedIn: 'root',
 })
 export class AnalyticsResolver {
-  private currentApplicationId: string;
+  private userApiService = inject(UserApiService);
+  private applicationService = inject(ApplicationService);
+  private tenantService = inject(TenantSelectionService);
+  private userAlertsService = inject(UserAlertsService);
 
-  constructor(
-    private userApiService: UserApiService,
-    private applicationService: ApplicationService,
-    private tenantService: TenantSelectionService,
-    private userAlertsService: UserAlertsService,
-  ) {}
+  private currentApplicationId: string;
 
   resolve(route: ActivatedRouteSnapshot) {
     const nextApplicationId = route.data.appId;

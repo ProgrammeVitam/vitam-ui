@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -89,13 +89,17 @@ import {
   providedIn: 'root',
 })
 export class HierarchyService extends SearchService<Profile> {
+  private profileApi: ProfileApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<Profile>();
 
-  constructor(
-    private profileApi: ProfileApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const profileApi = inject(ProfileApiService);
+
     super(profileApi, 'ALL');
+
+    this.profileApi = profileApi;
   }
 
   setTenantId(tenantIdentifier: number) {

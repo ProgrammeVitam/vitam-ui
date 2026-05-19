@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -48,6 +48,11 @@ import { ProbativeValueService } from '../probative-value.service';
   standalone: false,
 })
 export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
+  private probativeValueService = inject(ProbativeValueService);
+  private externalParameterService = inject(ExternalParametersService);
+  private route = inject(ActivatedRoute);
+  private snackBarService = inject(SnackBarService);
+
   @Input() probativeValue: any;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
@@ -58,12 +63,6 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   private destroyer$ = new Subject<void>();
 
   isLoading = false;
-  constructor(
-    private probativeValueService: ProbativeValueService,
-    private externalParameterService: ExternalParametersService,
-    private route: ActivatedRoute,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {

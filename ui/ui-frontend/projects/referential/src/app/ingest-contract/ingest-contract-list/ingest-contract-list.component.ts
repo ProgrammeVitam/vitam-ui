@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, IngestContract, PageRequest } from 'vitamui-library';
@@ -50,6 +50,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class IngestContractListComponent extends InfiniteScrollTable<IngestContract> implements OnDestroy, OnInit {
+  ingestContractService: IngestContractService;
+
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
   filterMap: { [key: string]: any[] } = {
@@ -72,8 +74,12 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
   @Output()
   ingestContractClick = new EventEmitter<IngestContract>();
 
-  constructor(public ingestContractService: IngestContractService) {
+  constructor() {
+    const ingestContractService = inject(IngestContractService);
+
     super(ingestContractService);
+
+    this.ingestContractService = ingestContractService;
   }
 
   ngOnInit() {

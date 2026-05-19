@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -49,6 +49,18 @@ import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
   standalone: false,
 })
 export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<IdentityProviderCreateComponent>>(MatDialogRef);
+  data = inject<{
+    customer: Customer;
+    domains: Array<{
+      value: string;
+      disabled: boolean;
+    }>;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private identityProviderService = inject(IdentityProviderService);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   form: FormGroup;
   commonControls: FormGroup;
   samlSpecificControls: FormGroup;
@@ -59,13 +71,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   protocoleType = ProtocoleType;
   jwsAlgorithms = JWS_ALGORITHMS;
 
-  constructor(
-    public dialogRef: MatDialogRef<IdentityProviderCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; domains: Array<{ value: string; disabled: boolean }> },
-    private formBuilder: FormBuilder,
-    private identityProviderService: IdentityProviderService,
-    private confirmDialogService: ConfirmDialogService,
-  ) {
+  constructor() {
     this.samlSpecificControls = this.initializeSamlControls();
     this.oidcSpecificControls = this.initializeOIDCControls();
     this.commonControls = this.initializeCommonControls();

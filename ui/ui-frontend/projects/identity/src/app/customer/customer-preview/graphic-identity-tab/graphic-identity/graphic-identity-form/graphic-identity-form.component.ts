@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
 
@@ -45,6 +45,8 @@ import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
   standalone: false,
 })
 export class GraphicIdentityFormComponent implements OnInit {
+  private themeService = inject(ThemeService);
+
   @Input()
   public graphicIdentityForm: FormGroup;
 
@@ -56,8 +58,6 @@ export class GraphicIdentityFormComponent implements OnInit {
 
   public ATTACHMENT_TYPE = AttachmentType;
   private logos: Logo[] = [];
-
-  constructor(private themeService: ThemeService) {}
 
   ngOnInit() {
     this.applyTheme();

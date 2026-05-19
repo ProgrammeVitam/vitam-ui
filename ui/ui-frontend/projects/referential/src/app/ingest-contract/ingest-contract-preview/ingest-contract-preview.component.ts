@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -54,6 +65,9 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
   standalone: false,
 })
 export class IngestContractPreviewComponent implements OnChanges, AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private ingestContractService = inject(IngestContractService);
+
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() ingestContract: IngestContract;
   @Input() tenantIdentifier: number;
@@ -89,11 +103,6 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
       return '';
     }
   }
-
-  constructor(
-    private matDialog: MatDialog,
-    private ingestContractService: IngestContractService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('ingestContract')) {

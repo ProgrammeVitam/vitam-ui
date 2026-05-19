@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { ApplicationId } from '../../application-id.enum';
@@ -52,14 +52,14 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [RouterModule, TenantSelectContentComponent, TranslateModule],
 })
 export class VitamUITenantSelectComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+
   appId: ApplicationId;
   appTenants: Tenant[];
   tenants: MenuOption[];
 
-  constructor(
-    private route: ActivatedRoute,
-    private authService: AuthService,
-  ) {
+  constructor() {
     this.route.data.subscribe((data) => {
       this.appId = data.appId;
     });

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
@@ -52,6 +52,12 @@ import { ConfirmActionComponent } from './confirm-action/confirm-action.componen
   standalone: false,
 })
 export class SearchCriteriaListComponent implements OnInit {
+  private searchCriteriaSaverService = inject(SearchCriteriaSaverService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  dialog = inject(MatDialog);
+  private translateService = inject(TranslateService);
+  private snackBarService = inject(SnackBarService);
+
   @Output()
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
@@ -63,14 +69,6 @@ export class SearchCriteriaListComponent implements OnInit {
   keyPressSubscription: Subscription;
 
   pending = false;
-
-  constructor(
-    private searchCriteriaSaverService: SearchCriteriaSaverService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-    public dialog: MatDialog,
-    private translateService: TranslateService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit() {
     this.subscriptionSearchCriteriaHistory = this.archiveSharedDataService

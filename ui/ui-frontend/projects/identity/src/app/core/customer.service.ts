@@ -39,7 +39,7 @@ import { map, tap } from 'rxjs/operators';
 import { CriteriaSearchQuery, Criterion, Customer, Logo, Operators, ThemeService, SnackBarService } from 'vitamui-library';
 
 import { HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AttachmentType } from '../customer/attachment.enum';
@@ -51,14 +51,12 @@ export const DEFAULT_PAGE_SIZE = 20;
   providedIn: 'root',
 })
 export class CustomerService {
-  updated = new Subject<Customer>();
+  private customerApi = inject(CustomerApiService);
+  private snackBarService = inject(SnackBarService);
+  private sanitizer = inject(DomSanitizer);
+  private themeService = inject(ThemeService);
 
-  constructor(
-    private customerApi: CustomerApiService,
-    private snackBarService: SnackBarService,
-    private sanitizer: DomSanitizer,
-    private themeService: ThemeService,
-  ) {}
+  updated = new Subject<Customer>();
 
   get(id: string): Observable<Customer> {
     return this.customerApi.getOne(id);

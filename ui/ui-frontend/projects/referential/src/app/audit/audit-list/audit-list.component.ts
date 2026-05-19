@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, merge, timer, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, Event, PageRequest } from 'vitamui-library';
@@ -57,6 +57,8 @@ export class AuditFilters {
   standalone: false,
 })
 export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+  auditService: AuditService;
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
@@ -84,8 +86,12 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   private readonly filterChange = new Subject<any>();
   private pollingSubscription: Subscription;
 
-  constructor(public auditService: AuditService) {
+  constructor() {
+    const auditService = inject(AuditService);
+
     super(auditService);
+
+    this.auditService = auditService;
   }
 
   ngOnInit() {

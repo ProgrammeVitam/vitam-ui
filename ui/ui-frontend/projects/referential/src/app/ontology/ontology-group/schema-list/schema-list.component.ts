@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import {
   ClickOutsideDirective,
@@ -76,6 +76,11 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
   styleUrls: ['./schema-list.component.scss'],
 })
 export class SchemaListComponent implements OnInit, OnDestroy {
+  schemaService = inject(SchemaService);
+  private translateService = inject(TranslateService);
+  dialog = inject(MatDialog);
+  private tenantSelectionService = inject(TenantSelectionService);
+
   private _searchText: string;
   private lastSelectedPath: string = '';
   @Input()
@@ -90,12 +95,7 @@ export class SchemaListComponent implements OnInit, OnDestroy {
   pending = false;
   private readonly subscriptions = new Subscription();
 
-  constructor(
-    public schemaService: SchemaService,
-    private translateService: TranslateService,
-    public dialog: MatDialog,
-    private tenantSelectionService: TenantSelectionService,
-  ) {
+  constructor() {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       ItemNodeUtils.getLevel,

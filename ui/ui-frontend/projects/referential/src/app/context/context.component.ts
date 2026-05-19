@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -52,6 +52,10 @@ import { firstValueFrom } from 'rxjs';
   standalone: false,
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
+  dialog = inject(MatDialog);
+  route: ActivatedRoute;
+  private applicationService = inject(ApplicationService);
+
   search = '';
   tenantIdentifier: string;
 
@@ -59,13 +63,13 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('CONTEXT').pipe(shareReplay(1));
 
-  constructor(
-    public dialog: MatDialog,
-    public route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private applicationService: ApplicationService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+
+    this.route = route;
   }
 
   async openCreateContextDialog() {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
 
@@ -47,6 +47,10 @@ import { ProfileService } from '../profile.service';
   standalone: false,
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
+  private rngProfileService = inject(ProfileService);
+  private authService = inject(AuthService);
+  private startupService = inject(StartupService);
+
   @Input()
   set id(id: string) {
     this.rngProfileService.get(id).subscribe((profile) => (this.profile = profile));
@@ -57,12 +61,6 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   @Output() profileClose = new EventEmitter();
 
   profileUpdateSub: Subscription;
-
-  constructor(
-    private rngProfileService: ProfileService,
-    private authService: AuthService,
-    private startupService: StartupService,
-  ) {}
 
   ngOnInit(): void {
     this.profileUpdateSub = this.rngProfileService.updated.subscribe((updatedProfile) => {

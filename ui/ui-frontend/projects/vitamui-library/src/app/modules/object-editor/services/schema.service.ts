@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Logger } from '../../logger/logger';
 import { Collection, ProfiledSchemaElement, Schema, SchemaElement } from '../../models';
 import { internationalizedKeys } from '../../object-viewer/services/display-object-helper.service';
@@ -54,10 +54,8 @@ interface SchemaError {
 
 @Injectable()
 export class SchemaService {
-  constructor(
-    private pathService: PathService,
-    private logger: Logger,
-  ) {}
+  private pathService = inject(PathService);
+  private logger = inject(Logger);
 
   public subschema(schema: Schema, options: SchemaOptions = { collection: null, versions: null, pathKey: 'ApiPath' }): Schema {
     let subschema = schema.slice();

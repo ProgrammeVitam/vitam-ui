@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -65,6 +65,8 @@ import { extend } from 'underscore';
   styleUrl: './design-system-old-inputs.component.scss',
 })
 export class DesignSystemOldInputsComponent implements OnInit {
+  private countryService = inject(CountryService);
+
   patternOptions = [
     { value: 'pattern 1', disabled: false },
     { value: 'pattern 2', disabled: false },
@@ -95,8 +97,6 @@ export class DesignSystemOldInputsComponent implements OnInit {
   file = new FormControl(new File(['test'], 'test', { type: 'text/plain' }));
 
   countries: Option[] = [];
-
-  constructor(private countryService: CountryService) {}
 
   ngOnInit() {
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {

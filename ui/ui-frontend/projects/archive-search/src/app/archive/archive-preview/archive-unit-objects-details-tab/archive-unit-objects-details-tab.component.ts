@@ -37,7 +37,7 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import {
   AccessContract,
   AccessContractService,
@@ -67,6 +67,12 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
   standalone: false,
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
+  private archiveService = inject(ArchiveService);
+  private clipboard = inject(Clipboard);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private accessContractService = inject(AccessContractService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   @Input() archiveUnit: Unit;
 
   hasDownloadDocumentRole = false;
@@ -74,14 +80,6 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   private accessContract: AccessContract;
   private subscription = new Subscription();
   private allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
-
-  constructor(
-    private archiveService: ArchiveService,
-    private clipboard: Clipboard,
-    private tenantSelectionService: TenantSelectionService,
-    private accessContractService: AccessContractService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {}
 
   ngOnInit() {
     this.checkDownloadPermissions();

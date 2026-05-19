@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -90,6 +90,19 @@ import { MatCheckbox } from '@angular/material/checkbox';
   ],
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<IngestContractCreateComponent>>(MatDialogRef);
+  data = inject<{
+    tenantIdentifier: number;
+    isSlaveMode: boolean;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private ingestContractService = inject(IngestContractService);
+  private ingestContractCreateValidators = inject(IngestContractCreateValidators);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private fileFormatService = inject(FileFormatService);
+  private managementContractService = inject(ManagementContractApiService);
+  private archiveProfileService = inject(ArchiveProfileApiService);
+
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
   readonly FilingPlanMode = FilingPlanMode;
 
@@ -103,17 +116,9 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   private keyPressSubscription: Subscription;
 
-  constructor(
-    public dialogRef: MatDialogRef<IngestContractCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { tenantIdentifier: number; isSlaveMode: boolean },
-    private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService,
-    private ingestContractCreateValidators: IngestContractCreateValidators,
-    private confirmDialogService: ConfirmDialogService,
-    private fileFormatService: FileFormatService,
-    private managementContractService: ManagementContractApiService,
-    private archiveProfileService: ArchiveProfileApiService,
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.tenantIdentifier = data.tenantIdentifier;
     this.isSlaveMode = data.isSlaveMode;
   }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
@@ -50,10 +50,8 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class ArchiveUnitDipService {
-  constructor(
-    private translateService: TranslateService,
-    public dialog: MatDialog,
-  ) {}
+  private translateService = inject(TranslateService);
+  dialog = inject(MatDialog);
 
   launchExportDipModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],

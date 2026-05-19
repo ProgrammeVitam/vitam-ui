@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Owner, Tenant } from 'vitamui-library';
@@ -46,13 +46,13 @@ import { OwnerService } from '../owner.service';
   standalone: false,
 })
 export class OwnerPopupComponent {
+  private route = inject(ActivatedRoute);
+  private ownerService = inject(OwnerService);
+
   owner: Owner;
   tenant: Tenant;
 
-  constructor(
-    private route: ActivatedRoute,
-    private ownerService: OwnerService,
-  ) {
+  constructor() {
     if (this.route.snapshot.data.tenant) {
       this.tenant = this.route.snapshot.data.tenant;
       this.owner = this.route.snapshot.data.owner;

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, Subject } from 'rxjs';
@@ -88,6 +88,17 @@ import { CdkStepper } from '@angular/cdk/stepper';
   ],
 })
 export class AuditCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<AuditCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private auditService = inject(AuditService);
+  private startupService = inject(StartupService);
+  protected accessContractService = inject(AccessContractService);
+  private auditCreateValidator = inject(AuditCreateValidators);
+  private externalParameterService = inject(ExternalParametersService);
+  private snackBarService = inject(SnackBarService);
+
   @Input() tenantIdentifier: number;
 
   public form: FormGroup;
@@ -113,19 +124,9 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   @ViewChild('stepper')
   private stepper: CdkStepper;
 
-  constructor(
-    public dialogRef: MatDialogRef<AuditCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private auditService: AuditService,
-    private startupService: StartupService,
-    protected accessContractService: AccessContractService,
-    private auditCreateValidator: AuditCreateValidators,
-    private externalParameterService: ExternalParametersService,
-    private snackBarService: SnackBarService,
-    translateService: TranslateService,
-  ) {
+  constructor() {
+    const translateService = inject(TranslateService);
+
     this.auditPerimetersOptions = Object.keys(AuditPerimeter).map((key) => ({
       key: key,
       label: translateService.instant(`AUDIT.CREATE_DIALOG.PERIMETERS.${key}`),

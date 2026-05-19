@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
 
@@ -54,6 +54,9 @@ import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } fr
   standalone: false,
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
+  private translateService = inject(TranslateService);
+  private logger = inject(Logger);
+
   @Input()
   archiveUnitRules: Unit;
   @Input()
@@ -72,11 +75,6 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   isToShowPropertiesList: boolean;
   isToShowRulesList: boolean;
   isToShowBlockedRulesList: boolean;
-
-  constructor(
-    private translateService: TranslateService,
-    private logger: Logger,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initializeParameters();

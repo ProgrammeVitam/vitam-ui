@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CriteriaSearchQuery, Criterion, Group, Operators, SearchService, SnackBarService } from 'vitamui-library';
@@ -46,13 +46,17 @@ import { GroupApiService } from '../core/api/group-api.service';
   providedIn: 'root',
 })
 export class GroupService extends SearchService<Group> {
+  private groupApi: GroupApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<Group>();
 
-  constructor(
-    private groupApi: GroupApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const groupApi = inject(GroupApiService);
+
     super(groupApi);
+
+    this.groupApi = groupApi;
   }
 
   create(group: Group) {

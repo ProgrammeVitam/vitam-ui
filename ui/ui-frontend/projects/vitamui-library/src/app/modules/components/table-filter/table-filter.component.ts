@@ -47,6 +47,7 @@ import {
   OnInit,
   Output,
   QueryList,
+  inject,
 } from '@angular/core';
 import { defer, merge, Observable, Subject } from 'rxjs';
 import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -62,6 +63,8 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
 })
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
+  private ngZone = inject(NgZone);
+
   @Input()
   set filter(values: any[]) {
     this._filter = values || [];
@@ -97,8 +100,6 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
 
   private readonly destroy = new Subject<void>();
   private selectionModel: SelectionModel<TableFilterOptionComponent>;
-
-  constructor(private ngZone: NgZone) {}
 
   ngOnInit() {
     this.selectionModel = new SelectionModel<TableFilterOptionComponent>(true);

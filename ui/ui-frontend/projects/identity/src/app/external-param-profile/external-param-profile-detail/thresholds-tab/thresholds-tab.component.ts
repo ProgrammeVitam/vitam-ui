@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { extend, isEmpty } from 'underscore';
@@ -50,12 +50,10 @@ import { DecimalPipe } from '@angular/common';
   standalone: false,
 })
 export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
-  constructor(
-    private formBuilder: FormBuilder,
-    private externalParamProfileService: ExternalParamProfileService,
-    private translateService: TranslateService,
-    private decimalPipe: DecimalPipe,
-  ) {}
+  private formBuilder = inject(FormBuilder);
+  private externalParamProfileService = inject(ExternalParamProfileService);
+  private translateService = inject(TranslateService);
+  private decimalPipe = inject(DecimalPipe);
 
   form: FormGroup;
   previousValue: ExternalParamProfile;

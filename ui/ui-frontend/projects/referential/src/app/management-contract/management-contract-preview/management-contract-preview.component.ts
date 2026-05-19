@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
@@ -51,6 +62,8 @@ import { ManagementContractStorageTabComponent } from './management-contract-sto
   standalone: false,
 })
 export class ManagementContractPreviewComponent implements OnChanges, AfterViewInit {
+  private matDialog = inject(MatDialog);
+
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() inputManagementContract: ManagementContract;
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
@@ -71,8 +84,6 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
       return '';
     }
   }
-
-  constructor(private matDialog: MatDialog) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.inputManagementContract && this.tabUpdated.some((update) => update)) {

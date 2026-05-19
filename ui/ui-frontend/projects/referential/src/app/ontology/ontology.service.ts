@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Ontology, SearchService, SnackBarService } from 'vitamui-library';
@@ -44,14 +44,18 @@ import { OntologyApiService } from '../core/api/ontology-api.service';
   providedIn: 'root',
 })
 export class OntologyService extends SearchService<Ontology> {
+  private ontologyApiService: OntologyApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<Ontology>();
   selectedId$ = new Subject<string>();
 
-  constructor(
-    private ontologyApiService: OntologyApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const ontologyApiService = inject(OntologyApiService);
+
     super(ontologyApiService, 'ALL');
+
+    this.ontologyApiService = ontologyApiService;
   }
 
   get(id: string): Observable<Ontology> {

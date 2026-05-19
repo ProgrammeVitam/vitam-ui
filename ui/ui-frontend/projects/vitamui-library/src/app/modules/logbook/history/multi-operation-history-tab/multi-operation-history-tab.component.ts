@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
@@ -52,6 +52,10 @@ const EVENT_LIMIT = 100;
   standalone: false,
 })
 export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
+  private authService = inject(AuthService);
+  private logbookService = inject(LogbookService);
+  private route = inject(ActivatedRoute);
+
   @Input() collectionsMap: Map<string, string>;
   @Input() identifiers: string[];
   @Input() filter: (event: any) => boolean;
@@ -61,12 +65,6 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   loading = false;
 
   private isDestroyed$ = new Subject<void>();
-
-  constructor(
-    private authService: AuthService,
-    private logbookService: LogbookService,
-    private route: ActivatedRoute,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (
