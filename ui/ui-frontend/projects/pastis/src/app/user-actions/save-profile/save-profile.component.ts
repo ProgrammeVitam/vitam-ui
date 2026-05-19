@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -133,6 +133,19 @@ function constantToTranslate(edit: boolean) {
   standalone: false,
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
+  private profileService = inject(ProfileService);
+  private popupService = inject(PopupService);
+  private fileService = inject(FileService);
+  private startupService = inject(StartupService);
+  private dataGeneriquePopupService = inject(DataGeneriquePopupService);
+  private noticeService = inject(NoticeService);
+  private translateService = inject(TranslateService);
+  dialog = inject(MatDialog);
+  private router = inject(Router);
+  private archiveProfileSaverService = inject(ArchiveProfileSaverService);
+  private archiveUnitProfileSaverService = inject(ArchiveUnitProfileSaverService);
+  private snackBarService = inject(SnackBarService);
+
   popupSaveCancelLabel: string;
   popupSaveTitleDialog: string;
   popupSaveSubTitleDialog: string;
@@ -161,20 +174,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() close = new EventEmitter();
 
-  constructor(
-    private profileService: ProfileService,
-    private popupService: PopupService,
-    private fileService: FileService,
-    private startupService: StartupService,
-    private dataGeneriquePopupService: DataGeneriquePopupService,
-    private noticeService: NoticeService,
-    private translateService: TranslateService,
-    public dialog: MatDialog,
-    private router: Router,
-    private archiveProfileSaverService: ArchiveProfileSaverService,
-    private archiveUnitProfileSaverService: ArchiveUnitProfileSaverService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   }
 

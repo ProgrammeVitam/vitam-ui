@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -94,6 +94,13 @@ import { BreadcrumbService } from '../../core/services/breadcrumb.service';
   standalone: false,
 })
 export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+  profileService = inject(ProfileService);
+  fileService = inject(FileService);
+  private sideNavService = inject(ToggleSidenavService);
+  private fileTreeService = inject(FileTreeService);
+  private breadcrumbService = inject(BreadcrumbService);
+  private logger = inject(Logger);
+
   sedaVersionLabel = this.profileService.getSedaVersionLabel();
   isAUP = this.profileService.isMode(ProfileType.PUA);
   selectedIndex = this.profileService.isMode(ProfileType.PA) ? 0 : 2;
@@ -140,15 +147,6 @@ export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(FileTreeComponent, { static: false }) fileTreeComponent: FileTreeComponent;
 
   private _fileServiceCurrentTreeSubscription: Subscription;
-
-  constructor(
-    public profileService: ProfileService,
-    public fileService: FileService,
-    private sideNavService: ToggleSidenavService,
-    private fileTreeService: FileTreeService,
-    private breadcrumbService: BreadcrumbService,
-    private logger: Logger,
-  ) {}
 
   ngOnInit(): void {
     if (!this.isStandalone) {

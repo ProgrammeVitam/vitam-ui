@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ProfileService } from '../../core/services/profile.service';
@@ -58,16 +58,14 @@ function constantToTranslate() {
   standalone: false,
 })
 export class SelectNoticeComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<SelectNoticeComponent>>(MatDialogRef);
+  data = inject<PastisDialogDataCreate>(MAT_DIALOG_DATA);
+  private translateService = inject(TranslateService);
+  private profilService = inject(ProfileService);
+
   profileOptions: Option[];
   selectedProfile: ProfileDescription;
   userValidation = false;
-
-  constructor(
-    public dialogRef: MatDialogRef<SelectNoticeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PastisDialogDataCreate,
-    private translateService: TranslateService,
-    private profilService: ProfileService,
-  ) {}
 
   ngOnInit(): void {
     const mapProfileDescriptionsToOptions = (profileListPUA: ProfileDescription[]) =>

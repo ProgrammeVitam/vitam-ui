@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-language.service';
 
 @Component({
@@ -83,9 +83,9 @@ import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-lang
   standalone: false,
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
-  sedaLanguage: boolean;
+  private metadataLanguageService = inject(PastisPopupMetadataLanguageService);
 
-  constructor(private metadataLanguageService: PastisPopupMetadataLanguageService) {}
+  sedaLanguage: boolean;
 
   ngOnInit(): void {
     this.metadataLanguageService.sedaLanguage.subscribe(

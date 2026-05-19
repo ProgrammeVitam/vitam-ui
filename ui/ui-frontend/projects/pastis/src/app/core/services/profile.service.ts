@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
 import { BehaviorSubject, combineLatest, filter, from, mergeMap, Observable, of, pipe, Subscription, toArray } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -94,6 +94,11 @@ import { ArchiveProfileApiService } from './archive-profile-api.service';
   providedIn: 'root',
 })
 export class ProfileService implements OnDestroy {
+  private apiService = inject(PastisApiService);
+  private pastisConfig = inject(PastisConfiguration);
+  private puaService = inject(ArchivalProfileUnitApiService);
+  private paService = inject(ArchiveProfileApiService);
+
   public profileType: ProfileType;
   public profileVersion: ProfileVersion;
   public profileName: string;
@@ -109,13 +114,6 @@ export class ProfileService implements OnDestroy {
     map((profile) => ({ ...profile, type: profile.controlSchema ? ProfileType.PUA : ProfileType.PA })),
     toArray(),
   );
-
-  constructor(
-    private apiService: PastisApiService,
-    private pastisConfig: PastisConfiguration,
-    private puaService: ArchivalProfileUnitApiService,
-    private paService: ArchiveProfileApiService,
-  ) {}
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

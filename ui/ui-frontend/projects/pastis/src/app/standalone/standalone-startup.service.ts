@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
 import { StandaloneThemeService } from './standalone-theme.service';
@@ -51,18 +51,16 @@ interface StandaloneConfiguration {
   providedIn: 'root',
 })
 export class StandaloneStartupService {
+  private logger = inject(Logger);
+  private authService = inject(AuthService);
+  private themeService = inject(StandaloneThemeService);
+  private location = inject(WINDOW_LOCATION);
+
   private CURRENT_TENANT_IDENTIFIER: string;
   private configurationData: StandaloneConfiguration;
 
   CURRENT_APP_ID: ApplicationId = ApplicationId.PORTAL_APP;
   userRefresh = new Subject<any>();
-
-  constructor(
-    private logger: Logger,
-    private authService: AuthService,
-    private themeService: StandaloneThemeService,
-    @Inject(WINDOW_LOCATION) private location: any,
-  ) {}
 
   load(): Observable<StandaloneConfiguration> {
     this.configurationData = null;

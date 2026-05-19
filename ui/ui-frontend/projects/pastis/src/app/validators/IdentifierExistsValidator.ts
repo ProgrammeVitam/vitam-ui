@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ProfileService } from '../core/services/profile.service';
 import { ArchivalProfileUnit } from '../models/archival-profile-unit';
 import { Profile } from '../models/profile';
@@ -45,7 +45,7 @@ import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
   providedIn: 'root',
 })
 export class IdentifierExistsValidator {
-  constructor(private profileService: ProfileService) {}
+  private profileService = inject(ProfileService);
 
   checkIdentifierExists(modePua: boolean | (() => boolean)): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ identifierExist: boolean } | null> => {

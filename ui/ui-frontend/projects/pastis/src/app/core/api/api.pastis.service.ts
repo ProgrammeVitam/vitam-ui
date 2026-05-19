@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
@@ -81,12 +81,13 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class PastisApiService {
+  private http = inject(HttpClient);
+
   baseUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) baseUrl: string,
-  ) {
+  constructor() {
+    const baseUrl = inject(BASE_URL);
+
     if (environment.apiServerUrl !== undefined && environment.standalone) {
       this.baseUrl = environment.apiServerUrl;
     } else {

@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { PopupService } from '../../../core/services/popup.service';
@@ -89,6 +89,12 @@ const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
   standalone: false,
 })
 export class PastisDialogConfirmComponent implements OnInit {
+  dialogConfirmRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
+  dialogReceivedData = inject<PastisDialogData>(MAT_DIALOG_DATA);
+  sedaService = inject(SedaService);
+  private popUpService = inject(PopupService);
+  private translateService = inject(TranslateService);
+
   portal: ComponentPortal<any>;
 
   dataBeforeClose: any;
@@ -97,14 +103,6 @@ export class PastisDialogConfirmComponent implements OnInit {
 
   popupValider: string = this.translated('.POPUP_VALIDER');
   popupAnnuler: string = this.translated('.POPUP_ANNULER');
-
-  constructor(
-    public dialogConfirmRef: MatDialogRef<PastisDialogConfirmComponent>,
-    @Inject(MAT_DIALOG_DATA) public dialogReceivedData: PastisDialogData,
-    public sedaService: SedaService,
-    private popUpService: PopupService,
-    private translateService: TranslateService,
-  ) {}
 
   ngOnInit() {
     // console.log('Data received on confirm dialog : %o', this.dialogReceivedData);

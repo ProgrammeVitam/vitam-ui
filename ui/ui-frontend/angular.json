@@ -913,8 +913,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/pastis/**/*.ts",
-              "projects/pastis/**/*.html"
+              "projects/pastis/src/**/*.ts",
+              "projects/pastis/src/**/*.html"
             ]
           }
         }

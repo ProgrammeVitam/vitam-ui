@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -57,6 +57,15 @@ import { IdentifierExistsValidator } from '../../validators/IdentifierExistsVali
   templateUrl: './save-profile-popup.component.html',
 })
 export class SaveProfilePopupComponent implements OnInit, OnDestroy {
+  private dialogRef = inject<MatDialogRef<SaveProfilePopupComponent>>(MatDialogRef);
+  private fb = inject(FormBuilder);
+  private translateService = inject(TranslateService);
+  private profileService = inject(ProfileService);
+  private applicationService = inject(ApplicationService);
+  private fileService = inject(FileService);
+  private router = inject(Router);
+  private identifierValidator = inject(IdentifierExistsValidator);
+
   profileOptions: Option[];
   notice: Notice;
   selectedProfile: ProfileDescription;
@@ -78,16 +87,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   modePUA: boolean;
   subscriptions = new Subscription();
 
-  constructor(
-    private dialogRef: MatDialogRef<SaveProfilePopupComponent>,
-    private fb: FormBuilder,
-    private translateService: TranslateService,
-    private profileService: ProfileService,
-    private applicationService: ApplicationService,
-    private fileService: FileService,
-    private router: Router,
-    private identifierValidator: IdentifierExistsValidator,
-  ) {
+  constructor() {
     this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   }
 
