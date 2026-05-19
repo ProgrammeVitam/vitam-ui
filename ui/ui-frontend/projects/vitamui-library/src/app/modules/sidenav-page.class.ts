@@ -46,7 +46,7 @@ import { GlobalEventService } from './global-event.service';
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
-  globalEventService = inject(GlobalEventService);
+  globalEventService: GlobalEventService;
 
   openedItem: T;
 
@@ -54,10 +54,10 @@ export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, O
 
   private destroy = new Subject<void>();
 
-  constructor() {
-    const route = inject(ActivatedRoute);
-
+  constructor(route: ActivatedRoute = inject(ActivatedRoute), globalEventService: GlobalEventService = inject(GlobalEventService)) {
     super(route);
+    this.globalEventService = globalEventService;
+
     merge(this.globalEventService.pageEvent, this.globalEventService.customerEvent, this.globalEventService.tenantEvent)
       .pipe(takeUntil(this.destroy))
       .subscribe(() => {
