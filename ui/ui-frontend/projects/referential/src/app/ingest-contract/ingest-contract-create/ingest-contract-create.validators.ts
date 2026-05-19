@@ -45,7 +45,11 @@ import { IngestContractService } from '../ingest-contract.service';
   providedIn: 'root',
 })
 export class IngestContractCreateValidators {
-  private ingestContractService = inject(IngestContractService);
+  private ingestContractService: IngestContractService;
+
+  constructor(ingestContractService: IngestContractService = inject(IngestContractService)) {
+    this.ingestContractService = ingestContractService;
+  }
 
   private debounceTime = 400;
 

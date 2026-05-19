@@ -44,7 +44,11 @@ import { SecurityProfileService } from '../security-profile.service';
   providedIn: 'root',
 })
 export class SecurityProfileCreateValidators {
-  private contextService = inject(SecurityProfileService);
+  private contextService: SecurityProfileService;
+
+  constructor(contextService: SecurityProfileService = inject(SecurityProfileService)) {
+    this.contextService = contextService;
+  }
 
   private debounceTime = 400;
 

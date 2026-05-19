@@ -44,7 +44,11 @@ import { AccessContract, AccessContractService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class AccessContractCreateValidators {
-  private accessContractService = inject(AccessContractService);
+  private accessContractService: AccessContractService;
+
+  constructor(accessContractService: AccessContractService = inject(AccessContractService)) {
+    this.accessContractService = accessContractService;
+  }
 
   private debounceTime = 400;
 

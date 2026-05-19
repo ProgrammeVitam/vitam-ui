@@ -46,7 +46,11 @@ import { ContextService } from '../context.service';
   providedIn: 'root',
 })
 export class ContextCreateValidators {
-  private contextService = inject(ContextService);
+  private contextService: ContextService;
+
+  constructor(contextService: ContextService = inject(ContextService)) {
+    this.contextService = contextService;
+  }
 
   private debounceTime = 400;
 

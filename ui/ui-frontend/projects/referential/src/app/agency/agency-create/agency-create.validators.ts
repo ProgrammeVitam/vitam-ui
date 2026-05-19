@@ -45,7 +45,11 @@ import { AgencyService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class AgencyCreateValidators {
-  private agencyService = inject(AgencyService);
+  private agencyService: AgencyService;
+
+  constructor(agencyService: AgencyService = inject(AgencyService)) {
+    this.agencyService = agencyService;
+  }
 
   private debounceTime = 400;
 

@@ -42,7 +42,11 @@ import { Pipe, PipeTransform, inject } from '@angular/core';
   standalone: false,
 })
 export class DateTimePipe implements PipeTransform {
-  private datePipe = inject(DatePipe);
+  private datePipe: DatePipe;
+
+  constructor(datePipe: DatePipe = inject(DatePipe)) {
+    this.datePipe = datePipe;
+  }
 
   /**
    * Handles different kind of values:

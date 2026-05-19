@@ -45,7 +45,11 @@ import { ManagementContractService } from '../management-contract.service';
   providedIn: 'root',
 })
 export class ManagementContractCreateValidators {
-  private managementContractService = inject(ManagementContractService);
+  private managementContractService: ManagementContractService;
+
+  constructor(managementContractService: ManagementContractService = inject(ManagementContractService)) {
+    this.managementContractService = managementContractService;
+  }
 
   private debounceTime = 400;
 

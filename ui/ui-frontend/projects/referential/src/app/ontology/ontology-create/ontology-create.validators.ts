@@ -45,7 +45,11 @@ import { OntologyService } from '../ontology.service';
   providedIn: 'root',
 })
 export class OntologyCreateValidators {
-  private ontologyService = inject(OntologyService);
+  private ontologyService: OntologyService;
+
+  constructor(ontologyService: OntologyService = inject(OntologyService)) {
+    this.ontologyService = ontologyService;
+  }
 
   private debounceTime = 400;
 

@@ -60,7 +60,11 @@ import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field
 })
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
-  protected elementRef = inject(ElementRef);
+  protected elementRef: ElementRef;
+
+  constructor(elementRef: ElementRef = inject(ElementRef)) {
+    this.elementRef = elementRef;
+  }
 
   @Input() label: string;
   @Input()

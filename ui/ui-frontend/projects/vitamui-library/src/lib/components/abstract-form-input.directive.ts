@@ -54,7 +54,11 @@ import { MiscValidators } from '../validators/misc.validators';
 
 @Directive()
 export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
-  private injector = inject(Injector);
+  private injector: Injector;
+
+  constructor(injector: Injector = inject(Injector)) {
+    this.injector = injector;
+  }
 
   @Input() errorMessageMap: { [p: string]: string };
   @Input({ transform: coerceBooleanProperty }) required: boolean;

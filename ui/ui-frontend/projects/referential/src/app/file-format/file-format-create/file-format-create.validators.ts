@@ -45,7 +45,11 @@ import { FileFormatService } from '../file-format.service';
   providedIn: 'root',
 })
 export class FileFormatCreateValidators {
-  private fileFormatService = inject(FileFormatService);
+  private fileFormatService: FileFormatService;
+
+  constructor(fileFormatService: FileFormatService = inject(FileFormatService)) {
+    this.fileFormatService = fileFormatService;
+  }
 
   private debounceTime = 400;
 

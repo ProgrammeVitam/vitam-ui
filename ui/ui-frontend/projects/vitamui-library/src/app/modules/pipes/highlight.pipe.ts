@@ -45,7 +45,11 @@ import { normalizeString } from '../../../lib/utils/string.util';
   standalone: false,
 })
 export class HighlightPipe implements PipeTransform {
-  private sanitizer = inject(DomSanitizer);
+  private sanitizer: DomSanitizer;
+
+  constructor(sanitizer: DomSanitizer = inject(DomSanitizer)) {
+    this.sanitizer = sanitizer;
+  }
 
   transform(value?: string, args?: string): SafeHtml | string {
     if (!args) {

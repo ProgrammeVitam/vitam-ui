@@ -52,7 +52,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
 
   @Input() tenantIdentifier: string;
   @Output() previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
-  selectedProjectId$: Subject<string> = this.projectsService.selectedProjectId$;
+  selectedProjectId$: Subject<string>;
   projectUpdated: Subscription;
   getProjectIcon = getProjectIcon;
   // sort columns :
@@ -69,6 +69,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     super(projectsService);
 
     this.projectsService = projectsService;
+    this.selectedProjectId$ = projectsService.selectedProjectId$;
   }
 
   ngOnInit(): void {

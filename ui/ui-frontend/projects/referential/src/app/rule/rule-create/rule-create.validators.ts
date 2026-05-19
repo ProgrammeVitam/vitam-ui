@@ -44,7 +44,11 @@ import { RuleService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class RuleCreateValidators {
-  private ruleService = inject(RuleService);
+  private ruleService: RuleService;
+
+  constructor(ruleService: RuleService = inject(RuleService)) {
+    this.ruleService = ruleService;
+  }
 
   private debounceTime = 400;
 

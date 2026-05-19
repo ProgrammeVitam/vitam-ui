@@ -34,13 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { TestBed } from '@angular/core/testing';
+
 import { CoreModule } from './core.module';
 
 describe('CoreModule', () => {
   let coreModule: CoreModule;
 
   beforeEach(() => {
-    coreModule = new CoreModule(null);
+    TestBed.configureTestingModule({});
+    coreModule = TestBed.runInInjectionContext(() => new CoreModule());
   });
 
   it('should create an instance', () => {
