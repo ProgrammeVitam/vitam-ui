@@ -41,7 +41,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { QuicklinkModule } from 'ngx-quicklink';
 import {
   AuthenticationModule,
   BASE_URL,
@@ -112,7 +111,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     VitamUICommonModule.forRoot(),
     AppRoutingModule,
     MatToolbarModule,
-    QuicklinkModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

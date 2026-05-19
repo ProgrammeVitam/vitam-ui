@@ -40,7 +40,6 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { AuthenticationModule, BytesPipe, provideI18n, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -63,7 +62,6 @@ registerLocaleData(localeFr, 'fr');
     AppRoutingModule,
     IngestModule,
     HoldingFillingSchemeModule,
-    QuicklinkModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
