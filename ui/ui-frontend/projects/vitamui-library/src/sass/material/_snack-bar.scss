@@ -3,7 +3,7 @@
 
 :root {
   .mat-mdc-snack-bar-container {
-    --mat-snackbar-container-color: transparent;
+    --mat-snack-bar-container-color: transparent;
 
     .mdc-snackbar__surface {
       @include elevation.shadow-0;
@@ -24,6 +24,10 @@
   margin: 0 !important;
   padding: 15px 120px;
   min-height: 80px;
+
+  .mat-mdc-snackbar-surface {
+    background-color: var(--vitamui-primary) !important;
+  }
 }
 
 .close-btn {
