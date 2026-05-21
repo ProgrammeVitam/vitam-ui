@@ -44,9 +44,9 @@ import { LoggerModule } from '../../../logger';
 import { Unit, UnitType } from '../../../models';
 import { ObjectViewerModule } from '../../../object-viewer/object-viewer.module';
 import { ArchiveUnitViewerComponent } from './archive-unit-viewer.component';
-import { DescriptionLevel } from '../../../models/units/description-level.enum';
 import { ObjectEditorModule } from '../../../object-editor/object-editor.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { DescriptionLevel } from '../../../../../lib/models/description-level.enum';
 
 describe('ArchiveUnitViewerComponent', () => {
   let component: ArchiveUnitViewerComponent;
