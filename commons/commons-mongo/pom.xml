@@ -13,9 +13,6 @@
         <artifactId>commons-parent</artifactId>
         <version>9.1.0-SNAPSHOT</version>
     </parent>
-    <properties>
-        <spring.data.mongo.version>3.3.5</spring.data.mongo.version>
-    </properties>
 
     <dependencies>
         <!-- VITAMUI -->
@@ -55,11 +52,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <!-- Spring Data Mongo-->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
