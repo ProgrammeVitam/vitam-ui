@@ -65,11 +65,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -231,7 +232,7 @@ public final class CustomerCrudControllerTest {
         when(tenantRepository.save(any())).thenReturn(buildTenant());
         when(userService.create(any())).thenReturn(buildUserDto());
 
-        when(groupRepository.save(any())).thenReturn(buildGroup());
+        when(groupRepository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         when(profileRepository.save(any())).thenAnswer(invocation -> {
             final Object[] args = invocation.getArguments();
@@ -240,6 +241,9 @@ public final class CustomerCrudControllerTest {
         when(identityProviderRepository.save(any())).thenReturn(buildIdp());
         when(profileService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildProfileDto()));
         when(tenantService.getDefaultProfiles(any(), any())).thenReturn(new ArrayList<>());
+        CustomerInitConfig.ProfileInitConfig restrictedProfile = createRestrictedProfile();
+
+        when(customerInitConfig.getProfiles()).thenReturn(List.of(restrictedProfile));
     }
 
     @Test
@@ -574,5 +578,27 @@ public final class CustomerCrudControllerTest {
 
     private ProfileDto buildProfileDto() {
         return IamServerUtilsTest.buildProfileDto();
+    }
+
+    private CustomerInitConfig.ProfileInitConfig createRestrictedProfile() {
+        CustomerInitConfig.ProfileInitConfig profile = new CustomerInitConfig.ProfileInitConfig();
+        profile.setAppName("USERS_APP");
+        profile.setName("Profil restreint pour la gestion des utilisateurs");
+        profile.setDescription("Profil restreint pour la gestion des utilisateurs");
+        profile.setRoles(
+            List.of(
+                "ROLE_GET_USERS",
+                "ROLE_CREATE_USERS",
+                "ROLE_UPDATE_USERS",
+                "ROLE_UPDATE_STANDARD_USERS",
+                "ROLE_MFA_USERS",
+                "ROLE_ANONYMIZATION_USERS",
+                "ROLE_GET_GROUPS",
+                "ROLE_GET_USER_INFOS",
+                "ROLE_CREATE_USER_INFOS",
+                "ROLE_UPDATE_USER_INFOS"
+            )
+        );
+        return profile;
     }
 }

@@ -46,6 +46,8 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class InitCustomerServiceTest {
@@ -130,7 +132,8 @@ public class InitCustomerServiceTest {
         // Given
         CustomerDto customer = IamDtoBuilder.buildCustomerDto("id", "name", "code", "emailDomain");
         OwnerDto owner = IamDtoBuilder.buildOwnerDto("id", "name", "id");
-
+        CustomerInitConfig.ProfileInitConfig restrictedProfile = createRestrictedProfile();
+        when(customerInitConfig.getProfiles()).thenReturn(List.of(restrictedProfile));
         Profile profileCustomerInit1 = new Profile();
         profileCustomerInit1.setApplicationName(APP_NAME);
         profileCustomerInit1.setName(FIRST_PROFILE_ID);
@@ -161,6 +164,8 @@ public class InitCustomerServiceTest {
 
         given(groupRepository.save(any())).willAnswer(invocation -> invocation.getArgument(0, Group.class));
 
+        ArgumentCaptor<Group> groupCaptor = ArgumentCaptor.forClass(Group.class);
+
         given(userInfoService.create(any())).willReturn(new UserInfoDto());
 
         // When
@@ -168,16 +173,48 @@ public class InitCustomerServiceTest {
 
         // Then
         ArgumentCaptor<Profile> profileCaptor = ArgumentCaptor.forClass(Profile.class);
-        Mockito.verify(profileRepository, times(7)).save(profileCaptor.capture());
+        Mockito.verify(profileRepository, times(8)).save(profileCaptor.capture());
         // Two profiles created on the same app
         Assertions.assertThat(profileCaptor.getAllValues())
             .filteredOn(profile -> profile.getApplicationName().equals(APP_NAME))
             .hasSize(2);
 
         // Only the first profile of the app in customer-init is affected to admin group
-        ArgumentCaptor<Group> groupCaptor = ArgumentCaptor.forClass(Group.class);
-        Mockito.verify(groupRepository, times(1)).save(groupCaptor.capture());
-        Assertions.assertThat(groupCaptor.getValue().getProfileIds()).contains(FIRST_PROFILE_ID);
-        Assertions.assertThat(groupCaptor.getValue().getProfileIds()).doesNotContain(SECOND_PROFILE_ID);
+
+        verify(groupRepository, times(2)).save(groupCaptor.capture());
+
+        List<Group> savedGroups = groupCaptor.getAllValues();
+
+        Group firstSavedGroup = savedGroups.get(0);
+        Group secondSavedGroup = savedGroups.get(1);
+
+        Assertions.assertThat(firstSavedGroup.getName()).startsWith("ADMIN_CLIENT_ROOT");
+        Assertions.assertThat(secondSavedGroup.getName()).startsWith("RESTRICTED_ADMIN_GROUP");
+
+        Assertions.assertThat(firstSavedGroup.getProfileIds())
+            .contains(FIRST_PROFILE_ID)
+            .doesNotContain(SECOND_PROFILE_ID);
+    }
+
+    private CustomerInitConfig.ProfileInitConfig createRestrictedProfile() {
+        CustomerInitConfig.ProfileInitConfig profile = new CustomerInitConfig.ProfileInitConfig();
+        profile.setAppName("USERS_APP");
+        profile.setName("Profil restreint pour la gestion des utilisateurs");
+        profile.setDescription("Profil restreint pour la gestion des utilisateurs");
+        profile.setRoles(
+            List.of(
+                "ROLE_GET_USERS",
+                "ROLE_CREATE_USERS",
+                "ROLE_UPDATE_USERS",
+                "ROLE_UPDATE_STANDARD_USERS",
+                "ROLE_MFA_USERS",
+                "ROLE_ANONYMIZATION_USERS",
+                "ROLE_GET_GROUPS",
+                "ROLE_GET_USER_INFOS",
+                "ROLE_CREATE_USER_INFOS",
+                "ROLE_UPDATE_USER_INFOS"
+            )
+        );
+        return profile;
     }
 }

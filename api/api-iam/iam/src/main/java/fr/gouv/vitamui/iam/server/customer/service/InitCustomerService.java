@@ -205,13 +205,64 @@ public class InitCustomerService {
         LOGGER.debug("External Parameter added into DataBase {}", fullAccessContract);
         externalParametersService.update(fullAccessContract);
 
-        final Group createdAdminGroup = createAdminGroup(customerDto, createdAdminProfiles);
-        createAdminUser(customerDto, createdAdminGroup);
+        createAdminGroup(customerDto, createdAdminProfiles);
 
         List<Profile> customProfiles = createCustomProfiles(customerDto, proofTenantDto);
 
         List<Group> customGroups = createCustomGroups(customerDto, proofTenantDto, customProfiles);
+
+        Group limitedGroup = createLimitedAdminGroup(customerDto, createdAdminProfiles, customProfiles);
+
+        createAdminUser(customerDto, limitedGroup);
+
         createCustomUsers(customerDto, customGroups);
+    }
+
+    private Group createLimitedAdminGroup(
+        CustomerDto customerDto,
+        List<Profile> adminProfiles,
+        List<Profile> customProfiles
+    ) {
+        final List<Profile> filteredProfiles = new ArrayList<>(
+            adminProfiles
+                .stream()
+                .filter(
+                    profile -> ApiIamExternalConstants.GENERIC_ADMIN_ALLOWED_APPS.contains(profile.getApplicationName())
+                )
+                .collect(
+                    Collectors.groupingBy(
+                        profile -> Pair.of(profile.getApplicationName(), profile.getTenantIdentifier()),
+                        Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0))
+                    )
+                )
+                .values()
+        );
+
+        final Profile userAppRestrictedProfile = customProfiles
+            .stream()
+            .filter(profile -> ApiIamExternalConstants.USERS_APP_NAME.equals(profile.getApplicationName()))
+            .filter(profile -> profile.getName().startsWith(ApiIamExternalConstants.USERS_APP_RESTRICT_PROFILE_NAME))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "Unable to find profile with name " + ApiIamExternalConstants.USERS_APP_RESTRICT_PROFILE_NAME
+                    )
+            );
+
+        filteredProfiles.add(userAppRestrictedProfile);
+
+        final Group group = EntityFactory.buildGroup(
+            ApiIamExternalConstants.RESTRICTED_ADMIN_GROUP_NAME + " " + customerDto.getCode(),
+            generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
+            ApiIamExternalConstants.RESTRICTED_ADMIN_GROUP_DESCRIPTION,
+            true,
+            ApiIamExternalConstants.ADMIN_LEVEL,
+            filteredProfiles,
+            customerDto.getId()
+        );
+
+        return saveGroup(group);
     }
 
     private ExternalParametersDto initFullAccessContractExternalParameter(
@@ -512,7 +563,7 @@ public class InitCustomerService {
         return profiles;
     }
 
-    private Group createAdminGroup(final CustomerDto customerDto, final List<Profile> profiles) {
+    private void createAdminGroup(final CustomerDto customerDto, final List<Profile> profiles) {
         // Cannot affect to a group 2 profiles on the same application name for the same tenant
         // So take the first found by applicationName/Tenant pair
         final List<Profile> filteredProfiles = new ArrayList<>(
@@ -535,7 +586,7 @@ public class InitCustomerService {
             filteredProfiles,
             customerDto.getId()
         );
-        return saveGroup(group);
+        saveGroup(group);
     }
 
     private UserDto createAdminUser(final CustomerDto customerDto, final Group group) {
@@ -543,6 +594,7 @@ public class InitCustomerService {
         userDto.setOtp(false);
         userDto.setType(UserTypeEnum.GENERIC);
         userDto.setSubrogeable(true);
+        userDto.setReadonly(true);
         userDto.setLastname(ApiIamExternalConstants.ADMIN_CLIENT_LASTNAME);
         userDto.setFirstname(ApiIamExternalConstants.ADMIN_CLIENT_FIRSTNAME);
         userDto.setUserInfoId(saveUserInfo(getLanguage(customerDto)).getId());
