@@ -161,6 +161,12 @@ public class InitCustomerServiceTest {
 
         given(groupRepository.save(any())).willAnswer(invocation -> invocation.getArgument(0, Group.class));
 
+        CustomerInitConfig.ProfilesGroupInitConfig profileGroup = new CustomerInitConfig.ProfilesGroupInitConfig();
+        profileGroup.setName(InitCustomerService.GENERIC_ADMIN_ROOT_GROUP_NAME);
+        profileGroup.setProfiles(List.of(FIRST_PROFILE_ID));
+        given(customerInitConfig.getProfilesGroups()).willReturn(List.of(profileGroup));
+        given(customerInitConfig.getUsers()).willReturn(new ArrayList<>());
+
         given(userInfoService.create(any())).willReturn(new UserInfoDto());
 
         // When
@@ -176,8 +182,14 @@ public class InitCustomerServiceTest {
 
         // Only the first profile of the app in customer-init is affected to admin group
         ArgumentCaptor<Group> groupCaptor = ArgumentCaptor.forClass(Group.class);
-        Mockito.verify(groupRepository, times(1)).save(groupCaptor.capture());
-        Assertions.assertThat(groupCaptor.getValue().getProfileIds()).contains(FIRST_PROFILE_ID);
-        Assertions.assertThat(groupCaptor.getValue().getProfileIds()).doesNotContain(SECOND_PROFILE_ID);
+        Mockito.verify(groupRepository, times(2)).save(groupCaptor.capture());
+        Group adminGroup = groupCaptor
+            .getAllValues()
+            .stream()
+            .filter(g -> g.getName().equals(initCustomerService.getAdminClientRootName(customer)))
+            .findFirst()
+            .get();
+        Assertions.assertThat(adminGroup.getProfileIds()).contains(FIRST_PROFILE_ID);
+        Assertions.assertThat(adminGroup.getProfileIds()).doesNotContain(SECOND_PROFILE_ID);
     }
 }

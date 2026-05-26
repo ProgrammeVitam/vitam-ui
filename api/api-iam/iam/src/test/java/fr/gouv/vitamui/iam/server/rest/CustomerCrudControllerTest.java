@@ -65,6 +65,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -231,7 +232,7 @@ public final class CustomerCrudControllerTest {
         when(tenantRepository.save(any())).thenReturn(buildTenant());
         when(userService.create(any())).thenReturn(buildUserDto());
 
-        when(groupRepository.save(any())).thenReturn(buildGroup());
+        when(groupRepository.save(any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         when(profileRepository.save(any())).thenAnswer(invocation -> {
             final Object[] args = invocation.getArguments();
@@ -240,6 +241,12 @@ public final class CustomerCrudControllerTest {
         when(identityProviderRepository.save(any())).thenReturn(buildIdp());
         when(profileService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildProfileDto()));
         when(tenantService.getDefaultProfiles(any(), any())).thenReturn(new ArrayList<>());
+
+        CustomerInitConfig.ProfilesGroupInitConfig profileGroup = new CustomerInitConfig.ProfilesGroupInitConfig();
+        profileGroup.setName(InitCustomerService.GENERIC_ADMIN_ROOT_GROUP_NAME);
+        profileGroup.setProfiles(List.of("profileName"));
+        when(customerInitConfig.getProfilesGroups()).thenReturn(List.of(profileGroup));
+        when(customerInitConfig.getUsers()).thenReturn(new ArrayList<>());
     }
 
     @Test
@@ -386,6 +393,7 @@ public final class CustomerCrudControllerTest {
         when(groupRepository.save(any())).thenThrow(new InternalServerException("Group Creation error"));
 
         customerController.create(buildCustomerData(customerDto));
+        fail("should fail");
         fail("should fail");
     }
 

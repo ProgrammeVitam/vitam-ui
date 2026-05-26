@@ -1,4 +1,3 @@
-
 customer-init:
   profiles:
     - name: profile1
@@ -6,16 +5,74 @@ customer-init:
       level: 1
       app-name: app1
       roles:
-       - role_1
-       - role_2
-       - role_3
+        - role_1
+        - role_2
+        - role_3
     - name: profile2
       description: desc2
       level: 2
       app-name: app2
       roles:
-       - role_2
-       - role_3
+        - role_2
+        - role_3
+    - name: USERS_APP_PROFILE_GENERIC_ADMIN
+      description: Profil de l'application de gestion des utilisateurs pour l'admin générique
+      app-name: USERS_APP
+      level:
+      roles:
+        - ROLE_GET_USERS
+        - ROLE_CREATE_USERS
+        - ROLE_UPDATE_USERS
+        - ROLE_UPDATE_STANDARD_USERS
+        - ROLE_MFA_USERS
+        - ROLE_ANONYMIZATION_USERS
+        - ROLE_GENERIC_USERS
+        - ROLE_GET_GROUPS
+        - ROLE_GET_USER_INFOS
+        - ROLE_CREATE_USER_INFOS
+        - ROLE_UPDATE_USER_INFOS
+
+
+    - name: ACCOUNTS_APP_PROFILE_GENERIC_ADMIN
+      description: Profil de l'application Mon Compte pour l'admin générique
+      app-name: ACCOUNTS_APP
+      level:
+      roles:
+        - ROLE_UPDATE_ME_USERS
+
+    - name: GROUPS_APP_PROFILE_GENERIC_ADMIN
+      description: Profil de l'application de gestion des groupes pour l'admin générique
+      app-name: GROUPS_APP
+      level:
+      roles:
+        - ROLE_GET_GROUPS
+        - ROLE_UPDATE_GROUPS
+        - ROLE_DELETE_GROUPS
+        - ROLE_CREATE_GROUPS
+        - ROLE_GET_PROFILES_ALL_TENANTS
+        - ROLE_GET_PROFILES
+
+    - name: HIERARCHY_PROFILE_APP_PROFILE_GENERIC_ADMIN
+      description: Profil de l'application de gestion des hiérarchies de profils pour l'admin générique
+      app-name: HIERARCHY_PROFILE_APP
+      level:
+      roles:
+        - ROLE_GET_PROFILES
+        - ROLE_CREATE_PROFILES
+        - ROLE_UPDATE_PROFILES
+        - ROLE_UPDATE_ME_USERS
+        - ROLE_DELETE_PROFILES
+
+    - name: PROFILES_APP_PROFILE_GENERIC_ADMIN
+      description: APP Profil de l'application de gestion des profils utilisateurs pour l'admin générique
+      app-name: PROFILES_APP
+      level:
+      roles:
+        - ROLE_GET_PROFILES
+        - ROLE_CREATE_PROFILES
+        - ROLE_UPDATE_PROFILES
+        - ROLE_GET_GROUPS
+        - ROLE_DELETE_PROFILES
 
   profiles-groups:
     - name: group1
@@ -24,6 +81,16 @@ customer-init:
       profiles:
         - profile1
 
+    - name: GENERIC_ADMIN_ROOT_GROUP  # default group to create for customers generic admin
+      description: desc
+      level:
+      readOnly: true
+      profiles:
+        - PROFILES_APP_PROFILE_GENERIC_ADMIN
+        - HIERARCHY_PROFILE_APP_PROFILE_GENERIC_ADMIN
+        - GROUPS_APP_PROFILE_GENERIC_ADMIN
+        - ACCOUNTS_APP_PROFILE_GENERIC_ADMIN
+        - USERS_APP_PROFILE_GENERIC_ADMIN
   users:
     - last-name: lastName
       first-name: firstName
@@ -37,9 +104,9 @@ customer-init:
       level: 1
       app-name: app2
       roles:
-       - role_1
-       - role_2
-       - role_3
+        - role_1
+        - role_2
+        - role_3
 
   admin-profiles:
     - name: profile4

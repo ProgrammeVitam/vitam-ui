@@ -99,6 +99,8 @@ import java.util.stream.Collectors;
 @Setter
 public class InitCustomerService {
 
+    public static final String GENERIC_ADMIN_ROOT_GROUP_NAME = "GENERIC_ADMIN_ROOT_GROUP";
+
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -205,12 +207,27 @@ public class InitCustomerService {
         LOGGER.debug("External Parameter added into DataBase {}", fullAccessContract);
         externalParametersService.update(fullAccessContract);
 
-        final Group createdAdminGroup = createAdminGroup(customerDto, createdAdminProfiles);
-        createAdminUser(customerDto, createdAdminGroup);
+        createAdminGroup(customerDto, createdAdminProfiles);
 
         List<Profile> customProfiles = createCustomProfiles(customerDto, proofTenantDto);
 
         List<Group> customGroups = createCustomGroups(customerDto, proofTenantDto, customProfiles);
+
+        List<Group> limitedGroups = customGroups
+            .stream()
+            .filter(group -> GENERIC_ADMIN_ROOT_GROUP_NAME.equals(group.getName()))
+            .toList();
+
+        if (limitedGroups.size() != 1) {
+            throw new IllegalArgumentException(
+                "Expected exactly one group with name GENERIC_ADMIN_ROOT_GROUP, found: " + limitedGroups.size()
+            );
+        }
+
+        Group limitedGroup = limitedGroups.get(0);
+
+        createAdminUser(customerDto, limitedGroup);
+
         createCustomUsers(customerDto, customGroups);
     }
 
@@ -529,7 +546,7 @@ public class InitCustomerService {
         final Group group = EntityFactory.buildGroup(
             getAdminClientRootName(customerDto),
             generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
-            ApiIamExternalConstants.ADMIN_CLIENT_ROOT,
+            ApiIamExternalConstants.FULL_ADMIN_CLIENT_ROOT,
             true,
             ApiIamExternalConstants.ADMIN_LEVEL,
             filteredProfiles,
@@ -543,6 +560,9 @@ public class InitCustomerService {
         userDto.setOtp(false);
         userDto.setType(UserTypeEnum.GENERIC);
         userDto.setSubrogeable(true);
+        userDto.setLastname(ApiIamExternalConstants.ADMIN_CLIENT_LASTNAME);
+        userDto.setFirstname(ApiIamExternalConstants.ADMIN_CLIENT_FIRSTNAME);
+        userDto.setReadonly(true);
         userDto.setLastname(ApiIamExternalConstants.ADMIN_CLIENT_LASTNAME);
         userDto.setFirstname(ApiIamExternalConstants.ADMIN_CLIENT_FIRSTNAME);
         userDto.setUserInfoId(saveUserInfo(getLanguage(customerDto)).getId());

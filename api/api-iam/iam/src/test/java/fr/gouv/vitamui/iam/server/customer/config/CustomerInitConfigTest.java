@@ -227,7 +227,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     public void testAfterPropertiesWithEmptyProfileNameForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
-            List.of(new CustomerInitConfig.ProfilesGroupInitConfig("", null, null, null))
+            List.of(new CustomerInitConfig.ProfilesGroupInitConfig("", null, null, false, null))
         );
         assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
@@ -238,7 +238,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
     public void testAfterPropertiesWithEmptyProfilesForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
-            List.of(new CustomerInitConfig.ProfilesGroupInitConfig(GROUP_NAME_1, DESCRIPTION_2, LEVEL_2, null))
+            List.of(new CustomerInitConfig.ProfilesGroupInitConfig(GROUP_NAME_1, DESCRIPTION_2, LEVEL_2, false, null))
         );
         assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
@@ -254,6 +254,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
+                    false,
                     List.of(PROFILE_NAME_3)
                 )
             )
@@ -272,6 +273,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
+                    false,
                     Arrays.asList(PROFILE_NAME_1, PROFILE_NAME_1)
                 )
             )
@@ -290,12 +292,14 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
+                    false,
                     List.of(PROFILE_NAME_1)
                 ),
                 new CustomerInitConfig.ProfilesGroupInitConfig(
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
+                    false,
                     List.of(PROFILE_NAME_1)
                 )
             )
@@ -449,6 +453,7 @@ public class CustomerInitConfigTest extends AbstractMongoTests {
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
+                    false,
                     List.of(PROFILE_NAME_1)
                 )
             )

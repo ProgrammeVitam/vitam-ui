@@ -47,6 +47,7 @@ import java.util.List;
 public final class ApiIamExternalConstants {
 
     public static final String ADMIN_CLIENT_ROOT = "ADMIN_CLIENT_ROOT";
+    public static final String FULL_ADMIN_CLIENT_ROOT = "FULL_ADMIN_CLIENT_ROOT";
 
     private static final List<String> ACCOUNT_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_UPDATE_ME_USERS);
 

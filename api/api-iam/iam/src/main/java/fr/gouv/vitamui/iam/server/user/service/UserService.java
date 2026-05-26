@@ -279,7 +279,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     protected void beforeCreate(final UserDto dto) {
         final String message = "Unable to create user " + dto.getEmail() + " (" + dto.getCustomerId() + ")";
 
-        checkSetReadonly(dto.isReadonly(), message);
+        if (UserTypeEnum.GENERIC != dto.getType()) {
+            //allow making generic users read Only
+            checkSetReadonly(dto.isReadonly(), message);
+        }
         checkCustomer(dto.getCustomerId(), message);
         checkEmail(dto.getEmail(), dto.getCustomerId(), message);
         checkGroupId(dto.getGroupId(), message);
@@ -454,11 +457,13 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         checkCustomer(user.getCustomerId(), message);
         checkLevel(user.getLevel(), message);
 
-        checkSetReadonly(dto.isReadonly(), message);
+        if (UserTypeEnum.GENERIC != dto.getType()) {
+            //allow making generic users read Only
+            checkSetReadonly(dto.isReadonly(), message);
+        }
         if (!StringUtils.equalsIgnoreCase(user.getEmail(), dto.getEmail())) {
             checkEmail(dto.getEmail(), user.getCustomerId(), message);
         }
-        checkSetReadonly(dto.isReadonly(), message);
 
         final GroupDto groupDto = getGroupDtoById(dto.getGroupId(), message);
         checkGroup(groupDto, user.getCustomerId(), message);
