@@ -7,17 +7,15 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
-    "module": "esnext",
+    "module": "preserve",
     "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
     "skipLibCheck": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
     "paths": {
       "vitamui-library": [
         "dist/vitamui-library"
@@ -31,8 +29,15 @@
     "useDefineForClassFields": false
   },
   // FIXME: uncomment to improve code quality
-//  "angularCompilerOptions": {
-//    "fullTemplateTypeCheck": true,
-//    "strictInjectionParameters": true
-//  }
+  // "noImplicitOverride": true,
+  // "noImplicitReturns": true,
+  // "noPropertyAccessFromIndexSignature": true,
+  // "isolatedModules": true,
+  // "angularCompilerOptions": {
+  //   "enableI18nLegacyMessageIdFormat": false,
+  //   "strictInjectionParameters": true,
+  //   "strictInputAccessModifiers": true,
+  //   "strictTemplates": true,
+  //   "fullTemplateTypeCheck": true
+  // }
 }

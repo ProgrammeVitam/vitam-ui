@@ -161,17 +161,25 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     return files instanceof FileList;
   }
 
-  private initializeFileToUpload(files: FileList | File[]) {
+  private initializeFileToUpload(files: FileList | File[]): boolean {
     if (files) {
-      this.fileToUpload = this.isFileList(files) ? files.item(0) : files[0];
-      this.fileName = this.fileToUpload.name;
-      this.fileSize = this.fileToUpload.size;
+      const file = this.isFileList(files) ? files.item(0) : files[0];
+      if (file) {
+        this.fileToUpload = file;
+        this.fileName = file.name;
+        this.fileSize = file.size;
+        return true;
+      }
     }
+
+    return false;
   }
 
   handleFile(files: FileList | File[]) {
     this.initializeParameters();
-    this.initializeFileToUpload(files);
+    if (!this.initializeFileToUpload(files)) {
+      return;
+    }
 
     this.fileSizeString = this.bytesPipe.transform(this.fileSize);
 

@@ -58,6 +58,7 @@ describe('SubrogationSnackBarComponent', () => {
     onTranslationChange: EMPTY,
     onLangChange: EMPTY,
     onDefaultLangChange: EMPTY,
+    onFallbackLangChange: EMPTY,
   };
 
   beforeEach(async () => {

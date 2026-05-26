@@ -3,7 +3,11 @@
 }
 
 @function is-important($important) {
-  @return #{if($important == '!important', '!important', '')};
+  @if $important == '!important' {
+    @return !important;
+  }
+
+  @return null;
 }
 
 @mixin shadow-accessible($important: null) {

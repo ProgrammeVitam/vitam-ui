@@ -144,7 +144,7 @@ describe('ReclassificationDialogService', () => {
     service.initialQuery.set(mockQuery);
 
     // Force l'effet du computed à s'exécuter
-    TestBed.flushEffects();
+    TestBed.tick();
     await waitForSignalEffects(); // Laisse le temps au toObservable de s'initialiser
 
     service.triggerLoadChildrenCount();
@@ -186,7 +186,7 @@ describe('ReclassificationDialogService', () => {
       of({ results: [], totalResults: mockTotal }) as Observable<PagedResult>,
     );
 
-    TestBed.flushEffects();
+    TestBed.tick();
     await waitForSignalEffects(); // Laisse le temps au toObservable de s'initialiser
 
     service.triggerLoadExactChildrenCount();
@@ -208,7 +208,7 @@ describe('ReclassificationDialogService', () => {
         of({ results: mockParents }) as Observable<PagedResult>,
       );
 
-    TestBed.flushEffects();
+    TestBed.tick();
     await waitForSignalEffects(); // Laisse le temps au toObservable de s'initialiser
 
     const parents = service.parents();

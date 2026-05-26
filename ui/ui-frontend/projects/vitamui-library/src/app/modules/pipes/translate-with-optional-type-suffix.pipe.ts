@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Pipe, PipeTransform, inject } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Pipe({
@@ -42,16 +42,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   pure: false,
 })
 export class TranslateWithOptionalTypeSuffixPipe extends TranslatePipe implements PipeTransform {
-  private translateService: TranslateService;
-
-  constructor() {
-    const translateService = inject(TranslateService);
-    const _ref = inject(ChangeDetectorRef);
-
-    super(translateService, _ref);
-
-    this.translateService = translateService;
-  }
+  private readonly translateService = inject(TranslateService);
 
   transform(key: string) {
     if (this.hasKey(key)) {

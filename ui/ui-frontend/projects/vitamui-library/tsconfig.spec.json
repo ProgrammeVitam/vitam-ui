@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
     "types": [
-      "node"
+      "node",
+      "vitest/globals"
     ],
     "noUnusedLocals": false,
     "noUnusedParameters": false,

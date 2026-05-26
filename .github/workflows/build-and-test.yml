@@ -50,7 +50,7 @@ jobs:
           name: frontend-test-reports
           path: |
             **/target/junit/*.xml
-            **/target/coverage/*
+            ui/ui-frontend/coverage/**
   build-backend:
     name: Build Backend
     runs-on: ubuntu-22.04 # We stay on Ubuntu 22.04, otherwise, timezone configuration would not be taken into account in Java on Ubuntu 24.04 (for unexplained reasons) and would break unit tests

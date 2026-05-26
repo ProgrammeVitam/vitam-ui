@@ -14,7 +14,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/identity",
             "index": "projects/identity/src/index.html",
@@ -79,7 +79,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "identity:build",
             "host": "dev.vitamui.com",
@@ -95,17 +95,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "identity:build"
-          }
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/identity/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/identity.xml"
           }
         },
         "lint": {
@@ -132,7 +129,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/portal",
             "index": "projects/portal/src/index.html",
@@ -197,7 +194,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "portal:build",
             "host": "dev.vitamui.com",
@@ -217,7 +214,10 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/portal/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/portal.xml"
           }
         },
         "lint": {
@@ -244,7 +244,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/referential",
             "index": "projects/referential/src/index.html",
@@ -309,7 +309,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "referential:build",
             "host": "dev.vitamui.com",
@@ -325,17 +325,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "referential:build"
-          }
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/referential/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/referential.xml"
           }
         },
         "lint": {
@@ -366,7 +363,7 @@
       "prefix": "vitamui",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "project": "projects/vitamui-library/ng-package.json"
           },
@@ -384,7 +381,10 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/vitamui-library.xml"
           }
         },
         "lint": {
@@ -411,7 +411,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/design-system",
             "index": "projects/design-system/src/index.html",
@@ -461,7 +461,7 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "host": "dev.vitamui.com",
             "port": 4242,
@@ -481,7 +481,10 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/design-system/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/design-system.xml"
           }
         },
         "lint": {
@@ -508,7 +511,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/ingest",
             "index": "projects/ingest/src/index.html",
@@ -557,7 +560,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "ingest:build",
             "host": "dev.vitamui.com",
@@ -573,17 +576,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "ingest:build"
-          }
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/ingest/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/ingest.xml"
           }
         },
         "lint": {
@@ -609,7 +609,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "allowedCommonJsDependencies": [
               "fast-xml-parser"
@@ -661,7 +661,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "archive-search:build",
             "host": "dev.vitamui.com",
@@ -677,17 +677,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "archive-search:build"
-          }
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/archive-search/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/archive-search.xml"
           }
         },
         "lint": {
@@ -713,7 +710,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "allowedCommonJsDependencies": [
               "jszip"
@@ -765,7 +762,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "collect:build",
             "host": "dev.vitamui.com",
@@ -781,17 +778,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "collect:build"
-          }
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/collect/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/collect.xml"
           }
         },
         "lint": {
@@ -817,7 +811,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/pastis",
             "index": "projects/pastis/src/index.html",
@@ -874,7 +868,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "pastis:build",
             "host": "dev.vitamui.com",
@@ -895,17 +889,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "pastis:build"
-          }
-        },
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/pastis/tsconfig.spec.json",
-            "providersFile": "test.ts"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "target/junit/pastis.xml"
           }
         },
         "lint": {

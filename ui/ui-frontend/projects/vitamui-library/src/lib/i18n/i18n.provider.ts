@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EnvironmentProviders } from '@angular/core';
+import { Provider } from '@angular/core';
 import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { VitamuiMissingTranslationHandler } from '../../app/modules';
 import { HttpBackend } from '@angular/common/http';
@@ -49,7 +49,7 @@ function httpLoaderFactory(httpBackend: HttpBackend, configService: ConfigServic
   ]);
 }
 
-export function provideI18n(): EnvironmentProviders {
+export function provideI18n(): Provider[] {
   return provideTranslateService({
     missingTranslationHandler: {
       provide: MissingTranslationHandler,

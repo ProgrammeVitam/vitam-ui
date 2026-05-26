@@ -51,6 +51,15 @@ class TranslateServiceStub {
   onTranslationChange = of({ lang: 'fr', translations: {} });
   onLangChange = of({ translations: {} });
   onDefaultLangChange = of();
+  onFallbackLangChange = of();
+
+  getCurrentLang(): string {
+    return 'fr';
+  }
+
+  getFallbackLang(): string {
+    return 'fr';
+  }
 
   get(_key: string | Array<string>, _interpolateParams?: Object): Observable<string | any> {
     return of('');

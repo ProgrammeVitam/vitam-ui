@@ -79,7 +79,8 @@ export class EditablePatternsComponent extends EditableFieldComponent {
     }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
     // Overlay has same id as the "select" element, suffixed by "-panel"
-    const selectOverlay = this.document.querySelector(`#${this.pattern.select.matSelect.id}-panel`) as HTMLElement;
+    const selectOverlayId = this.pattern?.select?.matSelect?.id;
+    const selectOverlay = selectOverlayId ? (this.document.querySelector(`#${selectOverlayId}-panel`) as HTMLElement) : null;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||
       this.isInside(target, overlayRef.hostElement) ||
