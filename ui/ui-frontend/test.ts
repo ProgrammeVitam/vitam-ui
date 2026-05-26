@@ -37,30 +37,12 @@
 
 /// <reference types="vitest/globals" />
 
-
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import '@angular/compiler';
 import '@analogjs/vitest-angular/setup-zone';
 import 'zone.js/testing';
-
-const removeJsdomUnsupportedMaterialSelector = (style: string) =>
-  style.replace(/\.mat-mdc-form-field-infix:has\(textarea\[cols\]\)\s*\{[^}]*\}/g, '');
-
-const textContentDescriptor = Object.getOwnPropertyDescriptor(Node.prototype, 'textContent');
-if (textContentDescriptor?.set && textContentDescriptor.get && !(HTMLStyleElement.prototype as any).__vitamuiTextContentPatched) {
-  Object.defineProperty(HTMLStyleElement.prototype, 'textContent', {
-    configurable: true,
-    get() {
-      return textContentDescriptor.get.call(this);
-    },
-    set(value: string) {
-      textContentDescriptor.set.call(this, typeof value === 'string' ? removeJsdomUnsupportedMaterialSelector(value) : value);
-    },
-  });
-  (HTMLStyleElement.prototype as any).__vitamuiTextContentPatched = true;
-}
 
 const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
 TestBed.configureTestingModule = ((moduleDef: any) =>
