@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Constants for API IAM.
@@ -47,6 +48,7 @@ import java.util.List;
 public final class ApiIamConstants {
 
     public static final String ADMIN_CLIENT_ROOT = "ADMIN_CLIENT_ROOT";
+    public static final String FULL_ADMIN_CLIENT_ROOT = "FULL_ADMIN_CLIENT_ROOT";
 
     private static final List<String> ACCOUNT_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_UPDATE_ME_USERS);
 
@@ -115,6 +117,19 @@ public final class ApiIamConstants {
         "Profil de l'application de gestion des hiérarchies de profils";
 
     public static final String PHONE_NUMBER_VALID_REGEXP = "^[+]{1}[0-9]{11,12}$";
+
+    public static final String RESTRICTED_ADMIN_GROUP_NAME = "RESTRICTED_ADMIN_GROUP";
+
+    public static final String USERS_APP_RESTRICT_PROFILE_NAME = "Profil restreint pour la gestion des utilisateurs";
+    public static final String USERS_APP_NAME = "USERS_APP";
+
+    public static final String RESTRICTED_ADMIN_GROUP_DESCRIPTION = "Groupe de profils pour l'administrateur générique";
+    public static final Set<String> GENERIC_ADMIN_ALLOWED_APPS = Set.of(
+        "PROFILES_APP",
+        "HIERARCHY_PROFILE_APP",
+        "GROUPS_APP",
+        "ACCOUNTS_APP"
+    );
 
     private ApiIamConstants() {
         // do nothing
