@@ -4,7 +4,7 @@ $header-height: 72px !default;
 
 mat-toolbar {
   @include elevation.shadow-128dp-dark;
-  z-index: 10;
+  z-index: 1001; // Make sure the header is over default overlays (tooltips, menus, ...)
 }
 
 .header {
