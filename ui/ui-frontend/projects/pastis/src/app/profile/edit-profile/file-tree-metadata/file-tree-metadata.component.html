@@ -1,8 +1,8 @@
-<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav-content>
-    <pastis-title-breadcrumb (selected)="navigate($event)" *ngIf="!isStandalone" [data]="breadcrumbDataTop" class="breadcrumbTop">
-    </pastis-title-breadcrumb>
+    @if (!isStandalone) {
+      <pastis-title-breadcrumb (selected)="navigate($event)" [data]="breadcrumbDataTop" class="breadcrumbTop"> </pastis-title-breadcrumb>
+    }
     <!--Top panels container-->
     <div class="pastis-metadata-option-container">
       <!-- Top left panel container -->
@@ -26,13 +26,15 @@
       <!--Top right panel container-->
       <div class="pastis-metadata-option-entete-2">
         <!--Toggle button allow additional properties-->
-        <div
-          *ngIf="profileService.profileType === 'PUA' && isStandalone"
-          [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate"
-        >
-          <allow-additional-properties [checked]="rootAdditionalProperties" (stateToggleButton)="changeStatusAdditionalProperties($event)">
-          </allow-additional-properties>
-        </div>
+        @if (profileService.profileType === 'PUA' && isStandalone) {
+          <div [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate">
+            <allow-additional-properties
+              [checked]="rootAdditionalProperties"
+              (stateToggleButton)="changeStatusAdditionalProperties($event)"
+            >
+            </allow-additional-properties>
+          </div>
+        }
         <!--Button save-->
         <div [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' | translate">
           <pastis-user-action-save-profile></pastis-user-action-save-profile>
@@ -41,7 +43,9 @@
         <div [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' | translate">
           <pastis-user-action-download-doc (click)="openChoicePopup()"></pastis-user-action-download-doc>
           <div class="vitamui-pastis-choice-language">
-            <pastis-popup-metadata-language (click)="changeSedaLanguage()" *ngIf="languagePopup"></pastis-popup-metadata-language>
+            @if (languagePopup) {
+              <pastis-popup-metadata-language (click)="changeSedaLanguage()"></pastis-popup-metadata-language>
+            }
           </div>
         </div>
       </div>
@@ -52,454 +56,451 @@
         [searchbarPlaceholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SEARCH_PLACEHOLDER' | translate"
       >
         <!--Button add metadata-->
-        <button
-          (click)="onAddNode()"
-          *ngIf="checkElementType() && resolveButtonLabel(clickedNode) !== null"
-          class="btn primary ml-5"
-          style="text-transform: uppercase"
-        >
-          {{ resolveButtonLabel(clickedNode) }}
-        </button>
+        @if (checkElementType() && resolveButtonLabel(clickedNode) !== null) {
+          <button (click)="onAddNode()" class="btn primary ml-5" style="text-transform: uppercase">
+            {{ resolveButtonLabel(clickedNode) }}
+          </button>
+        }
       </vitamui-banner>
     </div>
 
     <!--Metatada table container-->
     <div class="pastis-table-container">
-      <table
-        *ngIf="shouldLoadMetadataTable(); else complexElementWithoutChild"
-        [dataSource]="matDataSource"
-        class="list-profile-table"
-        mat-table
-      >
-        <!-- Name Column -->
-        <ng-container matColumnDef="nomDuChamp">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.NOM_METADONNEE' | translate }}
-          </th>
-          <td *matCellDef="let element; index as j" class="pastis-metadata-table-col-large" mat-cell>
-            <span
-              [ngClass]="{
-                'pastis-table-content': isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
-                'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
-              }"
-              [vitamuiTooltip]="getSedaDefinition(element.nomDuChamp)"
-            >
-              <span *ngIf="element.external">EXT-</span>
-              <span *ngIf="isElementEdit(element); else nonEdit">{{ element.nomDuChampEdit }}</span>
-              <ng-template #nonEdit> {{ onResolveName(element.nomDuChamp) }}</ng-template>
-
-              <mat-icon
-                *ngIf="!isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j])"
-                vitamuiTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
-                vitamuiTooltipPosition="TOP"
-              >
-                info
-              </mat-icon>
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Value Column -->
-        <ng-container matColumnDef="valeurFixe">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.VALEUR_FIXE' | translate }}
-          </th>
-          <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-medium" mat-cell>
-            <ng-container [ngSwitch]="getMetadataInputType(element)">
-              <ng-container *ngSwitchCase="'date'">
-                <div class="pastis-vitamui-container-editable-valeur-fixe">
-                  <vitamui-common-editable-textarea
-                    (ngModelChange)="setNodeValue(element, $event)"
-                    [dpDayPicker]="config"
-                    [maxlength]="120"
-                    [ngModel]="element.valeurFixe"
-                    class="valeur-fixe-pastis"
-                    [disabled]="profileService.profileType === 'PUA'"
-                  >
-                  </vitamui-common-editable-textarea>
-                </div>
-              </ng-container>
-              <ng-container *ngSwitchCase="'enumeration'">
-                <mat-select
-                  [ngModel]="element.valeurFixe"
-                  class="mat-select-valeur-fixe"
-                  placeholder="Choisissez une valeur"
-                  *ngIf="profileService.profileType === 'PA'"
-                  (selectionChange)="onChangeSelected(element, $event.value)"
-                >
-                  <mat-option [value]="">--None--</mat-option>
-                  <mat-option *ngFor="let val of element.enumeration; let i = index" [value]="val"> {{ val }} </mat-option>
-                </mat-select>
-              </ng-container>
-
-              <ng-container *ngIf="!checkElementType(element.nomDuChamp)">
-                <div *ngSwitchDefault class="pastis-vitamui-container-editable-valeur-fixe">
-                  <vitamui-common-editable-textarea
-                    (ngModelChange)="setNodeValue(element, $event)"
-                    [maxlength]="120"
-                    [ngModel]="element.valeurFixe"
-                    class="valeur-fixe-pastis"
-                    [disabled]="profileService.profileType === 'PUA'"
-                  >
-                  </vitamui-common-editable-textarea>
-                </div>
-              </ng-container>
-            </ng-container>
-            <ng-template #simpleElement></ng-template>
-          </td>
-        </ng-container>
-
-        <!-- Cardinality Column -->
-        <ng-container matColumnDef="cardinalite">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CARDINALITE' | translate }}
-          </th>
-          <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-small" mat-cell>
-            <mat-select
-              (ngModelChange)="setNodeChildrenCardinalities(element, $event)"
-              [ngModel]="selectedCardinalities[i]"
-              class="select-border"
-              disableRipple="true"
-              panelClass="vitamui-mat-select"
-            >
-              <mat-option *ngFor="let c of element.cardinalite" [value]="c">
-                <span class="cardinality-text">{{ c }}</span>
-              </mat-option>
-            </mat-select>
-          </td>
-        </ng-container>
-
-        <!-- Comment Column -->
-        <ng-container matColumnDef="commentaire">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.COMMENTAIRE' | translate }}
-          </th>
-          <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-large" mat-cell>
-            <div class="pastis-vitamui-container-editable-commentaire">
-              <vitamui-common-editable-textarea
-                (ngModelChange)="setDocumentation(element, $event)"
-                [maxlength]="120"
-                [ngModel]="element.commentaire"
-                class="commentaire-pastis"
-                [required]="hasCustomRegex(element)"
-              >
-              </vitamui-common-editable-textarea>
-            </div>
-          </td>
-        </ng-container>
-
-        <!--Menu options-->
-        <ng-container matColumnDef="menuoption">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell></th>
-          <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-small" mat-cell>
-            <button
-              (click)="onButtonClicked(element.id)"
-              *ngIf="isRowHovered(element.id)"
-              [matMenuTriggerFor]="menu"
-              [ngClass]="{
-                'pastis-btn-metadata-options-active': isButtonClicked(element.id),
-                'pastis-btn-metadata-options': !isButtonClicked(element.id),
-              }"
-              disableRipple="true"
-              id="menuBtn"
-              mat-icon-button
-            >
-              <mat-icon
+      @if (shouldLoadMetadataTable()) {
+        <table [dataSource]="matDataSource" class="list-profile-table" mat-table>
+          <!-- Name Column -->
+          <ng-container matColumnDef="nomDuChamp">
+            <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+              {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.NOM_METADONNEE' | translate }}
+            </th>
+            <td *matCellDef="let element; index as j" class="pastis-metadata-table-col-large" mat-cell>
+              <span
                 [ngClass]="{
-                  'pastis-ico-menu-active': isButtonClicked(element.id),
-                  'pastis-ico-menu-inactive': !isButtonClicked(element.id),
+                  'pastis-table-content': isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
+                  'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
                 }"
+                [vitamuiTooltip]="getSedaDefinition(element.nomDuChamp)"
               >
-                {{ isButtonClicked(element.id) ? 'close' : 'more_horiz' }}
-              </mat-icon>
-            </button>
-
-            <mat-menu #menu="matMenu" (closed)="buttonClickedId = undefined" [overlapTrigger]="false" class="pastis-menu-item-vitam">
-              <!-- Dupliquer-->
-              <mat-divider *ngIf="isDuplicated(element.nomDuChamp) && profileService.profileType === 'PA'"> </mat-divider>
-              <button
-                (click)="onDuplicateNode(element.id)"
-                *ngIf="isDuplicated(element.nomDuChamp) && profileService.profileType === 'PA'"
-                mat-menu-item
+                @if (element.external) {
+                  <span>EXT-</span>
+                }
+                @if (isElementEdit(element)) {
+                  <span>{{ element.nomDuChampEdit }}</span>
+                } @else {
+                  {{ onResolveName(element.nomDuChamp) }}
+                }
+                @if (!isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j])) {
+                  <mat-icon vitamuiTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1" vitamuiTooltipPosition="TOP">
+                    info
+                  </mat-icon>
+                }
+              </span>
+            </td>
+          </ng-container>
+          <!-- Value Column -->
+          <ng-container matColumnDef="valeurFixe">
+            <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+              {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.VALEUR_FIXE' | translate }}
+            </th>
+            <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-medium" mat-cell>
+              @switch (getMetadataInputType(element)) {
+                @case ('date') {
+                  <div class="pastis-vitamui-container-editable-valeur-fixe">
+                    <vitamui-common-editable-textarea
+                      (ngModelChange)="setNodeValue(element, $event)"
+                      [dpDayPicker]="config"
+                      [maxlength]="120"
+                      [ngModel]="element.valeurFixe"
+                      class="valeur-fixe-pastis"
+                      [disabled]="profileService.profileType === 'PUA'"
+                    >
+                    </vitamui-common-editable-textarea>
+                  </div>
+                }
+                @case ('enumeration') {
+                  @if (profileService.profileType === 'PA') {
+                    <mat-select
+                      [ngModel]="element.valeurFixe"
+                      class="mat-select-valeur-fixe"
+                      placeholder="Choisissez une valeur"
+                      (selectionChange)="onChangeSelected(element, $event.value)"
+                    >
+                      <mat-option [value]="">--None--</mat-option>
+                      @for (val of element.enumeration; track val; let i = $index) {
+                        <mat-option [value]="val"> {{ val }} </mat-option>
+                      }
+                    </mat-select>
+                  }
+                }
+                @default {
+                  @if (!checkElementType(element.nomDuChamp)) {
+                    <div class="pastis-vitamui-container-editable-valeur-fixe">
+                      <vitamui-common-editable-textarea
+                        (ngModelChange)="setNodeValue(element, $event)"
+                        [maxlength]="120"
+                        [ngModel]="element.valeurFixe"
+                        class="valeur-fixe-pastis"
+                        [disabled]="profileService.profileType === 'PUA'"
+                      >
+                      </vitamui-common-editable-textarea>
+                    </div>
+                  }
+                }
+              }
+              <ng-template #simpleElement></ng-template>
+            </td>
+          </ng-container>
+          <!-- Cardinality Column -->
+          <ng-container matColumnDef="cardinalite">
+            <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+              {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CARDINALITE' | translate }}
+            </th>
+            <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-small" mat-cell>
+              <mat-select
+                (ngModelChange)="setNodeChildrenCardinalities(element, $event)"
+                [ngModel]="selectedCardinalities[i]"
+                class="select-border"
+                disableRipple="true"
+                panelClass="vitamui-mat-select"
               >
-                <mat-icon>filter_none</mat-icon>
-                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.DUPLIQUER' | translate }}</span>
-              </button>
-              <!-- @Attributs-->
-              <mat-divider *ngIf="hasAttributes(element.nomDuChamp) && profileService.profileType === 'PA'"></mat-divider>
-              <button
-                (click)="onEditAttributesClick(element.id)"
-                *ngIf="hasAttributes(element.nomDuChamp) && profileService.profileType === 'PA'"
-                mat-menu-item
-              >
-                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate }}</span>
-              </button>
-
-              <!-- Autoriser la présence de métadonnées non déclarées-->
-              <mat-divider
-                *ngIf="
-                  isElementComplex(element.nomDuChamp) &&
-                  profileService.profileType === 'PUA' &&
-                  isElementNameNotContentManagement(element.nomDuChamp)
-                "
-              >
-              </mat-divider>
-              <mat-checkbox
-                *ngIf="
-                  isElementComplex(element.nomDuChamp) &&
-                  profileService.profileType === 'PUA' &&
-                  isElementNameNotContentManagement(element.nomDuChamp)
-                "
-                class="mat-menu-item"
-                (click)="toggleAutorisation(element)"
-                [checked]="getNodeAdditionalProperties(element)"
-              >
-                <span class="hgap-2 mr-2">
-                  <span class="allow_presence_text"
-                    >Autoriser la presence de <br />
-                    métadonnées non déclarées</span
+                @for (c of element.cardinalite; track c) {
+                  <mat-option [value]="c">
+                    <span class="cardinality-text">{{ c }}</span>
+                  </mat-option>
+                }
+              </mat-select>
+            </td>
+          </ng-container>
+          <!-- Comment Column -->
+          <ng-container matColumnDef="commentaire">
+            <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+              {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.COMMENTAIRE' | translate }}
+            </th>
+            <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-large" mat-cell>
+              <div class="pastis-vitamui-container-editable-commentaire">
+                <vitamui-common-editable-textarea
+                  (ngModelChange)="setDocumentation(element, $event)"
+                  [maxlength]="120"
+                  [ngModel]="element.commentaire"
+                  class="commentaire-pastis"
+                  [required]="hasCustomRegex(element)"
+                >
+                </vitamui-common-editable-textarea>
+              </div>
+            </td>
+          </ng-container>
+          <!--Menu options-->
+          <ng-container matColumnDef="menuoption">
+            <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell></th>
+            <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-small" mat-cell>
+              @if (isRowHovered(element.id)) {
+                <button
+                  (click)="onButtonClicked(element.id)"
+                  [matMenuTriggerFor]="menu"
+                  [ngClass]="{
+                    'pastis-btn-metadata-options-active': isButtonClicked(element.id),
+                    'pastis-btn-metadata-options': !isButtonClicked(element.id),
+                  }"
+                  disableRipple="true"
+                  id="menuBtn"
+                  mat-icon-button
+                >
+                  <mat-icon
+                    [ngClass]="{
+                      'pastis-ico-menu-active': isButtonClicked(element.id),
+                      'pastis-ico-menu-inactive': !isButtonClicked(element.id),
+                    }"
                   >
-                  <i
-                    class="vitamui-icon vitamui-icon-info primary clickable"
-                    vitamuiTooltip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
-                    style="font-size: 1.5em"
-                  ></i>
-                </span>
-              </mat-checkbox>
-
-              <!-- @Supprimer-->
-              <mat-divider *ngIf="isDeletable(element)"></mat-divider>
-              <button (click)="onDeleteNode(element.id)" *ngIf="isDeletable(element)" mat-menu-item>
-                <mat-icon>delete</mat-icon>
-                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate }}</span>
-              </button>
-
-              <!-- Contrôle de métadonnées => PUA -->
-              <mat-divider
-                *ngIf="
+                    {{ isButtonClicked(element.id) ? 'close' : 'more_horiz' }}
+                  </mat-icon>
+                </button>
+              }
+              <mat-menu #menu="matMenu" (closed)="buttonClickedId = undefined" [overlapTrigger]="false" class="pastis-menu-item-vitam">
+                <!-- Dupliquer-->
+                @if (isDuplicated(element.nomDuChamp) && profileService.profileType === 'PA') {
+                  <mat-divider> </mat-divider>
+                }
+                @if (isDuplicated(element.nomDuChamp) && profileService.profileType === 'PA') {
+                  <button (click)="onDuplicateNode(element.id)" mat-menu-item>
+                    <mat-icon>filter_none</mat-icon>
+                    <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.DUPLIQUER' | translate }}</span>
+                  </button>
+                }
+                <!-- @Attributs-->
+                @if (hasAttributes(element.nomDuChamp) && profileService.profileType === 'PA') {
+                  <mat-divider></mat-divider>
+                }
+                @if (hasAttributes(element.nomDuChamp) && profileService.profileType === 'PA') {
+                  <button (click)="onEditAttributesClick(element.id)" mat-menu-item>
+                    <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate }}</span>
+                  </button>
+                }
+                <!-- Autoriser la présence de métadonnées non déclarées-->
+                @if (
+                  isElementComplex(element.nomDuChamp) &&
+                  profileService.profileType === 'PUA' &&
+                  isElementNameNotContentManagement(element.nomDuChamp)
+                ) {
+                  <mat-divider> </mat-divider>
+                }
+                @if (
+                  isElementComplex(element.nomDuChamp) &&
+                  profileService.profileType === 'PUA' &&
+                  isElementNameNotContentManagement(element.nomDuChamp)
+                ) {
+                  <mat-checkbox
+                    class="mat-menu-item"
+                    (click)="toggleAutorisation(element)"
+                    [checked]="getNodeAdditionalProperties(element)"
+                  >
+                    <span class="hgap-2 mr-2">
+                      <span class="allow_presence_text"
+                        >Autoriser la presence de <br />
+                        métadonnées non déclarées</span
+                      >
+                      <i
+                        class="vitamui-icon vitamui-icon-info primary clickable"
+                        vitamuiTooltip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
+                        style="font-size: 1.5em"
+                      ></i>
+                    </span>
+                  </mat-checkbox>
+                }
+                <!-- @Supprimer-->
+                @if (isDeletable(element)) {
+                  <mat-divider></mat-divider>
+                }
+                @if (isDeletable(element)) {
+                  <button (click)="onDeleteNode(element.id)" mat-menu-item>
+                    <mat-icon>delete</mat-icon>
+                    <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate }}</span>
+                  </button>
+                }
+                <!-- Contrôle de métadonnées => PUA -->
+                @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   !isAppliedControl(element.id)
-                "
-              >
-              </mat-divider>
-              <button
-                (click)="onControlClick(element.id)"
-                *ngIf="
+                ) {
+                  <mat-divider> </mat-divider>
+                }
+                @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   !isAppliedControl(element.id)
-                "
-                mat-menu-item
-              >
-                <mat-icon><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
-                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate }}</span>
-              </button>
-
-              <!-- Edition des contres de métadonnées -->
-              <mat-divider
-                *ngIf="
+                ) {
+                  <button (click)="onControlClick(element.id)" mat-menu-item>
+                    <mat-icon><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                    <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate }}</span>
+                  </button>
+                }
+                <!-- Edition des contres de métadonnées -->
+                @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   isAppliedControl(element.id)
-                "
-              >
-              </mat-divider>
-              <button
-                (click)="onEditControlClick(element.id)"
-                *ngIf="
+                ) {
+                  <mat-divider> </mat-divider>
+                }
+                @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   isAppliedControl(element.id)
-                "
-                mat-menu-item
-              >
-                <mat-icon><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
-                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EDITION_CONTROLE' | translate }}</span>
-              </button>
-            </mat-menu>
-          </td>
-        </ng-container>
-
-        <tr *matHeaderRowDef="displayedColumns; sticky: true" class="pastis-table-row-header" mat-header-row></tr>
-        <tr
-          (mouseenter)="onMouseOver(row)"
-          (mouseleave)="onMouseLeave()"
-          *matRowDef="let row; columns: displayedColumns"
-          class="pastis-table-row"
-          mat-row
-        ></tr>
-      </table>
+                ) {
+                  <button (click)="onEditControlClick(element.id)" mat-menu-item>
+                    <mat-icon><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                    <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EDITION_CONTROLE' | translate }}</span>
+                  </button>
+                }
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr *matHeaderRowDef="displayedColumns; sticky: true" class="pastis-table-row-header" mat-header-row></tr>
+          <tr
+            (mouseenter)="onMouseOver(row)"
+            (mouseleave)="onMouseLeave()"
+            *matRowDef="let row; columns: displayedColumns"
+            class="pastis-table-row"
+            mat-row
+          ></tr>
+        </table>
+      } @else {
+        <div class="complex-element-no-child">
+          {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEUN' | translate }}
+          {{ clickedNode.name }} {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEDEUX' | translate }}
+        </div>
+      }
     </div>
 
     <!-- Metadata Control Part-->
-    <div *ngIf="profileService.profileType === 'PUA' && openControls">
-      <div class="pastis-panel-metadata-control" *ngIf="enumerationControl && clickedControl.name === clickedNode.name">
-        <div class="row">
-          <div class="col">
-            <h2 class="pastis-dialog-config-title" matDialogTitle>
-              <span class="pastis-dialog-title"
-                >{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENUMERATION_CONTROLE' | translate }}
-                <mat-icon class="pastis-icon-primary">
-                  <i
-                    class="vitamui-icon vitamui-icon-info primary clickable"
-                    [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_ENNUMERATION' | translate"
-                  ></i>
-                </mat-icon>
-              </span>
-            </h2>
-          </div>
-          <div style="position: relative; right: 20px">
-            <button class="btn btn-circle large" style="background-color: transparent; border-width: 0ch" (click)="closeControlsVue()">
-              <i class="material-icons">close</i>
-            </button>
-          </div>
-        </div>
-
-        <div class="ml-5 row">
-          <div class="col-4">
-            <vitamui-common-editable-input (ngModelChange)="addEnumsControl($event)" [ngModel]="editedEnumControl">
-            </vitamui-common-editable-input>
-          </div>
-          <div class="col-8" *ngIf="isEmptyEnumeration(enumerationsSedaControl) && isDataType()">
-            <p class="pastis-indication">
-              {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMAT_ENUMERATION_AUTORISES' | translate }}:
-              <span *ngFor="let regex of availableRegex">{{ regex.label }}, </span>
-            </p>
-          </div>
-        </div>
-        <div *ngIf="enumsControlSelected?.length > 0" class="pastis-container-selected-items mt-5">
-          <div *ngFor="let item of enumsControlSelected; let i = index" style="display: inline-flex">
-            <div class="selected-items-box">
-              <span style="padding: 12px">
-                <span class="item-text">{{ item }}</span>
-              </span>
-              <mat-divider class="selected-items-separator" vertical></mat-divider>
-              <span (click)="onRemoveEnumsControl(item)" class="selected-items-close">&times;</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="pastis-panel-metadata-control" *ngIf="expressionControl && clickedControl.name === clickedNode.name">
-        <div class="row">
-          <div class="col">
-            <h2 class="pastis-dialog-config-title" matDialogTitle>
-              <span class="pastis-dialog-title"
-                >{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EXPRESSION_CONTROLE' | translate }}
-                <mat-icon class="pastis-icon-primary">
-                  <i
-                    class="vitamui-icon vitamui-icon-info primary clickable"
-                    [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_EXPRESSION' | translate"
-                  ></i>
-                </mat-icon>
-              </span>
-            </h2>
-          </div>
-          <div style="position: relative; right: 20px">
-            <button class="btn btn-circle large" style="background-color: transparent; border-width: 0ch" (click)="closeControlsVue()">
-              <i class="material-icons">close</i>
-            </button>
-          </div>
-        </div>
-        <mat-radio-group [(ngModel)]="radioExpressionReguliere">
-          <div class="container">
+    @if (profileService.profileType === 'PUA' && openControls) {
+      <div>
+        @if (enumerationControl && clickedControl.name === clickedNode.name) {
+          <div class="pastis-panel-metadata-control">
             <div class="row">
-              <div class="col-auto">
-                <mat-radio-button value="select" class="text-text-normal pastis-radio">
-                  {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMATAGE_PREDEFINI' | translate }}:
-                </mat-radio-button>
+              <div class="col">
+                <h2 class="pastis-dialog-config-title" matDialogTitle>
+                  <span class="pastis-dialog-title"
+                    >{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENUMERATION_CONTROLE' | translate }}
+                    <mat-icon class="pastis-icon-primary">
+                      <i
+                        class="vitamui-icon vitamui-icon-info primary clickable"
+                        [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_ENNUMERATION' | translate"
+                      ></i>
+                    </mat-icon>
+                  </span>
+                </h2>
               </div>
-              <div class="row col">
-                <div class="col-auto">
-                  <vitamui-select
-                    [disabled]="availableRegex?.length <= 1"
-                    [(ngModel)]="regex"
-                    (change)="radioExpressionReguliere = 'select'"
-                    [options]="availableRegex"
-                    [enableSearch]="false"
-                  ></vitamui-select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="container mt-4">
-            <div class="row no-gutters">
-              <div class="col-auto">
-                <mat-radio-button value="input" [disabled]="isNotRegexCustomisable()"></mat-radio-button>
-              </div>
-              <div class="row col">
-                <div class="col-6">
-                  <vitamui-input
-                    [textarea]="true"
-                    class="w-100"
-                    [disabled]="isNotRegexCustomisable()"
-                    [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' | translate"
-                    [(ngModel)]="customRegex"
-                    (ngModelChange)="radioExpressionReguliere = 'input'"
-                    [required]="radioExpressionReguliere === 'input'"
-                    [maxlength]="115"
-                  >
-                  </vitamui-input>
-                </div>
-                <div class="col-6">
-                  <vitamui-input
-                    [textarea]="true"
-                    class="w-100"
-                    [disabled]="isNotRegexCustomisable()"
-                    [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PATTERN_COMMENT' | translate"
-                    [(ngModel)]="commentaire"
-                    (ngModelChange)="radioExpressionReguliere = 'input'"
-                    [required]="radioExpressionReguliere === 'input'"
-                    [maxlength]="115"
-                  >
-                  </vitamui-input>
-                </div>
+              <div style="position: relative; right: 20px">
+                <button class="btn btn-circle large" style="background-color: transparent; border-width: 0ch" (click)="closeControlsVue()">
+                  <i class="material-icons">close</i>
+                </button>
               </div>
             </div>
+            <div class="ml-5 row">
+              <div class="col-4">
+                <vitamui-common-editable-input (ngModelChange)="addEnumsControl($event)" [ngModel]="editedEnumControl">
+                </vitamui-common-editable-input>
+              </div>
+              @if (isEmptyEnumeration(enumerationsSedaControl) && isDataType()) {
+                <div class="col-8">
+                  <p class="pastis-indication">
+                    {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMAT_ENUMERATION_AUTORISES' | translate }}:
+                    @for (regex of availableRegex; track regex) {
+                      <span>{{ regex.label }}, </span>
+                    }
+                  </p>
+                </div>
+              }
+            </div>
+            @if (enumsControlSelected?.length > 0) {
+              <div class="pastis-container-selected-items mt-5">
+                @for (item of enumsControlSelected; track item; let i = $index) {
+                  <div style="display: inline-flex">
+                    <div class="selected-items-box">
+                      <span style="padding: 12px">
+                        <span class="item-text">{{ item }}</span>
+                      </span>
+                      <mat-divider class="selected-items-separator" vertical></mat-divider>
+                      <span (click)="onRemoveEnumsControl(item)" class="selected-items-close">&times;</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
           </div>
-        </mat-radio-group>
-      </div>
-
-      <div class="pastis-container-button-submit-controls">
-        <!--Button add metadata-->
-        <div class="row mt-3">
-          <button
-            *ngIf="(enumerationControl || expressionControl) && clickedControl.name === clickedNode.name"
-            [disabled]="
-              (enumsControlSelected.length <= 0 && regex === null && customRegex === null) ||
-              (radioExpressionReguliere === 'input' && (!customRegex || !commentaire))
-            "
-            class="btn primary ml-5"
-            style="text-transform: uppercase"
-            (click)="onSubmitControls()"
-          >
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_OK_BUTTON_LABEL' | translate }}
-          </button>
-          <button
-            *ngIf="
+        }
+        @if (expressionControl && clickedControl.name === clickedNode.name) {
+          <div class="pastis-panel-metadata-control">
+            <div class="row">
+              <div class="col">
+                <h2 class="pastis-dialog-config-title" matDialogTitle>
+                  <span class="pastis-dialog-title"
+                    >{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EXPRESSION_CONTROLE' | translate }}
+                    <mat-icon class="pastis-icon-primary">
+                      <i
+                        class="vitamui-icon vitamui-icon-info primary clickable"
+                        [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_EXPRESSION' | translate"
+                      ></i>
+                    </mat-icon>
+                  </span>
+                </h2>
+              </div>
+              <div style="position: relative; right: 20px">
+                <button class="btn btn-circle large" style="background-color: transparent; border-width: 0ch" (click)="closeControlsVue()">
+                  <i class="material-icons">close</i>
+                </button>
+              </div>
+            </div>
+            <mat-radio-group [(ngModel)]="radioExpressionReguliere">
+              <div class="container">
+                <div class="row">
+                  <div class="col-auto">
+                    <mat-radio-button value="select" class="text-text-normal pastis-radio">
+                      {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMATAGE_PREDEFINI' | translate }}:
+                    </mat-radio-button>
+                  </div>
+                  <div class="row col">
+                    <div class="col-auto">
+                      <vitamui-select
+                        [disabled]="availableRegex?.length <= 1"
+                        [(ngModel)]="regex"
+                        (change)="radioExpressionReguliere = 'select'"
+                        [options]="availableRegex"
+                        [enableSearch]="false"
+                      ></vitamui-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="container mt-4">
+                <div class="row no-gutters">
+                  <div class="col-auto">
+                    <mat-radio-button value="input" [disabled]="isNotRegexCustomisable()"></mat-radio-button>
+                  </div>
+                  <div class="row col">
+                    <div class="col-6">
+                      <vitamui-input
+                        [textarea]="true"
+                        class="w-100"
+                        [disabled]="isNotRegexCustomisable()"
+                        [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' | translate"
+                        [(ngModel)]="customRegex"
+                        (ngModelChange)="radioExpressionReguliere = 'input'"
+                        [required]="radioExpressionReguliere === 'input'"
+                        [maxlength]="115"
+                      >
+                      </vitamui-input>
+                    </div>
+                    <div class="col-6">
+                      <vitamui-input
+                        [textarea]="true"
+                        class="w-100"
+                        [disabled]="isNotRegexCustomisable()"
+                        [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PATTERN_COMMENT' | translate"
+                        [(ngModel)]="commentaire"
+                        (ngModelChange)="radioExpressionReguliere = 'input'"
+                        [required]="radioExpressionReguliere === 'input'"
+                        [maxlength]="115"
+                      >
+                      </vitamui-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-radio-group>
+          </div>
+        }
+        <div class="pastis-container-button-submit-controls">
+          <!--Button add metadata-->
+          <div class="row mt-3">
+            @if ((enumerationControl || expressionControl) && clickedControl.name === clickedNode.name) {
+              <button
+                [disabled]="
+                  (enumsControlSelected.length <= 0 && regex === null && customRegex === null) ||
+                  (radioExpressionReguliere === 'input' && (!customRegex || !commentaire))
+                "
+                class="btn primary ml-5"
+                style="text-transform: uppercase"
+                (click)="onSubmitControls()"
+              >
+                {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_OK_BUTTON_LABEL' | translate }}
+              </button>
+            }
+            @if (
               (enumerationControl || expressionControl) && clickedControl.name === clickedNode.name && isAppliedControl(clickedControl.id)
-            "
-            class="btn delete ml-5"
-            style="text-transform: uppercase"
-            (click)="onDeleteControls()"
-          >
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_DELETE_BUTTON_LABEL' | translate }}
-          </button>
+            ) {
+              <button class="btn delete ml-5" style="text-transform: uppercase" (click)="onDeleteControls()">
+                {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_DELETE_BUTTON_LABEL' | translate }}
+              </button>
+            }
+          </div>
         </div>
       </div>
-    </div>
-
-    <ng-template #complexElementWithoutChild>
-      <div class="complex-element-no-child">
-        {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEUN' | translate }}
-        {{ clickedNode.name }} {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEDEUX' | translate }}
-      </div>
-    </ng-template>
+    }
   </mat-sidenav-content>
 </mat-sidenav-container>

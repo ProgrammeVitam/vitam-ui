@@ -180,17 +180,21 @@ describe('GroupListComponent', () => {
                 <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.LEVEL</div>
               </div>
               <div class="vitamui-table-rows">
-                <div class="vitamui-row" *ngFor="let group of dataSource">
-                  <div></div>
-                  <div>{{ group.name }}</div>
-                  <div>{{ group.identifier }}</div>
-                  <div>{{ group.description }}</div>
-                  <div>{{ group.level }}</div>
+                @for (group of dataSource; track group) {
+                  <div class="vitamui-row">
+                    <div></div>
+                    <div>{{ group.name }}</div>
+                    <div>{{ group.identifier }}</div>
+                    <div>{{ group.description }}</div>
+                    <div>{{ group.level }}</div>
+                  </div>
+                }
+              </div>
+              @if (infiniteScrollDisabled) {
+                <div class="vitamui-table-message">
+                  <button class="clickable" type="button" (click)="groupService.loadMore()">GROUP.HOME.LOAD_MORE</button>
                 </div>
-              </div>
-              <div class="vitamui-table-message" *ngIf="infiniteScrollDisabled">
-                <button class="clickable" type="button" (click)="groupService.loadMore()">GROUP.HOME.LOAD_MORE</button>
-              </div>
+              }
             </div>
           `,
         },
