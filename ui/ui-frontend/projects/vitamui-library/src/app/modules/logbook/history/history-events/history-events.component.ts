@@ -36,25 +36,32 @@
  */
 import { Component, Input } from '@angular/core';
 
-import { IEvent } from '../../../models';
+import { HistoryEvent } from '../../../models';
+import { EventTypeLabelComponent } from '../../event-type-label/event-type-label.component';
+import { PipesModule } from '../../../pipes/pipes.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-history-events',
   templateUrl: './history-events.component.html',
   styleUrls: ['./history-events.component.scss'],
-  standalone: false,
+  imports: [EventTypeLabelComponent, PipesModule, TranslatePipe],
 })
 export class HistoryEventsComponent {
-  @Input() events: IEvent[];
+  @Input() events: HistoryEvent[];
 
-  checkEventData(event: IEvent): boolean {
-    if (event) {
-      return event.data !== '{}';
-    }
+  checkEventData(event: HistoryEvent): boolean {
+    return event?.data && event.data !== '{}';
   }
-  getEventData(event: IEvent) {
+  getEventData(event: HistoryEvent) {
     if (event) {
-      return event.data;
+      try {
+        // Pretty printing the data
+        return JSON.stringify(JSON.parse(event.data), null, 2);
+      } catch {
+        // In case the data is not a valid JSON
+        return event.data;
+      }
     }
   }
 }

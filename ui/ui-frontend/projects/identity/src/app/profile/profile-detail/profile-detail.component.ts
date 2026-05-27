@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
+import { AuthService, isLevelAllowed, Profile } from 'vitamui-library';
 
 import { ProfileService } from '../profile.service';
 
@@ -61,7 +61,6 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   constructor(
     private rngProfileService: ProfileService,
     private authService: AuthService,
-    private startupService: StartupService,
   ) {}
 
   ngOnInit(): void {
@@ -72,15 +71,6 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  openPopup() {
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + '/profile/' + this.profile.id,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
   }
 
   levelNotAllowed(): boolean {
@@ -95,11 +85,5 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.profileUpdateSub.unsubscribe();
-  }
-
-  filterEvents(event: Event): boolean {
-    return (
-      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') || event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE'))
-    );
   }
 }

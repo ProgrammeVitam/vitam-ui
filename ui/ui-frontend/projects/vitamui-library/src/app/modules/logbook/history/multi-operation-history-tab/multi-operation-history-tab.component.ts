@@ -40,8 +40,12 @@ import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../auth.service';
-import { IEvent } from '../../../models';
+import { HistoryEvent } from '../../../models';
 import { LogbookService } from '../../logbook.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CollapseModule } from '../../../components/collapse/collapse.module';
+import { HistoryEventsComponent } from '../history-events/history-events.component';
 
 const EVENT_LIMIT = 100;
 
@@ -49,15 +53,14 @@ const EVENT_LIMIT = 100;
   selector: 'vitamui-common-multi-operation-history-tab',
   templateUrl: './multi-operation-history-tab.component.html',
   styleUrls: ['./multi-operation-history-tab.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, TranslatePipe, CollapseModule, HistoryEventsComponent],
 })
 export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   @Input() collectionsMap: Map<string, string>;
   @Input() identifiers: string[];
-  @Input() filter: (event: any) => boolean;
   @Input() filteringByIdentifier = true;
 
-  events: IEvent[] = [];
+  events: HistoryEvent[] = [];
   loading = false;
 
   private isDestroyed$ = new Subject<void>();
@@ -91,18 +94,14 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
         map((paramMap) =>
           paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier),
         ),
-        switchMap((tenantIdentifier) => {
-          const result = this.logbookService.listHistoryOperations(this.collectionsMap, tenantIdentifier);
-          return result;
-        }),
+        switchMap((tenantIdentifier) => this.logbookService.listHistoryOperations(this.collectionsMap, tenantIdentifier)),
         takeUntil(this.isDestroyed$),
       )
       .subscribe(
         (results) => {
           this.events = results
-            .filter((event) => {
-              return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
-            })
+            // FIXME: shouldn't we filter on API side?
+            .filter((event) => (this.filteringByIdentifier ? this.filterByIdentifier(event) : true))
             .slice(0, EVENT_LIMIT);
           this.loading = false;
         },
@@ -110,7 +109,7 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
       );
   }
 
-  filterByIdentifier(event: any): boolean {
-    return event.objectId && this.identifiers.includes(event.objectId);
+  private filterByIdentifier(event: HistoryEvent): boolean {
+    return event.obId && this.identifiers.includes(event.obId);
   }
 }

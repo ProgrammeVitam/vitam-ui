@@ -36,9 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.user.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -76,9 +74,9 @@ import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfigura
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.dto.BasicCustomerDto;
 import fr.gouv.vitamui.commons.security.client.dto.GraphicIdentityDto;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
@@ -1167,7 +1165,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         return userConverter;
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id " + id);
         final Integer tenantIdentifier = securityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
@@ -1176,18 +1174,12 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
         final Optional<User> user = getRepository().findById(id);
         user.orElseThrow(() -> new NotFoundException("No user found with id : %s".formatted(id)));
-        final JsonNode body = logbookService
-            .findEventsByIdentifierAndCollectionNames(
-                user.get().getIdentifier(),
-                MongoDbCollections.USERS,
-                vitamContext
-            )
-            .toJsonNode();
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            user.get().getIdentifier(),
+            MongoDbCollections.USERS,
+            vitamContext,
+            USER_OPERATIONS_EVENT_TYPES.stream().map(Enum::name).collect(Collectors.toList())
+        );
     }
 
     /**

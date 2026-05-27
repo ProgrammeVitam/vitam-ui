@@ -37,7 +37,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { LogbookService } from 'vitamui-library';
-import { IngestStatus, LogbookOperation, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
+import { IngestStatus, ingestStatus, ingestStatusVisualColor, LogbookOperation } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 
 @Component({
@@ -97,12 +97,6 @@ export class IngestPreviewComponent implements OnInit, OnChanges {
 
   emitClose() {
     this.previewClose.emit();
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') || event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST'))
-    );
   }
 
   getIngestStatus(ingest: any): IngestStatus {

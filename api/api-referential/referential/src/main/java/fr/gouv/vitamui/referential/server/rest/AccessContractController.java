@@ -47,7 +47,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.accesscontract.AccessContractService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,6 +76,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -170,8 +171,7 @@ public class AccessContractController {
 
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return accessContractService.findHistoryById(id);

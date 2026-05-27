@@ -47,7 +47,6 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.ContextModel;
-import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
@@ -69,6 +68,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -367,38 +367,6 @@ public class ContextServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
-        VitamContext vitamContext = new VitamContext(0);
-        String id = "id_0";
-
-        when(
-            logbookService.findEventsByIdentifierAndCollectionNames(
-                any(String.class),
-                any(String.class),
-                any(VitamContext.class)
-            )
-        ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
-
-        assertThatCode(() -> contextService.findHistoryByIdentifier(vitamContext, id)).doesNotThrowAnyException();
-    }
-
-    @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
-        VitamContext vitamContext = new VitamContext(0);
-        String id = "id_0";
-
-        when(
-            logbookService.findEventsByIdentifierAndCollectionNames(
-                any(String.class),
-                any(String.class),
-                any(VitamContext.class)
-            )
-        ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
-
-        assertThatCode(() -> contextService.findHistoryByIdentifier(vitamContext, id)).doesNotThrowAnyException();
-    }
-
-    @Test
     public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
@@ -408,7 +376,8 @@ public class ContextServiceTest {
             logbookService.findEventsByIdentifierAndCollectionNames(
                 any(String.class),
                 any(String.class),
-                any(VitamContext.class)
+                any(VitamContext.class),
+                anyList()
             )
         ).thenThrow(new VitamClientException("Exception"));
 

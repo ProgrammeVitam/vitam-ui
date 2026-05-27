@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Owner, StartupService, Tenant } from 'vitamui-library';
+import { Owner, Tenant } from 'vitamui-library';
 
 @Component({
   selector: 'app-owner-preview',
@@ -50,29 +50,7 @@ export class OwnerPreviewComponent {
   @Input() isPopup: boolean;
   @Output() previewClose = new EventEmitter();
 
-  constructor(private startupService: StartupService) {}
-
-  openPopup() {
-    const url = this.tenant ? '/customer/tenant/' + this.tenant.id : '/customer/owner/' + this.owner.id;
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + url,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
-  }
-
   emitClose() {
     this.previewClose.emit();
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_UPDATE_OWNER') ||
-        event.outDetail.includes('EXT_VITAMUI_CREATE_OWNER') ||
-        event.outDetail.includes('EXT_VITAMUI_CREATE_TENANT') ||
-        event.outDetail.includes('EXT_VITAMUI_UPDATE_TENANT'))
-    );
   }
 }

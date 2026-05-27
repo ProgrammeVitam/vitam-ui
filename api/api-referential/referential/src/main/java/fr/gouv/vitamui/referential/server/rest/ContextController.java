@@ -45,7 +45,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.context.ContextService;
@@ -72,6 +72,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -159,8 +160,7 @@ public class ContextController {
 
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for context with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);

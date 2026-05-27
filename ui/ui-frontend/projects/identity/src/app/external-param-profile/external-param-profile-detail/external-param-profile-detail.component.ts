@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Event, ExternalParamProfile } from 'vitamui-library';
+import { ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
 
@@ -79,13 +79,5 @@ export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.externalParamProfileUpdateSub.unsubscribe();
-  }
-
-  filterEvents(event: Event): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE') ||
-        event.outDetail.includes('EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE'))
-    );
   }
 }

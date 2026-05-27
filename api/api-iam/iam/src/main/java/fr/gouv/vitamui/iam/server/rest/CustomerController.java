@@ -49,7 +49,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
@@ -89,6 +89,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -240,8 +241,8 @@ public class CustomerController implements CrudController<CustomerDto> {
 
     @Operation(operationId = "customers_findHistoryById", summary = "Find history for a customer by its id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException {
+    @Secured(ServicesData.ROLE_GET_CUSTOMERS)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         LOGGER.debug("get logbook for customer with id :{}", id);
         SanityChecker.checkSecureParameter(id);
         return customerService.findHistoryById(id);

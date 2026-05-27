@@ -36,27 +36,30 @@
  */
 import { Id } from '../id.interface';
 
-export interface IEvent extends Id {
-  obIdIn?: string;
-  idRequest: string;
-  parentId: string;
+export interface HistoryEvent {
   type: string;
-  typeProc: string;
   dateTime: Date;
   outcome: string;
   outDetail: string;
-  outMessage: string;
   data: string;
   parsedData: { [key: string]: any };
+  obId?: string;
+  obIdReq: string;
+  userIdentifier?: string;
+  subrogatorIdentifier?: string;
+}
+
+export interface IEvent extends Id, HistoryEvent {
+  obIdIn?: string;
+  idRequest: string;
+  parentId: string;
+  typeProc: string;
+  outMessage: string;
   objectId: string;
   collectionName: string;
   agId: string;
   agIdApp: string;
   agIdExt: string;
   rightsStatementIdentifier: string;
-  obIdReq: string;
-  obId?: string;
-  userIdentifier?: string;
-  subrogatorIdentifier?: string;
   events?: IEvent[];
 }
