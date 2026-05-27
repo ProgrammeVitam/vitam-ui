@@ -44,7 +44,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { LevelInputModule, RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { LevelInputComponent } from '../../../../vitamui-library/src/app/modules/components/editable-field/level-input/level-input.component';
+import { RoleComponent } from '../../../../vitamui-library/src/app/modules/components/role-toggle/role.component';
+import { RoleToggleComponent } from '../../../../vitamui-library/src/app/modules/components/role-toggle/role-toggle.component';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../vitamui-library/src/lib/vitamui-library.module';
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
@@ -62,7 +66,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     CommonModule,
     ExternalParamProfileRoutingModule,
     GroupAttributionModule,
-    LevelInputModule,
+    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatMenuModule,
@@ -72,7 +76,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSidenavModule,
     MatTabsModule,
     ReactiveFormsModule,
-    RoleToggleModule,
+    RoleComponent,
+    RoleToggleComponent,
     SharedModule,
     TranslateModule,
     VitamUICommonModule,

@@ -40,7 +40,7 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LogbookApiService } from '../api/logbook-api.service';
 import { Logger } from '../logger/logger';
-import { IEvent } from '../models';
+import { IEvent } from '../models/logbook/event.interface';
 import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 

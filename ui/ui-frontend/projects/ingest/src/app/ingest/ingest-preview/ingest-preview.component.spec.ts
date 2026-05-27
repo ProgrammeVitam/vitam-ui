@@ -41,16 +41,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, LogbookService } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { LogbookService } from '../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
 import { LogbookOperation } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: string): string {
     return value;
@@ -64,9 +62,9 @@ describe('IngestPreviewComponent test:', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestPreviewComponent, MockTruncatePipe],
+      declarations: [IngestPreviewComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatMenuModule, TranslateModule.forRoot()],
+      imports: [MatMenuModule, TranslateModule.forRoot(), MockTruncatePipe],
       providers: [
         { provide: LogbookService, useValue: {} },
         {

@@ -36,8 +36,10 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Collection, Schema, SchemaElement } from '../models';
-import { ProfiledSchemaElement } from '../object-viewer/models';
+import { Collection } from '../models/schema/collection.enum';
+import { Schema } from '../models/schema/schema.interface';
+import { SchemaElement } from '../models/schema/schema-element.model';
+import { ProfiledSchemaElement } from '../models/schema/schema-element.model';
 import { Control } from '../models/schema/control.model';
 import { EffectiveCardinality } from '../object-viewer/types';
 import { map } from 'rxjs/operators';

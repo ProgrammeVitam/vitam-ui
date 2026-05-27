@@ -56,7 +56,6 @@ import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'editable-field-component',
-  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {

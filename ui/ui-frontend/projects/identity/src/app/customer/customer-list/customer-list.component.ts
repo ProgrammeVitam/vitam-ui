@@ -39,17 +39,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import {
-  collapseAnimation,
-  Customer,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  Owner,
-  PageRequest,
-  rotateAnimation,
-  Tenant,
-} from 'vitamui-library';
+import { collapseAnimation, rotateAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Owner } from '../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { Tenant } from '../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';

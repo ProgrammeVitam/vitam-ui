@@ -41,7 +41,12 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty, omit } from 'underscore';
-import { ApplicationId, diff, FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, Role, SecurityService, VitamuiSelectOptions } from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from '../../../../../../vitamui-library/src/lib/models/file-format';
+import { Role } from '../../../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { SecurityService } from '../../../../../../vitamui-library/src/app/modules/security/security.service';
+import { VitamuiSelectOptions } from '../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { FileFormatService } from '../../file-format.service';
 
 @Component({

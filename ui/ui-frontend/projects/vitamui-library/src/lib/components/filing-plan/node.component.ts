@@ -38,12 +38,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Node } from '../../models/node.interface';
+import { MatIconButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vitamui-library-node',
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.scss'],
-  standalone: false,
+  imports: [MatIconButton, MatCheckbox, FormsModule],
 })
 export class NodeComponent {
   @Input() tenantIdentifier: number;

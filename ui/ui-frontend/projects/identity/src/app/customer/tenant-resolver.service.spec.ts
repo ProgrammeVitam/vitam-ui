@@ -38,7 +38,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { Tenant } from 'vitamui-library';
+import { Tenant } from '../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { TenantResolver } from './tenant-resolver.service';
 import { TenantService } from './tenant.service';
 

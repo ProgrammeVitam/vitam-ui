@@ -36,18 +36,17 @@
  */
 
 import { Injectable, inject } from '@angular/core';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
 import {
-  CriteriaDataType,
-  CriteriaOperator,
   CriteriaSearchCriteria,
   CriteriaValue,
-  FilingHoldingSchemeNode,
-  ORPHANS_NODE_ID,
   SearchCriteriaEltDto,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { FilingHoldingSchemeNode } from '../../../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import { ORPHANS_NODE_ID } from '../../../../../../../vitamui-library/src/app/modules/models/nodes/filing-holding-scheme.handler';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';

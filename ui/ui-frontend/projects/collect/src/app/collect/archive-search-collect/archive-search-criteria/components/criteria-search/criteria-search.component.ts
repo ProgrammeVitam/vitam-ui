@@ -40,11 +40,11 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   CriteriaSearchCriteria,
   CriteriaValue,
-  QueryParamsService,
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
-  TranslateWithOptionalTypeSuffixPipe,
-} from 'vitamui-library';
+} from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { QueryParamsService } from '../../../../../../../../vitamui-library/src/app/modules/url/query-params.service';
+import { TranslateWithOptionalTypeSuffixPipe } from '../../../../../../../../vitamui-library/src/app/modules/pipes/translate-with-optional-type-suffix.pipe';
 
 @Component({
   selector: 'app-criteria-search',

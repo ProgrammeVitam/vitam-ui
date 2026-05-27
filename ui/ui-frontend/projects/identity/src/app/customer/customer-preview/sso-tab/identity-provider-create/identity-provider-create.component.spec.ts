@@ -43,7 +43,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
-import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'vitamui-library';
+import { AuthnRequestBindingEnum } from '../../../../../../../vitamui-library/src/app/modules/utils/authnRequestBinding.enum';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { newFile } from '../../../../../../../vitamui-library/src/app/modules/models/customer/identity-provider.interface';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderCreateComponent } from './identity-provider-create.component';
@@ -58,7 +60,14 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    MatProgressBarModule,
+    ReactiveFormsModule,
+    MatButtonToggleModule,
+    MatSelectModule,
+    NoopAnimationsModule,
+    VitamUICommonTestModule,
+  ],
 })
 class PatternStubComponent implements ControlValueAccessor {
   @Input()
@@ -101,9 +110,10 @@ describe('IdentityProviderCreateComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
+        PatternStubComponent,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [IdentityProviderCreateComponent, PatternStubComponent],
+      declarations: [IdentityProviderCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },

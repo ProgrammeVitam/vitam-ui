@@ -39,20 +39,25 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ProfileType } from '../../models/profile-type.enum';
-import { ApplicationService, MiscValidators, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ApplicationService } from '../../../../../vitamui-library/src/app/modules/application.service';
+import { MiscValidators } from '../../../../../vitamui-library/src/lib/validators/misc.validators';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { Notice } from '../../models/notice.model';
 import { ProfileService } from '../../core/services/profile.service';
 import { Subscription } from 'rxjs';
 import { ProfileDescription } from '../../models/profile-description.model';
-import { PastisMaterialModule } from '../../material.module';
+
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 import { Router } from '@angular/router';
 import { FileService } from '../../core/services/file.service';
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  imports: [VitamUILibraryModule, ReactiveFormsModule, FormsModule, VitamUICommonModule, PastisMaterialModule, PastisGenericPopupComponent],
+  imports: [VitamUILibraryModule, ReactiveFormsModule, FormsModule, VitamUICommonModule, PastisGenericPopupComponent, MatDialogModule],
   selector: 'app-save-profile-popup',
   templateUrl: './save-profile-popup.component.html',
 })

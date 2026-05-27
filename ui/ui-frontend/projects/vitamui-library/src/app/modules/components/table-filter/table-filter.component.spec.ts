@@ -53,7 +53,6 @@ import { TableFilterComponent } from './table-filter.component';
       <vitamui-common-table-filter-option [value]="3">Option 3</vitamui-common-table-filter-option>
     </vitamui-common-table-filter>
   `,
-  standalone: false,
 })
 export class TestHostComponent {
   filter: any;
@@ -63,17 +62,13 @@ export class TestHostComponent {
   onClose() {}
 }
 
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
-
 describe('TableFilterComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPseudoCheckboxModule, FormsModule, TableFilterComponent, TableFilterOptionComponent],
-      declarations: [TestHostComponent],
+      imports: [MatPseudoCheckboxModule, FormsModule, TableFilterComponent, TableFilterOptionComponent, TestHostComponent],
     }).compileComponents();
   });
 

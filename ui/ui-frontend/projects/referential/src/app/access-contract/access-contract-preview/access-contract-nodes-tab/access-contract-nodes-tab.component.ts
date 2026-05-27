@@ -37,14 +37,12 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  AccessContract,
-  ExternalParameters,
-  ExternalParametersService,
-  SearchUnitApiService,
-  VitamuiHttpHeaders,
-  SnackBarService,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { ExternalParameters } from '../../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { SearchUnitApiService } from '../../../../../../vitamui-library/src/lib/api/search-unit-api.service';
+import { VitamuiHttpHeaders } from '../../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
 
 @Component({

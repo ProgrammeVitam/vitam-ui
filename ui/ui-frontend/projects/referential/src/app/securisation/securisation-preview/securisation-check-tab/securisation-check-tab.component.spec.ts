@@ -37,7 +37,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { AccessContractService, BASE_URL, ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ExternalParameters } from '../../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';

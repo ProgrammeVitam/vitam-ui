@@ -37,7 +37,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Customer } from 'vitamui-library';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
 
 @Component({
   selector: 'app-customer-popup',

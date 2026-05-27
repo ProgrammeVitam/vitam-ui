@@ -38,12 +38,14 @@ import { Injectable, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
-import { AppConfiguration } from '.';
+import { AppConfiguration } from './models/app.configuration.interface';
 import { convertToDarkColor, convertToLightColor, setLuminosity } from './utils/colors.util';
-import { AuthUser, ThemeDataType } from './models';
+import { AuthUser } from './models/user/auth-user.interface';
+import { ThemeDataType } from './models/customer/theme/themeDataType.enum';
 import { GraphicIdentity } from './models/customer/graphic-identity.interface';
 import { Color } from './models/customer/theme/color.interface';
-import { getColorFromMaps, hexToRgb, hexToRgbString, ThemeColorType } from './utils';
+import { getColorFromMaps, hexToRgb, hexToRgbString } from './utils/colors.util';
+import { ThemeColorType } from './utils/theme-color-type.enum';
 
 export interface Theme {
   colors: { [colorId: string]: string };

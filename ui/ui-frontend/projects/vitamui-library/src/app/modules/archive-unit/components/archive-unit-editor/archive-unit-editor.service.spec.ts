@@ -36,14 +36,14 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { LoggerModule } from '../../../logger';
+import { LoggerModule } from '../../../logger/logger.module';
 import { EditObjectService } from '../../../object-editor/services/edit-object.service';
 import { SchemaService as SchemaUtils } from '../../../object-editor/services/schema.service';
 import { TemplateService } from '../../../object-editor/services/template.service';
 import { DisplayObjectHelperService } from '../../../object-viewer/services/display-object-helper.service';
 import { DisplayRuleHelperService } from '../../../object-viewer/services/display-rule-helper.service';
 import { SchemaElementToDisplayRuleService } from '../../../object-viewer/services/schema-element-to-display-rule.service';
-import { SchemaService } from '../../../schema';
+import { SchemaService } from '../../../schema/schema.service';
 import { ArchiveUnitEditorService } from './archive-unit-editor.service';
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
 

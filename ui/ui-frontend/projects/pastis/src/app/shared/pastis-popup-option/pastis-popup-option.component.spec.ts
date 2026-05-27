@@ -40,7 +40,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, SnackBarService } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { PastisPopupOptionComponent } from './pastis-popup-option.component';

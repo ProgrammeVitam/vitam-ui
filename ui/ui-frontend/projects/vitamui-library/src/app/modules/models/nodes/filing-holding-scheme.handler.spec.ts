@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ResultFacet } from '../criteria';
-import { Unit, UnitType } from '../units';
+import { ResultFacet } from '../criteria/search-criteria.interface';
+import { Unit } from '../units/unit.interface';
+import { UnitType } from '../units/unit-type.enum';
 import { FilingHoldingSchemeHandler, ORPHANS_NODE_ID } from './filing-holding-scheme.handler';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
 import { DescriptionLevel } from '../units/description-level.enum';

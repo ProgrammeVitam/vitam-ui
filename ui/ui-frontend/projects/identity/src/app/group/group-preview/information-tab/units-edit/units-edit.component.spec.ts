@@ -42,7 +42,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
+import { BASE_URL } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../../group.service';
 import { UnitsEditComponent } from './units-edit.component';
@@ -58,7 +59,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 class UnitsFormStubComponent {
   writeValue() {}
@@ -78,9 +79,9 @@ describe('UnitsEditComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [UnitsEditComponent, UnitsFormStubComponent],
+      declarations: [UnitsEditComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, UnitsFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

@@ -35,9 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, inject } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditableFieldComponent } from '../editable-field/editable-field.component';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NgClass } from '@angular/common';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
+import { TruncateStubPipe } from '../../../../../testing/src/vitamui-common-test.module';
 
 export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,7 +56,16 @@ export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-multi-inputs.component.html',
   styleUrls: ['./vitamui-multi-inputs.component.scss'],
   providers: [MULTIPLE_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [
+    CdkOverlayOrigin,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinner,
+    CdkConnectedOverlay,
+    NgClass,
+    TruncatePipe,
+    TruncateStubPipe,
+  ],
 })
 export class VitamuiMultiInputsComponent extends EditableFieldComponent implements OnDestroy, OnChanges {
   values: string[] = [];

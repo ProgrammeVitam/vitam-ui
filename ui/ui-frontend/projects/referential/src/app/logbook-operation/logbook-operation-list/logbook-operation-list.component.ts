@@ -34,7 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DEFAULT_PAGE_SIZE, Direction, IEvent, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { IEvent } from '../../../../../vitamui-library/src/app/modules/models/logbook/event.interface';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
 
 import {
   Component,

@@ -40,11 +40,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { SharedModule } from '../shared/shared.module';
-import { CustomerCreateModule } from './customer-create';
-import { CustomerListModule } from './customer-list';
-import { CustomerPreviewModule } from './customer-preview';
+import { CustomerCreateModule } from './customer-create/customer-create.module';
+import { CustomerListModule } from './customer-list/customer-list.module';
+import { CustomerPreviewModule } from './customer-preview/customer-preview.module';
 import { CustomerPopupComponent } from './customer-preview/customer-popup.component';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';

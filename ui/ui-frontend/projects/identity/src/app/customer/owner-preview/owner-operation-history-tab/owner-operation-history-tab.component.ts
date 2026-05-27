@@ -35,7 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { AuthService, IEvent, LogbookService } from 'vitamui-library';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { IEvent } from '../../../../../../vitamui-library/src/app/modules/models/logbook/event.interface';
+import { LogbookService } from '../../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
 
 const EVENT_LIMIT = 100;
 @Component({

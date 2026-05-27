@@ -39,12 +39,16 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, injec
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Logger } from '../../../logger/logger';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TooltipDirective } from '../../../components/common-tooltip/tooltip.directive';
+import { TranslatePipe } from '@ngx-translate/core';
+import { PluralPipe } from '../../../pipes/plural.pipe';
 
 @Component({
   selector: 'vitamui-common-archive-unit-count',
   templateUrl: './archive-unit-count.component.html',
   styleUrls: ['./archive-unit-count.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, TooltipDirective, TranslatePipe, PluralPipe],
 })
 export class ArchiveUnitCountComponent implements OnChanges {
   private logger = inject(Logger);

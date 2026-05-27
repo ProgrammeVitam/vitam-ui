@@ -37,7 +37,8 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Colors, FacetDetails } from 'vitamui-library';
+import { Colors } from '../../../../../vitamui-library/src/app/modules/models/operation/facet-colors.enum';
+import { FacetDetails } from '../../../../../vitamui-library/src/app/modules/models/operation/facet-details.interface';
 import { OperationCategory, OperationDetails, OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 

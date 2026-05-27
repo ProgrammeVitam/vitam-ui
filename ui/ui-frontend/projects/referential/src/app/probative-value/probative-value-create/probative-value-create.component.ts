@@ -40,17 +40,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {
-  ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
-  Option,
-  SearchResponse,
-  SearchUnitApiService,
-  SigningRoleType,
-  SnackBarService,
-  VitamuiHttpHeaders,
-} from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SearchResponse } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-response.interface';
+import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
+import { SigningRoleType } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { VitamuiHttpHeaders } from '../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 import { ProbativeValueService } from '../probative-value.service';
 import { sizes } from '../../ontology/ontology-form-options';
 

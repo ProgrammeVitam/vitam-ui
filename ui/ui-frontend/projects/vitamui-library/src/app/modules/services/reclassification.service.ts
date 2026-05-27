@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto, SearchResponse } from '../models';
-import { SearchService } from '../vitamui-table';
+import { PagedResult, SearchCriteriaDto, SearchCriteriaEltDto } from '../models/criteria/search-criteria.interface';
+import { SearchResponse } from '../models/criteria/search-response.interface';
+import { SearchService } from '../vitamui-table/search.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { ReclassificationApiService } from './reclassification-api.service';

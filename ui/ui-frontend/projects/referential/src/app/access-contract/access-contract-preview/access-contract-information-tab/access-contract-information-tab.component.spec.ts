@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
-import { AccessContractService } from 'vitamui-library';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab.component';
 
 describe('Skipped spec placeholder', () => {

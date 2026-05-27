@@ -39,7 +39,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subscription } from 'rxjs';
 import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, EditObject, JsonPatch, SnackBarService, SpinnerOverlayService } from 'vitamui-library';
+import { ArchiveUnit } from '../../../../../../../vitamui-library/src/app/modules/archive-unit/models/archive-unit';
+import { ArchiveUnitEditorComponent } from '../../../../../../../vitamui-library/src/app/modules/archive-unit/components/archive-unit-editor/archive-unit-editor.component';
+import { EditObject } from '../../../../../../../vitamui-library/src/app/modules/object-editor/models/edit-object.model';
+import { JsonPatch } from '../../../../../../../vitamui-library/src/app/modules/archive-unit/models/json-patch';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { SpinnerOverlayService } from '../../../../../../../vitamui-library/src/lib/services/spinner-overlay.service';
 import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({

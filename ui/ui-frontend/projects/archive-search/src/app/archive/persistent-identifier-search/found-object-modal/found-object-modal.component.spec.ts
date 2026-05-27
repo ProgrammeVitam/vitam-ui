@@ -41,7 +41,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, LoggerModule, ObjectQualifierType, VitamuiMissingTranslationHandler } from 'vitamui-library';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { ObjectQualifierType } from '../../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { VitamuiMissingTranslationHandler } from '../../../../../../vitamui-library/src/app/modules/missing-translation-handler';
 import { FoundObjectModalComponent } from './found-object-modal.component';
 
 class FakeTranslateLoader implements TranslateLoader {

@@ -39,7 +39,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { ManagementContract, StorageStrategy, diff } from 'vitamui-library';
+import {
+  ManagementContract,
+  StorageStrategy,
+} from '../../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
 import { ManagementContractService } from '../../management-contract.service';
 
 @Component({

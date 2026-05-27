@@ -43,7 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 import { ManagementContractPreviewModule } from './management-contract-preview/management-contract-preview.module';
 import { ManagementContractRoutingModule } from './management-contract-routing.module';

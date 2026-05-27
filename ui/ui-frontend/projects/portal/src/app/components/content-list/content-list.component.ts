@@ -36,7 +36,8 @@
  */
 import { Component, Input, ViewChild } from '@angular/core';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
-import { Category, VitamUICommonModule } from 'vitamui-library';
+import { Category } from '../../../../../vitamui-library/src/app/modules/models/application/category.interface';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { ContentTypeEnum } from './content.enum';
 import { Content } from './content.interface';
 import { CommonModule } from '@angular/common';

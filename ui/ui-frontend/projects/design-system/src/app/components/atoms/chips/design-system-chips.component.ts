@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { ChipComponent } from 'vitamui-library';
+import { ChipComponent } from '../../../../../../vitamui-library/src/app/modules/components/chip/chip.component';
 
 @Component({
   templateUrl: './design-system-chips.component.html',

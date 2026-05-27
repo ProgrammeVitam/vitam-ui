@@ -48,7 +48,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent } from '../../../../../vitamui-library/src/lib/components/select/select.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab/ingest-contract-attachment-tab.component';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component';

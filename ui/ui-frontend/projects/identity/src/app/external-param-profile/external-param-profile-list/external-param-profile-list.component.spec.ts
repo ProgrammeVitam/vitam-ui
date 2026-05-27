@@ -42,7 +42,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of, Subject } from 'rxjs';
-import { CollapseModule } from 'vitamui-library';
+import { CollapseComponent } from '../../../../../vitamui-library/src/app/modules/components/collapse/collapse.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProfileValidators } from '../../hierarchy/profile.validators';
 import { ProfileService } from '../../profile/profile.service';
@@ -86,7 +86,7 @@ describe('ExternalParamProfileListComponent', () => {
         }),
         ReactiveFormsModule,
         MatProgressBarModule,
-        CollapseModule,
+        CollapseComponent,
         MatButtonToggleModule,
         VitamUICommonTestModule,
       ],

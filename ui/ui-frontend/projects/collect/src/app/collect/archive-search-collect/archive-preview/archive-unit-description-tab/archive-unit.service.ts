@@ -38,7 +38,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ArchiveUnitApiService } from './archive-unit-api.service';
-import { ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'vitamui-library';
+import { ArchiveUnit } from '../../../../../../../vitamui-library/src/app/modules/archive-unit/models/archive-unit';
+import { JsonPatchDto, MultiJsonPatchDto } from '../../../../../../../vitamui-library/src/app/modules/archive-unit/models/json-patch';
 
 @Injectable({
   providedIn: 'root',

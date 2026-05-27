@@ -38,7 +38,11 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { Agency, AgencyService, ConfirmActionComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { Agency } from '../../../../../vitamui-library/src/lib/models/agency';
+import { AgencyService } from '../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

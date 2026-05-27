@@ -38,7 +38,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, SecurityProfile } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { SecurityProfile } from '../../../../../vitamui-library/src/lib/models/security-profile';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileListComponent } from './security-profile-list.component';
 

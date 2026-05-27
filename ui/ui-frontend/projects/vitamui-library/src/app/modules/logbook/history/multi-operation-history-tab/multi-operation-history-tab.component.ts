@@ -40,8 +40,12 @@ import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../auth.service';
-import { IEvent } from '../../../models';
+import { IEvent } from '../../../models/logbook/event.interface';
 import { LogbookService } from '../../logbook.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CollapseComponent } from '../../../components/collapse/collapse.component';
+import { HistoryEventsComponent } from '../history-events/history-events.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const EVENT_LIMIT = 100;
 
@@ -49,7 +53,7 @@ const EVENT_LIMIT = 100;
   selector: 'vitamui-common-multi-operation-history-tab',
   templateUrl: './multi-operation-history-tab.component.html',
   styleUrls: ['./multi-operation-history-tab.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, CollapseComponent, HistoryEventsComponent, TranslatePipe],
 })
 export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   private authService = inject(AuthService);

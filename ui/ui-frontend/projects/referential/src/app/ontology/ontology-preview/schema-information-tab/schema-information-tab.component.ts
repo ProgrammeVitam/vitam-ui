@@ -36,12 +36,15 @@
  */
 import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SchemaElement, SchemaService, Option } from 'vitamui-library';
+import { SchemaElement } from '../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 import { sizes, types } from '../../ontology-form-options';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../../vitamui-library/src/lib/vitamui-library.module';
 
 @Component({
   selector: 'app-schema-information-tab',

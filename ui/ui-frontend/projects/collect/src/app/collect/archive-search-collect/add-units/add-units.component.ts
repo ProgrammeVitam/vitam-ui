@@ -38,22 +38,21 @@
 import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, from, Observable, of, switchMap } from 'rxjs';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { FilingPlanMode } from '../../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
 import {
-  CriteriaDataType,
-  CriteriaOperator,
-  Direction,
-  FilingPlanMode,
   PagedResult,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  Transaction,
-  Unit,
-  ZipFile,
-  ZipFileStatus,
-  ApplicationId,
-  SnackBarService,
-  StartupService,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { ZipFile } from '../../../../../../vitamui-library/src/lib/models/zip/zip-file.class';
+import { ZipFileStatus } from '../../../../../../vitamui-library/src/lib/models/zip/zip-file-status.interface';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { StartupService } from '../../../../../../vitamui-library/src/app/modules/startup.service';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { FormControl, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';

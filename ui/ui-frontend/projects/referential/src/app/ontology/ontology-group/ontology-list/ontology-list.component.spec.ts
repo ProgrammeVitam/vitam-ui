@@ -40,7 +40,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { AuthService, BASE_URL, Ontology, TenantSelectionService } from 'vitamui-library';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Ontology } from '../../../../../../vitamui-library/src/lib/models/ontology';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
 import { OntologyListComponent } from './ontology-list.component';
 import { OntologyService } from '../../ontology.service';
 

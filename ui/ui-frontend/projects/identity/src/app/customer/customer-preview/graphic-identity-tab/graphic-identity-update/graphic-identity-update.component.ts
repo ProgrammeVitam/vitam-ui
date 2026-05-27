@@ -39,7 +39,8 @@ import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Customer, Logo } from 'vitamui-library';
+import { Customer } from '../../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { Logo } from '../../../../../../../vitamui-library/src/app/modules/models/customer/theme/logo.interface';
 import { CustomerService } from '../../../../core/customer.service';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 

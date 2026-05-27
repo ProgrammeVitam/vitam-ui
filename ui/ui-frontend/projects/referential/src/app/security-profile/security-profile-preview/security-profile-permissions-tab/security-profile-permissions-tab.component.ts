@@ -39,7 +39,9 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Option, SecurityProfile, diff } from 'vitamui-library';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SecurityProfile } from '../../../../../../vitamui-library/src/lib/models/security-profile';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
 import { SecurityProfileService } from '../../security-profile.service';
 
 @Component({

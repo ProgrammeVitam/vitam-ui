@@ -40,17 +40,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import {
-  ConfirmDialogService,
-  CountryOption,
-  CountryService,
-  Customer,
-  Logo,
-  Option,
-  OtpState,
-  StartupService,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { CountryOption, CountryService } from '../../../../../vitamui-library/src/app/modules/country.service';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { Logo } from '../../../../../vitamui-library/src/app/modules/models/customer/theme/logo.interface';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { OtpState } from '../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { VitamuiSelectOptions } from '../../../../../vitamui-library/src/lib/components/select/select.component';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';

@@ -36,7 +36,9 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
+import { AttachmentType } from '../../../../../../../../vitamui-library/src/app/modules/models/customer/theme/attachmentType.enum';
+import { Logo } from '../../../../../../../../vitamui-library/src/app/modules/models/customer/theme/logo.interface';
+import { ThemeService } from '../../../../../../../../vitamui-library/src/app/modules/theme.service';
 
 @Component({
   selector: 'app-graphic-identity-form',

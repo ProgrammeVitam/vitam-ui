@@ -46,7 +46,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { SelectComponent, SelectWithTreeComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent } from '../../../../../vitamui-library/src/lib/components/select/select.component';
+import { SelectWithTreeComponent } from '../../../../../vitamui-library/src/lib/components/select-with-tree/select-with-tree.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -65,7 +68,7 @@ import { CriteriaSearchComponent } from './archive-search-criteria/components/cr
 import { ClassificationTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/classification-tree/classification-tree.component';
 import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/leaves-tree/leaves-tree.component';
-import { ConfirmActionModule } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
+import { ConfirmActionComponent } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.component';
 import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 // eslint-disable-next-line max-len
@@ -94,7 +97,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
   imports: [
     ArchiveSearchCollectRoutingModule,
     CommonModule,
-    ConfirmActionModule,
+    ConfirmActionComponent,
     MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,

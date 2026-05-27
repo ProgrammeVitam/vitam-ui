@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Event } from 'vitamui-library';
+import { Event } from '../../../../../vitamui-library/src/lib/models/event';
 
 import { Pipe, PipeTransform } from '@angular/core';
 
@@ -45,10 +45,7 @@ const classMap: { [key: string]: string } = {
   FATAL: 'status-badge-red',
 };
 
-@Pipe({
-  name: 'eventTypeBadgeClass',
-  standalone: false,
-})
+@Pipe({ name: 'eventTypeBadgeClass' })
 export class EventTypeBadgeClassPipe implements PipeTransform {
   transform(event: Event): string {
     if (!event || !event.events || event.events.length <= 0) {

@@ -42,7 +42,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { SharedModule } from '../../shared/shared.module';
 import { UnitsFormModule } from '../units-form/units-form.module';
 import { GroupPopupComponent } from './group-popup.component';

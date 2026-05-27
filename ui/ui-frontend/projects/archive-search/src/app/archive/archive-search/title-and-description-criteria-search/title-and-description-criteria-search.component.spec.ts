@@ -39,7 +39,9 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { CriteriaOperator, CriteriaValue, InjectorModule } from 'vitamui-library';
+import { CriteriaOperator } from '../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { CriteriaValue } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search.component';
 

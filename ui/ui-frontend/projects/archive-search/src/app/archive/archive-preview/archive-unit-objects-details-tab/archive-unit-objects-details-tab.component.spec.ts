@@ -39,16 +39,14 @@ import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  AccessContract,
-  AccessContractService,
-  ApiUnitObject,
-  DescriptionLevel,
-  ObjectQualifierType,
-  TenantSelectionService,
-  Unit,
-  VersionWithQualifierDto,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { ApiUnitObject } from '../../../../../../vitamui-library/src/lib/models/api-unit-object.interface';
+import { DescriptionLevel } from '../../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { ObjectQualifierType } from '../../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { VersionWithQualifierDto } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import { vi } from 'vitest';

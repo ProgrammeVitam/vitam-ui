@@ -37,15 +37,16 @@
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, inject } from '@angular/core';
-import { throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { PastisMaterialModule } from '../material.module';
+import { throwIfAlreadyLoaded } from '../../../../vitamui-library/src/app/modules/module-import-guard';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+
 import { SharedModule } from '../shared/shared.module';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [],
   exports: [VitamUICommonModule, NgxUiLoaderModule],
-  imports: [CommonModule, VitamUICommonModule, PastisMaterialModule, SharedModule, NgxUiLoaderModule],
+  imports: [CommonModule, VitamUICommonModule, SharedModule, NgxUiLoaderModule],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class CoreModule {

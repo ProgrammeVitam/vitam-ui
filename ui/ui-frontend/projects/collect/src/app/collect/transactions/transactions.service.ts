@@ -38,17 +38,14 @@ import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { saveAs } from 'file-saver-es';
-import {
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  PageRequest,
-  PaginatedResponse,
-  Project,
-  SearchService,
-  SnackBarService,
-  Transaction,
-  TransactionStatus,
-} from 'vitamui-library';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { PaginatedResponse } from '../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
+import { Project } from '../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { SearchService } from '../../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { Transaction } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
 import { pollUntil } from './polling';

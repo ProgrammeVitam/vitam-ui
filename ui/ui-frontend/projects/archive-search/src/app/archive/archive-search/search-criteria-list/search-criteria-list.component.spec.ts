@@ -42,24 +42,20 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import {
-  CriteriaDataType,
-  CriteriaOperator,
-  InjectorModule,
-  LoggerModule,
   SearchCriteriaEltements,
   SearchCriteriaHistory,
-  SnackBarService,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -102,8 +98,9 @@ describe('SearchCriteriaListComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         RouterTestingModule,
+        MockTruncatePipe,
       ],
-      declarations: [SearchCriteriaListComponent, MockTruncatePipe],
+      declarations: [SearchCriteriaListComponent],
       providers: [
         ArchiveSharedDataService,
         DatePipe,

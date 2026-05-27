@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { ApplicationId } from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 @Component({
   templateUrl: './breadcrumbs.component.html',

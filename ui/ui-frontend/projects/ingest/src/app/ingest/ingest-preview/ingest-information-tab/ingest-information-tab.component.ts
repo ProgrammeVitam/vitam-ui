@@ -45,7 +45,8 @@ import {
   LogbookOperation,
 } from '../../../models/logbook-event.interface';
 
-import { ApplicationId, ApplicationService } from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { ApplicationService } from '../../../../../../vitamui-library/src/app/modules/application.service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 

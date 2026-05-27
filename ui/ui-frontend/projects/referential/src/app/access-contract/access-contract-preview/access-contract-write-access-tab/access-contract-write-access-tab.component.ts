@@ -39,7 +39,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, AccessContractService, diff, Option } from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 
 @Component({
   selector: 'app-access-contract-write-access-tab',

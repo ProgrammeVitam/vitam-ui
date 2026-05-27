@@ -45,7 +45,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { CreatePersistentIdentifierPolicyFormComponent } from './create-persistent-identifier-policy-form.component';
 
 @NgModule({

@@ -42,7 +42,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, PagedResult, SearchCriteriaDto, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import {
+  PagedResult,
+  SearchCriteriaDto,
+} from '../../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { RuleTypeEnum } from '../../../../../models/rule-type-enum';

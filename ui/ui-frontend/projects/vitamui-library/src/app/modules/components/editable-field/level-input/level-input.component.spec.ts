@@ -48,8 +48,7 @@ describe('LevelInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LevelInputComponent],
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [FormsModule, TranslateModule.forRoot(), LevelInputComponent],
       providers: [
         {
           provide: WINDOW_LOCATION,

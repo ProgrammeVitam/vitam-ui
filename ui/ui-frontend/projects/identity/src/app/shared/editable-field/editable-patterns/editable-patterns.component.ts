@@ -38,7 +38,8 @@ import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@an
 import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
+import { EditableFieldComponent } from '../../../../../../vitamui-library/src/app/modules/components/editable-field/editable-field.component';
+import { PatternComponent } from '../../../../../../vitamui-library/src/lib/components/pattern/pattern.component';
 
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

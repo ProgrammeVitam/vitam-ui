@@ -72,7 +72,11 @@ import { TranslateModule } from '@ngx-translate/core';
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, Group, LevelInputModule, ProfileService } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Group } from '../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { LevelInputComponent } from '../../../../../vitamui-library/src/app/modules/components/editable-field/level-input/level-input.component';
+import { ProfileService } from '../../../../../vitamui-library/src/app/modules/services/profile.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -96,7 +100,7 @@ import { GroupCreateComponent } from './group-create.component';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, LevelInputComponent],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -116,7 +120,7 @@ class ProfilesFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, LevelInputComponent],
 })
 class UnitsFormStubComponent implements ControlValueAccessor {
   writeValue() {}
@@ -173,10 +177,12 @@ describe('GroupCreateComponent', () => {
         ReactiveFormsModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
-        LevelInputModule,
+        LevelInputComponent,
         TranslateModule.forRoot(),
+        ProfilesFormStubComponent,
+        UnitsFormStubComponent,
       ],
-      declarations: [ProfilesFormStubComponent, UnitsFormStubComponent, GroupCreateComponent],
+      declarations: [GroupCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

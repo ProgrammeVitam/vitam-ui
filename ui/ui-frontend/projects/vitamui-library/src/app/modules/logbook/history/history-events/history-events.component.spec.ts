@@ -36,13 +36,12 @@
  */
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IEvent } from '../../../models';
+import { IEvent } from '../../../models/logbook/event.interface';
 import { HistoryEventsComponent } from './history-events.component';
 
 @Component({
   selector: 'vitamui-common-event-type-label',
   template: '',
-  standalone: false,
 })
 class EventTypeLabelStubComponent {
   @Input() key: string;
@@ -54,7 +53,7 @@ describe('HistoryEventsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HistoryEventsComponent, EventTypeLabelStubComponent],
+      imports: [HistoryEventsComponent, EventTypeLabelStubComponent],
     }).compileComponents();
   });
 

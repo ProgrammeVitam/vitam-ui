@@ -78,13 +78,16 @@ import { FileTreeModule } from './../profile/edit-profile/file-tree/file-tree.mo
 import { SharedModule } from './../shared/shared.module';
 
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { PastisMaterialModule } from '../material.module';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../vitamui-library/src/lib/vitamui-library.module';
+
 import { UserActionsModule } from '../user-actions/user-actions.module';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
@@ -101,9 +104,10 @@ import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/past
     FileTreeModule,
     FormsModule,
     MatIconModule,
+    MatDialogModule,
     MatSlideToggleModule,
+    MatSidenavModule,
     MatTabsModule,
-    PastisMaterialModule,
     ProfilePreviewModule,
     ReactiveFormsModule,
     SharedModule,

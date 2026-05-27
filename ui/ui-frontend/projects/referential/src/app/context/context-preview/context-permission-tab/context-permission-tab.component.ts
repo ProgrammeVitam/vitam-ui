@@ -38,17 +38,14 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import {
-  AccessContract,
-  AuthService,
-  Context,
-  ContextPermission,
-  Customer,
-  IngestContract,
-  Tenant,
-  diff,
-  AccessContractService,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { Context, ContextPermission } from '../../../../../../vitamui-library/src/lib/models/context';
+import { Customer } from '../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { Tenant } from '../../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
 import { extend, isEmpty } from 'underscore';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';

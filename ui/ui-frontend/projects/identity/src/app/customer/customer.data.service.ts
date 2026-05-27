@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { Tenant } from 'vitamui-library';
+import { Tenant } from '../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 
 @Injectable({
   providedIn: 'root',

@@ -41,7 +41,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Owner } from '../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { Tenant } from '../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
@@ -62,7 +64,7 @@ import { TranslateModule } from '@ngx-translate/core';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -133,8 +135,9 @@ describe('OwnerCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
+        OwnerFormStubComponent,
       ],
-      declarations: [OwnerCreateComponent, OwnerFormStubComponent],
+      declarations: [OwnerCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },

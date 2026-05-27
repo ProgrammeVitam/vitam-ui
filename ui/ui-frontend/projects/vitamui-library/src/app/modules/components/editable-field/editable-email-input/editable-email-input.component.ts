@@ -36,10 +36,14 @@
  */
 import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 
 import { EditableFieldComponent } from '../editable-field.component';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { MatFormField } from '@angular/material/form-field';
+import { MatOption } from '@angular/material/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -52,7 +56,16 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-email-input.component.html',
   styleUrls: ['./editable-email-input.component.scss'],
   providers: [EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [
+    CdkOverlayOrigin,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatSelect,
+    MatOption,
+    MatProgressSpinner,
+    CdkConnectedOverlay,
+  ],
 })
 export class EditableEmailInputComponent extends EditableFieldComponent {
   private document = inject<Document>(DOCUMENT);

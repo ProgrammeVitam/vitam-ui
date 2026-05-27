@@ -47,7 +47,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
 import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
 import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';

@@ -47,7 +47,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { CountryService } from '../../../../../vitamui-library/src/app/modules/country.service';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { OtpState } from '../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
@@ -69,7 +74,16 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    NoopAnimationsModule,
+    ReactiveFormsModule,
+    VitamUICommonTestModule,
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -99,7 +113,16 @@ class DomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    NoopAnimationsModule,
+    ReactiveFormsModule,
+    VitamUICommonTestModule,
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -122,7 +145,16 @@ class OwnerFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    NoopAnimationsModule,
+    ReactiveFormsModule,
+    VitamUICommonTestModule,
+  ],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -231,7 +263,7 @@ describe('CustomerCreateComponent', () => {
         .mockReturnValue(() => of(null)),
     };
     await TestBed.configureTestingModule({
-      declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
+      declarations: [CustomerCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         LoggerModule.forRoot(),
@@ -244,6 +276,9 @@ describe('CustomerCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
+        OwnerFormStubComponent,
+        CustomerColorsInputStubComponent,
+        DomainInputStubComponent,
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },

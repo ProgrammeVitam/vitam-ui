@@ -75,8 +75,7 @@ describe('EditableEmailInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditableEmailInputComponent],
-      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, NoopAnimationsModule],
+      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, NoopAnimationsModule, EditableEmailInputComponent],
       providers: [{ provide: DOCUMENT, useValue: document }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

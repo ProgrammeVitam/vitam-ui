@@ -38,7 +38,9 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, SecurityProfile, SnackBarService } from 'vitamui-library';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SecurityProfile } from '../../../../vitamui-library/src/lib/models/security-profile';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { SecurityProfileApiService } from '../core/api/security-profile-api.service';
 

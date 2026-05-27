@@ -39,20 +39,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  Agency,
-  AgencyService,
-  ApplicationId,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  Role,
-  SecurityService,
-  VitamUICommonModule,
-} from 'vitamui-library';
-import { AgencyCreateModule } from '../agency-create';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { Agency } from '../../../../../vitamui-library/src/lib/models/agency';
+import { AgencyService } from '../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Role } from '../../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { SecurityService } from '../../../../../vitamui-library/src/app/modules/security/security.service';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { AgencyCreateModule } from '../agency-create/agency-create.module';
 
 import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

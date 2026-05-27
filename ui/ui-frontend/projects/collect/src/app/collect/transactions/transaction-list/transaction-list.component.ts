@@ -37,16 +37,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogData,
-  Direction,
-  InfiniteScrollTable,
-  SnackBarService,
-  StartupService,
-  Transaction,
-  TransactionStatus,
-} from 'vitamui-library';
+import { ConfirmDialogComponent } from '../../../../../../vitamui-library/src/lib/components/dialog/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '../../../../../../vitamui-library/src/lib/models/confirm-dialog-data.interface';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { StartupService } from '../../../../../../vitamui-library/src/app/modules/startup.service';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { ProjectsService } from '../../projects/projects.service';

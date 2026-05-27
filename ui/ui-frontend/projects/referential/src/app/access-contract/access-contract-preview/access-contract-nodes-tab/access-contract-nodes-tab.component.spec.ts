@@ -41,15 +41,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  AccessContract,
-  BASE_URL,
-  ExternalParameters,
-  ExternalParametersService,
-  LoggerModule,
-  SearchUnitApiService,
-  Status,
-} from 'vitamui-library';
+import { AccessContract, Status } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ExternalParameters } from '../../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchUnitApiService } from '../../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

@@ -34,7 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Owner } from '../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { Tenant } from '../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

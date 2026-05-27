@@ -38,7 +38,8 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { AccessContract, AccessContractService } from 'vitamui-library';
+import { AccessContract } from '../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
 
 @Injectable({
   providedIn: 'root',

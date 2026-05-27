@@ -38,7 +38,10 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { Customer, Logo, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
+import { Customer } from '../../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { Logo } from '../../../../../../../vitamui-library/src/app/modules/models/customer/theme/logo.interface';
+import { Theme, ThemeService } from '../../../../../../../vitamui-library/src/app/modules/theme.service';
+import { ThemeColorType } from '../../../../../../../vitamui-library/src/app/modules/utils/theme-color-type.enum';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 
 interface ThemeColorGroup {

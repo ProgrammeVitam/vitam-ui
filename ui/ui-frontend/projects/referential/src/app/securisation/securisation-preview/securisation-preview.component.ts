@@ -35,8 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
-import { Event } from 'vitamui-library';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { Event } from '../../../../../vitamui-library/src/lib/models/event';
 import { SecurisationService } from '../securisation.service';
 
 @Component({

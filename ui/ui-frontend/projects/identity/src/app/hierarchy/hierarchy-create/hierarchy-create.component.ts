@@ -38,16 +38,13 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import {
-  AuthService,
-  ConfirmDialogService,
-  CriteriaSearchQuery,
-  Operators,
-  Profile,
-  buildValidators,
-  collapseAnimation,
-  rotateAnimation,
-} from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { CriteriaSearchQuery } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Operators } from '../../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { Profile } from '../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { buildValidators } from '../../../../../vitamui-library/src/app/modules/utils/level.util';
+import { collapseAnimation, rotateAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
 import { HierarchyService } from '../hierarchy.service';
 
 @Component({

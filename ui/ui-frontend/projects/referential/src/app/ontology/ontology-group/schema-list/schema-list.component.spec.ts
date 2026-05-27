@@ -39,7 +39,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, SchemaService, TenantSelectionService } from 'vitamui-library';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
 import { SchemaListComponent } from './schema-list.component';
 import { TranslateModule } from '@ngx-translate/core';
 

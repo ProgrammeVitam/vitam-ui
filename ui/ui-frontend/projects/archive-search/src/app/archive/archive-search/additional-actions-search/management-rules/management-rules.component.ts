@@ -40,18 +40,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
+import { ApplicationId } from '../../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { BreadCrumbData } from '../../../../../../../vitamui-library/src/app/modules/models/breadcrumb/breadcrumb.interface';
+import { Logger } from '../../../../../../../vitamui-library/src/app/modules/logger/logger';
+import { Option } from '../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { Rule } from '../../../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../../../vitamui-library/src/app/modules/rule/rule.service';
 import {
-  ApplicationId,
-  BreadCrumbData,
-  Logger,
-  Option,
-  Rule,
-  RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  SelectComponent,
-  SnackBarService,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SelectComponent } from '../../../../../../../vitamui-library/src/lib/components/select/select.component';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';

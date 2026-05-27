@@ -40,16 +40,13 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { MatRadioModule } from '@angular/material/radio';
 import { finalize, Observable } from 'rxjs';
 import { AsyncPipe, I18nPluralPipe } from '@angular/common';
-import {
-  ApplicationId,
-  ArchiveUnitProfilesService,
-  DialogHeaderComponent,
-  Logger,
-  SearchCriteriaEltDto,
-  SelectComponent,
-  VitamuiSelectOptions,
-  SnackBarService,
-} from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { ArchiveUnitProfilesService } from '../../../../../../vitamui-library/src/app/modules/archive-unit-profiles/archive-unit-profiles.service';
+import { DialogHeaderComponent } from '../../../../../../vitamui-library/src/lib/components/dialog/dialog-header/dialog-header.component';
+import { Logger } from '../../../../../../vitamui-library/src/app/modules/logger/logger';
+import { SearchCriteriaEltDto } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SelectComponent, VitamuiSelectOptions } from '../../../../../../vitamui-library/src/lib/components/select/select.component';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { map } from 'rxjs/operators';
 import { ArchiveService } from '../../archive.service';
 import { RuleActions, RuleSearchCriteriaDto } from '../../models/ruleAction.interface';

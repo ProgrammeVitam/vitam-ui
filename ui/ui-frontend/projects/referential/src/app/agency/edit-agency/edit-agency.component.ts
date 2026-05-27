@@ -38,23 +38,21 @@ import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@a
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  Agency,
-  ApplicationId,
-  BreadCrumbData,
-  EditObject,
-  EditObjectService,
-  ObjectEditorModule,
-  ProfiledSchemaElement,
-  SpinnerOverlayService,
-  TemplateService,
-  TenantSelectionService,
-  TypeService,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-  SnackBarService,
-  AgencyService,
-} from 'vitamui-library';
+import { Agency } from '../../../../../vitamui-library/src/lib/models/agency';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { BreadCrumbData } from '../../../../../vitamui-library/src/app/modules/models/breadcrumb/breadcrumb.interface';
+import { EditObject } from '../../../../../vitamui-library/src/app/modules/object-editor/models/edit-object.model';
+import { EditObjectService } from '../../../../../vitamui-library/src/app/modules/object-editor/services/edit-object.service';
+import { ObjectEditorModule } from '../../../../../vitamui-library/src/app/modules/object-editor/object-editor.module';
+import { ProfiledSchemaElement } from '../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SpinnerOverlayService } from '../../../../../vitamui-library/src/lib/services/spinner-overlay.service';
+import { TemplateService } from '../../../../../vitamui-library/src/app/modules/object-editor/services/template.service';
+import { TenantSelectionService } from '../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { TypeService } from '../../../../../vitamui-library/src/app/modules/object-viewer/services/type.service';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { AgencyService } from '../../../../../vitamui-library/src/app/modules/agencies/agency.service';
 import { agencyTemplate } from '../agency.template';
 import { schema } from '../agency.schema';
 import { filter, finalize, of, Subscription, switchMap } from 'rxjs';

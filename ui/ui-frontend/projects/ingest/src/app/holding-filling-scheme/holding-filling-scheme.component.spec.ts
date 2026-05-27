@@ -47,7 +47,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchBarComponent } from '../../../../vitamui-library/src/app/modules/components/search-bar/search-bar.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { IngestType } from '../core/common/ingest-type.enum';
@@ -57,7 +59,19 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
 @Component({
   selector: 'app-ingest-list',
   template: '',
-  standalone: false,
+  imports: [
+    MatDatepickerModule,
+    MatMenuModule,
+    MatSidenavModule,
+    InjectorModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    BrowserAnimationsModule,
+    RouterTestingModule,
+    NoopAnimationsModule,
+    SearchBarComponent,
+    MatDialogModule,
+  ],
 })
 class IngestListStubComponent {}
 
@@ -89,8 +103,9 @@ describe('HoldingFilingSchemeComponent', () => {
         NoopAnimationsModule,
         SearchBarComponent,
         MatDialogModule,
+        IngestListStubComponent,
       ],
-      declarations: [HoldingFillingSchemeComponent, IngestListStubComponent],
+      declarations: [HoldingFillingSchemeComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },

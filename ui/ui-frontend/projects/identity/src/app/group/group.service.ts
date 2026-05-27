@@ -38,7 +38,12 @@ import { HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { CriteriaSearchQuery, Criterion, Group, Operators, SearchService, SnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Criterion } from '../../../../vitamui-library/src/app/modules/models/criteria/criterion.interface';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { GroupApiService } from '../core/api/group-api.service';
 

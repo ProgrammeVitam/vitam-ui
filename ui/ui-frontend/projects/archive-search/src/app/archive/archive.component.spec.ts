@@ -47,16 +47,12 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  AccessContract,
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
-  SearchBarComponent,
-  SecurityService,
-  Status,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { AccessContract, Status } from '../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchBarComponent } from '../../../../vitamui-library/src/app/modules/components/search-bar/search-bar.component';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';

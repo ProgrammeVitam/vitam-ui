@@ -40,7 +40,12 @@ import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
-import { AuthnRequestBindingEnum, IdentityProvider, newFile, SnackBarService } from 'vitamui-library';
+import { AuthnRequestBindingEnum } from '../../../../../../../vitamui-library/src/app/modules/utils/authnRequestBinding.enum';
+import {
+  IdentityProvider,
+  newFile,
+} from '../../../../../../../vitamui-library/src/app/modules/models/customer/identity-provider.interface';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
 

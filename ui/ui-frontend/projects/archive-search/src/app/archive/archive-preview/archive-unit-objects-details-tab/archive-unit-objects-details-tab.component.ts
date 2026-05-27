@@ -38,16 +38,14 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import {
-  AccessContract,
-  AccessContractService,
-  DescriptionLevel,
-  qualifiersToVersionsWithQualifier,
-  TenantSelectionService,
-  Unit,
-  VersionWithQualifierDto,
-  VitamuiHttpHeaders,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { DescriptionLevel } from '../../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { qualifiersToVersionsWithQualifier } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.utils';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { VersionWithQualifierDto } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
+import { VitamuiHttpHeaders } from '../../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 import { ArchiveService } from '../../archive.service';
 import { Subscription } from 'rxjs';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';

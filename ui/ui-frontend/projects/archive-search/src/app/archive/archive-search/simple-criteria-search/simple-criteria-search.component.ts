@@ -38,24 +38,26 @@ import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { AgencyService } from '../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ArchiveUnitProfilesService } from '../../../../../../vitamui-library/src/app/modules/archive-unit-profiles/archive-unit-profiles.service';
 import {
-  AgencyService,
-  ArchiveUnitProfilesService,
   CriteriaAction,
   CriteriaDataType,
   CriteriaOperator,
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import {
   CriteriaValue,
-  ItemNode,
-  Option,
-  SchemaElement,
-  SchemaService,
   SearchCriteriaAddAction,
   SearchCriteriaEltDto,
-  SearchCriteriaService,
   SearchCriteriaTypeEnum,
-  SearchType,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { ItemNode } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/item-node.interface';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SchemaElement } from '../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SearchCriteriaService } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.service';
+import { SearchType } from '../../../../../../vitamui-library/src/lib/components/search-with-type-selector/search-with-type-selector.component';
+import { VitamuiSelectOptions } from '../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { debounceTime, filter, map, share } from 'rxjs/operators';

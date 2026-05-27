@@ -36,13 +36,17 @@
  */
 import { Component, Input } from '@angular/core';
 
-import { IEvent } from '../../../models';
+import { IEvent } from '../../../models/logbook/event.interface';
+import { EventTypeLabelComponent } from '../../event-type-label/event-type-label.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { DateTimePipe } from '../../../pipes/datetime.pipe';
+import { DateTimeStubPipe } from '../../../../../../testing/src/vitamui-common-test.module';
 
 @Component({
   selector: 'vitamui-common-history-events',
   templateUrl: './history-events.component.html',
   styleUrls: ['./history-events.component.scss'],
-  standalone: false,
+  imports: [EventTypeLabelComponent, TranslatePipe, DateTimePipe, DateTimeStubPipe],
 })
 export class HistoryEventsComponent {
   @Input() events: IEvent[];

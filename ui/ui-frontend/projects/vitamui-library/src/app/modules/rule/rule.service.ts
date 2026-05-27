@@ -41,7 +41,7 @@ import { map, tap } from 'rxjs/operators';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { RuleApiService } from '../api/rule-api.service';
 import { Rule } from '../models/rule/rule.interface';
-import { SearchService } from '../vitamui-table';
+import { SearchService } from '../vitamui-table/search.service';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 import { VitamuiSelectOptions } from '../../../lib/components/select/select.component';
 

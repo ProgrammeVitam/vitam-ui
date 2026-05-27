@@ -36,18 +36,18 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
+import { ClickOutsideDirective } from '../../../../../../vitamui-library/src/app/modules/directives/click-outside/click-outside.directive';
+import { TooltipDirective } from '../../../../../../vitamui-library/src/app/modules/components/common-tooltip/tooltip.directive';
 import {
-  ClickOutsideDirective,
-  CommonTooltipModule,
   ItemFlatNode,
   ItemNode,
   ItemNodeUtils,
-  normalizeString,
-  SchemaElement,
-  SchemaService,
-  TenantSelectionService,
-  VitamUICommonModule,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/item-node.interface';
+import { normalizeString } from '../../../../../../vitamui-library/src/lib/utils/string.util';
+import { SchemaElement } from '../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
@@ -68,7 +68,7 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
     MatButtonToggleModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    CommonTooltipModule,
+    TooltipDirective,
     ClickOutsideDirective,
   ],
   selector: 'app-schema-list',

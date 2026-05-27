@@ -39,22 +39,18 @@ import { SafeResourceUrl, Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {
-  Application,
-  ApplicationId,
-  ApplicationService,
-  AuthService,
-  BasicCustomer,
-  Category,
-  FullLangString,
-  GlobalEventService,
-  LanguageService,
-  MinLangString,
-  StartupService,
-  ThemeDataType,
-  ThemeService,
-  UserInfo,
-} from 'vitamui-library';
+import { Application } from '../../../../vitamui-library/src/app/modules/models/application/application.interface';
+import { ApplicationId } from '../../../../vitamui-library/src/app/modules/application-id.enum';
+import { ApplicationService } from '../../../../vitamui-library/src/app/modules/application.service';
+import { AuthService } from '../../../../vitamui-library/src/app/modules/auth.service';
+import { BasicCustomer } from '../../../../vitamui-library/src/app/modules/models/customer/basic-customer.interface';
+import { Category } from '../../../../vitamui-library/src/app/modules/models/application/category.interface';
+import { FullLangString, LanguageService, MinLangString } from '../../../../vitamui-library/src/app/modules/language.service';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { StartupService } from '../../../../vitamui-library/src/app/modules/startup.service';
+import { ThemeDataType } from '../../../../vitamui-library/src/app/modules/models/customer/theme/themeDataType.enum';
+import { ThemeService } from '../../../../vitamui-library/src/app/modules/theme.service';
+import { UserInfo } from '../../../../vitamui-library/src/app/modules/models/user/user-info.interface';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
 import { Content } from '../components/content-list/content.interface';
 

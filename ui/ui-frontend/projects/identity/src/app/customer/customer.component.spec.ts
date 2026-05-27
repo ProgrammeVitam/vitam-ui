@@ -37,7 +37,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
+import { ENVIRONMENT } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -68,7 +70,7 @@ let page: Page;
 @Component({
   selector: 'app-customer-list',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerListStubComponent {
   search() {}
@@ -77,7 +79,7 @@ class CustomerListStubComponent {
 @Component({
   selector: 'app-customer-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerPreviewStubComponent {
   @Input()
@@ -91,7 +93,7 @@ class CustomerPreviewStubComponent {
 @Component({
   selector: 'app-owner-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
 })
 class OwnerPreviewStubComponent {
   @Input()
@@ -114,8 +116,18 @@ describe('CustomerComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
-      declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
+      imports: [
+        MatMenuModule,
+        MatSidenavModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        CustomerListStubComponent,
+        CustomerPreviewStubComponent,
+        OwnerPreviewStubComponent,
+      ],
+      declarations: [CustomerComponent],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },

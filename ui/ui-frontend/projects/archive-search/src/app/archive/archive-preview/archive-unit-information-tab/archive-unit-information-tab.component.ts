@@ -36,7 +36,11 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { AccessContract, AccessContractService, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { ObjectQualifierType } from '../../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { VersionWithQualifierDto } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 

@@ -37,7 +37,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab.component';

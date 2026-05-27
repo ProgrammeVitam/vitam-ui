@@ -40,7 +40,8 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { AccessContractService, BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
 import { AccessContractListComponent } from './access-contract-list.component';
 
 import { EMPTY, of } from 'rxjs';

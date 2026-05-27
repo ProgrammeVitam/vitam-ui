@@ -37,15 +37,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import {
-  Agency,
-  ApplicationId,
-  BreadCrumbData,
-  TenantSelectionService,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-  AgencyService,
-} from 'vitamui-library';
+import { Agency } from '../../../../../vitamui-library/src/lib/models/agency';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { BreadCrumbData } from '../../../../../vitamui-library/src/app/modules/models/breadcrumb/breadcrumb.interface';
+import { TenantSelectionService } from '../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
+import { AgencyService } from '../../../../../vitamui-library/src/app/modules/agencies/agency.service';
 import { agencyTemplate } from '../agency.template';
 import { of, switchMap } from 'rxjs';
 

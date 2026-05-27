@@ -39,7 +39,12 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
-import { AdminUserProfile, AuthService, Group, isRootLevel, Profile, User } from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { Group } from '../../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { isRootLevel } from '../../../../../../vitamui-library/src/app/modules/utils/level.util';
+import { Profile } from '../../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { User } from '../../../../../../vitamui-library/src/app/modules/models/user/user.interface';
 import { GroupService } from '../../../group/group.service';
 import { GroupAttributionComponent } from '../../group-attribution/group-attribution.component';
 import { GroupSelection } from '../../group-selection.interface';

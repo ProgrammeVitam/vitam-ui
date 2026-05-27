@@ -44,22 +44,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
+import { ApiUnitObject } from '../../../../../../../vitamui-library/src/lib/models/api-unit-object.interface';
+import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { DescriptionLevel } from '../../../../../../../vitamui-library/src/lib/models/description-level.enum';
 import {
-  ApiUnitObject,
-  BASE_URL,
-  DescriptionLevel,
-  ENVIRONMENT,
   FileInfoDto,
   FormatIdentificationDto,
-  InjectorModule,
-  LoggerModule,
-  ObjectQualifierType,
-  TenantSelectionService,
-  Unit,
-  UnitType,
   VersionWithQualifierDto,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
+import { InjectorModule } from '../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { ObjectQualifierType } from '../../../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { TenantSelectionService } from '../../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Unit } from '../../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

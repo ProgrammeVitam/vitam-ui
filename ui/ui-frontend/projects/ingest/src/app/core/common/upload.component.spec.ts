@@ -40,7 +40,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { BytesPipe } from '../../../../../vitamui-library/src/app/modules/pipes/bytes.pipe';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';

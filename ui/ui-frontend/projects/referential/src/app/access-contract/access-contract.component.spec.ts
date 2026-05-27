@@ -39,7 +39,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AccessContractService, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AccessContractService } from '../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { ApplicationService } from '../../../../vitamui-library/src/app/modules/application.service';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { WINDOW_LOCATION } from '../../../../vitamui-library/src/app/modules/injection-tokens';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -51,7 +55,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-access-contract-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractPreviewStub {
@@ -62,7 +66,7 @@ class AccessContractPreviewStub {
 @Component({
   selector: 'app-access-contract-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractListStub {}
@@ -81,7 +85,7 @@ describe('AccessContractComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
+      declarations: [AccessContractComponent],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -91,6 +95,8 @@ describe('AccessContractComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        AccessContractListStub,
+        AccessContractPreviewStub,
       ],
       providers: [
         { provide: AccessContractService, useValue: accessContractServiceMock },

@@ -36,14 +36,16 @@
  */
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { DisplayObject } from '../../models';
+import { DisplayObject } from '../../models/display-object.model';
 import { DateDisplayService } from '../../services/date-display.service';
+import { DataComponent } from '../../../components/data/data.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-primitive',
   templateUrl: './primitive.component.html',
   styleUrls: ['./primitive.component.scss'],
-  standalone: false,
+  imports: [DataComponent, TranslatePipe],
 })
 export class PrimitiveComponent implements OnInit {
   private dateDisplayService = inject(DateDisplayService);

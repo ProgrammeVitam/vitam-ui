@@ -43,7 +43,8 @@ import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import { Profile } from '../../../../models/profile';
 import { ProfileDescription } from '../../../../models/profile-description.model';
 import { ProfileType } from '../../../../models/profile-type.enum';
-import { MiscValidators, SnackBarService } from 'vitamui-library';
+import { MiscValidators } from '../../../../../../../vitamui-library/src/lib/validators/misc.validators';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

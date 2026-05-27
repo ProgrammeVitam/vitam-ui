@@ -35,7 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { IEvent, LogbookApiService, PageRequest, SearchService, VitamSelectOperator, VitamSelectQuery } from 'vitamui-library';
+import { IEvent } from '../../../../vitamui-library/src/app/modules/models/logbook/event.interface';
+import { LogbookApiService } from '../../../../vitamui-library/src/app/modules/api/logbook-api.service';
+import { PageRequest } from '../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { VitamSelectOperator } from '../../../../vitamui-library/src/app/modules/models/vitam/vitam-select-criteria.interface';
+import { VitamSelectQuery } from '../../../../vitamui-library/src/app/modules/models/vitam/vitam-select-query.interface';
 import { DateTime } from 'luxon';
 
 @Injectable({

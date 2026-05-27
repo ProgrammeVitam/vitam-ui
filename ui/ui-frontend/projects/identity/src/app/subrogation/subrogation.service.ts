@@ -37,16 +37,14 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  CriteriaSearchQuery,
-  Criterion,
-  Group,
-  Operators,
-  SearchService,
-  Subrogation,
-  SubrogationApiService,
-  SubrogationUser,
-} from 'vitamui-library';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Criterion } from '../../../../vitamui-library/src/app/modules/models/criteria/criterion.interface';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { Subrogation } from '../../../../vitamui-library/src/app/modules/models/subrogation/subrogation.interface';
+import { SubrogationApiService } from '../../../../vitamui-library/src/app/modules/api/subrogation-api.service';
+import { SubrogationUser } from '../../../../vitamui-library/src/app/modules/models/subrogation/subrogation-user.interface';
 
 import { UserGenericApiService } from './user-generic-api.service';
 

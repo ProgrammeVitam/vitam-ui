@@ -41,14 +41,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
-  SearchCriteriaTypeEnum,
-  TranslateWithOptionalTypeSuffixPipe,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchCriteriaTypeEnum } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { TranslateWithOptionalTypeSuffixPipe } from '../../../../../vitamui-library/src/app/modules/pipes/translate-with-optional-type-suffix.pipe';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CriteriaSearchComponent } from './criteria-search.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

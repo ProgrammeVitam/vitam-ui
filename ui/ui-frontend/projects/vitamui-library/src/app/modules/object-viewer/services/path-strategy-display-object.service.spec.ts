@@ -36,7 +36,8 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { LoggerModule } from '../../logger/logger.module';
-import { DisplayObject, DisplayRule } from '../models';
+import { DisplayObject } from '../models/display-object.model';
+import { DisplayRule } from '../models/display-rule.model';
 import { DisplayObjectType } from '../types';
 import { DataStructureService } from './data-structure.service';
 import { DisplayObjectHelperService } from './display-object-helper.service';

@@ -37,7 +37,12 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, nodeToVitamuiIcon } from 'vitamui-library';
+import { FilingHoldingSchemeNode } from '../../../../../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import {
+  nodeHasChildren,
+  nodeHasMatch,
+  nodeToVitamuiIcon,
+} from '../../../../../../../../../vitamui-library/src/app/modules/models/nodes/node.utils';
 import { Pair } from '../../../models/utils';
 
 @Component({

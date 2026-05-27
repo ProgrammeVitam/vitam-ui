@@ -37,7 +37,11 @@
 import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
-import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'vitamui-library';
+import { AccessionRegisterDetail } from '../../../../../vitamui-library/src/app/modules/models/access-register/accession-register-detail';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { OjectUtils } from '../../../../../vitamui-library/src/app/modules/utils/oject-utils';
 import { AccessionRegisterSearchDto } from '../../models/accession-register-export-csv.interface';
 import { AccessionRegistersService } from '../accession-register.service';
 

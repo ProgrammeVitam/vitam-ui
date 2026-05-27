@@ -37,7 +37,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SchemaApiService } from '../api/schema-api.service';
-import { Collection, Schema } from '../models';
+import { Collection } from '../models/schema/collection.enum';
+import { Schema } from '../models/schema/schema.interface';
 import { map } from 'rxjs/operators';
 import { SchemaElement } from '../models/schema/schema-element.model';
 import { ItemNode } from '../components/autocomplete/utils/item-node.interface';

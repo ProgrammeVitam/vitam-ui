@@ -44,58 +44,61 @@ import { debounceTime, filter, map, mergeMap, share, switchMap, take, tap } from
 import { isEmpty } from 'underscore';
 import {
   ACCESS_RULE,
-  AccessContract,
-  addErrorStatusBadgeIfArchiveUnitHasErrors,
   ALL_DESCENDANTS_FACET,
-  ApplicationId,
   APPRAISAL_RULE,
-  ArchiveSearchResultFacets,
-  ArchiveUnit,
-  BreadCrumbData,
-  ConfirmDialogComponent,
-  ConfirmDialogData,
-  CriteriaDataType,
-  CriteriaOperator,
-  CriteriaSearchCriteria,
-  CriteriaValue,
-  Direction,
   DISSEMINATION_RULE,
-  ExternalParameters,
-  ExternalParametersService,
-  FilingHoldingSchemeNode,
-  GlobalEventService,
-  MANAGEMENT_RULE_SHARED_DATA_SERVICE,
   NODES,
   ORIGIN_WAITING_RECALCULATE,
-  ORPHANS_NODE_ID,
-  PagedResult,
-  QueryParamsService,
-  ReclassificationDialogComponent,
   REUSE_RULE,
-  Rule,
-  RuleService,
+  STORAGE_RULE,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
+  WAITING_RECALCULATE,
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-configs';
+import { AccessContract } from '../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { addErrorStatusBadgeIfArchiveUnitHasErrors } from '../../../../../vitamui-library/src/app/modules/models/units/unit.utils';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import {
+  ArchiveSearchResultFacets,
+  CriteriaSearchCriteria,
+  CriteriaValue,
+  PagedResult,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaRemoveAction,
-  SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SidenavPage,
-  SnackBarService,
-  STORAGE_RULE,
   TermsFacet,
-  toManagementRuleType,
-  Transaction,
-  TransactionStatus,
-  Unit,
-  UnitType,
-  VALID_COMPUTED_INHERITED_RULES_FACET,
-  WAITING_RECALCULATE,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { ArchiveUnit } from '../../../../../vitamui-library/src/app/modules/archive-unit/models/archive-unit';
+import { BreadCrumbData } from '../../../../../vitamui-library/src/app/modules/models/breadcrumb/breadcrumb.interface';
+import { ConfirmDialogComponent } from '../../../../../vitamui-library/src/lib/components/dialog/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '../../../../../vitamui-library/src/lib/models/confirm-dialog-data.interface';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { FilingHoldingSchemeNode } from '../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import { GlobalEventService } from '../../../../../vitamui-library/src/app/modules/global-event.service';
+import { MANAGEMENT_RULE_SHARED_DATA_SERVICE } from '../../../../../vitamui-library/src/lib/models/management-rule-shared-data-service.interface';
+import { ORPHANS_NODE_ID } from '../../../../../vitamui-library/src/app/modules/models/nodes/filing-holding-scheme.handler';
+import { QueryParamsService } from '../../../../../vitamui-library/src/app/modules/url/query-params.service';
+import { ReclassificationDialogComponent } from '../../../../../vitamui-library/src/lib/components/reclassification-dialog/reclassification-dialog.component';
+import { Rule } from '../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../vitamui-library/src/app/modules/rule/rule.service';
+import {
+  SearchCriteriaEltements,
+  SearchCriteriaHistory,
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
+import { SearchCriteriaService } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.service';
+import { SidenavPage } from '../../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { toManagementRuleType } from '../../../../../vitamui-library/src/lib/components/management-rule-search/management-rule-search.config';
+import { Transaction } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';

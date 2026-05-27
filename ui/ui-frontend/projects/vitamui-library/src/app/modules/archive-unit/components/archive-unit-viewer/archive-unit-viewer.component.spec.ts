@@ -40,8 +40,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { BASE_URL } from '../../../injection-tokens';
-import { LoggerModule } from '../../../logger';
-import { Unit, UnitType } from '../../../models';
+import { LoggerModule } from '../../../logger/logger.module';
+import { Unit } from '../../../models/units/unit.interface';
+import { UnitType } from '../../../models/units/unit-type.enum';
 import { ObjectViewerModule } from '../../../object-viewer/object-viewer.module';
 import { ArchiveUnitViewerComponent } from './archive-unit-viewer.component';
 import { DescriptionLevel } from '../../../models/units/description-level.enum';
@@ -97,9 +98,15 @@ describe('ArchiveUnitViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [
+        ObjectViewerModule,
+        ObjectEditorModule,
+        ReactiveFormsModule,
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
+        ArchiveUnitViewerComponent,
+      ],
       providers: [
         {
           provide: BASE_URL,

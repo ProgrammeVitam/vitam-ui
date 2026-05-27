@@ -45,8 +45,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PipesModule } from '../shared/pipes/pipes.module';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
 import { LogbookOperationPopupComponent } from './logbook-operation-detail/logbook-operation-popup.component';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
@@ -54,6 +54,8 @@ import { LogbookOperationRoutingModule } from './logbook-operation-routing.modul
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
+import { EventTypeBadgeClassPipe } from '../shared/pipes/event-type-badge-class.pipe';
+import { LastEventPipe } from '../shared/pipes/last-event.pipe';
 
 @NgModule({
   declarations: [LogbookOperationComponent, LogbookOperationListComponent, LogbookOperationDetailComponent, LogbookOperationPopupComponent],
@@ -70,7 +72,8 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
+    EventTypeBadgeClassPipe,
+    LastEventPipe,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

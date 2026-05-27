@@ -36,7 +36,9 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { Logger } from '../../logger/logger';
-import { Collection, ProfiledSchemaElement, Schema, SchemaElement } from '../../models';
+import { Collection } from '../../models/schema/collection.enum';
+import { ProfiledSchemaElement, SchemaElement } from '../../models/schema/schema-element.model';
+import { Schema } from '../../models/schema/schema.interface';
 import { internationalizedKeys } from '../../object-viewer/services/display-object-helper.service';
 import { SedaVersion } from '../../object-viewer/types';
 import { PathService } from './path.service';

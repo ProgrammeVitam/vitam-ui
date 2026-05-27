@@ -40,17 +40,15 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
-import {
-  AgenciesModule,
-  BASE_URL,
-  InjectorModule,
-  ItemNode,
-  LoggerModule,
-  SchemaElement,
-  SchemaService,
-  SearchCriteriaAddAction,
-  SnackBarService,
-} from 'vitamui-library';
+import { AgenciesModule } from '../../../../../../vitamui-library/src/app/modules/agencies/agencies.module';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { ItemNode } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/item-node.interface';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SchemaElement } from '../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SearchCriteriaAddAction } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';

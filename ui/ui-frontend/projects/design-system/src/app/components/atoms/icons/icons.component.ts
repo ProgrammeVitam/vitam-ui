@@ -37,7 +37,7 @@
 import { Component } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { SelectComponent } from 'vitamui-library';
+import { SelectComponent } from '../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

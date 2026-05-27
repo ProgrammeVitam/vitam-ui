@@ -40,18 +40,17 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subscription, tap } from 'rxjs';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { FilingHoldingSchemeHandler } from '../../../../../vitamui-library/src/app/modules/models/nodes/filing-holding-scheme.handler';
+import { FilingHoldingSchemeNode } from '../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
 import {
-  CriteriaDataType,
-  CriteriaOperator,
-  FilingHoldingSchemeHandler,
-  FilingHoldingSchemeNode,
   PagedResult,
   ResultFacet,
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
-  Unit,
-  UnitType,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { NodeData } from '../models/nodedata.interface';

@@ -39,19 +39,18 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subscription } from 'rxjs';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { Direction } from '../../../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { FilingHoldingSchemeHandler } from '../../../../../../../../vitamui-library/src/app/modules/models/nodes/filing-holding-scheme.handler';
+import { FilingHoldingSchemeNode } from '../../../../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
 import {
-  CriteriaDataType,
-  CriteriaOperator,
-  Direction,
-  FilingHoldingSchemeHandler,
-  FilingHoldingSchemeNode,
   PagedResult,
   ResultFacet,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  Unit,
-  UnitType,
-} from 'vitamui-library';
+} from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Unit } from '../../../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';

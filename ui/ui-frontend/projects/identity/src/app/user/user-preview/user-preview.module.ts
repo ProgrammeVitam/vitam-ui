@@ -43,7 +43,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { SharedModule } from '../../shared/shared.module';
 import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';
 import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';

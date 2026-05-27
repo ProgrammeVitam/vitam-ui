@@ -38,12 +38,41 @@ import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/cor
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
 import { EditObject } from '../../models/edit-object.model';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { GroupEditorComponent } from '../group-editor/group-editor.component';
+import { ObjectEditorModule } from '../../object-editor.module';
+import { PrimitiveEditorComponent } from '../primitive-editor/primitive-editor.component';
+import { InputComponent } from '../../../../../lib/components/input/input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditorListInputComponent } from '../editor-list-input.component';
+import { EditorListTextareaComponent } from '../editor-list-textarea.component';
+import { EditorListSelectComponent } from '../editor-list-select.component';
+import { EditorListDateComponent } from '../editor-list-date.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { AppendStarPipe } from '../../required.pipe';
 
 @Component({
   selector: 'vitamui-common-list-editor',
   templateUrl: './list-editor.component.html',
   styleUrls: ['./list-editor.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+    NgTemplateOutlet,
+    GroupEditorComponent,
+    ObjectEditorModule,
+    PrimitiveEditorComponent,
+    InputComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    EditorListInputComponent,
+    EditorListTextareaComponent,
+    EditorListSelectComponent,
+    EditorListDateComponent,
+    TranslatePipe,
+    EmptyPipe,
+    AppendStarPipe,
+  ],
 })
 export class ListEditorComponent implements OnChanges {
   private favoriteEntryService = inject(FavoriteEntryService);

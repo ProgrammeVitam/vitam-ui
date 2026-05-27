@@ -39,7 +39,10 @@ import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ManagementContract, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
+import { ManagementContract } from '../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { ManagementContractsApiService } from '../core/api/management-contracts-api.service';
 

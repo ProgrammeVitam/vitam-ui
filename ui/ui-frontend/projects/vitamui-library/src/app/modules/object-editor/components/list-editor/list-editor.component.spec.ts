@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoggerModule } from '../../../logger';
+import { LoggerModule } from '../../../logger/logger.module';
 import { ListEditorComponent } from './list-editor.component';
 
 describe('ListEditorComponent', () => {
@@ -45,8 +45,7 @@ describe('ListEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ListEditorComponent],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), ListEditorComponent],
     }).compileComponents();
   });
 

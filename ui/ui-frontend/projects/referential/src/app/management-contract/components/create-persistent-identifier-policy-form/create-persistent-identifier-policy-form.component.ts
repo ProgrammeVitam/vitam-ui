@@ -36,7 +36,8 @@
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Option, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { PersistentIdentifierPolicyTypeEnum } from '../../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
 import { ManagementContractValidationErrors, ManagementContractValidators } from '../../validators/management-contract-validators';
 import { TranslateService } from '@ngx-translate/core';
 

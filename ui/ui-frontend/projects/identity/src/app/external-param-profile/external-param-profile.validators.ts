@@ -38,7 +38,7 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { ApplicationId } from 'vitamui-library';
+import { ApplicationId } from '../../../../vitamui-library/src/app/modules/application-id.enum';
 import { ExternalParamProfileService } from './external-param-profile.service';
 
 @Injectable({

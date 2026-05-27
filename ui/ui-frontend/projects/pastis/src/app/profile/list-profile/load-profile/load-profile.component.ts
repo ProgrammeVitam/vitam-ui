@@ -36,7 +36,9 @@
  */
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { FileSelectorComponent, PipesModule, VitamUILibraryModule } from 'vitamui-library';
+import { FileSelectorComponent } from '../../../../../../vitamui-library/src/app/modules/components/file-selector/file-selector.component';
+import { PipesModule } from '../../../../../../vitamui-library/src/app/modules/pipes/pipes.module';
+import { VitamUILibraryModule } from '../../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';

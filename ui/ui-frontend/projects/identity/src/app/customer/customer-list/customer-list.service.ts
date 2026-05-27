@@ -38,7 +38,12 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Customer, DEFAULT_PAGE_SIZE, Direction, Owner, PageRequest, PaginatedResponse, SearchService } from 'vitamui-library';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { Owner } from '../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { PaginatedResponse } from '../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
+import { SearchService } from '../../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
 import { CustomerApiService } from '../../core/api/customer-api.service';
 
 @Injectable({

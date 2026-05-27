@@ -39,7 +39,8 @@ import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 import { EditAgencyGuard } from './edit-agency.guard';
-import { SecurityService, TenantSelectionService } from 'vitamui-library';
+import { SecurityService } from '../../../../../vitamui-library/src/app/modules/security/security.service';
+import { TenantSelectionService } from '../../../../../vitamui-library/src/app/modules/tenant-selection.service';
 import { ROUTES } from './edit-agency.constants';
 
 describe('EditAgencyGuard', () => {

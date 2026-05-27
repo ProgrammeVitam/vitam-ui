@@ -36,13 +36,16 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MenuOption } from '../../../models/menu-option.interface';
-import { Option } from '../../autocomplete';
+import { Option } from '../../autocomplete/utils/option.interface';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'vitamui-common-item-select',
   templateUrl: './item-select.component.html',
   styleUrls: ['./item-select.component.scss'],
-  standalone: false,
+  imports: [MatFormField, MatLabel, MatSelect, MatOption, MatSuffix],
 })
 export class ItemSelectComponent {
   @Input() label: string;

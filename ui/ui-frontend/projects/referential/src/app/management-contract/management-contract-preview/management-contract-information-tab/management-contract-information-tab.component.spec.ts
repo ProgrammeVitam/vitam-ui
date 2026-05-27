@@ -43,7 +43,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import {
+  IntermediaryVersionEnum,
+  ManagementContract,
+} from '../../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { InputStubComponent, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab.component';
@@ -54,10 +60,7 @@ describe('ManagementContractInformationTabComponent', () => {
   let component: ManagementContractInformationTabComponent;
   let fixture: ComponentFixture<ManagementContractInformationTabComponent>;
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -109,7 +112,7 @@ describe('ManagementContractInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractInformationTabComponent, DateTimeStubPipe],
+      declarations: [ManagementContractInformationTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatSidenavModule,
@@ -118,6 +121,7 @@ describe('ManagementContractInformationTabComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         LoggerModule.forRoot(),
+        DateTimeStubPipe,
       ],
       providers: [
         FormBuilder,

@@ -46,7 +46,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
 import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
 import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';

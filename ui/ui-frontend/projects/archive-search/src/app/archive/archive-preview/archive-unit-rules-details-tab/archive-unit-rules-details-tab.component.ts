@@ -38,7 +38,12 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import {
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
 import { ArchiveService } from '../../archive.service';
 
 const PAGE_SIZE = 10;

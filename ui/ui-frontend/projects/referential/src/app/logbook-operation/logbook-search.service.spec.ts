@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { LogbookApiService, LogbookService } from 'vitamui-library';
+import { LogbookApiService } from '../../../../vitamui-library/src/app/modules/api/logbook-api.service';
+import { LogbookService } from '../../../../vitamui-library/src/app/modules/logbook/logbook.service';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';

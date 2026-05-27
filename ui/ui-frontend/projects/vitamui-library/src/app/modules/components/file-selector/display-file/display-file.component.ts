@@ -38,11 +38,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DisplayFile } from './display-file.interface';
 import { FormErrorComponent } from '../../../../../lib/components/form-errors/form-error/form-error.component';
 import { PipesModule } from '../../../pipes/pipes.module';
-import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';
+
+import { TooltipDirective } from '../../common-tooltip/tooltip.directive';
 
 @Component({
   selector: 'vitamui-display-file',
-  imports: [FormErrorComponent, PipesModule, CommonTooltipModule],
+  imports: [FormErrorComponent, PipesModule, TooltipDirective],
   templateUrl: './display-file.component.html',
   styleUrl: './display-file.component.scss',
 })

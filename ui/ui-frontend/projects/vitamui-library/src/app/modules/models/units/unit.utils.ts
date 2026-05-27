@@ -37,7 +37,7 @@
 import { VitamuiIcons } from '../../vitamui-icons.enum';
 import { UnitType } from './unit-type.enum';
 import { Unit, ValidationError } from './unit.interface';
-import { ArchiveUnit } from '../../archive-unit';
+import { ArchiveUnit } from '../../archive-unit/models/archive-unit';
 
 export function unitToVitamuiIcon(unit: Unit): VitamuiIcons {
   const hasObject = unit['#object'] && unit['#object'].length > 0;

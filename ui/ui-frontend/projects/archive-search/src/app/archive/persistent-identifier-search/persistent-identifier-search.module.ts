@@ -36,7 +36,8 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { FoundObjectModalComponent } from './found-object-modal/found-object-modal.component';
 import { PersistentIdentifierSearchRoutingModule } from './persistent-identifier-search-routing.module';
 import { PersistentIdentifierSearchComponent } from './persistent-identifier-search.component';

@@ -46,7 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { FileFormatService } from '../file-format.service';

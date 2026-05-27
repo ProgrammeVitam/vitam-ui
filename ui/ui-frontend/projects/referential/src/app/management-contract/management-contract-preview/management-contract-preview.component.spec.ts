@@ -41,7 +41,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -50,10 +52,7 @@ describe('ManagementContractPreviewComponent', () => {
   let component: ManagementContractPreviewComponent;
   let fixture: ComponentFixture<ManagementContractPreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class TruncateStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -62,7 +61,7 @@ describe('ManagementContractPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractPreviewComponent, TruncateStubPipe],
+      declarations: [ManagementContractPreviewComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatSidenavModule,
@@ -72,6 +71,7 @@ describe('ManagementContractPreviewComponent', () => {
         RouterTestingModule,
         LoggerModule.forRoot(),
         MatDialogModule,
+        TruncateStubPipe,
       ],
       providers: [
         {

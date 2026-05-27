@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { Schema } from '../../models';
-import { DisplayRule } from '../../object-viewer/models';
+import { Schema } from '../../models/schema/schema.interface';
+import { DisplayRule } from '../../object-viewer/models/display-rule.model';
 import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/schema-element-to-display-rule.service';

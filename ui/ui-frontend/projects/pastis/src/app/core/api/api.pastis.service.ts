@@ -74,7 +74,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

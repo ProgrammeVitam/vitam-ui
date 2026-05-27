@@ -38,17 +38,14 @@
 import { HttpClient, HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
-import {
-  BASE_URL,
-  PageRequest,
-  PaginatedResponse,
-  Project,
-  ProjectAttachments,
-  SearchCriteriaHistory,
-  Transaction,
-  VitamuiHttpHeaders,
-  PaginatedHttpClient,
-} from 'vitamui-library';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PageRequest } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { PaginatedResponse } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
+import { Project, ProjectAttachments } from '../../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { SearchCriteriaHistory } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { VitamuiHttpHeaders } from '../../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { PaginatedHttpClient } from '../../../../../../vitamui-library/src/app/modules/paginated-http-client';
 
 @Injectable({
   providedIn: 'root',

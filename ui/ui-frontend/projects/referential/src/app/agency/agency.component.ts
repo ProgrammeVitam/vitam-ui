@@ -38,24 +38,22 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import {
-  Agency,
-  AgencyService,
-  ApplicationId,
-  FileTypes,
-  GlobalEventService,
-  QueryParamsService,
-  Role,
-  SecurityService,
-  SidenavPage,
-  VitamUICommonModule,
-} from 'vitamui-library';
+import { Agency } from '../../../../vitamui-library/src/lib/models/agency';
+import { AgencyService } from '../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ApplicationId } from '../../../../vitamui-library/src/app/modules/application-id.enum';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { QueryParamsService } from '../../../../vitamui-library/src/app/modules/url/query-params.service';
+import { Role } from '../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { zip } from 'rxjs';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyCreateModule } from './agency-create';
+import { AgencyCreateModule } from './agency-create/agency-create.module';
 import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
 
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';

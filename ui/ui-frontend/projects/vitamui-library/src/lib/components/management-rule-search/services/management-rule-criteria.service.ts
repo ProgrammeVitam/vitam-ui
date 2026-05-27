@@ -39,14 +39,13 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 import { Params } from '@angular/router';
+import { CriteriaOperator } from '../../../../app/modules/models/criteria/criteria.enums';
 import {
-  CriteriaOperator,
   CriteriaSearchCriteria,
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
-  ORIGIN_HAS_AT_LEAST_ONE,
-  ORIGIN_INHERITE_AT_LEAST_ONE,
-} from '../../../../app/modules';
+} from '../../../../app/modules/models/criteria/search-criteria.interface';
+import { ORIGIN_HAS_AT_LEAST_ONE, ORIGIN_INHERITE_AT_LEAST_ONE } from '../../../../app/modules/models/criteria/search-criteria-configs';
 import { QueryParamsService } from '../../../../app/modules/url/query-params.service';
 import { SearchCriteriaService } from '../../../../app/modules/models/criteria/search-criteria.service';
 import {

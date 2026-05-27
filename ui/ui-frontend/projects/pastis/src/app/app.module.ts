@@ -34,108 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DatePipe, registerLocaleData } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { inject, LOCALE_ID, NgModule, provideAppInitializer } from '@angular/core';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import {
-  AuthenticationModule,
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  provideI18n,
-  StartupService,
-  ThemeService,
-  VitamUICommonModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { PastisConfiguration } from './core/classes/pastis-configuration';
-import { NoAuthenticationModule } from './standalone/no-authentication.module';
-import { StandaloneStartupService } from './standalone/standalone-startup.service';
-import { StandaloneThemeService } from './standalone/standalone-theme.service';
-import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
-import { provideNativeDateAdapter } from '@angular/material/core';
 
 export function PastisConfigurationFactory(appConfig: PastisConfiguration) {
   return () => appConfig.initConfiguration();
 }
 
 registerLocaleData(localeFr, 'fr');
-
-const startupServiceClass = environment.standalone ? StandaloneStartupService : StartupService;
-const themeServiceClass = environment.standalone ? StandaloneThemeService : ThemeService;
-const authenticationModuleClass = environment.standalone ? NoAuthenticationModule : AuthenticationModule.forRoot();
-
-const ngxUiLoaderConfig: NgxUiLoaderConfig = {
-  bgsColor: 'red',
-  bgsOpacity: 0.5,
-  bgsPosition: 'bottom-right',
-  bgsSize: 60,
-  bgsType: SPINNER.ballSpinClockwise,
-  blur: 5,
-  delay: 0,
-  fgsColor: 'var(--vitamui-white)',
-  fgsPosition: 'center-center',
-  fgsSize: 60,
-  fgsType: SPINNER.ballSpinClockwise,
-  gap: 24,
-  logoPosition: 'center-center',
-  logoSize: 120,
-  masterLoaderId: 'master',
-  overlayBorderRadius: '0',
-  pbColor: 'var(--vitamui-primary)',
-  pbDirection: 'ltr',
-  pbThickness: 3,
-  hasProgressBar: false,
-  textColor: 'var(--vitamui-white)',
-  textPosition: 'center-center',
-  maxTime: -1,
-  minTime: 300,
-};
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    authenticationModuleClass,
-    InjectorModule,
-    LoggerModule.forRoot(),
-    BrowserAnimationsModule,
-    BrowserModule,
-    VitamUICommonModule.forRoot(),
-    AppRoutingModule,
-    MatToolbarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), // FIXME: remove this pastis-specific loader in favor of vitam global loader
-  ],
-  providers: [
-    provideI18n(),
-    provideNativeDateAdapter(),
-    Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: WINDOW_LOCATION, useValue: window.location },
-    PastisConfiguration,
-    { provide: BASE_URL, useValue: './pastis-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    provideAppInitializer(() => {
-      const initializerFn = PastisConfigurationFactory(inject(PastisConfiguration));
-      return initializerFn();
-    }),
-    { provide: StartupService, useClass: startupServiceClass },
-    { provide: ThemeService, useClass: themeServiceClass },
-    DatePipe,
-  ],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}

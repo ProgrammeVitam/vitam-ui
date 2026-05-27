@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Direction } from 'vitamui-library';
+import { Direction } from '../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
 
 export interface AccessionRegisterSearchDto {
   orderBy?: string;

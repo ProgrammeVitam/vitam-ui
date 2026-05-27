@@ -36,23 +36,19 @@
  */
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  ApplicationId,
-  AuthService,
-  buildCriteriaFromSearch,
-  collapseAnimation,
-  CriteriaSearchQuery,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  Group,
-  InfiniteScrollTable,
-  PageRequest,
-  Role,
-  rotateAnimation,
-  User,
-  SnackBarService,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { buildCriteriaFromSearch } from '../../../../../vitamui-library/src/app/modules/vitamui-table/criteria-builder.util';
+import { collapseAnimation, rotateAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { CriteriaSearchQuery } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { Group } from '../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Role } from '../../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { User } from '../../../../../vitamui-library/src/app/modules/models/user/user.interface';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import {
   Component,

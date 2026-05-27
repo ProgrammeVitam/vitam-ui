@@ -39,7 +39,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, CountryService, Customer, diff, Option, OtpState, StartupService } from 'vitamui-library';
+import { CountryOption, CountryService } from '../../../../../../vitamui-library/src/app/modules/country.service';
+import { Customer } from '../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { OtpState } from '../../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { StartupService } from '../../../../../../vitamui-library/src/app/modules/startup.service';
 
 import { CustomerService } from '../../../core/customer.service';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from '../../customer-create/customer-create.validators';

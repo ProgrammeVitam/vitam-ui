@@ -38,7 +38,11 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import { AdminUserProfile } from '../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { Direction } from '../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { SearchBarComponent } from '../../../../vitamui-library/src/app/modules/components/search-bar/search-bar.component';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 import { IngestList } from '../core/common/ingest-list';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { UploadComponent } from '../core/common/upload.component';

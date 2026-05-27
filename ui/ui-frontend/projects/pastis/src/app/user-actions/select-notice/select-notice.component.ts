@@ -41,7 +41,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
-import { Option } from 'vitamui-library';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
 

@@ -38,7 +38,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard } from 'vitamui-library';
+import { ActiveTenantGuard } from '../../../../../vitamui-library/src/app/modules/active-tenant.guard';
 
 import { ProjectsComponent } from './projects.component';
 

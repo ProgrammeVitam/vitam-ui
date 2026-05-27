@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { SearchCriteriaDto } from 'vitamui-library';
+import { SearchCriteriaDto } from '../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 
 export interface ActionsRules {
   ruleType: string;

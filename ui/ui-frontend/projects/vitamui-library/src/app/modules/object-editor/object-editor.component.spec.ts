@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoggerModule } from '../logger';
+import { LoggerModule } from '../logger/logger.module';
 import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
 import { ObjectEditorComponent } from './object-editor.component';
 
@@ -46,8 +46,7 @@ describe('ObjectEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ObjectEditorComponent],
-      imports: [LoggerModule.forRoot(), ObjectViewerModule],
+      imports: [LoggerModule.forRoot(), ObjectViewerModule, ObjectEditorComponent],
     }).compileComponents();
   });
 

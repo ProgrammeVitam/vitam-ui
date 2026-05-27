@@ -35,17 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { DisplayObject } from '../../models';
+import { DisplayObject } from '../../models/display-object.model';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { LayoutService } from '../../services/layout.service';
 import { DisplayObjectType } from '../../types';
+import { DataComponent } from '../../../components/data/data.component';
+import { NgTemplateOutlet } from '@angular/common';
+import { AccordionComponent } from '../../../components/accordion/accordion.component';
+import { ObjectViewerModule } from '../../object-viewer.module';
+import { ListComponent } from '../list/list.component';
+import { PrimitiveComponent } from '../primitive/primitive.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
 
 @Component({
   selector: 'vitamui-common-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
-  standalone: false,
+  imports: [
+    DataComponent,
+    NgTemplateOutlet,
+    AccordionComponent,
+    ObjectViewerModule,
+    ListComponent,
+    PrimitiveComponent,
+    TranslatePipe,
+    EmptyPipe,
+  ],
 })
 export class GroupComponent implements OnInit, OnChanges {
   private layoutService = inject(LayoutService);

@@ -40,20 +40,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { Subscription } from 'rxjs';
-import {
-  AdminUserProfile,
-  AuthService,
-  Customer,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  DownloadUtils,
-  GlobalEventService,
-  Group,
-  PageRequest,
-  SidenavPage,
-  User,
-  SnackBarService,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { AuthService } from '../../../../vitamui-library/src/app/modules/auth.service';
+import { Customer } from '../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { DownloadUtils } from '../../../../vitamui-library/src/app/modules/utils/download.utils';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { User } from '../../../../vitamui-library/src/app/modules/models/user/user.interface';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { CustomerService } from '../core/customer.service';
 import { GroupService } from '../group/group.service';
 import { UserCreateComponent } from './user-create/user-create.component';

@@ -82,7 +82,7 @@ import { FileNode } from '../../models/file-node';
 import { ProfileType } from '../../models/profile-type.enum';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileTreeService } from './file-tree/file-tree.service';
-import { Logger } from 'vitamui-library';
+import { Logger } from '../../../../../vitamui-library/src/app/modules/logger/logger';
 import { filter } from 'rxjs/operators';
 import { BreadcrumbService } from '../../core/services/breadcrumb.service';
 

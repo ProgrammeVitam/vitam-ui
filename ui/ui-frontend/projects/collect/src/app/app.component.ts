@@ -36,11 +36,13 @@
  */
 
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { VitamUICommonModule } from '../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [RouterOutlet, VitamUICommonModule],
 })
 export class AppComponent {}

@@ -38,7 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { InjectorModule } from 'vitamui-library';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

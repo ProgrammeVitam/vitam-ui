@@ -37,19 +37,20 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, computed, input, InputSignal, OnChanges, Signal, SimpleChanges, inject } from '@angular/core';
+import { DescriptionLevel } from '../../../../../../../vitamui-library/src/lib/models/description-level.enum';
 import {
   ApiUnitObject,
-  DescriptionLevel,
   FileInfoDto,
   FormatIdentificationDto,
-  qualifiersToVersionsWithQualifier,
-  TenantSelectionService,
-  Unit,
   VersionWithQualifierDto,
-  ValidationError,
+} from '../../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
+import { qualifiersToVersionsWithQualifier } from '../../../../../../../vitamui-library/src/app/modules/models/units/object-group.utils';
+import { TenantSelectionService } from '../../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Unit, ValidationError } from '../../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import {
   getErrorOnTechnicalObjectsGroup,
   getErrorOnObjectsGroup,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/app/modules/models/units/unit.utils';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({

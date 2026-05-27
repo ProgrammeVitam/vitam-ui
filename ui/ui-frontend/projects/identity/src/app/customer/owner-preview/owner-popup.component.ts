@@ -37,7 +37,8 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Owner, Tenant } from 'vitamui-library';
+import { Owner } from '../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { Tenant } from '../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { OwnerService } from '../owner.service';
 
 @Component({

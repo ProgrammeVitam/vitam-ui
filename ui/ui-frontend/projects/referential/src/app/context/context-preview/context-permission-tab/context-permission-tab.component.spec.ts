@@ -42,7 +42,10 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { BASE_URL, Context, ContextPermission, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Context, ContextPermission } from '../../../../../../vitamui-library/src/lib/models/context';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ContextService } from '../../context.service';

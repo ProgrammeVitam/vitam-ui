@@ -39,7 +39,7 @@ import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { ActionsRules, ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
-import { Rule } from 'vitamui-library';
+import { Rule } from '../../../../../../../../vitamui-library/src/lib/models/rule';
 
 @Component({
   selector: 'app-archive-unit-rules',

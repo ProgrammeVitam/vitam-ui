@@ -38,7 +38,9 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ProbativeValueService } from '../probative-value.service';
 
 @Component({

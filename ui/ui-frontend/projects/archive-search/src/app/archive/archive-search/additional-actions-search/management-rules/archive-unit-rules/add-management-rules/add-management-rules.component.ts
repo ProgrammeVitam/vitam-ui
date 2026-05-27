@@ -44,14 +44,16 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
-  diff,
-  ManagementRuleValidators,
-  Rule,
-  RuleService,
+} from '../../../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { diff } from '../../../../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { ManagementRuleValidators } from '../../../../../../../../../vitamui-library/src/lib/validators/management-rule.validators';
+import { Rule } from '../../../../../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../../../../../vitamui-library/src/app/modules/rule/rule.service';
+import {
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+} from '../../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { VitamuiSelectOptions } from '../../../../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';

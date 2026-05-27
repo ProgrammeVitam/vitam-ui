@@ -40,16 +40,14 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
 import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
-import {
-  ApplicationId,
-  ArchiveUnit,
-  ArchiveUnitEditorComponent,
-  EditObject,
-  JsonPatch,
-  Logger,
-  SpinnerOverlayService,
-  SnackBarService,
-} from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { ArchiveUnit } from '../../../../../../vitamui-library/src/app/modules/archive-unit/models/archive-unit';
+import { ArchiveUnitEditorComponent } from '../../../../../../vitamui-library/src/app/modules/archive-unit/components/archive-unit-editor/archive-unit-editor.component';
+import { EditObject } from '../../../../../../vitamui-library/src/app/modules/object-editor/models/edit-object.model';
+import { JsonPatch } from '../../../../../../vitamui-library/src/app/modules/archive-unit/models/json-patch';
+import { Logger } from '../../../../../../vitamui-library/src/app/modules/logger/logger';
+import { SpinnerOverlayService } from '../../../../../../vitamui-library/src/lib/services/spinner-overlay.service';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({

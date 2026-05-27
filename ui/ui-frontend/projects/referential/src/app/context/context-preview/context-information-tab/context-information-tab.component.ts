@@ -39,7 +39,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Context, Option, diff } from 'vitamui-library';
+import { Context } from '../../../../../../vitamui-library/src/lib/models/context';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';

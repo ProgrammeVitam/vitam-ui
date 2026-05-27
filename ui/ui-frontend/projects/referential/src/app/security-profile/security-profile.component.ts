@@ -37,7 +37,10 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'vitamui-library';
+import { ApplicationService } from '../../../../vitamui-library/src/app/modules/application.service';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { SecurityProfile } from '../../../../vitamui-library/src/lib/models/security-profile';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 import { shareReplay } from 'rxjs/operators';

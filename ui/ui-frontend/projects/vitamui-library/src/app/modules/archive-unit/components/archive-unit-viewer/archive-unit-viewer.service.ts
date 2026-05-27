@@ -37,10 +37,13 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Logger } from '../../../logger/logger';
-import { Collection, Schema } from '../../../models';
+import { Collection } from '../../../models/schema/collection.enum';
+import { Schema } from '../../../models/schema/schema.interface';
 import { EditObjectService } from '../../../object-editor/services/edit-object.service';
-import { DisplayObject, DisplayObjectService, DisplayRule } from '../../../object-viewer/models';
-import { SchemaService } from '../../../schema';
+import { DisplayObject } from '../../../object-viewer/models/display-object.model';
+import { DisplayObjectService } from '../../../object-viewer/models/display-object-service';
+import { DisplayRule } from '../../../object-viewer/models/display-rule.model';
+import { SchemaService } from '../../../schema/schema.service';
 import { ArchiveUnitEditObjectService, SchemaElementByApiPath } from '../../archive-unit-edit-object.service';
 import { ArchiveUnitTemplateService } from '../../archive-unit-template.service';
 

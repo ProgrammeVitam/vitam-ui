@@ -37,7 +37,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ColorPickerDirective } from 'ngx-color-picker';
-import { hexToRgb, rgbToHsl, FormControlWarn } from 'vitamui-library';
+import { hexToRgb, rgbToHsl } from '../../../../../../../vitamui-library/src/app/modules/utils/colors.util';
+import { FormControlWarn } from '../../../../../../../vitamui-library/src/lib/components/form-errors/form-control-warn';
 
 @Component({
   selector: 'app-input-color',

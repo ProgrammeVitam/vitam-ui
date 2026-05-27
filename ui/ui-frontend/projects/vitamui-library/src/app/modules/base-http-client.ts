@@ -39,7 +39,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { LogbookApiService } from './api/logbook-api.service';
-import { ApiEvent, IEvent } from './models';
+import { ApiEvent } from './models/logbook/api-event.interface';
+import { IEvent } from './models/logbook/event.interface';
 
 const HTTP_STATUS_OK = 200;
 

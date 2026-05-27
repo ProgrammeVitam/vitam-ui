@@ -36,7 +36,8 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
-import { AccessionRegisterDetail, rotate90Animation } from 'vitamui-library';
+import { AccessionRegisterDetail } from '../../../../../../vitamui-library/src/app/modules/models/access-register/accession-register-detail';
+import { rotate90Animation } from '../../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
 
 @Component({
   selector: 'app-accession-register-detail',

@@ -37,17 +37,17 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { IEvent } from '../../../../../vitamui-library/src/app/modules/models/logbook/event.interface';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { fadeInOutAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
 import {
-  AuthService,
-  IEvent,
-  ExternalParameters,
-  ExternalParametersService,
-  fadeInOutAnimation,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
-  LogbookService,
-  SnackBarService,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/logbook/logbook-operation.interface';
+import { LogbookService } from '../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';

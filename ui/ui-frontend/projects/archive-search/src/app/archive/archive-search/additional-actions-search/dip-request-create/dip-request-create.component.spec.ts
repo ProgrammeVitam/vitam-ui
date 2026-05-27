@@ -42,15 +42,12 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  UsageVersionEnum,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { InjectorModule } from '../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { StartupService } from '../../../../../../../vitamui-library/src/app/modules/startup.service';
+import { UsageVersionEnum } from '../../../../../../../vitamui-library/src/app/modules/models/archive-search/archive-search.interface';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { DipRequestCreateComponent } from './dip-request-create.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

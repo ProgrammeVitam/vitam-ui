@@ -44,7 +44,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 import { ProbativeValueCreateModule } from './probative-value-create/probative-value-create.module';
 import { ProbativeValuePreviewModule } from './probative-value-preview/probative-value-preview.module';
@@ -52,7 +52,7 @@ import { ProbativeValueRoutingModule } from './probative-value-routing.module';
 import { ProbativeValueComponent } from './probative-value.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { PipesModule } from '../shared/pipes/pipes.module';
+
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
@@ -76,7 +76,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

@@ -37,7 +37,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Option } from 'vitamui-library';
+import { Option } from '../../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 
 @Component({
   selector: 'app-homepage-message-translation',

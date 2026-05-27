@@ -39,7 +39,7 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from
 
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { ContextPermission } from 'vitamui-library';
+import { ContextPermission } from '../../../../../vitamui-library/src/lib/models/context';
 import { ContextService } from '../context.service';
 
 @Injectable({

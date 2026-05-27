@@ -36,14 +36,13 @@
  */
 import { Component, computed, EventEmitter, input, InputSignal, OnChanges, Output, Signal, SimpleChanges, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TenantSelectionService } from '../../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Unit, ValidationError } from '../../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
 import {
-  TenantSelectionService,
-  Unit,
   getErrorsOnArchiveUnit,
   getErrorOnTechnicalObjectsGroup,
   getErrorOnObjectsGroup,
-  ValidationError,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/app/modules/models/units/unit.utils';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({

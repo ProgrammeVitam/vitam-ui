@@ -37,7 +37,11 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, inject } from '@angular/core';
 
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { throwIfAlreadyLoaded } from '../../../../vitamui-library/src/app/modules/module-import-guard';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { environment } from '../../environments/environment';
 
 @NgModule({

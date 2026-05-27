@@ -40,7 +40,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, IngestContract, Option, VitamuiHttpHeaders } from 'vitamui-library';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { VitamuiHttpHeaders } from '../../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';

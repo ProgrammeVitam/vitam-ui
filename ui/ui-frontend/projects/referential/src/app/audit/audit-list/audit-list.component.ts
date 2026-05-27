@@ -37,7 +37,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, merge, timer, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, Event, PageRequest } from 'vitamui-library';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Event } from '../../../../../vitamui-library/src/lib/models/event';
 import { AuditOperation } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 

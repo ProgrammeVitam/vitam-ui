@@ -37,15 +37,13 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
-import {
-  AccessContract,
-  AccessContractService,
-  ApiUnitObject,
-  ObjectQualifierType,
-  qualifiersToVersionsWithQualifier,
-  TenantSelectionService,
-  VersionWithQualifierDto,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { ApiUnitObject } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
+import { ObjectQualifierType } from '../../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { qualifiersToVersionsWithQualifier } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.utils';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { VersionWithQualifierDto } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveService } from '../../archive.service';
 

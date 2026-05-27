@@ -39,7 +39,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

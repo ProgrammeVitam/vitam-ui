@@ -38,7 +38,14 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User, UserInfo } from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { Group } from '../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { isLevelAllowed } from '../../../../../vitamui-library/src/app/modules/utils/level.util';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { User } from '../../../../../vitamui-library/src/app/modules/models/user/user.interface';
+import { UserInfo } from '../../../../../vitamui-library/src/app/modules/models/user/user-info.interface';
 import { UserInfoService } from './../user-info.service';
 
 import { UserApiService } from '../../core/api/user-api.service';

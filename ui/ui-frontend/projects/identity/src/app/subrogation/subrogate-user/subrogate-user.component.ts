@@ -39,14 +39,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import {
-  AppRootComponent,
-  Customer,
-  CustomerSelectionService,
-  GlobalEventService,
-  MenuOption,
-  SubrogationModalService,
-} from 'vitamui-library';
+import { AppRootComponent } from '../../../../../vitamui-library/src/app/modules/app-root-component.class';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { CustomerSelectionService } from '../../../../../vitamui-library/src/app/modules/customer-selection.service';
+import { GlobalEventService } from '../../../../../vitamui-library/src/app/modules/global-event.service';
+import { MenuOption } from '../../../../../vitamui-library/src/app/modules/models/menu-option.interface';
+import { SubrogationModalService } from '../../../../../vitamui-library/src/app/modules/subrogation/subrogation-modal/subrogation-modal.service';
 import { CustomerSelectService } from '../customer-select.service';
 
 @Component({

@@ -38,7 +38,10 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BASE_URL, CriteriaSearchQuery, PaginatedHttpClient, User } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { CriteriaSearchQuery } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { User } from '../../../../../vitamui-library/src/app/modules/models/user/user.interface';
 
 @Injectable({
   providedIn: 'root',

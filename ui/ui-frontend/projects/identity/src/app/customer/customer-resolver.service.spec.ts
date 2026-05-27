@@ -38,7 +38,8 @@ import { inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { Customer, OtpState } from 'vitamui-library';
+import { Customer } from '../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { OtpState } from '../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
 import { CustomerService } from '../core/customer.service';
 import { CustomerResolver } from './customer-resolver.service';
 

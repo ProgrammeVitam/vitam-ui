@@ -36,7 +36,8 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { Logger } from '../../logger/logger';
-import { DisplayObject, Layout } from '../models';
+import { DisplayObject } from '../models/display-object.model';
+import { Layout } from '../models/layout.model';
 import { LayoutSize } from '../types';
 
 @Injectable({

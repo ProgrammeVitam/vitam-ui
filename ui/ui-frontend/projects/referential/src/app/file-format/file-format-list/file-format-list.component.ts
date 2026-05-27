@@ -39,19 +39,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  ConfirmActionComponent,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  FILE_FORMAT_EXTERNAL_PREFIX,
-  FileFormat,
-  InfiniteScrollTable,
-  PageRequest,
-  StartupService,
-  User,
-  SnackBarService,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from '../../../../../vitamui-library/src/lib/models/file-format';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { User } from '../../../../../vitamui-library/src/app/modules/models/user/user.interface';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { FileFormatService } from '../file-format.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

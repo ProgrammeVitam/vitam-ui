@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { SlideToggleComponent } from 'vitamui-library';
+import { SlideToggleComponent } from '../../../../../vitamui-library/src/lib/components/slide-toggle/slide-toggle.component';
 
 import { AllowAdditionalPropertiesComponent } from './allow-additional-properties.component';
 

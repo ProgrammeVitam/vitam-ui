@@ -39,7 +39,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ApplicationId, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { SearchCriteriaEltDto } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
 

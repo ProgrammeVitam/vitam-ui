@@ -38,17 +38,15 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  ApiUnitObject,
-  BASE_URL,
-  IOntology,
-  PaginatedHttpClient,
-  SearchCriteriaDto,
-  SearchResponse,
-  Transaction,
-  Unit,
-  VitamError,
-} from 'vitamui-library';
+import { ApiUnitObject } from '../../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { IOntology } from '../../../../../../vitamui-library/src/app/modules/models/ontology/ontology.interface';
+import { PaginatedHttpClient } from '../../../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { SearchCriteriaDto } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SearchResponse } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-response.interface';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { VitamError } from '../../../../../../vitamui-library/src/app/modules/models/collect/vitam-error';
 import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
 
 @Injectable({

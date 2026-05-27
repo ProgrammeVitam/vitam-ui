@@ -38,8 +38,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field';
+import { CountryOption, CountryService } from '../../../../../../../vitamui-library/src/app/modules/country.service';
+import { Option } from '../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { VitamUICommonModule } from '../../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../../../vitamui-library/src/lib/vitamui-library.module';
+import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field/editable-field.module';
 
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';

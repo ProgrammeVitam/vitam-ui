@@ -49,20 +49,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
   PagedResult,
-  SchemaService,
   SearchCriteriaDto,
-  SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SecurityService,
-  UnitType,
-  VitamuiRoles,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SchemaService } from '../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SearchCriteriaService } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.service';
+import { SecurityService } from '../../../../../vitamui-library/src/app/modules/security/security.service';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
+import { VitamuiRoles } from '../../../../../vitamui-library/src/app/modules/vitamui-roles.enum';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSearchHelperService } from '../common-services/archive-search-helper.service';

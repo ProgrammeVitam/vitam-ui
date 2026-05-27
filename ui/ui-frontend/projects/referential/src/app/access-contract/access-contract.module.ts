@@ -44,7 +44,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';

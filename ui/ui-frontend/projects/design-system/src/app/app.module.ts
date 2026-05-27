@@ -46,34 +46,31 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TranslationModule } from './components/translation/translation.module';
-import { DesignSystemModule } from './components/design-system/design-system.module';
+
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  AppConfiguration,
-  ApplicationApiService,
-  AuthService,
-  BASE_URL,
-  BaseUserInfoApiService,
-  ENVIRONMENT,
-  LoggerModule,
-  provideI18n,
-  ThemeService,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-} from 'vitamui-library';
+import { AppConfiguration } from '../../../vitamui-library/src/app/modules/models/app.configuration.interface';
+import { ApplicationApiService } from '../../../vitamui-library/src/app/modules/api/application-api.service';
+import { AuthService } from '../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL, ENVIRONMENT } from '../../../vitamui-library/src/app/modules/injection-tokens';
+import { BaseUserInfoApiService } from '../../../vitamui-library/src/app/modules/api/base-user-info-api.service';
+import { LoggerModule } from '../../../vitamui-library/src/app/modules/logger/logger.module';
+import { provideI18n } from '../../../vitamui-library/src/lib/i18n/i18n.provider';
+import { ThemeService } from '../../../vitamui-library/src/app/modules/theme.service';
+import { VitamUICommonModule } from '../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../vitamui-library/src/lib/vitamui-library.module';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
 registerLocaleData(localeFr, 'fr');
 
-@NgModule({
+@NgModule(/* TODO(standalone-migration): clean up removed NgModule class manually. 
+{
   declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    DesignSystemModule,
     LoggerModule.forRoot(),
     MatExpansionModule,
     MatListModule,
@@ -99,7 +96,7 @@ registerLocaleData(localeFr, 'fr');
     { provide: BaseUserInfoApiService, useValue: { patchMyUserInfo: () => of(undefined) } }, // Make changing language work
   ],
   bootstrap: [AppComponent],
-})
+} */)
 export class AppModule {
   constructor() {
     const authService = inject(AuthService);

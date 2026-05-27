@@ -39,15 +39,13 @@ import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  AccessContract,
-  AccessContractService,
-  ApplicationService,
-  DownloadUtils,
-  FileTypes,
-  GlobalEventService,
-  SidenavPage,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { ApplicationService } from '../../../../vitamui-library/src/app/modules/application.service';
+import { DownloadUtils } from '../../../../vitamui-library/src/app/modules/utils/download.utils';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 

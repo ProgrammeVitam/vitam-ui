@@ -35,16 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import {
-  ApiEvent,
-  ApplicationId,
-  Event,
-  ExternalParameters,
-  ExternalParametersService,
-  IEvent,
-  LogbookApiService,
-  SnackBarService,
-} from 'vitamui-library';
+import { ApiEvent } from '../../../../../../vitamui-library/src/app/modules/models/logbook/api-event.interface';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { Event } from '../../../../../../vitamui-library/src/lib/models/event';
+import { ExternalParameters } from '../../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { IEvent } from '../../../../../../vitamui-library/src/app/modules/models/logbook/event.interface';
+import { LogbookApiService } from '../../../../../../vitamui-library/src/app/modules/api/logbook-api.service';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { SecurisationService } from '../../securisation.service';
 
 @Component({

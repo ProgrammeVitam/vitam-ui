@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Direction } from '../../vitamui-table';
+import { Direction } from '../../vitamui-table/direction.enum';
 
 @Component({
   selector: 'vitamui-order-by-button',

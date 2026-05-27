@@ -37,7 +37,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Customer, StartupService } from 'vitamui-library';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
 import { CustomerService } from '../../core/customer.service';
 
 @Component({

@@ -34,7 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Direction, Group, Operators, PageRequest, SnackBarService } from 'vitamui-library';
+import { BASE_URL } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Direction } from '../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { PageRequest } from '../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';

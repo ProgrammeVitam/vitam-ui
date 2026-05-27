@@ -40,7 +40,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from '../../../../../../testing/src';
 import { AuthService } from '../../../auth.service';
-import { IEvent } from '../../../models';
+import { IEvent } from '../../../models/logbook/event.interface';
 import { LogbookService } from '../../logbook.service';
 import { OperationHistoryTabComponent } from './operation-history-tab.component';
 
@@ -71,8 +71,7 @@ describe('OperationHistoryTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, TranslateModule.forRoot()],
-      declarations: [OperationHistoryTabComponent],
+      imports: [VitamUICommonTestModule, TranslateModule.forRoot(), OperationHistoryTabComponent],
       providers: [
         { provide: AuthService, useValue: {} },
         { provide: LogbookService, useValue: {} },

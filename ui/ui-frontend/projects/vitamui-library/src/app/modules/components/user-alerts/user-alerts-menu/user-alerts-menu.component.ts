@@ -36,12 +36,14 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AlertOption, UserAlerts } from '../../../models/user/user-alerts.interface';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-user-alerts-menu',
   templateUrl: './user-alerts-menu.component.html',
   styleUrls: ['./user-alerts-menu.component.scss'],
-  standalone: false,
+  imports: [MatMenuTrigger, MatMenu, MatMenuItem, TranslatePipe],
 })
 export class UserAlertsMenuComponent {
   @Input() userAlerts: UserAlerts;

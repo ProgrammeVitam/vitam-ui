@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Collection, ProfiledSchemaElement } from 'vitamui-library';
+import { Collection } from '../../../../vitamui-library/src/app/modules/models/schema/collection.enum';
+import { ProfiledSchemaElement } from '../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
 
 export const schema: ProfiledSchemaElement[] = [
   {

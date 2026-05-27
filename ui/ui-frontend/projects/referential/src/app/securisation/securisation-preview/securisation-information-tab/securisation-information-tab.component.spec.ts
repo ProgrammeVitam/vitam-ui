@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { of } from 'rxjs';
 
-import { Event } from 'vitamui-library';
+import { Event } from '../../../../../../vitamui-library/src/lib/models/event';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationInformationTabComponent } from './securisation-information-tab.component';
 

@@ -36,7 +36,11 @@
  */
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'vitamui-library';
+import { AccountComponent } from '../../../vitamui-library/src/app/modules/account/account.component';
+import { AnalyticsResolver } from '../../../vitamui-library/src/app/modules/analytics-resolver.service';
+import { AppGuard } from '../../../vitamui-library/src/app/modules/app.guard';
+import { ApplicationId } from '../../../vitamui-library/src/app/modules/application-id.enum';
+import { AuthGuard } from '../../../vitamui-library/src/app/modules/auth.guard';
 import { PortalComponent } from './portal/portal.component';
 
 const routes: Routes = [

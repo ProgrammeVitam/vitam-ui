@@ -38,7 +38,11 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, MiscValidators, rotateAnimation } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { buildValidators } from '../../../../../vitamui-library/src/app/modules/utils/level.util';
+import { collapseAnimation, rotateAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { MiscValidators } from '../../../../../vitamui-library/src/lib/validators/misc.validators';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';

@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
+import { BASE_URL } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -60,7 +61,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 class ProfilesFormStubComponent {
   @Input()
@@ -83,9 +84,9 @@ describe('ProfilesEditComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProfilesEditComponent, ProfilesFormStubComponent],
+      declarations: [ProfilesEditComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, ProfilesFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

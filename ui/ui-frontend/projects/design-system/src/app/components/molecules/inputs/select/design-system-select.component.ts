@@ -36,15 +36,11 @@
  */
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, resource, ViewChildren, inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import {
-  CountryOption,
-  CountryService,
-  FormFieldValueWrapperComponent,
-  Option,
-  SelectComponent,
-  SlideToggleComponent,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+import { CountryOption, CountryService } from '../../../../../../../vitamui-library/src/app/modules/country.service';
+import { FormFieldValueWrapperComponent } from '../../../../../../../vitamui-library/src/lib/components/form-field-value-wrapper/form-field-value-wrapper.component';
+import { Option } from '../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SelectComponent, VitamuiSelectOptions } from '../../../../../../../vitamui-library/src/lib/components/select/select.component';
+import { SlideToggleComponent } from '../../../../../../../vitamui-library/src/lib/components/slide-toggle/slide-toggle.component';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { extend } from 'underscore';

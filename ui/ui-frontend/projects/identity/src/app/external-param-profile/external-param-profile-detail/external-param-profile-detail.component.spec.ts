@@ -42,7 +42,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of, Subject } from 'rxjs';
-import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { environment } from '../../../environments/environment.prod';
 import { TestHostComponent } from '../../shared/domains-input/domains-input.component.spec';
 import { ExternalParamProfileService } from '../external-param-profile.service';
@@ -52,7 +54,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-information-tab',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule],
 })
 class InformationTabStubComponent {
   // @Input() profile: ExternalParamProfile;
@@ -76,7 +78,7 @@ describe('ExternalParamProfilDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestHostComponent, ExternalParamProfileDetailComponent, InformationTabStubComponent],
+      declarations: [ExternalParamProfileDetailComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         TranslateModule.forRoot({
@@ -86,6 +88,8 @@ describe('ExternalParamProfilDetailComponent', () => {
         MatTabsModule,
         NoopAnimationsModule,
         LoggerModule.forRoot(),
+        TestHostComponent,
+        InformationTabStubComponent,
       ],
       providers: [
         { provide: ExternalParamProfileService, useValue: { updated: new Subject() } },

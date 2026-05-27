@@ -37,7 +37,11 @@
 import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
-import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'vitamui-library';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import {
+  SignaturePolicy,
+  SignedDocumentPolicyEnum,
+} from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
 import { IngestContractService } from '../../ingest-contract.service';
 
 @Component({

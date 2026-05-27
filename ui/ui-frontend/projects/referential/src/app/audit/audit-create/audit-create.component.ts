@@ -40,22 +40,19 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, Subject } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
-import {
-  AccessContractService,
-  AccessionRegisterSummary,
-  ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
-  FilingPlanMode,
-  Option,
-  SelectComponent,
-  SnackBarService,
-  StartupService,
-  VitamUICommonModule,
-  VitamuiHttpHeaders,
-  VitamUILibraryModule,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { AccessionRegisterSummary } from '../../../../../vitamui-library/src/app/modules/models/access-register/accession-register-summary';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { FilingPlanMode } from '../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SelectComponent, VitamuiSelectOptions } from '../../../../../vitamui-library/src/lib/components/select/select.component';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamuiHttpHeaders } from '../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';

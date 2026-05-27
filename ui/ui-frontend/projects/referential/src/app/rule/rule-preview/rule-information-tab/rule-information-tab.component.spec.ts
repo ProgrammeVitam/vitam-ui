@@ -40,7 +40,11 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { Rule } from '../../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../../vitamui-library/src/app/modules/rule/rule.service';
+import { SecurityService } from '../../../../../../vitamui-library/src/app/modules/security/security.service';
+import { WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
 import { RuleInformationTabComponent } from './rule-information-tab.component';
 
 describe('RuleInformationTabComponent', () => {

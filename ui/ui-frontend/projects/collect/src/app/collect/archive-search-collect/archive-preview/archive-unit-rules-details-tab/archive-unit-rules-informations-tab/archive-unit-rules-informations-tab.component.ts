@@ -37,7 +37,13 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
+import {
+  InheritedPropertyDto,
+  RuleActionDetails,
+  Unit,
+  UnitRuleDto,
+} from '../../../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { Logger } from '../../../../../../../../vitamui-library/src/app/modules/logger/logger';
 
 @Component({
   selector: 'app-archive-unit-rules-informations-tab',

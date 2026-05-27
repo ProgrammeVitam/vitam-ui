@@ -38,7 +38,8 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ContextPermission } from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { ContextPermission } from '../../../../../vitamui-library/src/lib/models/context';
 import { ContextCreateValidators } from '../context-create/context-create.validators';
 
 @Component({

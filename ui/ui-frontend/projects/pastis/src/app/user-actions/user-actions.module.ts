@@ -77,9 +77,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUILibraryModule } from '../../../../vitamui-library/src/lib/vitamui-library.module';
 import { CoreModule } from '../core/core.module';
-import { PastisMaterialModule } from '../material.module';
+
 import { SharedModule } from '../shared/shared.module';
 import { FilterByNamePipe } from './add-metadata/add-metadata.component';
 import { UserActionAddPuaControlComponent } from './add-pua-control/add-pua-control.component';
@@ -108,7 +108,6 @@ import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/past
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    PastisMaterialModule,
     ReactiveFormsModule,
     SharedModule,
     TranslateModule,

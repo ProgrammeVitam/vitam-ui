@@ -40,7 +40,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupListComponent } from './group-list.component';
 

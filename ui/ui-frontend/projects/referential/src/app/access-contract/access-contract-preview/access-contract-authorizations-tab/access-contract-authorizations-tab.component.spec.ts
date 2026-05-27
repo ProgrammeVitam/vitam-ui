@@ -41,7 +41,8 @@ import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AccessContract, Status, AgencyService } from 'vitamui-library';
+import { AccessContract, Status } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AgencyService } from '../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
 
 describe('AccessContractUsageAndServicesTabComponent', () => {
   let component: AccessContractAuthorizationsTabComponent;

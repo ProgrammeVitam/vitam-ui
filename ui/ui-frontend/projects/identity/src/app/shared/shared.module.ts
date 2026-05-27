@@ -37,21 +37,23 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { CollapseModule, LevelInputModule, VitamUICommonModule } from 'vitamui-library';
-import { DomainsInputModule } from './domains-input';
-import { EditableFieldModule } from './editable-field';
+import { CollapseComponent } from '../../../../vitamui-library/src/app/modules/components/collapse/collapse.component';
+import { LevelInputComponent } from '../../../../vitamui-library/src/app/modules/components/editable-field/level-input/level-input.component';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { DomainsInputModule } from './domains-input/domains-input.module';
+import { EditableFieldModule } from './editable-field/editable-field.module';
 import { ProfilesFormModule } from './profiles-form/profiles-form.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    CollapseModule,
+    CollapseComponent,
     DomainsInputModule,
     EditableFieldModule,
     ProfilesFormModule,
-    LevelInputModule,
+    LevelInputComponent,
     VitamUICommonModule,
   ],
-  exports: [CollapseModule, DomainsInputModule, EditableFieldModule, ProfilesFormModule, LevelInputModule, VitamUICommonModule],
+  exports: [CollapseComponent, DomainsInputModule, EditableFieldModule, ProfilesFormModule, LevelInputComponent, VitamUICommonModule],
 })
 export class SharedModule {}

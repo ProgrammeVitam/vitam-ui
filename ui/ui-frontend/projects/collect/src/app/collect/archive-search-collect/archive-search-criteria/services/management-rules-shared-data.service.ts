@@ -38,7 +38,12 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Rule, RuleApiService, SearchCriteriaDto, SearchCriteriaEltDto } from 'vitamui-library';
+import { Rule } from '../../../../../../../vitamui-library/src/lib/models/rule';
+import { RuleApiService } from '../../../../../../../vitamui-library/src/app/modules/api/rule-api.service';
+import {
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+} from '../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 import { ActionsRules, ManagementRules } from '../models/rule-action.interface';
 
 @Injectable({

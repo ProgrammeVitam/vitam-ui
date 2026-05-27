@@ -42,15 +42,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
-  SearchCriteriaDto,
-  WINDOW_LOCATION,
-  TenantSelectionService,
-  Tenant,
-} from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchCriteriaDto } from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { TenantSelectionService } from '../../../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Tenant } from '../../../../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { UpdateUnitManagementRuleService } from '../../../../common-services/update-unit-management-rule.service';
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';

@@ -42,7 +42,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
-import { Customer, ENVIRONMENT, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { ENVIRONMENT, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { environment } from './../../../environments/environment';
@@ -52,7 +55,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-information-tab',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 export class InformationTabStubComponent {
   @Input()
@@ -66,7 +69,7 @@ export class InformationTabStubComponent {
 @Component({
   selector: 'app-sso-tab',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 export class SsoTabStubComponent {
   @Input()
@@ -78,7 +81,7 @@ export class SsoTabStubComponent {
 @Component({
   selector: 'app-graphic-identity-tab',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 export class GraphicIdentityTabStubComponent {
   @Input()
@@ -87,19 +90,13 @@ export class GraphicIdentityTabStubComponent {
   readOnly: boolean;
 }
 
-@Component({
-  template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>',
-  standalone: false,
-})
+@Component({ template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>' })
 class TestHostComponent {
   customer: any;
 
   @ViewChild(CustomerPreviewComponent, { static: false })
   component: CustomerPreviewComponent;
 }
-
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
 
 describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
@@ -114,15 +111,20 @@ describe('CustomerPreviewComponent', () => {
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
     await TestBed.configureTestingModule({
-      declarations: [
+      declarations: [CustomerPreviewComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        MatMenuModule,
+        MatTabsModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        LoggerModule.forRoot(),
         TestHostComponent,
-        CustomerPreviewComponent,
         InformationTabStubComponent,
         SsoTabStubComponent,
         GraphicIdentityTabStubComponent,
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot()],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: StartupService, useValue: startupServiceStub },

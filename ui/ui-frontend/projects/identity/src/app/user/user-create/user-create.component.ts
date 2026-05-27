@@ -38,21 +38,18 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import {
-  AdminUserProfile,
-  AuthService,
-  ConfirmDialogService,
-  CountryOption,
-  CountryService,
-  Customer,
-  Group,
-  isRootLevel,
-  Logger,
-  Option,
-  OtpState,
-  StartupService,
-  UserInfo,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { CountryOption, CountryService } from '../../../../../vitamui-library/src/app/modules/country.service';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { Group } from '../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { isRootLevel } from '../../../../../vitamui-library/src/app/modules/utils/level.util';
+import { Logger } from '../../../../../vitamui-library/src/app/modules/logger/logger';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { OtpState } from '../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { UserInfo } from '../../../../../vitamui-library/src/app/modules/models/user/user-info.interface';
 import { GroupSelection } from './../group-selection.interface';
 import { UserInfoService } from './../user-info.service';
 

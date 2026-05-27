@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { InformationBlocComponent } from 'vitamui-library';
+import { InformationBlocComponent } from '../../../../../../vitamui-library/src/app/modules/components/information-bloc/information-bloc.component';
 
 @Component({
   imports: [InformationBlocComponent],

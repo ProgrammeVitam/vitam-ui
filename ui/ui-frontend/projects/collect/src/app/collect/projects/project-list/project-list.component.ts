@@ -37,7 +37,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, getProjectIcon, InfiniteScrollTable, PageRequest, Project } from 'vitamui-library';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { getProjectIcon, Project } from '../../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { InfiniteScrollTable } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
 import { ProjectsService } from '../projects.service';
 
 @Component({

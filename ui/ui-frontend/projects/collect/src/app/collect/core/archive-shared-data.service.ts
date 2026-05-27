@@ -39,17 +39,17 @@ import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
   CriteriaSearchCriteria,
-  Direction,
-  FilingHoldingSchemeNode,
-  QueryParamsService,
   ResultFacet,
   SearchCriteriaAddAction,
   SearchCriteriaDto,
-  SearchCriteriaHistory,
   SearchCriteriaRemoveAction,
-  Unit,
-  ManagementRuleSharedDataService,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { FilingHoldingSchemeNode } from '../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import { QueryParamsService } from '../../../../../vitamui-library/src/app/modules/url/query-params.service';
+import { SearchCriteriaHistory } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { ManagementRuleSharedDataService } from '../../../../../vitamui-library/src/lib/models/management-rule-shared-data-service.interface';
 import { NodeData } from '../archive-search-collect/archive-search-criteria/models/nodedata.interface';
 
 @Injectable({

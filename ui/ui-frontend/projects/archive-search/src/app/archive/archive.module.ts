@@ -52,7 +52,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { AgenciesModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { AgenciesModule } from '../../../../vitamui-library/src/app/modules/agencies/agencies.module';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../vitamui-library/src/lib/vitamui-library.module';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -91,7 +93,7 @@ import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-hol
 import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule } from '@angular/material/table';
-import { ConfirmActionModule } from './archive-search/search-criteria-list/confirm-action/confirm-action.module';
+import { ConfirmActionComponent } from './archive-search/search-criteria-list/confirm-action/confirm-action.component';
 
 @NgModule({
   imports: [
@@ -115,7 +117,7 @@ import { ConfirmActionModule } from './archive-search/search-criteria-list/confi
     MatTabsModule,
     MatTreeModule,
     ReactiveFormsModule,
-    ConfirmActionModule,
+    ConfirmActionComponent,
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,

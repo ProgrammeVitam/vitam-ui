@@ -37,7 +37,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { SearchService, SnackBarService } from 'vitamui-library';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { LogbookManagementOperationApiService } from '../core/api/logbook-management-operation-api.service';
 import { OperationDetails, OperationResponse, OperationsResults } from '../models/operation-response.interface';
 

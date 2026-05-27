@@ -38,7 +38,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BASE_URL, PaginatedHttpClient, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { Event } from '../../../../../vitamui-library/src/lib/models/event';
+import { PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { PaginatedResponse } from '../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
+import { VitamuiHttpHeaders } from '../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',

@@ -45,10 +45,7 @@ import { LogbookManagementOperationService } from '../logbook-management-operati
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -114,9 +111,9 @@ describe('LogbookManagementOperationListComponent', () => {
       context: [],
     };
     await TestBed.configureTestingModule({
-      declarations: [LogbookManagementOperationListComponent, MockTruncatePipe],
+      declarations: [LogbookManagementOperationListComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
+      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, MockTruncatePipe],
       providers: [
         {
           provide: LogbookManagementOperationService,

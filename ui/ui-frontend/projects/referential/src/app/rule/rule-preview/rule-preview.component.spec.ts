@@ -37,7 +37,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { RuleService } from 'vitamui-library';
+import { RuleService } from '../../../../../vitamui-library/src/app/modules/rule/rule.service';
 import { RulePreviewComponent } from './rule-preview.component';
 import { TranslateModule } from '@ngx-translate/core';
 

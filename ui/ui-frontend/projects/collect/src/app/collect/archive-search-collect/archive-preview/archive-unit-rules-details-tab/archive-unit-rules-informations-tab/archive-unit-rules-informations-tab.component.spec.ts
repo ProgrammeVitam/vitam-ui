@@ -41,18 +41,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
+import { BASE_URL } from '../../../../../../../../vitamui-library/src/app/modules/injection-tokens';
 import {
-  BASE_URL,
   InheritedPropertyDto,
-  InjectorModule,
-  LoggerModule,
   ManagementRule,
-  provideI18n,
   RuleCategoryVitamUiDto,
   Unit,
   UnitRuleDto,
-  UnitType,
-} from 'vitamui-library';
+} from '../../../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { InjectorModule } from '../../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { provideI18n } from '../../../../../../../../vitamui-library/src/lib/i18n/i18n.provider';
+import { UnitType } from '../../../../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 
 describe('ArchiveUnitRulesInformationsTabComponent', () => {
   let component: ArchiveUnitRulesInformationsTabComponent;
@@ -75,10 +75,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     @Input() vitamuiCommonCollapse: any;
   }
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -121,7 +118,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesInformationsTabComponent, DateTimeStubPipe],
+      declarations: [ArchiveUnitRulesInformationsTabComponent],
       imports: [
         CollapseStubDirective,
         CollapseTriggerForStubDirective,
@@ -130,6 +127,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         VitamUICommonTestModule,
+        DateTimeStubPipe,
       ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },

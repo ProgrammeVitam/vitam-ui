@@ -44,7 +44,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { CollapseModule, ConfirmDialogService } from 'vitamui-library';
+import { CollapseComponent } from '../../../../../vitamui-library/src/app/modules/components/collapse/collapse.component';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
@@ -83,7 +84,7 @@ describe('ExternalParamProfileCreateComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
-        CollapseModule,
+        CollapseComponent,
         FormsModule,
         MatButtonToggleModule,
         MatProgressBarModule,

@@ -38,7 +38,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { Group } from 'vitamui-library';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
 import { GroupResolver } from './group-resolver.service';
 import { GroupService } from './group.service';
 

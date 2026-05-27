@@ -40,7 +40,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { ApplicationService } from '../../../../vitamui-library/src/app/modules/application.service';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -52,7 +55,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-agency-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextPreviewStub {
@@ -63,7 +66,7 @@ class ContextPreviewStub {
 @Component({
   selector: 'app-agency-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextListStub {}
@@ -79,7 +82,7 @@ describe('ContextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContextComponent, ContextListStub, ContextPreviewStub],
+      declarations: [ContextComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         VitamUICommonTestModule,
@@ -89,6 +92,8 @@ describe('ContextComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        ContextListStub,
+        ContextPreviewStub,
       ],
       providers: [
         { provide: ApplicationService, useValue: applicationServiceMock },

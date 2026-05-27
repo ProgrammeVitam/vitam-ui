@@ -46,19 +46,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import {
-  AccessContract,
-  AccessContractService,
-  AgencyService,
-  ConfirmDialogService,
-  FilingPlanMode,
-  Option,
-  SelectComponent,
-  Status,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+import { AccessContract, Status } from '../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { AgencyService } from '../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { FilingPlanMode } from '../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SelectComponent, VitamuiSelectOptions } from '../../../../../vitamui-library/src/lib/components/select/select.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 import { finalize, Subject } from 'rxjs';

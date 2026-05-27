@@ -43,7 +43,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 
-import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { RoleComponent } from '../../../../../vitamui-library/src/app/modules/components/role-toggle/role.component';
+import { RoleToggleComponent } from '../../../../../vitamui-library/src/app/modules/components/role-toggle/role-toggle.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../../user/group-attribution/group-attribution.module';
 import { ProfileCreateComponent } from './profile-create.component';
@@ -61,7 +64,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatProgressBarModule,
     MatSelectModule,
     ReactiveFormsModule,
-    RoleToggleModule,
+    RoleComponent,
+    RoleToggleComponent,
     SharedModule,
     TranslateModule,
     VitamUICommonModule,

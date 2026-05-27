@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ApiUnitObject, Unit } from 'vitamui-library';
+import { ApiUnitObject } from '../../../../../vitamui-library/src/lib/models/api-unit-object.interface';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
 
 export interface PersistentIdentifierResponseDto<T extends Unit | ApiUnitObject> {
   $results?: T[];

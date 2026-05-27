@@ -49,8 +49,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { IngestContract } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { IngestContract } from '../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';

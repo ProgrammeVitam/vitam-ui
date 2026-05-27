@@ -38,8 +38,8 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { SecurityProfile } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { SecurityProfile } from '../../../../../vitamui-library/src/lib/models/security-profile';
+import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';

@@ -38,7 +38,10 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessionRegisterDetail, ExternalParameters, ExternalParametersService, SidenavPage } from 'vitamui-library';
+import { AccessionRegisterDetail } from '../../../../vitamui-library/src/app/modules/models/access-register/accession-register-detail';
+import { ExternalParameters } from '../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 import { AccessionRegistersService } from './accession-register.service';
 
 @Component({

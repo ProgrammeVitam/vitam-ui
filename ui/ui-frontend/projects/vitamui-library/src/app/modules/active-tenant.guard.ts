@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
-import { Tenant } from './models';
+import { Tenant } from './models/customer/tenant.interface';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
 import { StartupService } from './startup.service';
 import { TenantSelectionService } from './tenant-selection.service';

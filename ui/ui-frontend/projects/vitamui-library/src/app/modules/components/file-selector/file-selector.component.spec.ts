@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileSelectorComponent } from './file-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
-import { LoggerModule } from '../../logger';
+import { LoggerModule } from '../../logger/logger.module';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';

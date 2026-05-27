@@ -41,21 +41,22 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
+import { DatepickerComponent } from '../../../app/modules/components/datepicker/datepicker.component';
 import {
-  CriteriaOperator,
-  DatepickerComponent,
-  EditableFieldModule,
   ELIMINATION_TECHNICAL_ID,
   INTERVAL_DATE_ACCESS,
   ORIGIN_HAS_AT_LEAST_ONE,
   ORIGIN_INHERITE_AT_LEAST_ONE,
   ORIGIN_WAITING_RECALCULATE,
   RULE_END_DATE,
+} from '../../../app/modules/models/criteria/search-criteria-configs';
+import {
   SearchCriteriaAddAction,
   SearchCriteriaRemoveAction,
   SearchCriteriaTypeEnum,
-  StartupService,
-} from '../../../app/modules';
+} from '../../../app/modules/models/criteria/search-criteria.interface';
+import { StartupService } from '../../../app/modules/startup.service';
 import {
   MANAGEMENT_RULE_SHARED_DATA_SERVICE,
   ManagementRuleSharedDataService,
@@ -72,6 +73,7 @@ import {
 import { ManagementRuleFormUtils } from './utils/management-rule-form.utils';
 import { ManagementRuleCriteriaService } from './services/management-rule-criteria.service';
 import { ManagementRuleCheckboxComponent } from './management-rule-checkbox.component';
+import { EditableInputComponent } from '../../../app/modules/components/editable-field/editable-input/editable-input.component';
 
 type RuleForm = {
   ruleIdentifier: FormControl<any[]>;
@@ -91,7 +93,7 @@ type RuleForm = {
     SelectComponent,
     ManagementRuleCheckboxComponent,
     DatepickerComponent,
-    EditableFieldModule,
+    EditableInputComponent,
   ],
   providers: [
     ManagementRuleCriteriaService,

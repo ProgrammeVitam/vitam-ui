@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { ApplicationService } from 'vitamui-library';
+import { ApplicationService } from '../../../../../../vitamui-library/src/app/modules/application.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { IngestInformationTabComponent } from './ingest-information-tab.component';

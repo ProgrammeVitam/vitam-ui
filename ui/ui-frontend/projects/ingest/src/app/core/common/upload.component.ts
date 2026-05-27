@@ -37,7 +37,9 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BytesPipe, StartupService, SnackBarService } from 'vitamui-library';
+import { BytesPipe } from '../../../../../vitamui-library/src/app/modules/pipes/bytes.pipe';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';

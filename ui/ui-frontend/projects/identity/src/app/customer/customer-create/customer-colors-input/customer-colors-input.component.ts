@@ -36,7 +36,10 @@
  */
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Color, Option, ThemeColorType, ThemeService } from 'vitamui-library';
+import { Color } from '../../../../../../vitamui-library/src/app/modules/models/customer/theme/color.interface';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { ThemeColorType } from '../../../../../../vitamui-library/src/app/modules/utils/theme-color-type.enum';
+import { ThemeService } from '../../../../../../vitamui-library/src/app/modules/theme.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 

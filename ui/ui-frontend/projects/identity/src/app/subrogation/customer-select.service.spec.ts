@@ -34,7 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AuthService, BASE_URL, CriteriaSearchQuery, ENVIRONMENT, LoggerModule, Operators } from 'vitamui-library';
+import { AuthService } from '../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL, ENVIRONMENT } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
 import { environment } from './../../environments/environment';
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';

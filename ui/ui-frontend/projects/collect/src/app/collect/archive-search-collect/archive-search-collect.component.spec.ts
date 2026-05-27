@@ -45,21 +45,18 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfigService,
-  ExternalParameters,
-  ExternalParametersService,
-  InjectorModule,
-  LoggerModule,
-  PagedResult,
-  Project,
-  SchemaService,
-  SearchCriteriaDto,
-  Transaction,
-  TransactionStatus,
-  UnitType,
-} from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfigService } from '../../../../../vitamui-library/src/app/modules/config.service';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { PagedResult, SearchCriteriaDto } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Project } from '../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { SchemaService } from '../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { Transaction } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';

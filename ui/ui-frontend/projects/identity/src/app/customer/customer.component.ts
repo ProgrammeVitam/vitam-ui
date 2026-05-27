@@ -38,7 +38,11 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'vitamui-library';
+import { Customer } from '../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { Owner } from '../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { Tenant } from '../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';

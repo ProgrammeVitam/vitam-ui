@@ -37,7 +37,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { AuthService, LogbookService } from 'vitamui-library';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { LogbookService } from '../../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab.component';
 

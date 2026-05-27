@@ -38,7 +38,9 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Profile, SnackBarService } from 'vitamui-library';
+import { BASE_URL } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Profile } from '../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ProfileService } from './profile.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

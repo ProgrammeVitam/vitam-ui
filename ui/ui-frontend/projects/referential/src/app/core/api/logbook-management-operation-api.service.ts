@@ -37,7 +37,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, PaginatedHttpClient } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
 import { OperationResponse } from '../../models/operation-response.interface';
 
 @Injectable({

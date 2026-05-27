@@ -51,7 +51,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { RoleComponent } from '../../../../vitamui-library/src/app/modules/components/role-toggle/role.component';
+import { RoleToggleComponent } from '../../../../vitamui-library/src/app/modules/components/role-toggle/role-toggle.component';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../vitamui-library/src/lib/vitamui-library.module';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 // eslint-disable-next-line max-len
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
@@ -80,7 +83,8 @@ import { AccessionRegisterComponent } from './accession-register.component';
     GroupAttributionModule,
     MatProgressBarModule,
     MatTabsModule,
-    RoleToggleModule,
+    RoleComponent,
+    RoleToggleComponent,
     MatCheckboxModule,
     MatCardModule,
     MatPseudoCheckboxModule,

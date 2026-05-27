@@ -41,7 +41,8 @@ import { map } from 'rxjs/operators';
 import { Ontology } from '../../../lib/models/ontology';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
-import { Collection, Schema } from '../models';
+import { Collection } from '../models/schema/collection.enum';
+import { Schema } from '../models/schema/schema.interface';
 
 @Injectable({
   providedIn: 'root',

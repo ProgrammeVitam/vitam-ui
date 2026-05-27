@@ -49,7 +49,12 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, Ontology, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import { Ontology } from '../../../../../vitamui-library/src/lib/models/ontology';
+import { SchemaElement } from '../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { OntologyService } from '../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
 

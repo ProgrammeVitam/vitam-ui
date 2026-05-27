@@ -46,15 +46,11 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  AccessionRegisterDetail,
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { AccessionRegisterDetail } from '../../../../../vitamui-library/src/app/modules/models/access-register/accession-register-detail';
+import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
 import { environment } from '../../../environments/environment.prod';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterPreviewComponent } from './accession-register-preview.component';
@@ -63,10 +59,7 @@ describe('AccessionRegisterPreviewComponent', () => {
   let component: AccessionRegisterPreviewComponent;
   let fixture: ComponentFixture<AccessionRegisterPreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -97,8 +90,9 @@ describe('AccessionRegisterPreviewComponent', () => {
         MatIconModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        MockTruncatePipe,
       ],
-      declarations: [AccessionRegisterPreviewComponent, MockTruncatePipe],
+      declarations: [AccessionRegisterPreviewComponent],
       providers: [
         { provide: AccessionRegistersService, useValue: AccessionRegistersServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },

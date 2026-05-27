@@ -40,14 +40,25 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
+import { RoleComponent } from '../../../../../vitamui-library/src/app/modules/components/role-toggle/role.component';
+import { RoleToggleComponent } from '../../../../../vitamui-library/src/app/modules/components/role-toggle/role-toggle.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { SharedModule } from '../../shared/shared.module';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { ProfileDetailComponent } from './profile-detail.component';
 import { ProfilePopupComponent } from './profile-popup.component';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonModule, RoleToggleModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    MatMenuModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    RoleComponent,
+    RoleToggleComponent,
+  ],
   declarations: [ProfilePopupComponent, ProfileDetailComponent, InformationTabComponent],
   exports: [ProfileDetailComponent],
 })

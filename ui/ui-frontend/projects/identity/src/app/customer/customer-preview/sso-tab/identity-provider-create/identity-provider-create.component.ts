@@ -38,7 +38,10 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthnRequestBindingEnum, ConfirmDialogService, Customer, IdentityProvider } from 'vitamui-library';
+import { AuthnRequestBindingEnum } from '../../../../../../../vitamui-library/src/app/modules/utils/authnRequestBinding.enum';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Customer } from '../../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { IdentityProvider } from '../../../../../../../vitamui-library/src/app/modules/models/customer/identity-provider.interface';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
 

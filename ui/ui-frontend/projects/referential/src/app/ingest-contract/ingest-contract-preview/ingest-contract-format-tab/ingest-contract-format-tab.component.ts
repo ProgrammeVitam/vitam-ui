@@ -39,7 +39,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { FileFormat, IngestContract, VitamuiSelectOptions, diff } from 'vitamui-library';
+import { FileFormat } from '../../../../../../vitamui-library/src/lib/models/file-format';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { VitamuiSelectOptions } from '../../../../../../vitamui-library/src/lib/components/select/select.component';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 

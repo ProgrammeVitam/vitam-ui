@@ -82,7 +82,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
@@ -99,7 +99,17 @@ import { TranslateModule } from '@ngx-translate/core';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    SecurityProfileCreateComponent,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    NoopAnimationsModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -127,7 +137,17 @@ class DomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    SecurityProfileCreateComponent,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    NoopAnimationsModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class SecurityProfileEditPermissionStubComponent implements ControlValueAccessor {
   writeValue() {}
@@ -190,8 +210,9 @@ describe('SecurityProfileCreateComponent', () => {
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
         TranslateModule.forRoot(),
+        SecurityProfileEditPermissionStubComponent,
+        DomainInputStubComponent,
       ],
-      declarations: [SecurityProfileEditPermissionStubComponent, DomainInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

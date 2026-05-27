@@ -36,16 +36,16 @@
  */
 import {
   CriteriaValue,
-  FilingHoldingSchemeNode,
   PagedResult,
   ResultBucket,
   ResultFacetList,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SearchCriteriaSort,
-  Unit,
-  UnitType,
-} from '../models';
+} from '../models/criteria/search-criteria.interface';
+import { FilingHoldingSchemeNode } from '../models/nodes/node.interface';
+import { Unit } from '../models/units/unit.interface';
+import { UnitType } from '../models/units/unit-type.enum';
 import { LeavesTreeApiService } from './leaves-tree-api.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { DescriptionLevel } from '../models/units/description-level.enum';

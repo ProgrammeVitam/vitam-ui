@@ -40,7 +40,12 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, UnitType } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import {
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';

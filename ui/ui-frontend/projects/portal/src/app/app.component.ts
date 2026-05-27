@@ -35,13 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, inject } from '@angular/core';
-import { Logger, StartupService } from 'vitamui-library';
+import { RouterOutlet } from '@angular/router';
+import { Logger } from '../../../vitamui-library/src/app/modules/logger/logger';
+import { StartupService } from '../../../vitamui-library/src/app/modules/startup.service';
+import { VitamUICommonModule } from '../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [RouterOutlet, VitamUICommonModule],
 })
 export class AppComponent implements OnInit {
   private startupService = inject(StartupService);

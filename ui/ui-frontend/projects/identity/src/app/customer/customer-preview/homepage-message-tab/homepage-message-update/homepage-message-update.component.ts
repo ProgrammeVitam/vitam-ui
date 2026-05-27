@@ -39,7 +39,8 @@ import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfirmDialogService, Customer } from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Customer } from '../../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
 import { CustomerService } from '../../../../core/customer.service';
 
 @Component({

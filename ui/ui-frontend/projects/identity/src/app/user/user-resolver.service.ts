@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { User } from 'vitamui-library';
+import { User } from '../../../../vitamui-library/src/app/modules/models/user/user.interface';
 import { UserService } from './user.service';
 
 @Injectable({

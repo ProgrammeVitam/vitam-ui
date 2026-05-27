@@ -39,10 +39,13 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from '../injection-tokens';
-import { ApiEvent, IEvent, VitamSelectQuery } from '../models';
+import { ApiEvent } from '../models/logbook/api-event.interface';
+import { IEvent } from '../models/logbook/event.interface';
+import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { VitamResponse } from '../models/vitam/vitam-response.interface';
 import { PaginatedApi } from '../paginated-api.interface';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
+import { PageRequest } from '../vitamui-table/page-request.model';
+import { PaginatedResponse } from '../vitamui-table/paginated-response.interface';
 
 const CAS_CONTEXT = 'Contexte CAS';
 const UNKNOWN_VALUE = '-';

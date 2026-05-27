@@ -43,7 +43,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 
-import { PipesModule, VitamUICommonModule } from 'vitamui-library';
+import { PipesModule } from '../../../../../vitamui-library/src/app/modules/pipes/pipes.module';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { UploadTrackingComponent } from './upload-tracking.component';
 import { TranslateModule } from '@ngx-translate/core';
 

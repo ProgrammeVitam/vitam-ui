@@ -37,15 +37,18 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Observable, Subject, Subscription, forkJoin, zip } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { GlobalEventService } from '../../global-event.service';
-import { AlertAnalytics, AlertOption, Application, AuthUser, ThemeDataType, UserAlerts } from '../../models';
+import { AlertAnalytics, AlertOption, UserAlerts } from '../../models/user/user-alerts.interface';
+import { Application } from '../../models/application/application.interface';
+import { AuthUser } from '../../models/user/auth-user.interface';
+import { ThemeDataType } from '../../models/customer/theme/themeDataType.enum';
 import { Tenant } from '../../models/customer/tenant.interface';
 import { StartupService } from '../../startup.service';
 import { ThemeService } from '../../theme.service';
@@ -57,6 +60,14 @@ import { SubrogationService } from './../../subrogation/subrogation.service';
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './../../tenant-selection.service';
 import { MenuOverlayService } from './menu/menu-overlay.service';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
+import { MatToolbar } from '@angular/material/toolbar';
+import { UserAlertsMenuComponent } from '../user-alerts/user-alerts-menu/user-alerts-menu.component';
+import { SelectSiteComponent } from './select-site/select-site.component';
+import { SelectLanguageComponent } from './select-language/select-language.component';
+import { ItemSelectComponent } from './item-select/item-select.component';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { UserPhotoComponent } from './user-photo/user-photo.component';
+import { MatMiniFabButton } from '@angular/material/button';
 
 const MAX_ALERTS_TO_DISPLAY = 3;
 
@@ -64,7 +75,20 @@ const MAX_ALERTS_TO_DISPLAY = 3;
   selector: 'vitamui-common-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  standalone: false,
+  imports: [
+    MatToolbar,
+    UserAlertsMenuComponent,
+    SelectSiteComponent,
+    SelectLanguageComponent,
+    ItemSelectComponent,
+    MatMenuTrigger,
+    UserPhotoComponent,
+    MatMenu,
+    MatMenuItem,
+    RouterLink,
+    MatMiniFabButton,
+    TranslatePipe,
+  ],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private subrogationService = inject(SubrogationService);

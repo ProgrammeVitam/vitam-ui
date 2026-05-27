@@ -49,17 +49,14 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
-import {
-  AuthService,
-  BASE_URL,
-  ENVIRONMENT,
-  GlobalEventService,
-  InjectorModule,
-  LoggerModule,
-  Rule,
-  SecurityService,
-  SnackBarService,
-} from 'vitamui-library';
+import { AuthService } from '../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL, ENVIRONMENT } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { Rule } from '../../../../vitamui-library/src/lib/models/rule';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
@@ -69,7 +66,19 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-rule-preview',
   template: '',
-  standalone: false,
+  imports: [
+    NoopAnimationsModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
 })
 class RulePreviewStubComponent {
   @Input()
@@ -79,7 +88,19 @@ class RulePreviewStubComponent {
 @Component({
   selector: 'app-rule-list',
   template: '',
-  standalone: false,
+  imports: [
+    NoopAnimationsModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
 })
 class RuleListStubComponent {
   @Input()
@@ -121,7 +142,7 @@ describe('RuleComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [RuleComponent, RuleListStubComponent, RulePreviewStubComponent],
+      declarations: [RuleComponent],
       imports: [
         NoopAnimationsModule,
         RouterTestingModule,
@@ -136,6 +157,8 @@ describe('RuleComponent', () => {
         InjectorModule,
         TranslateModule.forRoot(),
         LoggerModule.forRoot(),
+        RuleListStubComponent,
+        RulePreviewStubComponent,
       ],
       providers: [
         GlobalEventService,

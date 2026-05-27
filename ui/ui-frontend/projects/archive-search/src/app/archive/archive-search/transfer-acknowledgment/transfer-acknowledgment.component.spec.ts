@@ -40,7 +40,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { BytesPipe } from '../../../../../../vitamui-library/src/app/modules/pipes/bytes.pipe';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { StartupService } from '../../../../../../vitamui-library/src/app/modules/startup.service';
 import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
 import { DecimalPipe } from '@angular/common';
@@ -54,10 +58,7 @@ class FakeLoader implements TranslateLoader {
   }
 }
 
-@Pipe({
-  name: 'dateTime',
-  standalone: false,
-})
+@Pipe({ name: 'dateTime' })
 export class MockDateTimePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -97,13 +98,14 @@ describe('TransferAcknowledgmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransferAcknowledgmentComponent, MockDateTimePipe],
+      declarations: [TransferAcknowledgmentComponent],
       imports: [
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
+        MockDateTimePipe,
       ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -38,7 +38,10 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from '../../../../vitamui-library/src/lib/models/file-format';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { FileFormatApiService } from '../core/api/file-format-api.service';
 

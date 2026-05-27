@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AccessionRegisterDetail } from 'vitamui-library';
+import { AccessionRegisterDetail } from '../../../../../vitamui-library/src/app/modules/models/access-register/accession-register-detail';
 
 @Component({
   selector: 'app-accession-register-preview',

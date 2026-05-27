@@ -39,9 +39,10 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { SchemaService } from './schema.service';
 import { of } from 'rxjs';
-import { Schema, SchemaElement } from '../models';
+import { Schema } from '../models/schema/schema.interface';
+import { SchemaElement } from '../models/schema/schema-element.model';
 import { SchemaApiService } from '../api/schema-api.service';
-import { ItemNode } from '../components/autocomplete';
+import { ItemNode } from '../components/autocomplete/utils/item-node.interface';
 
 describe('SchemaService', () => {
   const schema: Schema[] = [

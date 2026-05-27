@@ -34,7 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Customer, ENVIRONMENT, LoggerModule, Operators, OtpState, SnackBarService } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Customer } from '../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { OtpState } from '../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { environment } from './../../environments/environment';
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';

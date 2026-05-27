@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { SearchCriteriaDto } from '../models';
+import { SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
 
 export interface ReclassificationCriteriaDto {
   searchCriteriaDto: SearchCriteriaDto;

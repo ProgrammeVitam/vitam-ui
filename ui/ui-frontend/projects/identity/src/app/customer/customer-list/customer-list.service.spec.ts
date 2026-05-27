@@ -37,7 +37,12 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, Customer, Direction, ENVIRONMENT, LoggerModule, OtpState, PageRequest } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { OtpState } from '../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
 import { environment } from './../../../environments/environment';
 import { CustomerListService } from './customer-list.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

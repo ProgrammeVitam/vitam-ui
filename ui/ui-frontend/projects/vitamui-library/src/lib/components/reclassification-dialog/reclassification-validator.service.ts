@@ -38,7 +38,8 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models';
+import { CriteriaDataType, CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
+import { SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria/search-criteria.interface';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 
 @Injectable({

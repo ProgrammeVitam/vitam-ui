@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, SnackBarService } from 'vitamui-library';
+import { BASE_URL } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { InputComponent } from 'vitamui-library';
+import { InputComponent } from '../../../../../../../vitamui-library/src/lib/components/input/input.component';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({

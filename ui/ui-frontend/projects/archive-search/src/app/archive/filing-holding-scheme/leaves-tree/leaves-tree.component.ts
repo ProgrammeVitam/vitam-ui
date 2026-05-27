@@ -38,19 +38,19 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
+import { ConfigurationsApiService } from '../../../../../../vitamui-library/src/app/modules/services/configurations-api.service';
+import { DescriptionLevel } from '../../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { FACETS_DEFAULT_SIZE } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-configs';
+import { FilingHoldingSchemeHandler } from '../../../../../../vitamui-library/src/app/modules/models/nodes/filing-holding-scheme.handler';
+import { FilingHoldingSchemeNode } from '../../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import { LeavesTreeService } from '../../../../../../vitamui-library/src/app/modules/services/leaves-tree.service';
+import { nodeToVitamuiIcon } from '../../../../../../vitamui-library/src/app/modules/models/nodes/node.utils';
 import {
-  ConfigurationsApiService,
-  DescriptionLevel,
-  FACETS_DEFAULT_SIZE,
-  FilingHoldingSchemeHandler,
-  FilingHoldingSchemeNode,
-  LeavesTreeService,
-  nodeToVitamuiIcon,
   ResultFacet,
   SearchCriteriaDto,
-  Unit,
-  UnitType,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { first } from 'rxjs/operators';

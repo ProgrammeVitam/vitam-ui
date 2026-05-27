@@ -38,7 +38,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract } from '../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
 

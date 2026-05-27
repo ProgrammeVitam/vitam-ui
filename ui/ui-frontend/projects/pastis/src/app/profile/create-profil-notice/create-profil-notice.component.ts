@@ -37,7 +37,11 @@
 import { Component, computed, effect, Injector, OnDestroy, OnInit, signal, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ApplicationService, MiscValidators, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ApplicationService } from '../../../../../vitamui-library/src/app/modules/application.service';
+import { MiscValidators } from '../../../../../vitamui-library/src/lib/validators/misc.validators';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileVersionOptions } from '../../models/profile-version.enum';
 import { TranslateService } from '@ngx-translate/core';
@@ -45,13 +49,14 @@ import { ProfileService } from '../../core/services/profile.service';
 import { Subscription } from 'rxjs';
 
 import { Notice } from '../../models/notice.model';
-import { PastisMaterialModule } from '../../material.module';
+
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  imports: [VitamUILibraryModule, ReactiveFormsModule, VitamUICommonModule, PastisMaterialModule, PastisGenericPopupComponent],
+  imports: [VitamUILibraryModule, ReactiveFormsModule, VitamUICommonModule, PastisGenericPopupComponent, MatDialogModule],
   selector: 'app-create-profil-notice',
   templateUrl: './create-profil-notice.component.html',
 })

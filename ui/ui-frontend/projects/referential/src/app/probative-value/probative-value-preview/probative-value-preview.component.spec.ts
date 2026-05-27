@@ -39,15 +39,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -69,8 +68,8 @@ describe('ProbativeValuePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
-      imports: [TranslateModule.forRoot()],
+      declarations: [ProbativeValuePreviewComponent],
+      imports: [TranslateModule.forRoot(), EventTypeBadgeClassPipe, MockTruncatePipe],
       providers: [
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: ProbativeValueService, useValue: {} },

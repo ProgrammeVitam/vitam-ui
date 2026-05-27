@@ -37,16 +37,13 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { LogbookService } from 'vitamui-library';
+import { LogbookService } from '../../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
 import { OperationDetails } from '../../../models/operation-response.interface';
 import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-information-tab.component';
 
 let expectedOperation: OperationDetails;
 
-@Component({
-  template: ``,
-  standalone: false,
-})
+@Component({ template: `` })
 class TestLogbookInformationComponent {
   operation = expectedOperation;
   tenantIdentifier = 1;
@@ -71,8 +68,8 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
       forcedCancellation: false,
     };
     await TestBed.configureTestingModule({
-      declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
-      imports: [TranslateModule.forRoot()],
+      declarations: [LogbookManagementOperationInformationTabComponent],
+      imports: [TranslateModule.forRoot(), TestLogbookInformationComponent],
       providers: [{ provide: LogbookService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

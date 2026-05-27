@@ -40,7 +40,9 @@ import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { BASE_URL } from '../injection-tokens';
-import { AppConfiguration, ApplicationInfo, AttachmentType } from '../models';
+import { AppConfiguration } from '../models/app.configuration.interface';
+import { ApplicationInfo } from '../models/application/application.interface';
+import { AttachmentType } from '../models/customer/theme/attachmentType.enum';
 
 @Injectable({
   providedIn: 'root',

@@ -39,11 +39,12 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmDialogData } from '../../../models/confirm-dialog-data.interface';
-import { ConfirmDialogModule } from '../../../../app/modules';
+
+import { CommonConfirmDialogComponent } from '../../../../app/modules/components/common-confirm-dialog/common-confirm-dialog.component';
 
 @Component({
   selector: 'vitamui-confirm-dialog',
-  imports: [TranslateModule, DialogModule, MatDialogModule, ConfirmDialogModule],
+  imports: [TranslateModule, DialogModule, MatDialogModule, CommonConfirmDialogComponent],
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {

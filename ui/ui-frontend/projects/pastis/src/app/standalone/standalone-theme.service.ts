@@ -37,18 +37,18 @@
 import { Injectable } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { EMPTY, Observable } from 'rxjs';
+import { AppConfiguration } from '../../../../vitamui-library/src/app/modules/models/app.configuration.interface';
+import { AuthUser } from '../../../../vitamui-library/src/app/modules/models/user/auth-user.interface';
+import { Color } from '../../../../vitamui-library/src/app/modules/models/customer/theme/color.interface';
 import {
-  AppConfiguration,
-  AuthUser,
-  Color,
   convertToDarkColor,
   convertToLightColor,
   getColorFromMaps,
   hexToRgb,
   hexToRgbString,
   setLuminosity,
-  ThemeColorType,
-} from 'vitamui-library';
+} from '../../../../vitamui-library/src/app/modules/utils/colors.util';
+import { ThemeColorType } from '../../../../vitamui-library/src/app/modules/utils/theme-color-type.enum';
 
 export interface Theme {
   colors: { [colorId: string]: string };

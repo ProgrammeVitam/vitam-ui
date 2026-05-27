@@ -40,7 +40,11 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { AuthService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
+import { AuthService } from '../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL, ENVIRONMENT } from '../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../vitamui-library/src/app/modules/logger/logger.module';
+import { StartupService } from '../../../vitamui-library/src/app/modules/startup.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../environments/environment.prod';
 
@@ -60,7 +64,7 @@ class FakeLoader implements TranslateLoader {
 @Component({
   selector: 'router-outlet',
   template: '',
-  standalone: false,
+  imports: [InjectorModule, VitamUICommonTestModule, BrowserAnimationsModule],
 })
 class RouterOutletStubComponent {}
 
@@ -76,7 +80,7 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, RouterOutletStubComponent],
+      declarations: [AppComponent],
       imports: [
         InjectorModule,
         VitamUICommonTestModule,
@@ -85,6 +89,7 @@ describe('AppComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
+        RouterOutletStubComponent,
       ],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },

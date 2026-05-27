@@ -42,7 +42,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, LevelInputModule } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { LevelInputComponent } from '../../../../../vitamui-library/src/app/modules/components/editable-field/level-input/level-input.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
@@ -57,7 +59,7 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, LevelInputComponent],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -87,10 +89,11 @@ describe('HierarchyCreateComponent', () => {
         ReactiveFormsModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
-        LevelInputModule,
+        LevelInputComponent,
         TranslateModule.forRoot(),
+        ProfilesFormStubComponent,
       ],
-      declarations: [ProfilesFormStubComponent, HierarchyCreateComponent],
+      declarations: [HierarchyCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantId: 10 } },

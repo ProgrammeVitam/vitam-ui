@@ -38,16 +38,15 @@ import { Injectable, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OriginatingAgencyReassignmentDialogComponent } from './originating-agency-reassignment-dialog.component';
+import { ApplicationId } from '../../../../../../../vitamui-library/src/app/modules/application-id.enum';
 import {
-  ApplicationId,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  SnackBarService,
-  CriteriaOperator,
   SearchCriteriaTypeEnum,
-  CriteriaDataType,
-  AlertDialogComponent,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { CriteriaOperator, CriteriaDataType } from '../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { AlertDialogComponent } from '../../../../../../../vitamui-library/src/lib/components/dialog/alert-dialog/alert-dialog.component';
 import { ArchiveService } from '../../../archive.service';
 import { ReassignmentMode, ReassignRequestDto } from '../../../models/reassign-request.interface';
 import { filter, switchMap, catchError } from 'rxjs/operators';

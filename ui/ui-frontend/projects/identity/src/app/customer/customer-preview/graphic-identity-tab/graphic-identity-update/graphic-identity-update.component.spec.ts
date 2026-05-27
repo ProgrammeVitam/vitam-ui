@@ -39,7 +39,12 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Customer } from '../../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { InjectorModule } from '../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { OtpState } from '../../../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
@@ -101,7 +106,7 @@ const expectedCustomer: Customer = {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -128,8 +133,8 @@ describe('GraphicIdentityUpdateComponent', () => {
       open: vi.fn().mockName('SnackBarService.open'),
     };
     await TestBed.configureTestingModule({
-      declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      declarations: [GraphicIdentityUpdateComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), CustomerColorsInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },

@@ -37,17 +37,15 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  AccessContractService,
-  Collection,
-  ExternalParameters,
-  ExternalParametersService,
-  GlobalEventService,
-  SchemaService,
-  SidenavPage,
-  SnackBarService,
-  Unit,
-} from 'vitamui-library';
+import { AccessContractService } from '../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { Collection } from '../../../../vitamui-library/src/app/modules/models/schema/collection.enum';
+import { ExternalParameters } from '../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { SchemaService } from '../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { Unit } from '../../../../vitamui-library/src/app/modules/models/units/unit.interface';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';

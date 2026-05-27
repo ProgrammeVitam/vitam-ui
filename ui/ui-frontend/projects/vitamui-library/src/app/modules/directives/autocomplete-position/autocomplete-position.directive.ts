@@ -40,7 +40,6 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiAutocompletePosition]',
-  standalone: false,
 })
 export class AutocompletePositionDirective implements OnDestroy {
   private matAutocompleteTrigger: MatAutocompleteTrigger;

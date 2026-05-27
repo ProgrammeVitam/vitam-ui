@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { Subscription, of } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
@@ -43,12 +43,38 @@ import { LayoutService } from '../../../object-viewer/services/layout.service';
 import { TypeService } from '../../../object-viewer/services/type.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
 import { Action, EditObject } from '../../models/edit-object.model';
+import { AccordionComponent } from '../../../components/accordion/accordion.component';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { VitamuiMenuButtonComponent } from '../../../components/vitamui-menu-button/vitamui-menu-button.component';
+import { MatMenuItem } from '@angular/material/menu';
+import { ObjectEditorModule } from '../../object-editor.module';
+import { ListEditorComponent } from '../list-editor/list-editor.component';
+import { PrimitiveEditorComponent } from '../primitive-editor/primitive-editor.component';
+import { DialogHeaderComponent } from '../../../../../lib/components/dialog/dialog-header/dialog-header.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { AppendStarPipe } from '../../required.pipe';
 
 @Component({
   selector: 'vitamui-common-group-editor',
   templateUrl: './group-editor.component.html',
   styleUrls: ['./group-editor.component.scss'],
-  standalone: false,
+  imports: [
+    AccordionComponent,
+    NgClass,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    NgTemplateOutlet,
+    ObjectEditorModule,
+    ListEditorComponent,
+    PrimitiveEditorComponent,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    TranslatePipe,
+    EmptyPipe,
+    AppendStarPipe,
+  ],
 })
 export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
   private layoutService = inject(LayoutService);

@@ -38,17 +38,14 @@ import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import {
-  AccessionRegisterSummary,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  Event,
-  LogbookApiService,
-  PageRequest,
-  SearchService,
-  VitamuiHttpHeaders,
-  SnackBarService,
-} from 'vitamui-library';
+import { AccessionRegisterSummary } from '../../../../vitamui-library/src/app/modules/models/access-register/accession-register-summary';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { Event } from '../../../../vitamui-library/src/lib/models/event';
+import { LogbookApiService } from '../../../../vitamui-library/src/app/modules/api/logbook-api.service';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
 import { OperationApiService } from '../core/api/operation-api.service';

@@ -46,15 +46,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  InjectorModule,
-  LoggerModule,
-  ManagementContract,
-  VitamUILibraryModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { ManagementContract } from '../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';

@@ -40,7 +40,7 @@ import JSZip from 'jszip';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CollectUploadFile, CollectZippedUploadFile } from './collect-upload-file';
-import { VitamuiHttpHeaders } from 'vitamui-library';
+import { VitamuiHttpHeaders } from '../../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',

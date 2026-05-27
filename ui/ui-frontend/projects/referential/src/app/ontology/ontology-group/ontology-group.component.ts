@@ -35,7 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { Ontology, SchemaElement, SchemaService } from 'vitamui-library';
+import { Ontology } from '../../../../../vitamui-library/src/lib/models/ontology';
+import { SchemaElement } from '../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../vitamui-library/src/app/modules/schema/schema.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';

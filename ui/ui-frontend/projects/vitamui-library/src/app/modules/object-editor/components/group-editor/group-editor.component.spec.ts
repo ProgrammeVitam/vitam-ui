@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatDialogModule } from '@angular/material/dialog';
-import { LoggerModule } from '../../../logger';
+import { LoggerModule } from '../../../logger/logger.module';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { GroupEditorComponent } from './group-editor.component';
 
@@ -47,8 +47,7 @@ describe('GroupEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GroupEditorComponent],
-      imports: [LoggerModule.forRoot(), PipesModule, MatDialogModule],
+      imports: [LoggerModule.forRoot(), PipesModule, MatDialogModule, GroupEditorComponent],
     }).compileComponents();
   });
 

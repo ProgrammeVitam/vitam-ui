@@ -57,8 +57,15 @@ describe('AccountInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, EditableFieldModule, SlideToggleComponent, TranslateModule.forRoot(), NoopAnimationsModule],
-      declarations: [AccountInformationTabComponent, VitamUIFieldErrorStubComponent],
+      imports: [
+        ReactiveFormsModule,
+        EditableFieldModule,
+        SlideToggleComponent,
+        TranslateModule.forRoot(),
+        NoopAnimationsModule,
+        AccountInformationTabComponent,
+        VitamUIFieldErrorStubComponent,
+      ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AccountService, useValue: accountServiceSpy },

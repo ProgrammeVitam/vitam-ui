@@ -39,7 +39,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, CriteriaValue, diff, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import {
+  CriteriaValue,
+  SearchCriteriaTypeEnum,
+} from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { diff } from '../../../../../../../../vitamui-library/src/app/modules/utils/diff.util';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 

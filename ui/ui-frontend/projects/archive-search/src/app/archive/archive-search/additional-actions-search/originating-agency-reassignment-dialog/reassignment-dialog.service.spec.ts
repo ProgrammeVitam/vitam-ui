@@ -40,7 +40,12 @@ import { of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ReassignmentDialogService } from './reassignment-dialog.service';
 import { ArchiveService } from '../../../archive.service';
-import { SnackBarService, SearchCriteriaEltDto, CriteriaOperator, CriteriaDataType, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import {
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+} from '../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { CriteriaOperator, CriteriaDataType } from '../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
 import { ReassignmentMode } from '../../../models/reassign-request.interface';
 
 describe('ReassignmentDialogService', () => {

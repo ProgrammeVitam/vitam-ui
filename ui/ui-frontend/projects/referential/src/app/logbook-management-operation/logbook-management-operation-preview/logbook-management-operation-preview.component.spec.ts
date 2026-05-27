@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
 import { OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview.component';
@@ -56,10 +56,7 @@ describe('LogbookManagementOperationPreviewComponent', () => {
     context: [],
   };
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -77,8 +74,8 @@ describe('LogbookManagementOperationPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LogbookManagementOperationPreviewComponent, MockTruncatePipe],
-      imports: [TranslateModule.forRoot()],
+      declarations: [LogbookManagementOperationPreviewComponent],
+      imports: [TranslateModule.forRoot(), MockTruncatePipe],
       providers: [
         { provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },

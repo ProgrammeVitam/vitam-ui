@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ObjectQualifierTypeType, SearchCriteriaEltDto } from 'vitamui-library';
+import { ObjectQualifierTypeType } from '../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { SearchCriteriaEltDto } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 
 type DIPSedaVersion = '2.1' | '2.2' | '2.3';
 

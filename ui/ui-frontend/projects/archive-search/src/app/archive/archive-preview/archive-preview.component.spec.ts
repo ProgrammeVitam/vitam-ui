@@ -46,18 +46,14 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  DescriptionLevel,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  Unit,
-  UnitType,
-  VitamUICommonModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { DescriptionLevel } from '../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
@@ -68,20 +64,14 @@ describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -101,7 +91,7 @@ describe('ArchivePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
+      declarations: [ArchivePreviewComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatMenuModule,
@@ -117,6 +107,8 @@ describe('ArchivePreviewComponent', () => {
         VitamUICommonModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        MockTruncatePipe,
+        MockUnitI18nPipe,
       ],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceMock },

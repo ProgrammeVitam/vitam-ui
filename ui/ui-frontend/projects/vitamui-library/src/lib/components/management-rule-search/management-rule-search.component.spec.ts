@@ -42,7 +42,9 @@ import { MANAGEMENT_RULE_SEARCH_CONFIG, ManagementRuleCheckboxDescriptor, Manage
 import { QueryParamsService } from '../../../app/modules/url/query-params.service';
 import { SearchCriteriaService } from '../../../app/modules/models/criteria/search-criteria.service';
 import { MANAGEMENT_RULE_SHARED_DATA_SERVICE } from '../../models/management-rule-shared-data-service.interface';
-import { ACCESS_RULE, ApplicationId, ORIGIN_WAITING_RECALCULATE, StartupService } from '../../../app/modules';
+import { ACCESS_RULE, ORIGIN_WAITING_RECALCULATE } from '../../../app/modules/models/criteria/search-criteria-configs';
+import { ApplicationId } from '../../../app/modules/application-id.enum';
+import { StartupService } from '../../../app/modules/startup.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ManagementRuleCriteriaService } from './services/management-rule-criteria.service';

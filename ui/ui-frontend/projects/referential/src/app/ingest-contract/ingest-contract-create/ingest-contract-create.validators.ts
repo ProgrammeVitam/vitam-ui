@@ -38,7 +38,7 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract } from '../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
 import { IngestContractService } from '../ingest-contract.service';
 
 @Injectable({

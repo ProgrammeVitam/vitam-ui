@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule, provideAppInitializer, inject } from '@angular/core';
-import { AuthenticatorService, AuthService } from 'vitamui-library';
+import { AuthenticatorService } from '../../../../vitamui-library/src/app/modules/authentication/services/authenticator.service';
+import { AuthService } from '../../../../vitamui-library/src/app/modules/auth.service';
 import { NoAuthenticatorService } from './no-authenticator.service';
 
 export function initializeApp() {

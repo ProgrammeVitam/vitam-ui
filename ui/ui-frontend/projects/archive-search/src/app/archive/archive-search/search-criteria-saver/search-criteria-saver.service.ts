@@ -36,7 +36,7 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchCriteriaHistory } from 'vitamui-library';
+import { SearchCriteriaHistory } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 
 @Injectable({

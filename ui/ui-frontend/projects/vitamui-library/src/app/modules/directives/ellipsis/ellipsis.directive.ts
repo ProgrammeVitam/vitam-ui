@@ -36,10 +36,7 @@
  */
 import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
 
-@Directive({
-  selector: '[vitamuiCommonEllipsis]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonEllipsis]' })
 export class EllipsisDirective implements OnInit, AfterViewInit {
   private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);

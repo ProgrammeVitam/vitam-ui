@@ -39,14 +39,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import {
-  ConfirmDialogService,
-  FILE_FORMAT_EXTERNAL_PREFIX,
-  FileFormat,
-  Option,
-  StartupService,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from '../../../../../vitamui-library/src/lib/models/file-format';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { VitamuiSelectOptions } from '../../../../../vitamui-library/src/lib/components/select/select.component';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateValidators } from './file-format-create.validators';
 

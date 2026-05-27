@@ -37,7 +37,7 @@
 import { Component } from '@angular/core';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { MatMenuItem } from '@angular/material/menu';
 
 const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;

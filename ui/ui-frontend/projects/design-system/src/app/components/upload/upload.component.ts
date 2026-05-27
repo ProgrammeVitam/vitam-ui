@@ -36,7 +36,11 @@
  */
 import { Component } from '@angular/core';
 
-import { FileValidationErrors, readFileContent, VitamUICommonModule } from 'vitamui-library';
+import {
+  FileValidationErrors,
+  readFileContent,
+} from '../../../../../vitamui-library/src/app/modules/components/file-selector/file-selector.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({

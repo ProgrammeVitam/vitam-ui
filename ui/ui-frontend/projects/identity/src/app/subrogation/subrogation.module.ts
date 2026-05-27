@@ -43,7 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { SharedModule } from '../shared/shared.module';
 import { SubrogateUserListComponent } from './subrogate-user/subrogate-user-list/subrogate-user-list.component';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';

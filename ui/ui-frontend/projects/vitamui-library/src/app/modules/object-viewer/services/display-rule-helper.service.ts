@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { DisplayRule, Ui } from '../models';
+import { DisplayRule } from '../models/display-rule.model';
+import { Ui } from '../models/ui.model';
 import { DisplayObjectType } from '../types';
 import { TypeService } from './type.service';
 

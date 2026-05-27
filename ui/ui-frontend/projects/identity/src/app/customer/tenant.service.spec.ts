@@ -34,7 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Operators, Owner, Tenant, SnackBarService } from 'vitamui-library';
+import { BASE_URL } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { Owner } from '../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { Tenant } from '../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { EMPTY } from 'rxjs';
 

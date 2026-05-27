@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AlertAnalytics, Application } from 'vitamui-library';
+import { AlertAnalytics } from '../../../../../vitamui-library/src/app/modules/models/user/user-alerts.interface';
+import { Application } from '../../../../../vitamui-library/src/app/modules/models/application/application.interface';
 import { ContentTypeEnum } from './content.enum';
 
 export interface Content {

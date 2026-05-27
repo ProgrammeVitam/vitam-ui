@@ -75,10 +75,12 @@ import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { PastisMaterialModule } from '../material.module';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../vitamui-library/src/lib/vitamui-library.module';
+
 import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 import { PastisBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
 import { PastisTitleBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-title-breadcrumb/pastis-title-breadcrumb.component';
@@ -100,7 +102,7 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
   imports: [
     CommonModule,
     FormsModule,
-    PastisMaterialModule,
+    MatDialogModule,
     MatSlideToggleModule,
     PortalModule,
     TranslateModule,
@@ -109,7 +111,6 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
   ],
   exports: [
     PastisUnderConstructionComponent,
-    PastisMaterialModule,
     PastisDialogConfirmComponent,
     PastisPopupMetadataLanguageComponent,
     PastisBreadcrumbComponent,

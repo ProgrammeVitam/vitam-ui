@@ -47,32 +47,31 @@ import { ArchiveCollectService } from '../../archive-search-collect/archive-coll
 import { HttpEventType, HttpStatusCode } from '@angular/common/http';
 import {
   ExternalReferentialService,
+  TENANT_SEPARATOR,
+} from '../../../../../../vitamui-library/src/app/modules/services/external-referential.service';
+import {
   fetchTitle,
   FilingPlanMode,
   FilingPlanService,
-  FlowType,
-  ItemNode,
-  Logger,
-  MetadataUnitUp,
   oneIncludedNodeRequired,
-  Option,
-  Project,
-  ProjectStatus,
-  readFileContent,
-  SchemaElement,
-  SchemaService,
-  SnackBarService,
-  TENANT_SEPARATOR,
-  TenantSelectionService,
-  Transaction,
-  TransactionStatus,
-  Unit,
-  VitamError,
-  VitamErrorDetails,
-  Workflow,
-  ZipFile,
-  ZipFileStatus,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import { FlowType, MetadataUnitUp, Project, Workflow } from '../../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { ItemNode } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/item-node.interface';
+import { Logger } from '../../../../../../vitamui-library/src/app/modules/logger/logger';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { ProjectStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/project-status';
+import { readFileContent } from '../../../../../../vitamui-library/src/app/modules/components/file-selector/file-selector.component';
+import { SchemaElement } from '../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { VitamError } from '../../../../../../vitamui-library/src/app/modules/models/collect/vitam-error';
+import { VitamErrorDetails } from '../../../../../../vitamui-library/src/app/modules/models/collect/vitam-error-details';
+import { ZipFile } from '../../../../../../vitamui-library/src/lib/models/zip/zip-file.class';
+import { ZipFileStatus } from '../../../../../../vitamui-library/src/lib/models/zip/zip-file-status.interface';
 
 export enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',

@@ -36,7 +36,8 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { collapseAnimation, Profile, rotateAnimation } from 'vitamui-library';
+import { collapseAnimation, rotateAnimation } from '../../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { Profile } from '../../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
 import { GroupSelection } from './../../group-selection.interface';
 @Component({
   selector: 'app-group-list',

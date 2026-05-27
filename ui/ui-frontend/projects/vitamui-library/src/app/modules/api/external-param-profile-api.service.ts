@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../injection-tokens';
-import { ExternalParamProfile } from '../models';
+import { ExternalParamProfile } from '../models/externalparamprofile/external-param-profile.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';
 
 @Injectable({

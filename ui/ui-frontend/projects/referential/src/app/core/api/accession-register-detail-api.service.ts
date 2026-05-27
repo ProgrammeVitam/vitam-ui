@@ -37,7 +37,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccessionRegisterDetail, BASE_URL, PaginatedHttpClient } from 'vitamui-library';
+import { AccessionRegisterDetail } from '../../../../../vitamui-library/src/app/modules/models/access-register/accession-register-detail';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
 
 @Injectable({
   providedIn: 'root',

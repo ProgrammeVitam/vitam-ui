@@ -37,16 +37,12 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { finalize, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import {
-  AccessContract,
-  collapseAnimation,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-  AccessContractService,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { collapseAnimation, rotateAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 

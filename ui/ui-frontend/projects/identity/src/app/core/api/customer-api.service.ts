@@ -37,7 +37,13 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, PaginatedHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { Logger } from '../../../../../vitamui-library/src/app/modules/logger/logger';
+import { Logo } from '../../../../../vitamui-library/src/app/modules/models/customer/theme/logo.interface';
+import { PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { PaginatedResponse } from '../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
 import { AttachmentType } from '../../customer/attachment.enum';
 
 @Injectable({

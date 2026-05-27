@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { Group } from 'vitamui-library';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
 import { GroupService } from './group.service';
 
 @Injectable({

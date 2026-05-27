@@ -40,8 +40,9 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '
 import { BehaviorSubject } from 'rxjs';
 import { orderedFields } from '../../archive-unit/archive-unit-fields';
 import { Logger } from '../../logger/logger';
-import { Schema } from '../../models';
-import { DisplayRule, ProfiledSchemaElement, SchemaElement } from '../../object-viewer/models';
+import { Schema } from '../../models/schema/schema.interface';
+import { DisplayRule } from '../../object-viewer/models/display-rule.model';
+import { ProfiledSchemaElement, SchemaElement } from '../../models/schema/schema-element.model';
 import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';

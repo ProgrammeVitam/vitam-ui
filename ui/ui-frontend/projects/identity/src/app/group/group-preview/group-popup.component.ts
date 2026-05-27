@@ -37,7 +37,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Group } from 'vitamui-library';
+import { Group } from '../../../../../vitamui-library/src/app/modules/models/group/group.interface';
 
 @Component({
   selector: 'app-group-popup',

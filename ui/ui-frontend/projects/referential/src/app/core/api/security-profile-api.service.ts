@@ -38,7 +38,9 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, PaginatedHttpClient, SecurityProfile } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { SecurityProfile } from '../../../../../vitamui-library/src/lib/models/security-profile';
 
 const HTTP_STATUS_OK = 200;
 

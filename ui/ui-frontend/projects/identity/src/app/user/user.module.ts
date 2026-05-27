@@ -40,13 +40,13 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from './group-attribution/group-attribution.module';
-import { UserCreateModule } from './user-create';
-import { UserListModule } from './user-list';
-import { UserPreviewModule } from './user-preview';
+import { UserCreateModule } from './user-create/user-create.module';
+import { UserListModule } from './user-list/user-list.module';
+import { UserPreviewModule } from './user-preview/user-preview.module';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 

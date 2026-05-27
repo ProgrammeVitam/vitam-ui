@@ -46,7 +46,7 @@ import { VitamUICommonTestModule } from '../../../../testing/src/public_api';
 import { environment } from '../../../environments/environment';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { InjectorModule } from '../helper/injector.module';
-import { LoggerModule } from '../logger';
+import { LoggerModule } from '../logger/logger.module';
 import { Account } from '../models/account/account.interface';
 import { ENVIRONMENT } from './../injection-tokens';
 import { AccountComponent } from './account.component';
@@ -55,7 +55,7 @@ import { AccountService } from './account.service';
 @Component({
   selector: 'vitamui-common-account-information-tab',
   template: '',
-  standalone: false,
+  imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 class InformationTabStubComponent {
   @Input() account: Account;
@@ -92,8 +92,9 @@ describe('AccountComponent', () => {
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
         TranslateModule.forRoot(),
+        AccountComponent,
+        InformationTabStubComponent,
       ],
-      declarations: [AccountComponent, InformationTabStubComponent],
       providers: [
         { provide: TranslateService, useValue: translateServiceSpy },
         { provide: AccountService, useValue: accountServiceSpy },

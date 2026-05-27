@@ -41,11 +41,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { SharedModule } from '../shared/shared.module';
-import { GroupCreateModule } from './group-create';
-import { GroupListModule } from './group-list';
-import { GroupPreviewModule } from './group-preview';
+import { GroupCreateModule } from './group-create/group-create.module';
+import { GroupListModule } from './group-list/group-list.module';
+import { GroupPreviewModule } from './group-preview/group-preview.module';
 import { GroupRoutingModule } from './group-routing.module';
 import { GroupComponent } from './group.component';
 

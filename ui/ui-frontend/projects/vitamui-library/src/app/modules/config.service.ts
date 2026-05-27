@@ -42,7 +42,7 @@ import { Injectable, OnDestroy, inject } from '@angular/core';
 
 import { ApplicationApiService } from './api/application-api.service';
 import { Logger } from './logger/logger';
-import { AppConfiguration } from './models';
+import { AppConfiguration } from './models/app.configuration.interface';
 
 @Injectable({
   providedIn: 'root',

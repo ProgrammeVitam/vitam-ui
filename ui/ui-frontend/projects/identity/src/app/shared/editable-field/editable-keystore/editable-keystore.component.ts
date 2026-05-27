@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EditableFieldComponent, IdentityProvider, newFile } from 'vitamui-library';
+import { EditableFieldComponent } from '../../../../../../vitamui-library/src/app/modules/components/editable-field/editable-field.component';
+import { IdentityProvider, newFile } from '../../../../../../vitamui-library/src/app/modules/models/customer/identity-provider.interface';
 
 import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 

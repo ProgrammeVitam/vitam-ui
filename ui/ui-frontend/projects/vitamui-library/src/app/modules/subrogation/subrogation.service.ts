@@ -46,7 +46,7 @@ import { AuthService } from '../auth.service';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { SUBROGRATION_REFRESH_RATE_MS } from '../injection-tokens';
 import { Logger } from '../logger/logger';
-import { Subrogation } from '../models';
+import { Subrogation } from '../models/subrogation/subrogation.interface';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
 
 @Injectable({

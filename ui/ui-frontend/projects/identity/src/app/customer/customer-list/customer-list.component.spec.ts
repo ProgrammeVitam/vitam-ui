@@ -44,7 +44,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
-import { Customer, OtpState, Owner, Tenant } from 'vitamui-library';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { OtpState } from '../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { Owner } from '../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { Tenant } from '../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
@@ -56,7 +59,6 @@ import { CustomerListService } from './customer-list.service';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapseTriggerFor]',
-  standalone: false,
 })
 class CollapseTriggerForStubDirective {
   @Input()
@@ -67,7 +69,6 @@ class CollapseTriggerForStubDirective {
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapse]',
   exportAs: 'vitamuiCommonCollapse',
-  standalone: false,
 })
 class CollapseStubDirective {
   @Input()
@@ -77,7 +78,7 @@ class CollapseStubDirective {
 @Component({
   selector: 'app-owner-list',
   template: '',
-  standalone: false,
+  imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 class OwnerListStubComponent {
   @Input()
@@ -280,9 +281,16 @@ describe('CustomerListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        CollapseStubDirective,
+        CollapseTriggerForStubDirective,
+        OwnerListStubComponent,
+      ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
+      declarations: [CustomerListComponent],
       providers: [
         { provide: CustomerListService, useValue: customerListServiceSpy },
         { provide: CustomerService, useValue: { updated: new Subject() } },

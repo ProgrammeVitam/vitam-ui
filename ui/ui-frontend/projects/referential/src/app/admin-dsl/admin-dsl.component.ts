@@ -39,7 +39,11 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, DslQueryType, Option, SnackBarService, AccessContractService } from 'vitamui-library';
+import { AppRootComponent } from '../../../../vitamui-library/src/app/modules/app-root-component.class';
+import { DslQueryType } from '../../../../vitamui-library/src/lib/models/dsl-query-type.enum';
+import { Option } from '../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { AccessContractService } from '../../../../vitamui-library/src/app/modules/services/access-contract.service';
 import { AdminDslService } from './admin-dsl.service';
 import { TranslateService } from '@ngx-translate/core';
 

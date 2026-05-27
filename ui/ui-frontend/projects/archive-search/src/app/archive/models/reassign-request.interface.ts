@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { SearchCriteriaDto } from 'vitamui-library';
+import { SearchCriteriaDto } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 
 export enum ReassignmentMode {
   BY_ID = 'BY_ID',

@@ -38,7 +38,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AccessContractService, AgencyService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { AccessContractService } from '../../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { AgencyService } from '../../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { InjectorModule } from '../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update.component';

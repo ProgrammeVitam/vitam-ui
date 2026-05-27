@@ -43,7 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';

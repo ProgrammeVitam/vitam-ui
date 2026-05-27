@@ -37,7 +37,11 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import {
+  RegisterValueEventModel,
+  RegisterValueEventType,
+} from '../../../../../../vitamui-library/src/app/modules/models/access-register/register-value-event-model';
 
 @Component({
   selector: 'app-accession-register-operations-list',

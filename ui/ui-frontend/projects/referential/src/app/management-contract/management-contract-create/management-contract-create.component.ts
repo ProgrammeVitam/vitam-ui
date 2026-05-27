@@ -39,14 +39,14 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, Reacti
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Logger } from '../../../../../vitamui-library/src/app/modules/logger/logger';
 import {
-  ConfirmDialogService,
-  Logger,
   ManagementContract,
-  Option,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 import { FormGroupToManagementContractConverterService } from '../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
@@ -63,7 +63,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { PersistentIdentifierPoliciesFormModule } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.module';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 @Component({
   selector: 'app-management-contract-create',
   templateUrl: './management-contract-create.component.html',

@@ -37,16 +37,14 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import {
-  ApplicationService,
-  DownloadUtils,
-  FileTypes,
-  GlobalEventService,
-  IngestContract,
-  Role,
-  SecurityService,
-  SidenavPage,
-} from 'vitamui-library';
+import { ApplicationService } from '../../../../vitamui-library/src/app/modules/application.service';
+import { DownloadUtils } from '../../../../vitamui-library/src/app/modules/utils/download.utils';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { IngestContract } from '../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { Role } from '../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
 import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { mergeMap, shareReplay } from 'rxjs/operators';

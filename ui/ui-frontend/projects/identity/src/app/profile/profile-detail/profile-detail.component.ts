@@ -36,7 +36,11 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { Event } from '../../../../../vitamui-library/src/lib/models/event';
+import { isLevelAllowed } from '../../../../../vitamui-library/src/app/modules/utils/level.util';
+import { Profile } from '../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
 
 import { ProfileService } from '../profile.service';
 

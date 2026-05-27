@@ -38,7 +38,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BASE_URL } from '../injection-tokens';
-import { SearchCriteriaDto, SearchResponse } from '../models';
+import { SearchCriteriaDto } from '../models/criteria/search-criteria.interface';
+import { SearchResponse } from '../models/criteria/search-response.interface';
 import { Observable } from 'rxjs';
 import { ReclassificationCriteriaDto } from './reclassification.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';

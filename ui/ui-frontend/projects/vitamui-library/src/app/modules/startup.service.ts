@@ -46,7 +46,10 @@ import { AuthService } from './auth.service';
 import { ConfigService } from './config.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
-import { AppConfiguration, AttachmentType, AuthUser, UserInfo } from './models';
+import { AppConfiguration } from './models/app.configuration.interface';
+import { AttachmentType } from './models/customer/theme/attachmentType.enum';
+import { AuthUser } from './models/user/auth-user.interface';
+import { UserInfo } from './models/user/user-info.interface';
 import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;

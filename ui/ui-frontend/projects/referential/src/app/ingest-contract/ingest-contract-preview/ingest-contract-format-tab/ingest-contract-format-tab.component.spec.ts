@@ -42,7 +42,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab.component';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
 
 describe('IngestContractFormatTabComponent', () => {
   let component: IngestContractFormatTabComponent;

@@ -40,14 +40,8 @@ import { FormsModule } from '@angular/forms';
 
 import { SearchBarComponent } from './search-bar.component';
 
-@Component({
-  template: ` <vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>`,
-  standalone: false,
-})
+@Component({ template: ` <vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>` })
 export class TestHostComponent {}
-
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
 
 describe('SearchBarComponent', () => {
   let testhost: TestHostComponent;
@@ -55,8 +49,7 @@ describe('SearchBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, SearchBarComponent],
-      declarations: [TestHostComponent],
+      imports: [FormsModule, SearchBarComponent, TestHostComponent],
     }).compileComponents();
   });
 

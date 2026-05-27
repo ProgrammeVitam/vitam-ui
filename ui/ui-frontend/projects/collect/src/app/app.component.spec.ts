@@ -41,7 +41,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { AuthService, StartupService } from 'vitamui-library';
+import { AuthService } from '../../../vitamui-library/src/app/modules/auth.service';
+import { StartupService } from '../../../vitamui-library/src/app/modules/startup.service';
 import { AppComponent } from './app.component';
 
 @Component({

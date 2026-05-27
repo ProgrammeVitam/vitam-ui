@@ -44,31 +44,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ENVIRONMENT,
-  FlowType,
-  InjectorModule,
-  LoggerModule,
-  Project,
-  ProjectStatus,
-  Transaction,
-  TransactionStatus,
-  WINDOW_LOCATION,
-  Workflow,
-} from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { FlowType, Project, Workflow } from '../../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { ProjectStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/project-status';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
 import { CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
-import { TenantSelectionService } from 'vitamui-library';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
 import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Pipe({
-  name: 'fileSize',
-  standalone: false,
-})
+@Pipe({ name: 'fileSize' })
 export class MockFileSizePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -159,10 +150,17 @@ describe('CreateProjectComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [CreateProjectComponent, MockFileSizePipe],
+      declarations: [CreateProjectComponent],
       teardown: { destroyAfterEach: false },
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [BrowserAnimationsModule, InjectorModule, TranslateModule.forRoot(), MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [
+        BrowserAnimationsModule,
+        InjectorModule,
+        TranslateModule.forRoot(),
+        MatButtonToggleModule,
+        LoggerModule.forRoot(),
+        MockFileSizePipe,
+      ],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

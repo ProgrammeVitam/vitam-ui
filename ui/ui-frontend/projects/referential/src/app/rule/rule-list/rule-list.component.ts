@@ -39,20 +39,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  ApplicationId,
-  AuthService,
-  ConfirmActionComponent,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  Role,
-  Rule,
-  RuleService,
-  SnackBarService,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { ConfirmActionComponent } from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Role } from '../../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { Rule } from '../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../vitamui-library/src/app/modules/rule/rule.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

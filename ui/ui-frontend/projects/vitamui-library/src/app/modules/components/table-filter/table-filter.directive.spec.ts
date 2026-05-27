@@ -45,12 +45,8 @@ import { TableFilterDirective } from './table-filter.directive';
     <button [vitamuiCommonTableFilter]="filterTemplate"></button>
     <ng-template #filterTemplate> Overlay content </ng-template>
   `,
-  standalone: false,
 })
 export class TesthostComponent {}
-
-@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
 
 describe('TableFilterDirective', () => {
   let testhost: TesthostComponent;
@@ -58,8 +54,7 @@ describe('TableFilterDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TableFilterDirective, OverlayModule],
-      declarations: [TesthostComponent],
+      imports: [TableFilterDirective, OverlayModule, TesthostComponent],
     }).compileComponents();
   });
 

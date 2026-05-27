@@ -35,7 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum } from 'vitamui-library';
+import {
+  ArchiveSearchResultFacets,
+  ResultFacet,
+  ResultFacetList,
+  RuleFacets,
+  SearchCriteriaMgtRuleEnum,
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 
 @Injectable({

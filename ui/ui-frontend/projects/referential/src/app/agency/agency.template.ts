@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DisplayRule } from 'vitamui-library';
+import { DisplayRule } from '../../../../vitamui-library/src/app/modules/object-viewer/models/display-rule.model';
 
 export const agencyTemplate: DisplayRule[] = [
   {

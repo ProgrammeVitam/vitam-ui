@@ -39,17 +39,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
-import {
-  ApplicationId,
-  GlobalEventService,
-  SidenavPage,
-  SecurityService,
-  Role,
-  SchemaService,
-  Ontology,
-  SchemaElement,
-  FileTypes,
-} from 'vitamui-library';
+import { ApplicationId } from '../../../../vitamui-library/src/app/modules/application-id.enum';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { Role } from '../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { SchemaService } from '../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { Ontology } from '../../../../vitamui-library/src/lib/models/ontology';
+import { SchemaElement } from '../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { OntologyCreateComponent } from './ontology-create/ontology-create.component';

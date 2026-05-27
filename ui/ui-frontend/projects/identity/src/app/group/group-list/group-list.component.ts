@@ -37,17 +37,13 @@
 import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 
-import {
-  buildCriteriaFromSearch,
-  collapseAnimation,
-  CriteriaSearchQuery,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  Group,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-} from 'vitamui-library';
+import { buildCriteriaFromSearch } from '../../../../../vitamui-library/src/app/modules/vitamui-table/criteria-builder.util';
+import { collapseAnimation, rotateAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { CriteriaSearchQuery } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { Group } from '../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
 import { GroupService } from '../group.service';
 import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
 

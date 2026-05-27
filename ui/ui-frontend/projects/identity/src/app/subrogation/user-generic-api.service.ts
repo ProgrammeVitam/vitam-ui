@@ -37,7 +37,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-import { BASE_URL, PaginatedHttpClient, SubrogationUser } from 'vitamui-library';
+import { BASE_URL } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PaginatedHttpClient } from '../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { SubrogationUser } from '../../../../vitamui-library/src/app/modules/models/subrogation/subrogation-user.interface';
 
 @Injectable({
   providedIn: 'root',

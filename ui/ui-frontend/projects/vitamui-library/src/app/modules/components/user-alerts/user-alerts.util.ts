@@ -37,7 +37,8 @@
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AlertAnalytics, Application } from '../../models';
+import { AlertAnalytics } from '../../models/user/user-alerts.interface';
+import { Application } from '../../models/application/application.interface';
 
 export function buildAlertLabel(translateService: TranslateService, alert: AlertAnalytics): Observable<string> {
   const keyTraduction = translateService.get('USER_ALERTS.KEYS.' + alert.key);

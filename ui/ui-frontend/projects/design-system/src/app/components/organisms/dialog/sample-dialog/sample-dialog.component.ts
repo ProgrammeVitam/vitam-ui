@@ -40,14 +40,12 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
-import {
-  DialogContentWithStateComponent,
-  DialogHeaderComponent,
-  NextStepComponent,
-  PreviousStepComponent,
-  SlideToggleComponent,
-  VitamUICommonModule,
-} from 'vitamui-library';
+import { DialogContentWithStateComponent } from '../../../../../../../vitamui-library/src/lib/components/dialog/dialog-content-with-state/dialog-content-with-state.component';
+import { DialogHeaderComponent } from '../../../../../../../vitamui-library/src/lib/components/dialog/dialog-header/dialog-header.component';
+import { NextStepComponent } from '../../../../../../../vitamui-library/src/lib/components/next-step/next-step.component';
+import { PreviousStepComponent } from '../../../../../../../vitamui-library/src/lib/components/previous-step/previous-step.component';
+import { SlideToggleComponent } from '../../../../../../../vitamui-library/src/lib/components/slide-toggle/slide-toggle.component';
+import { VitamUICommonModule } from '../../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 @Component({
   selector: 'design-system-sample-dialog',

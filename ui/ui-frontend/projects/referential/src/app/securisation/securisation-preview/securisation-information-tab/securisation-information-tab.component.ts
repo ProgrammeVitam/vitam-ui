@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { Event } from 'vitamui-library';
+import { Event } from '../../../../../../vitamui-library/src/lib/models/event';
 import { SecurisationService } from '../../securisation.service';
 
 @Component({

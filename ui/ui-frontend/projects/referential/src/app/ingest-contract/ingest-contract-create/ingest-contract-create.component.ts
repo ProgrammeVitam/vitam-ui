@@ -39,19 +39,18 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { FilingPlanMode } from '../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import { IngestContract } from '../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SelectComponent, VitamuiSelectOptions } from '../../../../../vitamui-library/src/lib/components/select/select.component';
 import {
-  ConfirmDialogService,
-  FilingPlanMode,
-  IngestContract,
-  Option,
-  SelectComponent,
   SignaturePolicy,
   SignedDocumentPolicyEnum,
-  VitamUICommonModule,
-  VitamuiHttpHeaders,
-  VitamUILibraryModule,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamuiHttpHeaders } from '../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';

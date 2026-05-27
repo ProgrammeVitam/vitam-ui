@@ -36,7 +36,7 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ResultFacet, ResultFacetList } from 'vitamui-library';
+import { ResultFacet, ResultFacetList } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 import { ArchiveFacetsService } from './archive-facets.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

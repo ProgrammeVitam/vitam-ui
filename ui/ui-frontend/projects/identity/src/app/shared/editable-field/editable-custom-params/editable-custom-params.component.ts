@@ -36,7 +36,7 @@
  */
 import { Component, ElementRef, EventEmitter, forwardRef, Input, Output, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { EditableFieldComponent } from 'vitamui-library';
+import { EditableFieldComponent } from '../../../../../../vitamui-library/src/app/modules/components/editable-field/editable-field.component';
 
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { Group, Profile } from 'vitamui-library';
+import { Group } from '../../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { Profile } from '../../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
 import { GroupService } from '../../../group/group.service';
 
 @Component({

@@ -43,7 +43,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../vitamui-library/src/lib/vitamui-library.module';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
 // eslint-disable-next-line max-len
 import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-preview/logbook-management-operation-information-tab/logbook-management-operation-information-tab.component';

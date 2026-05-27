@@ -41,7 +41,8 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
-import { Group, Subrogation } from '../models';
+import { Group } from '../models/group/group.interface';
+import { Subrogation } from '../models/subrogation/subrogation.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({

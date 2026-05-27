@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Tenant } from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Tenant } from '../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';

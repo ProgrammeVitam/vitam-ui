@@ -37,7 +37,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, Unit, ApiUnitObject } from 'vitamui-library';
+import { BaseHttpClient } from '../../../../../vitamui-library/src/app/modules/base-http-client';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { ApiUnitObject } from '../../../../../vitamui-library/src/lib/models/api-unit-object.interface';
 import { PersistentIdentifierResponseDto } from './persistent-identifier-response-dto.interface';
 
 @Injectable({

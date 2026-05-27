@@ -38,7 +38,7 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { RuleService } from 'vitamui-library';
+import { RuleService } from '../../../../../vitamui-library/src/app/modules/rule/rule.service';
 
 @Injectable({
   providedIn: 'root',

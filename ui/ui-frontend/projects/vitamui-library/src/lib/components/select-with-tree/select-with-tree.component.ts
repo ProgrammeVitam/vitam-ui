@@ -50,7 +50,8 @@ import {
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { ItemFlatNode, ItemNode, SearchBarComponent } from '../../../app/modules';
+import { ItemFlatNode, ItemNode } from '../../../app/modules/components/autocomplete/utils/item-node.interface';
+import { SearchBarComponent } from '../../../app/modules/components/search-bar/search-bar.component';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -59,10 +60,9 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 import { normalizeString } from '../../utils/string.util';
-import { AutocompletePositionDirectiveModule } from '../../../app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
+
 import { CommonModule } from '@angular/common';
-import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
-import { EllipsisDirectiveModule } from '../../../app/modules/directives/ellipsis/ellipsis.directive.module';
+
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -72,6 +72,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import { EllipsisDirective } from '../../../app/modules/directives/ellipsis/ellipsis.directive';
 
 const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -84,10 +85,8 @@ const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
   templateUrl: './select-with-tree.component.html',
   styleUrls: ['./select-with-tree.component.scss'],
   imports: [
-    AutocompletePositionDirectiveModule,
     CommonModule,
-    CommonTooltipModule,
-    EllipsisDirectiveModule,
+    EllipsisDirective,
     FormErrorsComponent,
     FormsModule,
     MatAutocompleteModule,

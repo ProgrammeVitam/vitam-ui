@@ -75,7 +75,11 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { DownloadUtils, GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
+import { DownloadUtils } from '../../../../vitamui-library/src/app/modules/utils/download.utils';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';

@@ -37,16 +37,13 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
-import {
-  buildCriteriaFromSearch,
-  CriteriaSearchQuery,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  ExternalParamProfile,
-  InfiniteScrollTable,
-  PageRequest,
-  Profile,
-} from 'vitamui-library';
+import { buildCriteriaFromSearch } from '../../../../../vitamui-library/src/app/modules/vitamui-table/criteria-builder.util';
+import { CriteriaSearchQuery } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { ExternalParamProfile } from '../../../../../vitamui-library/src/app/modules/models/externalparamprofile/external-param-profile.interface';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Profile } from '../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
 import { ProfileService } from '../../profile/profile.service';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';

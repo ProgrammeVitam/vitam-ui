@@ -45,14 +45,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../../pipes/pipes.module';
-import { ItemSelectModule } from '../item-select/item-select.module';
+
 import { MenuApplicationTileComponent } from './menu-application-tile/menu-application-tile.component';
 import { MenuOverlayService } from './menu-overlay.service';
 import { MenuComponent } from './menu.component';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 
 @NgModule({
-  declarations: [MenuComponent, MenuApplicationTileComponent],
   imports: [
     CommonModule,
     OverlayModule,
@@ -65,7 +64,8 @@ import { SearchBarComponent } from '../../search-bar/search-bar.component';
     SearchBarComponent,
     PipesModule,
     TranslateModule,
-    ItemSelectModule,
+    MenuComponent,
+    MenuApplicationTileComponent,
   ],
   providers: [MenuOverlayService],
   exports: [MenuComponent, MenuApplicationTileComponent],

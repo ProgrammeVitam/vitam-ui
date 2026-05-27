@@ -38,7 +38,9 @@ import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/co
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SidenavPage, VitamuiBannerComponent } from 'vitamui-library';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { VitamuiBannerComponent } from '../../../../vitamui-library/src/app/modules/components/vitamui-banner/vitamui-banner.component';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 

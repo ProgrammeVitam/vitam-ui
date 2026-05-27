@@ -40,8 +40,13 @@ import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
-import { FileFormat, FileTypes } from 'vitamui-library';
+import { ApplicationId } from '../../../../vitamui-library/src/app/modules/application-id.enum';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { Role } from '../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { FileFormat } from '../../../../vitamui-library/src/lib/models/file-format';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';

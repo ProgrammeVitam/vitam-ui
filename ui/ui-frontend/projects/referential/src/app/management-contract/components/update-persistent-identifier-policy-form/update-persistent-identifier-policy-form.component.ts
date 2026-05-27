@@ -40,7 +40,7 @@ import {
   ManagementContractValidationErrors,
   ManagementContractValidators,
 } from 'projects/referential/src/app/management-contract/validators/management-contract-validators';
-import { Option } from 'vitamui-library';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

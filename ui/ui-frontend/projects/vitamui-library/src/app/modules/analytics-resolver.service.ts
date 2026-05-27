@@ -39,7 +39,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { UserApiService } from './api/user-api.service';
 import { ApplicationService } from './application.service';
-import { UserAlertsService } from './components/user-alerts';
+import { UserAlertsService } from './components/user-alerts/user-alerts.service';
 import { User } from './models/user/user.interface';
 import { TenantSelectionService } from './tenant-selection.service';
 

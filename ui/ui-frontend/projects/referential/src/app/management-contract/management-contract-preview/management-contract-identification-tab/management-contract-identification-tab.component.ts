@@ -38,7 +38,11 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleCha
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { ManagementContract, Option, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import {
+  ManagementContract,
+  PersistentIdentifierPolicyTypeEnum,
+} from '../../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 import { FormGroupToManagementContractConverterService } from '../../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../../management-contract.service';

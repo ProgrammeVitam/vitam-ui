@@ -37,7 +37,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Agency, ConfirmDialogService, AgencyService } from 'vitamui-library';
+import { Agency } from '../../../../../vitamui-library/src/lib/models/agency';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { AgencyService } from '../../../../../vitamui-library/src/app/modules/agencies/agency.service';
 import { AgencyCreateValidators } from './agency-create.validators';
 
 @Component({

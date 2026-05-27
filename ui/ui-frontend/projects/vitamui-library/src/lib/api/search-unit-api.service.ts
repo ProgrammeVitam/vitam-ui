@@ -37,7 +37,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, SearchResponse } from '../../app/modules';
+import { BASE_URL } from '../../app/modules/injection-tokens';
+import { SearchResponse } from '../../app/modules/models/criteria/search-response.interface';
 
 @Injectable({
   providedIn: 'root',

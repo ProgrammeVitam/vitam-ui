@@ -38,7 +38,7 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Observable, combineLatest, of, timer } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
-import { RuleService } from 'vitamui-library';
+import { RuleService } from '../../../../../vitamui-library/src/app/modules/rule/rule.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { RuleCategoryAction } from '../models/ruleAction.interface';
 

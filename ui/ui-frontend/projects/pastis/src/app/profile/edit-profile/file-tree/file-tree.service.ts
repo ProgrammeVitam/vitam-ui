@@ -76,7 +76,7 @@ import { Injectable, inject } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { FileNode } from '../../../models/file-node';
-import { Logger } from 'vitamui-library';
+import { Logger } from '../../../../../../vitamui-library/src/app/modules/logger/logger';
 
 @Injectable({
   providedIn: 'root',

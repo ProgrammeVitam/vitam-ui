@@ -40,7 +40,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AgencyService, BASE_URL, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { AgencyService } from '../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';

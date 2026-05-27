@@ -38,7 +38,9 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, PaginatedHttpClient, SKIP_ERROR_NOTIFICATION } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { SKIP_ERROR_NOTIFICATION } from '../../../../../vitamui-library/src/app/modules/utils/http-header.util';
 import { Profile } from '../../models/profile';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 

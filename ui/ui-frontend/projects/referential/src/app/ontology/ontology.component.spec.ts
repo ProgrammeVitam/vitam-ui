@@ -40,7 +40,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SecurityService, SchemaService } from 'vitamui-library';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { SchemaService } from '../../../../vitamui-library/src/app/modules/schema/schema.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';
@@ -49,7 +52,7 @@ import { OntologyService } from './ontology.service';
 @Component({
   selector: 'app-ontology-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyPreviewStub {
@@ -60,7 +63,7 @@ class OntologyPreviewStub {
 @Component({
   selector: 'app-ontology-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyListStub {}
@@ -71,7 +74,7 @@ describe('OntologyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OntologyComponent, OntologyListStub, OntologyPreviewStub],
+      declarations: [OntologyComponent],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -81,6 +84,8 @@ describe('OntologyComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        OntologyListStub,
+        OntologyPreviewStub,
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

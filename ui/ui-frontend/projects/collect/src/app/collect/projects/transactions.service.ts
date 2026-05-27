@@ -36,7 +36,7 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Transaction } from 'vitamui-library';
+import { Transaction } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({

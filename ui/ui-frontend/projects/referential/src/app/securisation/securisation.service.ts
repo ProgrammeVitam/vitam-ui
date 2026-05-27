@@ -36,7 +36,10 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { download, Event, SearchService, VitamuiHttpHeaders } from 'vitamui-library';
+import { download } from '../../../../vitamui-library/src/lib/utils/download';
+import { Event } from '../../../../vitamui-library/src/lib/models/event';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 
 import { OperationApiService } from '../core/api/operation-api.service';
 

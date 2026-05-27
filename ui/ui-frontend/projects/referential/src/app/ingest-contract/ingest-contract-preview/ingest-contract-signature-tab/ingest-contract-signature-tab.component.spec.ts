@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { of } from 'rxjs';
-import { SignedDocumentPolicyEnum } from 'vitamui-library';
+import { SignedDocumentPolicyEnum } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab.component';

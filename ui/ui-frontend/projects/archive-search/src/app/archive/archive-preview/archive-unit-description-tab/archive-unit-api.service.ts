@@ -37,7 +37,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, Ontology, ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'vitamui-library';
+import { BaseHttpClient } from '../../../../../../vitamui-library/src/app/modules/base-http-client';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Ontology } from '../../../../../../vitamui-library/src/lib/models/ontology';
+import { ArchiveUnit } from '../../../../../../vitamui-library/src/app/modules/archive-unit/models/archive-unit';
+import { JsonPatchDto, MultiJsonPatchDto } from '../../../../../../vitamui-library/src/app/modules/archive-unit/models/json-patch';
 
 @Injectable({
   providedIn: 'root',

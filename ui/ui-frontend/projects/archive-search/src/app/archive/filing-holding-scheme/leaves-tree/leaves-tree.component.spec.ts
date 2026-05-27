@@ -43,16 +43,13 @@ import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import {
-  ConfigurationsApiService,
-  DescriptionLevel,
-  FilingHoldingSchemeNode,
-  InjectorModule,
-  LoggerModule,
-  PagedResult,
-  ResultFacet,
-  UnitType,
-} from 'vitamui-library';
+import { ConfigurationsApiService } from '../../../../../../vitamui-library/src/app/modules/services/configurations-api.service';
+import { DescriptionLevel } from '../../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { FilingHoldingSchemeNode } from '../../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { PagedResult, ResultFacet } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { UnitType } from '../../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';

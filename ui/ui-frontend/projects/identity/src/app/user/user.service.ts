@@ -38,17 +38,15 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  AuthUser,
-  CriteriaSearchQuery,
-  Criterion,
-  Operators,
-  Profile,
-  SearchService,
-  User,
-  SnackBarService,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { AuthUser } from '../../../../vitamui-library/src/app/modules/models/user/auth-user.interface';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Criterion } from '../../../../vitamui-library/src/app/modules/models/criteria/criterion.interface';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { Profile } from '../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { User } from '../../../../vitamui-library/src/app/modules/models/user/user.interface';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 import { UserApiService } from '../core/api/user-api.service';
 import { ProfileService } from '../profile/profile.service';

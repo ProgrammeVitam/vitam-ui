@@ -41,7 +41,12 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LogbookService } from '../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
@@ -49,10 +54,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -70,7 +72,7 @@ describe('LogbookOperationDetailComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
+      declarations: [LogbookOperationDetailComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         InjectorModule,
@@ -81,6 +83,9 @@ describe('LogbookOperationDetailComponent', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
+        EventTypeBadgeClassPipe,
+        LastEventPipe,
+        MockTruncatePipe,
       ],
       providers: [
         { provide: LogbookService, useValue: {} },

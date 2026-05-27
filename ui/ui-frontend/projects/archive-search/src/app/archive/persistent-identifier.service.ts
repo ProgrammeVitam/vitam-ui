@@ -37,7 +37,8 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiUnitObject, Unit } from 'vitamui-library';
+import { ApiUnitObject } from '../../../../vitamui-library/src/lib/models/api-unit-object.interface';
+import { Unit } from '../../../../vitamui-library/src/app/modules/models/units/unit.interface';
 import { PersistentIdentifierApiService } from '../core/api/persistent-identifier-api.service';
 import { PersistentIdentifierResponseDto } from '../core/api/persistent-identifier-response-dto.interface';
 

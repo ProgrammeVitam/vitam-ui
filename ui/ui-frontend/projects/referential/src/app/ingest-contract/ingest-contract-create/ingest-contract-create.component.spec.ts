@@ -43,14 +43,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import {
-  AccessContractService,
-  BASE_URL,
-  ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
-  LoggerModule,
-} from 'vitamui-library';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';

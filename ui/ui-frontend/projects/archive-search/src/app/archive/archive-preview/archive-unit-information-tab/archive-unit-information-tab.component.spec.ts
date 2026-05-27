@@ -50,23 +50,19 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  AccessContract,
-  AccessContractService,
-  ApiUnitObject,
-  BASE_URL,
-  DataComponent,
-  DescriptionLevel,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  ObjectQualifierType,
-  PipesModule,
-  StartupService,
-  Unit,
-  UnitType,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { ApiUnitObject } from '../../../../../../vitamui-library/src/lib/models/api-unit-object.interface';
+import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { DataComponent } from '../../../../../../vitamui-library/src/app/modules/components/data/data.component';
+import { DescriptionLevel } from '../../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { ObjectQualifierType } from '../../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { PipesModule } from '../../../../../../vitamui-library/src/app/modules/pipes/pipes.module';
+import { StartupService } from '../../../../../../vitamui-library/src/app/modules/startup.service';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
 
@@ -74,20 +70,14 @@ describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
   let fixture: ComponentFixture<ArchiveUnitInformationTabComponent>;
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class UnitI18nStubPipe implements PipeTransform {
     transform(value: any, _attribute: string): string {
       return value?.Title ?? '';
     }
   }
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -143,8 +133,10 @@ describe('ArchiveUnitInformationTabComponent', () => {
         TranslateModule.forRoot(),
         DataComponent,
         PipesModule,
+        UnitI18nStubPipe,
+        DateTimeStubPipe,
       ],
-      declarations: [ArchiveUnitInformationTabComponent, UnitI18nStubPipe, DateTimeStubPipe],
+      declarations: [ArchiveUnitInformationTabComponent],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },

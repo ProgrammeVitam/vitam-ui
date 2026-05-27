@@ -44,17 +44,18 @@ import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../../../../vitamui-library/src/app/modules/injection-tokens';
 import {
-  BASE_URL,
   CriteriaDataType,
   CriteriaOperator,
-  InjectorModule,
-  LoggerModule,
-  Rule,
+} from '../../../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { InjectorModule } from '../../../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { Rule } from '../../../../../../../../../vitamui-library/src/lib/models/rule';
+import {
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+} from '../../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { DeleteUnitRulesComponent } from './delete-unit-rules.component';

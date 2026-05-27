@@ -57,51 +57,54 @@ import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, map, tap } from 'rxjs/operators';
 import {
   ACCESS_RULE,
-  AccessContract,
-  AccessContractService,
-  AlertDialogComponent,
   ALL_DESCENDANTS_FACET,
   APPRAISAL_RULE,
-  ArchiveSearchResultFacets,
-  ConfigService,
-  CriteriaDataType,
-  CriteriaOperator,
-  CriteriaSearchCriteria,
-  CriteriaValue,
-  Direction,
   DISSEMINATION_RULE,
-  FilingHoldingSchemeNode,
-  Logger,
-  MANAGEMENT_RULE_SHARED_DATA_SERVICE,
   NODES,
   ORIGIN_WAITING_RECALCULATE,
-  ORPHANS_NODE_ID,
-  PagedResult,
-  QueryParamsService,
-  ReclassificationDialogComponent,
   REUSE_RULE,
-  Rule,
-  RuleService,
+  STORAGE_RULE,
+  VALID_COMPUTED_INHERITED_RULES_FACET,
+  WAITING_RECALCULATE,
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-configs';
+import { AccessContract } from '../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { AlertDialogComponent } from '../../../../../vitamui-library/src/lib/components/dialog/alert-dialog/alert-dialog.component';
+import {
+  ArchiveSearchResultFacets,
+  CriteriaSearchCriteria,
+  CriteriaValue,
+  PagedResult,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
-  SearchCriteriaEltements,
-  SearchCriteriaHistory,
   SearchCriteriaMgtRuleEnum,
   SearchCriteriaRemoveAction,
-  SearchCriteriaService,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SecurityService,
-  STORAGE_RULE,
   TermsFacet,
-  toManagementRuleType,
-  Unit,
-  UnitType,
-  VALID_COMPUTED_INHERITED_RULES_FACET,
-  VitamuiRoles,
-  WAITING_RECALCULATE,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { ConfigService } from '../../../../../vitamui-library/src/app/modules/config.service';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { FilingHoldingSchemeNode } from '../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import { Logger } from '../../../../../vitamui-library/src/app/modules/logger/logger';
+import { MANAGEMENT_RULE_SHARED_DATA_SERVICE } from '../../../../../vitamui-library/src/lib/models/management-rule-shared-data-service.interface';
+import { ORPHANS_NODE_ID } from '../../../../../vitamui-library/src/app/modules/models/nodes/filing-holding-scheme.handler';
+import { QueryParamsService } from '../../../../../vitamui-library/src/app/modules/url/query-params.service';
+import { ReclassificationDialogComponent } from '../../../../../vitamui-library/src/lib/components/reclassification-dialog/reclassification-dialog.component';
+import { Rule } from '../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../vitamui-library/src/app/modules/rule/rule.service';
+import {
+  SearchCriteriaEltements,
+  SearchCriteriaHistory,
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
+import { SearchCriteriaService } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.service';
+import { SecurityService } from '../../../../../vitamui-library/src/app/modules/security/security.service';
+import { toManagementRuleType } from '../../../../../vitamui-library/src/lib/components/management-rule-search/management-rule-search.config';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
+import { VitamuiRoles } from '../../../../../vitamui-library/src/app/modules/vitamui-roles.enum';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';

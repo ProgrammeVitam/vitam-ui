@@ -37,18 +37,15 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
-import {
-  ApplicationId,
-  buildCriteriaFromSearch,
-  CriteriaSearchQuery,
-  Criterion,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  Operators,
-  PageRequest,
-  Profile,
-} from 'vitamui-library';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { buildCriteriaFromSearch } from '../../../../../vitamui-library/src/app/modules/vitamui-table/criteria-builder.util';
+import { CriteriaSearchQuery } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Criterion } from '../../../../../vitamui-library/src/app/modules/models/criteria/criterion.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Operators } from '../../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { Profile } from '../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
 import { ProfileService } from '../profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

@@ -38,7 +38,8 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, inject } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DownloadSnackBarComponent, SnackBarService } from 'vitamui-library';
+import { DownloadSnackBarComponent } from '../../../../../vitamui-library/src/app/modules/components/download-snack-bar/download-snack-bar.component';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 @Injectable({
   providedIn: 'root',

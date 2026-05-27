@@ -42,7 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of, throwError } from 'rxjs';
-import { LoggerModule } from '../../../logger';
+import { LoggerModule } from '../../../logger/logger.module';
 import { VitamuiMissingTranslationHandler } from '../../../missing-translation-handler';
 import { PluralPipe } from '../../../pipes/plural.pipe';
 import { ArchiveUnitCountComponent } from './archive-unit-count.component';
@@ -75,7 +75,6 @@ describe('ArchiveUnitCountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitCountComponent, PluralPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       imports: [
         LoggerModule.forRoot(),
@@ -90,6 +89,8 @@ describe('ArchiveUnitCountComponent', () => {
         }),
         MatProgressSpinnerModule,
         LoggerModule.forRoot(),
+        ArchiveUnitCountComponent,
+        PluralPipe,
       ],
       providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();

@@ -46,7 +46,7 @@ import { VitamUICommonTestModule } from '../../../../testing/src';
 import { AuthService } from '../auth.service';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { BASE_URL } from '../injection-tokens';
-import { LoggerModule } from '../logger';
+import { LoggerModule } from '../logger/logger.module';
 import { environment } from './../../../environments/environment';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
 import { SubrogationService } from './subrogation.service';

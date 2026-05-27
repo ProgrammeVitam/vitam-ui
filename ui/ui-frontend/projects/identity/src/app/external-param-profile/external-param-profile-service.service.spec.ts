@@ -36,7 +36,9 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, LoggerModule, SnackBarService } from 'vitamui-library';
+import { BASE_URL } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ExternalParamProfileService } from './external-param-profile.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

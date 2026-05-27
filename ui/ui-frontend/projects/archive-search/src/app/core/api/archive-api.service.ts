@@ -38,21 +38,18 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {
-  ApiUnitObject,
-  ArchiveUnit,
-  BASE_URL,
-  IOntology,
-  JsonPatchDto,
-  MultiJsonPatchDto,
-  PageRequest,
-  PaginatedHttpClient,
-  PaginatedResponse,
-  SearchCriteriaDto,
-  SearchCriteriaHistory,
-  SearchResponse,
-  Unit,
-} from 'vitamui-library';
+import { ApiUnitObject } from '../../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
+import { ArchiveUnit } from '../../../../../vitamui-library/src/app/modules/archive-unit/models/archive-unit';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { IOntology } from '../../../../../vitamui-library/src/app/modules/models/ontology/ontology.interface';
+import { JsonPatchDto, MultiJsonPatchDto } from '../../../../../vitamui-library/src/app/modules/archive-unit/models/json-patch';
+import { PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
+import { PaginatedResponse } from '../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
+import { SearchCriteriaDto } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SearchCriteriaHistory } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
+import { SearchResponse } from '../../../../../vitamui-library/src/app/modules/models/criteria/search-response.interface';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';

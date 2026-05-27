@@ -49,7 +49,7 @@ import { EmptyPipe } from '../pipes/empty.pipe';
 import { GroupComponent } from './components/group/group.component';
 import { ListComponent } from './components/list/list.component';
 import { PrimitiveComponent } from './components/primitive/primitive.component';
-import { DisplayObjectService } from './models';
+import { DisplayObjectService } from './models/display-object-service';
 import { ObjectViewerComponent } from './object-viewer.component';
 import { DataStructureService } from './services/data-structure.service';
 import { DateDisplayService } from './services/date-display.service';
@@ -60,7 +60,8 @@ import { LayoutService } from './services/layout.service';
 import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 import { TypeService } from './services/type.service';
-import { Unit, UnitType } from '../models';
+import { Unit } from '../models/units/unit.interface';
+import { UnitType } from '../models/units/unit-type.enum';
 import { DescriptionLevel } from '../models/units/description-level.enum';
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -91,7 +92,6 @@ describe('ObjectViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent, EmptyPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TranslateModule.forRoot({
@@ -104,6 +104,11 @@ describe('ObjectViewerComponent', () => {
           },
         }),
         LoggerModule.forRoot(),
+        ObjectViewerComponent,
+        GroupComponent,
+        ListComponent,
+        PrimitiveComponent,
+        EmptyPipe,
       ],
       providers: [
         DataStructureService,

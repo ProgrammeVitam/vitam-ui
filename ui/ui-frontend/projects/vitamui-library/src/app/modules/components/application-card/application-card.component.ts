@@ -37,7 +37,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationService } from '../../application.service';
-import { Application } from '../../models';
+import { Application } from '../../models/application/application.interface';
 import { StartupService } from '../../startup.service';
 
 import { MatCardModule } from '@angular/material/card';

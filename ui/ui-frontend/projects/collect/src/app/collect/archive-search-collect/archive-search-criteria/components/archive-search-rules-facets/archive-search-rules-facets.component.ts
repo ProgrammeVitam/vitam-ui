@@ -36,7 +36,7 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { RuleFacets } from 'vitamui-library';
+import { RuleFacets } from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
 
 @Component({
   selector: 'app-archive-search-rules-facets',

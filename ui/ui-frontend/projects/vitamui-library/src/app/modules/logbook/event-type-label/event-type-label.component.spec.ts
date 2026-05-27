@@ -46,8 +46,7 @@ describe('EventTypeLabelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, TranslateModule.forRoot()],
-      declarations: [EventTypeLabelComponent],
+      imports: [VitamUICommonTestModule, TranslateModule.forRoot(), EventTypeLabelComponent],
     }).compileComponents();
   });
 

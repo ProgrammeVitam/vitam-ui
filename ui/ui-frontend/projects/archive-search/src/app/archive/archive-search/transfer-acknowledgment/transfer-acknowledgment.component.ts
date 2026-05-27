@@ -38,7 +38,10 @@ import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@a
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ApplicationId, BytesPipe, Logger, SnackBarService } from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { BytesPipe } from '../../../../../../vitamui-library/src/app/modules/pipes/bytes.pipe';
+import { Logger } from '../../../../../../vitamui-library/src/app/modules/logger/logger';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ArchiveService } from '../../archive.service';
 import { XMLParser } from 'fast-xml-parser';
 

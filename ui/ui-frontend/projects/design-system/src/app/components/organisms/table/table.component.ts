@@ -36,7 +36,11 @@
  */
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { collapseAnimation, Direction, Group, rotateAnimation, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { collapseAnimation, rotateAnimation } from '../../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { Group } from '../../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { SampleDialogComponent } from '../dialog/sample-dialog/sample-dialog.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';

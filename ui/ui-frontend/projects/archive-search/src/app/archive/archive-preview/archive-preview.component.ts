@@ -50,7 +50,10 @@ import {
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AccessContract, AccessContractService, Unit, unitToVitamuiIcon } from 'vitamui-library';
+import { AccessContract } from '../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { Unit } from '../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { unitToVitamuiIcon } from '../../../../../vitamui-library/src/app/modules/models/units/unit.utils';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 

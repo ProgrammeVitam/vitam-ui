@@ -36,7 +36,12 @@
  */
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ManagementContract, PersistentIdentifierPolicy, PersistentIdentifierUsage, VersionRetentionPolicy } from 'vitamui-library';
+import {
+  ManagementContract,
+  PersistentIdentifierPolicy,
+  PersistentIdentifierUsage,
+  VersionRetentionPolicy,
+} from '../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
 import { Converter } from './converter';
 
 @Injectable({

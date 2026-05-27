@@ -38,7 +38,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { Profile } from 'vitamui-library';
+import { Profile } from '../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
 import { ProfileResolver } from './profile-resolver.service';
 import { ProfileService } from './profile.service';
 

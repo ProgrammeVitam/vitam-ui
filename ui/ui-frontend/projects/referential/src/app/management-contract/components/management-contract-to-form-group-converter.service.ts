@@ -41,7 +41,7 @@ import {
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
   PersistentIdentifierUsage,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
 import { ManagementContractValidators } from '../validators/management-contract-validators';
 import { Converter } from './converter';
 

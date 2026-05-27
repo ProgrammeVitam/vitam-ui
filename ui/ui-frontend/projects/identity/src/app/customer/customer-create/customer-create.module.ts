@@ -44,7 +44,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomerPreviewModule } from '../customer-preview/customer-preview.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';

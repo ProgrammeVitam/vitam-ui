@@ -36,7 +36,9 @@
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
-import { Owner, StartupService, Tenant } from 'vitamui-library';
+import { Owner } from '../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { StartupService } from '../../../../../vitamui-library/src/app/modules/startup.service';
+import { Tenant } from '../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 
 @Component({
   selector: 'app-owner-preview',

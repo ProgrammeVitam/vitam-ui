@@ -36,7 +36,12 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
+import { AppConfiguration } from '../../../../vitamui-library/src/app/modules/models/app.configuration.interface';
+import { ApplicationId } from '../../../../vitamui-library/src/app/modules/application-id.enum';
+import { AuthService } from '../../../../vitamui-library/src/app/modules/auth.service';
+import { AuthUser } from '../../../../vitamui-library/src/app/modules/models/user/auth-user.interface';
+import { Logger } from '../../../../vitamui-library/src/app/modules/logger/logger';
+import { WINDOW_LOCATION } from '../../../../vitamui-library/src/app/modules/injection-tokens';
 import { StandaloneThemeService } from './standalone-theme.service';
 
 const WARNING_DURATION = 2000;

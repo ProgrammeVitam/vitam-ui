@@ -36,7 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { AuthenticatorService } from 'vitamui-library';
+import { AuthenticatorService } from '../../../../vitamui-library/src/app/modules/authentication/services/authenticator.service';
 
 @Injectable()
 export class NoAuthenticatorService implements AuthenticatorService {

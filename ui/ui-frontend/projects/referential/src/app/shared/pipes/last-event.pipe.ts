@@ -34,14 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { IEvent } from 'vitamui-library';
+import { IEvent } from '../../../../../vitamui-library/src/app/modules/models/logbook/event.interface';
 
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'lastEvent',
-  standalone: false,
-})
+@Pipe({ name: 'lastEvent' })
 export class LastEventPipe implements PipeTransform {
   transform(event: IEvent): IEvent {
     return event?.events?.length > 0 ? event.events[event.events.length - 1] : null;

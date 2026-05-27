@@ -46,14 +46,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import {
-  AccessContractService,
-  AgencyService,
-  BASE_URL,
-  ConfirmDialogService,
-  ExternalParametersService,
-  LoggerModule,
-} from 'vitamui-library';
+import { AccessContractService } from '../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { AgencyService } from '../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractCreateComponent } from './access-contract-create.component';
 import { AccessContractCreateValidators } from './access-contract-create.validators';

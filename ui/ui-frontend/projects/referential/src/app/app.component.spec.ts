@@ -43,15 +43,15 @@ import { AppComponent } from './app.component';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-common-subrogation-banner',
   template: '',
-  standalone: false,
+  imports: [RouterTestingModule],
 })
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [SubrogationBannerStubComponent, AppComponent],
+      imports: [RouterTestingModule, SubrogationBannerStubComponent],
+      declarations: [AppComponent],
     }).compileComponents();
   });
 

@@ -36,7 +36,7 @@
  */
 import { Component } from '@angular/core';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 @Component({
   selector: 'design-system-slide-toggle',

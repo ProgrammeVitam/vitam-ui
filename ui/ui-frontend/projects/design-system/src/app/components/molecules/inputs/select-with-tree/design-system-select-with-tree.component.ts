@@ -36,7 +36,12 @@
  */
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { ItemNode, MockSchemaService, SchemaElement, SchemaService, SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
+import { ItemNode } from '../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/item-node.interface';
+import { MockSchemaService } from '../../../../../../../vitamui-library/src/app/modules/schema/mock-schema.service';
+import { SchemaElement } from '../../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SelectWithTreeComponent } from '../../../../../../../vitamui-library/src/lib/components/select-with-tree/select-with-tree.component';
+import { VitamUICommonModule } from '../../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';

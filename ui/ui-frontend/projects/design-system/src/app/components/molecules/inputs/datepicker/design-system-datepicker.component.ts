@@ -35,7 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { DatepickerComponent, PickerType, SelectComponent } from 'vitamui-library';
+import { DatepickerComponent } from '../../../../../../../vitamui-library/src/app/modules/components/datepicker/datepicker.component';
+import { PickerType } from '../../../../../../../vitamui-library/src/app/modules/components/datepicker/datepicker.interface';
+import { SelectComponent } from '../../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';

@@ -40,18 +40,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize, Subscription } from 'rxjs';
 import * as uuid from 'uuid';
+import { AgencyService } from '../../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ApplicationId } from '../../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Logger } from '../../../../../../../vitamui-library/src/app/modules/logger/logger';
 import {
-  AgencyService,
-  ApplicationId,
-  ConfirmDialogService,
-  Logger,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
-  SearchCriteriaEltDto,
-  SnackBarService,
-  UsageVersionEnum,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/app/modules/models/units/object-qualifier.enums';
+import { SearchCriteriaEltDto } from '../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { UsageVersionEnum } from '../../../../../../../vitamui-library/src/app/modules/models/archive-search/archive-search.interface';
+import { VitamuiSelectOptions } from '../../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
 import { distinctUntilChanged, map } from 'rxjs/operators';

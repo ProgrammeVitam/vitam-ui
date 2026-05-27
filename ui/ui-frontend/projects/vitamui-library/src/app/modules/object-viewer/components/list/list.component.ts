@@ -35,16 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { DisplayObject } from '../../models';
+import { DisplayObject } from '../../models/display-object.model';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { TypeService } from '../../services/type.service';
 import { DisplayObjectType } from '../../types';
+import { GroupComponent } from '../group/group.component';
+import { ObjectViewerModule } from '../../object-viewer.module';
+import { PrimitiveComponent } from '../primitive/primitive.component';
+import { DataComponent } from '../../../components/data/data.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
-  standalone: false,
+  imports: [GroupComponent, ObjectViewerModule, PrimitiveComponent, DataComponent, TranslatePipe],
 })
 export class ListComponent implements OnChanges {
   private typeService = inject(TypeService);

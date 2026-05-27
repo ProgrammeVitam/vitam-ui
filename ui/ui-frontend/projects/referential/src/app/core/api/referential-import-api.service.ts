@@ -36,7 +36,8 @@
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BASE_URL, VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { VitamuiHttpHeaders } from '../../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 import { ReferentialTypes } from '../../shared/import-dialog/import-dialog-param.interface';
 
 @Injectable({

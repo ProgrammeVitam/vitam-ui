@@ -38,7 +38,11 @@ import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { SearchCriteriaDto, CriteriaOperator, SearchCriteriaTypeEnum, CriteriaDataType } from 'vitamui-library';
+import {
+  SearchCriteriaDto,
+  SearchCriteriaTypeEnum,
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { CriteriaOperator, CriteriaDataType } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 

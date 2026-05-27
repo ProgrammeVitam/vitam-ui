@@ -37,7 +37,10 @@
 import { Component, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, throwError } from 'rxjs';
-import { Logger, SnackBarService, Transaction, VitamErrorDetails } from 'vitamui-library';
+import { Logger } from '../../../../../../vitamui-library/src/app/modules/logger/logger';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { VitamErrorDetails } from '../../../../../../vitamui-library/src/app/modules/models/collect/vitam-error-details';
 import { ArchiveCollectService } from '../archive-collect.service';
 
 @Component({

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Pipe, PipeTransform } from '@angular/core';
-import { Event } from 'vitamui-library';
+import { Event } from '../../../../../vitamui-library/src/lib/models/event';
 
 const colorClassMap: { [key: string]: string } = {
   OK: 'text success',
@@ -44,10 +44,7 @@ const colorClassMap: { [key: string]: string } = {
   FATAL: 'text danger',
 };
 
-@Pipe({
-  name: 'eventTypeColorClass',
-  standalone: false,
-})
+@Pipe({ name: 'eventTypeColorClass' })
 export class EventTypeColorClassPipe implements PipeTransform {
   transform(event: Event): string {
     if (!event.events || event.events.length <= 0) {

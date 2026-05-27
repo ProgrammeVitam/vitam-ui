@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { CommonProgressBarComponent } from 'vitamui-library';
+import { CommonProgressBarComponent } from '../../../../../../vitamui-library/src/app/modules/components/common-progress-bar/common-progress-bar.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({

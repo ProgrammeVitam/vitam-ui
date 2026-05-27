@@ -43,7 +43,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import {
+  IntermediaryVersionEnum,
+  ManagementContract,
+} from '../../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab.component';

@@ -38,18 +38,16 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import {
-  AccessContract,
-  AccessContractApiService,
-  CriteriaSearchQuery,
-  Criterion,
-  ExternalParamProfile,
-  ExternalParamProfileApiService,
-  Operators,
-  SearchService,
-  SnackBarService,
-  VitamuiHttpHeaders,
-} from 'vitamui-library';
+import { AccessContract } from '../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractApiService } from '../../../../vitamui-library/src/app/modules/api/access-contract-api.service';
+import { CriteriaSearchQuery } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Criterion } from '../../../../vitamui-library/src/app/modules/models/criteria/criterion.interface';
+import { ExternalParamProfile } from '../../../../vitamui-library/src/app/modules/models/externalparamprofile/external-param-profile.interface';
+import { ExternalParamProfileApiService } from '../../../../vitamui-library/src/app/modules/api/external-param-profile-api.service';
+import { Operators } from '../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',

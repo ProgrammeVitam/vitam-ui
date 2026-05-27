@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { User } from 'vitamui-library';
+import { User } from '../../../../../vitamui-library/src/app/modules/models/user/user.interface';
 
 import { Component, forwardRef, OnInit, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';

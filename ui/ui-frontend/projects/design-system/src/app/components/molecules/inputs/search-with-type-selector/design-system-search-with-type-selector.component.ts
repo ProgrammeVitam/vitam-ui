@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
+import { FormFieldValueWrapperComponent } from '../../../../../../../vitamui-library/src/lib/components/form-field-value-wrapper/form-field-value-wrapper.component';
 import {
-  FormFieldValueWrapperComponent,
   SearchType,
   SearchWithTypeSelectorComponent,
   SearchWithTypeSelectorValue,
-  VitamUICommonModule,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/lib/components/search-with-type-selector/search-with-type-selector.component';
+import { VitamUICommonModule } from '../../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 

@@ -39,18 +39,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import {
-  AdminUserProfile,
-  CountryOption,
-  CountryService,
-  Customer,
-  diff,
-  Option,
-  OtpState,
-  StartupService,
-  User,
-  UserInfo,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { CountryOption, CountryService } from '../../../../../../vitamui-library/src/app/modules/country.service';
+import { Customer } from '../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { OtpState } from '../../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { StartupService } from '../../../../../../vitamui-library/src/app/modules/startup.service';
+import { User } from '../../../../../../vitamui-library/src/app/modules/models/user/user.interface';
+import { UserInfo } from '../../../../../../vitamui-library/src/app/modules/models/user/user-info.interface';
 import { UserInfoService } from '../../user-info.service';
 
 import { UserCreateValidators } from '../../user-create/user-create.validators';

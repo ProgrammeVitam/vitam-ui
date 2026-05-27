@@ -39,7 +39,8 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { Observable, of } from 'rxjs';
-import { ArchiveUnit, PagedResult } from '../../../app/modules';
+import { ArchiveUnit } from '../../../app/modules/archive-unit/models/archive-unit';
+import { PagedResult } from '../../../app/modules/models/criteria/search-criteria.interface';
 import { BaseReclassificationDialogService } from './reclassification-dialog.service';
 
 const fakeArchiveUnits = (count: number): ArchiveUnit[] => {

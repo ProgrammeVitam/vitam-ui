@@ -40,16 +40,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from '../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
 import {
-  ConfirmDialogService,
   CriteriaSearchCriteria,
-  Direction,
-  SearchCriteriaHistory,
   SearchCriteriaTypeEnum,
-  SnackBarService,
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { SearchCriteriaHistory } from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-history.interface';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import {
   ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria-configs';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
 

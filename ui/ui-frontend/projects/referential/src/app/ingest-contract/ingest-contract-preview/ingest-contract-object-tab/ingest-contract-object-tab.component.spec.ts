@@ -40,7 +40,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IngestContractService } from '../../ingest-contract.service';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab.component';

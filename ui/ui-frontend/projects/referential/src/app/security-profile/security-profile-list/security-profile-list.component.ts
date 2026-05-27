@@ -37,7 +37,11 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { AdminUserProfile, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, SecurityProfile } from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { SecurityProfile } from '../../../../../vitamui-library/src/lib/models/security-profile';
 import { SecurityProfileService } from '../security-profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

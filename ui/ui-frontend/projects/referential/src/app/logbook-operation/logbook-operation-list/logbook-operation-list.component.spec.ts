@@ -43,7 +43,7 @@ import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookSearchService } from '../logbook-search.service';
 import { LogbookOperationListComponent } from './logbook-operation-list.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { TableFilterDirective } from 'vitamui-library';
+import { TableFilterDirective } from '../../../../../vitamui-library/src/app/modules/components/table-filter/table-filter.directive';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
@@ -55,8 +55,15 @@ describe('LogbookOperationListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), OverlayModule, TableFilterDirective],
-      declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe],
+      imports: [
+        TranslateModule.forRoot(),
+        OverlayModule,
+        TableFilterDirective,
+        LastEventPipe,
+        EventTypeColorClassPipe,
+        EventTypeBadgeClassPipe,
+      ],
+      declarations: [LogbookOperationListComponent],
       providers: [
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { rgbToHsl, toHex } from 'vitamui-library';
+import { rgbToHsl, toHex } from '../../../../../../vitamui-library/src/app/modules/utils/colors.util';
 import { KeyValuePipe, NgClass } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 

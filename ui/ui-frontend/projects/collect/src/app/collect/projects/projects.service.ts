@@ -37,7 +37,9 @@
 import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Option, Project, ProjectAttachments, SearchService } from 'vitamui-library';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { Project, ProjectAttachments } from '../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { SearchService } from '../../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({

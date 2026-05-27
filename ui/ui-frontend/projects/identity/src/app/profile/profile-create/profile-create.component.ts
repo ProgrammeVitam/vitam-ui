@@ -35,16 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Subscription } from 'rxjs';
-import {
-  ApplicationId,
-  AuthService,
-  AuthUser,
-  buildValidators,
-  collapseAnimation,
-  ConfirmDialogService,
-  Profile,
-  Role,
-} from 'vitamui-library';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { AuthUser } from '../../../../../vitamui-library/src/app/modules/models/user/auth-user.interface';
+import { buildValidators } from '../../../../../vitamui-library/src/app/modules/utils/level.util';
+import { collapseAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { Profile } from '../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { Role } from '../../../../../vitamui-library/src/app/modules/utils/role.enum';
 
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

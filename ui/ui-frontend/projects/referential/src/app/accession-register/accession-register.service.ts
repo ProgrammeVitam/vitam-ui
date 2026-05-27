@@ -39,19 +39,17 @@ import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map, withLatestFrom } from 'rxjs/operators';
-import {
-  AccessionRegisterDetail,
-  AccessionRegisterStats,
-  AccessionRegisterStatus,
-  BytesPipe,
-  Colors,
-  ExternalParameters,
-  ExternalParametersService,
-  FacetDetails,
-  SearchService,
-  SnackBarService,
-  VitamuiHttpHeaders,
-} from 'vitamui-library';
+import { AccessionRegisterDetail } from '../../../../vitamui-library/src/app/modules/models/access-register/accession-register-detail';
+import { AccessionRegisterStats } from '../../../../vitamui-library/src/app/modules/models/access-register/accession-registers-stats';
+import { AccessionRegisterStatus } from '../../../../vitamui-library/src/app/modules/models/access-register/accession-register-status';
+import { BytesPipe } from '../../../../vitamui-library/src/app/modules/pipes/bytes.pipe';
+import { Colors } from '../../../../vitamui-library/src/app/modules/models/operation/facet-colors.enum';
+import { ExternalParameters } from '../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { FacetDetails } from '../../../../vitamui-library/src/app/modules/models/operation/facet-details.interface';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
 
 @Injectable({

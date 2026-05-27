@@ -41,7 +41,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 import { SecurityProfilePreviewModule } from './security-profile-preview/security-profile-preview.module';
 import { SecurityProfileRoutingModule } from './security-profile-routing.module';

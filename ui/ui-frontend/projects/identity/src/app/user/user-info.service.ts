@@ -37,7 +37,11 @@
 import { Injectable, inject } from '@angular/core';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BaseUserInfoApiService, SearchService, User, UserInfo, SnackBarService } from 'vitamui-library';
+import { BaseUserInfoApiService } from '../../../../vitamui-library/src/app/modules/api/base-user-info-api.service';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { User } from '../../../../vitamui-library/src/app/modules/models/user/user.interface';
+import { UserInfo } from '../../../../vitamui-library/src/app/modules/models/user/user-info.interface';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {

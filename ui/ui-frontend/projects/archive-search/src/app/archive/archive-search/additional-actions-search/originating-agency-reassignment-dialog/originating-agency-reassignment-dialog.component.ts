@@ -41,15 +41,12 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { MatRadioModule } from '@angular/material/radio';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
-import {
-  AgencyService,
-  ConfirmDialogService,
-  DialogHeaderComponent,
-  Option,
-  SelectComponent,
-  VitamUICommonModule,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+import { AgencyService } from '../../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ConfirmDialogService } from '../../../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { DialogHeaderComponent } from '../../../../../../../vitamui-library/src/lib/components/dialog/dialog-header/dialog-header.component';
+import { Option } from '../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SelectComponent, VitamuiSelectOptions } from '../../../../../../../vitamui-library/src/lib/components/select/select.component';
+import { VitamUICommonModule } from '../../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { ReassignmentMode } from '../../../models/reassign-request.interface';
 import { EntryOperationValidatorService } from './entry-operation-validator.service';
 

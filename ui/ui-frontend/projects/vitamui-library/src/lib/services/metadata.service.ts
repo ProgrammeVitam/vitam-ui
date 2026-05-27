@@ -41,7 +41,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { MetadataApiService } from '../api/metadata-api.service';
 import { Metadata } from '../models/metadata.interface';
-import { VitamuiHttpHeaders } from '../../app/modules';
+import { VitamuiHttpHeaders } from '../../app/modules/vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',

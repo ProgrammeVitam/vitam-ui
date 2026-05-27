@@ -66,37 +66,40 @@ import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { download } from '../../../../../../vitamui-library/src/lib/utils/download';
 import {
-  ApplicationId,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  download,
   ExternalReferentialService,
+  TENANT_SEPARATOR,
+} from '../../../../../../vitamui-library/src/app/modules/services/external-referential.service';
+import {
   fetchTitle,
   FilingPlanMode,
   FilingPlanService,
+  oneIncludedNodeRequired,
+} from '../../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import {
   getProjectIcon,
   getProjectWorkflow,
-  ItemNode,
-  MiscValidators,
-  oneIncludedNodeRequired,
-  Option,
-  PageRequest,
-  PaginatedResponse,
   Project,
-  readFileContent,
-  SchemaElement,
-  SchemaService,
-  SecurityService,
-  TENANT_SEPARATOR,
-  Transaction,
-  TransactionStatus,
-  Unit,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-  SnackBarService,
   Workflow,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { ItemNode } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/item-node.interface';
+import { MiscValidators } from '../../../../../../vitamui-library/src/lib/validators/misc.validators';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { PaginatedResponse } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
+import { readFileContent } from '../../../../../../vitamui-library/src/app/modules/components/file-selector/file-selector.component';
+import { SchemaElement } from '../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SecurityService } from '../../../../../../vitamui-library/src/app/modules/security/security.service';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
+import { Unit } from '../../../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../../vitamui-library/src/lib/vitamui-library.module';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.component';
 
 @Component({

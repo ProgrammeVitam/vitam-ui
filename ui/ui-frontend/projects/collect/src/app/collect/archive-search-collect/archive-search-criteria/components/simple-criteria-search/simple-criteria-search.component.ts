@@ -41,25 +41,27 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { debounceTime, filter, map, share } from 'rxjs/operators';
+import { AgencyService } from '../../../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { ArchiveUnitProfilesService } from '../../../../../../../../vitamui-library/src/app/modules/archive-unit-profiles/archive-unit-profiles.service';
+import { ConfigService } from '../../../../../../../../vitamui-library/src/app/modules/config.service';
 import {
-  AgencyService,
-  ArchiveUnitProfilesService,
-  ConfigService,
   CriteriaAction,
   CriteriaDataType,
   CriteriaOperator,
+} from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
+import {
   CriteriaValue,
-  ItemNode,
-  Option,
-  SchemaElement,
-  SchemaService,
   SearchCriteriaAddAction,
   SearchCriteriaEltDto,
-  SearchCriteriaService,
   SearchCriteriaTypeEnum,
-  SearchProvider,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+} from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { ItemNode } from '../../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/item-node.interface';
+import { Option } from '../../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { SchemaElement } from '../../../../../../../../vitamui-library/src/app/modules/models/schema/schema-element.model';
+import { SchemaService } from '../../../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { SearchCriteriaService } from '../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.service';
+import { SearchProvider } from '../../../../../../../../vitamui-library/src/app/modules/models/app.configuration.interface';
+import { VitamuiSelectOptions } from '../../../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../services/management-rules-shared-data.service';

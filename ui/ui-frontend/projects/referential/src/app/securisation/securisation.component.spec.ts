@@ -44,7 +44,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { GlobalEventService, InjectorModule, LoggerModule, DatepickerComponent } from 'vitamui-library';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { DatepickerComponent } from '../../../../vitamui-library/src/app/modules/components/datepicker/datepicker.component';
 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 

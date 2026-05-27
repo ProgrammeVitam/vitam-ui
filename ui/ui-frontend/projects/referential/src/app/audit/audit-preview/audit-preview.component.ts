@@ -35,21 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, computed, EventEmitter, input, OnInit, Output, Signal, inject } from '@angular/core';
-import {
-  Event,
-  ExternalParameters,
-  ExternalParametersService,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-  SnackBarService,
-} from 'vitamui-library';
+import { Event } from '../../../../../vitamui-library/src/lib/models/event';
+import { ExternalParameters } from '../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { AuditService } from '../audit.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PipesModule } from '../../shared/pipes/pipes.module';
+
 import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 
 @Component({
   selector: 'app-audit-preview',
@@ -58,9 +57,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     AuditInformationTabComponent,
     CommonModule,
+    EventTypeBadgeClassPipe,
     FormsModule,
     MatTabsModule,
-    PipesModule,
     TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,

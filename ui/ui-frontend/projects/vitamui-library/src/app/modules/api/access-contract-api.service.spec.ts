@@ -36,7 +36,8 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { InjectorModule } from '../helper/injector.module';
+import { LoggerModule } from '../logger/logger.module';
 import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
 import { environment } from '../../../environments/environment';
 import { AccessContractApiService } from './access-contract-api.service';

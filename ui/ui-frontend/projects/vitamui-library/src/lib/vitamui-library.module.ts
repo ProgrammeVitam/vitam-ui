@@ -36,9 +36,6 @@
  */
 import { NgModule } from '@angular/core';
 
-import { FilingPlanModule } from './components/filing-plan/filing-plan.module';
-import { VitamUIRadioGroupModule } from './components/vitamui-radio-group/vitamui-radio-group.module';
-import { VitamUIRadioModule } from './components/vitamui-radio/vitamui-radio.module';
 import { MAT_TABS_CONFIG } from '@angular/material/tabs';
 import { SelectComponent } from './components/select/select.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
@@ -62,6 +59,9 @@ import { ConfirmActionComponent } from './components/confirm-action/confirm-acti
 import { ManagementRuleSearchComponent } from './components/management-rule-search/management-rule-search.component';
 import { ConfirmDialogComponent } from './components/dialog/confirm-dialog/confirm-dialog.component';
 import { ErrorsDetailsDialogComponent } from './components/dialog/errors-details-dialog/errors-details-dialog.component';
+import { FilingPlanComponent } from './components/filing-plan/filing-plan.component';
+import { VitamUIRadioComponent } from './components/vitamui-radio/vitamui-radio.component';
+import { VitamUIRadioGroupComponent } from './components/vitamui-radio-group/vitamui-radio-group.component';
 
 const components = [
   AlertDialogComponent,
@@ -71,7 +71,7 @@ const components = [
   DialogContentWithStateComponent,
   ErrorDialogComponent,
   ErrorsDetailsDialogComponent,
-  FilingPlanModule,
+  FilingPlanComponent,
   FormFieldValueWrapperComponent,
   ManagementRuleSearchComponent,
   NextStepComponent,
@@ -83,8 +83,8 @@ const components = [
   SelectComponent,
   SelectWithTreeComponent,
   TranslateWithOptionalTypeSuffixPipe,
-  VitamUIRadioGroupModule,
-  VitamUIRadioModule,
+  VitamUIRadioComponent,
+  VitamUIRadioGroupComponent,
 ];
 
 @NgModule({

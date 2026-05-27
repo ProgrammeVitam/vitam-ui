@@ -48,8 +48,7 @@ describe('DownloadSnackBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DownloadSnackBarComponent],
-      imports: [MatDialogModule, MatProgressBarModule, TranslateModule.forRoot()],
+      imports: [MatDialogModule, MatProgressBarModule, TranslateModule.forRoot(), DownloadSnackBarComponent],
       providers: [
         {
           provide: MatDialog,

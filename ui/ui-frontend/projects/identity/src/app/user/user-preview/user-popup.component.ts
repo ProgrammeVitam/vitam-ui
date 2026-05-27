@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Customer, User } from 'vitamui-library';
+import { Customer } from '../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { User } from '../../../../../vitamui-library/src/app/modules/models/user/user.interface';
 
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';

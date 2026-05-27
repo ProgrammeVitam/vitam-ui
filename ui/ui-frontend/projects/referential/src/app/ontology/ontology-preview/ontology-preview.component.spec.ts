@@ -41,7 +41,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { OntologyService } from '../ontology.service';
 import { OntologyPreviewComponent } from './ontology-preview.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { LogbookService, SchemaService } from 'vitamui-library';
+import { LogbookService } from '../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
+import { SchemaService } from '../../../../../vitamui-library/src/app/modules/schema/schema.service';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
 

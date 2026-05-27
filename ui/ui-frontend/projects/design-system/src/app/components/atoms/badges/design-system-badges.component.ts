@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { BadgeComponent } from 'vitamui-library';
+import { BadgeComponent } from '../../../../../../vitamui-library/src/app/modules/components/badge/badge.component';
 
 @Component({
   imports: [BadgeComponent],

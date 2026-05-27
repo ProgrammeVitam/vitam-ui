@@ -39,10 +39,10 @@ import { Injectable, inject } from '@angular/core';
 import { from, mergeMap, Observable, of, Subject, toArray } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AgencyApiService } from './agency-api.service';
-import { SearchService } from '../vitamui-table';
+import { SearchService } from '../vitamui-table/search.service';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
-import { Option } from '../components/autocomplete';
-import { DownloadUtils } from '../utils';
+import { Option } from '../components/autocomplete/utils/option.interface';
+import { DownloadUtils } from '../utils/download.utils';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 import { Agency } from '../../../lib/models/agency';
 

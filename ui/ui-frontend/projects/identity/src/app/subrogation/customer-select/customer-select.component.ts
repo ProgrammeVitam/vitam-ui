@@ -38,7 +38,8 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { GlobalEventService, MenuOption } from 'vitamui-library';
+import { GlobalEventService } from '../../../../../vitamui-library/src/app/modules/global-event.service';
+import { MenuOption } from '../../../../../vitamui-library/src/app/modules/models/menu-option.interface';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomerSelectContentComponent } from './customer-select-content/customer-select-content.component';

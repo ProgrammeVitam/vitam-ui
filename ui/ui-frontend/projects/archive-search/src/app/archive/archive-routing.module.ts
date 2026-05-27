@@ -37,7 +37,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, AnalyticsResolver, TenantSelectionGuard, VitamUITenantSelectComponent } from 'vitamui-library';
+import { ActiveTenantGuard } from '../../../../vitamui-library/src/app/modules/active-tenant.guard';
+import { AnalyticsResolver } from '../../../../vitamui-library/src/app/modules/analytics-resolver.service';
+import { TenantSelectionGuard } from '../../../../vitamui-library/src/app/modules/tenant-selection.guard';
+import { VitamUITenantSelectComponent } from '../../../../vitamui-library/src/app/modules/components/vitamui-tenant-select/vitamui-tenant-select.component';
 import { ManagementRulesComponent } from './archive-search/additional-actions-search/management-rules/management-rules.component';
 import { ArchiveComponent } from './archive.component';
 

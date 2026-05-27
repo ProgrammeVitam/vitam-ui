@@ -39,7 +39,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, CountryService, diff, Option, Owner, StartupService, Tenant } from 'vitamui-library';
+import { CountryOption, CountryService } from '../../../../../../vitamui-library/src/app/modules/country.service';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { Owner } from '../../../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { StartupService } from '../../../../../../vitamui-library/src/app/modules/startup.service';
+import { Tenant } from '../../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 
 import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';

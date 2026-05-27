@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { LogbookService } from 'vitamui-library';
+import { LogbookService } from '../../../../../vitamui-library/src/app/modules/logbook/logbook.service';
 import { IngestStatus, LogbookOperation, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 

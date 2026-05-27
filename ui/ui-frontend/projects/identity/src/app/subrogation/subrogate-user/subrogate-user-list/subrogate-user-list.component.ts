@@ -35,23 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { forkJoin, Observable, Subject } from 'rxjs';
-import {
-  ApplicationId,
-  AuthService,
-  AuthUser,
-  buildCriteriaFromSearch,
-  CriteriaSearchQuery,
-  Criterion,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  Group,
-  InfiniteScrollTable,
-  Operators,
-  PageRequest,
-  Profile,
-  SubrogationModalService,
-  SubrogationUser,
-} from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { AuthUser } from '../../../../../../vitamui-library/src/app/modules/models/user/auth-user.interface';
+import { buildCriteriaFromSearch } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/criteria-builder.util';
+import { CriteriaSearchQuery } from '../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { Criterion } from '../../../../../../vitamui-library/src/app/modules/models/criteria/criterion.interface';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { Group } from '../../../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { InfiniteScrollTable } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { Operators } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { Profile } from '../../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { SubrogationModalService } from '../../../../../../vitamui-library/src/app/modules/subrogation/subrogation-modal/subrogation-modal.service';
+import { SubrogationUser } from '../../../../../../vitamui-library/src/app/modules/models/subrogation/subrogation-user.interface';
 
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';

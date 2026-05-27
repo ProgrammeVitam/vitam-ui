@@ -39,14 +39,31 @@ import { Logger } from '../../../logger/logger';
 import { DateDisplayService } from '../../../object-viewer/services/date-display.service';
 import { ComponentType } from '../../../object-viewer/types';
 import { EditObject } from '../../models/edit-object.model';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePatternConstants } from '../../../dates.constants';
+import { EditorInputComponent } from '../editor-input.component';
+import { EditorTextareaComponent } from '../editor-textarea.component';
+import { EditorSelectComponent } from '../editor-select.component';
+import { DatepickerComponent } from '../../../components/datepicker/datepicker.component';
+import { HintComponent } from '../../../components/hint/hint.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
 
 @Component({
   selector: 'vitamui-common-primitive-editor',
   templateUrl: './primitive-editor.component.html',
   styleUrls: ['./primitive-editor.component.scss'],
-  standalone: false,
+  imports: [
+    EditorInputComponent,
+    EditorTextareaComponent,
+    EditorSelectComponent,
+    DatepickerComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    HintComponent,
+    TranslatePipe,
+    EmptyPipe,
+  ],
 })
 export class PrimitiveEditorComponent implements OnInit {
   private logger = inject(Logger);

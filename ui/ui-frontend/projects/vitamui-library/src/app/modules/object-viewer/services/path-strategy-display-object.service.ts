@@ -37,7 +37,10 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Logger } from '../../logger/logger';
-import { DisplayObject, DisplayObjectService, DisplayRule, Mode } from '../models';
+import { DisplayObject } from '../models/display-object.model';
+import { DisplayObjectService } from '../models/display-object-service';
+import { DisplayRule } from '../models/display-rule.model';
+import { Mode } from '../models/display-object.enum';
 import { DisplayObjectHelperService } from './display-object-helper.service';
 import { TypeService } from './type.service';
 import {

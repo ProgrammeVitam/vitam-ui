@@ -36,7 +36,8 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CustomerSelectionService, MenuOption } from 'vitamui-library';
+import { CustomerSelectionService } from '../../../../../../vitamui-library/src/app/modules/customer-selection.service';
+import { MenuOption } from '../../../../../../vitamui-library/src/app/modules/models/menu-option.interface';
 import { CustomerMenuService } from '../customer-menu.service';
 
 @Component({

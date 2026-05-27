@@ -78,12 +78,14 @@ import { SharedModule } from '../../../shared/shared.module';
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
 import { MatTableModule } from '@angular/material/table';
-import { PastisMaterialModule } from '../../../material.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { EditableFieldModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { EditableFieldModule } from '../../../../../../identity/src/app/shared/editable-field/editable-field.module';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { CoreModule } from '../../../core/core.module';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
@@ -95,8 +97,8 @@ import { FileTreeComponent } from './file-tree.component';
     CoreModule,
     EditableFieldModule,
     FormsModule,
+    MatSidenavModule,
     MatTableModule,
-    PastisMaterialModule,
     ReactiveFormsModule,
     SharedModule,
     TranslateModule,

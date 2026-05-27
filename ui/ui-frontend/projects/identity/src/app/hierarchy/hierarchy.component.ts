@@ -37,7 +37,9 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { Profile } from '../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
 

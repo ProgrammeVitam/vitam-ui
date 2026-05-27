@@ -40,7 +40,7 @@ import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { UserApiService } from '../../api/user-api.service';
 import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
-import { Application } from '../../models';
+import { Application } from '../../models/application/application.interface';
 import { AlertAnalytics } from '../../models/user/user-alerts.interface';
 import { User } from '../../models/user/user.interface';
 import { buildAlertUrl } from './user-alerts.util';

@@ -38,7 +38,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, Rule, RuleService, SnackBarService } from 'vitamui-library';
+import { AuthService } from '../../../../../vitamui-library/src/app/modules/auth.service';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Rule } from '../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../vitamui-library/src/app/modules/rule/rule.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { RuleListComponent } from './rule-list.component';
 import { TranslateModule } from '@ngx-translate/core';
 

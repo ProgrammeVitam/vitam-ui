@@ -68,7 +68,9 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, ManagementContract, PaginatedHttpClient } from 'vitamui-library';
+import { BASE_URL } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ManagementContract } from '../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { PaginatedHttpClient } from '../../../../../vitamui-library/src/app/modules/paginated-http-client';
 
 const HTTP_STATUS_OK = 200;
 

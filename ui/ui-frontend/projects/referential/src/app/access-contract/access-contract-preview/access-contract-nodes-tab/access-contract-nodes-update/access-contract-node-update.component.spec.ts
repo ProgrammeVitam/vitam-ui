@@ -38,16 +38,13 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  AccessContractService,
-  BASE_URL,
-  Customer,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  OtpState,
-  SnackBarService,
-} from 'vitamui-library';
+import { AccessContractService } from '../../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { BASE_URL, ENVIRONMENT } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Customer } from '../../../../../../../vitamui-library/src/app/modules/models/customer/customer.interface';
+import { InjectorModule } from '../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { OtpState } from '../../../../../../../vitamui-library/src/app/modules/models/customer/otp-state.enum';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../../../../environments/environment';
 

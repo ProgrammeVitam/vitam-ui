@@ -39,12 +39,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'vitamui-library';
+import { ApplicationId } from '../../../../vitamui-library/src/app/modules/application-id.enum';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { Role } from '../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { Rule } from '../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../vitamui-library/src/app/modules/rule/rule.service';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { RuleCreateComponent } from './rule-create/rule-create.component';
 import { RuleListComponent } from './rule-list/rule-list.component';
-import { FileTypes } from 'vitamui-library';
+import { FileTypes } from '../../../../vitamui-library/src/lib/models/file-types.enum';
 
 @Component({
   selector: 'app-rules',

@@ -37,7 +37,12 @@
 import { Component, ElementRef, forwardRef, Input, OnInit, SimpleChanges, ViewChild, OnChanges, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { map, shareReplay } from 'rxjs/operators';
-import { Application, ApplicationApiService, Option, Profile, ProfileService, SelectComponent } from 'vitamui-library';
+import { Application } from '../../../../../vitamui-library/src/app/modules/models/application/application.interface';
+import { ApplicationApiService } from '../../../../../vitamui-library/src/app/modules/api/application-api.service';
+import { Option } from '../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { Profile } from '../../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
+import { ProfileService } from '../../../../../vitamui-library/src/app/modules/services/profile.service';
+import { SelectComponent } from '../../../../../vitamui-library/src/lib/components/select/select.component';
 
 import { HttpParams } from '@angular/common/http';
 import { OptionTree } from './option-tree.interface';

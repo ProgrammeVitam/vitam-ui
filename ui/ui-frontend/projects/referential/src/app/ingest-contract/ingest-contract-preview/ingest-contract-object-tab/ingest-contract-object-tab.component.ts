@@ -39,7 +39,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { IngestContract, Option, diff } from 'vitamui-library';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
 
 import { IngestContractService } from '../../ingest-contract.service';
 

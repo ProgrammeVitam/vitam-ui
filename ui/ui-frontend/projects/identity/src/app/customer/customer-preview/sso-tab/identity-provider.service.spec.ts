@@ -36,16 +36,12 @@
  */
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import {
-  BASE_URL,
-  CriteriaSearchQuery,
-  ENVIRONMENT,
-  IdentityProvider,
-  LoggerModule,
-  Operators,
-  SnackBarService,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { CriteriaSearchQuery } from '../../../../../../vitamui-library/src/app/modules/models/criteria/criteria.interface';
+import { IdentityProvider } from '../../../../../../vitamui-library/src/app/modules/models/customer/identity-provider.interface';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { Operators } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/operators.enum';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { environment } from './../../../../environments/environment';
 
 import { Type } from '@angular/core';

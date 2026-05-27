@@ -37,7 +37,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'vitamui-library';
+import { ActiveTenantGuard } from '../../../../vitamui-library/src/app/modules/active-tenant.guard';
+import { TenantSelectionGuard } from '../../../../vitamui-library/src/app/modules/tenant-selection.guard';
+import { VitamUITenantSelectComponent } from '../../../../vitamui-library/src/app/modules/components/vitamui-tenant-select/vitamui-tenant-select.component';
 
 import { AdminDslComponent } from './admin-dsl.component';
 

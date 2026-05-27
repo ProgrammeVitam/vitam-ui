@@ -40,14 +40,14 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { ConfigurationsApiService } from '../../../../../../../../../vitamui-library/src/app/modules/services/configurations-api.service';
+import { DescriptionLevel } from '../../../../../../../../../vitamui-library/src/lib/models/description-level.enum';
+import { FilingHoldingSchemeNode } from '../../../../../../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
 import {
-  ConfigurationsApiService,
-  DescriptionLevel,
-  FilingHoldingSchemeNode,
   ResultFacet,
   SearchCriteriaDto,
-  UnitType,
-} from 'vitamui-library';
+} from '../../../../../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { UnitType } from '../../../../../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';

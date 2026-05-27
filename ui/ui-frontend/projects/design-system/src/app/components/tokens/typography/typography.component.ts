@@ -36,13 +36,14 @@
  */
 import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { EllipsisDirectiveModule, CommonTooltipModule } from 'vitamui-library';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { EllipsisDirective } from '../../../../../../vitamui-library/src/app/modules/directives/ellipsis/ellipsis.directive';
+import { TooltipDirective } from '../../../../../../vitamui-library/src/app/modules/components/common-tooltip/tooltip.directive';
 
 @Component({
   templateUrl: './typography.component.html',
   styleUrls: ['./typography.component.scss'],
-  imports: [TranslatePipe, EllipsisDirectiveModule, NgClass, CommonTooltipModule, NgTemplateOutlet],
+  imports: [TranslatePipe, EllipsisDirective, NgClass, TooltipDirective, NgTemplateOutlet],
 })
 export class TypographyComponent {
   textFlavors = ['', 'bold'];

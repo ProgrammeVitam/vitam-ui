@@ -36,7 +36,11 @@
  */
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AccessContractService, AuthService, ContextPermission, Option, Tenant } from 'vitamui-library';
+import { AccessContractService } from '../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { AuthService } from '../../../../../../vitamui-library/src/app/modules/auth.service';
+import { ContextPermission } from '../../../../../../vitamui-library/src/lib/models/context';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { Tenant } from '../../../../../../vitamui-library/src/app/modules/models/customer/tenant.interface';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';

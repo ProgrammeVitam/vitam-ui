@@ -88,7 +88,8 @@ import { DuplicateMetadataComponent } from '../../../user-actions/duplicate-meta
 import { UserActionRemoveMetadataComponent } from '../../../user-actions/remove-metadata/remove-metadata.component';
 import { FileTreeMetadataService } from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
-import { Logger, SnackBarService } from 'vitamui-library';
+import { Logger } from '../../../../../../vitamui-library/src/app/modules/logger/logger';
+import { SnackBarService } from '../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { filter, map, tap } from 'rxjs/operators';

@@ -45,10 +45,7 @@ import { input } from 'vitamui-library/testing';
 import { CustomerCreateValidators } from '../../customer/customer-create/customer-create.validators';
 import { DomainsInputComponent } from './domains-input.component';
 
-@Component({
-  template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>',
-  standalone: false,
-})
+@Component({ template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>' })
 export class TestHostComponent {
   @ViewChild(DomainsInputComponent, { static: false })
   component: DomainsInputComponent;
@@ -59,9 +56,6 @@ export class TestHostComponent {
 let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
-
 describe('DomainsInputComponent', () => {
   beforeEach(async () => {
     const customerCreateValidatorsSpy = {
@@ -69,8 +63,8 @@ describe('DomainsInputComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot()],
-      declarations: [TestHostComponent, DomainsInputComponent],
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot(), TestHostComponent],
+      declarations: [DomainsInputComponent],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

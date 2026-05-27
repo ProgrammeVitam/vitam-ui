@@ -38,17 +38,15 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import {
-  ApplicationId,
-  diff,
-  Ontology,
-  Option,
-  Role,
-  SecurityService,
-  setTypeDetailAndStringSize,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-} from 'vitamui-library';
+import { ApplicationId } from '../../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
+import { Ontology } from '../../../../../../vitamui-library/src/lib/models/ontology';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { Role } from '../../../../../../vitamui-library/src/app/modules/utils/role.enum';
+import { SecurityService } from '../../../../../../vitamui-library/src/app/modules/security/security.service';
+import { setTypeDetailAndStringSize } from '../../../../../../vitamui-library/src/app/modules/models/ontology/ontology.utils';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { OntologyService } from '../../ontology.service';
 import { collections, sizes, types } from '../../ontology-form-options';
 import { CommonModule } from '@angular/common';

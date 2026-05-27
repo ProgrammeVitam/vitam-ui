@@ -48,7 +48,9 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchBarComponent } from '../../../../vitamui-library/src/app/modules/components/search-bar/search-bar.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { IngestType } from '../core/common/ingest-type.enum';
@@ -59,7 +61,18 @@ import { IngestService } from './ingest.service';
 @Component({
   selector: 'app-ingest-list',
   template: '',
-  standalone: false,
+  imports: [
+    MatDatepickerModule,
+    MatMenuModule,
+    MatSidenavModule,
+    InjectorModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    BrowserAnimationsModule,
+    RouterTestingModule,
+    NoopAnimationsModule,
+    SearchBarComponent,
+  ],
 })
 export class IngestListStubComponent {
   emitOrderChange() {}
@@ -96,8 +109,9 @@ describe('IngestComponent test:', () => {
         RouterTestingModule,
         NoopAnimationsModule,
         SearchBarComponent,
+        IngestListStubComponent,
       ],
-      declarations: [IngestComponent, IngestListStubComponent],
+      declarations: [IngestComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },

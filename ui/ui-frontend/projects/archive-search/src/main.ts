@@ -34,16 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { platformBrowser } from '@angular/platform-browser';
+import { enableProdMode, LOCALE_ID, importProvidersFrom } from '@angular/core';
+import { Title, BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { provideI18n } from '../../vitamui-library/src/lib/i18n/i18n.provider';
+import { WINDOW_LOCATION } from '../../vitamui-library/src/app/modules/injection-tokens';
+import { BytesPipe } from '../../vitamui-library/src/app/modules/pipes/bytes.pipe';
+import { AuthenticationModule } from '../../vitamui-library/src/app/modules/authentication/authentication.module';
+import { VitamUICommonModule } from '../../vitamui-library/src/app/modules/vitamui-common.module';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+import { CoreModule } from './app/core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app/app-routing.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppComponent } from './app/app.component';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      AuthenticationModule.forRoot(),
+      CoreModule,
+      BrowserAnimationsModule,
+      BrowserModule,
+      VitamUICommonModule.forRoot(),
+      AppRoutingModule,
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: environment.production,
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+    ),
+    provideI18n(),
+    provideNativeDateAdapter(),
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    {
+      provide: WINDOW_LOCATION,
+      useValue: window.location,
+    },
+    DatePipe,
+    BytesPipe,
+  ],
+}).catch((err) => console.error(err));

@@ -39,32 +39,30 @@ import { Injectable, LOCALE_ID, inject } from '@angular/core';
 import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { AccessContract } from '../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AccessContractService } from '../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { ApiUnitObject } from '../../../../vitamui-library/src/app/modules/models/units/object-group.interface';
+import { ArchiveUnit } from '../../../../vitamui-library/src/app/modules/archive-unit/models/archive-unit';
+import { CriteriaDataType, CriteriaOperator } from '../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
 import {
-  AccessContract,
-  AccessContractService,
-  ApiUnitObject,
-  ArchiveUnit,
-  CriteriaDataType,
-  CriteriaOperator,
   CriteriaSearchCriteria,
-  FilingHoldingSchemeHandler,
-  FilingHoldingSchemeNode,
-  getUnitI18nAttribute,
-  IOntology,
-  JsonPatchDto,
-  MultiJsonPatchDto,
   PagedResult,
-  SearchArchiveUnitsInterface,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  SearchResponse,
-  SearchService,
-  SecurityService,
-  Unit,
-  VitamuiHttpHeaders,
-  SnackBarService,
-} from 'vitamui-library';
+} from '../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { FilingHoldingSchemeHandler } from '../../../../vitamui-library/src/app/modules/models/nodes/filing-holding-scheme.handler';
+import { FilingHoldingSchemeNode } from '../../../../vitamui-library/src/app/modules/models/nodes/node.interface';
+import { getUnitI18nAttribute } from '../../../../vitamui-library/src/app/modules/pipes/unitI18n.pipe';
+import { IOntology } from '../../../../vitamui-library/src/app/modules/models/ontology/ontology.interface';
+import { JsonPatchDto, MultiJsonPatchDto } from '../../../../vitamui-library/src/app/modules/archive-unit/models/json-patch';
+import { SearchArchiveUnitsInterface } from '../../../../vitamui-library/src/app/modules/services/search-archive-units.interface';
+import { SearchResponse } from '../../../../vitamui-library/src/app/modules/models/criteria/search-response.interface';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { Unit } from '../../../../vitamui-library/src/app/modules/models/units/unit.interface';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';

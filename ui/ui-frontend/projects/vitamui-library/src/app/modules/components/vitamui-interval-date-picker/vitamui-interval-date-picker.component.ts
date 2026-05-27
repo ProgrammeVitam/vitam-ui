@@ -35,15 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
+import { NgStyle } from '@angular/common';
+import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-interval-date-picker',
   templateUrl: './vitamui-interval-date-picker.component.html',
   styleUrls: ['./vitamui-interval-date-picker.component.scss'],
-  standalone: false,
+  imports: [FormsModule, ReactiveFormsModule, NgStyle, DatepickerComponent, TranslatePipe],
 })
 export class VitamuiIntervalDatePickerComponent implements OnInit {
   private formBuilder = inject(FormBuilder);

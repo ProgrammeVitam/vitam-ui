@@ -44,7 +44,11 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { InjectorModule } from '../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { ManagementContract } from '../../../../../vitamui-library/src/app/modules/models/managementContract/management-contract.interface';
+import { SearchService } from '../../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractListComponent } from './management-contract-list.component';

@@ -45,18 +45,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import {
-  BASE_URL,
-  FilingPlanService,
-  LoggerModule,
-  PaginatedResponse,
-  Project,
-  ProjectStatus,
-  SchemaService,
-  TenantSelectionService,
-  Transaction,
-  TransactionStatus,
-} from 'vitamui-library';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { FilingPlanService } from '../../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { PaginatedResponse } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/paginated-response.interface';
+import { Project } from '../../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { ProjectStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/project-status';
+import { SchemaService } from '../../../../../../vitamui-library/src/app/modules/schema/schema.service';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
+import { Transaction } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction';
+import { TransactionStatus } from '../../../../../../vitamui-library/src/app/modules/models/collect/transaction-status';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectPreviewComponent } from './project-preview.component';

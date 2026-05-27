@@ -38,17 +38,14 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { MatDialog } from '@angular/material/dialog';
 import { finalize, merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import {
-  ConfirmActionComponent,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  IOntology,
-  Ontology,
-  PageRequest,
-  VitamUICommonModule,
-  TenantSelectionService,
-} from 'vitamui-library';
+import { ConfirmActionComponent } from '../../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { IOntology } from '../../../../../../vitamui-library/src/app/modules/models/ontology/ontology.interface';
+import { Ontology } from '../../../../../../vitamui-library/src/lib/models/ontology';
+import { VitamUICommonModule } from '../../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { TenantSelectionService } from '../../../../../../vitamui-library/src/app/modules/tenant-selection.service';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { OntologyService } from '../../ontology.service';

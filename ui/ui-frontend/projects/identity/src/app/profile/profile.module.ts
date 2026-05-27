@@ -42,7 +42,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { LevelInputModule, VitamUICommonModule } from 'vitamui-library';
+import { LevelInputComponent } from '../../../../vitamui-library/src/app/modules/components/editable-field/level-input/level-input.component';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
@@ -65,7 +66,7 @@ import { ProfileComponent } from './profile.component';
     ReactiveFormsModule,
     ProfileCreateModule,
     GroupAttributionModule,
-    LevelInputModule,
+    LevelInputComponent,
     MatSidenavModule,
     ProfileRoutingModule,
   ],

@@ -37,7 +37,7 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
-import { AccessContract } from 'vitamui-library';
+import { AccessContract } from '../../../../../vitamui-library/src/lib/models/access-contract.interface';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 describe('AccessContract Create Validators', () => {

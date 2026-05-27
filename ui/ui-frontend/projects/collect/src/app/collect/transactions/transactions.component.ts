@@ -38,7 +38,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction } from 'vitamui-library';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { BreadCrumbData } from '../../../../../vitamui-library/src/app/modules/models/breadcrumb/breadcrumb.interface';
+import { GlobalEventService } from '../../../../../vitamui-library/src/app/modules/global-event.service';
+import { Project } from '../../../../../vitamui-library/src/app/modules/models/collect/project';
+import { SidenavPage } from '../../../../../vitamui-library/src/app/modules/sidenav-page.class';
+import { Transaction } from '../../../../../vitamui-library/src/app/modules/models/collect/transaction';
 import { TransactionsService } from './transactions.service';
 
 @Component({

@@ -35,17 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { Route, Router, Routes } from '@angular/router';
-import { VitamuiSelectOptions } from 'vitamui-library';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { Route, Router, RouterOutlet, Routes } from '@angular/router';
+import { VitamuiSelectOptions } from '../../../vitamui-library/src/lib/components/select/select.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { RouteData } from './app-routing.module';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { SelectComponent } from '../../../vitamui-library/src/lib/components/select/select.component';
+import { VitamUICommonModule } from '../../../vitamui-library/src/app/modules/vitamui-common.module';
 
 @Component({
   selector: 'design-system-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [MatListModule, MatSidenavModule, ReactiveFormsModule, RouterOutlet, SelectComponent, TranslatePipe, VitamUICommonModule],
 })
 export class AppComponent {
   private router = inject(Router);

@@ -36,7 +36,9 @@
  */
 import { Component, OnDestroy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ApplicationId, FileTypes, SnackBarService } from 'vitamui-library';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { FileTypes } from '../../../../../vitamui-library/src/lib/models/file-types.enum';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ImportDialogParam, ImportError } from './import-dialog-param.interface';

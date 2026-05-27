@@ -37,7 +37,8 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
-import { BASE_URL, SubrogationApiService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { SubrogationApiService } from '../../../../vitamui-library/src/app/modules/api/subrogation-api.service';
 import { SubrogationService } from './subrogation.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

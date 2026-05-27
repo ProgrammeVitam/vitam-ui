@@ -38,7 +38,10 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { ApplicationService, Context, GlobalEventService, SidenavPage } from 'vitamui-library';
+import { ApplicationService } from '../../../../vitamui-library/src/app/modules/application.service';
+import { Context } from '../../../../vitamui-library/src/lib/models/context';
+import { GlobalEventService } from '../../../../vitamui-library/src/app/modules/global-event.service';
+import { SidenavPage } from '../../../../vitamui-library/src/app/modules/sidenav-page.class';
 
 import { ContextCreateComponent } from './context-create/context-create.component';
 import { ContextListComponent } from './context-list/context-list.component';

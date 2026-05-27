@@ -40,7 +40,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Rule, RuleService, SecurityService, VitamuiRoles, diff } from 'vitamui-library';
+import { Rule } from '../../../../../../vitamui-library/src/lib/models/rule';
+import { RuleService } from '../../../../../../vitamui-library/src/app/modules/rule/rule.service';
+import { SecurityService } from '../../../../../../vitamui-library/src/app/modules/security/security.service';
+import { VitamuiRoles } from '../../../../../../vitamui-library/src/app/modules/vitamui-roles.enum';
+import { diff } from '../../../../../../vitamui-library/src/app/modules/utils/diff.util';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 
 const RULES_APP = 'RULES_APP';

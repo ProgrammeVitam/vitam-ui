@@ -37,7 +37,10 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Event, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
+import { Event } from '../../../../vitamui-library/src/lib/models/event';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 import { OperationApiService } from '../core/api/operation-api.service';
 import { Observable } from 'rxjs';
 

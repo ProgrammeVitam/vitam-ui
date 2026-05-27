@@ -40,14 +40,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ExternalParameters,
-  ExternalParametersService,
-  IngestContract,
-  LoggerModule,
-  SearchUnitApiService,
-} from 'vitamui-library';
+import { BASE_URL } from '../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { ExternalParameters } from '../../../../../../vitamui-library/src/app/modules/externalParameters.enum';
+import { ExternalParametersService } from '../../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { IngestContract } from '../../../../../../vitamui-library/src/app/modules/models/ingest-contract/ingest-contract';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchUnitApiService } from '../../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

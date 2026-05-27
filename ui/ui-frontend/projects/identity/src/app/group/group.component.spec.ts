@@ -38,7 +38,12 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
+import { ENVIRONMENT } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Group } from '../../../../vitamui-library/src/app/modules/models/group/group.interface';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SearchBarComponent } from '../../../../vitamui-library/src/app/modules/components/search-bar/search-bar.component';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -68,7 +73,7 @@ let page: Page;
 @Component({
   selector: 'app-group-list',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, SearchBarComponent],
 })
 class GroupListStubComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -81,7 +86,7 @@ class GroupListStubComponent {
 @Component({
   selector: 'app-group-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, SearchBarComponent],
 })
 class GroupPreviewStubComponent {
   @Input()
@@ -109,8 +114,10 @@ describe('GroupComponent', () => {
         InjectorModule,
         SearchBarComponent,
         LoggerModule.forRoot(),
+        GroupListStubComponent,
+        GroupPreviewStubComponent,
       ],
-      declarations: [GroupComponent, GroupListStubComponent, GroupPreviewStubComponent],
+      declarations: [GroupComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },

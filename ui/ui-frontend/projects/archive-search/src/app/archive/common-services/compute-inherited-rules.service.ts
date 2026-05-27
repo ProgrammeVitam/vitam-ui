@@ -38,15 +38,14 @@ import { Injectable, TemplateRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
+import { ApplicationId } from '../../../../../vitamui-library/src/app/modules/application-id.enum';
+import { CriteriaDataType, CriteriaOperator } from '../../../../../vitamui-library/src/app/modules/models/criteria/criteria.enums';
 import {
-  ApplicationId,
-  CriteriaDataType,
-  CriteriaOperator,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  SnackBarService,
-  UnitType,
-} from 'vitamui-library';
+} from '../../../../../vitamui-library/src/app/modules/models/criteria/search-criteria.interface';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { UnitType } from '../../../../../vitamui-library/src/app/modules/models/units/unit-type.enum';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
 

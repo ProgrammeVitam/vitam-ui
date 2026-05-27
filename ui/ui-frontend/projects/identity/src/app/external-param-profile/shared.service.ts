@@ -36,7 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Profile } from 'vitamui-library';
+import { Profile } from '../../../../vitamui-library/src/app/modules/models/profile/profile.interface';
 
 @Injectable({
   providedIn: 'root',

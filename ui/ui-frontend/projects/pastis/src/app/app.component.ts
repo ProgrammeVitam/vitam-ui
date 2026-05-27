@@ -35,13 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { VitamUICommonModule } from '../../../vitamui-library/src/app/modules/vitamui-common.module';
 import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [RouterOutlet, VitamUICommonModule],
 })
 export class AppComponent {
   title = 'Pastis Application';

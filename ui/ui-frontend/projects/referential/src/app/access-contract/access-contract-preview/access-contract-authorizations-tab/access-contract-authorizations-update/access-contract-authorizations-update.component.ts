@@ -39,12 +39,12 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } fr
 import {
   AccessContract,
   AccessRightType,
-  Option,
-  VitamuiSelectOptions,
   AccessContractDisplay,
-  AccessContractService,
-  AgencyService,
-} from 'vitamui-library';
+} from '../../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { Option } from '../../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { VitamuiSelectOptions } from '../../../../../../../vitamui-library/src/lib/components/select/select.component';
+import { AccessContractService } from '../../../../../../../vitamui-library/src/app/modules/services/access-contract.service';
+import { AgencyService } from '../../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RULE_TYPES } from '../../../../rule/rules.constants';
 

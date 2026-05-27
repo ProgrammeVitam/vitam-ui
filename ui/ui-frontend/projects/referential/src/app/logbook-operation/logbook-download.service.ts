@@ -37,15 +37,13 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import {
-  DownloadUtils,
-  IEvent,
-  LogbookApiService,
-  LogbookOperationReportState,
-  SearchService,
-  SnackBarService,
-  VitamuiHttpHeaders,
-} from 'vitamui-library';
+import { DownloadUtils } from '../../../../vitamui-library/src/app/modules/utils/download.utils';
+import { IEvent } from '../../../../vitamui-library/src/app/modules/models/logbook/event.interface';
+import { LogbookApiService } from '../../../../vitamui-library/src/app/modules/api/logbook-api.service';
+import { LogbookOperationReportState } from '../../../../vitamui-library/src/app/modules/models/logbook/logbook-operation.interface';
+import { SearchService } from '../../../../vitamui-library/src/app/modules/vitamui-table/search.service';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { VitamuiHttpHeaders } from '../../../../vitamui-library/src/app/modules/vitamui-http-headers.enum';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
 const DOWNLOAD_TYPE_DIP = 'dip';

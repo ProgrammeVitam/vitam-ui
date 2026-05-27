@@ -43,7 +43,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
-import { InjectorModule, LoggerModule, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
+import { InjectorModule } from '../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import {
+  RegisterValueEventModel,
+  RegisterValueEventType,
+} from '../../../../../../vitamui-library/src/app/modules/models/access-register/register-value-event-model';
 import { AccessionRegisterOperationsListComponent } from './accession-register-operations-list.component';
 
 export class AccessionRegisterFixtures {

@@ -44,8 +44,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PipesModule } from '../shared/pipes/pipes.module';
+import { VitamUICommonModule } from '../../../../vitamui-library/src/app/modules/vitamui-common.module';
+
 import { AuditRoutingModule } from './audit-routing.module';
 import { AuditComponent } from './audit.component';
 import { MatInputModule } from '@angular/material/input';
@@ -73,7 +73,6 @@ import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

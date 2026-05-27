@@ -42,9 +42,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 
-import { LevelInputModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { LevelInputComponent } from '../../../../../vitamui-library/src/app/modules/components/editable-field/level-input/level-input.component';
+import { VitamUICommonModule } from '../../../../../vitamui-library/src/app/modules/vitamui-common.module';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { CustomParamsModule } from '../custom-params/custom-params.module';
-import { DomainsInputModule } from '../domains-input';
+import { DomainsInputModule } from '../domains-input/domains-input.module';
 import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
 import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
 import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';
@@ -56,7 +58,7 @@ import { EditablePatternsComponent } from './editable-patterns/editable-patterns
     CustomParamsModule,
     DomainsInputModule,
     FormsModule,
-    LevelInputModule,
+    LevelInputComponent,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatSelectModule,

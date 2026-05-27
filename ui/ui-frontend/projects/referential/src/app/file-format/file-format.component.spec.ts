@@ -39,7 +39,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule } from '../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SecurityService } from '../../../../vitamui-library/src/app/modules/security/security.service';
+import { WINDOW_LOCATION } from '../../../../vitamui-library/src/app/modules/injection-tokens';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -50,7 +53,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'app-file-format-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
@@ -61,7 +64,7 @@ class AgencyPreviewStub {
 @Component({
   selector: 'app-file-format-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
@@ -72,7 +75,7 @@ describe('FileFormatComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileFormatComponent, AgencyListStub, AgencyPreviewStub],
+      declarations: [FileFormatComponent],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -82,6 +85,8 @@ describe('FileFormatComponent', () => {
         MatSidenavModule,
         TranslateModule.forRoot(),
         MatDialogModule,
+        AgencyListStub,
+        AgencyPreviewStub,
       ],
       providers: [
         {

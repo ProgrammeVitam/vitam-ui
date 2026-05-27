@@ -39,7 +39,11 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, ENVIRONMENT, FilingPlanModule, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT } from '../../../../../../../vitamui-library/src/app/modules/injection-tokens';
+import { FilingPlanComponent } from '../../../../../../../vitamui-library/src/lib/components/filing-plan/filing-plan.component';
+import { InjectorModule } from '../../../../../../../vitamui-library/src/app/modules/helper/injector.module';
+import { LoggerModule } from '../../../../../../../vitamui-library/src/app/modules/logger/logger.module';
+import { SnackBarService } from '../../../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
@@ -68,7 +72,7 @@ describe.skip('IngestContractNodeUpdateComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [IngestContractNodeUpdateComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, FilingPlanModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, FilingPlanComponent, InjectorModule, LoggerModule.forRoot()],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         {

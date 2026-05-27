@@ -39,7 +39,9 @@ import { inject, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Owner, SnackBarService } from 'vitamui-library';
+import { BASE_URL } from '../../../../vitamui-library/src/app/modules/injection-tokens';
+import { Owner } from '../../../../vitamui-library/src/app/modules/models/customer/owner.interface';
+import { SnackBarService } from '../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { OwnerService } from './owner.service';
 
 import { TranslateService } from '@ngx-translate/core';

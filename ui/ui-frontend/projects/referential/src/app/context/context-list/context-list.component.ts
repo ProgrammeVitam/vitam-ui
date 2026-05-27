@@ -38,17 +38,13 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  collapseAnimation,
-  Context,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-  User,
-} from 'vitamui-library';
+import { AdminUserProfile } from '../../../../../vitamui-library/src/app/modules/models/profile/admin-user-profile.interface';
+import { collapseAnimation, rotateAnimation } from '../../../../../vitamui-library/src/app/modules/animations/vitamui-common-animations';
+import { Context } from '../../../../../vitamui-library/src/lib/models/context';
+import { DEFAULT_PAGE_SIZE, PageRequest } from '../../../../../vitamui-library/src/app/modules/vitamui-table/page-request.model';
+import { Direction } from '../../../../../vitamui-library/src/app/modules/vitamui-table/direction.enum';
+import { InfiniteScrollTable } from '../../../../../vitamui-library/src/app/modules/vitamui-table/infinite-scroll-table';
+import { User } from '../../../../../vitamui-library/src/app/modules/models/user/user.interface';
 import { ContextService } from '../context.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

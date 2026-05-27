@@ -39,7 +39,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of, Subject } from 'rxjs';
 
-import { ApplicationService } from 'vitamui-library';
+import { ApplicationService } from '../../../../../vitamui-library/src/app/modules/application.service';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyListComponent } from './hierarchy-list.component';

@@ -38,12 +38,13 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 
 import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-group.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-radio',
   templateUrl: './vitamui-radio.component.html',
   styleUrls: ['./vitamui-radio.component.scss'],
-  standalone: false,
+  imports: [NgClass],
 })
 export class VitamUIRadioComponent implements OnInit {
   private radioGroupService = inject(VitamUIRadioGroupService);

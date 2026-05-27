@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Option } from 'vitamui-library';
+import { Option } from '../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
 
 export const types: Option[] = [
   { key: 'DATE', label: 'Date', info: '' },

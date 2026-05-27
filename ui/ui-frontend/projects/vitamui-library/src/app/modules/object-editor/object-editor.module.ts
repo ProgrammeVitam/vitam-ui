@@ -43,7 +43,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
-import { DisplayObjectService } from '../object-viewer/models';
+import { DisplayObjectService } from '../object-viewer/models/display-object-service';
 import { PathStrategyDisplayObjectService } from '../object-viewer/services/path-strategy-display-object.service';
 import { PipesModule } from '../pipes/pipes.module';
 import { GroupEditorComponent } from './components/group-editor/group-editor.component';
@@ -73,7 +73,6 @@ import { VitamuiMenuButtonComponent } from '../components/vitamui-menu-button/vi
 import { MatMenuItem } from '@angular/material/menu';
 
 @NgModule({
-  declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
   providers: [
     { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
     EditObjectService,
@@ -109,6 +108,10 @@ import { MatMenuItem } from '@angular/material/menu';
     DatepickerComponent,
     DialogHeaderComponent,
     MatMenuItem,
+    ObjectEditorComponent,
+    GroupEditorComponent,
+    ListEditorComponent,
+    PrimitiveEditorComponent,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })

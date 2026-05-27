@@ -42,13 +42,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import {
-  ConfirmDialogService,
-  ExternalParametersService,
-  SearchUnitApiService,
-  SnackBarService,
-  VitamUILibraryModule,
-} from 'vitamui-library';
+import { ConfirmDialogService } from '../../../../../vitamui-library/src/app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { ExternalParametersService } from '../../../../../vitamui-library/src/app/modules/externalParameters.service';
+import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
+import { VitamUILibraryModule } from '../../../../../vitamui-library/src/lib/vitamui-library.module';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';

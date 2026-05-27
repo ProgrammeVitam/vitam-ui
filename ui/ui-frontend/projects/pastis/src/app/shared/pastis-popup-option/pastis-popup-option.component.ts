@@ -45,7 +45,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { FileNode } from '../../models/file-node';
 import { Profile } from '../../models/profile';
 import { ProfileType } from '../../models/profile-type.enum';
-import { SnackBarService } from 'vitamui-library';
+import { SnackBarService } from '../../../../../vitamui-library/src/app/modules/components/snack-bar/snack-bar.service';
 import { CreateProfilNoticeComponent } from '../../profile/create-profil-notice/create-profil-notice.component';
 
 function constantToTranslate(edit: boolean) {

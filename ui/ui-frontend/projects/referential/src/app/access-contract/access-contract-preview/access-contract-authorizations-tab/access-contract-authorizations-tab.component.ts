@@ -41,10 +41,10 @@ import {
   AccessContractDisplay,
   AccessRightType,
   accessRightTypeOf,
-  AgencyService,
-  Option,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+} from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
+import { AgencyService } from '../../../../../../vitamui-library/src/app/modules/agencies/agency.service';
+import { Option } from '../../../../../../vitamui-library/src/app/modules/components/autocomplete/utils/option.interface';
+import { VitamuiSelectOptions } from '../../../../../../vitamui-library/src/lib/components/select/select.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { RULE_TYPES } from '../../../rule/rules.constants';
