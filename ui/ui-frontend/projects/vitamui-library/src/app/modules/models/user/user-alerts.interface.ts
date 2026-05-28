@@ -45,6 +45,7 @@ export interface AlertOption extends Option {
   url: string;
 }
 
+// FIXME: supprimer ?
 export interface AlertAnalytics {
   applicationId: string;
   creationDate: string;

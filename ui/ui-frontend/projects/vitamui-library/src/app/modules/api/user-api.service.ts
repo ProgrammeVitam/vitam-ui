@@ -61,8 +61,7 @@ export class UserApiService {
   public analytics(data: {
     applicationId?: string;
     lastTenantIdentifier?: number;
-    alerts?: AlertAnalytics[];
-    lastHeaderExtraSelection?: string;
+    alerts?: AlertAnalytics[]; // FIXME: supprimer ?
   }): Observable<User> {
     const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, this.authService.getAnyTenantIdentifier());
     return this.http.post<User>(this.apiUrl + '/analytics', data, { headers });

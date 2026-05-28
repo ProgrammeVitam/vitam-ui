@@ -152,9 +152,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.currentAppId = appIdentifier;
       this.initCurrentAppTenants(this.currentAppId);
       this.initCustomerSelection(this.currentAppId);
-      this.initSeeMoreAlerts(this.currentAppId);
+      this.initSeeMoreAlerts(this.currentAppId); // FIXME: supprimer ?
     });
 
+    // FIXME: supprimer ?
     this.userAlertsService
       .getUserAlerts$()
       .pipe(takeUntil(this.destroyer$))
@@ -166,22 +167,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroyer$.complete();
   }
 
+  // FIXME: supprimer ?
   public openAlert(option: AlertOption): void {
     const alerts: AlertAnalytics[] = this.userAlertsService.getUserAlerts();
     const alert = alerts.find((a: AlertAnalytics) => a.id === option.key);
     this.userAlertsService.openAlert(alert).subscribe();
   }
 
+  // FIXME: supprimer ?
   public removeAlert(alert: AlertOption): void {
     this.userAlertsService.removeUserAlertById(alert.key).subscribe();
   }
 
+  // FIXME: supprimer ?
   private initSeeMoreAlerts(currentAppId: ApplicationId): void {
     if (currentAppId === ApplicationId.PORTAL_APP) {
       this.route.queryParams.subscribe((params) => this.userAlertsService.setSeeMoreAlerts(!!params.seeMoreAlerts));
     }
   }
 
+  // FIXME: supprimer ?
   public seeMoreAlerts(): void {
     if (this.currentAppId === ApplicationId.PORTAL_APP) {
       this.userAlertsService.setSeeMoreAlerts(true);
@@ -191,6 +196,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  // FIXME: supprimer ?
   private initUserAlerts(alertAnalytics: AlertAnalytics[]): void {
     if (alertAnalytics?.length) {
       const sources: Observable<AlertOption>[] = alertAnalytics.map((alert: AlertAnalytics) => {
@@ -213,6 +219,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  // FIXME: supprimer ?
   private reduceUserAlerts(alerts: AlertOption[]): AlertOption[] {
     if (alerts?.length > MAX_ALERTS_TO_DISPLAY) {
       this.hasMoreAlerts = true;

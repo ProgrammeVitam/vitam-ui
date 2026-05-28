@@ -40,6 +40,6 @@ import { AlertAnalytics } from './user-alerts.interface';
 export interface Analytics {
   applications: ApplicationAnalytics[];
   lastTenantIdentifier: number;
+  // FIXME: supprimer ?
   alerts: AlertAnalytics[];
-  lastHeaderExtraSelection: string;
 }

@@ -39,7 +39,9 @@ import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AlertAnalytics, Application } from '../../models';
 
+// FIXME: supprimer ?
 export function buildAlertLabel(translateService: TranslateService, alert: AlertAnalytics): Observable<string> {
+  // FIXME: supprimer les clés i18n ?
   const keyTraduction = translateService.get('USER_ALERTS.KEYS.' + alert.key);
   const actionTraduction = translateService.get('USER_ALERTS.ACTIONS.' + alert.action);
   const statusTraduction = translateService.get('USER_ALERTS.STATUS.' + alert.status);
@@ -49,6 +51,7 @@ export function buildAlertLabel(translateService: TranslateService, alert: Alert
   );
 }
 
+// FIXME: supprimer ?
 export function buildAlertUrl(app: Application, alert: AlertAnalytics): string {
   return app.url + '/' + alert.type.toLowerCase() + '/' + alert.id + '/explorer';
 }

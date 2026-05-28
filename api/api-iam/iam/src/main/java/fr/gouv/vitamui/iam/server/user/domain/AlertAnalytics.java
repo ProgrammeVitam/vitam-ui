@@ -31,6 +31,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+// FIXME: supprimer ?
 @Data
 public class AlertAnalytics implements Serializable {
 

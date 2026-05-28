@@ -9,7 +9,8 @@
     <ng-content select="[extended-content]"></ng-content>
 
     @if (userAlerts) {
-      <div class="d-flex align-items-center user-alerts">
+      <!--FIXME: supprimer ?-->
+    <div class="d-flex align-items-center user-alerts">
         <vitamui-common-user-alerts-menu
           [userAlerts]="userAlerts"
           [hasMoreAlerts]="hasMoreAlerts"

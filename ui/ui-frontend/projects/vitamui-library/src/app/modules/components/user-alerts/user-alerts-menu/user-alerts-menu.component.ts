@@ -37,6 +37,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AlertOption, UserAlerts } from '../../../models/user/user-alerts.interface';
 
+// FIXME: supprimer ?
 @Component({
   selector: 'vitamui-common-user-alerts-menu',
   templateUrl: './user-alerts-menu.component.html',

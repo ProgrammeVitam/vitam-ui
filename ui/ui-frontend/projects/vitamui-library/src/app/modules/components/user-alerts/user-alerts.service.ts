@@ -45,6 +45,7 @@ import { AlertAnalytics } from '../../models/user/user-alerts.interface';
 import { User } from '../../models/user/user.interface';
 import { buildAlertUrl } from './user-alerts.util';
 
+// FIXME: supprimer ?
 @Injectable({ providedIn: 'root' })
 export class UserAlertsService {
   private authService = inject(AuthService);
