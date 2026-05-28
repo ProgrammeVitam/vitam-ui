@@ -72,7 +72,6 @@ import { SearchBarWithSiblingButtonModule } from './components/search-bar-with-s
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
-import { UserAlertCardModule } from './components/user-alerts/user-alerts-card';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamuiCommonBannerModule } from './components/vitamui-common-banner/vitamui-common-banner.module';
 import { VitamuiContentBreadcrumbModule } from './components/vitamui-content-breadcrumb/vitamui-content-breadcrumb.module';
@@ -185,7 +184,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     StepperModule,
     SubrogationModule,
     TranslateModule,
-    UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
     VitamuiBodyModule,
@@ -259,7 +257,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     StepperModule,
     SubrogationModule,
     TranslateModule,
-    UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
     VitamuiBodyModule,

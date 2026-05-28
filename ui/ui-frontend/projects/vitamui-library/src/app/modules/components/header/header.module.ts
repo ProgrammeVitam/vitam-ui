@@ -41,7 +41,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserAlertsMenuModule } from '../user-alerts/user-alerts-menu/user-alerts-menu.module';
 import { HeaderComponent } from './header.component';
 import { ItemSelectModule } from './item-select/item-select.module';
 import { MenuModule } from './menu/menu.module';
@@ -62,7 +61,6 @@ import { UserPhotoModule } from './user-photo/user-photo.module';
     MenuModule.forRoot(),
     TranslateModule,
     SelectLanguageModule,
-    UserAlertsMenuModule,
     SelectSiteModule,
   ],
   exports: [HeaderComponent],

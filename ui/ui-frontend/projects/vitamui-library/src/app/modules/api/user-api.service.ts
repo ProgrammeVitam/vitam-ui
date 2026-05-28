@@ -39,7 +39,6 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { BASE_URL } from '../injection-tokens';
-import { AlertAnalytics } from '../models/user/user-alerts.interface';
 import { User } from '../models/user/user.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
@@ -57,12 +56,7 @@ export class UserApiService {
     this.apiUrl = baseUrl + '/users';
   }
 
-  public analytics(data: {
-    applicationId?: string;
-    lastTenantIdentifier?: number;
-    alerts?: AlertAnalytics[];
-    lastHeaderExtraSelection?: string;
-  }): Observable<User> {
+  public analytics(data: { applicationId?: string; lastTenantIdentifier?: number }): Observable<User> {
     const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, this.authService.getAnyTenantIdentifier());
     return this.http.post<User>(this.apiUrl + '/analytics', data, { headers });
   }

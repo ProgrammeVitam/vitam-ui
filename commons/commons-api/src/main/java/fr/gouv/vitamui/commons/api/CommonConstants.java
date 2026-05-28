@@ -258,6 +258,7 @@ public class CommonConstants {
     public static final String GPDR_DEFAULT_VALUE = "-";
 
     public static final String APPLICATION_ID = "applicationId";
+    public static final String LAST_TENANT_IDENTIFIER = "lastTenantIdentifier";
 
     public static final String TRANSACTION_PATH_ID = "/{transactionId}";
     public static final String LAST_TRANSACTION_PATH = "/last-transaction";
