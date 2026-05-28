@@ -38,7 +38,6 @@ package fr.gouv.vitamui.iam.server.user.converter;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import fr.gouv.vitamui.commons.api.domain.AlertAnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.ApplicationAnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -53,7 +52,6 @@ import fr.gouv.vitamui.iam.server.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -182,18 +180,7 @@ public class UserConverter implements Converter<UserDto, User> {
                     applicationAnalyticsDto.setAccessCounter(application.getAccessCounter());
                     applicationAnalyticsDtoList.add(applicationAnalyticsDto);
                 });
-
-            List<AlertAnalyticsDto> alertAnalyticsDtoDtoList = new ArrayList<>();
-            user
-                .getAnalytics()
-                .getAlerts()
-                .forEach(alert -> {
-                    AlertAnalyticsDto alertAnalyticsDto = new AlertAnalyticsDto();
-                    BeanUtils.copyProperties(alert, alertAnalyticsDto);
-                    alertAnalyticsDtoDtoList.add(alertAnalyticsDto);
-                });
             analyticsDto.setApplications(applicationAnalyticsDtoList);
-            analyticsDto.setAlerts(alertAnalyticsDtoDtoList);
 
             analyticsDto.setLastTenantIdentifier(user.getAnalytics().getLastTenantIdentifier());
             userDto.setAnalytics(analyticsDto);
