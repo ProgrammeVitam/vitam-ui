@@ -25,6 +25,7 @@
         trim_values: all
     - timestamp:
         field: date_time
+        timezone: {{ filebeat.timezone | default('Europe/Paris') }}
         layouts:
           - '2006-01-02 15:04:05,000'
         test:
@@ -113,6 +114,7 @@
         trim_values: all
     - timestamp:
         field: date_time
+        timezone: {{ filebeat.timezone | default('Europe/Paris') }}
         layouts:
           - '2006-01-02 15:04:05,000'
         test:
