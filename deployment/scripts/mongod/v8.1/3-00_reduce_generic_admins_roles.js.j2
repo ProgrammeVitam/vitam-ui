@@ -1,0 +1,181 @@
+print("START v8.1.3-00_reduce_generic_admins_roles.js");
+
+db = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}');
+
+// For each customer (except system_customer)
+db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (customer) {
+
+    var genericAdmin = db.getCollection('users').findOne({
+        'firstname': 'Admin',
+        'lastname': 'ADMIN',
+        'type': 'GENERIC',
+        'customerId': customer._id
+    });
+
+    if (!genericAdmin) {
+        print("No generic admin found for customer: " + customer._id);
+        return;
+    }
+
+    var currentGroupForGenericAdmin = db.getCollection('groups').findOne({ '_id': genericAdmin.groupId });
+
+    if (!currentGroupForGenericAdmin) {
+        print("No group found for generic admin of customer: " + customer._id);
+        return;
+    }
+
+    if (currentGroupForGenericAdmin.name != "GENERIC_ADMIN_ROOT_GROUP") {
+        // Not yet updated for this customer
+
+        // Find the proof tenant, by default is the first tenant on creating customer
+        var proofTenant = db.getCollection('tenants').findOne({
+            "customerId": customer._id,
+            "proof": true
+        });
+
+        // Get current sequence for profiles
+        var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+        // CREATE NEW PROFILES FOR APPLICATIONS:
+        // USERS_APP, ACCOUNTS_APP, GROUPS_APP, PROFILES_APP, HIERARCHY_PROFILE_APP
+
+        db.profiles.insertOne({
+            "_id": "PROFIL_" + proofTenant.identifier + "-USERS_APP_PROFILE_GENERIC_ADMIN",
+            "identifier": NumberInt(maxIdProfile++),
+            "name": "PROFIL_" + proofTenant.identifier + "-USERS_APP_PROFILE_GENERIC_ADMIN",
+            "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
+            "tenantIdentifier": NumberInt(proofTenant.identifier),
+            "applicationName": "USERS_APP",
+            "level": "",
+            "enabled": true,
+            "readonly": false,
+            "customerId": customer._id,
+            "roles": [
+                { "name": "ROLE_GET_USERS" },
+                { "name": "ROLE_CREATE_USERS" },
+                { "name": "ROLE_UPDATE_USERS" },
+                { "name": "ROLE_UPDATE_STANDARD_USERS" },
+                { "name": "ROLE_MFA_USERS" },
+                { "name": "ROLE_ANONYMIZATION_USERS" },
+                { "name": "ROLE_GENERIC_USERS" },
+                { "name": "ROLE_GET_GROUPS" },
+                { "name": "ROLE_GET_USER_INFOS" },
+                { "name": "ROLE_CREATE_USER_INFOS" },
+                { "name": "ROLE_UPDATE_USER_INFOS" }
+            ]
+        });
+
+        db.profiles.insertOne({
+            "_id": "PROFIL_" + proofTenant.identifier + "-ACCOUNTS_APP_PROFILE_GENERIC_ADMIN",
+            "identifier": NumberInt(maxIdProfile++),
+            "name": "PROFIL_" + proofTenant.identifier + "-ACCOUNTS_APP_PROFILE_GENERIC_ADMIN",
+            "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
+            "tenantIdentifier": NumberInt(proofTenant.identifier),
+            "applicationName": "ACCOUNTS_APP",
+            "level": "",
+            "enabled": true,
+            "readonly": false,
+            "customerId": customer._id,
+            "roles": [
+                { "name": "ROLE_UPDATE_ME_USERS" }
+            ]
+        });
+
+        db.profiles.insertOne({
+            "_id": "PROFIL_" + proofTenant.identifier + "-GROUPS_APP_PROFILE_GENERIC_ADMIN",
+            "identifier": NumberInt(maxIdProfile++),
+            "name": "PROFIL_" + proofTenant.identifier + "-GROUPS_APP_PROFILE_GENERIC_ADMIN",
+            "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
+            "tenantIdentifier": NumberInt(proofTenant.identifier),
+            "applicationName": "GROUPS_APP",
+            "level": "",
+            "enabled": true,
+            "readonly": false,
+            "customerId": customer._id,
+            "roles": [
+                { "name": "ROLE_GET_GROUPS" },
+                { "name": "ROLE_UPDATE_GROUPS" },
+                { "name": "ROLE_DELETE_GROUPS" },
+                { "name": "ROLE_CREATE_GROUPS" },
+                { "name": "ROLE_GET_PROFILES_ALL_TENANTS" },
+                { "name": "ROLE_GET_PROFILES" }
+            ]
+        });
+
+        db.profiles.insertOne({
+            "_id": "PROFIL_" + proofTenant.identifier + "-HIERARCHY_PROFILE_APP_PROFILE_GENERIC_ADMIN",
+            "identifier": NumberInt(maxIdProfile++),
+            "name": "PROFIL_" + proofTenant.identifier + "-HIERARCHY_PROFILE_APP_PROFILE_GENERIC_ADMIN",
+            "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
+            "tenantIdentifier": NumberInt(proofTenant.identifier),
+            "applicationName": "HIERARCHY_PROFILE_APP",
+            "level": "",
+            "enabled": true,
+            "readonly": false,
+            "customerId": customer._id,
+            "roles": [
+                { "name": "ROLE_GET_PROFILES" },
+                { "name": "ROLE_CREATE_PROFILES" },
+                { "name": "ROLE_UPDATE_PROFILES" },
+                { "name": "ROLE_UPDATE_ME_USERS" },
+                { "name": "ROLE_DELETE_PROFILES" }
+            ]
+        });
+
+        db.profiles.insertOne({
+            "_id": "PROFIL_" + proofTenant.identifier + "-PROFILES_APP_PROFILE_GENERIC_ADMIN",
+            "identifier": NumberInt(maxIdProfile++),
+            "name": "PROFIL_" + proofTenant.identifier + "-PROFILES_APP_PROFILE_GENERIC_ADMIN",
+            "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
+            "tenantIdentifier": NumberInt(proofTenant.identifier),
+            "applicationName": "PROFILES_APP",
+            "level": "",
+            "enabled": true,
+            "readonly": false,
+            "customerId": customer._id,
+            "roles": [
+                { "name": "ROLE_GET_PROFILES" },
+                { "name": "ROLE_CREATE_PROFILES" },
+                { "name": "ROLE_UPDATE_PROFILES" },
+                { "name": "ROLE_GET_GROUPS" },
+                { "name": "ROLE_DELETE_PROFILES" }
+            ]
+        });
+
+        db.groups.insertOne({
+            "_id": "GENERIC_ADMIN_ROOT_GROUP_" + proofTenant.identifier,
+            "name": "GENERIC_ADMIN_ROOT_GROUP",
+            "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
+            "profileIds": [
+                "PROFIL_" + proofTenant.identifier + "-PROFILES_APP_PROFILE_GENERIC_ADMIN",
+                "PROFIL_" + proofTenant.identifier + "-HIERARCHY_PROFILE_APP_PROFILE_GENERIC_ADMIN",
+                "PROFIL_" + proofTenant.identifier + "-GROUPS_APP_PROFILE_GENERIC_ADMIN",
+                "PROFIL_" + proofTenant.identifier + "-ACCOUNTS_APP_PROFILE_GENERIC_ADMIN",
+                "PROFIL_" + proofTenant.identifier + "-USERS_APP_PROFILE_GENERIC_ADMIN"
+            ],
+            "customerId": customer._id
+        });
+
+        // Update genericAdmin's group
+        db.users.updateOne(
+            { "_id": genericAdmin._id },
+            {
+                $set: {
+                    "groupId": "GENERIC_ADMIN_ROOT_GROUP_" + proofTenant.identifier
+                }
+            }
+        );
+
+        // Update sequence
+        db.sequences.updateOne(
+            { "_id": "profile_identifier" },
+            {
+                $set: {
+                    "sequence": NumberInt(maxIdProfile)
+                }
+            }
+        );
+    }
+});
+
+print("END v8.1.3-00_reduce_generic_admins_roles.js");
