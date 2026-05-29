@@ -4,25 +4,36 @@ db = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}');
 
 // For each customer (except system_customer)
 db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (customer) {
-
     var genericAdmin = db.getCollection('users').findOne({
-        'firstname': 'Admin',
-        'lastname': 'ADMIN',
         'type': 'GENERIC',
+        'email': {
+            '$regex': '^admin@',
+            '$options': 'i'
+        },
         'customerId': customer._id
     });
 
     if (!genericAdmin) {
-        print("No generic admin found for customer: " + customer._id);
-        return;
+        throw new Error("No generic admin found for customer: " + customer._id);
     }
 
-    var currentGroupForGenericAdmin = db.getCollection('groups').findOne({ '_id': genericAdmin.groupId });
+    var currentGroupForGenericAdmin = db.getCollection('groups').findOne({
+        '_id': genericAdmin.groupId
+    });
 
     if (!currentGroupForGenericAdmin) {
-        print("No group found for generic admin of customer: " + customer._id);
-        return;
+        throw new Error("No group found for generic admin of customer: " + customer._id);
     }
+
+    //Update full admin group to make it readOnly
+    db.groups.updateOne(
+        { "_id": currentGroupForGenericAdmin._id },
+        {
+            $set: {
+                "readonly": true
+            }
+        }
+    );
 
     if (currentGroupForGenericAdmin.name != "GENERIC_ADMIN_ROOT_GROUP") {
         // Not yet updated for this customer
@@ -34,14 +45,21 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         });
 
         // Get current sequence for profiles
-        var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+        var maxIdProfile = db.getCollection('sequences').findOne({
+            '_id': 'profile_identifier'
+        }).sequence;
+
+        // Get current sequence for groups
+        var maxIdGroup = db.getCollection('sequences').findOne({
+            '_id': 'group_identifier'
+        }).sequence;
 
         // CREATE NEW PROFILES FOR APPLICATIONS:
         // USERS_APP, ACCOUNTS_APP, GROUPS_APP, PROFILES_APP, HIERARCHY_PROFILE_APP
 
         db.profiles.insertOne({
             "_id": "PROFIL_" + proofTenant.identifier + "-USERS_APP_PROFILE_GENERIC_ADMIN",
-            "identifier": NumberInt(maxIdProfile++),
+            "identifier": NumberInt(++maxIdProfile),
             "name": "PROFIL_" + proofTenant.identifier + "-USERS_APP_PROFILE_GENERIC_ADMIN",
             "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
             "tenantIdentifier": NumberInt(proofTenant.identifier),
@@ -67,7 +85,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
 
         db.profiles.insertOne({
             "_id": "PROFIL_" + proofTenant.identifier + "-ACCOUNTS_APP_PROFILE_GENERIC_ADMIN",
-            "identifier": NumberInt(maxIdProfile++),
+            "identifier": NumberInt(++maxIdProfile),
             "name": "PROFIL_" + proofTenant.identifier + "-ACCOUNTS_APP_PROFILE_GENERIC_ADMIN",
             "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
             "tenantIdentifier": NumberInt(proofTenant.identifier),
@@ -83,7 +101,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
 
         db.profiles.insertOne({
             "_id": "PROFIL_" + proofTenant.identifier + "-GROUPS_APP_PROFILE_GENERIC_ADMIN",
-            "identifier": NumberInt(maxIdProfile++),
+            "identifier": NumberInt(++maxIdProfile),
             "name": "PROFIL_" + proofTenant.identifier + "-GROUPS_APP_PROFILE_GENERIC_ADMIN",
             "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
             "tenantIdentifier": NumberInt(proofTenant.identifier),
@@ -104,7 +122,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
 
         db.profiles.insertOne({
             "_id": "PROFIL_" + proofTenant.identifier + "-HIERARCHY_PROFILE_APP_PROFILE_GENERIC_ADMIN",
-            "identifier": NumberInt(maxIdProfile++),
+            "identifier": NumberInt(++maxIdProfile),
             "name": "PROFIL_" + proofTenant.identifier + "-HIERARCHY_PROFILE_APP_PROFILE_GENERIC_ADMIN",
             "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
             "tenantIdentifier": NumberInt(proofTenant.identifier),
@@ -124,7 +142,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
 
         db.profiles.insertOne({
             "_id": "PROFIL_" + proofTenant.identifier + "-PROFILES_APP_PROFILE_GENERIC_ADMIN",
-            "identifier": NumberInt(maxIdProfile++),
+            "identifier": NumberInt(++maxIdProfile),
             "name": "PROFIL_" + proofTenant.identifier + "-PROFILES_APP_PROFILE_GENERIC_ADMIN",
             "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
             "tenantIdentifier": NumberInt(proofTenant.identifier),
@@ -145,6 +163,8 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         db.groups.insertOne({
             "_id": "GENERIC_ADMIN_ROOT_GROUP_" + proofTenant.identifier,
             "name": "GENERIC_ADMIN_ROOT_GROUP",
+            "readonly": true,
+            "identifier": NumberInt(++maxIdGroup),
             "description": "Profil de l'application de gestion des utilisateurs pour l'admin générique",
             "profileIds": [
                 "PROFIL_" + proofTenant.identifier + "-PROFILES_APP_PROFILE_GENERIC_ADMIN",
@@ -166,12 +186,21 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
             }
         );
 
-        // Update sequence
+        // Update sequences
         db.sequences.updateOne(
             { "_id": "profile_identifier" },
             {
                 $set: {
                     "sequence": NumberInt(maxIdProfile)
+                }
+            }
+        );
+
+        db.sequences.updateOne(
+            { "_id": "group_identifier" },
+            {
+                $set: {
+                    "sequence": NumberInt(maxIdGroup)
                 }
             }
         );
