@@ -189,11 +189,6 @@ public class CommonConstants {
 
     public static final String USER_INFO_ID = "userInfoId";
 
-    /**
-     * Constant contains application list for portal/header applications display
-     */
-    public static final String APPLICATION_CONFIGURATION = "APPLICATION_CONFIGURATION";
-
     public static final String CAS_IDP_PARAMETER = "cas_idp";
 
     public static final String IDP_PARAMETER = "idp";

@@ -46,6 +46,7 @@ import { BASE_URL } from './injection-tokens';
 import { Application } from './models/application/application.interface';
 import { StartupService } from './startup.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { Category } from './models';
 
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;
@@ -63,7 +64,7 @@ describe('ApplicationService', () => {
       customerId: 'fakeCustomerId',
     };
     const configServiceStub = {
-      config: { GATEWAY_ENABLED: false },
+      config: { CATEGORY_CONFIGURATION: [] as Category[] },
     };
 
     TestBed.configureTestingModule({
@@ -89,10 +90,10 @@ describe('ApplicationService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should call /fake-api/ui/applications/filtered?filterApp=true', () => {
+  it('should call /fake-api/ui/applications', () => {
     appService.list().subscribe(
       (response) => {
-        expect(response.APPLICATION_CONFIGURATION).toEqual([
+        expect(response).toEqual([
           {
             id: 'account',
             identifier: ApplicationId.ACCOUNTS_APP,
@@ -112,32 +113,29 @@ describe('ApplicationService', () => {
         throw e;
       },
     );
-    const req = httpTestingController.expectOne('/fake-api/ui/applications/filtered?filterApp=true');
+    const req = httpTestingController.expectOne('/fake-api/ui/applications');
     expect(req.request.method).toEqual('GET');
-    req.flush({
-      APPLICATION_CONFIGURATION: [
-        {
-          id: 'account',
-          identifier: ApplicationId.ACCOUNTS_APP,
-          url: 'http://app-test-2.vitamui.com',
-          icon: 'vitamui-icon vitamui-icon-user',
-          name: 'Mon compte',
-          category: 'users',
-          position: 7,
-          hasCustomerList: false,
-          hasTenantList: false,
-          hasHighlight: false,
-          target: '',
-        },
-      ],
-      CATEGORY_CONFIGURATION: [{ identifier: 'users', title: '', displayTitle: false, order: 1 }],
-    });
+    req.flush([
+      {
+        id: 'account',
+        identifier: ApplicationId.ACCOUNTS_APP,
+        url: 'http://app-test-2.vitamui.com',
+        icon: 'vitamui-icon vitamui-icon-user',
+        name: 'Mon compte',
+        category: 'users',
+        position: 7,
+        hasCustomerList: false,
+        hasTenantList: false,
+        hasHighlight: false,
+        target: '',
+      },
+    ]);
   });
 
   it('should return an empty list if the API returns an error', () => {
     appService.list().subscribe(
       (response) => {
-        expect(response).toEqual({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: [] });
+        expect(response).toEqual([]);
       },
       (e: unknown) => {
         throw e;
