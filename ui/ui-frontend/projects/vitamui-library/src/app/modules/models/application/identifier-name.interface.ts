@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './application.interface';
-export * from './category.interface';
-export * from './identifier-name.interface';
-export * from './ui.interface';
-export * from './vitam-configuration.interface';
+
+export interface IdentifierName {
+  identifier: string;
+  name: string;
+}

@@ -36,16 +36,11 @@
  */
 package fr.gouv.vitamui.iam.server.application.service;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.domain.Criterion;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.domain.IdentifierNameDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
@@ -55,7 +50,6 @@ import fr.gouv.vitamui.iam.server.application.domain.Application;
 import fr.gouv.vitamui.iam.server.security.AbstractResourceClientService;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +59,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -108,41 +101,20 @@ public class ApplicationService extends AbstractResourceClientService<Applicatio
     /**
      * {@inheritDoc}
      */
-    @Override
-    public List<ApplicationDto> getAll(Optional<String> criteria, Optional<String> embedded) {
-        Boolean filterApp = true;
-
-        if (criteria.isPresent()) {
-            final QueryDto queryDto = QueryDto.fromJson(criteria);
-            List<Criterion> criterions = queryDto.getCriterionList();
-            Optional<Criterion> findFilterApp = criterions
-                .stream()
-                .filter(criterion -> "filterApp".equals(criterion.getKey()))
-                .findFirst();
-
-            if (findFilterApp.isPresent()) {
-                Criterion filterAppCriterion = findFilterApp.get();
-                filterApp = (Boolean) filterAppCriterion.getValue();
-
-                criterions.remove(filterAppCriterion);
-                criteria = Optional.of(CriteriaUtils.toJson(queryDto));
-            }
-        }
-
-        List<ApplicationDto> apps = super.getAll(criteria, embedded);
-        if (filterApp) {
-            filterApp(apps);
-        }
-        return apps;
+    public List<ApplicationDto> getAllFilteredByUser(Optional<String> criteria) {
+        List<ApplicationDto> apps = super.getAll(criteria);
+        return filterApp(apps); // Apps are filtered depending on user permissions
     }
 
-    public Map<String, List<ApplicationDto>> getApplications(final boolean filterApp) {
-        QueryDto query = new QueryDto(QueryOperator.AND);
-        query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
-        List<ApplicationDto> applications = getAll(Optional.of(query.toJson()), Optional.empty());
-        Map<String, List<ApplicationDto>> portalConfig = new HashMap<>();
-        portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
-        return portalConfig;
+    /**
+     * Returns all applications names and identifiers, without filtering on user permissions (useful to have a list of all applications without leaking secured information)
+     * @return unfiltered application list, but only with their identifier and name
+     */
+    public List<IdentifierNameDto> listNames() {
+        return super.getAll(Optional.empty())
+            .stream()
+            .map(app -> new IdentifierNameDto(app.getIdentifier(), app.getName()))
+            .toList();
     }
 
     public boolean isApplicationExternalIdentifierEnabled(String applicationId) {
@@ -157,20 +129,21 @@ public class ApplicationService extends AbstractResourceClientService<Applicatio
 
     /**
      * Filter application for logger user permission
+     *
      * @param apps initial app list
+     * @return filtered application list
      */
-    private void filterApp(final Collection<ApplicationDto> apps) {
-        final AuthUserDto user = securityService.getUser();
-        if (user == null) {
-            throw new UnAuthorizedException("No authenticated user");
-        }
-        List<TenantInformationDto> tenantsByApp = user.getTenantsByApp();
-        if (CollectionUtils.isEmpty(user.getTenantsByApp())) {
-            tenantsByApp = new ArrayList<>();
-        }
-        final Collection<String> filter = tenantsByApp.stream().map(p -> p.getName()).collect(Collectors.toList());
-        final Predicate<ApplicationDto> predicate = a -> !filter.contains(a.getIdentifier());
-        apps.removeIf(predicate);
+    private List<ApplicationDto> filterApp(final Collection<ApplicationDto> apps) {
+        final AuthUserDto user = Optional.ofNullable(securityService.getUser()).orElseThrow(
+            () -> new UnAuthorizedException("No authenticated user")
+        );
+        final List<TenantInformationDto> tenantsByApp = Optional.ofNullable(user.getTenantsByApp()).orElse(
+            new ArrayList<>()
+        );
+        final Collection<String> filter = tenantsByApp.stream().map(TenantInformationDto::getName).toList();
+        final Predicate<ApplicationDto> predicate = app -> filter.contains(app.getIdentifier());
+
+        return apps.stream().filter(predicate).toList();
     }
 
     /**
@@ -201,7 +174,7 @@ public class ApplicationService extends AbstractResourceClientService<Applicatio
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return Arrays.asList("identifier", "url", "_id", "category", "filterApp");
+        return Arrays.asList("identifier", "url", "_id", "category");
     }
 
     @Override
