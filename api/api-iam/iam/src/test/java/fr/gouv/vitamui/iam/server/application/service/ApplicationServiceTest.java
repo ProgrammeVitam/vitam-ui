@@ -2,8 +2,7 @@ package fr.gouv.vitamui.iam.server.application.service;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.IdentifierNameDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -61,22 +60,20 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    public void testGetAll() {
+    public void testGetAllFilteredByUser() {
         final Application app = IamServerUtilsTest.buildApplication();
         final List<Application> apps = Arrays.asList(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
 
         wireInternalSecurityServerCalls(true);
 
-        final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
-
-        final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
+        final List<ApplicationDto> result = applicationService.getAllFilteredByUser(Optional.empty());
         Assertions.assertNotNull(result, "Applications should be returned.");
         Assertions.assertEquals(apps.size(), result.size(), "Applications size should be returned.");
     }
 
     @Test
-    public void testGetAllFilteredForUser() {
+    public void testGetAllFilteredByUserShouldFilteredForUser() {
         final Application app = IamServerUtilsTest.buildApplication();
         final Application app2 = IamServerUtilsTest.buildApplication("id2", "url2");
         final List<Application> apps = Arrays.asList(app, app2);
@@ -84,57 +81,50 @@ public class ApplicationServiceTest {
 
         wireInternalSecurityServerCalls(true);
 
-        final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
-
-        final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
+        final List<ApplicationDto> result = applicationService.getAllFilteredByUser(Optional.empty());
         Assertions.assertNotNull(result, "Applications should be returned.");
         Assertions.assertEquals(1, result.size(), "Applications size should be returned.");
     }
 
     @Test
-    public void testGetAllWithoutFilter() {
-        final Application app = IamServerUtilsTest.buildApplication();
-        final Application app2 = IamServerUtilsTest.buildApplication("id2", "url2");
-        final List<Application> apps = Arrays.asList(app, app2);
-        when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
-
-        wireInternalSecurityServerCalls(true);
-
-        final QueryDto criteria = QueryDto.criteria("filterApp", false, CriterionOperator.EQUALS);
-
-        final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assertions.assertNotNull(result, "Applications should be returned.");
-        Assertions.assertEquals(2, result.size(), "Applications size should be returned.");
-    }
-
-    @Test
-    public void testGetAllForNullUserThenThrowException() {
+    public void testGetAllFilteredByUserForNullUserThenThrowException() {
         final Application app = IamServerUtilsTest.buildApplication();
         final List<Application> apps = List.of(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
 
         Mockito.when(securityService.getUser()).thenReturn(null);
 
-        final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
         try {
-            applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
+            applicationService.getAllFilteredByUser(Optional.empty());
             Assertions.fail("Should Throw Exception");
         } catch (UnAuthorizedException ignored) {}
     }
 
     @Test
-    public void testGetAllForUserWithoutPermission() {
+    public void testGetAllFilteredByUserForUserWithoutPermission() {
         final Application app = IamServerUtilsTest.buildApplication();
-        final List<Application> apps = Arrays.asList(app);
+        final List<Application> apps = List.of(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
 
         wireInternalSecurityServerCalls(false);
 
-        final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
-
-        final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
+        final List<ApplicationDto> result = applicationService.getAllFilteredByUser(Optional.empty());
         Assertions.assertNotNull(result, "Applications should be returned.");
         Assertions.assertEquals(0, result.size(), "Applications size should be returned.");
+    }
+
+    @Test
+    public void testListNamesShouldReturnAllApps() {
+        final Application app = IamServerUtilsTest.buildApplication();
+        final Application app2 = IamServerUtilsTest.buildApplication("id2", "url2");
+        final List<Application> apps = Arrays.asList(app, app2);
+        when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
+
+        wireInternalSecurityServerCalls(false);
+
+        final List<IdentifierNameDto> result = applicationService.listNames();
+        Assertions.assertNotNull(result, "Applications should be returned.");
+        Assertions.assertEquals(2, result.size(), "Applications size should be returned.");
     }
 
     private void wireInternalSecurityServerCalls(boolean withApplications) {

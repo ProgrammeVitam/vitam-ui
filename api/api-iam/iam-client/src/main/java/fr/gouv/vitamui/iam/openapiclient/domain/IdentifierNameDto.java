@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './application.interface';
-export * from './category.interface';
-export * from './identifier-name.interface';
-export * from './ui.interface';
-export * from './vitam-configuration.interface';
+package fr.gouv.vitamui.iam.openapiclient.domain;
+
+/**
+ * Needed because OpenAPI generator can only use the model coming from one package.
+ */
+public class IdentifierNameDto extends fr.gouv.vitamui.commons.api.domain.IdentifierNameDto {}
