@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.iam.server.user.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -100,7 +98,6 @@ import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.server.user.domain.AlertAnalytics;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -141,7 +138,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.ALERTS;
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_TENANT_IDENTIFIER;
@@ -1216,14 +1212,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
                 case LAST_TENANT_IDENTIFIER:
                     patchLastTenantIdentifier(user, CastUtils.toInteger(value));
                     break;
-                case ALERTS:
-                    final ObjectMapper objectMapper = new ObjectMapper();
-                    final List<AlertAnalytics> alertAnalytics = objectMapper.convertValue(
-                        CastUtils.toList(value),
-                        new TypeReference<>() {}
-                    );
-                    patchAlertsAnalytics(user, alertAnalytics);
-                    break;
             }
         });
 
@@ -1237,7 +1225,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
-        final Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID, LAST_TENANT_IDENTIFIER, ALERTS);
+        final Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID, LAST_TENANT_IDENTIFIER);
 
         if (MapUtils.isEmpty(partialDto)) {
             throw new IllegalArgumentException("Unable to patch user analytics : payload is empty");
@@ -1261,11 +1249,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
     private void patchLastTenantIdentifier(final User user, final Integer tenantIdentifier) {
         user.getAnalytics().setLastTenantIdentifier(tenantIdentifier);
-    }
-
-    // FIXME: supprimer ?
-    private void patchAlertsAnalytics(final User user, final List<AlertAnalytics> alerts) {
-        user.getAnalytics().setAlerts(alerts);
     }
 
     private void checkApplicationAccessPermission(final String applicationId) {

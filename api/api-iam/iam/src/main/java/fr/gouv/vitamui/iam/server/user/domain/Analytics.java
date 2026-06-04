@@ -14,9 +14,6 @@ public class Analytics implements Serializable {
 
     private Integer lastTenantIdentifier;
 
-    // FIXME: on ne l'utilise jamais => supprimer ?
-    private List<AlertAnalytics> alerts = new ArrayList<>();
-
     public void tagApplicationAsLastUsed(String applicationId) {
         applications
             .stream()

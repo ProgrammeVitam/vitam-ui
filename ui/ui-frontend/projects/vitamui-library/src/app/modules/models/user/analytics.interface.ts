@@ -35,11 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ApplicationAnalytics } from './application-analytics.interface';
-import { AlertAnalytics } from './user-alerts.interface';
 
 export interface Analytics {
   applications: ApplicationAnalytics[];
   lastTenantIdentifier: number;
-  // FIXME: supprimer ?
-  alerts: AlertAnalytics[];
 }

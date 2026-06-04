@@ -34,31 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, Subscription, forkJoin, zip } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { GlobalEventService } from '../../global-event.service';
-import { AlertAnalytics, AlertOption, Application, AuthUser, ThemeDataType, UserAlerts } from '../../models';
+import { Application, AuthUser, ThemeDataType, UserAlerts } from '../../models';
 import { Tenant } from '../../models/customer/tenant.interface';
 import { StartupService } from '../../startup.service';
 import { ThemeService } from '../../theme.service';
 import { MenuOption } from '../../models/menu-option.interface';
-import { UserAlertsService } from '../user-alerts/user-alerts.service';
-import { buildAlertLabel } from '../user-alerts/user-alerts.util';
 import { ApplicationId } from './../../application-id.enum';
 import { SubrogationService } from './../../subrogation/subrogation.service';
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './../../tenant-selection.service';
 import { MenuOverlayService } from './menu/menu-overlay.service';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
-
-const MAX_ALERTS_TO_DISPLAY = 3;
 
 @Component({
   selector: 'vitamui-common-header',
@@ -79,12 +74,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private applicationService = inject(ApplicationService);
   private globalEventService = inject(GlobalEventService);
-  private translateService = inject(TranslateService);
-  private userAlertsService = inject(UserAlertsService);
 
   @Input() hasLangSelection = false;
-
-  @Output() alertClick = new EventEmitter<AlertAnalytics>();
 
   /** TODO : rooting /account in portal module => move to header module */
   public hasAccountProfile = false;
@@ -152,83 +143,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.currentAppId = appIdentifier;
       this.initCurrentAppTenants(this.currentAppId);
       this.initCustomerSelection(this.currentAppId);
-      this.initSeeMoreAlerts(this.currentAppId); // FIXME: supprimer ?
     });
-
-    // FIXME: supprimer ?
-    this.userAlertsService
-      .getUserAlerts$()
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((alerts: AlertAnalytics[]) => this.initUserAlerts(alerts));
   }
 
   ngOnDestroy() {
     this.destroyer$.next();
     this.destroyer$.complete();
   }
-
-  // FIXME: supprimer ?
-  public openAlert(option: AlertOption): void {
-    const alerts: AlertAnalytics[] = this.userAlertsService.getUserAlerts();
-    const alert = alerts.find((a: AlertAnalytics) => a.id === option.key);
-    this.userAlertsService.openAlert(alert).subscribe();
-  }
-
-  // FIXME: supprimer ?
-  public removeAlert(alert: AlertOption): void {
-    this.userAlertsService.removeUserAlertById(alert.key).subscribe();
-  }
-
-  // FIXME: supprimer ?
-  private initSeeMoreAlerts(currentAppId: ApplicationId): void {
-    if (currentAppId === ApplicationId.PORTAL_APP) {
-      this.route.queryParams.subscribe((params) => this.userAlertsService.setSeeMoreAlerts(!!params.seeMoreAlerts));
-    }
-  }
-
-  // FIXME: supprimer ?
-  public seeMoreAlerts(): void {
-    if (this.currentAppId === ApplicationId.PORTAL_APP) {
-      this.userAlertsService.setSeeMoreAlerts(true);
-    } else {
-      const url = this.startupService.getPortalUrl() + '?seeMoreAlerts=true';
-      window.location.href = url;
-    }
-  }
-
-  // FIXME: supprimer ?
-  private initUserAlerts(alertAnalytics: AlertAnalytics[]): void {
-    if (alertAnalytics?.length) {
-      const sources: Observable<AlertOption>[] = alertAnalytics.map((alert: AlertAnalytics) => {
-        const labelObs = buildAlertLabel(this.translateService, alert);
-        const appObs = this.applicationService.getAppById(alert.applicationId);
-
-        return zip(labelObs, appObs).pipe(
-          map((result) => {
-            return { label: result[0], url: result[1]?.url, key: alert.id };
-          }),
-        );
-      });
-
-      forkJoin(sources)
-        .pipe(takeUntil(this.destroyer$))
-        .subscribe((alerts) => {
-          const alertsToDispaly = this.reduceUserAlerts(alerts);
-          this.userAlerts = { count: alertAnalytics.length, alerts: alertsToDispaly };
-        });
-    }
-  }
-
-  // FIXME: supprimer ?
-  private reduceUserAlerts(alerts: AlertOption[]): AlertOption[] {
-    if (alerts?.length > MAX_ALERTS_TO_DISPLAY) {
-      this.hasMoreAlerts = true;
-      return alerts.slice(0, MAX_ALERTS_TO_DISPLAY);
-    }
-
-    return alerts;
-  }
-
   public updateTenant(tenant: MenuOption): void {
     this.tenantSelectionService.setSelectedTenant(tenant.value);
     this.changeTenant(tenant.value?.identifier);
