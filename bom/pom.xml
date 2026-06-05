@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>bom</artifactId>
-    <version>9.1.0-SNAPSHOT</version>
+    <version>9.1.0</version>
     <packaging>pom</packaging>
     <name>VITAMUI BOM</name>
     <description>${project.artifactId}</description>
@@ -76,7 +76,7 @@
         <testcontainers.version>1.21.4</testcontainers.version>
         <archunit.version>1.4.1</archunit.version>
         <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
-        <vitam.version>9.1.0-SNAPSHOT</vitam.version>
+        <vitam.version>9.1.0</vitam.version>
         <xdocreport.version>2.2.0</xdocreport.version>
         <xerces.version>2.12.2</xerces.version>
         <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
