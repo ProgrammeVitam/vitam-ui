@@ -34,19 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EnvironmentProviders } from '@angular/core';
+import { EnvironmentProviders, Injector } from '@angular/core';
 import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { VitamuiMissingTranslationHandler } from '../../app/modules';
-import { HttpBackend } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../app/modules/config.service';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { merge } from 'lodash-es';
+import { VitamBackendPropertiesLoader } from './vitam-backend-properties.loader';
 
-function httpLoaderFactory(httpBackend: HttpBackend, configService: ConfigService): TranslateLoader {
+export class VitamAggregateLoader implements TranslateLoader {
+  constructor(private loaders: TranslateLoader[]) {}
+
+  getTranslation(lang: string): Observable<any> {
+    const observables = this.loaders.map((loader) => loader.getTranslation(lang));
+    return forkJoin(observables).pipe(map((translations) => translations.reduce((acc, curr) => merge(acc, curr), {})));
+  }
+}
+
+function httpLoaderFactory(httpBackend: HttpBackend, injector: Injector): TranslateLoader {
+  const configService = injector.get(ConfigService);
   const version = configService.config && configService.config['VERSION_RELEASE'];
-  return new MultiTranslateHttpLoader(httpBackend, [
+  const translationSources: { url: string; type?: string }[] = configService.config['TRANSLATION_SOURCES'] || [];
+  const httpClient = new HttpClient(httpBackend);
+
+  const jsonResources = [
     { prefix: './assets/shared-i18n/', suffix: `.json?v=${version}` },
     { prefix: './assets/i18n/', suffix: `.json?v=${version}` },
-  ]);
+  ];
+
+  // Add external JSON sources to MultiTranslateHttpLoader
+  translationSources
+    .filter((s) => s.type === 'json' || !s.type)
+    .forEach((s) => jsonResources.push({ prefix: `${s.url}_`, suffix: `.json?v=${version}` }));
+
+  const standardLoader = new MultiTranslateHttpLoader(httpBackend, jsonResources);
+
+  // Add external Properties sources
+  const propertiesLoaders = translationSources
+    .filter((s) => s.type === 'properties')
+    .map(({ url }) => new VitamBackendPropertiesLoader(httpClient, url));
+
+  const loaders: TranslateLoader[] = [standardLoader, ...propertiesLoaders];
+
+  return new VitamAggregateLoader(loaders);
 }
 
 export function provideI18n(): EnvironmentProviders {
@@ -59,7 +92,7 @@ export function provideI18n(): EnvironmentProviders {
     loader: {
       provide: TranslateLoader,
       useFactory: httpLoaderFactory,
-      deps: [HttpBackend, ConfigService],
+      deps: [HttpBackend, Injector],
     },
   });
 }
