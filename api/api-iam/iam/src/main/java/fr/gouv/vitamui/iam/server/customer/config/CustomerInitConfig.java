@@ -171,6 +171,7 @@ public class CustomerInitConfig implements InitializingBean {
 
         private String name;
         private String description;
+        private boolean readOnly;
         private String level;
         private List<String> profiles;
 
@@ -180,10 +181,12 @@ public class CustomerInitConfig implements InitializingBean {
             final String name,
             final String description,
             final String level,
+            final boolean readOnly,
             final List<String> profiles
         ) {
             this.name = name;
             this.description = description;
+            this.readOnly = readOnly;
             this.level = level;
             this.profiles = profiles;
         }
